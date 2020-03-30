@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "List Of Faulty Items & Returned Goods";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Production Faulty Items & Returned Goods</b></h4>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12 mb-2">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">Return/Faulty Code</label>
+                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Line</label>
+                @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Warehouse</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">State Status</label>
+                @Html.DropDownList("ddlStatus", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">Return Type</label>
+                @Html.DropDownList("ddlReturnType", (IEnumerable<SelectListItem>)ViewBag.ReturnType, "Select Return Type", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Faulty Case</label>
+                @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">From Date</label>
+                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">To Date</label>
+                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12 mt-2" id="dataContainer">
+        @{Html.RenderAction("GetItemReturnList", new { @flag = "view" });}
+    </div>
+    <div class="modal fade" id="modalReturnDetails" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-primary">
+                    <input type="hidden" id="hdfReturnInfoId" />
+                    <input type="hidden" id="hdfRowIndex" />
+                    <h4 id="modalHeading" class="modal-title">
+                        Details Of Faulty Items / Returned Goods
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" id="dataContainer1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var txtCode = $("#txtCode");
+        var ddlReturnType = $("#ddlReturnType");
+        var ddlFaultyCase = $("#ddlFaultyCase");
+        var ddlLines = $("#ddlLines");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlStatus = $("#ddlStatus");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var hdfReturnInfoId = $("#hdfReturnInfoId");
+        var hdfRowIndex = $("#hdfRowIndex");
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        function OpenModal() {
+            $("#dataContainer1").empty();
+            hdfReturnInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalReturnDetails").modal("show");
+        }
+
+        $(document).on("click", "a.data-item-detail", function (e) {
+            e.preventDefault();
+            OpenModal();
+            var data = {
+                itemReturnInfoId: TryParseInt($(this).attr("data-item-detail"), 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetProductionItemReturnDetails', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfReturnInfoId.val(data.itemReturnInfoId);
+                    hdfRowIndex.val(idx)
+                    $("#dataContainer1").empty();
+                    $("#dataContainer1").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        txtCode.keyup(function () {
+            loadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            loadDataTable()
+        })
+
+        function loadDataTable() {
+            var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            console.log(data);
+
+            $.when(getReqWithData(dataType.html, type.post, '/Inventory/GetItemReturnList', data)).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").empty();
+                    $("#dataContainer").append(res);
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        $(document).on('click', ".btnAccept", function (e) {
+            e.preventDefault();
+            disable(".btnAccept");
+            fnItemReturnStateChange(hdfReturnInfoId.val(), hdfRowIndex.val(), reqStatus.accepted);
+        })
+
+        function fnItemReturnStateChange(id, index, status) {
+            console.log("id "+id+" index "+index+" status "+status);
+            if (id > 0) {
+                var data = JSON.stringify({ returnInfoId: id, status: status });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveWarehouseStockInByItemReturn', data, getToken())).then(function (res, status) {
+                    if (status == "success" && res === true) {
+                        $("#modalReturnDetails").modal("toggle").toggle("fast");
+                        hdfReturnInfoId.val('0');
+                        hdfRowIndex.val("");
+                        //alert("Requisition State has been changed successfully");
+                        removeTableRow("#tblReturnItems tbody", index);
+                        $('.toastrDefaultSuccess').trigger('click');
+                        setTimeout(function () {
+                            loadDataTable();
+                        }, 1000);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+            enable(".btnAccept");
+        }
+    </script>
+}

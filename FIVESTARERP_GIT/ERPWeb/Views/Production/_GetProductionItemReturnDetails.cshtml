@@ -1,0 +1,49 @@
+﻿@model  IEnumerable<ERPBO.Production.ViewModels.ItemReturnDetailViewModel>
+@using ERPBO.Production.ViewModels;
+@{
+    int sl = 0;
+    Layout = null;
+    ItemReturnInfoViewModel info = ((ItemReturnInfoViewModel)ViewBag.ReturnInfoViewModel);
+}
+<table class="table table-bordered table-striped table-sm table-responsive-lg">
+    <tr>
+        <td style="width:13%">Return Code</td>
+        <td style="width:20%"><b>@info.IRCode</b></td>
+        <td style="width:10%">Line</td>
+        <td style="width:23%"><b>@info.LineNumber</b></td>
+        <td style="width:10%">Warehouse</td>
+        <td style="width:23%"><b>@info.WarehouseName</b></td>
+    </tr>
+</table>
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id ="tblReturnItems">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th class="hide"></th>
+            <th class="hide"></th>
+            <th>Item Type</th>
+            <th class="hide"></th>
+            <th>Item Name</th>
+            <th>Qty.</th>
+            <th>Unit</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center" width="10%"><b>@sl</b></td>
+                <td class="hide">@item.IRDetailId</td>
+                <td class="hide">@item.ItemTypeId</td>
+                <td>@item.ItemTypeName</td>
+                <td class="hide">@item.ItemId</td>
+                <td>@item.ItemName</td>
+                <td class="text-center">@item.Quantity</td>
+                <td class="text-center">@item.UnitName</td>
+                <td class="text-center">@item.Remarks</td>
+            </tr>
+        }
+    </tbody>
+</table>

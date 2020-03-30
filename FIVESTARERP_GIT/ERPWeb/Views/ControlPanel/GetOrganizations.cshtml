@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ERPBO.ControlPanel.ViewModels.OrganizationViewModel>
+
+@{
+    ViewBag.Title = "List Of Organization";
+    int sl = 0;
+    string badge = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h4><b style="color:darkblue">List Of Organization</b></h4>
+        <hr />
+    </div>
+    <div class="col-md-12 mb-2">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblOraganizationData tbody tr',this)" />
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-right">
+                <a href="/ControlPanel/CreateOrganization" class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Organization</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblOraganizationData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>SL</th>
+                    <th>Organization</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Mobile Number</th>
+                    <th>Email</th>
+                    <th>Website</th>
+                    <th>StateStatus</th>
+                    <th>Entry Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl += 1;
+                    badge = (item.StateStatus == "Active" ? "badge bg-success" : "badge bg-danger");
+                    <tr>
+                        <td class="text-center">
+                            @sl
+                        </td>
+                        <td>@item.OrganizationName</td>
+                        <td>@item.Address</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.Email</td>
+                        <td>@item.Website</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>
+                            @item.EntryDate.Value.ToString("dd-MMM-yyyy")
+                        </td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@item.OrgId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

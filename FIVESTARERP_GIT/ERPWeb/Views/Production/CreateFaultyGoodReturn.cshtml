@@ -1,0 +1,370 @@
+﻿
+@{
+    ViewBag.Title = "Adding Faulty Item / Return Goods";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/Production/GetItemReturnList" class="float-left btn btn-sm btn-outline-primary" title="Go To List">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
+                </a>
+            </div>
+            <div class="col-md-6  text-center">
+                <h4><b style="color:darkblue">Adding Faulty Item /Goods Return </b></h4>
+            </div>
+            <div class="col-md-3">
+                <a href="#" class="float-right btn btn-sm btn-outline-danger" id="resetUI" title="Reset UI">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <hr />
+    </div>
+    <div class="col-md-12">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlReturnType">Return Type</label>
+                @Html.DropDownList("ddlReturnType", (IEnumerable<SelectListItem>)ViewBag.ReturnType, "Select Return Type", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-returnType">Return type is required</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlFaultyCase">Faulty Case</label>
+                @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-faultycase">Faulty case is required</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlLines">Line</label>
+                @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-line">Line is required</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlWarehouse">Warehouse</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-warehouse">Warehouse is required</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlItemType">Item Type</label>
+                <select id="ddlItemType" class="form-control form-control-sm">
+                    <option value="">Select Item Type</option>
+                </select>
+                <span class="error hide req-itemType">Item type is required</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlItem">Item Name</label>
+                <select id="ddlItem" class="form-control form-control-sm">
+                    <option value="">Select Item</option>
+                </select>
+                <span class="error hide req-item">Item is required</span>
+                <span class="error hide dup-item">Item is already added</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="txtQuantity">Quantity <span id="itemQty"></span></label>
+                <div class="input-group col-md-8">
+                    <input type="number" id="txtQuantity" class="form-control form-control-sm" />
+                    &nbsp;<span class="mt-2" id="unitName"></span>
+                </div>
+                <span class="error hide req-qty">Quantity is required</span>
+                <span class="error hide stock-limitCross">Not enough stock</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="txtRemark">Remarks</label>
+                <input type="text" id="txtRemark" class="form-control form-control-sm" />
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped" id="tblNewData">
+            <thead>
+                <tr>
+                    <th colspan="8" class="text-center">
+                        <button type="button" id="btnAddToList" class="float-left btn btn-sm btn-outline-warning"><i class="fa fa-plus"></i> Add To List</button>
+                        <span class="error hide no-rows">Please add data into the table</span>
+                        <button type="button" id="btnSubmit" class="float-right btn btn-sm btn-outline-success">Save <i class="fas fa-paper-plane"></i></button>
+                    </th>
+                </tr>
+                <tr class="btn-dark text-center">
+                    <th>SL</th>
+                    <th class="hide"></th>
+                    <th>Item Type</th>
+                    <th class="hide"></th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlReturnType = $("#ddlReturnType");
+        var ddlFaultyCase = $("#ddlFaultyCase");
+        var ddlLines = $("#ddlLines");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtQuantity = $("#txtQuantity");
+        var txtRemark = $("#txtRemark");
+        var unitName = $("#unitName");
+        var itemQty = $("#itemQty");
+
+
+        ddlLines.change(function () {
+            if (ddlLines.val() !== '') {
+                disable("#ddlLines");
+            }
+        })
+        ddlWarehouse.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                disable("#ddlWarehouse");
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            else {
+                enable("#ddlWarehouse");
+            }
+        })
+
+        ddlItemType.change(function () {
+            $("#unitName").text('');
+            itemQty.text('');
+            txtQuantity.val('0');
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+        })
+
+        ddlItem.change(function () {
+            $("#unitName").text('');
+            itemQty.text('');
+            txtQuantity.val('0');
+            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlLines.val() != "" && TryParseInt(ddlLines.val(), 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetItemUnitAndPDNStockQtyByLineId', JSON.stringify({ itemId: ddlItem.val(), lineId: ddlLines.val() }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (status == "success") {
+                        $("#unitName").text('(' + res.unitSymbol + ')');
+                        $("#itemQty").text('(' + res.stockQty + ')');
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+
+        })
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateAddToList() === true) {
+                addTableRow();
+                ddlItem.val('');
+                txtQuantity.val('0');
+                unitName.text('');
+                itemQty.text('');
+            }
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            disable("#btnSubmit");
+            if (validateForm() === true)
+            {
+                var info = { ReturnType: ddlReturnType.val(), FaultyCase: ddlFaultyCase.val(), LineId: ddlLines.val(), WarehouseId: ddlWarehouse.val() };
+
+                var details = [];
+                details.length = 0;
+
+                $.each($('#tblNewData tbody tr'), function (index, item) {
+                    var itemType = $(this).children('td').eq(1).html();
+                    var item = $(this).children('td').eq(3).html();
+                    var qty = $(this).children('td').eq(5).html();
+                    var remarks = $(this).children('td').eq(6).html();
+                    details.push({
+                        ItemTypeId: itemType,
+                        ItemId: item,
+                        Quantity: qty,
+                        Remarks: remarks
+                    });
+                })
+                var data = JSON.stringify({ info: info, details: details });
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFaultyItemOrGoodsReturn', data, getToken())).then(function (res, status)
+                {
+                    console.log(res);
+                    console.log(status);
+                    if (res === true && status === "success") {
+                        $('.toastrDefaultSuccess').trigger('click');
+                         setTimeout(function () {
+                            redirectPage('@Url.Action("GetItemReturnList")');
+                        }, 1000);
+                    }
+                }).fail(function (error) {
+                    enable("#btnSubmit");
+                    consoleLog(error);
+                })
+            }
+            enable("#btnSubmit");
+        })
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+        function validateForm()
+        {
+            var isvalid = true;
+            $('.error').addClass('hide');
+            if ($("#tblNewData tbody tr").length == 0) {
+                $('.no-rows').removeClass('hide');
+                isvalid = false;
+            }
+            else
+            {
+                if (ddlReturnType.val() === "") {
+                    $(".req-returnType").removeClass('hide');
+                    isvalid = false;
+                }
+                else if ($("#ddlReturnType option:selected").text().indexOf("Faulty") >= 0) {
+                    console.log("Case");
+                    console.log($("#ddlReturnType option:selected").text().indexOf("Faulty"));
+                    if (ddlFaultyCase.val() === '') {
+                        $(".req-faultycase").removeClass('hide');
+                        isvalid = false;
+                    }
+                }
+                if (ddlLines.val() === '') {
+                    $('.req-line').removeClass('hide');
+                    isvalid = false;
+                }
+                if (ddlWarehouse.val() === '') {
+                    $('.req-warehouse').removeClass('hide');
+                    isvalid = false;
+                }
+            }
+            
+            return isvalid;
+        }
+
+        function addTableRow() {
+            var len = $("#tblNewData tbody tr").length;
+            var td1 = '<td class="text-center">' + (len + 1) + '</td>';
+            var td2 = '<td class="hide">' + ddlItemType.val() + '</td>';
+            var td3 = '<td>' + $("#ddlItemType option:selected").text() + '</td>';
+            var td4 = '<td class="hide">' + ddlItem.val() + '</td>';
+            var td5 = '<td>' + $("#ddlItem option:selected").text() + '</td>';
+            var td6 = '<td class="text-center">' + txtQuantity.val() + '</td>';
+            var td7 = '<td>' + txtRemark.val() + '</td>';
+            var td8 = '<td class="text-center"><a href="#" class="btn btn-sm btn-outline-danger data-onfly-del"><i class="far fa-trash-alt"></i> Delete</a></td>';
+            var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + '</tr>';
+            $("#tblNewData tbody").append(tr);
+        }
+
+        $(document).on('click', 'a.data-onfly-del', function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            removeTableRow("#tblNewData tbody", index);
+            fnFixTheTbodyRowSerial("#tblNewData", index);
+            //$("#tblNewData tbody tr").removeClass("btn-success");
+        })
+
+        function validateAddToList() {
+            var isvalid = true;
+            $('.error').addClass('hide');
+            if ($("#tblNewData tbody tr").length > 0) {
+                $.each($("#tblNewData tbody tr"), function (index, item) {
+                    var itemId = $(this).children('td').eq(3).html();
+                    if (itemId == ddlItem.val()) {
+                        $(".dup-item").removeClass('hide');
+                        isvalid = false;
+                    }
+                })
+            }
+            if (ddlReturnType.val() === "") {
+                $(".req-returnType").removeClass('hide');
+                isvalid = false;
+            }
+            else if ($("#ddlReturnType option:selected").text().indexOf("Faulty") >= 0) {
+                console.log("Case");
+                console.log($("#ddlReturnType option:selected").text().indexOf("Faulty"));
+                if (ddlFaultyCase.val() === '') {
+                    $(".req-faultycase").removeClass('hide');
+                    isvalid = false;
+                }
+            }
+            if (ddlLines.val() === '') {
+                $('.req-line').removeClass('hide');
+                isvalid = false;
+            }
+            if (ddlWarehouse.val() === '') {
+                $('.req-warehouse').removeClass('hide');
+                isvalid = false;
+            }
+            if (ddlItemType.val() === '') {
+                $('.req-itemType').removeClass('hide');
+                isvalid = false;
+            }
+            if (ddlItem.val() === '') {
+                $('.req-item').removeClass('hide');
+                isvalid = false;
+            }
+            if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                $('.req-qty').removeClass('hide');
+                isvalid = false;
+            }
+            else {
+                var iq = itemQty.text();
+                iq = iq.substr(1, iq.length - 2);
+                if (TryParseInt(txtQuantity.val(), 0) > iq) {
+                    $('.stock-limitCross').removeClass('hide');
+                    isvalid = false;
+                }
+                //console.log("ItemQty");
+                //console.log(iq);
+            }
+            return isvalid;
+        }
+
+        function clearCtrl() {
+            ddlItemType.val('');
+            clearDropdown("ddlItem");
+            txtQuantity.val('0');
+            txtRemark.val('');
+            $("#unitName").text('');
+            itemQty.text('');
+        }
+
+        $("#resetUI").click(function (e) {
+            e.preventDefault();
+            resetUI();
+        })
+
+        function resetUI() {
+            $("#tblNewData tbody").empty();
+            ddlReturnType.val('');
+            ddlFaultyCase.val('');
+            enable("#ddlLines");
+            ddlLines.val('');
+            ddlWarehouse.val('');
+            enable("#ddlWarehouse");
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            txtQuantity.val(0);
+            itemQty.text('');
+            unitName.text('');
+        }
+
+    </script>
+}
+
