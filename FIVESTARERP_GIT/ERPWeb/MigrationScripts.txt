@@ -20,3 +20,5 @@ Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.Cont
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 
+-- Yeasin
+
