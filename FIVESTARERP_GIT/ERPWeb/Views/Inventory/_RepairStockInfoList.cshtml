@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<ERPBO.Inventory.ViewModels.RepairStockInfoViewModel>
 @{
     int sl = 0;
+    int stock = 0;
 }
 <table class="table table-bordered table-sm table-striped" id="tblWarehouseStockInfo">
     <thead class="btn-dark">
         <tr class="text-center">
             <th>SL No.</th>
             <th class="hide"></th>
+            <th>Line</th>
+            <th>Model</th>
             <th class="hide"></th>
             <th>Warehouse</th>
             <th class="hide"></th>
@@ -25,9 +28,12 @@
         @foreach (var info in Model)
         {
             sl = sl + 1;
+            stock = (info.StockInQty.Value - info.StockOutQty.Value);
             <tr>
                 <td class="text-center" width="10%">@sl</td>
                 <td class="hide">@info.RStockInfoId</td>
+                <td>@info.LineNumber</td>
+                <td>@info.ModelName</td>
                 <td class="hide">@info.WarehouseId</td>
                 <td>@info.Warehouse</td>
                 <td class="hide">@info.ItemTypeId</td>
@@ -36,18 +42,19 @@
                 <td>@info.Item</td>
                 <td class="text-center">@info.StockInQty</td>
                 <td class="text-center">@info.StockOutQty</td>
+                <td class="text-center">@stock</td>
                 <td class="hide">@info.UnitId</td>
                 <td class="text-center">@info.Unit</td>
                 <td>@info.Remarks</td>
             </tr>
         }
         @if (Model.Count() == 0)
-            {
-                <tr class="text-center empty-row">
-                    <td colspan="13">
-                        No data available in table
-                    </td>
-                </tr>
-            }
+        {
+            <tr class="text-center empty-row">
+                <td colspan="13">
+                    No data available in table
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

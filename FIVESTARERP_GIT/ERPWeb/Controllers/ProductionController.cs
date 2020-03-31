@@ -213,9 +213,16 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
+        #endregion
+
+        #region Production -Stock
         [HttpGet]
         public ActionResult GetProductionStockInfoList()
         {
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem
             {
                 Text = ware.WarehouseName,
@@ -225,13 +232,13 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId)
+        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId)
         {
             IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(OrgId).Select(info => new ProductionStockInfoDTO
             {
                 StockInfoId = info.ProductionStockInfoId,
                 LineId = info.LineId.Value,
-                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value,OrgId).LineNumber,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId.Value, OrgId).LineNumber,
                 WarehouseId = info.WarehouseId,
                 Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName),
                 ItemTypeId = info.ItemTypeId,
@@ -244,14 +251,22 @@ namespace ERPWeb.Controllers
                 StockOutQty = info.StockOutQty,
                 Remarks = info.Remarks,
                 OrganizationId = info.OrganizationId,
+                DescriptionId = info.DescriptionId,
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value,info.OrganizationId).DescriptionName)
             }).AsEnumerable();
 
-            productionStockInfoDTO = productionStockInfoDTO.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).ToList();
+            productionStockInfoDTO = productionStockInfoDTO.Where(ws => 
+            (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) &&(ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && 
+            (ItemId == null || ItemId == 0 || ws.ItemId == ItemId) &&
+            (LineId == null || LineId == 0 || ws.LineId == LineId) &&
+            (ModelId == null || ModelId == 0 || ws.DescriptionId == ModelId)
+            ).ToList();
 
             List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
             AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
             return PartialView("_productionStockInfoList", productionStockInfoViews);
-        }
+        } 
+
         #endregion
 
         #region Description
@@ -277,7 +292,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Item Return
-        public ActionResult GetItemReturnList(string flag,string code,long? lineId, long?  warehouseId,string status,string returnType,string faultyCase, string fromDate, string toDate)
+        public ActionResult GetItemReturnList(string flag,string code,long? lineId, long?  warehouseId,string status,string returnType,string faultyCase, string fromDate, string toDate, long? modelId)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -298,16 +313,21 @@ namespace ERPWeb.Controllers
                 }).ToList();
 
                 ViewBag.Status = Utility.ListOfReqStatus().Where(s => s.text == RequisitionStatus.Approved || s.text == RequisitionStatus.Accepted || s.text== RequisitionStatus.Canceled).Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
                 return View();
             }
             else
             {
                 var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).ToList();
                 var lines = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).ToList();
+                var descriptions = _descriptionBusiness.GetDescriptionByOrgId(OrgId).ToList();
                 IEnumerable<ItemReturnInfoDTO> itemReturnInfoDTOs = _itemReturnInfoBusiness.GetItemReturnInfos(OrgId).Where(i => 1 == 1
                 && (code == null || code.Trim() =="" || i.IRCode.Contains(code))
                 && (lineId == null || lineId <= 0 || i.LineId == lineId)
                 && (warehouseId == null || warehouseId <= 0 || i.WarehouseId == warehouseId)
+                && (modelId == null || modelId <= 0 || i.DescriptionId == modelId)
                 && (status == null || status.Trim() == "" || i.StateStatus == status.Trim()) 
                 && (returnType == null || returnType.Trim() == "" || i.ReturnType == returnType.Trim())
                 && (faultyCase == null || faultyCase.Trim() == "" || i.FaultyCase == faultyCase.Trim())
@@ -338,7 +358,9 @@ namespace ERPWeb.Controllers
                     WarehouseName = warehouses.Where(w => w.Id == i.WarehouseId).FirstOrDefault().WarehouseName,
                     Qty = _itemReturnDetailBusiness.GetItemReturnDetailsByReturnInfoId(OrgId, i.IRInfoId).Count(),
                     StateStatus = i.StateStatus,
-                    EntryDate = i.EntryDate
+                    EntryDate = i.EntryDate,
+                    DescriptionId = i.DescriptionId,
+                    Model = descriptions.FirstOrDefault(d=> d.DescriptionId == i.DescriptionId).DescriptionName
 
                 }).ToList();
 
@@ -366,6 +388,8 @@ namespace ERPWeb.Controllers
                 Text = w.WarehouseName,
                 Value = w.Id.ToString()
             }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
 
             return View();
         }
@@ -421,7 +445,7 @@ namespace ERPWeb.Controllers
         }
 
         ////IRDetailId,IRCode,ReturnType,FaultyCase,LineNumber,WarehouseName,ItemTypeName,ItemName,Quantity,UnitSymbol,StateStatus,Remarks,EntryDate
-        public ActionResult GetProductionFaultyOrReturnItemDetailList(string flag, string refNum, string returnType,string faultyCase,long? lineId, long? warehouseId,string status, long? itemTypeId, long? itemId, string fromDate, string toDate)
+        public ActionResult GetProductionFaultyOrReturnItemDetailList(string flag, string refNum, string returnType,string faultyCase,long? lineId, long? warehouseId,string status, long? itemTypeId, long? itemId, string fromDate, string toDate,long? modelId)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -442,11 +466,14 @@ namespace ERPWeb.Controllers
                 }).ToList();
 
                 ViewBag.Status = Utility.ListOfReqStatus().Where(s => s.text == RequisitionStatus.Approved || s.text == RequisitionStatus.Accepted || s.text == RequisitionStatus.Canceled).Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
                 return View();
             }
             else
             {
-                IEnumerable<ItemReturnDetailListDTO> listdto = _itemReturnDetailBusiness.GetItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate);
+                IEnumerable<ItemReturnDetailListDTO> listdto = _itemReturnDetailBusiness.GetItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate,modelId);
                 IEnumerable<ItemReturnDetailListViewModel> listViewModels = new List<ItemReturnDetailListViewModel>();
                 AutoMapper.Mapper.Map(listdto, listViewModels);
                 return PartialView("_GetProductionFaultyOrReturnItemDetailList", listViewModels);

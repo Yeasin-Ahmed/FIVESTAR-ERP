@@ -12,6 +12,10 @@
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
+                <label for="ddlLineNumber" class="control-label font-weight-bold">Line</label>
+                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm ctrl-change" })
+            </div>
+            <div class="col-md-3">
                 <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
@@ -23,9 +27,15 @@
             </div>
             <div class="col-md-3">
                 <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
-                <select id="ddlItem" class="form-control form-control-sm">
+                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
                     <option value="">--Select Item--</option>
                 </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change" })
             </div>
         </div>
         <hr />
@@ -43,7 +53,9 @@
         var txtInQuantity = $("#txtInQuantity");
         var txtRemarks = $("#txtRemarks");
         var unitName = $("#unitName");
-
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlModelName = $("#ddlModelName");
+        
         $(document).ready(function () {
 
         })
@@ -52,8 +64,7 @@
             var dateval = $(this).val();
             console.log(dateval);
         })
-
-        //casced dropdown load for itemtype
+        
         ddlWarehouse.change(function () {
             $("#unitName").text('');
             clearDropdown("ddlItemType");
@@ -64,7 +75,6 @@
             LoadDataTable();
         })
 
-        //casced dropdown load for item
         ddlItemType.change(function () {
             $("#unitName").text('');
             clearDropdown("ddlItem");
@@ -74,12 +84,13 @@
             LoadDataTable();
         })
 
-        ddlItem.change(function () {
+        $(document).on('click', '.ctrl-change', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(),0) };
+            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), LineId: TryParseInt(ddlLineNumber.val(), 0), ModelId: TryParseInt(ddlModelName.val(), 0) };
+
             $.when(getReqWithData('html', 'GET', '/Production/GetProductionStockInfoPartialList', data)).then(function (res,status) {
                 console.log(status);
                 if (status === "success") {

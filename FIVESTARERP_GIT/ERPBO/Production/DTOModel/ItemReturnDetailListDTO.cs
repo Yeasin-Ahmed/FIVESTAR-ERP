@@ -13,6 +13,7 @@ namespace ERPBO.Production.DTOModel
         public string IRCode { get; set; }
         public string ReturnType { get; set; }
         public string FaultyCase { get; set; }
+        public string ModelName { get; set; }
         public string LineNumber { get; set; }
         public string WarehouseName { get; set; }
         public string ItemTypeName { get; set; }

@@ -18,9 +18,7 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-
         //custom
-
         public string StateStatus { get; set; }
     }
 }

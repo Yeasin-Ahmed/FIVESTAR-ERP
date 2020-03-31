@@ -33,13 +33,14 @@
                 @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
+                <label class="col-form-label">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
                 <label class="col-form-label">Warehouse</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
-            <div class="col-md-3">
-                <label class="col-form-label">State Status</label>
-                @Html.DropDownList("ddlStatus", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
+
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -57,6 +58,12 @@
             <div class="col-md-3">
                 <label class="col-form-label">To Date</label>
                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">State Status</label>
+                @Html.DropDownList("ddlStatus", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
         </div>
         <hr />
@@ -96,6 +103,7 @@
         var dptToDate = $("#dptToDate");
         var hdfReturnInfoId = $("#hdfReturnInfoId");
         var hdfRowIndex = $("#hdfRowIndex");
+        var ddlModelName = $("#ddlModelName");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -125,7 +133,7 @@
 
         function loadDataTable()
         {
-            var data = { flag:"search",code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(),fromDate:dptFromDate.val(),toDate:dptToDate.val() };
+            var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(),0) };
             console.log(data);
 
             $.when(getReqWithData(dataType.html, type.post, '/Production/GetItemReturnList', data)).then(function (res, status)

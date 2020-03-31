@@ -48,14 +48,14 @@ namespace ERPBLL.Production
             return _itemReturnDetailRepository.GetAll(i => i.OrganizationId == OrgId && i.IRInfoId == returnInfoId).ToList();
         }
 
-        public IEnumerable<ItemReturnDetailListDTO> GetItemReturnDetailList(string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate)
+        public IEnumerable<ItemReturnDetailListDTO> GetItemReturnDetailList(string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate, long? modelId)
         {
             IEnumerable<ItemReturnDetailListDTO> list = new List<ItemReturnDetailListDTO>();
-            list = _productionDb.Db.Database.SqlQuery<ItemReturnDetailListDTO>(QueryForItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate)).ToList();
+            list = _productionDb.Db.Database.SqlQuery<ItemReturnDetailListDTO>(QueryForItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate, modelId)).ToList();
             return list;
         }
 
-        private string QueryForItemReturnDetailList(string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate)
+        private string QueryForItemReturnDetailList(string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate, long? modelId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -83,6 +83,10 @@ namespace ERPBLL.Production
             {
                 param += string.Format(@" and iri.WarehouseId ={0}", warehouseId);
             }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and iri.DescriptionId ={0}", modelId);
+            }
             if (itemTypeId != null && itemTypeId > 0)
             {
                 param += string.Format(@" and ird.ItemTypeId={0}", itemTypeId);
@@ -108,10 +112,11 @@ namespace ERPBLL.Production
                 param += string.Format(@" and Cast(iri.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select ird.IRDetailId,iri.IRCode,iri.ReturnType,ISNULL(iri.FaultyCase,'') 'FaultyCase',pl.LineNumber,w.WarehouseName,itype.ItemName 'ItemTypeName',item.ItemName,ird.Quantity,un.UnitSymbol,iri.StateStatus
+            query = string.Format(@"Select ird.IRDetailId,iri.IRCode,iri.ReturnType,ISNULL(iri.FaultyCase,'') 'FaultyCase',de.DescriptionName 'ModelName',pl.LineNumber,w.WarehouseName,itype.ItemName 'ItemTypeName',item.ItemName,ird.Quantity,un.UnitSymbol,iri.StateStatus
 ,ISNULL(ird.Remarks,'') 'Remarks',Convert(nvarchar(20),iri.EntryDate,106) 'EntryDate' From tblItemReturnDetail ird
 Inner Join tblItemReturnInfo iri on ird.IRInfoId = iri.IRInfoId
 Inner Join tblProductionLines Pl on iri.LineId= pl.LineId
+Inner Join tblDescriptions de on iri.DescriptionId= de.DescriptionId
 Inner Join [Inventory].dbo.[tblWarehouses] w on iri.WarehouseId = w.Id
 Inner Join [Inventory].dbo.[tblItemTypes] itype on ird.ItemTypeId = itype.ItemId
 Inner Join [Inventory].dbo.[tblItems] item on ird.ItemId = item.ItemId

@@ -32,10 +32,9 @@
                 <label class="col-form-label">Faulty Case</label>
                 @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
-            
             <div class="col-md-3">
-                <label class="col-form-label">State Status</label>
-                @Html.DropDownList("ddlStatus", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
+                <label class="col-form-label">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
         </div>
         <div class="row">
@@ -69,6 +68,10 @@
                 <label class="col-form-label">To Date</label>
                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
             </div>
+            <div class="col-md-3">
+                <label class="col-form-label">State Status</label>
+                @Html.DropDownList("ddlStatus", (IEnumerable<SelectListItem>)ViewBag.Status, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
         </div>
         <hr />
     </div>
@@ -90,6 +93,7 @@
         var dptToDate = $("#dptToDate");
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
+        var ddlModelName = $("#ddlModelName");
 
         $(document).ready(function ()
         {
@@ -136,7 +140,7 @@
 
         function LoadDataTable()
         {
-            var data = { flag: "search", refNum: txtCode.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { flag: "search", refNum: txtCode.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(),modelId:TryParseInt(ddlModelName.val(),0) };
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Production/GetProductionFaultyOrReturnItemDetailList', data)).then(function (res, status) {
                 console.log(status);

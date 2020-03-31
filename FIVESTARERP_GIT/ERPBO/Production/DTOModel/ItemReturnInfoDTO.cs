@@ -18,6 +18,7 @@ namespace ERPBO.Production.DTOModel
         public string FaultyCase { get; set; }
         public long? LineId { get; set; }
         public long? WarehouseId { get; set; }
+        public long? DescriptionId { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(100)]
@@ -33,5 +34,7 @@ namespace ERPBO.Production.DTOModel
         [StringLength(100)]
         public string WarehouseName { get; set; }
         public int Qty { get; set; }
+        [StringLength(100)]
+        public string Model { get; set; }
     }
 }

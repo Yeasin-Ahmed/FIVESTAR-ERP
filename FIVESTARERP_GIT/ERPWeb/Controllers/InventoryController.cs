@@ -35,11 +35,12 @@ namespace ERPWeb.Controllers
         private readonly IItemReturnDetailBusiness _itemReturnDetailBusiness;
         private readonly IRepairStockInfoBusiness _repairStockInfoBusiness;
         private readonly IRepairStockDetailBusiness _repairStockDetailBusiness;
+        private readonly IDescriptionBusiness _descriptionBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -54,6 +55,7 @@ namespace ERPWeb.Controllers
             this._itemReturnDetailBusiness = itemReturnDetailBusiness;
             this._repairStockInfoBusiness = repairStockInfoBusiness;
             this._repairStockDetailBusiness = repairStockDetailBusiness;
+            this._descriptionBusiness = descriptionBusiness;
         }
         // GET: Account
 
@@ -520,10 +522,18 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region RepairStock -Table
-        public ActionResult GetRepairStockInfoList(string flag, long? WarehouseId, long? ItemTypeId, long? ItemId)
+        public ActionResult GetRepairStockInfoList(string flag,long? LineId,long? ModelId, long? WarehouseId, long? ItemTypeId, long? ItemId)
         {
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.ListOfLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(l => new SelectListItem
+                {
+                    Text = l.LineNumber,
+                    Value = l.LineId.ToString()
+                }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem
                 {
                     Text = ware.WarehouseName,
@@ -533,9 +543,13 @@ namespace ERPWeb.Controllers
             }
             else
             {
+                var descriptions = _descriptionBusiness.GetDescriptionByOrgId(OrgId);
+                var lines = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId);
                 IEnumerable<RepairStockInfoDTO> repairStockInfoDTOs = _repairStockInfoBusiness.GetRepairStockInfos(OrgId).Select(info => new RepairStockInfoDTO
                 {
                     RStockInfoId = info.RStockInfoId,
+                    DescriptionId = info.DescriptionId,
+                    LineId = info.LineId,
                     WarehouseId = info.WarehouseId,
                     Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, OrgId).WarehouseName),
                     ItemTypeId = info.ItemTypeId,
@@ -547,10 +561,19 @@ namespace ERPWeb.Controllers
                     StockInQty = info.StockInQty,
                     StockOutQty = info.StockOutQty,
                     Remarks = info.Remarks,
-                    OrganizationId = info.OrganizationId
+                    OrganizationId = info.OrganizationId,
+                    ModelName = (descriptions.FirstOrDefault(m=> m.DescriptionId == info.DescriptionId).DescriptionName),
+                    LineNumber = (lines.FirstOrDefault(l=> l.LineId == info.LineId).LineNumber)
+
                 }).AsEnumerable();
 
-                repairStockInfoDTOs = repairStockInfoDTOs.Where(ws => (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)).ToList();
+                repairStockInfoDTOs = repairStockInfoDTOs.Where(ws => 
+                (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) && 
+                (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) 
+                && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)
+                && (LineId == null || LineId == 0 || ws.LineId == LineId)
+                && (ModelId == null || ModelId == 0 || ws.DescriptionId == ModelId)
+                ).ToList();
 
                 List<RepairStockInfoViewModel> repairStockInfoViewModels = new List<RepairStockInfoViewModel>();
                 AutoMapper.Mapper.Map(repairStockInfoDTOs, repairStockInfoViewModels);

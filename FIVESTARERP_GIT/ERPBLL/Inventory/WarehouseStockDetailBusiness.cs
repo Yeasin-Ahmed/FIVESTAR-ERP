@@ -221,6 +221,7 @@ namespace ERPBLL.Inventory
                             executionStatus = _itemReturnInfoBusiness.SaveItemReturnStatus(irInfoId, status, orgId);
                         }
                     }
+
                     else if (irInfo.ReturnType == ReturnType.ProductionFaultyReturn || irInfo.ReturnType == ReturnType.RepairFaultyReturn)
                     {
                         List<RepairStockDetailDTO> repairStockDetailDTOs = new List<RepairStockDetailDTO>();
@@ -238,7 +239,9 @@ namespace ERPBLL.Inventory
                                 UnitId = _itemBusiness.GetItemById(item.ItemId, orgId).UnitId,
                                 EntryDate = DateTime.Now,
                                 StockStatus = StockStatus.StockIn,
-                                RefferenceNumber = irInfo.IRCode
+                                RefferenceNumber = irInfo.IRCode,
+                                DescriptionId = irInfo.DescriptionId,
+                                LineId = irInfo.LineId
                             };
                             repairStockDetailDTOs.Add(stockDetailDTO);
                         }
