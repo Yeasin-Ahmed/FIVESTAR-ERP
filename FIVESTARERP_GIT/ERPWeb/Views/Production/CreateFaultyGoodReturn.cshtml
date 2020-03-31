@@ -32,9 +32,9 @@
                 <span class="error hide req-returnType">Return type is required</span>
             </div>
             <div class="col-md-3">
-                <label class="col-form-label" for="ddlFaultyCase">Faulty Case</label>
-                @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm" })
-                <span class="error hide req-faultycase">Faulty case is required</span>
+                <label class="col-form-label" for="ddlModelName">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-model">Model is required</span>
             </div>
             <div class="col-md-3">
                 <label class="col-form-label" for="ddlLines">Line</label>
@@ -77,6 +77,13 @@
                 <input type="text" id="txtRemark" class="form-control form-control-sm" />
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlFaultyCase">Faulty Case</label>
+                @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-faultycase">Faulty case is required</span>
+            </div>
+        </div>
         <hr />
     </div>
     <div class="col-md-12">
@@ -117,13 +124,14 @@
         var txtRemark = $("#txtRemark");
         var unitName = $("#unitName");
         var itemQty = $("#itemQty");
-
+        var ddlModelName = $("#ddlModelName");
 
         ddlLines.change(function () {
             if (ddlLines.val() !== '') {
                 disable("#ddlLines");
             }
         })
+
         ddlWarehouse.change(function () {
             $("#unitName").text('');
             clearDropdown("ddlItemType");
@@ -147,12 +155,22 @@
             }
         })
 
-        ddlItem.change(function () {
+        ddlItem.change(function ()
+        {
+            LoadItemStock()
+        })
+
+        ddlModelName.change(function ()
+        {
+            LoadItemStock()
+        })
+
+        function LoadItemStock() {
             $("#unitName").text('');
             itemQty.text('');
             txtQuantity.val('0');
-            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlLines.val() != "" && TryParseInt(ddlLines.val(), 0) > 0) {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetItemUnitAndPDNStockQtyByLineId', JSON.stringify({ itemId: ddlItem.val(), lineId: ddlLines.val() }), getToken())).then(function (res, status) {
+            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlLines.val() != "" && TryParseInt(ddlLines.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetItemUnitAndPDNStockQtyByLineAndModelId', JSON.stringify({ itemId: ddlItem.val(), lineId: ddlLines.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {
@@ -163,8 +181,7 @@
                     consoleLog(error);
                 })
             }
-
-        })
+        }
 
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
@@ -177,12 +194,13 @@
             }
         })
 
-        $("#btnSubmit").click(function (e) {
+        $("#btnSubmit").click(function (e)
+        {
             e.preventDefault();
             disable("#btnSubmit");
             if (validateForm() === true)
             {
-                var info = { ReturnType: ddlReturnType.val(), FaultyCase: ddlFaultyCase.val(), LineId: ddlLines.val(), WarehouseId: ddlWarehouse.val() };
+                var info = { ReturnType: ddlReturnType.val(), FaultyCase: ddlFaultyCase.val(), LineId: ddlLines.val(), WarehouseId: ddlWarehouse.val(), DescriptionId: ddlModelName.val() };
 
                 var details = [];
                 details.length = 0;
@@ -244,12 +262,17 @@
                         isvalid = false;
                     }
                 }
-                if (ddlLines.val() === '') {
+                if (TryParseInt(ddlLines.val(),0) === 0) {
                     $('.req-line').removeClass('hide');
                     isvalid = false;
                 }
-                if (ddlWarehouse.val() === '') {
+                if (TryParseInt(ddlWarehouse.val(),0) === 0) {
                     $('.req-warehouse').removeClass('hide');
+                    isvalid = false;
+                }
+                if (TryParseInt(ddlModelName.val(),0) === 0)
+                {
+                    $('.req-model').removeClass('hide');
                     isvalid = false;
                 }
             }

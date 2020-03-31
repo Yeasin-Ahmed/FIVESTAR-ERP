@@ -61,8 +61,9 @@ namespace ERPBLL.Production
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.LineId = item.LineId;
+                stockDetail.DescriptionId = item.DescriptionId;
 
-                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId).FirstOrDefault();
+                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (productionInfo != null)
                 {
                     productionInfo.StockInQty += item.Quantity;
@@ -81,6 +82,7 @@ namespace ERPBLL.Production
                     productionStockInfo.OrganizationId = orgId;
                     productionStockInfo.EUserId = userId;
                     productionStockInfo.EntryDate = DateTime.Now;
+                    productionStockInfo.DescriptionId = item.DescriptionId;
                     _productionStockInfoRepository.Insert(productionStockInfo);
                 }
                 productionStockDetails.Add(stockDetail);
@@ -88,11 +90,12 @@ namespace ERPBLL.Production
             _productionStockDetailRepository.InsertAll(productionStockDetails);
             return _productionStockDetailRepository.Save();
         }
+
         public bool SaveProductionStockOut(List<ProductionStockDetailDTO> productionStockDetailDTOs, long userId, long orgId, string flag)
         {
             var executionStatus = false;
             List<ProductionStockDetail> productionStockDetails = new List<ProductionStockDetail>();
-            if(flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn)
+            if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn)
             {
                 foreach (var item in productionStockDetailDTOs)
                 {
@@ -107,10 +110,11 @@ namespace ERPBLL.Production
                     stockDetail.UnitId = item.UnitId;
                     stockDetail.RefferenceNumber = item.RefferenceNumber;
                     stockDetail.LineId = item.LineId;
+                    stockDetail.DescriptionId = item.DescriptionId;
                     stockDetail.EntryDate = item.EntryDate;
                     stockDetail.StockStatus = StockStatus.StockReturn;
                     productionStockDetails.Add(stockDetail);
-                    var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByItemLineId(orgId, item.ItemId.Value, item.LineId.Value);
+                    var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(orgId, item.ItemId.Value, item.LineId.Value,item.DescriptionId.Value);
                     stockInfo.StockOutQty += stockDetail.Quantity;
                     _productionStockInfoRepository.Update(stockInfo);
                 }
@@ -140,7 +144,8 @@ namespace ERPBLL.Production
                         Remarks = item.Remarks,
                         Quantity = (int)item.Quantity.Value,
                         RefferenceNumber = reqInfo.ReqInfoCode,
-                        LineId = reqInfo.LineId
+                        LineId = reqInfo.LineId,
+                        DescriptionId = reqInfo.DescriptionId
                     };
                     productionStockDetailDTOs.Add(productionStockDetailDTO);
                 }

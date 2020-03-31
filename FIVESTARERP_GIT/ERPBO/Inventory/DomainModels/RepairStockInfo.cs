@@ -17,6 +17,8 @@ namespace ERPBO.Inventory.DomainModels
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
+        public long? LineId { get; set; }
+        public long? DescriptionId { get; set; }
         public int? StockInQty { get; set; }
         public int? StockOutQty { get; set; }
         [StringLength(150)]

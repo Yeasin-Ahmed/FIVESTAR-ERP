@@ -11,6 +11,7 @@
             <th style="vertical-align:middle">Return Type</th>
             <th style="vertical-align:middle">Faulty Case</th>
             <th style="vertical-align:middle">Line</th>
+            <th style="vertical-align:middle">Model</th>
             <th style="vertical-align:middle">Warehouse</th>
             <th style="vertical-align:middle">Item Type</th>
             <th style="vertical-align:middle">Item Name</th>
@@ -32,6 +33,7 @@
                 <td>@item.ReturnType</td>
                 <td>@item.FaultyCase</td>
                 <td>@item.LineNumber</td>
+                <td>@item.ModelName</td>
                 <td>@item.WarehouseName</td>
                 <td>@item.ItemTypeName</td>
                 <td>@item.ItemName</td>
@@ -47,7 +49,7 @@
         @if (Model.Count() == 0)
         {
             <tr class="text-center empty-row">
-                <td colspan="13">No data found in the table</td>
+                <td colspan="14">No data found in the table</td>
             </tr>
         }
     </tbody>

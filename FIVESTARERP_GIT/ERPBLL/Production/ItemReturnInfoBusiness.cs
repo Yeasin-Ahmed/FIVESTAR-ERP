@@ -60,6 +60,7 @@ namespace ERPBLL.Production
             itemReturnInfo.EUserId = info.EUserId;
             itemReturnInfo.EntryDate = DateTime.Now;
             itemReturnInfo.Remarks = info.Remarks;
+            itemReturnInfo.DescriptionId = info.DescriptionId;
             List<ItemReturnDetail> itemReturnDetails = new List<ItemReturnDetail>();
             List<ProductionStockDetailDTO> productionStockDetailDTOs = new List<ProductionStockDetailDTO>();
             foreach (var item in details)
@@ -87,8 +88,8 @@ namespace ERPBLL.Production
                     RefferenceNumber = itemReturnInfo.IRCode,
                     EUserId = itemReturnInfo.EUserId,
                     Remarks = info.ReturnType + (!string.IsNullOrEmpty(info.FaultyCase) ? " (" + info.FaultyCase + ")" : ""),
-                    EntryDate = itemReturnDetail.EntryDate
-                    
+                    EntryDate = itemReturnDetail.EntryDate,
+                    DescriptionId = info.DescriptionId
                 };
                 itemReturnDetails.Add(itemReturnDetail);
                 productionStockDetailDTOs.Add(productionStockDetailDTO);
