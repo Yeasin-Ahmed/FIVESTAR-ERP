@@ -19,11 +19,32 @@ namespace ERPBO.ControlPanel.ViewModels
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public bool IsRoleActive { get; set; }
-        public long? RoleId { get; set; }
+        public long RoleId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long BranchId { get; set; }
+
+        [StringLength(50)]
+        public string MobileNo { get; set; }
+        [StringLength(150)]
+        public string Address { get; set; }
+        [StringLength(100)]
+        public string Desigation { get; set; }
+        [Range(1, long.MaxValue)]
+        public string ConfirmPassword { get; set; }
+        [Range(1, long.MaxValue)]
+        public long OrganizationId { get; set; }
+
+        //custom
+        [StringLength(100)]
+        public string BranchName { get; set; }
+        [StringLength(100)]
+        public string RoleName { get; set; }
+        [StringLength(100)]
+        public string OrganizationName { get; set; }
+        public string StateStatus { get; set; }
+        public string StateStatusRole { get; set; }
     }
 }

@@ -16,13 +16,17 @@ namespace ERPWeb.Controllers
         private readonly IOrganizationBusiness _organizationBusiness;
         private readonly IBranchBusiness _branchBusiness;
         private readonly IRoleBusiness _roleBusiness;
+        private readonly IAppUserBusiness _appUserBusiness;
+
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness)
+
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
             this._roleBusiness = roleBusiness;
+            this._appUserBusiness = appUserBusiness;
         }
         // GET: ControlPanel
         [HttpGet]
@@ -158,6 +162,59 @@ namespace ERPWeb.Controllers
                     RoleDTO dto = new RoleDTO();
                     AutoMapper.Mapper.Map(roleViewModel, dto);
                     isSuccess = _roleBusiness.SaveRole(dto, UserId, OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region AppUser
+        public ActionResult GetAppUserList(int? page)
+        {
+            ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
+
+            ViewBag.ddlRoleName = _roleBusiness.GetAllRoleByOrgId(OrgId).Select(br => new SelectListItem { Text = br.RoleName, Value = br.RoleId.ToString() });
+
+            ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
+
+            IPagedList<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(OrgId).Select(user => new AppUserViewModel
+            {
+             UserId=user.UserId,
+            EmployeeId = user.EmployeeId,
+            FullName = user.FullName,
+            MobileNo = user.MobileNo,
+            Address = user.Address,
+            Email = user.Email,
+            Desigation = user.Desigation,
+            UserName = user.UserName,
+            Password = user.Password,
+            ConfirmPassword = user.ConfirmPassword,
+            StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
+            StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
+            OrganizationId = user.OrganizationId,
+            OrganizationName=(_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+            BranchId = user.BranchId,
+            BranchName=(_branchBusiness.GetBranchOneByOrgId(user.BranchId,OrgId).BranchName),
+            RoleId = user.RoleId,
+            RoleName=(_roleBusiness.GetRoleOneById(user.RoleId,OrgId).RoleName),
+            }).OrderBy(user => user.UserId).ToPagedList(page ?? 1, 15);
+            IEnumerable<AppUserViewModel> appUserViewModelForPage = new List<AppUserViewModel>();
+            return View(appUserViewModels);
+        }
+        public ActionResult SaveAppUser(AppUserViewModel appUserViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    AppUserDTO dto = new AppUserDTO();
+                    AutoMapper.Mapper.Map(appUserViewModel, dto);
+                    isSuccess = _appUserBusiness.SaveAppUser(dto, UserId, OrgId);
                 }
                 catch (Exception ex)
                 {

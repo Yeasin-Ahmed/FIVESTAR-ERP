@@ -19,11 +19,24 @@ namespace ERPBO.ControlPanel.DTOModels
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public bool IsRoleActive { get; set; }
-        public long? RoleId { get; set; }
+        public long RoleId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long BranchId { get; set; }
+
+        public string MobileNo { get; set; }
+        public string Address { get; set; }
+        public string Desigation { get; set; }
+        public string ConfirmPassword { get; set; }
+        public long OrganizationId { get; set; }
+
+        //custom
+        public string BranchName { get; set; }
+        public string RoleName { get; set; }
+        public string OrganizationName { get; set; }
+        public string StateStatus { get; set; }
+        public string StateStatusRole { get; set; }
     }
 }

@@ -19,12 +19,17 @@ namespace ERPDAL.ControlPanelContextMigrations
                         Email = c.String(),
                         IsActive = c.Boolean(nullable: false),
                         IsRoleActive = c.Boolean(nullable: false),
-                        RoleId = c.Long(),
+                        RoleId = c.Long(nullable: false),
                         EUserId = c.Long(),
                         EntryDate = c.DateTime(),
                         UpUserId = c.Long(),
                         UpdateDate = c.DateTime(),
                         BranchId = c.Long(nullable: false),
+                        MobileNo = c.String(),
+                        Address = c.String(),
+                        Desigation = c.String(),
+                        ConfirmPassword = c.String(),
+                        OrganizationId = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.UserId)
                 .ForeignKey("dbo.tblBranch", t => t.BranchId, cascadeDelete: true)

@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPanelContextMigrations\202003290927301_ControlPanel_AllEntities_29-Mar-2020.cs" />
-    <Compile Include="ControlPanelContextMigrations\202003290927301_ControlPanel_AllEntities_29-Mar-2020.Designer.cs">
-      <DependentUpon>202003290927301_ControlPanel_AllEntities_29-Mar-2020.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202003310514063_ControlPanel_AllEntities_29-Mar-2020.cs" />
+    <Compile Include="ControlPanelContextMigrations\202003310514063_ControlPanel_AllEntities_29-Mar-2020.Designer.cs">
+      <DependentUpon>202003310514063_ControlPanel_AllEntities_29-Mar-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -94,8 +94,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202003290927301_ControlPanel_AllEntities_29-Mar-2020.resx">
-      <DependentUpon>202003290927301_ControlPanel_AllEntities_29-Mar-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202003310514063_ControlPanel_AllEntities_29-Mar-2020.resx">
+      <DependentUpon>202003310514063_ControlPanel_AllEntities_29-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202003290932046_Inventory_AllEntities_29-Mar-2020.resx">
       <DependentUpon>202003290932046_Inventory_AllEntities_29-Mar-2020.cs</DependentUpon>

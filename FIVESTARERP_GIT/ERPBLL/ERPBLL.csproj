@@ -69,7 +69,9 @@
   <ItemGroup>
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="ControlPanel\AppUserBusiness.cs" />
     <Compile Include="ControlPanel\BranchBusiness.cs" />
+    <Compile Include="ControlPanel\Interface\IAppUserBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IBranchBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IOrganizationBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IRoleBusiness.cs" />
