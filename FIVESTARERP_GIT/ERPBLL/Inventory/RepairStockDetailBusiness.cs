@@ -60,8 +60,10 @@ namespace ERPBLL.Inventory
                 stockDetail.EntryDate = DateTime.Now;
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.LineId = item.LineId;
 
-                var repairStockInfo = _repairStockInfoBusiness.GetRepairStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
+                var repairStockInfo = _repairStockInfoBusiness.GetRepairStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (repairStockInfo != null)
                 {
                     repairStockInfo.StockInQty += item.Quantity;
@@ -79,6 +81,8 @@ namespace ERPBLL.Inventory
                     repairStockInfoNew.OrganizationId = orgId;
                     repairStockInfoNew.EUserId = userId;
                     repairStockInfoNew.EntryDate = DateTime.Now;
+                    repairStockInfoNew.LineId = item.LineId;
+                    repairStockInfoNew.DescriptionId = item.DescriptionId;
                     repairStockInfoRepository.Insert(repairStockInfoNew);
                 }
                 repairStockDetails.Add(stockDetail);

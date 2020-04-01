@@ -22,6 +22,7 @@ namespace ERPBO.Production.DTOModel
         public long? UnitId { get; set; }
         public int? StockInQty { get; set; }
         public int? StockOutQty { get; set; }
+        public long? DescriptionId { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
@@ -43,5 +44,7 @@ namespace ERPBO.Production.DTOModel
         public string Unit { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
+        [StringLength(100)]
+        public string ModelName { get; set; }
     }
 }

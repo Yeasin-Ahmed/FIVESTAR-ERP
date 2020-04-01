@@ -18,6 +18,10 @@ namespace ERPBO.Inventory.ViewModels
         public long? ItemId { get; set; }
         [Range(1, long.MaxValue)]
         public long? UnitId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? LineId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? DescriptionId { get; set; }
         public int? StockInQty { get; set; }
         public int? StockOutQty { get; set; }
         [StringLength(150)]
@@ -39,5 +43,9 @@ namespace ERPBO.Inventory.ViewModels
         public string Item { get; set; }
         [StringLength(100)]
         public string Unit { get; set; }
+        [StringLength(150)]
+        public string ModelName { get; set; }
+        [StringLength(100)]
+        public string LineNumber { get; set; }
     }
 }

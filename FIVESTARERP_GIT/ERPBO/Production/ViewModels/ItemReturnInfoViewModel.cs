@@ -20,6 +20,7 @@ namespace ERPBO.Production.ViewModels
         public long? LineId { get; set; }
         [Range(1, long.MaxValue)]
         public long? WarehouseId { get; set; }
+        public long? DescriptionId { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(100)]
@@ -35,5 +36,7 @@ namespace ERPBO.Production.ViewModels
         [StringLength(100)]
         public string WarehouseName { get; set; }
         public int Qty { get; set; }
+        [StringLength(100)]
+        public string Model { get; set; }
     }
 }

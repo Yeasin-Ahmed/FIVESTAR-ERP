@@ -12,22 +12,31 @@
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
+                <label for="ddlLineNumber" class="control-label font-weight-bold">Line</label>
+                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "--Select Line--", new { @class = "form-control form-control-sm ctrl-change" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change" })
+            </div>
+            <div class="col-md-3">
                 <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
                 <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
-                <select id="ddlItemType" class="form-control form-control-sm">
+                <select id="ddlItemType" class="form-control form-control-sm ctrl-change">
                     <option value="">--Select Item Type--</option>
                 </select>
             </div>
+
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
                 <select id="ddlItem" class="form-control form-control-sm">
                     <option value="">--Select Item--</option>
                 </select>
-                <span class="error hide duplicate-itemName font-weight-bold">The itemName is already exist!</span>
-
             </div>
             <div class="col-md-3">
             </div>
@@ -35,7 +44,7 @@
         <hr />
     </div>
     <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("GetRepairStockInfoList",new {@flag="search"});}
+        @{Html.RenderAction("GetRepairStockInfoList", new { @flag = "search" });}
     </div>
 </div>
 
@@ -44,6 +53,8 @@
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlModelName = $("#ddlModelName");
 
         $(document).ready(function () {
         })
@@ -74,13 +85,13 @@
             LoadDataTable();
         })
 
-        ddlItem.change(function () {
+        $(document).on('change', '.ctrl-change', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { flag:"search",WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(),0) };
-            $.when(getReqWithData('html', 'GET', '/Inventory/GetRepairStockInfoList', data)).then(function (res,status) {
+            var data = { flag: "search",LineId:TryParseInt(ddlLineNumber.val(),0),ModelId:TryParseInt(ddlModelName.val(),0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0) };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetRepairStockInfoList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").empty();

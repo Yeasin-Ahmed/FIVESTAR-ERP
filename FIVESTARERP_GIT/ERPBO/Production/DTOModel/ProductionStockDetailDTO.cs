@@ -22,6 +22,7 @@ namespace ERPBO.Production.DTOModel
         public long? UnitId { get; set; }
         [Range(1, long.MaxValue)]
         public int Quantity { get; set; }
+        public long? DescriptionId { get; set; }
         public Nullable<DateTime> ExpireDate { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
@@ -49,5 +50,7 @@ namespace ERPBO.Production.DTOModel
         public string StockStatus { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
+        [StringLength(100)]
+        public string ModelName { get; set; }
     }
 }

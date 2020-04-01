@@ -103,6 +103,20 @@ namespace ERPWeb.Controllers
             return Json(new {unitid=unit.UnitId,unitName=unit.UnitName,unitSymbol = unit.UnitSymbol,stockQty=itemStock });
         }
 
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId,long modelId)
+        {
+            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
+            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
+            var productionStock = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(OrgId, itemId, lineId,modelId);
+            var itemStock = 0;
+            if (productionStock != null)
+            {
+                itemStock = (productionStock.StockInQty - productionStock.StockOutQty).Value;
+            }
+            return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
         #region Dropdown List
 
         [HttpPost]
