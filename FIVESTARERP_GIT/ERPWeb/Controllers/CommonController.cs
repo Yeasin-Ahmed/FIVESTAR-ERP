@@ -5,6 +5,7 @@ using ERPWeb.Filters;
 using System.Linq;
 using System.Web.Mvc;
 using ERPBO.Inventory.DTOModel;
+using ERPBLL.ControlPanel.Interface;
 
 namespace ERPWeb.Controllers
 {
@@ -19,10 +20,11 @@ namespace ERPWeb.Controllers
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IProductionLineBusiness _productionLineBusiness;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
+        private readonly IAppUserBusiness _appUserBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness,IAppUserBusiness appUserBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -32,6 +34,7 @@ namespace ERPWeb.Controllers
             this._requsitionDetailBusiness = requsitionDetailBusiness;
             this._productionLineBusiness = productionLineBusiness;
             this._productionStockInfoBusiness = productionStockInfoBusiness;
+            this._appUserBusiness = appUserBusiness;
         }
 
         #region Validation Action Methods
@@ -65,6 +68,12 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateLineNumber(string lineNumber, long id)
         {
             bool isExist = _productionLineBusiness.IsDuplicateLineNumber(lineNumber, id, OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateEmployeeId(string employeeId, long id)
+        {
+            bool isExist = _appUserBusiness.IsDuplicateEmployeeId(employeeId, id, OrgId);
             return Json(isExist);
         }
 

@@ -22,7 +22,7 @@ namespace ERPBO.ControlPanel.DomainModels
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public bool IsRoleActive { get; set; }
-        public long? RoleId { get; set; }
+        public long RoleId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
@@ -30,5 +30,12 @@ namespace ERPBO.ControlPanel.DomainModels
         [ForeignKey("Branch")]
         public long BranchId { get; set; }
         public Branch Branch { get; set; }
+
+        public string MobileNo { get; set; }
+        public string Address { get; set; }
+        public string Desigation { get; set; }
+        public string ConfirmPassword { get; set; }
+        public long OrganizationId { get; set; }
+
     }
 }

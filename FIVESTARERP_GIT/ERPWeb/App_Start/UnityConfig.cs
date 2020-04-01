@@ -45,6 +45,7 @@ namespace ERPWeb
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
 
             // Control Panel Database
+            container.RegisterType<IAppUserBusiness, AppUserBusiness>();
             container.RegisterType<IRoleBusiness, RoleBusiness>();
             container.RegisterType<IBranchBusiness, BranchBusiness>();
             container.RegisterType<IOrganizationBusiness, OrganizationBusiness>();

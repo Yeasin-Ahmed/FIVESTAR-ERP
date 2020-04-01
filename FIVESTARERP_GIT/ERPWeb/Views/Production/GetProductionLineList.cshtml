@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionLineViewModel>
+﻿@model PagedList.IPagedList<ERPBO.Production.ViewModels.ProductionLineViewModel>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Production Line List";
     int sl = 0;
@@ -64,6 +66,11 @@
                 }
             </tbody>
         </table>
+        <div class="container">
+            <ul class="pagination pagination-sm float-lg-right ">
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("GetProductionLineList", new { page }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+            </ul>
+        </div>
     </div>
 </div>
 

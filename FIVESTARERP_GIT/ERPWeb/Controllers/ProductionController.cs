@@ -49,9 +49,9 @@ namespace ERPWeb.Controllers
         }
 
         #region ProductionLine
-        public ActionResult GetProductionLineList()
+        public ActionResult GetProductionLineList(int? page)
         {
-            IEnumerable<ProductionLineDTO> productionLineDTO = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new ProductionLineDTO
+            IPagedList<ProductionLineViewModel> productionLineViewModels = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new ProductionLineViewModel
             {
                 LineId = line.LineId,
                 LineNumber = line.LineNumber,
@@ -63,9 +63,10 @@ namespace ERPWeb.Controllers
                 EntryDate = line.EntryDate,
                 UpUserId = line.UpUserId,
                 UpdateDate = line.UpdateDate
-            }).ToList();
-            List<ProductionLineViewModel> productionLineViewModels = new List<ProductionLineViewModel>();
-            AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
+            }).OrderBy(line => line.LineId).ToPagedList(page ?? 1, 15);
+            IEnumerable<ProductionLineViewModel> productionLineViewModelForPage = new List<ProductionLineViewModel>();
+           // List<ProductionLineViewModel> productionLineViewModels = new List<ProductionLineViewModel>();
+           // AutoMapper.Mapper.Map(productionLineDTO, productionLineViewModels);
             return View(productionLineViewModels);
         }
         [HttpPost]
