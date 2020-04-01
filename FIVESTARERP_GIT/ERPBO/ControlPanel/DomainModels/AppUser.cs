@@ -30,12 +30,10 @@ namespace ERPBO.ControlPanel.DomainModels
         [ForeignKey("Branch")]
         public long BranchId { get; set; }
         public Branch Branch { get; set; }
-
         public string MobileNo { get; set; }
         public string Address { get; set; }
         public string Desigation { get; set; }
         public string ConfirmPassword { get; set; }
         public long OrganizationId { get; set; }
-
     }
 }
