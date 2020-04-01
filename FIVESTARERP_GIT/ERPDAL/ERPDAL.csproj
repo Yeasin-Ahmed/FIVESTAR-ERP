@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPanelContextMigrations\202003290927301_ControlPanel_AllEntities_29-Mar-2020.cs" />
-    <Compile Include="ControlPanelContextMigrations\202003290927301_ControlPanel_AllEntities_29-Mar-2020.Designer.cs">
-      <DependentUpon>202003290927301_ControlPanel_AllEntities_29-Mar-2020.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202003310712133_ControlPanel_AllEntities_31-Mar-2020.cs" />
+    <Compile Include="ControlPanelContextMigrations\202003310712133_ControlPanel_AllEntities_31-Mar-2020.Designer.cs">
+      <DependentUpon>202003310712133_ControlPanel_AllEntities_31-Mar-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -59,40 +59,16 @@
     <Compile Include="ControlPanelDAL\IControlPanelUnitOfWork.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelBaseRepository.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelUnitOfWork.cs" />
-    <Compile Include="InventoryContextMigrations\202003290932046_Inventory_AllEntities_29-Mar-2020.cs" />
-    <Compile Include="InventoryContextMigrations\202003290932046_Inventory_AllEntities_29-Mar-2020.Designer.cs">
-      <DependentUpon>202003290932046_Inventory_AllEntities_29-Mar-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202003301506595_Inventory_AddDescriptionId_RepairStock.cs" />
-    <Compile Include="InventoryContextMigrations\202003301506595_Inventory_AddDescriptionId_RepairStock.Designer.cs">
-      <DependentUpon>202003301506595_Inventory_AddDescriptionId_RepairStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202003301516362_Inventory_LindId_RepairStock.cs" />
-    <Compile Include="InventoryContextMigrations\202003301516362_Inventory_LindId_RepairStock.Designer.cs">
-      <DependentUpon>202003301516362_Inventory_LindId_RepairStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202003301521300_Inventory_LineId&amp;DescriptionId_RepairStockDetail.cs" />
-    <Compile Include="InventoryContextMigrations\202003301521300_Inventory_LineId&amp;DescriptionId_RepairStockDetail.Designer.cs">
-      <DependentUpon>202003301521300_Inventory_LineId&amp;DescriptionId_RepairStockDetail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202003310506027_Inventory_RepairStock_LindIdToLineId.cs" />
-    <Compile Include="InventoryContextMigrations\202003310506027_Inventory_RepairStock_LindIdToLineId.Designer.cs">
-      <DependentUpon>202003310506027_Inventory_RepairStock_LindIdToLineId.cs</DependentUpon>
+    <Compile Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.Designer.cs">
+      <DependentUpon>202003310717010_Inventory_AllEntities_31-Mar-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202003290937140_Production_AllEntities_29-Mar-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202003290937140_Production_AllEntities_29-Mar-2020.Designer.cs">
-      <DependentUpon>202003290937140_Production_AllEntities_29-Mar-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202003300854520_Production_AddDescriptionId_ProductionStock.cs" />
-    <Compile Include="ProductionContextMigrations\202003300854520_Production_AddDescriptionId_ProductionStock.Designer.cs">
-      <DependentUpon>202003300854520_Production_AddDescriptionId_ProductionStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202003301115236_Production_ItemReturnInfo_DescriptionId.cs" />
-    <Compile Include="ProductionContextMigrations\202003301115236_Production_ItemReturnInfo_DescriptionId.Designer.cs">
-      <DependentUpon>202003301115236_Production_ItemReturnInfo_DescriptionId.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202003310720120_Production_AllEntities_31-Mar-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202003310720120_Production_AllEntities_31-Mar-2020.Designer.cs">
+      <DependentUpon>202003310720120_Production_AllEntities_31-Mar-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -118,32 +94,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202003290927301_ControlPanel_AllEntities_29-Mar-2020.resx">
-      <DependentUpon>202003290927301_ControlPanel_AllEntities_29-Mar-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202003310712133_ControlPanel_AllEntities_31-Mar-2020.resx">
+      <DependentUpon>202003310712133_ControlPanel_AllEntities_31-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202003290932046_Inventory_AllEntities_29-Mar-2020.resx">
-      <DependentUpon>202003290932046_Inventory_AllEntities_29-Mar-2020.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.resx">
+      <DependentUpon>202003310717010_Inventory_AllEntities_31-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202003301506595_Inventory_AddDescriptionId_RepairStock.resx">
-      <DependentUpon>202003301506595_Inventory_AddDescriptionId_RepairStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202003301516362_Inventory_LindId_RepairStock.resx">
-      <DependentUpon>202003301516362_Inventory_LindId_RepairStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202003301521300_Inventory_LineId&amp;DescriptionId_RepairStockDetail.resx">
-      <DependentUpon>202003301521300_Inventory_LineId&amp;DescriptionId_RepairStockDetail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202003310506027_Inventory_RepairStock_LindIdToLineId.resx">
-      <DependentUpon>202003310506027_Inventory_RepairStock_LindIdToLineId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202003290937140_Production_AllEntities_29-Mar-2020.resx">
-      <DependentUpon>202003290937140_Production_AllEntities_29-Mar-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202003300854520_Production_AddDescriptionId_ProductionStock.resx">
-      <DependentUpon>202003300854520_Production_AddDescriptionId_ProductionStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202003301115236_Production_ItemReturnInfo_DescriptionId.resx">
-      <DependentUpon>202003301115236_Production_ItemReturnInfo_DescriptionId.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202003310720120_Production_AllEntities_31-Mar-2020.resx">
+      <DependentUpon>202003310720120_Production_AllEntities_31-Mar-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
