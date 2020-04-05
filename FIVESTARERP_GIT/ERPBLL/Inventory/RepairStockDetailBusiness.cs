@@ -90,5 +90,73 @@ namespace ERPBLL.Inventory
             repairStockDetailRepository.InsertAll(repairStockDetails);
             return repairStockDetailRepository.Save();
         }
+
+        public IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            IEnumerable<RepairStockDetailListDTO> repairStockDetailListDTOs = new List<RepairStockDetailListDTO>();
+            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<RepairStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum)).ToList();
+            return repairStockDetailListDTOs;
+        }
+
+        private string QueryForRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            if (lineId != null && lineId > 0)
+            {
+                param += string.Format(@" and pl.LineId={0}", lineId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and de.DescriptionId={0}", modelId);
+            }
+            if (warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and wh.Id={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and it.ItemId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and i.ItemId ={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(stockStatus) && stockStatus.Trim() != "")
+            {
+                param += string.Format(@" and rsd.StockStatus='{0}'", stockStatus);
+            }
+            if (!string.IsNullOrEmpty(refNum) && refNum.Trim() != "")
+            {
+                param += string.Format(@" and rsd.RefferenceNumber Like'%{0}%'", refNum);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(rsd.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(rsd.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(rsd.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select rsd.RStockDetailId,pl.LineNumber,de.DescriptionName 'ModelName',wh.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',rsd.Quantity,rsd.StockStatus
+,Convert(nvarchar(20),rsd.EntryDate,106) 'EntryDate', ISNULL(rsd.RefferenceNumber,'N/A') as 'RefferenceNumber'  From tblRepairStockDetails rsd
+Left Join tblWarehouses wh on rsd.WarehouseId = wh.Id
+Left Join tblItemTypes it on rsd.ItemTypeId = it.ItemId
+Left Join tblItems i on rsd.ItemId  = i.ItemId
+Left Join tblUnits u on rsd.UnitId= u.UnitId
+Left Join [Production].dbo.[tblDescriptions] de on rsd.DescriptionId = de.DescriptionId
+Left Join [Production].dbo.[tblProductionLines] pl on rsd.LineId = pl.LineId
+Where 1=1 {0}", Utility.ParamChecker(param));
+            return query;
+        }
     }
 }

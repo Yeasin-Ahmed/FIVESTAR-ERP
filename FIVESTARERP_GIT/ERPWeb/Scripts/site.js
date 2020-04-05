@@ -305,7 +305,7 @@ function fnSaveWhen(obj) {
 function fnDeleteWhen(obj, tblId, rowIndex) {
     $.when(obj).then(function (res) {
         console.log(res);
-        if (res == true) {
+        if (res === true) {
             alert(execuStatus.successDelete);
             removeTableRow(tblId, rowIndex);
         }
@@ -595,7 +595,7 @@ function enable(elementId) {
 function message(element, modalId) {
     $(element).show(200).fadeIn('slow', function () {
         $(element).delay(500).fadeOut('slow', function () {
-            if (modalId != "" && modalId != undefined) {
+            if (modalId !== "" && modalId !== undefined) {
                 hideModal(modalId, reloadPage());
             }
         });
@@ -655,19 +655,37 @@ function getDateFromJson(jsonVal) {
     var parsedDate = new Date(parseInt(StartDateServer.substr(6)));
     var day = ("0" + parsedDate.getDate()).slice(-2);
     var month = ("0" + (parsedDate.getMonth() + 1)).slice(-2);
-    return parsedDate.getFullYear() + "-" + (month) + "-" + (day);
+    return parsedDate.getFullYear() + "-" + month+ "-" + day;
 }
 
-function clearDropdown(eletementId) {
-    //if ($("#" + eletementId + " option").length > 1)
-    //if ($("#" + eletementId).children("option").length > 1)
-    //{
+function clearDropdown(eletementId)
+{
     $('#' + eletementId + ' option:not(:first)').remove();
-    //}
 }
 
 function ajaxValueChecker(data, url, token) {
     var returnVal = false;
+    $.ajax({
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'POST',
+        url: url,
+        async: false,
+        data: data,
+        headers: token,
+        success: function (result) {
+            console.log(result);
+            returnVal = result;
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+    return returnVal;
+}
+
+function ajaxValueChecker2(data, url, token) {
+    var returnVal = {};
     $.ajax({
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',

@@ -254,5 +254,64 @@ namespace ERPBLL.Inventory
             }
             return executionStatus;
         }
+
+        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            IEnumerable<WarehouseStockDetailInfoListDTO> warehouseStockDetailInfoLists = new List<WarehouseStockDetailInfoListDTO>();
+            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum)).ToList();
+            return warehouseStockDetailInfoLists;
+        }
+
+        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and wh.Id={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and it.ItemId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and i.ItemId ={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(stockStatus) && stockStatus.Trim() != "")
+            {
+                param += string.Format(@" and wsd.StockStatus='{0}'", stockStatus);
+            }
+            if (!string.IsNullOrEmpty(refNum) && refNum.Trim() != "")
+            {
+                param += string.Format(@" and wsd.RefferenceNumber Like'%{0}%'", refNum);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(wsd.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(wsd.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(wsd.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select wsd.StockDetailId,wh.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',wsd.Quantity,wsd.StockStatus
+,Convert(nvarchar(20),wsd.EntryDate,106) 'EntryDate', ISNULL(wsd.RefferenceNumber,'N/A') as 'RefferenceNumber'  From tblWarehouseStockDetails wsd
+Left Join tblWarehouses wh on wsd.WarehouseId = wh.Id
+Left Join tblItemTypes it on wsd.ItemTypeId = it.ItemId
+Left Join tblItems i on wsd.ItemId  = i.ItemId
+Left Join tblUnits u on wsd.UnitId= u.UnitId
+Where 1=1 {0}", Utility.ParamChecker(param));
+            return query;
+        }
     }
 }

@@ -21,10 +21,11 @@ namespace ERPWeb.Controllers
         private readonly IProductionLineBusiness _productionLineBusiness;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
         private readonly IAppUserBusiness _appUserBusiness;
+        private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness,IItemTypeBusiness itemTypeBusiness,IUnitBusiness unitBusiness,IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness,IAppUserBusiness appUserBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -35,6 +36,7 @@ namespace ERPWeb.Controllers
             this._productionLineBusiness = productionLineBusiness;
             this._productionStockInfoBusiness = productionStockInfoBusiness;
             this._appUserBusiness = appUserBusiness;
+            this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
         }
 
         #region Validation Action Methods
@@ -90,7 +92,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemUnitAndPDNStockQtyByLineId(long itemId,long lineId)
+        public ActionResult GetItemUnitAndPDNStockQtyByLineId(long itemId, long lineId)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
@@ -100,21 +102,81 @@ namespace ERPWeb.Controllers
             {
                 itemStock = (productionStock.StockInQty - productionStock.StockOutQty).Value;
             }
-            return Json(new {unitid=unit.UnitId,unitName=unit.UnitName,unitSymbol = unit.UnitSymbol,stockQty=itemStock });
+            return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId,long modelId)
+        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId, long modelId)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
-            var productionStock = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(OrgId, itemId, lineId,modelId);
+            var productionStock = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(OrgId, itemId, lineId, modelId);
             var itemStock = 0;
             if (productionStock != null)
             {
                 itemStock = (productionStock.StockInQty - productionStock.StockOutQty).Value;
             }
             return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsStockAvailableForRequisition(long? reqInfoId)
+        {
+            //bool isValidExec = true;
+            //string isValidTxt = string.Empty;
+            //var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, OrgId).ToList();
+            //var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(OrgId);
+            //var items = _itemBusiness.GetAllItemByOrgId(OrgId).ToList();
+
+            //foreach (var item in reqDetail)
+            //{
+            //    var w = warehouseStock.FirstOrDefault(wr => wr.ItemId == item.ItemId);
+            //    if (w != null)
+            //    {
+            //        if ((w.StockInQty - w.StockOutQty) < item.Quantity)
+            //        {
+            //            isValidExec = false;
+            //            isValidTxt += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        isValidExec = false;
+            //        isValidTxt += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName+" does not have enough stock </br>";
+            //    }
+            //}
+
+            ExecutionStateWithText stateWithText = GetExecutionStockAvailableForRequisition(reqInfoId);
+            return Json(stateWithText);
+        }
+
+        [NonAction]
+        public ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
+        {
+            ExecutionStateWithText stateWithText = new ExecutionStateWithText();
+             var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, OrgId).ToList();
+            var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(OrgId);
+            var items = _itemBusiness.GetAllItemByOrgId(OrgId).ToList();
+
+            foreach (var item in reqDetail)
+            {
+                var w = warehouseStock.FirstOrDefault(wr => wr.ItemId == item.ItemId);
+                if (w != null)
+                {
+                    if ((w.StockInQty - w.StockOutQty) < item.Quantity)
+                    {
+                        stateWithText.isSuccess = false;
+                        stateWithText.text += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+                    }
+                }
+                else
+                {
+                    stateWithText.isSuccess = false;
+                    stateWithText.text += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+                }
+            }
+
+            return stateWithText;
         }
 
         #region Dropdown List

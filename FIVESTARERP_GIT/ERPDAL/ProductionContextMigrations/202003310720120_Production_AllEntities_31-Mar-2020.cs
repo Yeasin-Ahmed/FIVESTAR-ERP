@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Production_AllEntities_29Mar2020 : DbMigration
+    public partial class Production_AllEntities_31Mar2020 : DbMigration
     {
         public override void Up()
         {
@@ -56,6 +56,7 @@ namespace ERPDAL.ProductionContextMigrations
                         FaultyCase = c.String(maxLength: 100),
                         LineId = c.Long(),
                         WarehouseId = c.Long(),
+                        DescriptionId = c.Long(),
                         StateStatus = c.String(maxLength: 50),
                         Remarks = c.String(maxLength: 100),
                         OrganizationId = c.Long(nullable: false),
@@ -94,6 +95,7 @@ namespace ERPDAL.ProductionContextMigrations
                         ItemId = c.Long(),
                         UnitId = c.Long(),
                         Quantity = c.Int(nullable: false),
+                        DescriptionId = c.Long(),
                         ExpireDate = c.DateTime(),
                         Remarks = c.String(maxLength: 150),
                         OrganizationId = c.Long(nullable: false),
@@ -121,6 +123,7 @@ namespace ERPDAL.ProductionContextMigrations
                         UnitId = c.Long(),
                         StockInQty = c.Int(),
                         StockOutQty = c.Int(),
+                        DescriptionId = c.Long(),
                         Remarks = c.String(maxLength: 150),
                         OrganizationId = c.Long(nullable: false),
                         EUserId = c.Long(),

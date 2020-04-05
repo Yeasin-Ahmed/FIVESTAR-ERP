@@ -222,7 +222,7 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
-            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
 
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem
             {
@@ -233,7 +233,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId)
+        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq)
         {
             IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(OrgId).Select(info => new ProductionStockInfoDTO
             {
@@ -257,16 +257,48 @@ namespace ERPWeb.Controllers
             }).AsEnumerable();
 
             productionStockInfoDTO = productionStockInfoDTO.Where(ws => 
-            (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) &&(ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) && 
-            (ItemId == null || ItemId == 0 || ws.ItemId == ItemId) &&
-            (LineId == null || LineId == 0 || ws.LineId == LineId) &&
-            (ModelId == null || ModelId == 0 || ws.DescriptionId == ModelId)
+            (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId) 
+            && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId) 
+            && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId) 
+            && (LineId == null || LineId == 0 || ws.LineId == LineId) 
+            && (ModelId == null || ModelId == 0 || ws.DescriptionId == ModelId)
+            && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
             ).ToList();
 
             List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
             AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
             return PartialView("_productionStockInfoList", productionStockInfoViews);
-        } 
+        }
+
+        public ActionResult GetProductionStockDetailInfoList(string flag,long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ListOfLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(l => new SelectListItem
+                {
+                    Text = l.LineNumber,
+                    Value = l.LineId.ToString()
+                }).ToList();
+
+                ViewBag.ListOfWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(w => new SelectListItem
+                {
+                    Text = w.WarehouseName,
+                    Value = w.Id.ToString()
+                }).ToList();
+
+                ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _productionStockDetailBusiness.GetProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum);
+                IEnumerable<ProductionStockDetailInfoListViewModel> viewModels = new List<ProductionStockDetailInfoListViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetProductionStockDetailInfoList", viewModels);
+            }
+        }
 
         #endregion
 
@@ -315,7 +347,7 @@ namespace ERPWeb.Controllers
 
                 ViewBag.Status = Utility.ListOfReqStatus().Where(s => s.text == RequisitionStatus.Approved || s.text == RequisitionStatus.Accepted || s.text== RequisitionStatus.Canceled).Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
 
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
 
                 return View();
             }
@@ -468,7 +500,7 @@ namespace ERPWeb.Controllers
 
                 ViewBag.Status = Utility.ListOfReqStatus().Where(s => s.text == RequisitionStatus.Approved || s.text == RequisitionStatus.Accepted || s.text == RequisitionStatus.Canceled).Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
 
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
 
                 return View();
             }
@@ -480,6 +512,10 @@ namespace ERPWeb.Controllers
                 return PartialView("_GetProductionFaultyOrReturnItemDetailList", listViewModels);
             }
         }
+        #endregion
+
+        #region 
+
         #endregion
 
         protected override void Dispose(bool disposing)

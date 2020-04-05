@@ -13,5 +13,6 @@ namespace ERPBLL.Inventory.Interface
         IEnumerable<RepairStockDetail> GetRepairStockDetails(long orgId);
         RepairStockDetail GetRepairStockDetailById(long orgId,long stockDetailId);
         bool SaveRepairStockIn(List<RepairStockDetailDTO> repairStockDetailDTOs,long orgId, long userId);
+        IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate,string refNum);
     }
 }

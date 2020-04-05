@@ -5,10 +5,23 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Production Stock Info</b></h4>
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/Production/GetProductionStockDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                    <i class="fas fa-eye"></i> Go To Details View
+                </a>
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Production Stock Info</b></h4>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
         <hr />
     </div>
-    <div class="col-md-12 mb-2">
+
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
@@ -20,7 +33,7 @@
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
-                <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
+                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm">
                     <option value="">--Select Item Type--</option>
                 </select>
@@ -36,6 +49,10 @@
             <div class="col-md-3">
                 <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
+                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
             </div>
         </div>
         <hr />
@@ -55,6 +72,7 @@
         var unitName = $("#unitName");
         var ddlLineNumber = $("#ddlLineNumber");
         var ddlModelName = $("#ddlModelName");
+        var txtLessOrEq = $("#txtLessOrEq");
         
         $(document).ready(function () {
 
@@ -88,8 +106,12 @@
             LoadDataTable();
         })
 
+        txtLessOrEq.keyup(function () {
+            LoadDataTable();
+        })
+
         function LoadDataTable() {
-            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), LineId: TryParseInt(ddlLineNumber.val(), 0), ModelId: TryParseInt(ddlModelName.val(), 0) };
+            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), LineId: TryParseInt(ddlLineNumber.val(), 0), ModelId: TryParseInt(ddlModelName.val(), 0), lessOrEq: txtLessOrEq.val() };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetProductionStockInfoPartialList', data)).then(function (res,status) {
                 console.log(status);

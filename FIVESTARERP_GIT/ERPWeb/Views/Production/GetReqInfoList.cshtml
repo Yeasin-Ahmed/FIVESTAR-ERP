@@ -9,6 +9,7 @@
         <hr />
     </div>
     <div class="col-md-12 mb-2">
+        <h5 class="text-cyan"><b>Search By</b></h5>
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
@@ -32,12 +33,23 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <label class="control-label font-weight-bold">From Date</label>
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                <label class="col-form-label">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+
             </div>
             <div class="col-md-3">
-                <label class="control-label font-weight-bold">To Date</label>
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                <label class="col-form-label">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
             </div>
             <div class="col-md-3">
                 <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
@@ -100,6 +112,21 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
         })
 
         txtReqCode.keyup(function ()

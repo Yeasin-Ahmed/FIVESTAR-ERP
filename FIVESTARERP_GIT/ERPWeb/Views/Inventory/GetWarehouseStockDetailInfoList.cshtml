@@ -1,0 +1,163 @@
+﻿@model ERPBO.Inventory.ViewModels.WarehouseStockDetailInfoListViewModel
+
+@{
+    ViewBag.Title = "Warehouse Stock Details";
+}
+
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/Inventory/GetWarehouseStockInfoList" class="btn btn-sm btn-outline-primary float-left" title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></a>
+            </div>
+            <div class="col-md-6 text-center">
+                <h4 style="color:darkblue"><b>Warehouse Stock Details</b></h4>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
+                <select id="ddlItemType" class="form-control form-control-sm">
+                    <option value="">--Select Item Type--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
+                    <option value="">--Select Item--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">Refference Number</label>
+                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Ref Num." />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Stock Status</label>
+                @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12" id="dataContainer">
+        @{Html.RenderAction("GetWarehouseStockDetailInfoList", new { @flag = "load" });}
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtCode = $("#txtCode");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var ddlStockStatus = $("#ddlStockStatus");
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        txtCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '')
+                {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        ddlWarehouse.change(function () {
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlItemType.change(function () {
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val() };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockDetailInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").empty();
+                    $("#dataContainer").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+    </script>
+}

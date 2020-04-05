@@ -6,14 +6,14 @@
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReturnItems">
     <thead class="thead-dark">
         <tr class="text-center">
-            <th>SL No.</th>
+            <th>#SL</th>
             <th class="hide"></th>
             <th class="hide"></th>
-            <th>ItemTypeName</th>
+            <th>ItemType Name</th>
             <th class="hide"></th>
-            <th>ItemName</th>
+            <th>Item Name</th>
             <th>Qty.</th>
-            <th>Unit</th>
+            <th>Type Of Unit</th>
         </tr>
     </thead>
     <tbody>
@@ -21,7 +21,7 @@
         {
             sl = sl + 1;
             <tr>
-                <td class="text-center" width="10%">@sl</td>
+                <td class="text-center"><b>@sl</b></td>
                 <td class="hide">@d.ReqDetailId</td>
                 <td class="hide">@d.ItemTypeId</td>
                 <td>@d.ItemTypeName</td>
@@ -33,6 +33,8 @@
         }
     </tbody>
 </table>
+<br />
+<div id="alert-error"></div>
 
 @if ((string)ViewBag.RequisitionStatus == "Pending")
 {

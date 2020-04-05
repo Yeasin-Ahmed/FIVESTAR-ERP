@@ -7,13 +7,13 @@ namespace ERPDAL.InventoryContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Inventory_AddDescriptionId_RepairStock : IMigrationMetadata
+    public sealed partial class Inventory_AllEntities_31Mar2020 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Inventory_AddDescriptionId_RepairStock));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Inventory_AllEntities_31Mar2020));
         
         string IMigrationMetadata.Id
         {
-            get { return "202003301506595_Inventory_AddDescriptionId_RepairStock"; }
+            get { return "202003310717010_Inventory_AllEntities_31-Mar-2020"; }
         }
         
         string IMigrationMetadata.Source

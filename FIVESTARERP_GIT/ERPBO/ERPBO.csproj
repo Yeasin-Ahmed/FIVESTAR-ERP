@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Dropdown.cs" />
+    <Compile Include="Common\ExecutionStateWithText.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\Role.cs" />
@@ -68,11 +69,15 @@
     <Compile Include="Inventory\DTOModel\ItemDomainModel.cs" />
     <Compile Include="Inventory\DTOModel\ItemTypeDomainModel.cs" />
     <Compile Include="Inventory\DTOModel\RepairStockDetailDTO.cs" />
+    <Compile Include="Inventory\DTOModel\RepairStockDetailListDTO.cs" />
     <Compile Include="Inventory\DTOModel\WarehouseStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\RepairStockInfoDTO.cs" />
+    <Compile Include="Inventory\DTOModel\WarehouseStockDetailInfoListDTO.cs" />
     <Compile Include="Inventory\DTOModel\WarehouseStockInfoDTO.cs" />
+    <Compile Include="Inventory\ViewModels\RepairStockDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockInfoViewModel.cs" />
+    <Compile Include="Inventory\ViewModels\WarehouseStockDetailInfoListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockInfoViewModel.cs" />
     <Compile Include="Production\DomainModels\Description.cs" />
@@ -86,6 +91,7 @@
     <Compile Include="Production\DTOModel\ItemReturnDetailListDTO.cs" />
     <Compile Include="Production\DTOModel\ItemReturnInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionLineDTO.cs" />
+    <Compile Include="Production\DTOModel\ProductionStockDetailInfoListDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionInfoDTO.cs" />
@@ -105,6 +111,7 @@
     <Compile Include="Production\ViewModels\ItemReturnDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
+    <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\UnitViewModel.cs" />
