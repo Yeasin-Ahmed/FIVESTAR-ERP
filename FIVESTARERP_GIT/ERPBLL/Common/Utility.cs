@@ -44,6 +44,17 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfStockStatus()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=StockStatus.StockIn,value=StockStatus.StockIn},
+                new Dropdown(){text=StockStatus.StockOut,value=StockStatus.StockOut},
+                new Dropdown(){text=StockStatus.StockReturn,value=StockStatus.StockReturn}
+            };
+            return dropdowns;
+        }
+
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

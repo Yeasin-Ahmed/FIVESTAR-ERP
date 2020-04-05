@@ -156,5 +156,78 @@ namespace ERPBLL.Production
             }
             return false;
         }
+
+        public IEnumerable<ProductionStockDetailInfoListDTO> GetProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            IEnumerable<ProductionStockDetailInfoListDTO> productionStockDetailInfoListDTOs = new List<ProductionStockDetailInfoListDTO>();
+            productionStockDetailInfoListDTOs = this._productionDb.Db.Database.SqlQuery<ProductionStockDetailInfoListDTO>(QueryForProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum)).ToList();
+            return productionStockDetailInfoListDTOs;
+        }
+
+        private string QueryForProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (lineId != null && lineId > 0)
+            {
+                param += string.Format(@" and pl.LineId={0}", lineId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and de.DescriptionId={0}", modelId);
+            }
+            if (warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and wh.Id={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and it.ItemId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and i.ItemId ={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(stockStatus) && stockStatus.Trim() != "")
+            {
+                param += string.Format(@" and psd.StockStatus='{0}'", stockStatus);
+            }
+            if (!string.IsNullOrEmpty(refNum) && refNum.Trim() != "")
+            {
+                param += string.Format(@" and psd.RefferenceNumber Like'%{0}%'", refNum);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(psd.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(psd.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(psd.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select psd.StockDetailId,ISNULL(pl.LineNumber,'') 'LineNumber', ISNULL(de.DescriptionName,'') 'ModelName', 
+ISNULL(w.WarehouseName,'') 'WarehouseName', ISNULL(it.ItemName,'') 'ItemTypeName', ISNULL(i.ItemName,'') 'ItemName',
+ISNULL(u.UnitSymbol,'') 'UnitName', psd.Quantity,psd.StockStatus,CONVERT(nvarchar(30),psd.EntryDate,100) 'EntryDate',
+psd.RefferenceNumber
+From tblProductionStockDetail psd
+Left Join tblProductionLines pl on psd.LineId= pl.LineId
+Left Join tblDescriptions de on psd.DescriptionId= de.DescriptionId
+Left Join [Inventory].dbo.[tblWarehouses] w on psd.WarehouseId = w.Id
+Left Join [Inventory].dbo.[tblItemTypes] it on psd.ItemTypeId = it.ItemId
+Left Join [Inventory].dbo.[tblItems] i on psd.ItemId = i.ItemId
+Left Join [Inventory].dbo.[tblUnits] u on psd.UnitId = u.UnitId
+Where 1=1 {0}",Utility.ParamChecker(param));
+
+            return query;
+        }
     }
 }

@@ -41,7 +41,7 @@
                     <span class="@badge">@info.StateStatus</span>
                 </td>
                 <td>@info.Remarks</td>
-                <td class="text-center">@info.EntryDate.Value.ToString("dd MMM yyyy")</td>
+                <td class="text-center">@info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")</td>
                 <td class="text-center">
                     <a href="#" class="btn btn-block btn-outline-secondary btn-sm data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i> Details</a>
                     @if (info.StateStatus == "Rechecked")

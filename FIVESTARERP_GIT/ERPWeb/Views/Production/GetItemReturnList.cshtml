@@ -22,26 +22,8 @@
         </div>
         <hr />
     </div>
-    <div class="col-md-12 mb-1">
-        <div class="row">
-            <div class="col-md-3">
-                <label class="col-form-label">Return/Faulty Code</label>
-                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">Line</label>
-                @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">Warehouse</label>
-                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-
-        </div>
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
         <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label">Return Type</label>
@@ -52,12 +34,42 @@
                 @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
+                <label class="col-form-label">Return/Faulty Code</label>
+                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Line Number</label>
+                @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
                 <label class="col-form-label">From Date</label>
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">To Date</label>
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -124,14 +136,29 @@
         })
 
         txtCode.keyup(function () {
-            loadDataTable();
+            LoadDataTable();
         })
 
         $(document).on('change', '.ctrl-changed', function () {
-            loadDataTable()
+            LoadDataTable()
         })
 
-        function loadDataTable()
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        function LoadDataTable()
         {
             var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(),0) };
             console.log(data);

@@ -113,7 +113,7 @@ namespace ERPBLL.Production
             }
 
             query = string.Format(@"Select ird.IRDetailId,iri.IRCode,iri.ReturnType,ISNULL(iri.FaultyCase,'') 'FaultyCase',de.DescriptionName 'ModelName',pl.LineNumber,w.WarehouseName,itype.ItemName 'ItemTypeName',item.ItemName,ird.Quantity,un.UnitSymbol,iri.StateStatus
-,ISNULL(ird.Remarks,'') 'Remarks',Convert(nvarchar(20),iri.EntryDate,106) 'EntryDate' From tblItemReturnDetail ird
+,ISNULL(ird.Remarks,'') 'Remarks',Convert(nvarchar(30),iri.EntryDate,100) 'EntryDate' From tblItemReturnDetail ird
 Inner Join tblItemReturnInfo iri on ird.IRInfoId = iri.IRInfoId
 Inner Join tblProductionLines Pl on iri.LineId= pl.LineId
 Inner Join tblDescriptions de on iri.DescriptionId= de.DescriptionId

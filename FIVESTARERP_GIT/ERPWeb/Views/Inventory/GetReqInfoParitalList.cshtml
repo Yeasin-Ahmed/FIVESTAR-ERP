@@ -7,7 +7,7 @@
 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblReqInfoData">
     <thead class="btn-dark">
         <tr class="text-center">
-            <th>SL No.</th>
+            <th>#SL</th>
             <th class="hide"></th>
             <th>Requsition Code</th>
             <th class="hide"></th>
@@ -28,7 +28,7 @@
             sl = sl + 1;
             badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
             <tr>
-                <td class="text-center" width="10%">@sl</td>
+                <td class="text-center"><b>@sl</b></td>
                 <td class="hide">@info.ReqInfoId</td>
                 <td>@info.ReqInfoCode</td>
                 <td>@info.LineNumber</td>
@@ -39,9 +39,9 @@
                     <span class="@badge">@info.StateStatus</span>
                 </td>
                 <td>@info.Remarks</td>
-                <td>@info.EntryDate.Value.ToString("dd MMM yyyy")</td>
+                <td>@info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")</td>
                 <td class="text-center">
-                    <a href="#" class="btn btn-block btn-outline-secondary btn-sm data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i> Details</a>
+                    <a href="#" class="btn btn-block btn-outline-secondary btn-sm data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i> Details</a> 
                     @if (info.StateStatus == "Rechecked")
                     {
                         <a href="#" class="btn btn-block btn-outline-warning btn-sm data-edit-item" data-edit-item="@info.ReqInfoId"><i class="fa fa-pen"></i> Edit</a>

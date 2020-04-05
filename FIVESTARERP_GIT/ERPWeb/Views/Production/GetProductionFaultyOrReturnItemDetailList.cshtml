@@ -18,12 +18,9 @@
         </div>
         <hr />
     </div>
-    <div class="col-md-12 mb-1">
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
         <div class="row">
-            <div class="col-md-3">
-                <label class="col-form-label">Return/Faulty Code</label>
-                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
-            </div>
             <div class="col-md-3">
                 <label class="col-form-label">Return Type</label>
                 @Html.DropDownList("ddlReturnType", (IEnumerable<SelectListItem>)ViewBag.ReturnType, "Select Return Type", new { @class = "form-control form-control-sm ctrl-changed" })
@@ -33,21 +30,25 @@
                 @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
+                <label class="col-form-label">Return/Faulty Code</label>
+                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
+            </div>
+            <div class="col-md-3">
                 <label class="col-form-label">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
         </div>
         <div class="row">
             <div class="col-md-3">
-                <label class="col-form-label">Line</label>
+                <label class="col-form-label">Line Number</label>
                 @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
-                <label class="col-form-label">Warehouse</label>
+                <label class="col-form-label">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
-                <label class="col-form-label" for="ddlItemType">Item Type</label>
+                <label class="col-form-label" for="ddlItemType">ItemType Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm ctrl-changed">
                     <option value="">Select Item Type</option>
                 </select>
@@ -62,11 +63,22 @@
         <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label">From Date</label>
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">To Date</label>
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">State Status</label>
@@ -136,6 +148,21 @@
         $(document).on('change', '.ctrl-changed', function ()
         {
             LoadDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
         })
 
         function LoadDataTable()

@@ -6,7 +6,7 @@
 <table class="table table-bordered table-sm table-striped" id="tblWarehouseStockInfo">
     <thead class="btn-dark">
         <tr class="text-center">
-            <th>SL No.</th>
+            <th>#SL</th>
             <th class="hide"></th>
             <th class="hide"></th>
             <th>Line</th>
@@ -15,25 +15,24 @@
             <th class="hide"></th>
             <th>Warehouse</th>
             <th class="hide"></th>
-            <th>Item Type</th>
+            <th>ItemType Name</th>
             <th class="hide"></th>
-            <th>Item</th>
+            <th>Item Name</th>
             <th>Stock-In Qty</th>
             <th>Stock-Out Qty</th>
             <th>Stock Qty</th>
             <th class="hide"></th>
-            <th>Unit</th>
+            <th>Type Of Unit</th>
             <th>Remarks</th>
         </tr>
-    </thead>
-    <tbody></tbody>
+    </thead>   
     <tbody>
         @foreach (var info in Model)
         {
             sl = sl + 1;
             stock = (info.StockInQty.Value - info.StockOutQty.Value);
             <tr>
-                <td class="text-center" width="10%">@sl</td>
+                <td class="text-center"><b>@sl</b></td>
                 <td class="hide">@info.StockInfoId</td>
                 <td class="hide">@info.LineId</td>
                 <td>@info.LineNumber</td>

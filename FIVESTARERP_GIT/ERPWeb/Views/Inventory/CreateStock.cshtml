@@ -6,13 +6,15 @@
 <div class="row">
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-4">
-                <a href="/Inventory/GetWarehouseStockInfoList" class="btn btn-sm btn-primary" title="Back To List"><i class="fas fa-arrow-left"></i></a>
+            <div class="col-md-3">
+                <a href="/Inventory/GetWarehouseStockInfoList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
             </div>
-            <div class="col-md-4 text-center">
+            <div class="col-md-6 text-center">
                 <h4 style="color:darkblue"><b>Warehouse Stock-In</b></h4>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+            </div>
         </div>
         <hr />
     </div>
@@ -61,28 +63,21 @@
                 <div class="col-md-3">
                     <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
                     <div class="clearfix">
-                        <button type="submit" class="btn btn-sm btn-success float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-save"></i> &nbsp; ADD TO LIST </button>
-                        <button  class="btn btn-danger btn-sm float-lg-right" id="btnReset"> RESET <i class="fas fa-sync-alt"></i> </button>
+                        <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
                     </div>
                 </div>
             </div>
-            <hr />
             <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-1">
-                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblRequsitionDetailsData tbody tr',this)" />
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-                        <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
-                    </div>
-                </div>
                 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseStock">
-                    <thead class="btn-dark">
-                        <tr class="text-center">
+                    <thead>
+                        <tr>
+                            <th colspan="9">
+                                <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                            </th>
+                        </tr>
+                        <tr class="btn-dark text-center">
+
                             <th>SL No.</th>
-                            @*<th class="hide"></th>
-                        <th>Production Line</th>*@
                             <th class="hide"></th>
                             <th>Item Type Name</th>
                             <th class="hide"></th>
@@ -112,7 +107,7 @@
         //casced dropdown load for itemtype
         ddlWarehouse.change(function () {
             $("#unitName").text('');
-            
+
             clearDropdown("ddlItemType");
             clearDropdown("ddlItem");
             if (ddlWarehouse.val() != "") {
@@ -197,6 +192,7 @@
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
             if (validateInput() == true) {
+
                 disable("#ddlWarehouse");
                 var sl = $("#tblWarehouseStock tbody tr").length;
                 var td1 = "<td class='text-center'>" + (sl + 1) + "</td>"
@@ -227,11 +223,14 @@
         //
         $(document).on("click", "a.data-onfly-del", function (e) {
             e.preventDefault();
-            var index = $(this).parent().parents('tbody tr').index();
-            removeTableRow("#tblWarehouseStock tbody", index);
-            fnFixTheTbodyRowSerial("#tblWarehouseStock", index);
-
-            $("#tblWarehouseStock tbody tr").removeClass("btn-success");
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    var index = $(this).parent().parents('tbody tr').index();
+                    removeTableRow("#tblWarehouseStock tbody", index);
+                    fnFixTheTbodyRowSerial("#tblWarehouseStock", index);
+                    $("#tblWarehouseStock tbody tr").removeClass("btn-success");
+                };
+            }));
         })
 
         $("#btnReset").click(function (e)
@@ -251,41 +250,46 @@
             e.preventDefault();
             if (ddlWarehouse.val() != '' && $("#tblWarehouseStock tbody tr").length > 0)
             {
-                var reqData = [];
-                reqData.length = 0;
-                $.each($("#tblWarehouseStock tbody tr"), function (index, item) {
-                    var td = $(this).children('td');                    
-                    reqData.push({
-                        WarehouseId: ddlWarehouse.val(),
-                        ItemTypeId: td.eq(1).html(),
-                        ItemId: td.eq(3).html(),
-                        Quantity: td.eq(5).html(),
-                        Remarks: td.eq(7).html()
-                    });
-                })
-                reqData = JSON.stringify({ models: reqData });
-                console.log(reqData);
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result === true)
+                    {
+                        var reqData = [];
+                        reqData.length = 0;
+                        $.each($("#tblWarehouseStock tbody tr"), function (index, item) {
+                            var td = $(this).children('td');
+                            reqData.push({
+                                WarehouseId: ddlWarehouse.val(),
+                                ItemTypeId: td.eq(1).html(),
+                                ItemId: td.eq(3).html(),
+                                Quantity: td.eq(5).html(),
+                                Remarks: td.eq(7).html()
+                            });
+                        })
+                        reqData = JSON.stringify({ models: reqData });
+                        console.log(reqData);
 
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveWarehouseStockIn', reqData, getToken())).then(function (res, status)
-                {
-                    if (res == true) {
-                        setTimeout(function () {
-                            $('.toastrDefaultSuccess').trigger('click');
-                            redirectPage('@Url.Action("GetWarehouseStockInfoList")');
-                        }, 1500);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveWarehouseStockIn', reqData, getToken())).then(function (res, status)
+                        {
+                            if (res == true) {
+                                setTimeout(function () {
+                                    $('.toastrDefaultSuccess').trigger('click');
+                                    redirectPage('@Url.Action("GetWarehouseStockInfoList")');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            alert(execuStatus.fail);
+                        })
                     }
-                    else {
-                        $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    alert(execuStatus.fail);
-                })
+                  })
             }
         })
 
         function redirectPage(page) {
             window.location.replace(page);
         }
-       
+
     </script>
 }

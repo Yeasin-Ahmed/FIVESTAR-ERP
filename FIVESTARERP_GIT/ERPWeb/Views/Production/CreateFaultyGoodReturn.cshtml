@@ -32,6 +32,11 @@
                 <span class="error hide req-returnType">Return type is required</span>
             </div>
             <div class="col-md-3">
+                <label class="col-form-label" for="ddlFaultyCase">Faulty Case</label>
+                @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-faultycase">Faulty case is required</span>
+            </div>
+            <div class="col-md-3">
                 <label class="col-form-label" for="ddlModelName">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm" })
                 <span class="error hide req-model">Model is required</span>
@@ -41,13 +46,14 @@
                 @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ListOfLine, "Select Line", new { @class = "form-control form-control-sm" })
                 <span class="error hide req-line">Line is required</span>
             </div>
+            
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label" for="ddlWarehouse">Warehouse</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ListOfWarehouse, "Select Warehouse", new { @class = "form-control form-control-sm" })
                 <span class="error hide req-warehouse">Warehouse is required</span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label" for="ddlItemType">Item Type</label>
                 <select id="ddlItemType" class="form-control form-control-sm">
@@ -72,16 +78,17 @@
                 <span class="error hide req-qty">Quantity is required</span>
                 <span class="error hide stock-limitCross">Not enough stock</span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label" for="txtRemark">Remarks</label>
                 <input type="text" id="txtRemark" class="form-control form-control-sm" />
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
-                <label class="col-form-label" for="ddlFaultyCase">Faulty Case</label>
-                @Html.DropDownList("ddlFaultyCase", (IEnumerable<SelectListItem>)ViewBag.FaultyCase, "Select Faulty Case", new { @class = "form-control form-control-sm" })
-                <span class="error hide req-faultycase">Faulty case is required</span>
+                <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
+                <div class="clearfix mt-1">
+                    <button type="button" id="btnAddToList" class="btn btn-sm btn-outline-warning"><i class="fa fa-plus"></i> Add To List</button>
+                </div>
             </div>
         </div>
         <hr />
@@ -91,7 +98,6 @@
             <thead>
                 <tr>
                     <th colspan="8" class="text-center">
-                        <button type="button" id="btnAddToList" class="float-left btn btn-sm btn-outline-warning"><i class="fa fa-plus"></i> Add To List</button>
                         <span class="error hide no-rows">Please add data into the table</span>
                         <button type="button" id="btnSubmit" class="float-right btn btn-sm btn-outline-success">Save <i class="fas fa-paper-plane"></i></button>
                     </th>
@@ -200,7 +206,9 @@
             disable("#btnSubmit");
             if (validateForm() === true)
             {
-                var info = { ReturnType: ddlReturnType.val(), FaultyCase: ddlFaultyCase.val(), LineId: ddlLines.val(), WarehouseId: ddlWarehouse.val(), DescriptionId: ddlModelName.val() };
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result === true) {
+                        var info = { ReturnType: ddlReturnType.val(), FaultyCase: ddlFaultyCase.val(), LineId: ddlLines.val(), WarehouseId: ddlWarehouse.val(), DescriptionId: ddlModelName.val() };
 
                 var details = [];
                 details.length = 0;
@@ -234,6 +242,9 @@
                     enable("#btnSubmit");
                     consoleLog(error);
                 })
+                    }
+                });
+
             }
             enable("#btnSubmit");
         })
@@ -276,7 +287,7 @@
                     isvalid = false;
                 }
             }
-            
+
             return isvalid;
         }
 
@@ -296,10 +307,13 @@
 
         $(document).on('click', 'a.data-onfly-del', function (e) {
             e.preventDefault();
-            var index = $(this).parent().parents('tbody tr').index();
-            removeTableRow("#tblNewData tbody", index);
-            fnFixTheTbodyRowSerial("#tblNewData", index);
-            //$("#tblNewData tbody tr").removeClass("btn-success");
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    var index = $(this).parent().parents('tbody tr').index();
+                    removeTableRow("#tblNewData tbody", index);
+                    fnFixTheTbodyRowSerial("#tblNewData", index);
+                };
+            }));
         })
 
         function validateAddToList() {

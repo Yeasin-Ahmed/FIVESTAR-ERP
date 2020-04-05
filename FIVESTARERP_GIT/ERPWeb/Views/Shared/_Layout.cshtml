@@ -108,16 +108,13 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
-                <img src="~/Content/dist/img/icons8-star-64.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">FIVE STAR</span>
+                <span class="brand-text font-weight-light"><i class="fas fa-star"></i> FIVE STAR</span>
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        @*<img src="~/Content/dist/img/istockphoto-501690081-1024x1024.png" class="img-circle elevation-2" alt="User Image">*@
                         <i class="fas fa-fire fa-2x" style="color:#ff6f09"></i>
                     </div>
                     <div class="info">
@@ -282,7 +279,7 @@
                                 <li class="nav-item">
                                     <a href="/Inventory/GetItemReturnList" class="nav-link">
                                         <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Item Return List</p>
+                                        <p>Production Return Item</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -317,7 +314,7 @@
                                 <li class="nav-item">
                                     <a href="/Production/GetReqInfoList" class="nav-link">
                                         <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Requsition Info</p>
+                                        <p>Item Requsition</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -329,7 +326,7 @@
                                 <li class="nav-item">
                                     <a href="/Production/GetItemReturnList" class="nav-link">
                                         <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Item Return List</p>
+                                        <p>Return Items</p>
                                     </a>
                                 </li>
                             </ul>
@@ -396,6 +393,7 @@
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="~/Content/plugins/jquery/jquery.min.js"></script>
+    <script type="module" src="~/Scripts/popper.js"></script>
     <!-- Bootstrap 4 -->
     <script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
@@ -405,6 +403,8 @@
     <script src="~/Content/plugins/Toastr/toastr.min.js"></script>
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <script src="~/Content/plugins/bs-custom-file-input/bs-custom-file-input.js"></script>
+    <script src="~/Scripts/bootbox.js"></script>
+    <script src="~/Scripts/bootbox.locales.js"></script>
     <script src="~/Scripts/site.js"></script>
 
     <script type="text/javascript">

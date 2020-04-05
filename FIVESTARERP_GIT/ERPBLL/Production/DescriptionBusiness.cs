@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Production.DomainModels;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
@@ -15,14 +16,21 @@ namespace ERPBLL.Production
         private readonly IProductionUnitOfWork _productionDb; // database
         private readonly DescriptionRepository descriptionRepository; // table
         private IInventoryUnitOfWork _inventoryDb;
+        private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
 
-        public DescriptionBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb)
+        public DescriptionBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness)
         {
             this._productionDb = productionDb;
             descriptionRepository = new DescriptionRepository(this._productionDb);
             this._inventoryDb = inventoryDb;
+            this._productionStockInfoBusiness = productionStockInfoBusiness;
         }
-       
+
+        public IEnumerable<Dropdown> GetAllDescriptionsInProductionStock(long orgId)
+        {
+            var modelInPDN = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Select(s => s.DescriptionId).Distinct().ToList();
+          return  GetDescriptionByOrgId(orgId).Where(d => modelInPDN.Contains(d.DescriptionId)).OrderBy(d => d.DescriptionName).Select(s => new Dropdown { text = s.DescriptionName, value = s.DescriptionId.ToString() }).ToList();
+        }
 
         public IEnumerable<Description> GetDescriptionByOrgId(long orgId)
         {
