@@ -73,9 +73,11 @@
     <Compile Include="ControlPanel\BranchBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IAppUserBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IBranchBusiness.cs" />
+    <Compile Include="ControlPanel\Interface\IManiMenuBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IModuleBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IOrganizationBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IRoleBusiness.cs" />
+    <Compile Include="ControlPanel\ManiMenuBusiness.cs" />
     <Compile Include="ControlPanel\ModuleBusiness.cs" />
     <Compile Include="ControlPanel\OrganizationBusiness.cs" />
     <Compile Include="ControlPanel\RoleBusiness.cs" />

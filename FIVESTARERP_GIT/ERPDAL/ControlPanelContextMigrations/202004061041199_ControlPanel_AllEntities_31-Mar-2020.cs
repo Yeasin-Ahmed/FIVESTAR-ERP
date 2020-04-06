@@ -83,6 +83,37 @@ namespace ERPDAL.ControlPanelContextMigrations
                 .PrimaryKey(t => t.OrganizationId);
             
             CreateTable(
+                "dbo.tblMainMenus",
+                c => new
+                    {
+                        MMId = c.Long(nullable: false, identity: true),
+                        MenuName = c.String(),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                        MId = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => t.MMId)
+                .ForeignKey("dbo.tblModules", t => t.MId, cascadeDelete: true)
+                .Index(t => t.MId);
+            
+            CreateTable(
+                "dbo.tblModules",
+                c => new
+                    {
+                        MId = c.Long(nullable: false, identity: true),
+                        ModuleName = c.String(),
+                        IconName = c.String(),
+                        IconColor = c.String(),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.MId);
+            
+            CreateTable(
                 "dbo.tblRoles",
                 c => new
                     {
@@ -100,11 +131,15 @@ namespace ERPDAL.ControlPanelContextMigrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.tblMainMenus", "MId", "dbo.tblModules");
             DropForeignKey("dbo.tblApplicationUsers", "BranchId", "dbo.tblBranch");
             DropForeignKey("dbo.tblBranch", "OrganizationId", "dbo.tblOrganizations");
+            DropIndex("dbo.tblMainMenus", new[] { "MId" });
             DropIndex("dbo.tblBranch", new[] { "OrganizationId" });
             DropIndex("dbo.tblApplicationUsers", new[] { "BranchId" });
             DropTable("dbo.tblRoles");
+            DropTable("dbo.tblModules");
+            DropTable("dbo.tblMainMenus");
             DropTable("dbo.tblOrganizations");
             DropTable("dbo.tblBranch");
             DropTable("dbo.tblApplicationUsers");

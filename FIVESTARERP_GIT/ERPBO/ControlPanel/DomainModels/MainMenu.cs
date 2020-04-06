@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 
 namespace ERPBO.ControlPanel.DomainModels
 {
-    [Table("tblModules")]
-    public class Module
+    [Table("tblMainMenus")]
+   public class MainMenu
     {
         [Key]
-        public long MId { get; set; }
-        public string ModuleName { get; set; }
-        public string IconName { get; set; }
-        public string IconColor { get; set; }
+        public long MMId { get; set; }
+        public string MenuName { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public ICollection<MainMenu> MainMenus { get; set; }
+        [ForeignKey("Module")]
+        public long MId { get; set; }
+        public Module Module { get; set; }
     }
-
-
 }

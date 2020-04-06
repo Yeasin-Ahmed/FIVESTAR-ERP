@@ -7,13 +7,13 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ControlPanel_6Apr2020_AddModule : IMigrationMetadata
+    public sealed partial class ControlPanel_AllEntities_31Mar2020 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ControlPanel_6Apr2020_AddModule));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ControlPanel_AllEntities_31Mar2020));
         
         string IMigrationMetadata.Id
         {
-            get { return "202004060520448_ControlPanel_6-Apr-2020_AddModule"; }
+            get { return "202004061041199_ControlPanel_AllEntities_31-Mar-2020"; }
         }
         
         string IMigrationMetadata.Source
