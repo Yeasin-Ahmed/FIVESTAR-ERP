@@ -49,7 +49,7 @@ namespace ERPWeb
             container.RegisterType<IRoleBusiness, RoleBusiness>();
             container.RegisterType<IBranchBusiness, BranchBusiness>();
             container.RegisterType<IOrganizationBusiness, OrganizationBusiness>();
-            container.RegisterType<IModuleBusiness, IModuleBusiness>();
+            container.RegisterType<IModuleBusiness, ModuleBusiness>();
             container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
