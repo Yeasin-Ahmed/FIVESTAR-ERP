@@ -316,6 +316,7 @@
     <Content Include="Views\Production\_GetProductionStockDetailInfoList.cshtml" />
     <Content Include="Views\Inventory\GetRepairStockDetailInfoList.cshtml" />
     <Content Include="Views\Inventory\_GetRepairStockDetailInfoList.cshtml" />
+    <Content Include="Views\ControlPanel\GetModuleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

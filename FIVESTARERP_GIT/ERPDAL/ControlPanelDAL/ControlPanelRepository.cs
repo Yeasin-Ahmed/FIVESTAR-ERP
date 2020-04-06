@@ -26,4 +26,8 @@ namespace ERPDAL.ControlPanelDAL
     {
         public RoleRepository(IControlPanelUnitOfWork controlPanelUnitOfWork) : base(controlPanelUnitOfWork) { }
     }
+    public class ModuleRepository : ControlPanelBaseRepository<Module>
+    {
+        public ModuleRepository(IControlPanelUnitOfWork controlPanelUnitOfWork) : base(controlPanelUnitOfWork) { }
+    }
 }
