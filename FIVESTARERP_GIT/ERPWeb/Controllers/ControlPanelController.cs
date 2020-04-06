@@ -17,16 +17,18 @@ namespace ERPWeb.Controllers
         private readonly IBranchBusiness _branchBusiness;
         private readonly IRoleBusiness _roleBusiness;
         private readonly IAppUserBusiness _appUserBusiness;
+        private readonly IModuleBusiness _moduleBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
             this._roleBusiness = roleBusiness;
             this._appUserBusiness = appUserBusiness;
+            this._moduleBusiness = moduleBusiness;
         }
         // GET: ControlPanel
         [HttpGet]
@@ -215,6 +217,41 @@ namespace ERPWeb.Controllers
                     AppUserDTO dto = new AppUserDTO();
                     AutoMapper.Mapper.Map(appUserViewModel, dto);
                     isSuccess = _appUserBusiness.SaveAppUser(dto, UserId, OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Module
+        public ActionResult GetModuleList()
+        {
+            IEnumerable<ModuleDTO> moduleDTO = _moduleBusiness.GetAllModules().Select(m => new ModuleDTO
+            {
+                MId = m.MId,
+                ModuleName = m.ModuleName,
+                IconName = m.IconName,
+                IconColor = m.IconColor,
+            }).ToList();
+            List<ModuleViewModel> moduleViewModels = new List<ModuleViewModel>();
+            AutoMapper.Mapper.Map(moduleDTO, moduleViewModels);
+            return View(moduleViewModels);
+        }
+
+        public ActionResult SaveModule(ModuleViewModel moduleViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ModuleDTO dto = new ModuleDTO();
+                    AutoMapper.Mapper.Map(moduleViewModel, dto);
+                    isSuccess = _moduleBusiness.SaveModule(dto, UserId);
                 }
                 catch (Exception ex)
                 {
