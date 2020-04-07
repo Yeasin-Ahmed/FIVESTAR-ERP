@@ -25,9 +25,7 @@ namespace ERPBO.Inventory.DomainModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<Item> Items { get; set; }
 
-
         // Navigation Property
-
         [ForeignKey("Warehouse")]
         public long WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }

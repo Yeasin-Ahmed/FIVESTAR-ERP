@@ -21,14 +21,14 @@
         </div>
     </div>
     <div class="col-md-12">
-        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblModuleData">
+       <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblModuleData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL No.</th>
+                    <th>#SL</th>
                     <th class="hide"></th>
-                    <th>ModuleName</th>
-                    <th>IconName</th>
-                    <th>IconColor</th>
+                    <th>Module Name</th>
+                    <th>Icon Name</th>
+                    <th>Icon Color</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -37,7 +37,7 @@
                 {
                     sl = sl + 1;
                     <tr>
-                        <td class="text-center" width="10%">@sl</td>
+                        <td class="text-center"><b>@sl</b></td>
                         <td class="hide">@module.MId</td>
                         <td>@module.ModuleName</td>
                         <td>@module.IconName</td>
@@ -92,7 +92,6 @@
                     </div>
                 </form>
             </div>
-
             <div class="modal-footer btn-light">
                 <div class="col-md-6">
                     <div id="msg1" class="alert alert-success hide float-left">
