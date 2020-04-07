@@ -18,19 +18,22 @@ namespace ERPWeb.Controllers
         private readonly IRoleBusiness _roleBusiness;
         private readonly IAppUserBusiness _appUserBusiness;
         private readonly IModuleBusiness _moduleBusiness;
+        private readonly IManiMenuBusiness _maniMenuBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness,IManiMenuBusiness maniMenuBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
             this._roleBusiness = roleBusiness;
             this._appUserBusiness = appUserBusiness;
             this._moduleBusiness = moduleBusiness;
+            this._maniMenuBusiness = maniMenuBusiness;
         }
         // GET: ControlPanel
+        #region Organization
         [HttpGet]
         public ActionResult GetOrganizations()
         {
@@ -57,7 +60,7 @@ namespace ERPWeb.Controllers
             return View(OrganizationViewModels);
         }
 
-        [HttpGet]                                                
+        [HttpGet]
         public ActionResult CreateOrganization(long? oId)
         {
             OrganizationViewModel organizationViewModel = new OrganizationViewModel();
@@ -82,7 +85,7 @@ namespace ERPWeb.Controllers
             return View(organizationViewModel);
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveOrganization(OrganizationViewModel model)
         {
             bool IsSuccess = false;
@@ -90,10 +93,11 @@ namespace ERPWeb.Controllers
             {
                 OrganizationDTO dto = new OrganizationDTO();
                 AutoMapper.Mapper.Map(model, dto);
-                IsSuccess = _organizationBusiness.SaveOrganization(dto,UserId);
+                IsSuccess = _organizationBusiness.SaveOrganization(dto, UserId);
             }
             return Json(IsSuccess);
         }
+        #endregion
 
         #region Branch
         public ActionResult GetBranchList(int? page)
@@ -252,6 +256,42 @@ namespace ERPWeb.Controllers
                     ModuleDTO dto = new ModuleDTO();
                     AutoMapper.Mapper.Map(moduleViewModel, dto);
                     isSuccess = _moduleBusiness.SaveModule(dto, UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region MainMenu
+        public ActionResult GetMainMenuList()
+        {
+            ViewBag.ddlModuleName = _moduleBusiness.GetAllModules().Select(br => new SelectListItem { Text = br.ModuleName, Value = br.MId.ToString() });
+
+            IEnumerable<MainMenuDTO> mainMenuDTO = _maniMenuBusiness.GetAllMainMenu().Select(mainmenu => new MainMenuDTO
+            {
+                MMId = mainmenu.MMId,
+                MenuName=mainmenu.MenuName,
+                MId=mainmenu.MId,
+                ModuleName=(_moduleBusiness.GetModuleOneById(mainmenu.MId).ModuleName),
+            }).ToList();
+            IEnumerable<MainMenuViewModel> mainMenuViewModels = new List<MainMenuViewModel>();
+            AutoMapper.Mapper.Map(mainMenuDTO, mainMenuViewModels);
+            return View(mainMenuViewModels);
+        }
+        public ActionResult SaveMainMenu(MainMenuViewModel mainMenuViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    MainMenuDTO dto = new MainMenuDTO();
+                    AutoMapper.Mapper.Map(mainMenuViewModel, dto);
+                    isSuccess = _maniMenuBusiness.SaveMainMenu(dto, UserId);
                 }
                 catch (Exception ex)
                 {

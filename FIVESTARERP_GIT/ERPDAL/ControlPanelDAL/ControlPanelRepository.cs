@@ -30,4 +30,8 @@ namespace ERPDAL.ControlPanelDAL
     {
         public ModuleRepository(IControlPanelUnitOfWork controlPanelUnitOfWork) : base(controlPanelUnitOfWork) { }
     }
+    public class MainMenuRepository : ControlPanelBaseRepository<MainMenu>
+    {
+        public MainMenuRepository(IControlPanelUnitOfWork controlPanelUnitOfWork) : base(controlPanelUnitOfWork) { }
+    }
 }
