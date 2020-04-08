@@ -318,6 +318,7 @@
     <Content Include="Views\Inventory\_GetRepairStockDetailInfoList.cshtml" />
     <Content Include="Views\ControlPanel\GetModuleList.cshtml" />
     <Content Include="Views\ControlPanel\GetMainMenuList.cshtml" />
+    <Content Include="Views\ControlPanel\GetSubMenuList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
