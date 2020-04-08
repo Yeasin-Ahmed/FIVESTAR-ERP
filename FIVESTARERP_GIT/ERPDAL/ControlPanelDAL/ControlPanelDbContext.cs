@@ -21,5 +21,6 @@ namespace ERPDAL.ControlPanelDAL
         public DbSet<Role> tblRoles { get; set; }
         public DbSet<Module> tblModules { get; set; }
         public DbSet<MainMenu> tblMainMenus { get; set; }
+        public DbSet<SubMenu> tblSubMenus { get; set; }
     }
 }

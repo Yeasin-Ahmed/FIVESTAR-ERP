@@ -21,5 +21,6 @@ namespace ERPBO.ControlPanel.DomainModels
         [ForeignKey("Module")]
         public long MId { get; set; }
         public Module Module { get; set; }
+        public ICollection<SubMenu> SubMenus { get; set; }
     }
 }

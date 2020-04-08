@@ -19,11 +19,12 @@ namespace ERPWeb.Controllers
         private readonly IAppUserBusiness _appUserBusiness;
         private readonly IModuleBusiness _moduleBusiness;
         private readonly IManiMenuBusiness _maniMenuBusiness;
+        private readonly ISubMenuBusiness _subMenuBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness,IManiMenuBusiness maniMenuBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness,IManiMenuBusiness maniMenuBusiness,ISubMenuBusiness subMenuBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
@@ -31,6 +32,7 @@ namespace ERPWeb.Controllers
             this._appUserBusiness = appUserBusiness;
             this._moduleBusiness = moduleBusiness;
             this._maniMenuBusiness = maniMenuBusiness;
+            this._subMenuBusiness = subMenuBusiness;
         }
         // GET: ControlPanel
         #region Organization
@@ -292,6 +294,50 @@ namespace ERPWeb.Controllers
                     MainMenuDTO dto = new MainMenuDTO();
                     AutoMapper.Mapper.Map(mainMenuViewModel, dto);
                     isSuccess = _maniMenuBusiness.SaveMainMenu(dto, UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region SubMenu
+        public ActionResult GetSubMenuList()
+        {
+            ViewBag.ddlMainMenu = _maniMenuBusiness.GetAllMainMenu().Select(br => new SelectListItem { Text = br.MenuName, Value = br.MMId.ToString() });
+
+            ViewBag.ddlParentSubMenu = _subMenuBusiness.GetAllSubMenu().Select(br => new SelectListItem { Text = br.SubMenuName, Value = br.SubMenuName.ToString() });
+
+            IEnumerable<SubMenuDTO> subMenuDTO = _subMenuBusiness.GetAllSubMenu().Select(sub => new SubMenuDTO
+            {
+                SubMenuId=sub.SubMenuId,
+                SubMenuName=sub.SubMenuName,
+                ControllerName=sub.ControllerName,
+                ActionName=sub.ActionName,
+                IconClass=sub.IconClass,
+                IsViewableStatus= (sub.IsViewable == true ? "Active" : "Inactive"),
+                IsActAsParentStatus = (sub.IsActAsParent == true ? "Active" : "Inactive"),
+                ParentSubMenuId = sub.ParentSubMenuId,
+                MMId =sub.MMId,
+                MenuName=(_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
+            }).ToList();
+            IEnumerable<SubMenuViewModel> subMenuViewModels = new List<SubMenuViewModel>();
+            AutoMapper.Mapper.Map(subMenuDTO, subMenuViewModels);
+            return View(subMenuViewModels);
+        }
+        public ActionResult SaveSubMenu(SubMenuViewModel subMenuViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    SubMenuDTO dto = new SubMenuDTO();
+                    AutoMapper.Mapper.Map(subMenuViewModel, dto);
+                    isSuccess = _subMenuBusiness.SaveSubMenu(dto, UserId);
                 }
                 catch (Exception ex)
                 {

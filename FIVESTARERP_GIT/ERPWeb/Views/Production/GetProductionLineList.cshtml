@@ -185,7 +185,8 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
-                var data = JSON.stringify({ LineId: TryParseInt(hdfLineId.val(), 0), LineNumber: txtLineNumber.val(), LineIncharge: txtIncharge.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked") });
+                var data = JSON.stringify({ LineId: TryParseInt(hdfLineId.val(), 0), LineNumber: txtLineNumber.val(), LineIncharge: txtIncharge.val(), Remarks: txtRemarks.val(),
+                    IsActive: chkStatestatus.is(":checked") });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveProductionLine', data, getToken())).then(function (res, status) {
                     console.log(status);
