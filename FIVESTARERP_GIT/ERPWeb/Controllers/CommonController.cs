@@ -142,7 +142,7 @@ namespace ERPWeb.Controllers
             //    else
             //    {
             //        isValidExec = false;
-            //        isValidTxt += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName+" does not have enough stock </br>";
+            //        isValidTxt += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
             //    }
             //}
 
@@ -157,22 +157,22 @@ namespace ERPWeb.Controllers
              var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, OrgId).ToList();
             var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(OrgId);
             var items = _itemBusiness.GetAllItemByOrgId(OrgId).ToList();
-
+            stateWithText.isSuccess = true;
             foreach (var item in reqDetail)
             {
-                var w = warehouseStock.FirstOrDefault(wr => wr.ItemId == item.ItemId);
+                var w = warehouseStock.Where(wr => wr.ItemId == item.ItemId).FirstOrDefault();
                 if (w != null)
                 {
                     if ((w.StockInQty - w.StockOutQty) < item.Quantity)
                     {
                         stateWithText.isSuccess = false;
-                        stateWithText.text += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+                        stateWithText.text += items.Where(it => it.ItemId == item.ItemId).FirstOrDefault().ItemName + " does not have enough stock </br>";
                     }
                 }
                 else
                 {
                     stateWithText.isSuccess = false;
-                    stateWithText.text += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+                    stateWithText.text += items.Where(it => it.ItemId == item.ItemId).FirstOrDefault().ItemName + " does not have enough stock </br>";
                 }
             }
 
