@@ -3,7 +3,7 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ControlPanel_AllEntities_31Mar2020 : DbMigration
+    public partial class ControlPanel_8Apr2020_Yeasin : DbMigration
     {
         public override void Up()
         {
@@ -114,6 +114,28 @@ namespace ERPDAL.ControlPanelContextMigrations
                 .PrimaryKey(t => t.MId);
             
             CreateTable(
+                "dbo.tblSubMenus",
+                c => new
+                    {
+                        SubMenuId = c.Long(nullable: false, identity: true),
+                        SubMenuName = c.String(maxLength: 100),
+                        ControllerName = c.String(maxLength: 150),
+                        ActionName = c.String(maxLength: 150),
+                        IconClass = c.String(maxLength: 100),
+                        IsViewable = c.Boolean(nullable: false),
+                        IsActAsParent = c.Boolean(nullable: false),
+                        ParentSubMenuId = c.Long(),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                        MMId = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => t.SubMenuId)
+                .ForeignKey("dbo.tblMainMenus", t => t.MMId, cascadeDelete: true)
+                .Index(t => t.MMId);
+            
+            CreateTable(
                 "dbo.tblRoles",
                 c => new
                     {
@@ -131,13 +153,16 @@ namespace ERPDAL.ControlPanelContextMigrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.tblSubMenus", "MMId", "dbo.tblMainMenus");
             DropForeignKey("dbo.tblMainMenus", "MId", "dbo.tblModules");
             DropForeignKey("dbo.tblApplicationUsers", "BranchId", "dbo.tblBranch");
             DropForeignKey("dbo.tblBranch", "OrganizationId", "dbo.tblOrganizations");
+            DropIndex("dbo.tblSubMenus", new[] { "MMId" });
             DropIndex("dbo.tblMainMenus", new[] { "MId" });
             DropIndex("dbo.tblBranch", new[] { "OrganizationId" });
             DropIndex("dbo.tblApplicationUsers", new[] { "BranchId" });
             DropTable("dbo.tblRoles");
+            DropTable("dbo.tblSubMenus");
             DropTable("dbo.tblModules");
             DropTable("dbo.tblMainMenus");
             DropTable("dbo.tblOrganizations");

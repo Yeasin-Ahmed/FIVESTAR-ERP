@@ -43,7 +43,7 @@ var execuStatus = {
 // Loading dropdown using ajax..
 // All the Parameters are required accept contextKey
 function LoadDropDown(url, type, elementId, contextKey) {
-    if (contextKey === undefined && $.trim(contextKey) == '') {
+    if (contextKey === undefined && $.trim(contextKey) === '') {
         $.ajax({
             dataType: 'json',
             type: type,
@@ -82,7 +82,7 @@ function LoadDropDown(url, type, elementId, contextKey) {
 }
 
 function LoadDropDown2(url, type, elementId, contextKey) {
-    if (contextKey === undefined && $.trim(contextKey) == '') {
+    if (contextKey === undefined && $.trim(contextKey) === '') {
         $.ajax({
             dataType: 'json',
             type: type,

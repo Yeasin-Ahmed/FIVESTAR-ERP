@@ -13,23 +13,19 @@ namespace ERPBO.ControlPanel.DomainModels
     {
         [Key]
         public long SubMenuId { get; set; }
-
         [StringLength(100)]
         public string SubMenuName { get; set; }
-
         [StringLength(150)]
         public string ControllerName { get; set; }
         [StringLength(150)]
         public string ActionName { get; set; }
         [StringLength(100)]
         public string IconClass { get; set; }
-
         public bool IsViewable { get; set; }
         public bool IsActAsParent { get; set; }
         public long? ParentSubMenuId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
-
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         [ForeignKey("MainMenu")]

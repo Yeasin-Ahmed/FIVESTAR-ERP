@@ -24,6 +24,11 @@ namespace ERPBLL.ControlPanel
             return appUserRepository.GetAll(user => user.OrganizationId == orgId).ToList();
         }
 
+        public IEnumerable<AppUser> GetAllAppUsers()
+        {
+            return appUserRepository.GetAll().ToList();
+        }
+
         public AppUser GetAppUserOneById(long id, long orgId)
         {
             return appUserRepository.GetOneByOrg(user => user.UserId == id && user.OrganizationId == orgId);

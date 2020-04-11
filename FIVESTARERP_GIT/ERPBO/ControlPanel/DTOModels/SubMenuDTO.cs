@@ -24,6 +24,7 @@ namespace ERPBO.ControlPanel.DTOModels
         //custom
         public long MMId { get; set; }
         public string MenuName { get; set; }
+        public string ParentSubmenuName { get; set; }
         public string IsViewableStatus { get; set; }
         public string IsActAsParentStatus { get; set; }
     }

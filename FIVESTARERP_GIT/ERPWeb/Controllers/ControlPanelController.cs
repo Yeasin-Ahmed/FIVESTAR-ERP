@@ -1,4 +1,5 @@
-﻿using ERPBLL.ControlPanel.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.ControlPanel.Interface;
 using ERPBO.ControlPanel.DTOModels;
 using ERPBO.ControlPanel.ViewModels;
 using ERPWeb.Filters;
@@ -24,7 +25,7 @@ namespace ERPWeb.Controllers
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness,IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness,IManiMenuBusiness maniMenuBusiness,ISubMenuBusiness subMenuBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness, IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
@@ -185,30 +186,29 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-            ViewBag.ddlRoleName = _roleBusiness.GetAllRoleByOrgId(OrgId).Select(br => new SelectListItem { Text = br.RoleName, Value = br.RoleId.ToString() });
+            //ViewBag.ddlRoleName = _roleBusiness.GetAllRoleByOrgId(OrgId).Select(br => new SelectListItem { Text = br.RoleName, Value = br.RoleId.ToString() });
 
-            ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
+            //ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
 
             IPagedList<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(OrgId).Select(user => new AppUserViewModel
             {
-             UserId=user.UserId,
-            EmployeeId = user.EmployeeId,
-            FullName = user.FullName,
-            MobileNo = user.MobileNo,
-            Address = user.Address,
-            Email = user.Email,
-            Desigation = user.Desigation,
-            UserName = user.UserName,
-            Password = user.Password,
-            ConfirmPassword = user.ConfirmPassword,
-            StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
-            StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
-            OrganizationId = user.OrganizationId,
-            OrganizationName=(_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
-            BranchId = user.BranchId,
-            BranchName=(_branchBusiness.GetBranchOneByOrgId(user.BranchId,OrgId).BranchName),
-            RoleId = user.RoleId,
-            RoleName=(_roleBusiness.GetRoleOneById(user.RoleId,OrgId).RoleName),
+                UserId = user.UserId,
+                EmployeeId = user.EmployeeId,
+                FullName = user.FullName,
+                MobileNo = user.MobileNo,
+                Address = user.Address,
+                Email = user.Email,
+                Desigation = user.Desigation,
+                UserName = user.UserName,
+                Password = Utility.Decrypt(user.Password),
+                StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
+                StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
+                OrganizationId = user.OrganizationId,
+                OrganizationName = (_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+                BranchId = user.BranchId,
+                BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, OrgId).BranchName),
+                RoleId = user.RoleId,
+                RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, OrgId).RoleName),
             }).OrderBy(user => user.UserId).ToPagedList(page ?? 1, 15);
             IEnumerable<AppUserViewModel> appUserViewModelForPage = new List<AppUserViewModel>();
             return View(appUserViewModels);
@@ -221,6 +221,7 @@ namespace ERPWeb.Controllers
                 try
                 {
                     AppUserDTO dto = new AppUserDTO();
+                    appUserViewModel.Password = Utility.Encrypt(appUserViewModel.Password);
                     AutoMapper.Mapper.Map(appUserViewModel, dto);
                     isSuccess = _appUserBusiness.SaveAppUser(dto, UserId, OrgId);
                 }
@@ -276,9 +277,9 @@ namespace ERPWeb.Controllers
             IEnumerable<MainMenuDTO> mainMenuDTO = _maniMenuBusiness.GetAllMainMenu().Select(mainmenu => new MainMenuDTO
             {
                 MMId = mainmenu.MMId,
-                MenuName=mainmenu.MenuName,
-                MId=mainmenu.MId,
-                ModuleName=(_moduleBusiness.GetModuleOneById(mainmenu.MId).ModuleName),
+                MenuName = mainmenu.MenuName,
+                MId = mainmenu.MId,
+                ModuleName = (_moduleBusiness.GetModuleOneById(mainmenu.MId).ModuleName),
             }).ToList();
             IEnumerable<MainMenuViewModel> mainMenuViewModels = new List<MainMenuViewModel>();
             AutoMapper.Mapper.Map(mainMenuDTO, mainMenuViewModels);
@@ -309,20 +310,29 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlMainMenu = _maniMenuBusiness.GetAllMainMenu().Select(br => new SelectListItem { Text = br.MenuName, Value = br.MMId.ToString() });
 
-            ViewBag.ddlParentSubMenu = _subMenuBusiness.GetAllSubMenu().Select(br => new SelectListItem { Text = br.SubMenuName, Value = br.SubMenuName.ToString() });
+            ViewBag.ddlParentSubMenu = _subMenuBusiness.GetAllSubMenu().Where(s => s.IsActAsParent == true).Select(s => new SelectListItem
+            {
+
+                Text = s.SubMenuName + ((s.MMId > 0) ? " (" + (_maniMenuBusiness.GetMainMenuOneById(s.MMId).MenuName) + ")" : ""),
+                Value = s.SubMenuId.ToString()
+
+            });
 
             IEnumerable<SubMenuDTO> subMenuDTO = _subMenuBusiness.GetAllSubMenu().Select(sub => new SubMenuDTO
             {
-                SubMenuId=sub.SubMenuId,
-                SubMenuName=sub.SubMenuName,
-                ControllerName=sub.ControllerName,
-                ActionName=sub.ActionName,
-                IconClass=sub.IconClass,
-                IsViewableStatus= (sub.IsViewable == true ? "Active" : "Inactive"),
-                IsActAsParentStatus = (sub.IsActAsParent == true ? "Active" : "Inactive"),
+                SubMenuId = sub.SubMenuId,
+                SubMenuName = sub.SubMenuName,
+                ControllerName = sub.ControllerName,
+                ActionName = sub.ActionName,
+                IconClass = sub.IconClass,
+                IsViewable = sub.IsViewable,
+                IsActAsParent = sub.IsActAsParent,
+                IsViewableStatus = (sub.IsViewable == true ? "Yes" : "No"),
+                IsActAsParentStatus = (sub.IsActAsParent == true ? "Yes" : "No"),
                 ParentSubMenuId = sub.ParentSubMenuId,
-                MMId =sub.MMId,
-                MenuName=(_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
+                ParentSubmenuName = (sub.ParentSubMenuId > 0 ? _subMenuBusiness.GetSubMenuOneById(sub.ParentSubMenuId.Value).SubMenuName : ""),
+                MMId = sub.MMId,
+                MenuName = (_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
             }).ToList();
             IEnumerable<SubMenuViewModel> subMenuViewModels = new List<SubMenuViewModel>();
             AutoMapper.Mapper.Map(subMenuDTO, subMenuViewModels);
