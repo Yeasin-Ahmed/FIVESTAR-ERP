@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ERPBO.ControlPanel.ViewModels.SubMenuViewModel>
 @{
-    ViewBag.Title = "GetSubMenuList";
+    ViewBag.Title = "List of Submenu";
     int sl = 0;
     string badge = string.Empty;
     string badge1 = string.Empty;
@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Sub Menu</b></h4>
+        <h4><b style="color:darkblue">List of Submenu</b></h4>
         <hr />
     </div>
     <div class="col-md-12 mb-2">
@@ -27,17 +27,18 @@
         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblSubMenuData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL No.</th>
-                    <th class="hide">SubMenuId</th>
-                    <th>SubMenuName</th>
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>SubMenu Name</th>
                     <th class="hide">MMId</th>
-                    <th>MainMenu</th>
-                    <th>ControllerName</th>
-                    <th>ActionName</th>
+                    <th>Main Menu</th>
+                    <th>Controller Name</th>
+                    <th>Action Name</th>
                     <th>IconClass</th>
-                    <th>IsViewable</th>
-                    <th>IsActAsParent</th>
-                    <th>ParentSubMenuId</th>
+                    <th>Is Viewable</th>
+                    <th>Is ActAsParent</th>
+                    <th class="hide"></th>
+                    <th>Parent Submenu</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -45,34 +46,35 @@
                 @foreach (var sub in Model)
                 {
                     sl = sl + 1;
-                    badge = (sub.IsViewableStatus == "Active" ? "badge bg-success" : "badge bg-danger");
-                    badge1 = (sub.IsActAsParentStatus == "Active" ? "badge1 bg-success" : "badge1 bg-danger");
-                <tr>
-                    <td class="text-center" width="10%">@sl</td>
-                    <td class="hide">@sub.SubMenuId</td>
-                    <td>@sub.SubMenuName</td>
-                    <td class="hide">@sub.MMId</td>
-                    <td>@sub.MenuName</td>
-                    <td>@sub.ControllerName</td>
-                    <td>@sub.ActionName</td>
-                    <td>@sub.IconClass</td>
-                    <td class="text-center" data-val="@sub.IsViewableStatus">
-                        <span class="@badge">@sub.IsViewableStatus</span>
-                    </td>
-                    <td class="text-center" data-val="@sub.IsActAsParentStatus">
-                        <span class="@badge1">@sub.IsActAsParentStatus</span>
-                    </td>
-                    <td>@sub.ParentSubMenuId</td>
-                    <td class="text-center">
-                        <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@sub.SubMenuId"><i class="fa fa-pen"></i> Edit</a>
-                    </td>
-                </tr>
+                    badge = (sub.IsViewableStatus == "Yes" ? "badge bg-success" : "badge bg-danger");
+                    badge1 = (sub.IsActAsParentStatus == "Yes" ? "badge bg-success" : "badge bg-danger");
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@sub.SubMenuId</td>
+                        <td>@sub.SubMenuName</td>
+                        <td class="hide">@sub.MMId</td>
+                        <td>@sub.MenuName</td>
+                        <td>@sub.ControllerName</td>
+                        <td>@sub.ActionName</td>
+                        <td>@sub.IconClass</td>
+                        <td class="text-center" data-val="@sub.IsViewableStatus">
+                            <span class="@badge">@sub.IsViewableStatus</span>
+                        </td>
+                        <td class="text-center" data-val="@sub.IsActAsParentStatus">
+                            <span class="@badge1">@sub.IsActAsParentStatus</span>
+                        </td>
+                        <td class="hide">@sub.ParentSubMenuId</td>
+                        <td>@sub.ParentSubmenuName</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@sub.SubMenuId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
                 }
                 @if (Model.Count() == 0)
                 {
                     <tr class="text-center empty-row">
-                        <td colspan="10">
-                            No Rows Found
+                        <td colspan="13">
+                            No data found in the table
                         </td>
                     </tr>
                 }
@@ -90,53 +92,53 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form id="frmRole">
+                <form id="frmSubmenu">
                     <input type="hidden" name="Id" id="hdfSubMenuId" />
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="txtSubMenuName" class="control-label font-weight-bold">SubMenuName</label>
-                            <input type="text" name="subMenuName" value="" id="txtSubMenuName" class="form-control form-control-sm" />
+                            <label for="txtSubMenuName" class="control-label font-weight-bold">Submenu Name</label>
+                            <input type="text"  id="txtSubMenuName" class="form-control form-control-sm" />
                             <span class="error hide required-submenuName font-weight-bold">Input SubMenu Name!</span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="txtController" class="control-label font-weight-bold">Controller</label>
-                            <input type="text" name="menuName" value="" id="txtController" class="form-control form-control-sm" />
-                            <span class="error hide required-controllerName font-weight-bold">Input SubMenu Name!</span>
+                            <label for="txtController" class="control-label font-weight-bold">Controller Name</label>
+                            <input type="text"  id="txtController" class="form-control form-control-sm" />
+                            <span class="error hide required-controllerName font-weight-bold">Input Controller Name!</span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="txtActionName" class="control-label font-weight-bold">ActionName</label>
-                            <input type="text" name="txtActionName" value="" id="txtActionName" class="form-control form-control-sm" />
-                            <span class="error hide required-actionName font-weight-bold">Input ActionName Name!</span>
+                            <label for="txtActionName" class="control-label font-weight-bold">Action Name</label>
+                            <input type="text" value="" id="txtActionName" class="form-control form-control-sm" />
+                            <span class="error hide required-actionName font-weight-bold">Input Action Name!</span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="txtIconName" class="control-label font-weight-bold">IconName</label>
-                            <input type="text" name="menuName" value="" id="txtIconName" class="form-control form-control-sm" />
+                            <label for="txtIconName" class="control-label font-weight-bold">Icon Name</label>
+                            <input type="text" value="" id="txtIconName" class="form-control form-control-sm" />
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="chkIsViewable" class="control-label font-weight-bold">IsViewable</label>
                             <div class="form-control form-control-sm">
-                                <input type="checkbox" id="chkIsViewable" /> <b>Is Active?</b>
+                                <input type="checkbox" id="chkIsViewable" /> <b>Is Viewable?</b>
+                            </div>
+                            <span class="error hide req-chkViewable">Check Viewable</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkIsActAsParent" /> <b>Is Act as Parent?</b>
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="chkIsActAsParent" class="control-label font-weight-bold">IsActAsParent</label>
-                            <div class="form-control form-control-sm">
-                                <input type="checkbox" id="chkIsActAsParent" /> <b>Is Active?</b>
-                            </div>
-                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="ddlParentSubMenu" class="control-label font-weight-bold">ParentSubMenu</label>
+                            <label for="ddlParentSubMenu" class="control-label font-weight-bold">Parent Submenu</label>
                             @Html.DropDownList("ddlParentSubMenu", (IEnumerable<SelectListItem>)ViewBag.ddlParentSubMenu, "--Select SubMenuName--", new { @class = "form-control form-control-sm" })
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="ddlMainMenu" class="control-label font-weight-bold">MainMenu</label>
+                            <label for="ddlMainMenu" class="control-label font-weight-bold">Mainmenu</label>
                             @Html.DropDownList("ddlMainMenu", (IEnumerable<SelectListItem>)ViewBag.ddlMainMenu, "--Select MainMenu--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide req-mainmenu">Mainmenu is required</span>
                         </div>
                     </div>
                 </form>
@@ -159,6 +161,7 @@
 
 @section scripts{
     <script type="text/javascript">
+
         var hdfSubMenuId = $("#hdfSubMenuId");
         var txtSubMenuName = $("#txtSubMenuName");
         var txtController = $("#txtController");
@@ -169,19 +172,20 @@
         var ddlParentSubMenu = $("#ddlParentSubMenu");
         var ddlMainMenu = $("#ddlMainMenu");
 
-        //$(document).ready(function () {
-        //    $('#tblSubMenuData').DataTable({
-        //        "paging": false,
-        //        "lengthChange": false,
-        //        "searching": false,
-        //        "ordering": true,
-        //        "info": false,
-        //        "autoWidth": false,
-        //    });
-        //})
+        $(document).ready(function () {
+            //$('#tblSubMenuData').DataTable({
+            //    "paging": false,
+            //    "lengthChange": false,
+            //    "searching": false,
+            //    "ordering": true,
+            //    "info": false,
+            //    "autoWidth": false,
+            //});
+        })
 
         function OpenModal() {
             $("#modalSubMenu").modal("show");
+            fnModalHeadChange('Add Submenu');
             $(".error").addClass("hide");
         }
 
@@ -194,15 +198,35 @@
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
+
             if ($.trim(txtSubMenuName.val()) == "") {
                 $(".required-submenuName").removeClass("hide");
                 isValid = false;
             }
+            if (TryParseInt(ddlMainMenu.val(), 0) === 0) {
+                $('.req-mainmenu').removeClass("hide");
+                isValid = false;
+            }
+            if (chkIsActAsParent.is(":checked") === true) {
+
+                if (chkIsViewable.is(":checked") === false) {
+                    $('.req-chkViewable').removeClass("hide");
+                    isValid = false;
+                }
+            }
+            else {
+                if (txtController.val().trim() === '') {
+                    $('.required-controllerName').removeClass("hide");
+                    isValid = false;
+                }
+                if (txtActionName.val().trim() === '') {
+                    $('.required-actionName').removeClass("hide");
+                    isValid = false;
+                }
+            }
             return isValid;
         }
 
-
-        ////Data add
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");
@@ -234,7 +258,6 @@
                     enable("#btnSubmit");
                 });
             }
-
         })
 
         $(document).on("click", "a.data-edit-item", function (e) {
@@ -258,17 +281,19 @@
             txtActionName.val(td5);
             txtIconName.val(td6);
             chkIsViewable.prop("checked", false);
-            if (td7 === 'Active') {
+            if (td7 === 'Yes') {
                 chkIsViewable.prop("checked", true);
             }
             chkIsActAsParent.prop("checked", false);
-            if (td8 === 'Active') {
+            if (td8 === 'Yes') {
                 chkIsActAsParent.prop("checked", true);
             }
             ddlParentSubMenu.val(td9);
-            
+            OpenModal();
+            fnModalHeadChange('Update Submenu');
 
         })
+
         function clearCtrl() {
             hdfSubMenuId.val('0');
             txtSubMenuName.val('');
@@ -279,12 +304,9 @@
             chkIsActAsParent.prop("checked", false);
             ddlParentSubMenu.val('0');
             ddlMainMenu.val('');
-
         }
-        $(".data-edit-item").click(function (e) {
-            e.preventDefault()
-            OpenModal()
-        });
+
+
 
     </script>
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using ERPBO.Inventory.DTOModel;
 using ERPBLL.ControlPanel.Interface;
+using System.Collections.Generic;
 
 namespace ERPWeb.Controllers
 {
@@ -22,10 +23,12 @@ namespace ERPWeb.Controllers
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
         private readonly IAppUserBusiness _appUserBusiness;
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
+        private readonly IRoleBusiness _roleBusiness;
+        private readonly IBranchBusiness _branchBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -37,6 +40,8 @@ namespace ERPWeb.Controllers
             this._productionStockInfoBusiness = productionStockInfoBusiness;
             this._appUserBusiness = appUserBusiness;
             this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
+            this._roleBusiness = roleBusiness;
+            this._branchBusiness = branchBusiness;
         }
 
         #region Validation Action Methods
@@ -47,6 +52,7 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         #endregion
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateItemTypeName(string itemTypeName, long id, long warehouseId)
         {
@@ -65,7 +71,6 @@ namespace ERPWeb.Controllers
             bool isExist = _itemBusiness.IsDuplicateItemName(itemName, id, OrgId);
             return Json(isExist);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateLineNumber(string lineNumber, long id)
         {
@@ -77,6 +82,21 @@ namespace ERPWeb.Controllers
         {
             bool isExist = _appUserBusiness.IsDuplicateEmployeeId(employeeId, id, OrgId);
             return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsUserExist(string userName,long id)
+        {
+           bool isUserExist = _appUserBusiness.GetAllAppUsers().Where(u => u.UserName.ToLower() == userName.ToLower() && u.UserId != id).FirstOrDefault() != null;
+
+            return Json(isUserExist);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsEmailExist(string email,long id)
+        {
+            bool isEmailExist = _appUserBusiness.GetAllAppUsers().Where(u => u.Email.ToLower() == email.ToLower() && u.UserId != id).FirstOrDefault() != null;
+
+            return Json(isEmailExist);
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -142,7 +162,7 @@ namespace ERPWeb.Controllers
             //    else
             //    {
             //        isValidExec = false;
-            //        isValidTxt += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName+" does not have enough stock </br>";
+            //        isValidTxt += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
             //    }
             //}
 
@@ -151,28 +171,28 @@ namespace ERPWeb.Controllers
         }
 
         [NonAction]
-        public ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
+        private ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
         {
             ExecutionStateWithText stateWithText = new ExecutionStateWithText();
              var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, OrgId).ToList();
             var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(OrgId);
             var items = _itemBusiness.GetAllItemByOrgId(OrgId).ToList();
-
+            stateWithText.isSuccess = true;
             foreach (var item in reqDetail)
             {
-                var w = warehouseStock.FirstOrDefault(wr => wr.ItemId == item.ItemId);
+                var w = warehouseStock.Where(wr => wr.ItemId == item.ItemId).FirstOrDefault();
                 if (w != null)
                 {
                     if ((w.StockInQty - w.StockOutQty) < item.Quantity)
                     {
                         stateWithText.isSuccess = false;
-                        stateWithText.text += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+                        stateWithText.text += items.Where(it => it.ItemId == item.ItemId).FirstOrDefault().ItemName + " does not have enough stock </br>";
                     }
                 }
                 else
                 {
                     stateWithText.isSuccess = false;
-                    stateWithText.text += items.FirstOrDefault(it => it.ItemId == item.ItemId).ItemName + " does not have enough stock </br>";
+                    stateWithText.text += items.Where(it => it.ItemId == item.ItemId).FirstOrDefault().ItemName + " does not have enough stock </br>";
                 }
             }
 
@@ -195,6 +215,27 @@ namespace ERPWeb.Controllers
             var items = _itemBusiness.GetAllItemByOrgId(OrgId).AsEnumerable();
             var dropDown = items.Where(i => i.ItemTypeId == itemTypeId).Select(i => new Dropdown { text = i.ItemName, value = i.ItemId.ToString() }).ToList();
             return Json(dropDown);
+        }
+
+        [HttpPost]
+        public ActionResult GetRolesByOrgId(long orgId)
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>();
+            if(orgId > 0)
+            {
+                dropdowns=_roleBusiness.GetAllRoleByOrgId(orgId).Select(r => new Dropdown {text= r.RoleName,value=r.RoleId.ToString() }).ToList();
+            }
+            return Json(dropdowns);
+        }
+        [HttpPost]
+        public ActionResult GetBranchesByOrgId(long orgId)
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>();
+            if (orgId > 0)
+            {
+                dropdowns = _branchBusiness.GetBranchByOrgId(orgId).Select(r => new Dropdown { text = r.BranchName, value = r.BranchId.ToString() }).ToList();
+            }
+            return Json(dropdowns);
         }
 
         #endregion

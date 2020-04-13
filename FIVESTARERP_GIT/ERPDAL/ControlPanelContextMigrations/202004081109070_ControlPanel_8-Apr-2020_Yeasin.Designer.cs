@@ -7,13 +7,13 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ControlPanelDbtblsubmenu : IMigrationMetadata
+    public sealed partial class ControlPanel_8Apr2020_Yeasin : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ControlPanelDbtblsubmenu));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ControlPanel_8Apr2020_Yeasin));
         
         string IMigrationMetadata.Id
         {
-            get { return "202004071221460_ControlPanelDbtblsubmenu"; }
+            get { return "202004081109070_ControlPanel_8-Apr-2020_Yeasin"; }
         }
         
         string IMigrationMetadata.Source

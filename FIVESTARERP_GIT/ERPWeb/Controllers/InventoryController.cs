@@ -442,7 +442,7 @@ namespace ERPWeb.Controllers
         }
 
         [NonAction]
-        public ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
+        private ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
         {
             ExecutionStateWithText stateWithText = new ExecutionStateWithText();
             var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, OrgId).ToArray();

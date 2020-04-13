@@ -49,13 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPanelContextMigrations\202004061041199_ControlPanel_AllEntities_31-Mar-2020.cs" />
-    <Compile Include="ControlPanelContextMigrations\202004061041199_ControlPanel_AllEntities_31-Mar-2020.Designer.cs">
-      <DependentUpon>202004061041199_ControlPanel_AllEntities_31-Mar-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPanelContextMigrations\202004071221460_ControlPanelDbtblsubmenu.cs" />
-    <Compile Include="ControlPanelContextMigrations\202004071221460_ControlPanelDbtblsubmenu.Designer.cs">
-      <DependentUpon>202004071221460_ControlPanelDbtblsubmenu.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202004081109070_ControlPanel_8-Apr-2020_Yeasin.cs" />
+    <Compile Include="ControlPanelContextMigrations\202004081109070_ControlPanel_8-Apr-2020_Yeasin.Designer.cs">
+      <DependentUpon>202004081109070_ControlPanel_8-Apr-2020_Yeasin.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -98,11 +94,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202004061041199_ControlPanel_AllEntities_31-Mar-2020.resx">
-      <DependentUpon>202004061041199_ControlPanel_AllEntities_31-Mar-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202004071221460_ControlPanelDbtblsubmenu.resx">
-      <DependentUpon>202004071221460_ControlPanelDbtblsubmenu.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202004081109070_ControlPanel_8-Apr-2020_Yeasin.resx">
+      <DependentUpon>202004081109070_ControlPanel_8-Apr-2020_Yeasin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.resx">
       <DependentUpon>202003310717010_Inventory_AllEntities_31-Mar-2020.cs</DependentUpon>

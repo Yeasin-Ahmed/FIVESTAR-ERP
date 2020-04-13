@@ -19,11 +19,13 @@ namespace ERPBO.ControlPanel.ViewModels
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public bool IsRoleActive { get; set; }
+        [Range(1, long.MaxValue)]
         public long RoleId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        [Range(1, long.MaxValue)]
         public long BranchId { get; set; }
 
         [StringLength(50)]
@@ -32,7 +34,6 @@ namespace ERPBO.ControlPanel.ViewModels
         public string Address { get; set; }
         [StringLength(100)]
         public string Desigation { get; set; }
-        [Range(1, long.MaxValue)]
         public string ConfirmPassword { get; set; }
         [Range(1, long.MaxValue)]
         public long OrganizationId { get; set; }

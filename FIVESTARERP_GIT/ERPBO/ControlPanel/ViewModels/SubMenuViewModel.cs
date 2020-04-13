@@ -20,7 +20,6 @@ namespace ERPBO.ControlPanel.ViewModels
         public string IconClass { get; set; }
         public bool IsViewable { get; set; }
         public bool IsActAsParent { get; set; }
-        [Range(1,long.MaxValue)]
         public long? ParentSubMenuId { get; set; }
         [Range(1, long.MaxValue)]
         public long? EUserId { get; set; }
@@ -34,6 +33,7 @@ namespace ERPBO.ControlPanel.ViewModels
         public long MMId { get; set; }
         [StringLength(100)]
         public string MenuName { get; set; }
+        public string ParentSubmenuName { get; set; }
         public string IsViewableStatus { get; set; }
         public string IsActAsParentStatus { get; set; }
     }
