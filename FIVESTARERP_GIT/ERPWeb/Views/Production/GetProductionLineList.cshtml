@@ -78,7 +78,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title">Add New Production Line</h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Production Line</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> Save </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText"> Save</span> </button>
             </div>
         </div>
     </div>
@@ -148,6 +148,8 @@
         })
 
         function OpenModal() {
+            $("#spanModalHead").text('Add New Production Line');
+            $("#spanSaveText").text('Save');
             $("#modalLine").modal("show");
             $(".error").addClass("hide");
         }
@@ -238,6 +240,8 @@
         $(".data-edit-item").click(function (e) {
             e.preventDefault()
             OpenModal()
+            $("#spanModalHead").text('Update Production Line');
+            $("#spanSaveText").text('Update');
         });
     </script>
     }
