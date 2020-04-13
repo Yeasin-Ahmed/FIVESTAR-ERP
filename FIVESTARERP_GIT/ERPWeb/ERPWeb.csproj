@@ -319,6 +319,7 @@
     <Content Include="Views\ControlPanel\GetModuleList.cshtml" />
     <Content Include="Views\ControlPanel\GetMainMenuList.cshtml" />
     <Content Include="Views\ControlPanel\GetSubMenuList.cshtml" />
+    <Content Include="Views\Production\GetRequsitionDetailsEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

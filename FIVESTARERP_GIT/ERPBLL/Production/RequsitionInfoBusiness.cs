@@ -44,32 +44,66 @@ namespace ERPBLL.Production
         }
         public bool SaveRequisition(ReqInfoDTO reqInfoDTO, long userId, long orgId)
         {
+            
             RequsitionInfo requsitionInfo = new RequsitionInfo();
-            requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
-            requsitionInfo.LineId = reqInfoDTO.LineId.Value;
-            requsitionInfo.OrganizationId = orgId;
-            requsitionInfo.StateStatus = RequisitionStatus.Pending;
-            requsitionInfo.ReqInfoCode =("REQ-"+ DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
-            requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
-            requsitionInfo.EntryDate = DateTime.Now;
-            requsitionInfo.EUserId = userId;
-            List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
-
-            foreach (var item in reqInfoDTO.ReqDetails)
+            if (reqInfoDTO.ReqInfoId == 0)
             {
-                RequsitionDetail requsitionDetail = new RequsitionDetail();
-                requsitionDetail.ItemTypeId = item.ItemTypeId;
-                requsitionDetail.ItemId = item.ItemId;
-                requsitionDetail.Quantity = item.Quantity;
-                requsitionDetail.UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
-                requsitionDetail.Remarks = item.Remarks;
-                requsitionDetail.EUserId = userId;
-                requsitionDetail.EntryDate = DateTime.Now;
-                requsitionDetail.OrganizationId = orgId;
-                requsitionDetails.Add(requsitionDetail);
+                requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
+                requsitionInfo.LineId = reqInfoDTO.LineId.Value;
+                requsitionInfo.OrganizationId = orgId;
+                requsitionInfo.StateStatus = RequisitionStatus.Pending;
+                requsitionInfo.ReqInfoCode = ("REQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+                requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
+                requsitionInfo.EntryDate = DateTime.Now;
+                requsitionInfo.EUserId = userId;
+                List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
+
+                foreach (var item in reqInfoDTO.ReqDetails)
+                {
+                    RequsitionDetail requsitionDetail = new RequsitionDetail();
+                    requsitionDetail.ItemTypeId = item.ItemTypeId;
+                    requsitionDetail.ItemId = item.ItemId;
+                    requsitionDetail.Quantity = item.Quantity;
+                    requsitionDetail.UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
+                    requsitionDetail.Remarks = item.Remarks;
+                    requsitionDetail.EUserId = userId;
+                    requsitionDetail.EntryDate = DateTime.Now;
+                    requsitionDetail.OrganizationId = orgId;
+                    requsitionDetails.Add(requsitionDetail);
+                }
+                requsitionInfo.RequsitionDetails = requsitionDetails;
+                requsitionInfoRepository.Insert(requsitionInfo);
             }
-            requsitionInfo.RequsitionDetails = requsitionDetails;
-            requsitionInfoRepository.Insert(requsitionInfo);
+            else
+            {
+                requsitionInfo = GetRequisitionById(reqInfoDTO.ReqInfoId, orgId);
+                requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
+                requsitionInfo.LineId = reqInfoDTO.LineId.Value;
+                requsitionInfo.OrganizationId = orgId;
+                requsitionInfo.StateStatus = RequisitionStatus.Pending;
+                requsitionInfo.ReqInfoCode = ("REQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+                requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
+                requsitionInfo.EntryDate = DateTime.Now;
+                requsitionInfo.EUserId = userId;
+                List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
+
+                foreach (var item in reqInfoDTO.ReqDetails)
+                {
+                    RequsitionDetail requsitionDetail = new RequsitionDetail();
+                    requsitionDetail.ItemTypeId = item.ItemTypeId;
+                    requsitionDetail.ItemId = item.ItemId;
+                    requsitionDetail.Quantity = item.Quantity;
+                    requsitionDetail.UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
+                    requsitionDetail.Remarks = item.Remarks;
+                    requsitionDetail.EUserId = userId;
+                    requsitionDetail.EntryDate = DateTime.Now;
+                    requsitionDetail.OrganizationId = orgId;
+                    requsitionDetails.Add(requsitionDetail);
+                }
+                requsitionInfo.RequsitionDetails = requsitionDetails;
+                requsitionInfoRepository.Update(requsitionInfo);
+            }
+            
             return requsitionInfoRepository.Save();
         }
         public bool SaveRequisitionStatus(long reqId, string status, long orgId)

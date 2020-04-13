@@ -213,6 +213,39 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+        public ActionResult GetRequsitionDetailsEdit(long reqId)
+        {
+            var items = _itemBusiness.GetAllItemByOrgId(OrgId);
+            var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId);
+            var units = _unitBusiness.GetAllUnitByOrgId(OrgId);
+            IEnumerable<RequsitionDetailDTO> requsitionDetailDTO = _requsitionDetailBusiness.GetAllReqDetailByOrgId(OrgId).Where(r=>r.ReqInfoId==reqId).Select(d => new RequsitionDetailDTO
+            {
+                ReqDetailId = d.ReqInfoId,
+                ReqInfoId =d.ReqInfoId,
+                ItemTypeId = d.ItemTypeId.Value,
+                ItemTypeName = (_itemTypeBusiness.GetItemType(d.ItemTypeId.Value, OrgId).ItemName),
+                ItemId = d.ItemId.Value,
+                ItemName = (_itemBusiness.GetItemOneByOrgId(d.ItemId.Value, OrgId).ItemName),
+                Quantity = d.Quantity.Value,
+                UnitName = (_unitBusiness.GetUnitOneByOrgId(d.UnitId.Value, OrgId).UnitSymbol)
+            }).ToList();
+
+            var info = _requsitionInfoBusiness.GetRequisitionById(reqId,OrgId);
+            RequsitionInfoViewModel requsitionInfoView = new RequsitionInfoViewModel()
+            {
+                ReqInfoId=info.ReqInfoId,
+                ReqInfoCode = info.ReqInfoCode,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber,
+                WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName,
+                ModelName=_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId,OrgId).DescriptionName,
+            };
+
+            ViewBag.RequsitionInfoViewModel = requsitionInfoView;
+
+            List<RequsitionDetailViewModel> requsitionDetailViewModels = new List<RequsitionDetailViewModel>();
+            AutoMapper.Mapper.Map(requsitionDetailDTO, requsitionDetailViewModels);
+            return View("GetRequsitionDetailsEdit", requsitionDetailViewModels);
+        }
 
         #endregion
 
