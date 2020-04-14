@@ -6,18 +6,23 @@
     RequsitionInfoViewModel info = ((RequsitionInfoViewModel)ViewBag.RequsitionInfoViewModel);
 
 }
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReqInfoData">
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReqInfoForEdit">
     <tbody>
         <tr>
             <td class="hide">@info.ReqInfoId</td>
-            <td style="width:13%">Return Code</td>
-            <td style="width:20%"><b>@info.ReqInfoCode</b></td>
-            <td style="width:10%">Line</td>
-            <td style="width:23%"><b>@info.LineNumber</b></td>
-            <td style="width:10%">Warehouse</td>
-            <td style="width:23%"><b>@info.WarehouseName</b></td>
-            <td style="width:10%">Model</td>
-            <td style="width:23%"><b>@info.ModelName</b></td>
+            <td style="width:15%">Return Code</td>
+            <td style="width:35%"><b>@info.ReqInfoCode</b></td>
+            <td class="hide">@info.LineId</td>
+            <td style="width:15%">Line Number</td>
+            <td style="width:35%"><b>@info.LineNumber</b></td>
+        </tr>
+        <tr>
+            <td class="hide">@info.WarehouseId</td>
+            <td style="width:15%">Warehouse</td>
+            <td style="width:35%"><b>@info.WarehouseName</b></td>
+            <td class="hide">@info.DescriptionId</td>
+            <td style="width:15%">Model</td>
+            <td style="width:35%"><b>@info.ModelName</b></td>
         </tr>
     </tbody>
 </table>
@@ -32,7 +37,7 @@
             <th>Item Name</th>
             <th>Qty.</th>
             <th>Type Of Unit</th>
-            <th>Actions</th>
+            @*<th>Actions</th>*@
         </tr>
     </thead>
     <tbody>
@@ -46,17 +51,14 @@
             <td>@detail.ItemTypeName</td>
             <td class="hide">@detail.ItemId</td>
             <td>@detail.ItemName</td>
-            <td class="text-center">
-                <input type="number" value="@detail.Quantity" />
+            <td class="text-center" style="width:15%">
+                <input type="number" value="@detail.Quantity" class="form-control form-control-sm"/>
             </td>
             <td class="text-center">@detail.UnitName</td>
-            <td class="text-center">
+            @*<td class="text-center">
                 <a href="#" class="btn btn-danger btn-sm data-onfly-del" data-edit-item="@detail.ReqDetailId"><i class="fa fa-pen"></i> Delete</a>
-            </td>
+            </td>*@
         </tr>
         }
     </tbody>
 </table>
-<div class="modal-footer">
-    <button type="submit" style="background-color:darkblue" class="btn btn-sm btn-success" id="btnUpdate">Save</button>
-</div>

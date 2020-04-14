@@ -327,6 +327,7 @@
     <Content Include="Views\Production\_GetFinishGoodsStockInfo.cshtml" />
     <Content Include="Views\Production\GetFinishGoodsStockDetailInfoList.cshtml" />
     <Content Include="Views\Production\_GetFinishGoodsStockDetailInfoList.cshtml" />
+    <Content Include="Views\Production\GetRequsitionDetailsEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

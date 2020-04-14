@@ -127,13 +127,20 @@ namespace ERPWeb.Controllers
         public ActionResult SaveRequsition(VmReqInfo model)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.ReqDetails.Count > 0)
             {
                 try
                 {
                     ReqInfoDTO dto = new ReqInfoDTO();
                     AutoMapper.Mapper.Map(model, dto);
-                    isSuccess = _requsitionInfoBusiness.SaveRequisition(dto, UserId, OrgId);
+                    if (model.ReqInfoId == 0) {
+                        isSuccess = _requsitionInfoBusiness.SaveRequisition(dto, UserId, OrgId);
+                    }
+                    else
+                    {
+                        isSuccess = _requsitionDetailBusiness.SaveRequisitionDetail(dto, UserId, OrgId);
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -228,7 +235,7 @@ namespace ERPWeb.Controllers
             var units = _unitBusiness.GetAllUnitByOrgId(OrgId);
             IEnumerable<RequsitionDetailDTO> requsitionDetailDTO = _requsitionDetailBusiness.GetAllReqDetailByOrgId(OrgId).Where(r=>r.ReqInfoId==reqId).Select(d => new RequsitionDetailDTO
             {
-                ReqDetailId = d.ReqInfoId,
+                ReqDetailId = d.ReqDetailId,
                 ReqInfoId =d.ReqInfoId,
                 ItemTypeId = d.ItemTypeId.Value,
                 ItemTypeName = (_itemTypeBusiness.GetItemType(d.ItemTypeId.Value, OrgId).ItemName),
@@ -244,15 +251,18 @@ namespace ERPWeb.Controllers
                 ReqInfoId=info.ReqInfoId,
                 ReqInfoCode = info.ReqInfoCode,
                 LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber,
+                LineId = info.LineId,
                 WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName,
+                WarehouseId = info.WarehouseId,
                 ModelName=_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId,OrgId).DescriptionName,
+                DescriptionId = info.DescriptionId
             };
 
             ViewBag.RequsitionInfoViewModel = requsitionInfoView;
 
             List<RequsitionDetailViewModel> requsitionDetailViewModels = new List<RequsitionDetailViewModel>();
             AutoMapper.Mapper.Map(requsitionDetailDTO, requsitionDetailViewModels);
-            return View("GetRequsitionDetailsEdit", requsitionDetailViewModels);
+            return PartialView("GetRequsitionDetailsEdit", requsitionDetailViewModels);
         }
 
         #endregion

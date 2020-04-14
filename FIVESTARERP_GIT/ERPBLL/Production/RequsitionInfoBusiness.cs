@@ -23,6 +23,7 @@ namespace ERPBLL.Production
         private readonly RequsitionInfoRepository requsitionInfoRepository; // table
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly IItemBusiness _itemBusiness; // interface
+        //private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; //
 
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         public RequsitionInfoBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IItemBusiness itemBusiness)
@@ -32,6 +33,8 @@ namespace ERPBLL.Production
             this._inventoryDb = inventoryDb;
             this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
             this._itemBusiness = itemBusiness;
+            //this._requsitionDetailBusiness = requsitionDetailBusiness;
+            //, IRequsitionDetailBusiness requsitionDetailBusiness
         }
 
         public IEnumerable<RequsitionInfo> GetAllReqInfoByOrgId(long orgId)
@@ -44,7 +47,7 @@ namespace ERPBLL.Production
         }
         public bool SaveRequisition(ReqInfoDTO reqInfoDTO, long userId, long orgId)
         {
-            
+            bool IsSuccess = false;
             RequsitionInfo requsitionInfo = new RequsitionInfo();
             if (reqInfoDTO.ReqInfoId == 0)
             {
@@ -73,38 +76,12 @@ namespace ERPBLL.Production
                 }
                 requsitionInfo.RequsitionDetails = requsitionDetails;
                 requsitionInfoRepository.Insert(requsitionInfo);
+                IsSuccess = requsitionInfoRepository.Save();
             }
             else
             {
-                requsitionInfo = GetRequisitionById(reqInfoDTO.ReqInfoId, orgId);
-                requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
-                requsitionInfo.LineId = reqInfoDTO.LineId.Value;
-                requsitionInfo.OrganizationId = orgId;
-                requsitionInfo.StateStatus = RequisitionStatus.Pending;
-                requsitionInfo.ReqInfoCode = ("REQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
-                requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
-                requsitionInfo.EntryDate = DateTime.Now;
-                requsitionInfo.EUserId = userId;
-                List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
-
-                foreach (var item in reqInfoDTO.ReqDetails)
-                {
-                    RequsitionDetail requsitionDetail = new RequsitionDetail();
-                    requsitionDetail.ItemTypeId = item.ItemTypeId;
-                    requsitionDetail.ItemId = item.ItemId;
-                    requsitionDetail.Quantity = item.Quantity;
-                    requsitionDetail.UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
-                    requsitionDetail.Remarks = item.Remarks;
-                    requsitionDetail.EUserId = userId;
-                    requsitionDetail.EntryDate = DateTime.Now;
-                    requsitionDetail.OrganizationId = orgId;
-                    requsitionDetails.Add(requsitionDetail);
-                }
-                requsitionInfo.RequsitionDetails = requsitionDetails;
-                requsitionInfoRepository.Update(requsitionInfo);
             }
-            
-            return requsitionInfoRepository.Save();
+            return IsSuccess;
         }
         public bool SaveRequisitionStatus(long reqId, string status, long orgId)
         {

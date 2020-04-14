@@ -1,6 +1,8 @@
-﻿using ERPBLL.Production.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DomainModels;
+using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
 using System;
 using System.Collections.Generic;
@@ -8,23 +10,25 @@ using System.Linq;
 
 namespace ERPBLL.Production
 {
-   public class RequsitionDetailBusiness: IRequsitionDetailBusiness
-   {
+    public class RequsitionDetailBusiness : IRequsitionDetailBusiness
+    {
         private readonly IProductionUnitOfWork _productionDb; // database
-        private readonly RequsitionDetailRepository requsitionDetailRepository; // table
-        public RequsitionDetailBusiness(IProductionUnitOfWork productionDb)
+        private readonly RequsitionDetailRepository _requsitionDetailRepository; // table
+        private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
+        public RequsitionDetailBusiness(IProductionUnitOfWork productionDb, IRequsitionInfoBusiness requsitionInfoBusiness)
         {
             this._productionDb = productionDb;
-            requsitionDetailRepository = new RequsitionDetailRepository(this._productionDb);
+            this._requsitionDetailRepository = new RequsitionDetailRepository(this._productionDb);
+            this._requsitionInfoBusiness = requsitionInfoBusiness;
         }
 
         public IEnumerable<RequsitionDetail> GetAllReqDetailByOrgId(long orgId)
         {
-            return requsitionDetailRepository.GetAll(unit => unit.OrganizationId == orgId).ToList();
+            return _requsitionDetailRepository.GetAll(unit => unit.OrganizationId == orgId).ToList();
         }
         public bool SaveReqDetails(RequsitionDetailDTO detailDTO, long userId, long orgId)
         {
-            
+
             RequsitionDetail requsitionDetail = new RequsitionDetail();
             if (detailDTO.ReqDetailId == 0)
             {
@@ -36,7 +40,7 @@ namespace ERPBLL.Production
                 requsitionDetail.EUserId = userId;
                 requsitionDetail.EntryDate = DateTime.Now;
                 requsitionDetail.OrganizationId = orgId;
-                requsitionDetailRepository.Insert(requsitionDetail);
+                _requsitionDetailRepository.Insert(requsitionDetail);
             }
             else
             {
@@ -48,15 +52,41 @@ namespace ERPBLL.Production
                 requsitionDetail.UpUserId = userId;
                 requsitionDetail.UpdateDate = DateTime.Now;
                 requsitionDetail.OrganizationId = orgId;
-                requsitionDetailRepository.Update(requsitionDetail);
+                _requsitionDetailRepository.Update(requsitionDetail);
             }
-            return requsitionDetailRepository.Save();
+            return _requsitionDetailRepository.Save();
         }
 
         public IEnumerable<RequsitionDetail> GetRequsitionDetailByReqId(long id, long orgId)
         {
-            return requsitionDetailRepository.GetAll(rd => rd.ReqInfoId == id && rd.OrganizationId == orgId).ToList();
+            return _requsitionDetailRepository.GetAll(rd => rd.ReqInfoId == id && rd.OrganizationId == orgId).ToList();
         }
 
+        public bool SaveRequisitionDetail(ReqInfoDTO reqInfoDTO,long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            var reqInfo = _requsitionInfoBusiness.GetRequisitionById(reqInfoDTO.ReqInfoId, orgId);
+            if (reqInfo != null && reqInfo.ReqInfoId > 0 && reqInfo.StateStatus == RequisitionStatus.Pending)
+            {
+                foreach (var item in reqInfoDTO.ReqDetails)
+                {
+                    var reDetailInDb = GetRequsitionDetailById(item.ReqDetailId, orgId);
+                    if(reDetailInDb != null)
+                    {
+                        reDetailInDb.Quantity = item.Quantity;
+                        reDetailInDb.UpUserId = userId;
+                        reDetailInDb.UpdateDate = DateTime.Now;
+                        _requsitionDetailRepository.Update(reDetailInDb);
+                    }
+                }
+            }
+            IsSuccess = _requsitionDetailRepository.Save();
+            return IsSuccess;
+        }
+
+        public RequsitionDetail GetRequsitionDetailById(long id, long orgId)
+        {
+            return _requsitionDetailRepository.GetAll(rd => rd.ReqDetailId == id && rd.OrganizationId == orgId).FirstOrDefault();
+        }
     }
 }
