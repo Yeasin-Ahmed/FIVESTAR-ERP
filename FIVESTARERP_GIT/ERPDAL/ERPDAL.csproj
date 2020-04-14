@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPanelContextMigrations\202004081109070_ControlPanel_8-Apr-2020_Yeasin.cs" />
-    <Compile Include="ControlPanelContextMigrations\202004081109070_ControlPanel_8-Apr-2020_Yeasin.Designer.cs">
-      <DependentUpon>202004081109070_ControlPanel_8-Apr-2020_Yeasin.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202004140835479_ControlPanel_AllEntities_14-April-2020.cs" />
+    <Compile Include="ControlPanelContextMigrations\202004140835479_ControlPanel_AllEntities_14-April-2020.Designer.cs">
+      <DependentUpon>202004140835479_ControlPanel_AllEntities_14-April-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -59,28 +59,16 @@
     <Compile Include="ControlPanelDAL\IControlPanelUnitOfWork.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelBaseRepository.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelUnitOfWork.cs" />
-    <Compile Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.cs" />
-    <Compile Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.Designer.cs">
-      <DependentUpon>202003310717010_Inventory_AllEntities_31-Mar-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202004131557005_Inventory_ItemCode.cs" />
-    <Compile Include="InventoryContextMigrations\202004131557005_Inventory_ItemCode.Designer.cs">
-      <DependentUpon>202004131557005_Inventory_ItemCode.cs</DependentUpon>
+    <Compile Include="InventoryContextMigrations\202004140847107_Inventory_AllEntities_14-April-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202004140847107_Inventory_AllEntities_14-April-2020.Designer.cs">
+      <DependentUpon>202004140847107_Inventory_AllEntities_14-April-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202003310720120_Production_AllEntities_31-Mar-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202003310720120_Production_AllEntities_31-Mar-2020.Designer.cs">
-      <DependentUpon>202003310720120_Production_AllEntities_31-Mar-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202004110846018_Production_FinishGoods.cs" />
-    <Compile Include="ProductionContextMigrations\202004110846018_Production_FinishGoods.Designer.cs">
-      <DependentUpon>202004110846018_Production_FinishGoods.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202004130419209_Production_FinishGoods_UnitId.cs" />
-    <Compile Include="ProductionContextMigrations\202004130419209_Production_FinishGoods_UnitId.Designer.cs">
-      <DependentUpon>202004130419209_Production_FinishGoods_UnitId.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.Designer.cs">
+      <DependentUpon>202004140841002_Production_AllEntities_14-April-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -106,23 +94,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202004081109070_ControlPanel_8-Apr-2020_Yeasin.resx">
-      <DependentUpon>202004081109070_ControlPanel_8-Apr-2020_Yeasin.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202004140835479_ControlPanel_AllEntities_14-April-2020.resx">
+      <DependentUpon>202004140835479_ControlPanel_AllEntities_14-April-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202003310717010_Inventory_AllEntities_31-Mar-2020.resx">
-      <DependentUpon>202003310717010_Inventory_AllEntities_31-Mar-2020.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202004140847107_Inventory_AllEntities_14-April-2020.resx">
+      <DependentUpon>202004140847107_Inventory_AllEntities_14-April-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202004131557005_Inventory_ItemCode.resx">
-      <DependentUpon>202004131557005_Inventory_ItemCode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202003310720120_Production_AllEntities_31-Mar-2020.resx">
-      <DependentUpon>202003310720120_Production_AllEntities_31-Mar-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202004110846018_Production_FinishGoods.resx">
-      <DependentUpon>202004110846018_Production_FinishGoods.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202004130419209_Production_FinishGoods_UnitId.resx">
-      <DependentUpon>202004130419209_Production_FinishGoods_UnitId.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.resx">
+      <DependentUpon>202004140841002_Production_AllEntities_14-April-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

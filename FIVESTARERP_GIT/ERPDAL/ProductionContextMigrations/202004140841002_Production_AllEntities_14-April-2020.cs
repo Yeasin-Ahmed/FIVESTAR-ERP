@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Production_AllEntities_31Mar2020 : DbMigration
+    public partial class Production_AllEntities_14April2020 : DbMigration
     {
         public override void Up()
         {
@@ -23,6 +23,97 @@ namespace ERPDAL.ProductionContextMigrations
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.DescriptionId);
+            
+            CreateTable(
+                "dbo.tblFinishGoodsInfo",
+                c => new
+                    {
+                        FinishGoodsInfoId = c.Long(nullable: false, identity: true),
+                        ProductionLineId = c.Long(nullable: false),
+                        DescriptionId = c.Long(nullable: false),
+                        WarehouseId = c.Long(nullable: false),
+                        ItemTypeId = c.Long(nullable: false),
+                        ItemId = c.Long(nullable: false),
+                        UnitId = c.Long(nullable: false),
+                        Quanity = c.Int(nullable: false),
+                        ProductionType = c.String(),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.FinishGoodsInfoId);
+            
+            CreateTable(
+                "dbo.tblFinishGoodsRowMaterial",
+                c => new
+                    {
+                        FGRMId = c.Long(nullable: false, identity: true),
+                        WarehouseId = c.Long(nullable: false),
+                        ItemTypeId = c.Long(nullable: false),
+                        ItemId = c.Long(nullable: false),
+                        UnitId = c.Long(nullable: false),
+                        Quanity = c.Int(nullable: false),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                        FinishGoodsInfoId = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => t.FGRMId)
+                .ForeignKey("dbo.tblFinishGoodsInfo", t => t.FinishGoodsInfoId, cascadeDelete: true)
+                .Index(t => t.FinishGoodsInfoId);
+            
+            CreateTable(
+                "dbo.tblFinishGoodsStockDetail",
+                c => new
+                    {
+                        FinishGoodsStockDetailId = c.Long(nullable: false, identity: true),
+                        LineId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        UnitId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        DescriptionId = c.Long(),
+                        ExpireDate = c.DateTime(),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                        StockStatus = c.String(maxLength: 150),
+                        RefferenceNumber = c.String(maxLength: 150),
+                        FinishGoodsStockInfo_FinishGoodsStockInfoId = c.Long(),
+                    })
+                .PrimaryKey(t => t.FinishGoodsStockDetailId)
+                .ForeignKey("dbo.tblFinishGoodsStockInfo", t => t.FinishGoodsStockInfo_FinishGoodsStockInfoId)
+                .Index(t => t.FinishGoodsStockInfo_FinishGoodsStockInfoId);
+            
+            CreateTable(
+                "dbo.tblFinishGoodsStockInfo",
+                c => new
+                    {
+                        FinishGoodsStockInfoId = c.Long(nullable: false, identity: true),
+                        LineId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        UnitId = c.Long(),
+                        StockInQty = c.Int(),
+                        StockOutQty = c.Int(),
+                        DescriptionId = c.Long(),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.FinishGoodsStockInfoId);
             
             CreateTable(
                 "dbo.tblItemReturnDetail",
@@ -180,9 +271,13 @@ namespace ERPDAL.ProductionContextMigrations
             DropForeignKey("dbo.tblRequsitionDetails", "ReqInfoId", "dbo.tblRequsitionInfo");
             DropForeignKey("dbo.tblProductionStockDetail", "ProductionStockInfo_ProductionStockInfoId", "dbo.tblProductionStockInfo");
             DropForeignKey("dbo.tblItemReturnDetail", "IRInfoId", "dbo.tblItemReturnInfo");
+            DropForeignKey("dbo.tblFinishGoodsStockDetail", "FinishGoodsStockInfo_FinishGoodsStockInfoId", "dbo.tblFinishGoodsStockInfo");
+            DropForeignKey("dbo.tblFinishGoodsRowMaterial", "FinishGoodsInfoId", "dbo.tblFinishGoodsInfo");
             DropIndex("dbo.tblRequsitionDetails", new[] { "ReqInfoId" });
             DropIndex("dbo.tblProductionStockDetail", new[] { "ProductionStockInfo_ProductionStockInfoId" });
             DropIndex("dbo.tblItemReturnDetail", new[] { "IRInfoId" });
+            DropIndex("dbo.tblFinishGoodsStockDetail", new[] { "FinishGoodsStockInfo_FinishGoodsStockInfoId" });
+            DropIndex("dbo.tblFinishGoodsRowMaterial", new[] { "FinishGoodsInfoId" });
             DropTable("dbo.tblRequsitionInfo");
             DropTable("dbo.tblRequsitionDetails");
             DropTable("dbo.tblProductionStockInfo");
@@ -190,6 +285,10 @@ namespace ERPDAL.ProductionContextMigrations
             DropTable("dbo.tblProductionLines");
             DropTable("dbo.tblItemReturnInfo");
             DropTable("dbo.tblItemReturnDetail");
+            DropTable("dbo.tblFinishGoodsStockInfo");
+            DropTable("dbo.tblFinishGoodsStockDetail");
+            DropTable("dbo.tblFinishGoodsRowMaterial");
+            DropTable("dbo.tblFinishGoodsInfo");
             DropTable("dbo.tblDescriptions");
         }
     }
