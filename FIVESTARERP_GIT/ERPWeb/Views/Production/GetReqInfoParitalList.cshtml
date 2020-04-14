@@ -43,10 +43,10 @@
                 <td>@info.Remarks</td>
                 <td class="text-center">@info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")</td>
                 <td class="text-center">
-                    <a href="#" class="btn btn-block btn-outline-secondary btn-sm data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i> Details</a>
-                    @if (info.StateStatus == "Rechecked")
+                    <a href="#" class="btn btn-sm btn-outline-secondary data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i></a>
+                    @if (info.StateStatus == "Pending")
                     {
-                        <a href="#" class="btn btn-block btn-outline-warning btn-sm data-edit-item" data-edit-item="@info.ReqInfoId"><i class="fa fa-pen"></i> Edit </a>
+                        <a href="#" class="btn btn-sm btn-outline-warning  data-edit-item" data-edit-item="@info.ReqInfoId" title="Edit Req"><i class="fa fa-pen"></i></a>
                     }
                 </td>
             </tr>
