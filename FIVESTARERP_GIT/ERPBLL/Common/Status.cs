@@ -34,5 +34,15 @@ namespace ERPBLL.Common
         public static readonly string ManMade = "Man Made";
         public static readonly string ChinaMade = "China Made";
     }
+    public class ProductionTypes
+    {
+        public static readonly string CKD = "CKD";
+        public static readonly string SKD = "SKD";
+        public static readonly string HandSet = "HandSet";
+    }
 
+    public class StockOutReason
+    {
+        public static readonly string StockOutByProductionForProduceGoods = "StockOutByProductionForProduceGoods";
+    }
 }

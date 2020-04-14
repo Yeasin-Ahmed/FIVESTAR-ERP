@@ -319,6 +319,14 @@
     <Content Include="Views\ControlPanel\GetModuleList.cshtml" />
     <Content Include="Views\ControlPanel\GetMainMenuList.cshtml" />
     <Content Include="Views\ControlPanel\GetSubMenuList.cshtml" />
+    <Content Include="Views\Production\CreateFinishGoods.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsList.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsList.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsMaterialDetails.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsStockInfo.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsStockDetailInfoList.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsStockDetailInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

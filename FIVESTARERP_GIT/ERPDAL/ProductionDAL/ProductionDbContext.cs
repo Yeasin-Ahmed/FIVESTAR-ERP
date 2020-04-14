@@ -10,6 +10,7 @@ namespace ERPDAL.ProductionDAL
         {
 
         }
+
         public DbSet<RequsitionInfo> tblRequsitionInfo { get; set; }
         public DbSet<RequsitionDetail> tblRequsitionDetails { get; set; }
         public DbSet<ProductionLine> tblProductionLines { get; set; }
@@ -18,5 +19,9 @@ namespace ERPDAL.ProductionDAL
         public DbSet<ItemReturnInfo> tblItemReturnInfo { get; set; }
         public DbSet<ItemReturnDetail> tblItemReturnDetail { get; set; }
         public DbSet<Description> tblDescriptions { get; set; }
+        public DbSet<FinishGoodsInfo> tblFinishGoodsInfo { get; set; }
+        public DbSet<FinishGoodsRowMaterial> tblFinishGoodsRowMaterial { get; set; }
+        public DbSet<FinishGoodsStockInfo> tblFinishGoodsStockInfo { get; set; }
+        public DbSet<FinishGoodsStockDetail> tblFinishGoodsStockDetail { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Inventory.DomainModels
 {
-    [Table("tblItems")]
+   [Table("tblItems")]
    public class Item
     {
         [Key]
@@ -17,6 +17,8 @@ namespace ERPBO.Inventory.DomainModels
         public string ItemName { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
+        [StringLength(20)]
+        public string ItemCode { get; set; }
         public bool IsActive { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }

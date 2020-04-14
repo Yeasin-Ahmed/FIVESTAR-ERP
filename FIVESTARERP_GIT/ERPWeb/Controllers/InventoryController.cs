@@ -192,7 +192,8 @@ namespace ERPWeb.Controllers
                 ItemTypeId = item.ItemTypeId,
                 ItemTypeName = _itemTypeBusiness.GetItemType(item.ItemTypeId, OrgId).ItemName,
                 UnitId = item.UnitId,
-                UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, OrgId).UnitName
+                UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, OrgId).UnitName,
+                ItemCode= item.ItemCode
             }).ToList();
             List<ItemViewModel> itemViewModels = new List<ItemViewModel>();
             AutoMapper.Mapper.Map(itemDomains, itemViewModels);
@@ -693,6 +694,8 @@ namespace ERPWeb.Controllers
             return View();
         }
         #endregion
+
+        
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

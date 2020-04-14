@@ -45,4 +45,24 @@ namespace ERPDAL.ProductionDAL
         public DescriptionRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
 
+    public class FinishGoodsInfoRepository : ProductionBaseRepository<FinishGoodsInfo>
+    {
+        public FinishGoodsInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
+    public class FinishGoodsRowMaterialRepository : ProductionBaseRepository<FinishGoodsRowMaterial>
+    {
+        public FinishGoodsRowMaterialRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
+    public class FinishGoodsStockInfoRepository : ProductionBaseRepository<FinishGoodsStockInfo>
+    {
+        public FinishGoodsStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
+    public class FinishGoodsStockDetailRepository : ProductionBaseRepository<FinishGoodsStockDetail>
+    {
+        public FinishGoodsStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
 }

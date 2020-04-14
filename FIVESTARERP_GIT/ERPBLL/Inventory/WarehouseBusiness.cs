@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Inventory.Interface;
+using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DomainModels;
 using ERPBO.Inventory.DTOModels;
 using ERPDAL.InventoryDAL;
@@ -21,10 +22,12 @@ namespace ERPBLL.Inventory
         /// </summary>
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly WarehouseRepository warehouseRepository; // repo
-        public WarehouseBusiness(IInventoryUnitOfWork inventoryDb)
+        private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
+        public WarehouseBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness)
         {
             this._inventoryDb = inventoryDb;
             warehouseRepository = new WarehouseRepository(this._inventoryDb);
+            this._productionStockInfoBusiness = productionStockInfoBusiness;
         }
 
         public bool SaveWarehouse(WarehouseDTO warehouseDTO, long userId, long orgId)
@@ -61,6 +64,7 @@ namespace ERPBLL.Inventory
         {
             return warehouseRepository.GetOneByOrg(ware => ware.Id == id && ware.OrganizationId == orgId);
         }
+
         public async Task<bool> SaveAsync(WarehouseDTO warehouseDomain, long userId, long orgId)
         {
             //    Warehouse warehouse = new Warehouse();
@@ -102,6 +106,12 @@ namespace ERPBLL.Inventory
         public bool IsDuplicateWarehouseName(string warehouseName, long id, long orgId)
         {
             return warehouseRepository.GetOneByOrg(ware => ware.WarehouseName == warehouseName && ware.Id != id && ware.OrganizationId == orgId) != null ? true : false;
+        }
+
+        public IEnumerable<Warehouse> GetAllWarehouseByProductionLineId(long orgId, long lineId)
+        {
+           var warehouses = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(l => l.LineId == lineId).Select(l => l.WarehouseId).Distinct().ToList();
+           return GetAllWarehouseByOrgId(orgId).Where(w => warehouses.Contains(w.Id)).ToList();
         }
     }
 }

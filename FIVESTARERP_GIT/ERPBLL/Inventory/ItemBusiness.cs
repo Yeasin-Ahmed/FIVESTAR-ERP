@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ERPBO.Common;
+using ERPBLL.Production.Interface;
 
 namespace ERPBLL.Inventory
 {
@@ -19,15 +21,32 @@ namespace ERPBLL.Inventory
         /// </summary>
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly ItemRepository itemRepository; // repo
-        public ItemBusiness(IInventoryUnitOfWork inventoryDb)
+        private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
+        public ItemBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness)
         {
             this._inventoryDb = inventoryDb;
             itemRepository = new ItemRepository(this._inventoryDb);
+            this._productionStockInfoBusiness = productionStockInfoBusiness;
         }
 
         public IEnumerable<Item> GetAllItemByOrgId(long orgId)
         {
             return itemRepository.GetAll(item => item.OrganizationId == orgId).ToList();
+        }
+
+        public IEnumerable<ItemDomainDTO> GetAllItemsInProductionStockByLineId(long lineId, long orgId)
+        {
+           var items= _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(l => l.LineId == lineId).Select(s => s.ItemId).Distinct().ToList();
+
+         return GetAllItemByOrgId(orgId).Where(it => items.Contains(it.ItemId)).Select(it => new ItemDomainDTO
+            {
+                ItemId = it.ItemId,
+                ItemName = it.ItemName,
+                ItemTypeId = it.ItemTypeId,
+                UnitId = it.UnitId,
+                IsActive = it.IsActive,
+                Remarks = it.Remarks
+            }).ToList();
         }
 
         public ItemDomainDTO GetItemById(long itemId, long orgId)
@@ -45,6 +64,14 @@ namespace ERPBLL.Inventory
         public Item GetItemOneByOrgId(long id, long orgId)
         {
             return itemRepository.GetOneByOrg(item => item.ItemId == id && item.OrganizationId == orgId);
+        }
+
+        public IEnumerable<Dropdown> GetItemsByWarehouseId(long warehouseId, long orgId)
+        {
+           return this._inventoryDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (i.ItemName+' ['+it.ItemName+']') 'text', Cast(i.ItemId as nvarchar(50)) 'value' From tblItems i
+Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
+Inner Join tblWarehouses w on it.WarehouseId = w.Id
+Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
         }
 
         public bool IsDuplicateItemName(string itemName, long id, long orgId)
@@ -65,6 +92,7 @@ namespace ERPBLL.Inventory
                 items.OrganizationId = orgId;
                 items.ItemTypeId = itemDomain.ItemTypeId;
                 items.UnitId = itemDomain.UnitId;
+                items.ItemCode = GenerateItemCode(orgId);
                 itemRepository.Insert(items);
             }
             else
@@ -80,6 +108,17 @@ namespace ERPBLL.Inventory
                 itemRepository.Update(items);
             }
             return itemRepository.Save();
+        }
+
+        private string GenerateItemCode(long OrgId)
+        {
+            string code = string.Empty;
+            string newCode = string.Empty;
+            code = GetAllItemByOrgId(OrgId).OrderByDescending(i => i.ItemId).FirstOrDefault().ItemCode;
+            code = code.Substring(3);
+            code = (Convert.ToInt32(code) + 1).ToString();
+            newCode = "ITM"+code.PadLeft(5, '0');
+            return newCode;
         }
     }
 }

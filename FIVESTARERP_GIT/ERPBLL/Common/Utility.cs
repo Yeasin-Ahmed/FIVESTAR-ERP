@@ -54,6 +54,16 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfProductionType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=ProductionTypes.CKD,value=ProductionTypes.CKD},
+                new Dropdown(){text=ProductionTypes.SKD,value=ProductionTypes.SKD},
+                new Dropdown(){text=ProductionTypes.HandSet,value=ProductionTypes.HandSet}
+            };
+            return dropdowns;
+        }
 
         public static string Encrypt(string clearText)
         {

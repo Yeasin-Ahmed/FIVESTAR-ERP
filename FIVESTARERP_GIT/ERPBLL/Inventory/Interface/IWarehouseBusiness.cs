@@ -14,5 +14,6 @@ namespace ERPBLL.Inventory.Interface
         IEnumerable<dynamic> SqlQuery(string query);
         IEnumerable<dynamic> GetComplexData(long orgId);
         bool IsDuplicateWarehouseName(string warehouseName, long id, long orgId);
+        IEnumerable<Warehouse> GetAllWarehouseByProductionLineId(long orgId,long lineId);
     }
 }

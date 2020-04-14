@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "List Of Finish Goods";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">List Of Finish Goods</b></h4>
+            </div>
+            <div class="col-md-3">
+                <a href="/Production/CreateFinishGoods" style="background-color:darkblue" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Adding Finish Goods</a>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">Line Number</label>
+                @Html.DropDownList("ddlLines", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "---Select Line---", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "---Select Model---", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "---Select Warehouse---", new { @class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlItemType">ItemType Name</label>
+                <select id="ddlItemType" class="form-control form-control-sm">
+                    <option value="">---Select ItemType---</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlItem">Item Name</label>
+                <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
+                    <option value="">---Select Item---</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Finish Qty (Less then / Equal)</label>
+                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+            </div>
+            <hr />
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12" id="dataContainer">
+        @{Html.RenderAction("GetFinishGoodsList", new { @flag = "view" });}
+    </div>
+</div>
+
+<div class="modal fade" id="modalMaterialDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title">
+                    Material Details Of Finish Goods
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer1">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLines = $("#ddlLines");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlModelName = $("#ddlModelName");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtLessOrEq = $("#txtLessOrEq");
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        ddlWarehouse.change(function () {
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlItemType.change(function () {
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTable();
+        })
+
+        txtLessOrEq.keyup(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", lineId: TryParseInt(ddlLines.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemName: TryParseInt(ddlItem.val(), 0), finishQty: txtLessOrEq.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            console.log(data);
+
+            $.when(getReqWithData(dataType.html, type.post, '/Production/GetFinishGoodsList', data)).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").empty();
+                    $("#dataContainer").append(res);
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function OpenModal() {
+            $("#modalMaterialDetails").modal('show');
+        }
+
+        $(document).on('click', '.data-meterial-details', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-meterial-details');
+            $.when(getReqWithData(dataType.html, type.post, '/Production/GetFinishGoodsMaterialDetails',{ finishGoodsInfoId:id})).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer1").empty();
+                    $("#dataContainer1").append(res);
+                    OpenModal();
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        })
+
+    </script>
+
+}

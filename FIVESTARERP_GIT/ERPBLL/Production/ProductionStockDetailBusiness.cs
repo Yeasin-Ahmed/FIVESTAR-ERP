@@ -95,7 +95,7 @@ namespace ERPBLL.Production
         {
             var executionStatus = false;
             List<ProductionStockDetail> productionStockDetails = new List<ProductionStockDetail>();
-            if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn)
+            if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn || flag == StockOutReason.StockOutByProductionForProduceGoods)
             {
                 foreach (var item in productionStockDetailDTOs)
                 {
@@ -179,7 +179,7 @@ namespace ERPBLL.Production
             }
             if (warehouseId != null && warehouseId > 0)
             {
-                param += string.Format(@" and wh.Id={0}", warehouseId);
+                param += string.Format(@" and w.Id={0}", warehouseId);
             }
             if (itemTypeId != null && itemTypeId > 0)
             {

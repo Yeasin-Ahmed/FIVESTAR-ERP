@@ -93,10 +93,17 @@
     <Compile Include="Inventory\RepairStockInfoBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
+    <Compile Include="Production\FinishGoodsInfoBusiness.cs" />
     <Compile Include="Production\DescriptionBusiness.cs" />
+    <Compile Include="Production\FinishGoodsRowMaterialBusiness.cs" />
+    <Compile Include="Production\FinishGoodsStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IDescriptionBusiness.cs" />
+    <Compile Include="Production\Interface\IFinishGoodsInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IFinishGoodsRowMaterialBusiness.cs" />
+    <Compile Include="Production\Interface\IFinishGoodsStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IItemReturnDetailBusiness.cs" />
     <Compile Include="Production\Interface\IItemReturnInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IFinishGoodsStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IProductionLineBusiness.cs" />
     <Compile Include="Production\Interface\IProductionStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRequsitionDetailBusiness.cs" />
@@ -110,6 +117,7 @@
     <Compile Include="Production\ItemReturnInfoBusiness.cs" />
     <Compile Include="Production\ProductionLineBusiness.cs" />
     <Compile Include="Production\ProductionStockDetailBusiness.cs" />
+    <Compile Include="Production\FinishGoodsStockInfoBusiness.cs" />
     <Compile Include="Production\ProductionStockInfoBusiness.cs" />
     <Compile Include="Production\RequsitionDetailBusiness.cs" />
     <Compile Include="Production\RequsitionInfoBusiness.cs" />

@@ -30,6 +30,7 @@
                     <th class="hide"></th>
                     <th>ItemType Name</th>
                     <th>Item Name</th>
+                    <th>Item Code</th>
                     <th>Unit Name</th>
                     <th>Remarks</th>
                     <th>StateStatus</th>
@@ -46,6 +47,7 @@
                     <td class="hide">@item.ItemId</td>
                     <td>@item.ItemTypeName</td>
                     <td>@item.ItemName</td>
+                    <td class="text-center">@item.ItemCode</td>
                     <td class="text-center">@item.UnitName</td>
                     <td class="text-center">@item.Remarks</td>
                     <td class="text-center" data-val="@item.StateStatus">
@@ -59,7 +61,7 @@
                 @if (Model.Count() == 0)
                 {
                     <tr class="text-center empty-row">
-                        <td colspan="5">
+                        <td colspan="9">
                             No Rows Found
                         </td>
                     </tr>

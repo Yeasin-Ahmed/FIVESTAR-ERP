@@ -200,6 +200,17 @@ namespace ERPWeb.Controllers
         }
 
         #region Dropdown List
+        [HttpPost]
+        public ActionResult GetItemsByLine(long lineId)
+        {
+           var data = _itemBusiness.GetAllItemsInProductionStockByLineId(lineId, OrgId).Select(i => new Dropdown
+            {
+                value = i.ItemId.ToString(),
+                text = i.ItemName
+            }).ToList();
+
+            return Json(data);
+        }
 
         [HttpPost]
         public ActionResult GetItemTypeForDDL(long warehouseId)
@@ -236,6 +247,23 @@ namespace ERPWeb.Controllers
                 dropdowns = _branchBusiness.GetBranchByOrgId(orgId).Select(r => new Dropdown { text = r.BranchName, value = r.BranchId.ToString() }).ToList();
             }
             return Json(dropdowns);
+        }
+
+        [HttpPost]
+        public ActionResult GetItemsByWarehouseId(long warehouseId)
+        {
+            var data =_itemBusiness.GetItemsByWarehouseId(warehouseId, OrgId).ToList();
+            return Json(data);
+        }
+
+        [HttpPost]
+        public ActionResult GetWarehouseByProductionLineId(long lineId)
+        {
+            var data = _warehouseBusiness.GetAllWarehouseByProductionLineId(OrgId, lineId).Select(w=> new Dropdown {
+                text = w.WarehouseName,
+                value = w.Id.ToString()
+            }).ToList();
+            return Json(data);
         }
 
         #endregion

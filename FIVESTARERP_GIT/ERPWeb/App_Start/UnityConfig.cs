@@ -42,6 +42,11 @@ namespace ERPWeb
             container.RegisterType<IItemReturnInfoBusiness, ItemReturnInfoBusiness>();
             container.RegisterType<IItemReturnDetailBusiness, ItemReturnDetailBusiness>();
             container.RegisterType<IDescriptionBusiness, DescriptionBusiness>();
+            container.RegisterType<IFinishGoodsInfoBusiness, FinishGoodsInfoBusiness>();
+            container.RegisterType<IFinishGoodsRowMaterialBusiness, FinishGoodsRowMaterialBusiness>();
+            container.RegisterType<IFinishGoodsStockDetailBusiness, FinishGoodsStockDetailBusiness>();
+            container.RegisterType<IFinishGoodsStockInfoBusiness, FinishGoodsStockInfoBusiness>();
+            container.RegisterType<IFinishGoodsStockDetailBusiness, FinishGoodsStockDetailBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
 
             // Control Panel Database
