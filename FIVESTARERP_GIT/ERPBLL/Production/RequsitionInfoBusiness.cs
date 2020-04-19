@@ -37,6 +37,15 @@ namespace ERPBLL.Production
             //, IRequsitionDetailBusiness requsitionDetailBusiness
         }
 
+        public IEnumerable<DashboardRequisitionSummeryDTO> DashboardRequisitionSummery(long orgId)
+        {
+           return this._productionDb.Db.Database.SqlQuery<DashboardRequisitionSummeryDTO>(
+               string.Format(@"select StateStatus, count(*) as TotalCount
+                from dbo.tblRequsitionInfo
+                Where OrganizationId={0}
+                group by StateStatus",orgId)).ToList();
+        }
+
         public IEnumerable<RequsitionInfo> GetAllReqInfoByOrgId(long orgId)
         {
             return requsitionInfoRepository.GetAll(unit => unit.OrganizationId == orgId).ToList();

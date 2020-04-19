@@ -99,6 +99,9 @@
     <Compile Include="Production\DomainModels\ProductionStockDetail.cs" />
     <Compile Include="Production\DomainModels\FinishGoodsStockInfo.cs" />
     <Compile Include="Production\DomainModels\ProductionStockInfo.cs" />
+    <Compile Include="Production\DTOModel\DashboardFacultyWiseProductionDTO.cs" />
+    <Compile Include="Production\DTOModel\DashboardLineWiseProductionDTO.cs" />
+    <Compile Include="Production\DTOModel\DashboardRequisitionSummeryDTO.cs" />
     <Compile Include="Production\DTOModel\DescriptionDTO.cs" />
     <Compile Include="Production\DTOModel\FinishGoodsInfoDTO.cs" />
     <Compile Include="Production\DTOModel\FinishGoodsRowMaterialDTO.cs" />
@@ -124,6 +127,9 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\ViewModels\DashboardFacultyWiseProductionViewModel.cs" />
+    <Compile Include="Production\ViewModels\DashboardLineWiseProductionViewModel.cs" />
+    <Compile Include="Production\ViewModels\DashboardRequisitionSummeryViewModel.cs" />
     <Compile Include="Production\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsRowMaterialViewModel.cs" />

@@ -36,6 +36,22 @@ namespace ERPBLL.Production
             itemReturnInfoRepository = new ItemReturnInfoRepository(this._productionDb);
         }
 
+        public IEnumerable<DashboardFacultyWiseProductionDTO> DashboardFacultyDayWiseProduction(long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<DashboardFacultyWiseProductionDTO>(
+                string.Format(@"select FaultyCase,count(*) as Total from tblItemReturnInfo
+                where Cast(GETDATE() as date) = Cast(EntryDate as date) and OrganizationId={0}
+                group by FaultyCase", orgId)).ToList();
+        }
+
+        public IEnumerable<DashboardFacultyWiseProductionDTO> DashboardFacultyOverAllWiseProduction(long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<DashboardFacultyWiseProductionDTO>(
+                string.Format(@"select FaultyCase,count(*) as Total from tblItemReturnInfo
+                where OrganizationId={0}
+                group by FaultyCase", orgId)).ToList();
+        }
+
         public ItemReturnInfo GetItemReturnInfo(long OrgId, long infoId)
         {
             return itemReturnInfoRepository.GetAll(i => i.OrganizationId == OrgId && i.IRInfoId == infoId).FirstOrDefault();

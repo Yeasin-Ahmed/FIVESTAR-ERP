@@ -66,9 +66,9 @@
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.Designer.cs">
-      <DependentUpon>202004140841002_Production_AllEntities_14-April-2020.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202004160647379_Production_AllEntities_14-April-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202004160647379_Production_AllEntities_14-April-2020.Designer.cs">
+      <DependentUpon>202004160647379_Production_AllEntities_14-April-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -100,8 +100,8 @@
     <EmbeddedResource Include="InventoryContextMigrations\202004140847107_Inventory_AllEntities_14-April-2020.resx">
       <DependentUpon>202004140847107_Inventory_AllEntities_14-April-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.resx">
-      <DependentUpon>202004140841002_Production_AllEntities_14-April-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202004160647379_Production_AllEntities_14-April-2020.resx">
+      <DependentUpon>202004160647379_Production_AllEntities_14-April-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
