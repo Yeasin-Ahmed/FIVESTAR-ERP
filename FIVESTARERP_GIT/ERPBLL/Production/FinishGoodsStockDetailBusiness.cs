@@ -154,6 +154,23 @@ Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
         }
+        public IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseDailyProduction(long orgId)
+        {
+                return this._productionDb.Db.Database.SqlQuery<DashboardLineWiseProductionDTO>(
+                string.Format(@"select  l.LineNumber,sum(d.Quantity) as Total from tblFinishGoodsStockDetail d
+                inner join tblProductionLines l on d.LineId=l.LineId
+                Where d.StockStatus ='Stock-In' And Cast(GETDATE() as date) = Cast(d.EntryDate as date) and d.OrganizationId={0}
+                group by l.LineId,l.LineNumber", orgId)).ToList();
+        }
+
+        public IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseOverAllProduction(long orgId)
+        {
+                return this._productionDb.Db.Database.SqlQuery<DashboardLineWiseProductionDTO>(
+                string.Format(@"select  l.LineNumber,sum(d.Quantity) as Total from tblFinishGoodsStockDetail d
+                inner join tblProductionLines l on d.LineId=l.LineId
+                Where d.StockStatus ='Stock-In' and d.OrganizationId={0}
+                group by l.LineId,l.LineNumber", orgId)).ToList();
+        }
 
         public bool SaveFinishGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
         {

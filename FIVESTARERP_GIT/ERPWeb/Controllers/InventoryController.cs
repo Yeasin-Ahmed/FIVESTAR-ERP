@@ -126,11 +126,12 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region ItemType - Table
-        public ActionResult GetItemTypeList()
+        public ActionResult GetItemTypeList(int? page)
         {
+            ViewBag.pageNum = page.ToString();
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
 
-            IEnumerable<ItemTypeDTO> itemTypesDomains = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).Select(item => new ItemTypeDTO
+            IPagedList<ItemTypeViewModel> itemTypesDomains = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).Select(item => new ItemTypeViewModel
             {
                 ItemId = item.ItemId,
                 WarehouseId = item.WarehouseId,
@@ -139,10 +140,12 @@ namespace ERPWeb.Controllers
                 StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = item.OrganizationId,
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(item.WarehouseId, OrgId).WarehouseName)
-            }).ToList();
-            List<ItemTypeViewModel> itemTypeViewModels = new List<ItemTypeViewModel>();
-            AutoMapper.Mapper.Map(itemTypesDomains, itemTypeViewModels);
-            return View(itemTypeViewModels);
+            }).OrderBy(item => item.ItemId).ToPagedList(page?? 1, 3);
+            IEnumerable<ItemTypeViewModel> itemTypeViewModelsForPage =new List<ItemTypeViewModel>();
+            //List<ItemTypeViewModel> itemTypeViewModels = new List<ItemTypeViewModel>();
+            //AutoMapper.Mapper.Map(itemTypesDomains, itemTypeViewModels);
+            
+            return View(itemTypesDomains);
         }
 
         public ActionResult SaveItemType(ItemTypeViewModel itemTypeViewModel)
@@ -202,13 +205,14 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Item - Table
-        public ActionResult GetItemList()
+        public ActionResult GetItemList(int? page)
         {
+            ViewBag.pageNum = page.ToString();
             ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
 
             ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
 
-            IEnumerable<ItemDomainDTO> itemDomains = _itemBusiness.GetAllItemByOrgId(1).Select(item => new ItemDomainDTO
+            IPagedList<ItemViewModel> itemViewModels = _itemBusiness.GetAllItemByOrgId(1).Select(item => new ItemViewModel
             {
                 ItemId = item.ItemId,
                 ItemName = item.ItemName,
