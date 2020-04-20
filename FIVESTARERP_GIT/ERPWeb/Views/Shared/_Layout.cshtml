@@ -271,6 +271,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="/Inventory/GetDescriptionList" class="nav-link">
+                                        <i class="fas fa-circle fa-1x nav-icon"></i>
+                                        <p>Description</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="/Inventory/GetItemTypeList" class="nav-link">
                                         <i class="fas fa-circle fa-1x nav-icon"></i>
                                         <p>ItemType List</p>
@@ -312,7 +318,12 @@
                                         <p>Repair Stock</p>
                                     </a>
                                 </li>
-                                
+                                <li class="nav-item">
+                                    <a href="/Inventory/GetFinishGoodsSendToWarehouse" class="nav-link">
+                                        <i class="fas fa-circle fa-1x nav-icon"></i>
+                                        <p>Receive Finish Goods</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
@@ -328,12 +339,6 @@
                                     <a href="/Production/GetProductionLineList" class="nav-link">
                                         <i class="fas fa-circle fa-1x nav-icon"></i>
                                         <p>Production Line</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Production/GetDescriptionList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Description</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -366,6 +371,12 @@
                                         <p>Finish Goods Stock</p>
                                     </a>
                                 </li>
+                                @*<li class="nav-item">
+                                        <a href="" class="nav-link">
+                                            <i class="fas fa-circle fa-1x nav-icon"></i>
+                                            <p>Send Finish Goods</p>
+                                        </a>
+                                    </li>*@
                             </ul>
                         </li>
                     </ul>
@@ -434,7 +445,7 @@
     <!-- Bootstrap 4 -->
     <script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="~/Content/dist/js/adminlte.min.js"></script>
+    <script src="~/Content/dist/js/adminlte.js"></script>
     <script src="~/Scripts/jquery.dataTables.js"></script>
     <script src="~/Scripts/dataTables.bootstrap4.js"></script>
     <script src="~/Content/plugins/Toastr/toastr.min.js"></script>
@@ -442,6 +453,7 @@
     <script src="~/Content/plugins/bs-custom-file-input/bs-custom-file-input.js"></script>
     <script src="~/Scripts/bootbox.js"></script>
     <script src="~/Scripts/bootbox.locales.js"></script>
+    <script src="~/Content/dist/js/demo.js"></script>
     <script src="~/Scripts/site.js"></script>
 
     <script type="text/javascript">

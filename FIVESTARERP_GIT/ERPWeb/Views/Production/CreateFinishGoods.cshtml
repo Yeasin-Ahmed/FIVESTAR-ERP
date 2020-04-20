@@ -367,16 +367,22 @@
             var td4 = '<td class="hide">' + ddlItem.val() + '</td>';
             var td5 = '<td class="text-center">' + $("#ddlItem option:selected").text() + '</td>';
             var td6 = '<td class="text-center">' + txtStockOutQty.val() + '</td>';
-            var td7 = '<td class="text-center"><a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Remove"><i class="fas fa-trash"></i></a></td>';
+            var td7 = '<td class="text-center"><a href="#" class="btn btn-sm btn-outline-danger data-del-item" title="Remove"><i class="fas fa-trash"></i></a></td>';
 
             var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + '</tr>'
             $("#tblMaterials tbody").append(tr);
         }
 
-        $(document).on('click', 'a.data-del-item', function (e) {
+        $(document).on('click', '.data-del-item', function (e) {
             e.preventDefault();
-            var index = $(this).parent().parents('tr').index();
-            fnRemoveARowFromTbody("#tblMaterials", index);
+            console.log('Remove clicked');
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblMaterials tbody", index);
+                    fnFixTheTbodyRowSerial("#tblMaterials", index);
+                };
+            }));
         })
 
         function redirectPage(page) {

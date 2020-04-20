@@ -91,17 +91,18 @@ namespace ERPBLL.Inventory
             return repairStockDetailRepository.Save();
         }
 
-        public IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        public IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId)
         {
             IEnumerable<RepairStockDetailListDTO> repairStockDetailListDTOs = new List<RepairStockDetailListDTO>();
-            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<RepairStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum)).ToList();
+            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<RepairStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId)).ToList();
             return repairStockDetailListDTOs;
         }
 
-        private string QueryForRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        private string QueryForRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
+            param += string.Format(@" and rsd.OrganizationId={0}", orgId);
             if (lineId != null && lineId > 0)
             {
                 param += string.Format(@" and pl.LineId={0}", lineId);
@@ -153,7 +154,7 @@ Left Join tblWarehouses wh on rsd.WarehouseId = wh.Id
 Left Join tblItemTypes it on rsd.ItemTypeId = it.ItemId
 Left Join tblItems i on rsd.ItemId  = i.ItemId
 Left Join tblUnits u on rsd.UnitId= u.UnitId
-Left Join [Production].dbo.[tblDescriptions] de on rsd.DescriptionId = de.DescriptionId
+Left Join tblDescriptions de on rsd.DescriptionId = de.DescriptionId
 Left Join [Production].dbo.[tblProductionLines] pl on rsd.LineId = pl.LineId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;

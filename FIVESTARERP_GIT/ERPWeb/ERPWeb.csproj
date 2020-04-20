@@ -159,6 +159,7 @@
     <Content Include="Content\dist\img\user2-160x160.jpg" />
     <Content Include="Content\dist\js\adminlte.js" />
     <Content Include="Content\dist\js\adminlte.min.js" />
+    <Content Include="Content\dist\js\demo.js" />
     <Content Include="Content\Images\noImage.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.js" />
@@ -305,7 +306,7 @@
     <Content Include="Views\Inventory\_RepairStockInfoList.cshtml" />
     <Content Include="Views\Production\GetProductionFaultyOrReturnItemDetailList.cshtml" />
     <Content Include="Views\Production\_GetProductionFaultyOrReturnItemDetailList.cshtml" />
-    <Content Include="Views\Production\GetDescriptionList.cshtml" />
+    <Content Include="Views\Inventory\GetDescriptionList.cshtml" />
     <Content Include="Views\ControlPanel\GetBranchList.cshtml" />
     <Content Include="Views\ControlPanel\GetRoleList.cshtml" />
     <Content Include="Views\ControlPanel\GetAppUserList.cshtml" />
@@ -328,6 +329,15 @@
     <Content Include="Views\Production\GetFinishGoodsStockDetailInfoList.cshtml" />
     <Content Include="Views\Production\_GetFinishGoodsStockDetailInfoList.cshtml" />
     <Content Include="Views\Production\GetRequsitionDetailsEdit.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Production\CreateFinishGoodsToWarehouse.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsSendItemDetail.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsSendItemDetailList.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsSendItemDetailList.cshtml" />
+    <Content Include="Views\Inventory\GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Inventory\_GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Inventory\_GetFinishGoodsSendItemDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

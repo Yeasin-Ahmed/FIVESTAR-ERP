@@ -1,0 +1,300 @@
+﻿
+@{
+    ViewBag.Title = "Send Stock To Warehouse";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/Production/GetFinishGoodsSendToWarehouse" class="btn btn-sm btn-outline-primary float-left" title="Back To List">
+                    <i class="fa fa-arrow-alt-circle-left"></i>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <h4><b style="color:darkblue">Send Stock To Warehouse</b></h4>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlLineNumber" class="control-label">Line Number</label>
+                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-line">Line is require</span>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlWarehouse" class="control-label">Warehouse Name (To)</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-warehouse">Warehouse is require</span>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlModelName" class="control-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm" })
+                <span class="error hide req-model">Model is require</span>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlItemType" class="control-label">ItemType Name</label>
+                <select id="ddlItemType" class="form-control form-control-sm">
+                    <option value="">--Select Item Type--</option>
+                </select>
+                <span class="error hide req-itemType">ItemType is require</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlItem" class="control-label">Item Name</label>
+                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
+                    <option value="">--Select Item--</option>
+                </select>
+                <span class="error hide req-item">Item is require</span>
+                <span class="error hide dup-item">This Item is already added</span>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">Quantity <span id="stockQty"></span></label>
+                <div class="input-group" style="width:70%">
+                    <input type="number" class="form-control form-control-sm" id="txtQty" />
+                    <span id="unitName" class="text-bold mt-1"></span>
+                </div>
+                <span class="error hide req-qty">Quantity is require</span>
+                <span class="error hide req-stockOver">Stock not available</span>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" style="visibility:hidden">Add To List</label>
+                <div class="clearfix">
+                    <button type="button" class="btn btn-sm float-left btn-outline-primary" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i> Add To List</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="col-md-12 mt-1">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblStockItem">
+            <thead class="">
+                <tr>
+                    <th colspan="8">
+                        <button type="submit" class="btn float-right btn-sm btn-outline-success" id="btnSubmit">Save <i class="fas fa-paper-plane"></i></button>
+                    </th>
+                </tr>
+                <tr class="btn-dark text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>ItemType Name</th>
+                    <th class="hide"></th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Type Of Unit</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlModelName = $("#ddlModelName");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtQty = $("#txtQty");
+        var unitName = $("#unitName");
+        var stockQty = $("#stockQty");
+
+        ddlLineNumber.change(function () {
+            if (ddlLineNumber.val() !== "") {
+                disable("#ddlLineNumber");
+            }
+        })
+
+        ddlModelName.change(function () {
+            disable("#ddlModelName");
+        })
+
+        ddlWarehouse.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                disable("#ddlWarehouse");
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            else {
+                enable("#ddlWarehouse");
+            }
+        })
+
+        ddlItem.change(function () {
+            LoadItemStock();
+        })
+
+        ddlItemType.change(function () {
+            $("#unitName").text('');
+            stockQty.text('');
+            txtQty.val('0');
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+        })
+
+        function LoadItemStock() {
+            $("#unitName").text('');
+            stockQty.text('');
+            txtQty.val('0');
+            if (TryParseInt(ddlItem.val(), 0) > 0 && TryParseInt(ddlLineNumber.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0, TryParseInt(ddlWarehouse.val(), 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetItemUnitAndFGStockQty', JSON.stringify({ lineId: ddlLineNumber.val(), warehouseId: ddlWarehouse.val(), itemId: ddlItem.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (status == "success") {
+                        $("#unitName").text(res.unitSymbol);
+                        $("#stockQty").text('(' + res.stockQty + ')');
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+        }
+
+        function validateAddToList() {
+            var isValid = true;
+            $('.error').addClass('hide');
+            if (ddlLineNumber.val() === "") {
+                $('.req-line').removeClass('hide');
+                isValid = false;
+            }
+            if (ddlWarehouse.val() === "") {
+                $('.req-warehouse').removeClass('hide');
+                isValid = false;
+            }
+            if (ddlModelName.val() === "") {
+                $('.req-model').removeClass('hide');
+                isValid = false;
+            }
+            if (ddlItemType.val() === "") {
+                $('.req-itemType').removeClass('hide');
+                isValid = false;
+            }
+            if (ddlItem.val() === "") {
+                $('.req-item').removeClass('hide');
+                isValid = false;
+            }
+            else {
+                $.each($("#tblStockItem tbody tr"), function (index, item) {
+                    var item = $(this).children('td').eq(3).html();
+                    if (ddlItem.val() === item) {
+                        isValid = false;
+                        $('.dup-item').removeClass('hide');
+                    }
+                })
+            }
+            if (TryParseInt(txtQty.val(), 0) <= 0) {
+                $('.req-qty').removeClass('hide');
+                isValid = false;
+            }
+            else {
+                if ($("#stockQty").text() === '') {
+                    $('.req-stockOver').removeClass('hide');
+                    isValid = false;
+                }
+                else {
+                    var sq = $("#stockQty").text().trim();
+                    sq = sq.substring(1, sq.length - 1);
+                    //console.log("Stock Qty");
+                    //console.log(sq);
+                    if (TryParseInt(txtQty.val(), 0) > TryParseInt(sq, 0)) {
+                        isValid = false;
+                        $('.req-stockOver').removeClass('hide');
+                    }
+                }
+            }
+
+            return isValid;
+        }
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateAddToList() === true) {
+                BindDataTable();
+            }
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if ($("#tblStockItem tbody tr").length > 0) {
+
+                bootbox.confirm("Are  you sure you want to save", function (result) {
+                    if (result === true) {
+                        disable("#btnSubmit");
+                        var info = { SendId: 0, LineId: TryParseInt(ddlLineNumber.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val()), DescriptionId: TryParseInt(ddlModelName.val(), 0) };
+
+                        var detail = [];
+                        detail.length = 0;
+
+                        $.each($("#tblStockItem tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            detail.push({
+                                ItemTypeId: tds.eq(1).html(),
+                                ItemId: tds.eq(3).html(),
+                                Quantity: tds.eq(5).html()
+                            })
+                        })
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFinishGoodsSendToWarehouse', JSON.stringify({ info: info, detail: detail }), getToken())).then(function (res, status) {
+                            if (res === true && status === 'success') {
+                                $(".toastrDefaultSuccess").trigger('click');
+                                //$(".toastrDefaultSuccess").fadeOut(500);
+                                setTimeout(function () {
+                                redirectPage('@Url.Action("GetFinishGoodsSendToWarehouse")');
+                                }, 800);
+                            }
+                            else {
+                                $(".toastrDefaultError").trigger('click');
+                            }
+                        }).fail(function (error) {
+                            console.log(error);
+                        })
+                        enable("#btnSubmit");
+                    }
+                })
+            }
+        })
+
+        function BindDataTable() {
+            var length = $("#tblStockItem tbody tr").length;
+            var td1 = '<td class="text-center">' + (length + 1) + '</td>';
+            var td2 = '<td class="hide">' + ddlItemType.val() + '</td>';
+            var td3 = '<td>' + $("#ddlItemType option:selected").text() + '</td>';
+            var td4 = '<td class="hide">' + ddlItem.val() + '</td>';
+            var td5 = '<td>' + $("#ddlItem option:selected").text() + '</td>';
+            var td6 = '<td>' + txtQty.val() + '</td>';
+            var td7 = '<td>' + unitName.text() + '</td>';
+            var td8 = '<td class="text-center"><a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Remove"><i class="fas fa-trash"></i></a></td>';
+            var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + '</tr>';
+            $("#tblStockItem tbody").append(tr);
+        }
+
+        $(document).on('click', 'a.data-del-item', function (e) {
+            e.preventDefault();
+            console.log('Remove clicked');
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblStockItem tbody", index);
+                    fnFixTheTbodyRowSerial("#tblStockItem", index);
+                };
+            }));
+        })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+
+    </script>
+}

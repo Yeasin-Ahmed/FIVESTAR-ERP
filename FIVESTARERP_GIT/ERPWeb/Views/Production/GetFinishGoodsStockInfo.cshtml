@@ -14,8 +14,8 @@
                 <h4><b style="color:darkblue">Finish Goods Stock Info</b></h4>
             </div>
             <div class="col-md-3">
-                <a href="#" class="float-right btn btn-sm btn-outline-primary" title="Details View" data-url="/Production/SendStockToWarehouse" onclick="bootbox.alert('Implementing')">
-                    <i class="fas fa-paper-plane"></i> Send Stock To Warehouse
+                <a href="/Production/GetFinishGoodsSendToWarehouse" class="float-right btn btn-sm btn-outline-primary data-send-item" title="Send Stock">
+                    <i class="fas fa-paper-plane"></i> Send Finish Goods To Warehouse
                 </a>
             </div>
         </div>
@@ -64,12 +64,58 @@
     </div>
 </div>
 
+@*<div class="modal fade" id="modalSendToWarehouse" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title">
+                    Send Finish Goods To Warehouse
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="ddlLineNumber2" class="control-label">Line Number</label>
+                        @Html.DropDownList("ddlLineNumber2", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm ctrl-change-2" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="ddlWarehouse2" class="control-label">Warehouse Name (To)</label>
+                        @Html.DropDownList("ddlWarehouse2", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="ddlModelName" class="control-label">Model Name</label>
+                        @Html.DropDownList("ddlModelName2", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="ddlItemType2" class="control-label font-weight-bold">ItemType Name</label>
+                        <select id="ddlItemType2" class="form-control form-control-sm">
+                            <option value="">--Select Item Type--</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="ddlItem2" class="control-label font-weight-bold">Item Name</label>
+                        <select id="ddlItem2" class="form-control form-control-sm ctrl-change">
+                            <option value="">--Select Item--</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="btnSubmit" class="btn btn-outline-success">Save <i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
 @section scripts{
     <script type="text/javascript">
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
-        var txtInQuantity = $("#txtInQuantity");
         var txtRemarks = $("#txtRemarks");
         var unitName = $("#unitName");
         var ddlLineNumber = $("#ddlLineNumber");
@@ -121,5 +167,15 @@
                 console.log(error);
             })
         }
+
+        function OpenModal() {
+            $('#modalSendToWarehouse').modal('show');
+        }
+
+        //$('a.data-send-item').click(function (e) {
+        //    e.preventDefault();
+        //    OpenModal();
+        //    ///Production/GetSendStockListToWarehouse
+        //})
     </script>
 }

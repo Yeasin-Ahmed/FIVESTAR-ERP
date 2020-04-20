@@ -229,9 +229,9 @@
         //data delete add list
         $(document).on("click", "a.data-onfly-del", function (e) {
             e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
             if (bootbox.confirm("Are you sure you want to delete?", function (result) {
                 if (result === true) {
-                    var index = $(this).parent().parents('tbody tr').index();
                     removeTableRow("#tblRequsitionDetailsData tbody", index);
                     fnFixTheTbodyRowSerial("#tblRequsitionDetailsData", index);
                     $("#tblRequsitionDetailsData tbody tr").removeClass("btn-success");

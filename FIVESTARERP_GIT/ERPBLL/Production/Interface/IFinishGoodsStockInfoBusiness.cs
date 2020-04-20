@@ -12,5 +12,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<FinishGoodsStockInfo> GetAllFinishGoodsStockInfoByOrgId(long orgId);
         FinishGoodsStockInfo GetAllFinishGoodsStockInfoByItemLineId(long orgId, long itemId, long lineId);
         FinishGoodsStockInfo GetAllFinishGoodsStockInfoByLineAndModelId(long orgId, long itemId, long lineId, long modelId);
+        //GetAllProductionStockInfoByLineAndModelId
+        FinishGoodsStockInfo GetFinishGoodsStockInfoByAll(long orgId, long lineId,long warehouseId, long itemId, long modelId);
     }
 }

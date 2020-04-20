@@ -7,6 +7,11 @@ using ERPBO.Inventory.DomainModels;
 
 namespace ERPDAL.InventoryDAL
 {
+
+    public class DescriptionRepository : InventoryBaseRepository<Description>
+    {
+        public DescriptionRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+    }
     public class WarehouseRepository:InventoryBaseRepository<Warehouse>
     {
         public WarehouseRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }

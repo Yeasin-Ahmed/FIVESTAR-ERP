@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ERPBO.Production.DTOModel.FinishGoodsSendToWarehouseDetailViewModel>
+@using ERPBO.Production.ViewModels;
+@{
+    int sl = 0;
+    FinishGoodsSendToWarehouseInfoViewModel info = ((FinishGoodsSendToWarehouseInfoViewModel)ViewBag.FinishGoodsSendInfo);
+}
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
+    <tbody>
+        <tr>
+            <td class="hide">@info.SendId</td>
+            <td style="width:15%">Ref Num
+            <td style="width:35%"><b>@info.RefferenceNumber</b></td>
+            <td class="hide">@info.LineId</td>
+            <td style="width:15%">Line Number</td>
+            <td style="width:35%"><b>@info.LineNumber</b></td>
+        </tr>
+        <tr>
+            <td class="hide">@info.WarehouseId</td>
+            <td style="width:15%">Warehouse</td>
+            <td style="width:35%"><b>@info.WarehouseName</b></td>
+            <td class="hide">@info.DescriptionId</td>
+            <td style="width:15%">Model</td>
+            <td style="width:35%"><b>@info.ModelName</b></td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th class="hide"></th>
+            <th class="hide"></th>
+            <th>ItemType Name</th>
+            <th class="hide"></th>
+            <th>Item Name</th>
+            <th>Qty.</th>
+            <th>Type Of Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center text-bold" width="10%">@sl</td>
+                <td class="hide">@detail.SendDetailId</td>
+                <td class="hide">@detail.ItemTypeId</td>
+                <td>@detail.ItemTypeName</td>
+                <td class="hide">@detail.ItemId</td>
+                <td>@detail.ItemName</td>
+                <td class="text-center" style="width:15%">
+                    @detail.Quantity
+                </td>
+                <td class="text-center">@detail.UnitName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
