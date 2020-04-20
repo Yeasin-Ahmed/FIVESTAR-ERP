@@ -54,7 +54,7 @@ namespace ERPBLL.Production
                 stockDetail.LineId = item.LineId;
                 stockDetail.DescriptionId = item.DescriptionId;
 
-                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId && o.WarehouseId == item.WarehouseId).FirstOrDefault();
+                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (finishGoodsStockInfoInDb != null)
                 {
                     finishGoodsStockInfoInDb.StockInQty += item.Quantity;
@@ -155,33 +155,22 @@ Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
 
-        public bool SaveFinshGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
+        public IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseDailyProduction(long orgId)
         {
-            List<FinishGoodsStockDetail> finishGoodsStockDetail = new List<FinishGoodsStockDetail>();
-            foreach (var item in finishGoodsStockDetailDTOs)
-            {
-                FinishGoodsStockDetail stockDetail = new FinishGoodsStockDetail();
-                stockDetail.WarehouseId = item.WarehouseId;
-                stockDetail.ItemTypeId = item.ItemTypeId;
-                stockDetail.ItemId = item.ItemId;
-                stockDetail.Quantity = item.Quantity;
-                stockDetail.OrganizationId = orgId;
-                stockDetail.EUserId = userId;
-                stockDetail.Remarks = item.Remarks;
-                stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
-                stockDetail.EntryDate = DateTime.Now;
-                stockDetail.StockStatus = StockStatus.StockOut;
-                stockDetail.RefferenceNumber = item.RefferenceNumber;
-                stockDetail.LineId = item.LineId;
-                stockDetail.DescriptionId = item.DescriptionId;
+                return this._productionDb.Db.Database.SqlQuery<DashboardLineWiseProductionDTO>(
+                string.Format(@"select  l.LineNumber,sum(d.Quantity) as Total from tblFinishGoodsStockDetail d
+                inner join tblProductionLines l on d.LineId=l.LineId
+                Where d.StockStatus ='Stock-In' And Cast(GETDATE() as date) = Cast(d.EntryDate as date) and d.OrganizationId={0}
+                group by l.LineId,l.LineNumber", orgId)).ToList();
+        }
 
-                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId && o.WarehouseId == item.WarehouseId).FirstOrDefault();
-                finishGoodsStockInfoInDb.StockOutQty += item.Quantity;
-                _finishGoodsStockInfoRepository.Update(finishGoodsStockInfoInDb);
-                finishGoodsStockDetail.Add(stockDetail);
-            }
-            _finishGoodsStockDetailRepository.InsertAll(finishGoodsStockDetail);
-            return _finishGoodsStockDetailRepository.Save();
+        public IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseOverAllProduction(long orgId)
+        {
+                return this._productionDb.Db.Database.SqlQuery<DashboardLineWiseProductionDTO>(
+                string.Format(@"select  l.LineNumber,sum(d.Quantity) as Total from tblFinishGoodsStockDetail d
+                inner join tblProductionLines l on d.LineId=l.LineId
+                Where d.StockStatus ='Stock-In' and d.OrganizationId={0}
+                group by l.LineId,l.LineNumber", orgId)).ToList();
         }
     }
 }

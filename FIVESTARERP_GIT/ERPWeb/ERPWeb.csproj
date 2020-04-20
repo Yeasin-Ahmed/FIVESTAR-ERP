@@ -159,7 +159,6 @@
     <Content Include="Content\dist\img\user2-160x160.jpg" />
     <Content Include="Content\dist\js\adminlte.js" />
     <Content Include="Content\dist\js\adminlte.min.js" />
-    <Content Include="Content\dist\js\demo.js" />
     <Content Include="Content\Images\noImage.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.js" />
@@ -306,7 +305,7 @@
     <Content Include="Views\Inventory\_RepairStockInfoList.cshtml" />
     <Content Include="Views\Production\GetProductionFaultyOrReturnItemDetailList.cshtml" />
     <Content Include="Views\Production\_GetProductionFaultyOrReturnItemDetailList.cshtml" />
-    <Content Include="Views\Inventory\GetDescriptionList.cshtml" />
+    <Content Include="Views\Production\GetDescriptionList.cshtml" />
     <Content Include="Views\ControlPanel\GetBranchList.cshtml" />
     <Content Include="Views\ControlPanel\GetRoleList.cshtml" />
     <Content Include="Views\ControlPanel\GetAppUserList.cshtml" />
@@ -329,15 +328,7 @@
     <Content Include="Views\Production\GetFinishGoodsStockDetailInfoList.cshtml" />
     <Content Include="Views\Production\_GetFinishGoodsStockDetailInfoList.cshtml" />
     <Content Include="Views\Production\GetRequsitionDetailsEdit.cshtml" />
-    <Content Include="Views\Production\GetFinishGoodsSendToWarehouse.cshtml" />
-    <Content Include="Views\Production\_GetFinishGoodsSendToWarehouse.cshtml" />
-    <Content Include="Views\Production\CreateFinishGoodsToWarehouse.cshtml" />
-    <Content Include="Views\Production\_GetFinishGoodsSendItemDetail.cshtml" />
-    <Content Include="Views\Production\GetFinishGoodsSendItemDetailList.cshtml" />
-    <Content Include="Views\Production\_GetFinishGoodsSendItemDetailList.cshtml" />
-    <Content Include="Views\Inventory\GetFinishGoodsSendToWarehouse.cshtml" />
-    <Content Include="Views\Inventory\_GetFinishGoodsSendToWarehouse.cshtml" />
-    <Content Include="Views\Inventory\_GetFinishGoodsSendItemDetail.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -351,7 +342,6 @@
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
@@ -401,6 +391,13 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+    <ItemGroup>
+      <RoslynFiles Include="$(CscToolPath)\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
+    <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
   </Target>
   <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
     <ItemGroup>

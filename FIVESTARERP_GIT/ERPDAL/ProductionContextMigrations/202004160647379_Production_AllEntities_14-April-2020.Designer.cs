@@ -13,7 +13,7 @@ namespace ERPDAL.ProductionContextMigrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202004140841002_Production_AllEntities_14-April-2020"; }
+            get { return "202004160647379_Production_AllEntities_14-April-2020"; }
         }
         
         string IMigrationMetadata.Source

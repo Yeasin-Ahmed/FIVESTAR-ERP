@@ -14,5 +14,8 @@ namespace ERPBLL.Production.Interface
         ItemReturnInfo GetItemReturnInfo(long OrgId, long infoId);
         bool SaveFaultyItemOrGoodsReturn(ItemReturnInfoDTO info, List<ItemReturnDetailDTO> details);
         bool SaveItemReturnStatus(long irInfoId, string status, long orgId);
+
+        IEnumerable<DashboardFacultyWiseProductionDTO> DashboardFacultyDayWiseProduction(long orgId);
+        IEnumerable<DashboardFacultyWiseProductionDTO> DashboardFacultyOverAllWiseProduction(long orgId);
     }
 }

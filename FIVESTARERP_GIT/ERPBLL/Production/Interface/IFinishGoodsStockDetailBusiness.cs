@@ -15,5 +15,8 @@ namespace ERPBLL.Production.Interface
 
         bool SaveFinshGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId);
         IEnumerable<FinishGoodsStockDetailInfoListDTO> GetFinishGoodsStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum);
+        IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseDailyProduction(long orgId);
+
+        IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseOverAllProduction(long orgId);
     }
 }
