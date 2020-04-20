@@ -91,7 +91,7 @@ namespace ERPBLL.Production
             _finishGoodsSendToWarehouseInfoRepository.Insert(domainInfo);
             if (_finishGoodsSendToWarehouseInfoRepository.Save() == true)
             {
-                IsSuccess = this._finishGoodsStockDetailBusiness.SaveFinshGoodsStockOut(stockDetails, userId, orgId);
+                IsSuccess = this._finishGoodsStockDetailBusiness.SaveFinishGoodsStockOut(stockDetails, userId, orgId);
             }
             return IsSuccess;
         }

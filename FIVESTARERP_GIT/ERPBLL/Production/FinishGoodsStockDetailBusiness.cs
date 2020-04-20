@@ -34,7 +34,7 @@ namespace ERPBLL.Production
             return _finishGoodsStockDetailRepository.GetAll(fd => fd.OrganizationId == orgId).ToList();
         }
 
-        public bool SaveFinshGoodsStockIn(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
+        public bool SaveFinishGoodsStockIn(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
         {
             List<FinishGoodsStockDetail> finishGoodsStockDetail = new List<FinishGoodsStockDetail>();
             foreach (var item in finishGoodsStockDetailDTOs)
@@ -155,7 +155,7 @@ Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
 
-        public bool SaveFinshGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
+        public bool SaveFinishGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
         {
             List<FinishGoodsStockDetail> finishGoodsStockDetail = new List<FinishGoodsStockDetail>();
             foreach (var item in finishGoodsStockDetailDTOs)
