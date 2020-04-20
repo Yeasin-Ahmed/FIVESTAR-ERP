@@ -8,6 +8,23 @@ namespace ERPDAL.InventoryContextMigrations
         public override void Up()
         {
             CreateTable(
+                "dbo.tblDescriptions",
+                c => new
+                    {
+                        DescriptionId = c.Long(nullable: false, identity: true),
+                        DescriptionName = c.String(),
+                        SubCategoryId = c.Long(),
+                        Remarks = c.String(),
+                        IsActive = c.Boolean(nullable: false),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.DescriptionId);
+            
+            CreateTable(
                 "dbo.tblItems",
                 c => new
                     {
@@ -193,6 +210,7 @@ namespace ERPDAL.InventoryContextMigrations
             DropTable("dbo.tblWarehouses");
             DropTable("dbo.tblItemTypes");
             DropTable("dbo.tblItems");
+            DropTable("dbo.tblDescriptions");
         }
     }
 }
