@@ -70,13 +70,13 @@
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.Designer.cs">
-      <DependentUpon>202004140841002_Production_AllEntities_14-April-2020.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProductionContextMigrations\202004160500371_Production_FinishGoodsSendToWarehouse.cs" />
     <Compile Include="ProductionContextMigrations\202004160500371_Production_FinishGoodsSendToWarehouse.Designer.cs">
       <DependentUpon>202004160500371_Production_FinishGoodsSendToWarehouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202004160647379_Production_AllEntities_14-April-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202004160647379_Production_AllEntities_14-April-2020.Designer.cs">
+      <DependentUpon>202004160647379_Production_AllEntities_14-April-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\202004181424371_Production_FinishGoodsSend_Remarks&amp;UnitId.cs" />
     <Compile Include="ProductionContextMigrations\202004181424371_Production_FinishGoodsSend_Remarks&amp;UnitId.Designer.cs">
@@ -119,11 +119,11 @@
     <EmbeddedResource Include="InventoryContextMigrations\202004191459222_Inventory_Description.resx">
       <DependentUpon>202004191459222_Inventory_Description.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202004140841002_Production_AllEntities_14-April-2020.resx">
-      <DependentUpon>202004140841002_Production_AllEntities_14-April-2020.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202004160500371_Production_FinishGoodsSendToWarehouse.resx">
       <DependentUpon>202004160500371_Production_FinishGoodsSendToWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202004160647379_Production_AllEntities_14-April-2020.resx">
+      <DependentUpon>202004160647379_Production_AllEntities_14-April-2020.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202004181424371_Production_FinishGoodsSend_Remarks&amp;UnitId.resx">
       <DependentUpon>202004181424371_Production_FinishGoodsSend_Remarks&amp;UnitId.cs</DependentUpon>
