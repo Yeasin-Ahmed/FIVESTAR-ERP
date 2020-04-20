@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBLL.Production
+namespace ERPBLL.Inventory
 {
    public class DescriptionBusiness: IDescriptionBusiness
     {
