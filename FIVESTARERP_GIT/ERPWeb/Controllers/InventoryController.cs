@@ -224,9 +224,9 @@ namespace ERPWeb.Controllers
                 UnitId = item.UnitId,
                 UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, OrgId).UnitName,
                 ItemCode = item.ItemCode
-            }).ToList();
-            List<ItemViewModel> itemViewModels = new List<ItemViewModel>();
-            AutoMapper.Mapper.Map(itemDomains, itemViewModels);
+            }).OrderBy(item => item.ItemId).ToPagedList(page ?? 1, 3);
+            //IEnumerable<ItemViewModel> itemViewModelsForPage = new List<ItemViewModel>();
+            //AutoMapper.Mapper.Map(itemDomains, itemViewModels);
             return View(itemViewModels);
         }
         public ActionResult SaveItem(ItemViewModel itemViewModel)
