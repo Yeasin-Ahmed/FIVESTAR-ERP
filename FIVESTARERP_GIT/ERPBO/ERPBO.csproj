@@ -71,12 +71,10 @@
     <Compile Include="ControlPanel\ViewModels\OrganizationViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\RoleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\SubMenuViewModel.cs" />
-    <Compile Include="Inventory\DomainModels\Description.cs" />
     <Compile Include="Inventory\DomainModels\RepairStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\RepairStockInfo.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockInfo.cs" />
-    <Compile Include="Inventory\DTOModel\DescriptionDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDomainDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemTypeDomainModel.cs" />
     <Compile Include="Inventory\DTOModel\RepairStockDetailDTO.cs" />
@@ -85,13 +83,13 @@
     <Compile Include="Inventory\DTOModel\RepairStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\WarehouseStockDetailInfoListDTO.cs" />
     <Compile Include="Inventory\DTOModel\WarehouseStockInfoDTO.cs" />
-    <Compile Include="Inventory\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailInfoListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockInfoViewModel.cs" />
+    <Compile Include="Production\DomainModels\Description.cs" />
     <Compile Include="Production\DomainModels\FinishGoodsInfo.cs" />
     <Compile Include="Production\DomainModels\FinishGoodsRowMaterial.cs" />
     <Compile Include="Production\DomainModels\ItemReturnDetail.cs" />
@@ -104,6 +102,7 @@
     <Compile Include="Production\DTOModel\DashboardFacultyWiseProductionDTO.cs" />
     <Compile Include="Production\DTOModel\DashboardLineWiseProductionDTO.cs" />
     <Compile Include="Production\DTOModel\DashboardRequisitionSummeryDTO.cs" />
+    <Compile Include="Production\DTOModel\DescriptionDTO.cs" />
     <Compile Include="Production\DTOModel\FinishGoodsInfoDTO.cs" />
     <Compile Include="Production\DTOModel\FinishGoodsRowMaterialDTO.cs" />
     <Compile Include="Production\DTOModel\FinishGoodsStockDetailDTO.cs" />
@@ -131,6 +130,7 @@
     <Compile Include="Production\ViewModels\DashboardFacultyWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardLineWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardRequisitionSummeryViewModel.cs" />
+    <Compile Include="Production\ViewModels\DescriptionViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsRowMaterialViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsStockDetailInfoListViewModel.cs" />
