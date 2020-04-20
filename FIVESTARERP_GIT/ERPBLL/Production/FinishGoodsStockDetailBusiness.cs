@@ -172,5 +172,10 @@ Where 1=1 {0}", Utility.ParamChecker(param));
                 Where d.StockStatus ='Stock-In' and d.OrganizationId={0}
                 group by l.LineId,l.LineNumber", orgId)).ToList();
         }
+
+        public bool SaveFinshGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
