@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Production_FinishGoodsSendToWarehouse : DbMigration
+    public partial class Production_AllEntities_14April2020 : DbMigration
     {
         public override void Up()
         {
@@ -15,8 +15,10 @@ namespace ERPDAL.ProductionContextMigrations
                         ItemTypeId = c.Long(nullable: false),
                         ItemId = c.Long(nullable: false),
                         Quantity = c.Int(nullable: false),
+                        UnitId = c.Long(nullable: false),
                         Remarks = c.String(maxLength: 150),
                         Flag = c.String(maxLength: 150),
+                        RefferenceNumber = c.String(maxLength: 100),
                         OrganizationId = c.Long(nullable: false),
                         EUserId = c.Long(),
                         EntryDate = c.DateTime(),
@@ -39,6 +41,7 @@ namespace ERPDAL.ProductionContextMigrations
                         Remarks = c.String(maxLength: 150),
                         Flag = c.String(maxLength: 150),
                         StateStatus = c.String(maxLength: 150),
+                        RefferenceNumber = c.String(maxLength: 100),
                         OrganizationId = c.Long(nullable: false),
                         EUserId = c.Long(),
                         EntryDate = c.DateTime(),
@@ -47,10 +50,28 @@ namespace ERPDAL.ProductionContextMigrations
                     })
                 .PrimaryKey(t => t.SendId);
             
+            DropTable("dbo.tblDescriptions");
         }
         
         public override void Down()
         {
+            CreateTable(
+                "dbo.tblDescriptions",
+                c => new
+                    {
+                        DescriptionId = c.Long(nullable: false, identity: true),
+                        DescriptionName = c.String(),
+                        SubCategoryId = c.Long(),
+                        Remarks = c.String(),
+                        IsActive = c.Boolean(nullable: false),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.DescriptionId);
+            
             DropForeignKey("dbo.tblFinishGoodsSendToWarehouseDetail", "SendId", "dbo.tblFinishGoodsSendToWarehouseInfo");
             DropIndex("dbo.tblFinishGoodsSendToWarehouseDetail", new[] { "SendId" });
             DropTable("dbo.tblFinishGoodsSendToWarehouseInfo");

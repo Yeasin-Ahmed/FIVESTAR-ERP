@@ -7,13 +7,13 @@ namespace ERPDAL.ProductionContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Production_FinishGoodsSendToWarehouse : IMigrationMetadata
+    public sealed partial class Production_AllEntities_14April2020 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Production_FinishGoodsSendToWarehouse));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Production_AllEntities_14April2020));
         
         string IMigrationMetadata.Id
         {
-            get { return "202004160500371_Production_FinishGoodsSendToWarehouse"; }
+            get { return "202004200700561_Production_AllEntities_14-April-2020"; }
         }
         
         string IMigrationMetadata.Source
