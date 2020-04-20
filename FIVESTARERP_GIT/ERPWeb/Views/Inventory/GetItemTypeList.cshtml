@@ -1,8 +1,14 @@
-﻿@model IEnumerable<ERPBO.Inventory.ViewModels.ItemTypeViewModel>
+﻿@model PagedList.IPagedList<ERPBO.Inventory.ViewModels.ItemTypeViewModel>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "GetItemTypeList";
     int sl = 0;
     string badge = string.Empty;
+    if(((string)ViewBag.pageNum) != "")
+    {
+        Layout = null;
+    }
 }
 <div class="row">
     <div class="col-md-12 text-center">
@@ -21,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12"  >
         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblItemTypeData">
             <thead class="btn-dark">
                 <tr class="text-center">
@@ -40,20 +46,20 @@
                 {
                     sl = sl + 1;
                     badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                <tr>
-                    <td class="text-center" width="10%">@sl</td>
-                    <td class="hide">@item.ItemId</td>
-                    <td class="hide">@item.WarehouseId</td>
-                    <td>@item.WarehouseName</td>
-                    <td>@item.ItemName</td>
-                    <td>@item.Remarks</td>
-                    <td class="text-center" data-val="@item.StateStatus">
-                        <span class="@badge">@item.StateStatus</span>
-                    </td>
-                    <td class="text-center">
-                        <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@item.ItemId</td>
+                        <td class="hide">@item.WarehouseId</td>
+                        <td>@item.WarehouseName</td>
+                        <td>@item.ItemName</td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
                 }
                 @if (Model.Count() == 0)
                 {
@@ -65,6 +71,11 @@
                 }
             </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+            @Html.PagedListPager((IPagedList)@Model, page => Url.Action("GetItemTypeList", new { page = page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "body-container", InsertionMode= InsertionMode.Replace })
+            )
+        </div>
     </div>
 </div>
 

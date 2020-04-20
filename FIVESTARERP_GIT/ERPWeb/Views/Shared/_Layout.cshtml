@@ -397,7 +397,9 @@
             <div class="content">
                 <div class="container-fluid">
                     <br />
-                    @RenderBody()
+                    <div id="body-container">
+                        @RenderBody()
+                    </div>
                 </div><!-- /.container-fluid -->
                 <button type="button" class="hide toastrDefaultSuccess"></button>
                 <button type="button" class="hide toastrDefaultError"></button>
@@ -443,7 +445,7 @@
     <script src="~/Scripts/bootbox.js"></script>
     <script src="~/Scripts/bootbox.locales.js"></script>
     <script src="~/Scripts/site.js"></script>
-
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             bsCustomFileInput.init();
