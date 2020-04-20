@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Production.DomainModels
+namespace ERPBO.Inventory.DomainModels
 {
    [Table("tblDescriptions")]
    public class Description

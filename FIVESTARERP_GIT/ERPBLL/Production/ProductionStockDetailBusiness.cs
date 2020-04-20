@@ -157,18 +157,18 @@ namespace ERPBLL.Production
             return false;
         }
 
-        public IEnumerable<ProductionStockDetailInfoListDTO> GetProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        public IEnumerable<ProductionStockDetailInfoListDTO> GetProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId)
         {
             IEnumerable<ProductionStockDetailInfoListDTO> productionStockDetailInfoListDTOs = new List<ProductionStockDetailInfoListDTO>();
-            productionStockDetailInfoListDTOs = this._productionDb.Db.Database.SqlQuery<ProductionStockDetailInfoListDTO>(QueryForProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum)).ToList();
+            productionStockDetailInfoListDTOs = this._productionDb.Db.Database.SqlQuery<ProductionStockDetailInfoListDTO>(QueryForProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId)).ToList();
             return productionStockDetailInfoListDTOs;
         }
 
-        private string QueryForProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        private string QueryForProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
-
+            param += string.Format(@" and psd.OrganizationId={0}", orgId);
             if (lineId != null && lineId > 0)
             {
                 param += string.Format(@" and pl.LineId={0}", lineId);
@@ -220,12 +220,12 @@ ISNULL(u.UnitSymbol,'') 'UnitName', psd.Quantity,psd.StockStatus,CONVERT(nvarcha
 psd.RefferenceNumber
 From tblProductionStockDetail psd
 Left Join tblProductionLines pl on psd.LineId= pl.LineId
-Left Join tblDescriptions de on psd.DescriptionId= de.DescriptionId
+Left Join [Inventory].dbo.tblDescriptions de on psd.DescriptionId= de.DescriptionId
 Left Join [Inventory].dbo.[tblWarehouses] w on psd.WarehouseId = w.Id
 Left Join [Inventory].dbo.[tblItemTypes] it on psd.ItemTypeId = it.ItemId
 Left Join [Inventory].dbo.[tblItems] i on psd.ItemId = i.ItemId
 Left Join [Inventory].dbo.[tblUnits] u on psd.UnitId = u.UnitId
-Where 1=1 {0}",Utility.ParamChecker(param));
+Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
         }

@@ -14,6 +14,7 @@ namespace ERPDAL.InventoryDAL
         {
 
         }
+        public DbSet<Description> tblDescriptions { get; set; }
         public DbSet<Warehouse> tblWarehouses { get; set; }
         public DbSet<ItemType> tblItemTypes { get; set; }
         public DbSet<Unit> tblUnits { get; set; }

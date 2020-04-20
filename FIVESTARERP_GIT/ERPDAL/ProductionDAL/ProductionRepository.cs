@@ -40,11 +40,6 @@ namespace ERPDAL.ProductionDAL
         public ItemReturnDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
 
-    public class DescriptionRepository : ProductionBaseRepository<Description>
-    {
-        public DescriptionRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
-    }
-
     public class FinishGoodsInfoRepository : ProductionBaseRepository<FinishGoodsInfo>
     {
         public FinishGoodsInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
@@ -63,6 +58,16 @@ namespace ERPDAL.ProductionDAL
     public class FinishGoodsStockDetailRepository : ProductionBaseRepository<FinishGoodsStockDetail>
     {
         public FinishGoodsStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
+    public class FinishGoodsSendToWarehouseInfoRepository: ProductionBaseRepository<FinishGoodsSendToWarehouseInfo>
+    {
+        public FinishGoodsSendToWarehouseInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+
+    public class FinishGoodsSendToWarehouseDetailRepository : ProductionBaseRepository<FinishGoodsSendToWarehouseDetail>
+    {
+        public FinishGoodsSendToWarehouseDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
 
 }

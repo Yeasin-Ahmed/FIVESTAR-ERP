@@ -25,10 +25,11 @@ namespace ERPWeb.Controllers
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         private readonly IRoleBusiness _roleBusiness;
         private readonly IBranchBusiness _branchBusiness;
+        private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -42,6 +43,7 @@ namespace ERPWeb.Controllers
             this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
             this._roleBusiness = roleBusiness;
             this._branchBusiness = branchBusiness;
+            this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
         }
 
         #region Validation Action Methods
@@ -135,6 +137,20 @@ namespace ERPWeb.Controllers
             if (productionStock != null)
             {
                 itemStock = (productionStock.StockInQty - productionStock.StockOutQty).Value;
+            }
+            return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetItemUnitAndFGStockQty(long lineId,long warehouseId,long itemId, long modelId)
+        {
+            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, OrgId).UnitId;
+            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, OrgId);
+            var finishGoodsStock = _finishGoodsStockInfoBusiness.GetFinishGoodsStockInfoByAll(OrgId, lineId,warehouseId,itemId,modelId);
+            var itemStock = 0;
+            if (finishGoodsStock != null)
+            {
+                itemStock = (finishGoodsStock.StockInQty - finishGoodsStock.StockOutQty).Value;
             }
             return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
         }

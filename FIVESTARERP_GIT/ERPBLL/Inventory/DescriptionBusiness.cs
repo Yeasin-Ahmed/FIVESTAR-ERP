@@ -1,5 +1,7 @@
-﻿using ERPBLL.Production.Interface;
+﻿using ERPBLL.Inventory.Interface;
+using ERPBLL.Production.Interface;
 using ERPBO.Common;
+using ERPBO.Inventory.DomainModels;
 using ERPBO.Production.DomainModels;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
@@ -9,20 +11,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBLL.Production
+namespace ERPBLL.Inventory
 {
    public class DescriptionBusiness: IDescriptionBusiness
     {
-        private readonly IProductionUnitOfWork _productionDb; // database
         private readonly DescriptionRepository descriptionRepository; // table
-        private IInventoryUnitOfWork _inventoryDb;
+        private readonly IInventoryUnitOfWork _inventoryDb;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
 
-        public DescriptionBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness)
+        public DescriptionBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness)
         {
-            this._productionDb = productionDb;
-            descriptionRepository = new DescriptionRepository(this._productionDb);
             this._inventoryDb = inventoryDb;
+            descriptionRepository = new DescriptionRepository(this._inventoryDb);
             this._productionStockInfoBusiness = productionStockInfoBusiness;
         }
 

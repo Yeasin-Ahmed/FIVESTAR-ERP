@@ -31,5 +31,10 @@ namespace ERPBLL.Production
         {
             return _finishGoodsStockInfoRepository.GetAll(ware => ware.OrganizationId == orgId && ware.ItemId == itemId && ware.LineId == lineId && ware.DescriptionId == modelId).FirstOrDefault();
         }
+
+        public FinishGoodsStockInfo GetFinishGoodsStockInfoByAll(long orgId, long lineId, long warehouseId, long itemId, long modelId)
+        {
+            return _finishGoodsStockInfoRepository.GetOneByOrg(f => f.OrganizationId == orgId && f.ItemId == itemId && f.LineId == lineId && f.DescriptionId == modelId && f.WarehouseId == warehouseId);
+        }
     }
 }

@@ -118,7 +118,7 @@ namespace ERPBLL.Production
             if (_finishGoodsInfoRepository.Save() == true)
             {
                 // Finish Goods Stock-In//
-                if (_finishGoodsStockDetailBusiness.SaveFinshGoodsStockIn(listFinishGoodsStockDetailDTO, userId, orgId) == true)
+                if (_finishGoodsStockDetailBusiness.SaveFinishGoodsStockIn(listFinishGoodsStockDetailDTO, userId, orgId) == true)
                 {
                     // Production Stock-Out // 
                     IsSucess = _productionStockDetailBusiness.SaveProductionStockOut(listproductionStockDetailDTOs, userId, orgId, StockOutReason.StockOutByProductionForProduceGoods);

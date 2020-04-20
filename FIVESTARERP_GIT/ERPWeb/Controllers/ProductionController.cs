@@ -2,6 +2,7 @@
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DTOModel;
+using ERPBO.Inventory.ViewModels;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
 using ERPWeb.Filters;
@@ -33,11 +34,12 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsRowMaterialBusiness _finishGoodsRowMaterialBusiness;
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
         private readonly IFinishGoodsStockDetailBusiness _finishGoodsStockDetailBusiness;
+        private readonly IFinishGoodsSendToWarehouseInfoBusiness _finishGoodsSendToWarehouseInfoBusiness;
+        private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
 
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
-
-        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness , IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness)
+        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._warehouseBusiness = warehouseBusiness;
@@ -55,6 +57,8 @@ namespace ERPWeb.Controllers
             this._finishGoodsRowMaterialBusiness = finishGoodsRowMaterialBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
             this._finishGoodsStockDetailBusiness = finishGoodsStockDetailBusiness;
+            this._finishGoodsSendToWarehouseInfoBusiness = finishGoodsSendToWarehouseInfoBusiness;
+            this._finishGoodsSendToWarehouseDetailBusiness = finishGoodsSendToWarehouseDetailBusiness;
         }
 
         #region ProductionLine
@@ -134,14 +138,15 @@ namespace ERPWeb.Controllers
                 {
                     ReqInfoDTO dto = new ReqInfoDTO();
                     AutoMapper.Mapper.Map(model, dto);
-                    if (model.ReqInfoId == 0) {
+                    if (model.ReqInfoId == 0)
+                    {
                         isSuccess = _requsitionInfoBusiness.SaveRequisition(dto, UserId, OrgId);
                     }
                     else
                     {
                         isSuccess = _requsitionDetailBusiness.SaveRequisitionDetail(dto, UserId, OrgId);
                     }
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -234,10 +239,10 @@ namespace ERPWeb.Controllers
             var items = _itemBusiness.GetAllItemByOrgId(OrgId);
             var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId);
             var units = _unitBusiness.GetAllUnitByOrgId(OrgId);
-            IEnumerable<RequsitionDetailDTO> requsitionDetailDTO = _requsitionDetailBusiness.GetAllReqDetailByOrgId(OrgId).Where(r=>r.ReqInfoId==reqId).Select(d => new RequsitionDetailDTO
+            IEnumerable<RequsitionDetailDTO> requsitionDetailDTO = _requsitionDetailBusiness.GetAllReqDetailByOrgId(OrgId).Where(r => r.ReqInfoId == reqId).Select(d => new RequsitionDetailDTO
             {
                 ReqDetailId = d.ReqDetailId,
-                ReqInfoId =d.ReqInfoId,
+                ReqInfoId = d.ReqInfoId,
                 ItemTypeId = d.ItemTypeId.Value,
                 ItemTypeName = (_itemTypeBusiness.GetItemType(d.ItemTypeId.Value, OrgId).ItemName),
                 ItemId = d.ItemId.Value,
@@ -246,16 +251,16 @@ namespace ERPWeb.Controllers
                 UnitName = (_unitBusiness.GetUnitOneByOrgId(d.UnitId.Value, OrgId).UnitSymbol)
             }).ToList();
 
-            var info = _requsitionInfoBusiness.GetRequisitionById(reqId,OrgId);
+            var info = _requsitionInfoBusiness.GetRequisitionById(reqId, OrgId);
             RequsitionInfoViewModel requsitionInfoView = new RequsitionInfoViewModel()
             {
-                ReqInfoId=info.ReqInfoId,
+                ReqInfoId = info.ReqInfoId,
                 ReqInfoCode = info.ReqInfoCode,
                 LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber,
                 LineId = info.LineId,
                 WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName,
                 WarehouseId = info.WarehouseId,
-                ModelName=_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId,OrgId).DescriptionName,
+                ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId, OrgId).DescriptionName,
                 DescriptionId = info.DescriptionId
             };
 
@@ -345,35 +350,13 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _productionStockDetailBusiness.GetProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum);
+                var dto = _productionStockDetailBusiness.GetProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,OrgId);
                 IEnumerable<ProductionStockDetailInfoListViewModel> viewModels = new List<ProductionStockDetailInfoListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetProductionStockDetailInfoList", viewModels);
             }
         }
 
-        #endregion
-
-        #region Description
-        public ActionResult GetDescriptionList(int? page)
-        {
-            IPagedList<DescriptionViewModel> descriptionViewModels = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new DescriptionViewModel
-            {
-                DescriptionId = des.DescriptionId,
-                DescriptionName = des.DescriptionName,
-                SubCategoryId = des.SubCategoryId,
-                StateStatus = (des.IsActive == true ? "Active" : "Inactive"),
-                Remarks = des.Remarks,
-                OrganizationId = des.OrganizationId,
-                EUserId = des.EUserId,
-                EntryDate = des.EntryDate,
-                UpUserId = des.UpUserId,
-                UpdateDate = des.UpdateDate
-
-            }).OrderBy(des => des.DescriptionId).ToPagedList(page ?? 1, 15);
-            IEnumerable<DescriptionViewModel> descriptionViewModelForPage = new List<DescriptionViewModel>();
-            return View(descriptionViewModels);
-        }
         #endregion
 
         #region Item Return
@@ -557,7 +540,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                IEnumerable<ItemReturnDetailListDTO> listdto = _itemReturnDetailBusiness.GetItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate, modelId);
+                IEnumerable<ItemReturnDetailListDTO> listdto = _itemReturnDetailBusiness.GetItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate, modelId,OrgId);
                 IEnumerable<ItemReturnDetailListViewModel> listViewModels = new List<ItemReturnDetailListViewModel>();
                 AutoMapper.Mapper.Map(listdto, listViewModels);
                 return PartialView("_GetProductionFaultyOrReturnItemDetailList", listViewModels);
@@ -565,7 +548,7 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region Finish Goods
+        #region Finish Goods Stock
 
         [HttpGet]
         public ActionResult CreateFinishGoods()
@@ -597,7 +580,7 @@ namespace ERPWeb.Controllers
             return View();
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveFinishGoods(FinishGoodsInfoViewModel info, List<FinishGoodsRowMaterialViewModel> details)
         {
             bool IsSucess = false;
@@ -607,7 +590,7 @@ namespace ERPWeb.Controllers
                 List<FinishGoodsRowMaterialDTO> finishGoodsRowMaterialDTOs = new List<FinishGoodsRowMaterialDTO>();
                 AutoMapper.Mapper.Map(info, finishGoodsInfoDTO);
                 AutoMapper.Mapper.Map(details, finishGoodsRowMaterialDTOs);
-                IsSucess= _finishGoodsInfoBusiness.SaveFinishGoods(finishGoodsInfoDTO, finishGoodsRowMaterialDTOs, UserId, OrgId);
+                IsSucess = _finishGoodsInfoBusiness.SaveFinishGoods(finishGoodsInfoDTO, finishGoodsRowMaterialDTOs, UserId, OrgId);
             }
             return Json(IsSucess);
         }
@@ -671,10 +654,10 @@ namespace ERPWeb.Controllers
             {
                 IEnumerable<FinishGoodsRowMaterialDTO> finishGoodsRowMaterialDTO = _finishGoodsRowMaterialBusiness.GetGoodsRowMaterialsByOrgAndFinishInfoId(OrgId, finishGoodsInfoId).Select(r => new FinishGoodsRowMaterialDTO
                 {
-                    WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(r.WarehouseId,OrgId).WarehouseName,
-                    ItemTypeName = _itemTypeBusiness.GetItemType(r.ItemTypeId,OrgId).ItemName,
-                    ItemName = _itemBusiness.GetItemOneByOrgId(r.ItemId,OrgId).ItemName,
-                    UnitName = _unitBusiness.GetUnitOneByOrgId(r.UnitId,OrgId).UnitSymbol,
+                    WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(r.WarehouseId, OrgId).WarehouseName,
+                    ItemTypeName = _itemTypeBusiness.GetItemType(r.ItemTypeId, OrgId).ItemName,
+                    ItemName = _itemBusiness.GetItemOneByOrgId(r.ItemId, OrgId).ItemName,
+                    UnitName = _unitBusiness.GetUnitOneByOrgId(r.UnitId, OrgId).UnitSymbol,
                     Quanity = r.Quanity
                 }).ToList();
                 AutoMapper.Mapper.Map(finishGoodsRowMaterialDTO, viewModels);
@@ -682,7 +665,7 @@ namespace ERPWeb.Controllers
             return PartialView("_GetFinishGoodsMaterialDetails", viewModels);
         }
 
-        public ActionResult GetFinishGoodsStockInfo(string flag,long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq)
+        public ActionResult GetFinishGoodsStockInfo(string flag, long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -762,6 +745,168 @@ namespace ERPWeb.Controllers
                 IEnumerable<FinishGoodsStockDetailInfoListViewModel> viewModels = new List<FinishGoodsStockDetailInfoListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetFinishGoodsStockDetailInfoList", viewModels);
+            }
+        }
+        #endregion
+
+        #region Finish Goods Send To Warehouse
+        public ActionResult GetFinishGoodsSendToWarehouse(string flag, long? lineId, long? warehouseId, long? modelId, string status, string fromDate, string toDate, string refNo)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Where(w => w.WarehouseName == "Warehouse 2" || w.WarehouseName == "Warehouse 3").Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+                ViewBag.ddlSendStatus = Utility.ListOfFinishGoodsSendStatus().Select(s => new SelectListItem
+                {
+                    Text = s.text,
+                    Value = s.value
+                }).ToList();
+
+                return View();
+            }
+            else
+            {
+
+                var tblwarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId);
+                var tblLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId);
+                var tblModel = _descriptionBusiness.GetDescriptionByOrgId(OrgId);
+
+                List<FinishGoodsSendToWarehouseInfoDTO> listOfFinishGoodsSendInfo = _finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodsSendToWarehouseList(OrgId)
+                     .Where(f => 1 == 1 &&
+                         (refNo == null || refNo.Trim() == "" || f.RefferenceNumber.Contains(refNo)) &&
+                         (warehouseId == null || warehouseId <= 0 || f.WarehouseId == warehouseId) &&
+                         (status == null || status.Trim() == "" || f.StateStatus == status.Trim()) &&
+                         (lineId == null || lineId <= 0 || f.LineId == lineId) &&
+                         (modelId == null || modelId <= 0 || f.DescriptionId == modelId) &&
+                         (
+                             (fromDate == null && toDate == null)
+                             ||
+                              (fromDate == "" && toDate == "")
+                             ||
+                             (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                                 f.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                                 f.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                             ||
+                             (fromDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                             ||
+                             (toDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                         )
+                     )
+                     .Select(f => new FinishGoodsSendToWarehouseInfoDTO
+                     {
+                         SendId = f.SendId,
+                         LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(f.LineId, OrgId).LineNumber,
+                         WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(f.WarehouseId, OrgId).WarehouseName),
+                         ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(f.DescriptionId, OrgId).DescriptionName,
+                         StateStatus = f.StateStatus,
+                         ItemCount = this._finishGoodsSendToWarehouseDetailBusiness.GetFinishGoodsDetailByInfoId(f.SendId, OrgId).Count(),
+                         Remarks = f.Remarks,
+                         EntryDate = f.EntryDate,
+                         RefferenceNumber = f.RefferenceNumber
+                     }).ToList();
+                List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
+                AutoMapper.Mapper.Map(listOfFinishGoodsSendInfo, listOfFinishGoodsSendToWarehouseInfoViewModels);
+                return PartialView("_GetFinishGoodsSendToWarehouse", listOfFinishGoodsSendToWarehouseInfoViewModels);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateFinishGoodsToWarehouse()
+        {
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Where(w => w.WarehouseName == "Warehouse 2" || w.WarehouseName == "Warehouse 3").Select(ware => new SelectListItem
+            {
+                Text = ware.WarehouseName,
+                Value = ware.Id.ToString()
+            }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+            return View();
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveFinishGoodsSendToWarehouse(FinishGoodsSendToWarehouseInfoViewModel info, List<FinishGoodsSendToWarehouseDetailViewModel> detail)
+        {
+            bool IsSucess = false;
+            if (ModelState.IsValid && detail.Count() > 0)
+            {
+                FinishGoodsSendToWarehouseInfoDTO dtoInfo = new FinishGoodsSendToWarehouseInfoDTO();
+                List<FinishGoodsSendToWarehouseDetailDTO> dtoDetail = new List<FinishGoodsSendToWarehouseDetailDTO>();
+                AutoMapper.Mapper.Map(info, dtoInfo);
+                AutoMapper.Mapper.Map(detail, dtoDetail);
+                IsSucess = _finishGoodsSendToWarehouseInfoBusiness.SaveFinishGoodsSendToWarehouse(dtoInfo, dtoDetail, UserId, OrgId);
+            }
+            return Json(IsSucess);
+        }
+
+        public ActionResult GetFinishGoodsSendItemDetail(long sendId)
+        {
+            List<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
+            if (sendId > 0)
+            {
+                var info = _finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodsSendToWarehouseById(sendId, OrgId);
+                FinishGoodsSendToWarehouseInfoViewModel infoViewModel = new FinishGoodsSendToWarehouseInfoViewModel
+                {
+                    SendId = info.SendId,
+                    LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, OrgId).LineNumber,
+                    RefferenceNumber = info.RefferenceNumber,
+                    WarehouseId = info.WarehouseId,
+                    WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName,
+                    DescriptionId = info.DescriptionId,
+                    ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId, OrgId).DescriptionName
+                };
+
+                ViewBag.FinishGoodsSendInfo = infoViewModel;
+                List<FinishGoodsSendToWarehouseDetailDTO> dtos = new List<FinishGoodsSendToWarehouseDetailDTO>();
+                dtos = _finishGoodsSendToWarehouseDetailBusiness.GetFinishGoodsDetailByInfoId(sendId, OrgId).Select(f => new FinishGoodsSendToWarehouseDetailDTO
+                {
+                    SendDetailId = f.SendDetailId,
+                    ItemTypeName = _itemTypeBusiness.GetItemType(f.ItemTypeId, OrgId).ItemName,
+                    ItemName = _itemBusiness.GetItemById(f.ItemId, OrgId).ItemName,
+                    UnitName = _unitBusiness.GetUnitOneByOrgId(f.UnitId, OrgId).UnitSymbol,
+                    Quantity = f.Quantity
+                }).ToList();
+
+                AutoMapper.Mapper.Map(dtos, viewModels);
+            }
+            return PartialView("_GetFinishGoodsSendItemDetail", viewModels);
+        }
+
+        public ActionResult GetFinishGoodsSendItemDetailList(string flag,long? lineId, long? warehouseId, long? modelId,long? itemTypeId, long? itemId,string status, string refNum, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Where(w => w.WarehouseName == "Warehouse 2" || w.WarehouseName == "Warehouse 3").Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+                ViewBag.ddlSendStatus = Utility.ListOfFinishGoodsSendStatus().Select(s => new SelectListItem
+                {
+                    Text = s.text,
+                    Value = s.value
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                IEnumerable<FinishGoodsSendDetailListDTO> dto= _finishGoodsSendToWarehouseDetailBusiness.GetGoodsSendDetailList(lineId, warehouseId, modelId, itemTypeId, itemId, status, refNum, OrgId, fromDate, toDate);
+                IEnumerable<FinishGoodsSendDetailListViewModel> viewModels = new List<FinishGoodsSendDetailListViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetFinishGoodsSendItemDetailList", viewModels);
             }
         }
 

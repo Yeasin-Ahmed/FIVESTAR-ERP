@@ -12,6 +12,6 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<ItemReturnDetail> GetItemReturnDetails(long OrgId);
         IEnumerable<ItemReturnDetail> GetItemReturnDetailsByReturnInfoId(long OrgId,long returnInfoId);
-        IEnumerable<ItemReturnDetailListDTO> GetItemReturnDetailList(string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate, long? modelId);
+        IEnumerable<ItemReturnDetailListDTO> GetItemReturnDetailList(string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate, long? modelId,long orgId);
     }
 }

@@ -223,7 +223,7 @@ namespace ERPWeb.Controllers
                 ItemTypeName = _itemTypeBusiness.GetItemType(item.ItemTypeId, OrgId).ItemName,
                 UnitId = item.UnitId,
                 UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, OrgId).UnitName,
-                ItemCode= item.ItemCode
+                ItemCode = item.ItemCode
             }).ToList();
             List<ItemViewModel> itemViewModels = new List<ItemViewModel>();
             AutoMapper.Mapper.Map(itemDomains, itemViewModels);

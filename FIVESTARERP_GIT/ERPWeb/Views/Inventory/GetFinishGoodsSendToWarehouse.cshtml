@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "Send List Of Finish Goods";
+}
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+               
+            </div>
+            <div class="col-md-6">
+                <h4>
+                    <b style="color:darkblue">Receive Finish Goods From Production</b>
+                </h4>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            @Html.AntiForgeryToken()
+            <div class="col-md-3">
+                <label class="control-label" for="ddlLineNumber">Line Number</label>
+                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "---Select Line---", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="ddlWarehouse">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "---Select Warehouse---", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label" for="ddlModelName">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "---Select Model---", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label for="txtRefNum" class="control-label font-weight-bold">Requsition Code</label>
+                <input type="text" name="search" id="txtRefNum" class="form-control form-control-sm" placeholder="Search By Ref Number" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label" for="ddlSendStatus">Status</label>
+                @Html.DropDownList("ddlSendStatus", (IEnumerable<SelectListItem>)ViewBag.ddlSendStatus, "---Select Status---", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <label class="control-label">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="col-md-12 mt-1" id="dataContainer">
+        @{Html.RenderAction("GetFinishGoodsSendToWarehouse", new { @flag = "view" });}
+    </div>
+</div>
+
+<div class="modal fade" id="modalSendDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <input type="hidden" id="hdfSendInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Finis Goods Item Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer1">
+
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlModelName = $("#ddlModelName");
+        var txtRefNum = $("#txtRefNum");
+        var ddlSendStatus = $("#ddlSendStatus");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var hdfSendInfoId = $('#hdfSendInfoId');
+        var hdfRowIndex = $('#hdfRowIndex');
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        txtRefNum.keyup(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        $(".btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (TryParseInt(hdfSendInfoId.val(), 0) > 0) {
+                bootbox.confirm("Are you sure you want to Receive goods?", function (result) {
+                    if (result === true) {
+                        disable(".btnSubmit");
+                        var id = TryParseInt(hdfSendInfoId.val(), 0);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveFinishGoodsItems', JSON.stringify({ sendId: id }), getToken())).then(function (res, status)
+                        {
+                            if (res === true && status === 'success') {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                $('.toastrDefaultSuccess').fadeOut(800);
+                                $("#modalSendDetails").modal('toggle');
+                                LoadDataTable();
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                                $('.toastrDefaultError').fadeOut(800);
+                            }
+                        }).fail(function (error) {
+                            $('.toastrDefaultError').trigger('click');
+                            $('.toastrDefaultError').fadeOut(800);
+                            })
+                        enable(".btnSubmit");
+                    }
+                })
+            }
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), refNo: txtRefNum.val(), status: ddlSendStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetFinishGoodsSendToWarehouse', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").empty();
+                    $("#dataContainer").append(res);
+                    
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        function OpenModal() {
+            $("#modalSendDetails").modal('show');
+            enable("#btnSubmit");
+            hdfSendInfoId.val('0')
+            hdfRowIndex.val('');
+        }
+
+        $(document).on('click', '.data-item-details', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-item-details');
+            if (TryParseInt(id, 0) > 0) {
+                $.when(getReqWithData(dataType.html,type.get, '/Inventory/GetFinishGoodsSendItemDetail', { sendId: id })).then(function (res, status)
+                {
+                    if (status === 'success') {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res);
+                        OpenModal();
+                        hdfSendInfoId.val(id);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+        })
+
+    </script>
+}

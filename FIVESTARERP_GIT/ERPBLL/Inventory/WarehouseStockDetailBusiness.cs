@@ -255,18 +255,19 @@ namespace ERPBLL.Inventory
             return executionStatus;
         }
 
-        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             IEnumerable<WarehouseStockDetailInfoListDTO> warehouseStockDetailInfoLists = new List<WarehouseStockDetailInfoListDTO>();
-            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum)).ToList();
+            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, orgId)).ToList();
             return warehouseStockDetailInfoLists;
         }
 
-        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
 
+            param += string.Format(@" and wsd.OrganizationId={0}", orgId);
             if (warehouseId != null && warehouseId > 0)
             {
                 param += string.Format(@" and wh.Id={0}", warehouseId);

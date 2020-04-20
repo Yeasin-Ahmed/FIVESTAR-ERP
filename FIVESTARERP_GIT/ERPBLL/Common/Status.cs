@@ -40,9 +40,13 @@ namespace ERPBLL.Common
         public static readonly string SKD = "SKD";
         public static readonly string HandSet = "HandSet";
     }
-
     public class StockOutReason
     {
         public static readonly string StockOutByProductionForProduceGoods = "StockOutByProductionForProduceGoods";
+    }
+    public class FinishGoodsSendStatus
+    {
+        public static readonly string Send = "Send";
+        public static readonly string Received = "Received";
     }
 }

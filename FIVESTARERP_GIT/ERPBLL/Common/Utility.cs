@@ -64,7 +64,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
-
+        public static IEnumerable<Dropdown> ListOfFinishGoodsSendStatus()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=FinishGoodsSendStatus.Send,value=FinishGoodsSendStatus.Send},
+                new Dropdown(){text=FinishGoodsSendStatus.Received,value=FinishGoodsSendStatus.Received}
+            };
+            return dropdowns;
+        }
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";
