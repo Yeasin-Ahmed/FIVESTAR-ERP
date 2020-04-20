@@ -12,11 +12,9 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<FinishGoodsStockDetail> GelAllFinishGoodsStockDetailByOrgId(long orgId);
         bool SaveFinishGoodsStockIn(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId);
-
         bool SaveFinishGoodsStockOut(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId);
         IEnumerable<FinishGoodsStockDetailInfoListDTO> GetFinishGoodsStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum);
         IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseDailyProduction(long orgId);
-
         IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseOverAllProduction(long orgId);
     }
 }
