@@ -91,7 +91,7 @@ From tblFinishGoodsSendToWarehouseDetail d
 Inner Join tblFinishGoodsSendToWarehouseInfo i on i.SendId = d.SendId
 Inner Join tblProductionLines l on i.LineId = l.LineId
 Inner Join [Inventory].dbo.[tblWarehouses] w on i.WarehouseId = w.Id
-Inner Join tblDescriptions de on i.DescriptionId = de.DescriptionId
+Inner Join [Inventory].dbo.[tblDescriptions] de on i.DescriptionId = de.DescriptionId
 Inner Join [Inventory].dbo.[tblItemTypes] it on d.ItemTypeId = it.ItemId
 Inner Join [Inventory].dbo.[tblItems] ii on d.ItemId = ii.ItemId
 Inner Join [Inventory].dbo.[tblUnits] u on d.UnitId = u.UnitId

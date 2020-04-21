@@ -307,7 +307,6 @@
     <Content Include="Views\Inventory\_RepairStockInfoList.cshtml" />
     <Content Include="Views\Production\GetProductionFaultyOrReturnItemDetailList.cshtml" />
     <Content Include="Views\Production\_GetProductionFaultyOrReturnItemDetailList.cshtml" />
-    <Content Include="Views\Production\GetDescriptionList.cshtml" />
     <Content Include="Views\ControlPanel\GetBranchList.cshtml" />
     <Content Include="Views\ControlPanel\GetRoleList.cshtml" />
     <Content Include="Views\ControlPanel\GetAppUserList.cshtml" />
@@ -332,6 +331,15 @@
     <Content Include="Views\Production\GetRequsitionDetailsEdit.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Inventory\GetDescriptionList.cshtml" />
+    <Content Include="Views\Inventory\_GetFinishGoodsSendItemDetail.cshtml" />
+    <Content Include="Views\Inventory\_GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Inventory\GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Production\CreateFinishGoodsToWarehouse.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsSendItemDetailList.cshtml" />
+    <Content Include="Views\Production\GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsSendItemDetail.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsSendItemDetailList.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsSendToWarehouse.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -347,6 +355,9 @@
     <Folder Include="Views\Common\" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
       <Project>{9e01eb95-ff40-485a-926c-73e8cf61e58b}</Project>
       <Name>ERPBLL</Name>
@@ -359,9 +370,6 @@
       <Project>{c075def3-a65b-4b86-90fa-dd698b139db4}</Project>
       <Name>ERPDAL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

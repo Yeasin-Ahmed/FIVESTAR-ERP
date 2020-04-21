@@ -145,7 +145,7 @@ ISNULL(u.UnitSymbol,'') 'UnitName', fsd.Quantity,fsd.StockStatus,CONVERT(nvarcha
 fsd.RefferenceNumber
 From tblFinishGoodsStockDetail fsd
 Left Join tblProductionLines pl on fsd.LineId= pl.LineId
-Left Join tblDescriptions de on fsd.DescriptionId= de.DescriptionId
+Left Join [Inventory].dbo.[tblDescriptions] de on fsd.DescriptionId= de.DescriptionId
 Left Join [Inventory].dbo.[tblWarehouses] wh on fsd.WarehouseId = wh.Id
 Left Join [Inventory].dbo.[tblItemTypes] it on fsd.ItemTypeId = it.ItemId
 Left Join [Inventory].dbo.[tblItems] i on fsd.ItemId = i.ItemId

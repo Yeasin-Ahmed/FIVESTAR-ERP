@@ -3,7 +3,7 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ControlPanel_AllEntities_14April2020 : DbMigration
+    public partial class ControlPanel_AllEntities_20Apr2020 : DbMigration
     {
         public override void Up()
         {

@@ -39,17 +39,21 @@ namespace ERPBLL.Production
         public IEnumerable<DashboardFacultyWiseProductionDTO> DashboardFacultyDayWiseProduction(long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<DashboardFacultyWiseProductionDTO>(
-                string.Format(@"select FaultyCase,count(*) as Total from tblItemReturnInfo
-                where Cast(GETDATE() as date) = Cast(EntryDate as date) and OrganizationId={0}
-                group by FaultyCase", orgId)).ToList();
+                string.Format(@"select FaultyCase,SUM(d.Quantity) as Total from 
+tblItemReturnDetail d
+Inner Join tblItemReturnInfo i on d.IRInfoId = i.IRInfoId
+where Cast(GETDATE() as date) = Cast(d.EntryDate as date) and i.StateStatus='Accepted' and d.OrganizationId={0}
+group by FaultyCase", orgId)).ToList();
         }
 
         public IEnumerable<DashboardFacultyWiseProductionDTO> DashboardFacultyOverAllWiseProduction(long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<DashboardFacultyWiseProductionDTO>(
-                string.Format(@"select FaultyCase,count(*) as Total from tblItemReturnInfo
-                where OrganizationId={0}
-                group by FaultyCase", orgId)).ToList();
+                string.Format(@"select FaultyCase,SUM(d.Quantity) as Total from 
+tblItemReturnDetail d
+Inner Join tblItemReturnInfo i on d.IRInfoId = i.IRInfoId
+where i.StateStatus='Accepted' and d.OrganizationId={0}
+group by FaultyCase", orgId)).ToList();
         }
 
         public ItemReturnInfo GetItemReturnInfo(long OrgId, long infoId)

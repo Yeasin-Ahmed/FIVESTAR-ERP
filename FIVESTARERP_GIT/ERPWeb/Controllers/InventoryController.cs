@@ -63,6 +63,7 @@ namespace ERPWeb.Controllers
             this._finishGoodsSendToWarehouseInfoBusiness = finishGoodsSendToWarehouseInfoBusiness;
             this._finishGoodsSendToWarehouseDetailBusiness = finishGoodsSendToWarehouseDetailBusiness;
         }
+
         // GET: Account
         #region Description
         public ActionResult GetDescriptionList(int? page)
