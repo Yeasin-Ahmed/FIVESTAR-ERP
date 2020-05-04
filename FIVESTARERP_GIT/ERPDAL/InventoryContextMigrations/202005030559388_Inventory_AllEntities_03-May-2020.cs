@@ -3,7 +3,7 @@ namespace ERPDAL.InventoryContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Inventory_AllEntities_20April2020 : DbMigration
+    public partial class Inventory_AllEntities_03May2020 : DbMigration
     {
         public override void Up()
         {
@@ -51,6 +51,7 @@ namespace ERPDAL.InventoryContextMigrations
                     {
                         ItemId = c.Long(nullable: false, identity: true),
                         ItemName = c.String(maxLength: 100),
+                        ShortName = c.String(maxLength: 5),
                         Remarks = c.String(maxLength: 150),
                         IsActive = c.Boolean(nullable: false),
                         OrganizationId = c.Long(nullable: false),

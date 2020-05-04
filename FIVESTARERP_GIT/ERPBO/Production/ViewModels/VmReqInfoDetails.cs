@@ -47,6 +47,8 @@ namespace ERPBO.Production.ViewModels
         public long DescriptionId { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
+        [Required,StringLength(50)]
+        public string RequisitionType { get; set; }
         public List<VmReqDetails> ReqDetails { get; set; }
     }
 }

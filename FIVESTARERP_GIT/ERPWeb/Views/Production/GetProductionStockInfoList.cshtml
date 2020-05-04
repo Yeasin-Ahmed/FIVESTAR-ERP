@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col-md-3">
                 <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change" })
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
             </div>
             <div class="col-md-3">
                 <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
@@ -75,7 +75,13 @@
         var txtLessOrEq = $("#txtLessOrEq");
         
         $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
 
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
         })
 
         $(document).on('change', '.date-datePicker', function (e) {

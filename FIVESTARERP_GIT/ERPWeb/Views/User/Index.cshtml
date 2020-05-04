@@ -4,14 +4,295 @@
     int sl = 0;
     string badge = string.Empty;
 }
-<div>
-    <h1><strong style="color:darkslateblue">Dashboard</strong></h1>
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="m-0 text-dark"><i class="fas fa-fire" style="color:#ff7615"></i> Dashboard</h1>
+        <hr />
+    </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-3 col-6">
+        <div class="card card-indigo">
+            <div class="card-header border-transparent">
+                <h3 class="card-title">Today Production</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0" style="min-height:200px">
+                @if (((IEnumerable<DashboardLineWiseProductionViewModel>)ViewBag.DashboardLineWiseProductionViewModel).Count() > 0)
+                {
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Line Number</th>
+                                <th class="text-center">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var finish in (IEnumerable<DashboardLineWiseProductionViewModel>)ViewBag.DashboardLineWiseProductionViewModel)
+                            {
+                                <tr>
+                                    <td>@finish.LineNumber</td>
+                                    <td class="text-center text-bold">@finish.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="text-center text-indigo" style="width:100%;height:100%">
+                        <div style="position:absolute;top:40%;left:26%">
+                            <i class="fas fa-box-open fa-5x"></i>
+                            <p class="text-dark text-bold">NO PRODUCTION</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3 col-6">
+        <div class="card card-indigo">
+            <div class="card-header border-transparent">
+                <h3 class="card-title">OverAll Production</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0" style="min-height:200px">
+                @if (((IEnumerable<DashboardLineWiseProductionViewModel>)ViewBag.DashboardLineWiseOverallProductionViewModel).Count() > 0)
+                {
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Line Number</th>
+                                <th class="text-center">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var finish in (IEnumerable<DashboardLineWiseProductionViewModel>)ViewBag.DashboardLineWiseOverallProductionViewModel)
+                            {
+                                <tr>
+                                    <td>@finish.LineNumber</td>
+                                    <td class="text-center text-bold">@finish.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="text-center text-indigo" style="width:100%;height:100%">
+                        <div style="position:absolute;top:40%;left:26%">
+                            <i class="fas fa-box-open fa-5x"></i>
+                            <p class="text-dark text-bold">NO PRODUCTION</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3 col-6">
+        <div class="card card-primary">
+            <div class="card-header border-transparent">
+                <h3 class="card-title">Today Faulty</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0" style="min-height:200px">
+                <div class="table table-bordered table-responsive">
+                    @if (((IEnumerable<DashboardFacultyWiseProductionViewModel>)ViewBag.DashboardFacultyWiseProductionViewModel).Count() > 0)
+                    {
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Faculty</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var faculty in (IEnumerable<DashboardFacultyWiseProductionViewModel>)ViewBag.DashboardFacultyWiseProductionViewModel)
+                                {
+                                    <tr>
+                                        <td>@faculty.FaultyCase</td>
+                                        <td class="text-center text-bold">@faculty.Total</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-primary" style="width:100%;height:100%">
+                            <div style="position:absolute;top:40%;left:32%">
+                                <i class="fas fa-heart-broken fa-5x"></i>
+                                <p class="text-dark text-bold">NO FAULTY</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3 col-6">
+        <div class="card card-primary">
+            <div class="card-header border-transparent">
+                <h3 class="card-title">OverAll Faulty</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0" style="min-height:200px">
+                @if (((IEnumerable<DashboardFacultyWiseProductionViewModel>)ViewBag.DashboardFacultyWiseOverAllProductionViewModel).Count() > 0)
+                {
+                    <table class="table table-striped table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th class="">Faculty</th>
+                                <th class="text-center">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var Ofaculty in (IEnumerable<DashboardFacultyWiseProductionViewModel>)ViewBag.DashboardFacultyWiseOverAllProductionViewModel)
+                            {
+                                <tr>
+                                    <td>@Ofaculty.FaultyCase</td>
+                                    <td class="text-center text-bold">@Ofaculty.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="text-center text-primary" style="width:100%;height:100%">
+                        <div style="position:absolute;top:40%;left:32%">
+                            <i class="fas fa-heart-broken fa-5x"></i>
+                            <p class="text-dark text-bold">NO FAULTY</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-gray">
+            <div class="card-header border-transparent">
+                <h3 class="card-title text-bold text-white"><i class="fas fa-gavel"></i> Production Requisition Status</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-primary">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionAccepted).StateStatus)</span>
+                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionAccepted).TotalCount)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionApproved).StateStatus)</span>
+                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionApproved).TotalCount)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-warning">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionPending).StateStatus)</span>
+                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionPending).TotalCount)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-primary">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionRecheck).StateStatus)</span>
+                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionRecheck).TotalCount)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-secondary">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionCancel).StateStatus)</span>
+                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionCancel).TotalCount)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-danger">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionReject).StateStatus)</span>
+                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionReject).TotalCount)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-sm-3 col-6">
         <div class="card">
             <div class="card-header border-transparent">
-                <h3 class="card-title"><strong style="color:darkblue">Production Requsition</strong></h3>
+                <h3 class="card-title">Production Requsition</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -48,161 +329,7 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title"><strong style="color:darkblue">Today Production</strong></h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table m-0">
-                        <thead style="background-color: lightgreen">
-                            <tr>
-                                <th>LineNumber</th>
-                                <th class="text-center">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var finish in (IEnumerable<DashboardLineWiseProductionViewModel>)ViewBag.DashboardLineWiseProductionViewModel)
-                            {
-                                <tr>
-                                    <td>@finish.LineNumber</td>
-                                    <td class="text-center text-bold">@finish.Total</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title"><strong style="color:darkblue">OverAll Production</strong></h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table m-0">
-                        <thead style="background-color:lightgreen">
-                            <tr>
-                                <th>LineNumber</th>
-                                <th class="text-center">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var finish in (IEnumerable<DashboardLineWiseProductionViewModel>)ViewBag.DashboardLineWiseOverallProductionViewModel)
-                            {
-                                <tr>
-                                    <td>@finish.LineNumber</td>
-                                    <td class="text-center text-bold">@finish.Total</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-<div class="row">
-    <div class="col-md-1"></div>
-
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title"><strong style="color:darkblue">Today Faculty</strong></h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table table-bordered table-responsive">
-                    <table class="table m-0">
-                        <thead style="background-color:greenyellow">
-                            <tr>
-                                <th class="text-center">Faculty</th>
-                                <th class="text-center">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody style="background-color:lightgray">
-                            @foreach (var faculty in (IEnumerable<DashboardFacultyWiseProductionViewModel>)ViewBag.DashboardFacultyWiseProductionViewModel)
-                            {
-                                <tr>
-                                    <td>@faculty.FaultyCase</td>
-                                    <td class="text-center text-bold">@faculty.Total</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title"><strong style="color:darkblue">OverAll Faculty</strong></h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table table-bordered table-responsive">
-                    <table class="table m-0">
-                        <thead style="background-color:greenyellow">
-                            <tr>
-                                <th class="text-center">Faculty</th>
-                                <th class="text-center">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody style="background-color:lightgray">
-                            @foreach (var Ofaculty in (IEnumerable<DashboardFacultyWiseProductionViewModel>)ViewBag.DashboardFacultyWiseOverAllProductionViewModel)
-                            {
-                                <tr>
-                                    <td>@Ofaculty.FaultyCase</td>
-                                    <td class="text-center text-bold">@Ofaculty.Total</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
+</div>*@
 <div class="row">
     <div class="col-md-6">
         <div class="card" style="background-color:lightblue">

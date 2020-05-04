@@ -21,6 +21,7 @@ using PagedList;
 
 namespace ERPWeb.Controllers
 {
+    [CustomAuthorize]
     public class InventoryController : BaseController
     {
         // GET: Inventory
@@ -132,20 +133,25 @@ namespace ERPWeb.Controllers
             ViewBag.pageNum = page.ToString();
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
 
-            IPagedList<ItemTypeViewModel> itemTypesDomains = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).Select(item => new ItemTypeViewModel
+
+            var allData = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId);
+            IPagedList<ItemTypeViewModel> itemTypesDomains = allData.Select(item => new ItemTypeViewModel
             {
                 ItemId = item.ItemId,
                 WarehouseId = item.WarehouseId,
+                ShortName = item.ShortName,
                 ItemName = item.ItemName,
                 Remarks = item.Remarks,
                 StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = item.OrganizationId,
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(item.WarehouseId, OrgId).WarehouseName)
-            }).OrderBy(item => item.ItemId).ToPagedList(page?? 1, 3);
+            }).OrderBy(item => item.ItemId).ToPagedList(page?? 1, 15);
             IEnumerable<ItemTypeViewModel> itemTypeViewModelsForPage =new List<ItemTypeViewModel>();
             //List<ItemTypeViewModel> itemTypeViewModels = new List<ItemTypeViewModel>();
             //AutoMapper.Mapper.Map(itemTypesDomains, itemTypeViewModels);
-            
+
+            ViewBag.ItemCount = allData.Count();
+
             return View(itemTypesDomains);
         }
 
@@ -213,7 +219,8 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
 
-            IPagedList<ItemViewModel> itemViewModels = _itemBusiness.GetAllItemByOrgId(1).Select(item => new ItemViewModel
+            var allData = _itemBusiness.GetAllItemByOrgId(1);
+            IPagedList<ItemViewModel> itemViewModels = allData.Select(item => new ItemViewModel
             {
                 ItemId = item.ItemId,
                 ItemName = item.ItemName,
@@ -225,9 +232,10 @@ namespace ERPWeb.Controllers
                 UnitId = item.UnitId,
                 UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, OrgId).UnitName,
                 ItemCode = item.ItemCode
-            }).OrderBy(item => item.ItemId).ToPagedList(page ?? 1, 3);
+            }).OrderBy(item => item.ItemId).ToPagedList(page ?? 1, 15);
             //IEnumerable<ItemViewModel> itemViewModelsForPage = new List<ItemViewModel>();
             //AutoMapper.Mapper.Map(itemDomains, itemViewModels);
+            ViewBag.ItemCount = allData.Count();
             return View(itemViewModels);
         }
         public ActionResult SaveItem(ItemViewModel itemViewModel)
@@ -262,7 +270,6 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Warehouse Stock Info -Table
-
         [HttpGet]
         public ActionResult GetWarehouseStockInfoList()
         {
@@ -378,11 +385,13 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
 
+            ViewBag.ddlRequisitionType = Utility.ListOfRequisitionType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
             return View();
         }
 
         // Used By  GetReqInfoList
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType)
         {
             var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(OrgId);
             IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req =>
@@ -394,6 +403,7 @@ namespace ERPWeb.Controllers
                 &&
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
                 &&
+                (requisitionType == null || requisitionType.Trim() == "" || req.RequisitionType == requisitionType.Trim()) &&
                 (line == null || line <= 0 || req.LineId == line)
                 &&
                 (modelId == null || modelId <= 0 || req.DescriptionId == modelId) &&
@@ -425,6 +435,7 @@ namespace ERPWeb.Controllers
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName),
                 ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, OrgId).Select(s => s.ItemId).Distinct().Count(),
+                RequisitionType = info.RequisitionType
             }).ToList();
 
             List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
@@ -730,7 +741,6 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Finish Goods Stock
-
         public ActionResult GetFinishGoodsSendToWarehouse(string flag, long? lineId, long? warehouseId, long? modelId, string status, string fromDate, string toDate, string refNo)
         {
             if (string.IsNullOrEmpty(flag))

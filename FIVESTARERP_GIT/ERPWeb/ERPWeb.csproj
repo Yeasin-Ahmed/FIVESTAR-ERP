@@ -58,6 +58,18 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.Common.10.0.40219.1\lib\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.WebForms.10.0.40219.1\lib\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -139,7 +151,13 @@
     <Content Include="Content\dist\css\adminlte.min.css" />
     <Content Include="Content\dist\css\bootstrap-datepicker3.css" />
     <Content Include="Content\dist\css\dataTables.bootstrap4.css" />
+    <Content Include="Content\dist\css\icheck-bootstrap.min.css" />
+    <Content Include="Content\dist\css\OverlayScrollbars.css" />
+    <Content Include="Content\dist\css\OverlayScrollbars.min.css" />
+    <Content Include="Content\dist\css\select2-bootstrap4.min.css" />
+    <Content Include="Content\dist\css\select2.min.css" />
     <Content Include="Content\dist\img\AdminLTELogo.png" />
+    <Content Include="Content\dist\img\aside-bg-new.jpg" />
     <Content Include="Content\dist\img\avatar.png" />
     <Content Include="Content\dist\img\avatar04.png" />
     <Content Include="Content\dist\img\avatar2.png" />
@@ -156,7 +174,10 @@
     <Content Include="Content\dist\img\credit\visa.png" />
     <Content Include="Content\dist\img\default-150x150.png" />
     <Content Include="Content\dist\img\icons.png" />
-    <Content Include="Content\dist\img\user2-160x160.jpg" />
+    <Content Include="Content\dist\img\fivestar.png" />
+    <Content Include="Content\dist\img\appuser.jpg" />
+    <Content Include="Content\dist\img\Login_bg.jpg" />
+    <Content Include="Content\dist\img\userIcon.png" />
     <Content Include="Content\dist\js\adminlte.js" />
     <Content Include="Content\dist\js\adminlte.min.js" />
     <Content Include="Content\Images\noImage.jpg" />
@@ -188,6 +209,13 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\LogIn\css\font-awesome.css" />
+    <Content Include="Content\LogIn\css\style.css" />
+    <Content Include="Content\LogIn\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\LogIn\images\banner1.jpg" />
+    <Content Include="Content\LogIn\images\banner.jpg" />
+    <Content Include="Content\LogIn\images\chormeLogo.png" />
+    <Content Include="Content\LogIn\images\right.jpg" />
     <Content Include="MigrationScripts.txt" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.locales.js" />
@@ -212,8 +240,25 @@
     <Content Include="Content\dist\css\bootstrap-datepicker3.css.map" />
     <Content Include="Content\plugins\Toastr\toastr.js.map" />
     <Content Include="Content\plugins\bs-custom-file-input\bs-custom-file-input.js.map" />
+    <Content Include="Content\LogIn\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\LogIn\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\LogIn\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\LogIn\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\LogIn\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Reports\DataSets\ProductionDS.xsc">
+      <DependentUpon>ProductionDS.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\ProductionDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ProductionDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\ProductionDS.xss">
+      <DependentUpon>ProductionDS.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\download.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -229,6 +274,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery.overlayScrollbars.js" />
+    <Content Include="Scripts\jquery.overlayScrollbars.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -240,6 +287,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\select2.full.min.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
@@ -257,15 +305,25 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ControlPanelController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryToken.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\AutoMapperWebProfile.cs" />
+    <Compile Include="Infrastructure\BaseViewPage.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\DataSets\ProductionDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductionDS.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -340,6 +398,15 @@
     <Content Include="Views\Production\_GetFinishGoodsSendItemDetail.cshtml" />
     <Content Include="Views\Production\_GetFinishGoodsSendItemDetailList.cshtml" />
     <Content Include="Views\Production\_GetFinishGoodsSendToWarehouse.cshtml" />
+    <Content Include="Views\ControlPanel\GetMainMenusForOrgAuth.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserCustomAuthorization.cshtml" />
+    <Content Include="Views\Common\_sidebar.cshtml" />
+    <Content Include="Views\Access\LogIn.cshtml" />
+    <Content Include="Views\Access\_token.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\Error\AccessDenied.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -350,9 +417,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Common\" />
+    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -370,6 +436,11 @@
       <Project>{c075def3-a65b-4b86-90fa-dd698b139db4}</Project>
       <Name>ERPDAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\rptProductionRequisition.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -40,6 +40,7 @@ namespace ERPBLL.Inventory
                 itemType.ItemName = itemTypeDTO.ItemName;
                 itemType.Remarks = itemTypeDTO.Remarks;
                 itemType.IsActive = itemTypeDTO.IsActive;
+                itemType.ShortName = itemTypeDTO.ShortName;
                 itemType.EUserId = userId;
                 itemType.EntryDate = DateTime.Now;
                 itemType.OrganizationId = orgId;
@@ -49,7 +50,7 @@ namespace ERPBLL.Inventory
             else
             {
                 itemType = GetItemTypeOneByOrgId(itemTypeDTO.ItemId, itemTypeDTO.WarehouseId, orgId);
-                itemType.ItemName = itemTypeDTO.ItemName;
+                //itemType.ItemName = itemTypeDTO.ItemName;
                 itemType.Remarks = itemTypeDTO.Remarks;
                 itemType.IsActive = itemTypeDTO.IsActive;
                 itemType.UpUserId = itemTypeDTO.UpUserId;
@@ -62,6 +63,10 @@ namespace ERPBLL.Inventory
         public bool IsDuplicateItemTypeName(string itemTypeName, long id, long orgId, long warehouseId)
         {
             return itemTypeRepository.GetOneByOrg(item => item.ItemName == itemTypeName && item.ItemId != id && item.OrganizationId == orgId && item.WarehouseId == warehouseId) != null ? true : false;
+        }
+        public bool IsDuplicateShortName(string shortName, long id, long orgId)
+        {
+            return itemTypeRepository.GetOneByOrg(item => item.ShortName == shortName && item.ItemId != id && item.OrganizationId == orgId ) != null ? true : false;
         }
 
         public ItemType GetItemTypeOneByOrgId(long id, long warehouseId, long orgId)

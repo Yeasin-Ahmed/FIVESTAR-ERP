@@ -15,5 +15,6 @@ namespace ERPBLL.Inventory.Interface
         ItemType GetItemTypeOneByOrgId(long id,long warehouseId, long orgId);
         bool IsDuplicateItemTypeName(string itemTypeName, long id, long orgId, long warehouseId);
         ItemType GetItemType(long id, long orgId);
+        bool IsDuplicateShortName(string shortName, long id, long orgId);
     }
 }

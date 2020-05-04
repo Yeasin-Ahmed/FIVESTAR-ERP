@@ -42,7 +42,7 @@ namespace ERPBLL.Production
                 string.Format(@"select FaultyCase,SUM(d.Quantity) as Total from 
 tblItemReturnDetail d
 Inner Join tblItemReturnInfo i on d.IRInfoId = i.IRInfoId
-where Cast(GETDATE() as date) = Cast(d.EntryDate as date) and i.StateStatus='Accepted' and d.OrganizationId={0}
+where Cast(GETDATE() as date) = Cast(d.EntryDate as date) and i.StateStatus='Accepted' and d.OrganizationId={0} and FaultyCase IN ('Man Made','China Made')
 group by FaultyCase", orgId)).ToList();
         }
 
@@ -52,7 +52,7 @@ group by FaultyCase", orgId)).ToList();
                 string.Format(@"select FaultyCase,SUM(d.Quantity) as Total from 
 tblItemReturnDetail d
 Inner Join tblItemReturnInfo i on d.IRInfoId = i.IRInfoId
-where i.StateStatus='Accepted' and d.OrganizationId={0}
+where i.StateStatus='Accepted' and d.OrganizationId={0} and FaultyCase IN ('Man Made','China Made')
 group by FaultyCase", orgId)).ToList();
         }
 

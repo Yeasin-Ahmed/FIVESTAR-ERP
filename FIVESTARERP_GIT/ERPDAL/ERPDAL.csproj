@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPanelContextMigrations\202004200943136_ControlPanel_AllEntities_20-Apr-2020.cs" />
-    <Compile Include="ControlPanelContextMigrations\202004200943136_ControlPanel_AllEntities_20-Apr-2020.Designer.cs">
-      <DependentUpon>202004200943136_ControlPanel_AllEntities_20-Apr-2020.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.cs" />
+    <Compile Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.Designer.cs">
+      <DependentUpon>202004281022349_ControlPanel_28-April-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -59,16 +59,16 @@
     <Compile Include="ControlPanelDAL\IControlPanelUnitOfWork.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelBaseRepository.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelUnitOfWork.cs" />
-    <Compile Include="InventoryContextMigrations\202004200944536_Inventory_AllEntities_20-April-2020.cs" />
-    <Compile Include="InventoryContextMigrations\202004200944536_Inventory_AllEntities_20-April-2020.Designer.cs">
-      <DependentUpon>202004200944536_Inventory_AllEntities_20-April-2020.cs</DependentUpon>
+    <Compile Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.Designer.cs">
+      <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202004200946043_Production_AllEntities_20-April-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202004200946043_Production_AllEntities_20-April-2020.Designer.cs">
-      <DependentUpon>202004200946043_Production_AllEntities_20-April-2020.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.Designer.cs">
+      <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -87,14 +87,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202004200943136_ControlPanel_AllEntities_20-Apr-2020.resx">
-      <DependentUpon>202004200943136_ControlPanel_AllEntities_20-Apr-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.resx">
+      <DependentUpon>202004281022349_ControlPanel_28-April-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202004200944536_Inventory_AllEntities_20-April-2020.resx">
-      <DependentUpon>202004200944536_Inventory_AllEntities_20-April-2020.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.resx">
+      <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202004200946043_Production_AllEntities_20-April-2020.resx">
-      <DependentUpon>202004200946043_Production_AllEntities_20-April-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
+      <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

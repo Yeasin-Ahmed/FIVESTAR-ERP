@@ -24,10 +24,10 @@
         </div>
     </div>
     <div class="col-md-12">
-        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblOraganizationData">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg table-valign-middle" id="tblOraganizationData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL</th>
+                    <th>#SL</th>
                     <th>Organization</th>
                     <th>Address</th>
                     <th>Phone Number</th>
@@ -45,7 +45,7 @@
                     sl += 1;
                     badge = (item.StateStatus == "Active" ? "badge bg-success" : "badge bg-danger");
                     <tr>
-                        <td class="text-center">
+                        <td class="text-center text-bold">
                             @sl
                         </td>
                         <td>@item.OrganizationName</td>
@@ -61,7 +61,7 @@
                             @item.EntryDate.Value.ToString("dd-MMM-yyyy")
                         </td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@item.OrgId"><i class="fa fa-pen"></i> Edit</a>
+                            <a href="@Url.Action("CreateOrganization","ControlPanel",new {oId=item.OrgId })" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@item.OrgId"><i class="fa fa-pen"></i> Edit</a>
                         </td>
                     </tr>
                 }

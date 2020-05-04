@@ -22,11 +22,13 @@ namespace ERPBLL.Inventory
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly ItemRepository itemRepository; // repo
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
-        public ItemBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness)
+        private readonly IItemTypeBusiness _itemTypeBusiness;
+        public ItemBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness, IItemTypeBusiness itemTypeBusiness)
         {
             this._inventoryDb = inventoryDb;
             itemRepository = new ItemRepository(this._inventoryDb);
             this._productionStockInfoBusiness = productionStockInfoBusiness;
+            this._itemTypeBusiness = itemTypeBusiness;
         }
 
         public IEnumerable<Item> GetAllItemByOrgId(long orgId)
@@ -92,7 +94,7 @@ Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
                 items.OrganizationId = orgId;
                 items.ItemTypeId = itemDomain.ItemTypeId;
                 items.UnitId = itemDomain.UnitId;
-                items.ItemCode = GenerateItemCode(orgId);
+                items.ItemCode = GenerateItemCode(orgId, itemDomain.ItemTypeId);
                 itemRepository.Insert(items);
             }
             else
@@ -105,19 +107,33 @@ Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
                 items.UpdateDate = DateTime.Now;
                 items.ItemTypeId = itemDomain.ItemTypeId;
                 items.UnitId = itemDomain.UnitId;
+                //items.ItemCode = GenerateItemCode(orgId, itemDomain.ItemTypeId);
                 itemRepository.Update(items);
             }
             return itemRepository.Save();
         }
 
-        private string GenerateItemCode(long OrgId)
+        private string GenerateItemCode(long OrgId, long itemTypeId)
         {
             string code = string.Empty;
             string newCode = string.Empty;
-            code = GetAllItemByOrgId(OrgId).OrderByDescending(i => i.ItemId).FirstOrDefault().ItemCode;
-            code = code.Substring(3);
-            code = (Convert.ToInt32(code) + 1).ToString();
-            newCode = "ITM"+code.PadLeft(5, '0');
+            string shortName = _itemTypeBusiness.GetItemType(itemTypeId, OrgId).ShortName;
+
+            var lastItem = itemRepository.GetAll(i => i.ItemTypeId == itemTypeId && i.OrganizationId == OrgId).OrderByDescending(i => i.ItemId).FirstOrDefault();
+            if (string.IsNullOrEmpty(lastItem.ItemCode))
+            {
+                newCode = shortName + "00001";
+            }
+            else
+            {
+                code =lastItem.ItemCode.Substring(3);
+                code = (Convert.ToInt32(code) + 1).ToString();
+                newCode = shortName + code.PadLeft(5, '0');
+            }
+            //code = GetAllItemByOrgId(OrgId).OrderByDescending(i => i.ItemId).FirstOrDefault().ItemCode;
+            //code = code.Substring(3);
+            //code = (Convert.ToInt32(code) + 1).ToString();
+            //newCode = "ITM"+code.PadLeft(5, '0');
             return newCode;
         }
     }

@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-3">
                 <label for="ddlModelName" class="control-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm" })
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                 <span class="error hide req-model">Model is require</span>
             </div>
             <div class="col-md-3">
@@ -105,6 +105,16 @@
         var txtQty = $("#txtQty");
         var unitName = $("#unitName");
         var stockQty = $("#stockQty");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
 
         ddlLineNumber.change(function () {
             if (ddlLineNumber.val() !== "") {

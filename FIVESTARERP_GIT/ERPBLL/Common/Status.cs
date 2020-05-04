@@ -49,4 +49,16 @@ namespace ERPBLL.Common
         public static readonly string Send = "Send";
         public static readonly string Received = "Received";
     }
+    public class UserType
+    {
+        public static readonly string SystemAdmin = "System Admin";
+        public static readonly string Admin = "Admin";
+    }
+
+    public class RequisitionType
+    {
+        public static readonly string CKD = "CKD";
+        public static readonly string SKD = "SKD";
+    }
+
 }

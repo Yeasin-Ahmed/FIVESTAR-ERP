@@ -4,8 +4,17 @@
 }
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Product Requsition Info</b></h4>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Production Requisition Info</b></h4>
+            </div>
+            <div class="col-md-3">
+                <a href="/Production/CreateRequsition" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create New Requisition</a>
+            </div>
+        </div>
+        
         <hr />
     </div>
     <div class="col-md-12 mb-2">
@@ -13,8 +22,8 @@
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
-                <label for="txtReqCode" class="control-label font-weight-bold">Requsition Code</label>
-                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requsition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
+                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
             </div>
             <div class="col-md-3">
                 <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
@@ -28,10 +37,17 @@
             <div class="col-md-3">
                 <label for="ddlLineNumber" class="control-label font-weight-bold">Line Number</label>
                 @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select LineNumber--", new { @class = "form-control form-control-sm ctrl-changed" })
-                <span class="error hide required-lineNumber font-weight-bold">Required Line Number!</span>
             </div>
         </div>
         <div class="row">
+            <div class="col-md-3">
+                <label for="ddlModelName" class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Requisition Type</label>
+                @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionTypes, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>
             <div class="col-md-3">
                 <label class="col-form-label">From Date</label>
                 <div class="input-group input-group-sm ">
@@ -50,15 +66,6 @@
                         <span class="input-group-text">&#10008;</span>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlModelName" class="col-form-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold" style="visibility:hidden">Add New</label>
-                <br />
-                <a href="/Production/CreateRequsition" style="background-color:darkblue" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create New Requisition</a>
             </div>
         </div>
     </div>
@@ -116,8 +123,15 @@
         var dptToDate = $("#dptToDate");
         var hdfReqInfoId = $("#hdfReqInfoId");
         var hdfRowIndex = $("#hdfRowIndex");
-
+        var ddlRequisitionType = $("#ddlRequisitionType")
         $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
@@ -158,7 +172,7 @@
         })
 
         function LoadDataTable() {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType:ddlRequisitionType.val() };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetReqInfoParitalList', data)).then(function (res, status) {
                 if (status == "success") {
@@ -332,6 +346,30 @@
                 bootbox.alert('One/More Item quantity is 0/empty')
             }
             
+        })
+
+        // Report 
+        $(document).on('click', '.data-report-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-report-item');
+            if (TryParseInt(id, 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Report/GetProductionRequisitionReport', JSON.stringify({ reqInfoId: id }), getToken())).then(function (res, status) {
+                    console.log(res.IsSuccess);
+                    if (res.IsSuccess === true)
+                    {
+                        //var thisUrl = '@Url.Action("Report", "GetYourReport")' + '?id=' + res.Id;
+                        //console.log('');
+                        //console.log(thisUrl);
+                        //window.location = "/Report/GetYourReport?id="+ res.Id;
+                        var pdfWindow = window.open("", "_blank")
+                        console.log(res.File);
+                        pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >");
+                        download(res.File, res.FileName, "application/pdf");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }   
         })
     </script>
 }

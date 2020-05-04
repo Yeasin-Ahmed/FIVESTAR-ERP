@@ -68,6 +68,7 @@ namespace ERPBLL.Production
                 requsitionInfo.DescriptionId = reqInfoDTO.DescriptionId;
                 requsitionInfo.EntryDate = DateTime.Now;
                 requsitionInfo.EUserId = userId;
+                requsitionInfo.RequisitionType = reqInfoDTO.RequisitionType;
                 List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
 
                 foreach (var item in reqInfoDTO.ReqDetails)

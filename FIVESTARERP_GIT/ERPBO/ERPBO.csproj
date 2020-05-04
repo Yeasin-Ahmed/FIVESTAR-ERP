@@ -49,28 +49,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CustomPrincipalSerializeModel.cs" />
     <Compile Include="Common\Dropdown.cs" />
     <Compile Include="Common\ExecutionStateWithText.cs" />
+    <Compile Include="Common\UserInformation.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\MainMenu.cs" />
     <Compile Include="ControlPanel\DomainModels\Module.cs" />
+    <Compile Include="ControlPanel\DomainModels\OrganizationAuthorization.cs" />
     <Compile Include="ControlPanel\DomainModels\Role.cs" />
     <Compile Include="ControlPanel\DomainModels\SubMenu.cs" />
+    <Compile Include="ControlPanel\DomainModels\UserAuthorization.cs" />
     <Compile Include="ControlPanel\DTOModels\AppUserDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\BranchDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\ManiMenuDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\ModuleDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\OrganizationAuthorizationDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\OrganizationDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\OrgAuthMenusDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\RoleDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\SubMenuDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\UserAuthorizationDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\UserAuthorizeMenusDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\UserCustomMenusDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\UserDetaildDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\UserLogInDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\UserMenuDTO.cs" />
     <Compile Include="ControlPanel\ViewModels\AppUserViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\BranchViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\ModuleViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\OrganizationAuthorizationViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\OrganizationViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\OrgAuthMenusDTO.cs" />
+    <Compile Include="ControlPanel\ViewModels\OrgAuthUIViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\RoleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\SubMenuViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\UserAuthorizationViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\UserAuthorizeMenusViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\UserCustomMenusViewModels.cs" />
+    <Compile Include="ControlPanel\ViewModels\UserDetaildViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\UserLogInViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\UserMenuViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
     <Compile Include="Inventory\DomainModels\Description.cs" />
     <Compile Include="Inventory\DomainModels\RepairStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockDetail.cs" />
@@ -133,6 +155,7 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\ReportModels\ProductionRequisitionReport.cs" />
     <Compile Include="Production\ViewModels\DashboardFacultyWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardLineWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardRequisitionSummeryViewModel.cs" />
@@ -167,7 +190,6 @@
   <ItemGroup>
     <Folder Include="ControlPanel\ReportModels\" />
     <Folder Include="Inventory\ReportModels\" />
-    <Folder Include="Production\ReportModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,7 +15,6 @@ namespace ERPBO.ControlPanel.DTOModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long MId { get; set; }
-
         //custom
         public string ModuleName { get; set; }
     }

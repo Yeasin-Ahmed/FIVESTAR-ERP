@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Production Requsition List</b></h4>
+        <h4><b style="color:darkblue">Production Requisition List</b></h4>
         <hr />
     </div>
     <div class="col-md-12 mb-2">
@@ -13,8 +13,8 @@
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
-                <label for="txtReqCode" class="control-label font-weight-bold">Requsition Code</label>
-                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requsition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
+                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
             </div>
             <div class="col-md-3">
                 <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
@@ -33,8 +33,12 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed" })
+                <label for="ddlModelName" class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Requisition Type</label>
+                @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionTypes, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">From Date</label>
@@ -92,8 +96,17 @@
         var dptToDate = $("#dptToDate");
         var hdfReqInfoId = $("#hdfReqInfoId");
         var hdfRowIndex = $("#hdfRowIndex");
+        var ddlRequisitionType = $("#ddlRequisitionType")
 
         $(document).ready(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
@@ -136,7 +149,7 @@
 
         function LoadDataTable()
         {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(),requisitionType: ddlRequisitionType.val() };
 
             $.when(getReqWithData('html', 'GET', '/Inventory/GetReqInfoParitalList', data)).then(function (res, status)
             {

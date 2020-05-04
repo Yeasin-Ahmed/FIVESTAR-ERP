@@ -73,6 +73,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfRequisitionType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=RequisitionType.CKD,value=RequisitionType.CKD},
+                new Dropdown(){text=RequisitionType.SKD,value=RequisitionType.SKD}
+            };
+            return dropdowns;
+        }
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

@@ -38,6 +38,7 @@
                     <th>ItemType Name</th>
                     <th>Remarks</th>
                     <th>State Status</th>
+                    <th>Short Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -56,6 +57,7 @@
                         <td class="text-center" data-val="@item.StateStatus">
                             <span class="@badge">@item.StateStatus</span>
                         </td>
+                        <td class="text-center">@item.ShortName</td>
                         <td class="text-center">
                             <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
                         </td>
@@ -72,9 +74,12 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-end">
-            @Html.PagedListPager((IPagedList)@Model, page => Url.Action("GetItemTypeList", new { page = page }),
-            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "body-container", InsertionMode= InsertionMode.Replace })
-            )
+            @if((int)ViewBag.ItemCount > 15)
+            {
+                @Html.PagedListPager((IPagedList)@Model, page => Url.Action("GetItemTypeList", new { page = page }),
+           PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "body-container", InsertionMode = InsertionMode.Replace }))
+            }
+           
         </div>
     </div>
 </div>
@@ -93,7 +98,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
-                            @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse,"--Select Warehouse--",new {@class= "form-control form-control-sm" })
+                            @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
                             <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
                         </div>
                     </div>
@@ -103,6 +108,14 @@
                             <input type="text" name="txtitemTypeName" value="" id="txtitemTypeName" class="form-control form-control-sm" />
                             <span class="error hide required-itemTypeName font-weight-bold">Input ItemType Name!</span>
                             <span class="error hide duplicate-itemTypeName font-weight-bold">Already ItemType Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtShortName" class="control-label font-weight-bold">Short Name</label>
+                            <input type="text" name="txtShortName" value="" id="txtShortName" class="form-control form-control-sm" maxlength="3"/>
+                            <span class="error hide required-shortName font-weight-bold">Input Short Name!</span>
+                            <span class="error hide duplicate-shortName font-weight-bold">Already Short Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -142,7 +155,7 @@
         var txtitemTypeName = $("#txtitemTypeName");
         var txtRemarks = $("#txtRemarks");
         var chkStatestatus = $("#chkStatestatus");
-
+        var txtShortName = $("#txtShortName");
 
         $(document).ready(function () {
             $('#tblItemTypeData').DataTable({
@@ -187,6 +200,17 @@
                 $(".required-itemTypeName").removeClass("hide");
                 isValid = false;
             }
+            if (txtShortName.val() === '') {
+                $(".required-shortName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfItemTypeId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, shortName: txtShortName.val().trim() }), '/Common/IsDuplicateItemTypeShortName', getToken()) == true) {
+                    $(".duplicate-shortName").removeClass("hide");
+                    isValid = false;
+                }
+            }
             return isValid;
         }
 
@@ -195,7 +219,7 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
-                var data = JSON.stringify({ ItemId: TryParseInt(hdfItemTypeId.val(), 0), WarehouseId: ddlWarehouseName.val(), ItemName: txtitemTypeName.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked") });
+                var data = JSON.stringify({ ItemId: TryParseInt(hdfItemTypeId.val(), 0), WarehouseId: ddlWarehouseName.val(), ItemName: txtitemTypeName.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked"),ShortName:txtShortName.val().trim() });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItemType', data, getToken())).then(function (res, status) {
                     console.log(status);
@@ -231,11 +255,13 @@
             var td3 = row.find('td:eq(4)').html();
             var td4 = row.find('td:eq(5)').html();
             var td5 = row.find('td:eq(6)').attr("data-val");
+            var td6 = row.find('td:eq(7)').html();
 
             hdfItemTypeId.val(td1);
             ddlWarehouseName.val(td2);
             txtitemTypeName.val(td3);
             txtRemarks.val(td4);
+            txtShortName.val(td6);
             chkStatestatus.prop("checked", false);
             if (td5.toLowerCase() === 'active') {
                 chkStatestatus.prop("checked", true);
@@ -247,6 +273,7 @@
             ddlWarehouseName.val('');
             txtitemTypeName.val('');
             txtRemarks.val('');
+            txtShortName.val('');
             chkStatestatus.prop("checked", false);
         }
     </script>

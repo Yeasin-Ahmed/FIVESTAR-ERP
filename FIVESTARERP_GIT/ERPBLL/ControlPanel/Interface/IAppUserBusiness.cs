@@ -1,5 +1,7 @@
-﻿using ERPBO.ControlPanel.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.ControlPanel.DomainModels;
 using ERPBO.ControlPanel.DTOModels;
+using ERPBO.ControlPanel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,7 @@ namespace ERPBLL.ControlPanel.Interface
         AppUser GetAppUserOneById(long id, long orgId);
         bool IsDuplicateEmployeeId(string employeeId, long id, long orgId);
         IEnumerable<AppUser> GetAllAppUsers();
+        UserDetaildDTO GetUserDetail(long userId, long orgId);
+        Task<UserInformation> GetUserInformation(UserLogInViewModel loginModel);
     }
 }

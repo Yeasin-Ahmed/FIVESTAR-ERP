@@ -1,19 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "Create Requsition";
+    ViewBag.Title = "Create Requisition";
     int sl = 0;
 }
 
 <div class="row">
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a href="/Production/GetReqInfoList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
             </div>
-            <div class="col-md-4">
-                <h4 style="color:darkblue"><b>Create New Requsition</b></h4>
+            <div class="col-md-6 text-center">
+                <h4 style="color:darkblue"><b>Create Requisition</b></h4>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <button class="btn btn-outline-danger btn-sm float-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></button>
             </div>
         </div>
@@ -24,15 +24,27 @@
             @Html.AntiForgeryToken()
             <div class="row">
                 <div class="col-md-3">
-                    <label for="ddlLineNumber" class="control-label font-weight-bold">Production Line</label>
+                    <label for="ddlLineNumber" class="control-label">Production Line</label>
                     @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line Number--", new { @class = "form-control form-control-sm" })
                     <span class="error hide req-line">Line Number is required</span>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Requisition Type</label>
+                    @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                    <span class="error hide req-type">Requisition Type is required</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                     @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
                     <span class="error hide req-warehouse">Warehouse Name is required</span>
                 </div>
+                <div class="col-md-3">
+                    <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                    <span class="error hide require-model">Model is required</span>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
                     <select id="ddlItemType" class="form-control form-control-sm">
@@ -48,9 +60,7 @@
                     <span class="error hide req-item">Item Name is required</span>
                     <span class="error hide duplicate-itemName">The Item is already exist!</span>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="txtQuantity" class="control-label font-weight-bold">Quantity</label>
                     <div class="input-group col-md-8">
                         <input type="number" name="quantity" id="txtQuantity" class="form-control form-control-sm" />
@@ -58,21 +68,15 @@
                         <span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
-                    <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                    <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtRemarks" class="form-control form-control-sm"></textarea>
                 </div>
-                <div class="col-md-3">
-                    <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
-                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed" })
-                    <span class="error hide require-model">Model is required</span>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="" class="control-label font-weight-bold" style="visibility:hidden">Add To List</label>
                     <div class="clearfix">
-                        <button type="submit" class="btn btn-sm btn-outline-warning float-left" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i> Add To List </button>
+                        <button type="submit" class="btn btn-sm btn-warning float-right" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i> Add To List </button>
                     </div>
-
                 </div>
             </div>
             <hr />
@@ -114,7 +118,17 @@
         var txtRemarks = $("#txtRemarks");
         var txtQuantity = $("#txtQuantity");
         var ddlModelName = $("#ddlModelName");
+        var ddlRequisitionType = $("ddlRequisitionType");
 
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
         ddlLineNumber.change(function () {
             disable("#ddlLineNumber")
         })
@@ -197,7 +211,11 @@
                 isValid = false;
                 $(".require-model").removeClass("hide");
             }
-
+            console.log($("#ddlRequisitionType").val());
+            if ($("#ddlRequisitionType").val() === "") {
+                isValid = false;
+                $(".req-type").removeClass("hide");
+            }
             return isValid;
         }
 
@@ -237,7 +255,7 @@
                     $("#tblRequsitionDetailsData tbody tr").removeClass("btn-success");
                 };
             }));
-           
+
         })
 
         function validateInput() {
@@ -301,7 +319,8 @@
                     ReqInfoId: 0,
                     LineId: TryParseInt(ddlLineNumber.val(), 0),
                     WarehouseId: TryParseInt(ddlWarehouse.val(), 0),
-                    DescriptionId: TryParseInt(ddlModelName.val(),0),
+                    DescriptionId: TryParseInt(ddlModelName.val(), 0),
+                    RequisitionType: $("#ddlRequisitionType").val(),
                     ReqDetails: reqDetails
                 };
 

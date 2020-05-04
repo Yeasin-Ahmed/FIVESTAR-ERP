@@ -75,9 +75,12 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-end">
-            @Html.PagedListPager((IPagedList)@Model, page => Url.Action("GetItemList", new { page = page }),
-            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "body-container", InsertionMode= InsertionMode.Replace })
-            )
+            @if ((int)ViewBag.ItemCount > 15)
+            {
+                @Html.PagedListPager((IPagedList)@Model, page => Url.Action("GetItemList", new { page = page }),
+           PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "body-container", InsertionMode= InsertionMode.Replace }))
+            }
+
         </div>
     </div>
 </div>

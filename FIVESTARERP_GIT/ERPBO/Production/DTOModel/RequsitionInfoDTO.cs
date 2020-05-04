@@ -16,6 +16,8 @@ namespace ERPBO.Production.DTOModel
         public string StateStatus { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
+        [StringLength(50)]
+        public string RequisitionType { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }

@@ -31,7 +31,10 @@ textarea {
     font-size:10pt;
     font-weight:bold;
 }
-
+.field-validation-error{
+    text-align:left !important;
+    font-size:small;
+}
 
 .bg-secondary {
     background-color: #6c757d;

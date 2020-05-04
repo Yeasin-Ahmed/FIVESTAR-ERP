@@ -4,6 +4,8 @@ using ERPBLL.Inventory;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production;
 using ERPBLL.Production.Interface;
+using ERPBLL.Report;
+using ERPBLL.Report.Interface;
 using ERPDAL.ControlPanelDAL;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
@@ -23,6 +25,7 @@ namespace ERPWeb
             // e.g. container.RegisterType<ITestService, TestService>();
 
             // Inventory Database
+            #region Inventory
             container.RegisterType<IWarehouseStockDetailBusiness, WarehouseStockDetailBusiness>();
             container.RegisterType<IWarehouseStockInfoBusiness, WarehouseStockInfoBusiness>();
             container.RegisterType<IItemBusiness, ItemBusiness>();
@@ -31,9 +34,11 @@ namespace ERPWeb
             container.RegisterType<IWarehouseBusiness, WarehouseBusiness>();
             container.RegisterType<IRepairStockInfoBusiness, RepairStockInfoBusiness>();
             container.RegisterType<IRepairStockDetailBusiness, RepairStockDetailBusiness>();
-            container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database
+            container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
+            #endregion
 
             // Production Database
+            #region Production
             container.RegisterType<IProductionLineBusiness, ProductionLineBusiness>();
             container.RegisterType<IRequsitionDetailBusiness, RequsitionDetailBusiness>();
             container.RegisterType<IRequsitionInfoBusiness, RequsitionInfoBusiness>();
@@ -50,8 +55,10 @@ namespace ERPWeb
             container.RegisterType<IFinishGoodsSendToWarehouseInfoBusiness, FinishGoodsSendToWarehouseInfoBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseDetailBusiness, FinishGoodsSendToWarehouseDetailBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
+            #endregion
 
-            // Control Panel Database
+            // ControlPanel Database
+            #region ControlPanel
             container.RegisterType<ISubMenuBusiness, SubMenuBusiness>();
             container.RegisterType<IManiMenuBusiness, ManiMenuBusiness>();
             container.RegisterType<IAppUserBusiness, AppUserBusiness>();
@@ -60,7 +67,16 @@ namespace ERPWeb
             container.RegisterType<IModuleBusiness, ModuleBusiness>();
             container.RegisterType<IOrganizationBusiness, OrganizationBusiness>();
             container.RegisterType<IModuleBusiness, ModuleBusiness>();
+            container.RegisterType<IOrganizationAuthBusiness, OrganizationAuthBusiness>();
+            container.RegisterType<IUserAuthorizationBusiness, UserAuthorizationBusiness>();
             container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
+            #endregion
+
+            #region Report
+
+            container.RegisterType<IProductionReportBusiness, ProductionReportBusiness>();
+
+            #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPWeb.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,9 @@ namespace ERPWeb.Controllers
 {
     public class BaseController : Controller
     {
-        protected override void Dispose(bool disposing)
+        protected virtual new CustomPrincipal User
         {
-            base.Dispose(disposing);
+            get { return HttpContext.User as CustomPrincipal; }
         }
     }
 }

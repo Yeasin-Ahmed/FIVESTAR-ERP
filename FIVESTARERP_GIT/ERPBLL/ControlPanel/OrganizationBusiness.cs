@@ -73,17 +73,19 @@ namespace ERPBLL.ControlPanel
                     orgInDb.Website = org.Website;
                     orgInDb.Email = org.Email;
                     orgInDb.Fax = org.Fax;
-                    orgInDb.OrgLogoPath = org.OrgLogoPath;
-                    orgInDb.ReportLogoPath = org.ReportLogoPath;
+                    //orgInDb.OrgLogoPath = org.OrgLogoPath;
+                    //orgInDb.ReportLogoPath = org.ReportLogoPath;
                     orgInDb.IsActive = org.IsActive;
                     orgInDb.UpUserId = userId;
                     orgInDb.UpdateDate = DateTime.Now;
                     if (org.OrgImage != null)
                     {
+                        Utility.DeleteImage(orgInDb.OrgLogoPath);
                         orgInDb.OrgLogoPath = Utility.SaveImage(org.OrgImage.InputStream, org.OrgImage.FileName, Utility.OrgLogoPath, org.OrgId);
                     }
                     if (org.ReportImage != null)
                     {
+                        Utility.DeleteImage(orgInDb.ReportLogoPath);
                         orgInDb.ReportLogoPath = Utility.SaveImage(org.ReportImage.InputStream, org.ReportImage.FileName, Utility.ReportLogoPath, org.OrgId);
                     }
                     _organizationRepository.Update(orgInDb);

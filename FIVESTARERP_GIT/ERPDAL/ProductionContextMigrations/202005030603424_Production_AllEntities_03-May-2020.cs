@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Production_AllEntities_20April2020 : DbMigration
+    public partial class Production_AllEntities_03May2020 : DbMigration
     {
         public override void Up()
         {
@@ -279,6 +279,7 @@ namespace ERPDAL.ProductionContextMigrations
                         ReqInfoCode = c.String(maxLength: 100),
                         StateStatus = c.String(maxLength: 100),
                         Remarks = c.String(maxLength: 150),
+                        RequisitionType = c.String(maxLength: 50),
                         OrganizationId = c.Long(nullable: false),
                         EUserId = c.Long(),
                         EntryDate = c.DateTime(),

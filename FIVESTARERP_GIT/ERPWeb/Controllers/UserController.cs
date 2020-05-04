@@ -1,6 +1,8 @@
-﻿using ERPBLL.Production.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Production.Interface;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
+using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,7 @@ using System.Web.Mvc;
 
 namespace ERPWeb.Controllers
 {
+    [CustomAuthorize]
     public class UserController : BaseController
     {
         // GET: User
@@ -36,7 +39,27 @@ namespace ERPWeb.Controllers
            IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
             ViewBag.RequisitionSummery = viewModel;
+            // Requisition Status // YSN
 
+             var reqAccepted = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Accepted);
+            ViewBag.RequisitionAccepted = (reqAccepted == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Accepted", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel {StateStatus= reqAccepted.StateStatus,TotalCount= reqAccepted.TotalCount };
+
+            var reqApproved = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Approved);
+            ViewBag.RequisitionApproved = (reqApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Approved", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqApproved.StateStatus, TotalCount = reqApproved.TotalCount };
+
+            var reqPending = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Pending);
+            ViewBag.RequisitionPending = (reqPending == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Pending", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqPending.StateStatus, TotalCount = reqPending.TotalCount };
+
+            var reqRecheck = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Recheck);
+            ViewBag.RequisitionRecheck = (reqRecheck == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Recheck", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqRecheck.StateStatus, TotalCount = reqRecheck.TotalCount };
+
+            var reqCancel = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Canceled);
+            ViewBag.RequisitionCancel = (reqCancel == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Cancel", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqCancel.StateStatus, TotalCount = reqCancel.TotalCount };
+
+            var reqReject = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Rejected);
+            ViewBag.RequisitionReject = (reqReject == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Rejected", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqReject.StateStatus, TotalCount = reqReject.TotalCount };
+
+            //--------------------//
             // Line wise daily Production
             IEnumerable<DashboardLineWiseProductionDTO> dashboardLineWises = _finishGoodsStockDetailBusiness.DashboardLineWiseDailyProduction(OrgId);
             IEnumerable<DashboardLineWiseProductionViewModel> dashboardLines = new List<DashboardLineWiseProductionViewModel>();

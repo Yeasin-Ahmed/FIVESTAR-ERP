@@ -7,29 +7,37 @@ using System.Web.Mvc;
 using ERPBO.Inventory.DTOModel;
 using ERPBLL.ControlPanel.Interface;
 using System.Collections.Generic;
+using ERPBO.ControlPanel.ViewModels;
 
 namespace ERPWeb.Controllers
 {
-
+    [CustomAuthorize]
     public class CommonController : BaseController
     {
+        // Warehouse
         private readonly IWarehouseBusiness _warehouseBusiness;
         private readonly IItemTypeBusiness _itemTypeBusiness;
         private readonly IUnitBusiness _unitBusiness;
         private readonly IItemBusiness _itemBusiness;
+        private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
+
+        // Production
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IProductionLineBusiness _productionLineBusiness;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
-        private readonly IAppUserBusiness _appUserBusiness;
-        private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
-        private readonly IRoleBusiness _roleBusiness;
-        private readonly IBranchBusiness _branchBusiness;
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
 
-        private readonly long UserId = 1;
-        private readonly long OrgId = 1;
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness)
+        // ControlPanel
+        private readonly IAppUserBusiness _appUserBusiness;
+        private readonly IRoleBusiness _roleBusiness;
+        private readonly IBranchBusiness _branchBusiness;
+        private readonly IOrganizationBusiness _organizationBusiness;
+        private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
+
+        private readonly long UserId=1;
+        private readonly long OrgId=1;
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -44,7 +52,92 @@ namespace ERPWeb.Controllers
             this._roleBusiness = roleBusiness;
             this._branchBusiness = branchBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
+            this._organizationBusiness = organizationBusiness;
+            this._userAuthorizationBusiness = userAuthorizationBusiness;
+            //this.UserId = User.UserId;
+            //this.OrgId = User.OrgId;
         }
+
+        #region User Menus
+        public ActionResult GetUserMenus()
+        {
+            // This is a three level menu //
+            List<UserMainMenuViewModel> listOfUserMainMenuViewModel = new List<UserMainMenuViewModel>();
+            if (User.UserId > 0 && User.OrgId > 0 && User.IsRoleActive ==false) // When Users Role is Inactive //
+            {
+                var userAllMenus = (List<UserAuthorizeMenusViewModels>)Session["UserAuthorizeMenus"]; //_userAuthorizationBusiness.GetUserAuthorizeMenus(UserId, OrgId);
+                
+
+                var menus = (from mm in userAllMenus
+                             select new { MainmenuId = mm.MainmenuId, MainmenuName = mm.MainmenuName }).Distinct().ToList();
+
+                foreach (var mm in menus)
+                {
+                    UserMainMenuViewModel userMainMenuViewModel = new UserMainMenuViewModel();
+                    userMainMenuViewModel.MainmenuId = mm.MainmenuId;
+                    userMainMenuViewModel.MainmenuName = mm.MainmenuName;
+
+                    List<UserSubmenuViewModel> listOfSubmenus = new List<UserSubmenuViewModel>();
+                    var submenuWithParent = (from sub in userAllMenus
+                                             where sub.MainmenuId == mm.MainmenuId && sub.ParentSubMenuId > 0
+                                             select new { ParentSubMenuId = sub.ParentSubMenuId, ParentSubmenuName = sub.ParentSubmenuName }).Distinct().ToList();
+
+                    var submenuWithoutParent = (from sub in userAllMenus
+                                             where sub.MainmenuId == mm.MainmenuId && sub.ParentSubMenuId == 0 && sub.IsViewable == true
+                                             select new { SubMenuId = sub.SubmenuId, SubmenuName = sub.SubMenuName,ControllerName=sub.ControllerName,ActionName=sub.ActionName }).Distinct().ToList();
+
+                    foreach (var submenu in submenuWithoutParent)
+                    {
+                        UserSubmenuViewModel userSubmenu = new UserSubmenuViewModel();
+                        userSubmenu.SubmenuId = submenu.SubMenuId;
+                        userSubmenu.SubmenuName = submenu.SubmenuName;
+                        userSubmenu.ControllerName = submenu.ControllerName;
+                        userSubmenu.ActionName = submenu.ActionName;
+                        userSubmenu.IsParent = false;
+                        userSubmenu.UserSubSubmenus = new List<UserSubSubmenuViewModel>();
+                        listOfSubmenus.Add(userSubmenu);
+                    }
+                    foreach (var submenu in submenuWithParent)
+                    {
+                        UserSubmenuViewModel userSubmenu = new UserSubmenuViewModel();
+                        userSubmenu.SubmenuId = submenu.ParentSubMenuId;
+                        userSubmenu.SubmenuName = submenu.ParentSubmenuName;
+                        userSubmenu.ControllerName =string.Empty;
+                        userSubmenu.ActionName = string.Empty;
+                        userSubmenu.IsParent = true;
+
+                        // Subsubmenu
+                        List<UserSubSubmenuViewModel> listOfSubSubmenu= new List<UserSubSubmenuViewModel>();
+                        var subsubmenuItems = (from sub in userAllMenus
+                                               where sub.ParentSubMenuId == submenu.ParentSubMenuId
+                                               select new { SubmenuName = sub.SubMenuName, SubmenuId = sub.SubmenuId, ControllerName = sub.ControllerName, ActionName = sub.ActionName }).ToList();
+
+                        foreach (var item in subsubmenuItems)
+                        {
+                            UserSubSubmenuViewModel subSubmenuViewModel = new UserSubSubmenuViewModel();
+                            subSubmenuViewModel.ControllerName = item.ControllerName;
+                            subSubmenuViewModel.ActionName = item.ActionName;
+                            subSubmenuViewModel.SubsubmenuId = item.SubmenuId;
+                            subSubmenuViewModel.SubsubmenuName = item.SubmenuName;
+                            listOfSubSubmenu.Add(subSubmenuViewModel);
+                        }
+                        userSubmenu.UserSubSubmenus = listOfSubSubmenu;
+                        listOfSubmenus.Add(userSubmenu);
+                    }
+
+                    userMainMenuViewModel.UserSubmenus = listOfSubmenus;
+                    listOfUserMainMenuViewModel.Add(userMainMenuViewModel);
+                }
+                
+            }
+            else
+            {
+                // When users role is active //
+            }
+
+            return PartialView("_sidebar", listOfUserMainMenuViewModel);
+        }
+        #endregion
 
         #region Validation Action Methods
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -61,6 +154,14 @@ namespace ERPWeb.Controllers
             bool isExist = _itemTypeBusiness.IsDuplicateItemTypeName(itemTypeName, id, OrgId, warehouseId);
             return Json(isExist);
         }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateItemTypeShortName(string shortName, long id)
+        {
+            bool isExist = _itemTypeBusiness.IsDuplicateShortName(shortName, id, OrgId);
+            return Json(isExist);
+        }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateUnitName(string unitName, long id)
         {
@@ -273,6 +374,24 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost]
+        public ActionResult GetUsersByOrg(long orgId)
+        {
+            List<Dropdown> list = new List<Dropdown>();
+            if(orgId > 0)
+            {
+                if(_organizationBusiness.GetOrganizationById(orgId) != null)
+                {
+                    list = _appUserBusiness.GetAllAppUserByOrgId(orgId).Select(u => new Dropdown {
+                        text =  u.UserName,
+                        value = u.UserId.ToString()
+                    }).ToList();
+
+                }
+            }
+            return Json(list);
+        }
+
+        [HttpPost]
         public ActionResult GetWarehouseByProductionLineId(long lineId)
         {
             var data = _warehouseBusiness.GetAllWarehouseByProductionLineId(OrgId, lineId).Select(w=> new Dropdown {
@@ -284,9 +403,9 @@ namespace ERPWeb.Controllers
 
         #endregion
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    base.Dispose(disposing);
+        //}
     }
 }

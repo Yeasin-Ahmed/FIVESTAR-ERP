@@ -1,6 +1,9 @@
-﻿using ERPBLL.ControlPanel.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.ControlPanel.Interface;
+using ERPBO.Common;
 using ERPBO.ControlPanel.DomainModels;
 using ERPBO.ControlPanel.DTOModels;
+using ERPBO.ControlPanel.ViewModels;
 using ERPDAL.ControlPanelDAL;
 using System;
 using System.Collections.Generic;
@@ -32,6 +35,36 @@ namespace ERPBLL.ControlPanel
         public AppUser GetAppUserOneById(long id, long orgId)
         {
             return appUserRepository.GetOneByOrg(user => user.UserId == id && user.OrganizationId == orgId);
+        }
+
+        public UserDetaildDTO GetUserDetail(long userId, long orgId)
+        {
+            return this._controlPanelUnitOfWork.Db.Database.SqlQuery<UserDetaildDTO>(string.Format(@"Select a.EmployeeId,o.OrganizationName,a.UserName,a.FullName,ISNULL(a.Email,'N/A') 'Email',ISNULL(a.Desigation,'N/A') 'Designation',r.RoleName, 
+(Case When a.IsRoleActive = 0 then 'Inactive' else 'Active' End)'RoleStatus',
+(Case When a.IsActive = 0 then 'Inactive' else 'Active' End)'UserStatus',
+ISNULL(a.Address,'N/A') 'Address'
+From tblApplicationUsers a
+Inner Join tblOrganizations o on a.OrganizationId = o.OrganizationId
+Left Join tblRoles r on a.RoleId = r.RoleId
+Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).Single();
+        }
+
+        public async Task<UserInformation> GetUserInformation(UserLogInViewModel loginModel)
+        {
+            UserInformation user = new UserInformation();
+            if(loginModel.UserName !="" && loginModel.Password != "")
+            {
+                if(Utility.ParamChecker(loginModel.UserName) !="" && Utility.ParamChecker(loginModel.Password) != "")
+                {
+                    user = await _controlPanelUnitOfWork.Db.Database.SqlQuery<UserInformation>(string.Format(@"Select U.UserId,U.UserName,U.Desigation 'Designation',U.EmployeeId,U.Email,U.[Address],U.MobileNo,U.FullName,U.IsActive,O.OrganizationId,O.OrganizationName,O.OrgLogoPath,
+O.ReportLogoPath, 
+R.RoleName,R.RoleId,O.IsActive 'IsOrgActive',U.IsRoleActive From tblApplicationUsers U
+Inner Join tblOrganizations O on U.OrganizationId = O.OrganizationId
+Inner Join tblRoles R On U.RoleId = R.RoleId And R.OrganizationId = U.OrganizationId
+Where U.UserName = '{0}' And U.[Password] = '{1}'", loginModel.UserName, loginModel.Password)).FirstOrDefaultAsync();
+                }
+            }
+            return user;
         }
 
         public bool IsDuplicateEmployeeId(string employeeId, long id, long orgId)

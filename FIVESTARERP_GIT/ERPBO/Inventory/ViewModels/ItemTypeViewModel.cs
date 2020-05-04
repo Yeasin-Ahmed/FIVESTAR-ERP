@@ -12,6 +12,8 @@ namespace ERPBO.Inventory.ViewModels
         public long ItemId { get; set; }
         [Required,StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(5)]
+        public string ShortName { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public bool IsActive { get; set; }

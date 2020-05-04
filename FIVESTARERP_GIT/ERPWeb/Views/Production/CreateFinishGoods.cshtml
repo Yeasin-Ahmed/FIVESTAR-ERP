@@ -47,7 +47,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="col-form-label">Model</label>
-                                    @Html.DropDownList("ddlModel", (IEnumerable<SelectListItem>)ViewBag.ddlModel, "--- Select Model ---", new { @class = "form-control form-control-sm" })
+                                    @Html.DropDownList("ddlModel", (IEnumerable<SelectListItem>)ViewBag.ddlModel, "--- Select Model ---", new { @class = "form-control form-control-sm select2 select2-danger" })
                                     <span class="error hide req-model">Model is require</span>
                                 </div>
                                 <div class="col-md-6">
@@ -155,6 +155,16 @@
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var txtStockOutQty = $("#txtStockOutQty");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
 
         ddlItem.change(function () {
             LoadItemStock()

@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace ERPWeb.Controllers
 {
+    [CustomAuthorize]
     public class ControlPanelController : Controller
     {
         private readonly IOrganizationBusiness _organizationBusiness;
@@ -21,11 +22,12 @@ namespace ERPWeb.Controllers
         private readonly IModuleBusiness _moduleBusiness;
         private readonly IManiMenuBusiness _maniMenuBusiness;
         private readonly ISubMenuBusiness _subMenuBusiness;
-
+        private readonly IOrganizationAuthBusiness _organizationAuthBusiness;
+        private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness, IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness, IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness, IOrganizationAuthBusiness organizationAuthBusiness, IUserAuthorizationBusiness userAuthorizationBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
@@ -34,6 +36,8 @@ namespace ERPWeb.Controllers
             this._moduleBusiness = moduleBusiness;
             this._maniMenuBusiness = maniMenuBusiness;
             this._subMenuBusiness = subMenuBusiness;
+            this._organizationAuthBusiness= organizationAuthBusiness;
+            this._userAuthorizationBusiness = userAuthorizationBusiness;
         }
         // GET: ControlPanel
         #region Organization
@@ -42,6 +46,7 @@ namespace ERPWeb.Controllers
         {
             IEnumerable<OrganizationDTO> organizationDTOs = _organizationBusiness.GetAllOrganizations().Select(org => new OrganizationDTO
             {
+                OrgId =org.OrganizationId,
                 OrganizationName = org.OrganizationName,
                 ShortName = org.ShortName,
                 Address = org.Address,
@@ -82,6 +87,8 @@ namespace ERPWeb.Controllers
                 organizationViewModel.IsActive = Org.IsActive;
                 organizationViewModel.Fax = Org.Fax;
                 organizationViewModel.ShortName = Org.ShortName;
+                organizationViewModel.OrgLogoPath = Org.OrgLogoPath;
+                organizationViewModel.ReportLogoPath = Org.ReportLogoPath;
                 pageTitle = "Update Organization";
             }
             ViewBag.PageTitle = pageTitle;
@@ -355,6 +362,136 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
+        }
+        #endregion
+
+        #region Orgainzation Auth
+        public ActionResult GetMainMenusForOrgAuth(string flag,long? orgId)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                var allmainmenus = _organizationAuthBusiness.GetMainMenusForOrgAuth();
+                List<ModuleUIViewModel> viewModels = new List<ModuleUIViewModel>();
+                var modules = allmainmenus.Select(s => s.MId).Distinct().ToList();
+                foreach (var item in modules)
+                {
+                    ModuleUIViewModel module = new ModuleUIViewModel();
+                    var mainmenu = allmainmenus.Where(m => m.MId == item).ToList();
+                    if (mainmenu.Count > 0)
+                    {
+                        module.MId = item;
+                        module.ModuleName = mainmenu.FirstOrDefault().ModuleName;
+                        List<MainMenuUIVIewModel> mainMenuUIVIews = new List<MainMenuUIVIewModel>();
+                        foreach (var menu in mainmenu)
+                        {
+                            MainMenuUIVIewModel m = new MainMenuUIVIewModel();
+                            m.MMId = menu.MMId;
+                            m.MainmenuName = menu.MenuName;
+                            mainMenuUIVIews.Add(m);
+                        }
+                        module.MainMenus = mainMenuUIVIews;
+                    }
+                    viewModels.Add(module);
+                }
+
+                ViewBag.ddlOrganization = _organizationBusiness.GetAllOrganizations().Select(s => new SelectListItem
+                {
+                    Text = s.OrganizationName,
+                    Value = s.OrganizationId.ToString()
+                }).ToList();
+                return View(viewModels);
+            }
+            else
+            {
+                var allmainmenusByOrg = _organizationAuthBusiness.GetMainMenusForOrgAuthById(orgId.Value);
+                return Json(allmainmenusByOrg);
+            }
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveOrganizationAuthMenus(OrgAuthMenusViewModels viewModels)
+        {
+            bool IsSuccess = false;
+            if(ModelState.IsValid && viewModels.Menus.Count > 0)
+            {
+                OrgAuthMenusDTO dto = new OrgAuthMenusDTO();
+                AutoMapper.Mapper.Map(viewModels, dto);
+                IsSuccess = this._organizationAuthBusiness.SaveOrganizationAuthMenus(dto, UserId);
+            }
+            return Json(IsSuccess);
+        }
+
+        public ActionResult SetUserCustomAuthorization(string flag, long? userId, long? orgId )
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlOrganization = _organizationBusiness.GetAllOrganizations().Select(o => new SelectListItem
+                {
+                    Text = o.OrganizationName,
+                    Value = o.OrganizationId.ToString()
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                List<VmUserModule> listVmUserModule = new List<VmUserModule>();
+                IEnumerable<UserCustomMenusDTO> userCustomMenus = _userAuthorizationBusiness.GetUserCustomMenus(userId.Value, orgId.Value);
+                 var userDto =_appUserBusiness.GetUserDetail(userId.Value, orgId.Value);
+                UserDetaildViewModel userDetaildViewModel = new UserDetaildViewModel();
+                AutoMapper.Mapper.Map(userDto, userDetaildViewModel);
+                if (userCustomMenus.Count() > 0)
+                {
+                    var modules = (from m in userCustomMenus
+                                   select new { MId = m.ModuleId, ModuleName = m.ModuleName }).Distinct().ToList();
+                    foreach (var item in modules)
+                    {
+                        VmUserModule vmUserModule = new VmUserModule();
+                        vmUserModule.ModuleId = item.MId;
+                        vmUserModule.ModuleName = item.ModuleName;
+                        List<VmUserMenu> vmUserMenus = new List<VmUserMenu>();
+                        var mainmenu = (from m in userCustomMenus
+                                        where m.ModuleId == item.MId
+                                        select new { MenuId = m.MainmenuId, MenuName = m.MainmenuName }).Distinct().ToList();
+                        foreach (var mm in mainmenu)
+                        {
+                            VmUserMenu vmUserMenu = new VmUserMenu();
+                            vmUserMenu.MenuId = mm.MenuId;
+                            vmUserMenu.MenuName = mm.MenuName;
+                            vmUserMenu.SubMenus = userCustomMenus.Where(s => s.MainmenuId == mm.MenuId).Select(s => new VmUserSubmenu
+                            {
+                                SubmenuId = s.SubmenuId,
+                                SubMenuName = s.SubMenuName,
+                                ParentSubMenuId = s.ParentSubMenuId,
+                                Add = s.Add,
+                                Edit = s.Edit,
+                                Detail = s.Detail,
+                                Delete = s.Delete,
+                                Approval = s.Approval,
+                                Report = s.Report,
+                                TaskId = s.TaskId
+                            }).ToList();
+                            vmUserMenus.Add(vmUserMenu);
+                        }
+
+                        vmUserModule.Menus = vmUserMenus;
+                        listVmUserModule.Add(vmUserModule);
+                    }
+                }
+                return Json(new {userDetail=userDetaildViewModel,menuDetail=listVmUserModule });
+            }
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveUserAuthorization(List<UserAuthorizationViewModel> models)
+        {
+            bool IsSuccess = false;
+            if(models.Count > 0)
+            {
+                List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
+                AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
+                IsSuccess=_userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, UserId, OrgId);
+            }
+            return Json(IsSuccess);
         }
         #endregion
     }

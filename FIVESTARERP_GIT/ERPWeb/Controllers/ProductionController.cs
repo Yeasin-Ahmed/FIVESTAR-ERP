@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace ERPWeb.Controllers
 {
+    [CustomAuthorize]
     public class ProductionController : BaseController
     {
         // GET: Production
@@ -118,6 +119,8 @@ namespace ERPWeb.Controllers
             }).ToList();
 
             ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlRequisitionType = Utility.ListOfRequisitionType().Select(r => new SelectListItem {Text=r.text,Value=r.value }).ToList();
             return View();
         }
         public ActionResult CreateRequsition()
@@ -125,6 +128,8 @@ namespace ERPWeb.Controllers
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(line => new SelectListItem { Text = line.WarehouseName, Value = line.Id.ToString() }).ToList();
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
             ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+            ViewBag.ddlRequisitionType = Utility.ListOfRequisitionType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
             return View();
         }
 
@@ -157,7 +162,7 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList ActionMethod
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? modelId, long? line, string fromDate, string toDate)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? modelId, long? line, string fromDate, string toDate,string requisitionType)
         {
             var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(OrgId);
             IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(OrgId).Where(req =>
@@ -165,6 +170,7 @@ namespace ERPWeb.Controllers
                 (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode)) &&
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId) &&
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim()) &&
+                (requisitionType == null || requisitionType.Trim() == "" || req.RequisitionType == requisitionType.Trim()) &&
                 (line == null || line <= 0 || req.LineId == line) &&
                 (modelId == null || modelId <= 0 || req.DescriptionId == modelId) &&
                 (
@@ -195,6 +201,7 @@ namespace ERPWeb.Controllers
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, OrgId).WarehouseName),
                 ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, OrgId).Select(s => s.ItemId).Distinct().Count(),
+                RequisitionType = info.RequisitionType
             }).ToList();
             List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
             AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);

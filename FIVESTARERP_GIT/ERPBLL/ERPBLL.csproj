@@ -75,13 +75,17 @@
     <Compile Include="ControlPanel\Interface\IBranchBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IManiMenuBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IModuleBusiness.cs" />
+    <Compile Include="ControlPanel\Interface\IOrganizationAuthBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IOrganizationBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IRoleBusiness.cs" />
+    <Compile Include="ControlPanel\Interface\IUserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\Interface\ISubMenuBusiness.cs" />
     <Compile Include="ControlPanel\ManiMenuBusiness.cs" />
     <Compile Include="ControlPanel\ModuleBusiness.cs" />
+    <Compile Include="ControlPanel\OrganizationAuthBusiness.cs" />
     <Compile Include="ControlPanel\OrganizationBusiness.cs" />
     <Compile Include="ControlPanel\RoleBusiness.cs" />
+    <Compile Include="ControlPanel\UserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\SubMenuBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockInfoBusiness.cs" />
@@ -128,6 +132,8 @@
     <Compile Include="Inventory\UnitBusiness.cs" />
     <Compile Include="Inventory\WarehouseBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\Interface\IProductionReportBusiness.cs" />
+    <Compile Include="Report\ProductionReportBusiness.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBO\ERPBO.csproj">

@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed" })
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
             </div>
         </div>
         <div class="row">
@@ -109,6 +109,13 @@
 
         $(document).ready(function ()
         {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
