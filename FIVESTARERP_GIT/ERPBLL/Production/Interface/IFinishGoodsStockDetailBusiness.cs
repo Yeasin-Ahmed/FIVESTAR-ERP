@@ -1,4 +1,5 @@
-﻿using ERPBO.Production.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<FinishGoodsStockDetailInfoListDTO> GetFinishGoodsStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum);
         IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseDailyProduction(long orgId);
         IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseOverAllProduction(long orgId);
+        IEnumerable<DaysAndLineWiseProductionChart> GetDayAndLineProductionChartsData(long orgId);
+        IEnumerable<DayAndModelWiseProductionChart> GetDayAndModelWiseProductionChart(long orgId);
     }
 }

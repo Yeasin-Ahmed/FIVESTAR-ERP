@@ -258,6 +258,7 @@
       <DependentUpon>ProductionDS.xsd</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\download.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -289,6 +290,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\select2.full.min.js" />
     <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\sparkline.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />

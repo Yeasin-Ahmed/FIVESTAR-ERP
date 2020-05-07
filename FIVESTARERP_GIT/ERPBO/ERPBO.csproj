@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DayAndModelWiseProductionChart.cs" />
+    <Compile Include="Common\DaysAndLineWiseProductionChart.cs" />
     <Compile Include="Common\CustomPrincipalSerializeModel.cs" />
     <Compile Include="Common\Dropdown.cs" />
     <Compile Include="Common\ExecutionStateWithText.cs" />

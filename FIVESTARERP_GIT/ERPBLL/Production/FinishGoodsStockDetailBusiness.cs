@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -199,6 +200,26 @@ Where 1=1 {0}", Utility.ParamChecker(param));
             }
             _finishGoodsStockDetailRepository.InsertAll(finishGoodsStockDetail);
             return _finishGoodsStockDetailRepository.Save();
+        }
+
+        public IEnumerable<DaysAndLineWiseProductionChart> GetDayAndLineProductionChartsData(long orgId)
+        {
+            IEnumerable<DaysAndLineWiseProductionChart> data = new List<DaysAndLineWiseProductionChart>();
+            if (orgId> 0)
+            {
+                data = this._productionDb.Db.Database.SqlQuery<DaysAndLineWiseProductionChart>(string.Format(@"Exec spDaysAndLineWiseProductionChart {0}",orgId)).ToList();
+            }
+            return data;
+        }
+
+        public IEnumerable<DayAndModelWiseProductionChart> GetDayAndModelWiseProductionChart(long orgId)
+        {
+            IEnumerable<DayAndModelWiseProductionChart> data = new List<DayAndModelWiseProductionChart>();
+            if (orgId > 0)
+            {
+                data = this._productionDb.Db.Database.SqlQuery<DayAndModelWiseProductionChart>(string.Format(@"Exec [spDaysAndModelWiseProductionChart] {0}", orgId)).ToList();
+            }
+            return data;
         }
     }
 }
