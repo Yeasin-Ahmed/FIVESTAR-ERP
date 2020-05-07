@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
 using ERPWeb.Filters;
@@ -85,6 +86,40 @@ namespace ERPWeb.Controllers
             ViewBag.DashboardFacultyWiseOverAllProductionViewModel = OverAllFacultyViews;
 
             return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GetChartData()
+        {
+            var data =_finishGoodsStockDetailBusiness.GetDayAndLineProductionChartsData(User.OrgId);
+            var lineNumber = (from ln in data
+                         select ln.LineNumber).Distinct().ToArray();
+
+            var months = (from ln in data
+                          select ln.Date).Distinct().ToArray();
+            List<List<int>> charts = new List<List<int>>();
+
+            foreach (var item in lineNumber)
+            {
+                var qtys = data.Where(c => c.LineNumber == item).Select(c => c.Quantity).ToList();
+                charts.Add(qtys);
+            }
+
+            // Chart-2 
+            var data2 = _finishGoodsStockDetailBusiness.GetDayAndModelWiseProductionChart(User.OrgId);
+            var modelNames = (from ln in data2
+                              select ln.ModelName).Distinct().ToArray();
+
+            var months2 = (from ln in data
+                          select ln.Date).Distinct().ToArray();
+            List<List<int>> charts2 = new List<List<int>>();
+
+            foreach (var item in modelNames)
+            {
+                var qtys = data2.Where(c => c.ModelName == item).Select(c => c.Quantity).ToList();
+                charts2.Add(qtys);
+            }
+            return Json(new {lines= lineNumber, months= months, charts= charts, models= modelNames, charts2=charts2,months2= months2 });
         }
 
         protected override void Dispose(bool disposing)

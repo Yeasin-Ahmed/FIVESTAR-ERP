@@ -11,6 +11,7 @@
     </div>
 </div>
 <div class="row">
+    @Html.AntiForgeryToken()
     <div class="col-sm-3 col-6">
         <div class="card card-indigo">
             <div class="card-header border-transparent">
@@ -288,55 +289,13 @@
         </div>
     </div>
 </div>
-@*<div class="row">
-    <div class="col-sm-3 col-6">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title">Production Requsition</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table m-0">
-                        <thead>
-                            <tr>
-                                <th class="text-center">StateStatus</th>
-                                <th class="text-center">TotalCount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var info in (IEnumerable<DashboardRequisitionSummeryViewModel>)ViewBag.RequisitionSummery)
-                            {
-                                sl = sl + 1;
-                                badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
-                                <tr>
-                                    <td class="text-center" data-val="@info.StateStatus">
-                                        <span class="@badge">@info.StateStatus</span>
-                                    </td>
-                                    <td class="text-center text-bold">@info.TotalCount</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
 <div class="row">
-    <div class="col-md-6">
-        <div class="card" style="background-color:lightblue">
+    <div class="col-md-12">
+        <div class="card">
             <div class="card-header border-0">
                 <h3 class="card-title">
                     <i class="fas fa-th mr-1"></i>
-                    DayWise Production Graph(By Line)
+                    Line Wise Last 30 Days Production Graph
                 </h3>
                 <div class="card-tools">
                     <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
@@ -348,32 +307,278 @@
                 </div>
             </div>
             <div class="card-body">
-                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card" style="background-color:lightblue">
-            <div class="card-header border-0">
-                <h3 class="card-title">
-                    <i class="fas fa-th mr-1"></i>
-                    Production Graph(By Model)
-                </h3>
-                <div class="card-tools">
-                    <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
+                <div style="width:100%;height:100%;">
+                    <canvas class="chart" id="daylineChart" style="min-height: 300px; height: 300px; max-height: 300px; min-width: 100%;max-width:960px"></canvas>
                 </div>
-            </div>
-            <div class="card-body">
-                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <h3 class="card-title">
+                    <i class="fas fa-th mr-1"></i>
+                    Model Wise Last 30 Days Production Graph
+                </h3>
+                <div class="card-tools">
+                    <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="width:100%;height:100%;">
+                    <canvas class="chart" id="modellineChart" style="min-height: 300px; height: 300px; max-height: 300px; min-width: 100%;max-width:960px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/User/GetChartData', null, getToken())).then(function (res, status) {
+                if (status === 'success') {
+                    console.log(res);
+                    GenerateDayLineProductionChart(res.lines, res.months, res.charts);
+                    GenerateDayModelProductionChart(res.models, res.months2, res.charts2);
+                }
+                else {
+                    $(".toastrDefaultError").trigger('click');
+                    $(".toastrDefaultError").fadeOut(800);
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $(".toastrDefaultError").trigger('click');
+                $(".toastrDefaultError").fadeOut(800);
+            })
+        })
+
+        var colors = ["#27AE60", "#ffc107", "#8D6E63", "#BA68C8", "#2196F3", "#009688", "#D4E157", "#9E9E9E", "#607D8B", "#CC3333", "#DC7633", "#E91E63", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000"];
+
+        function GenerateDayLineProductionChart(line, month, data) {
+            var canvas = document.getElementById('daylineChart');
+            canvas.width = 960;
+            canvas.height = 300;
+
+            var myCanvas = canvas.getContext('2d');
+            var line = line;
+            var month = month;
+            var data = data;
+
+            var mydataSets = [];
+            mydataSets.length = 0;
+
+            for (var i = 0; i < line.length; i++) {
+
+                mydataSets.push({
+                    label: line[i],
+                    fill: false,
+                    borderWidth: 2,
+                    lineTension: 0,
+                    spanGaps: true,
+                    borderColor: colors[i],
+                    pointRadius: 3,
+                    pointHoverRadius: 7,
+                    pointColor: colors[i],
+                    pointBackgroundColor: colors[i],
+                    data: data[i]
+                })
+            }
+            console.log('My data set');
+            console.log(mydataSets);
+
+            var chartData = {
+                labels: month,
+                datasets: mydataSets
+            };
+
+            console.log(chartData);
+
+            var ChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#efefef',
+                        },
+                        gridLines: {
+                            display: false,
+                            color: '#efefef',
+                            drawBorder: false,
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 2000,
+                            fontColor: '#efefef',
+
+                        },
+                        gridLines: {
+                            display: true,
+                            color: '#efefef',
+                            drawBorder: false,
+                        }
+                    }]
+                }
+            }
+            Chart.defaults.global.legend.labels.usePointStyle = true;
+            var chart = new Chart(myCanvas, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                fontColor: "#000",
+                                fontStyle: "bold",
+                                beginAtZero: true,
+                                maxTicksLimit: 5, //5
+                                //padding: 3 // 20
+                            },
+                            gridLines: {
+                                //drawTicks: false,
+                                //display: false,
+                            }
+
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                //zeroLineColor: "transparent"
+                            },
+                            ticks: {
+                                padding: 20, //20
+                                fontColor: "rgba(0,0,0,0.5)",
+                                fontStyle: "bold"
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+        function GenerateDayModelProductionChart(model, month, data) {
+            var canvas = document.getElementById('modellineChart');
+            canvas.width = 960;
+            canvas.height = 300;
+
+            var myCanvas = canvas.getContext('2d');
+            var model = model;
+            var month = month;
+            var data = data;
+
+            var mydataSets = [];
+            mydataSets.length = 0;
+
+            for (var i = 0; i < model.length; i++) {
+
+                mydataSets.push({
+                    label: model[i],
+                    fill: false,
+                    borderWidth: 2,
+                    lineTension: 0,
+                    spanGaps: true,
+                    borderColor: colors[i],
+                    pointRadius: 3,
+                    pointHoverRadius: 7,
+                    pointColor: colors[i],
+                    pointBackgroundColor: colors[i],
+                    data: data[i]
+                })
+            }
+            console.log('My data set');
+            console.log(mydataSets);
+
+            var chartData = {
+                labels: month,
+                datasets: mydataSets
+            };
+
+            console.log(chartData);
+
+            var ChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#efefef',
+                        },
+                        gridLines: {
+                            display: false,
+                            color: '#efefef',
+                            drawBorder: false,
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 2000,
+                            fontColor: '#efefef',
+
+                        },
+                        gridLines: {
+                            display: true,
+                            color: '#efefef',
+                            drawBorder: false,
+                        }
+                    }]
+                }
+            }
+            Chart.defaults.global.legend.labels.usePointStyle = true;
+            var chart = new Chart(myCanvas, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                fontColor: "#000",
+                                fontStyle: "bold",
+                                beginAtZero: true,
+                                maxTicksLimit: 5, //5
+                                //padding: 3 // 20
+                            },
+                            gridLines: {
+                                //drawTicks: false,
+                                //display: false,
+                            }
+
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                //zeroLineColor: "transparent"
+                            },
+                            ticks: {
+                                padding: 20, //20
+                                fontColor: "rgba(0,0,0,0.5)",
+                                fontStyle: "bold"
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+    </script>
+}
 
 
