@@ -187,7 +187,14 @@
                 var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
                 var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + "</tr>";
-                $("#tblRequsitionDetailsData tbody").append(tr);
+
+                if ($("#tblRequsitionDetailsData tbody tr").length == 0) {
+                    $("#tblRequsitionDetailsData tbody").append(tr);
+                }
+                else {
+                    $("#tblRequsitionDetailsData tbody tr").eq(0).before(tr);
+                }
+                //$("#tblRequsitionDetailsData tbody").append(tr);
                 clearCtrl();
             }
         });
@@ -251,11 +258,11 @@
             if (bootbox.confirm("Are you sure you want to delete?", function (result) {
                 if (result === true) {
                     removeTableRow("#tblRequsitionDetailsData tbody", index);
-                    fnFixTheTbodyRowSerial("#tblRequsitionDetailsData", index);
+                    //fnFixTheTbodyRowSerial("#tblRequsitionDetailsData", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblRequsitionDetailsData", index);
                     $("#tblRequsitionDetailsData tbody tr").removeClass("btn-success");
                 };
             }));
-
         })
 
         function validateInput() {

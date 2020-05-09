@@ -575,6 +575,19 @@ function fnFixTheTbodyRowSerial(tableId, rowIndex) {
     });
 }
 
+function fnFixTheTbodyRowSerialInDecsOrder(tableId, rowIndex) {
+    var tableLen = $(tableId + " tbody tr").length;
+    if (tableLen !== 0) {
+        var count = 1;
+        $.each($(tableId + " tbody tr"), function (index, item) {
+            if (rowIndex !== index) {
+                $(this).find('td:eq(0)').text(tableLen - count);
+                count++;
+            }
+        });
+    }
+}
+
 // Search By Anything on the table
 function fnSearchByAnything(searchElementId, tableId) {
     var value = $(searchElementId).val().toLowerCase();

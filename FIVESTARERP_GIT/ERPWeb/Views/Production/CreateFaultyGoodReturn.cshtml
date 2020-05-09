@@ -302,7 +302,14 @@
             var td7 = '<td>' + txtRemark.val() + '</td>';
             var td8 = '<td class="text-center"><a href="#" class="btn btn-sm btn-outline-danger data-onfly-del"><i class="far fa-trash-alt"></i> Delete</a></td>';
             var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + '</tr>';
-            $("#tblNewData tbody").append(tr);
+            //$("#tblNewData tbody").append(tr);
+
+            if ($("#tblNewData tbody tr").length == 0) {
+                $("#tblNewData tbody").append(tr);
+            }
+            else {
+                $("#tblNewData tbody tr").eq(0).before(tr);
+            }
         }
 
         $(document).on('click', 'a.data-onfly-del', function (e) {
@@ -311,7 +318,8 @@
                 if (result === true) {
                     var index = $(this).parent().parents('tbody tr').index();
                     removeTableRow("#tblNewData tbody", index);
-                    fnFixTheTbodyRowSerial("#tblNewData", index);
+                    //fnFixTheTbodyRowSerial("#tblNewData", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblNewData tbody", index);
                 };
             }));
         })

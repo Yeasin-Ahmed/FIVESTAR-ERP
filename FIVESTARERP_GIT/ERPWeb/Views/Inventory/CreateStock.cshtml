@@ -76,8 +76,7 @@
                             </th>
                         </tr>
                         <tr class="btn-dark text-center">
-
-                            <th>SL No.</th>
+                            <th>#SL</th>
                             <th class="hide"></th>
                             <th>Item Type Name</th>
                             <th class="hide"></th>
@@ -195,7 +194,7 @@
 
                 disable("#ddlWarehouse");
                 var sl = $("#tblWarehouseStock tbody tr").length;
-                var td1 = "<td class='text-center'>" + (sl + 1) + "</td>"
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
                 var td2 = "<td class='hide'>" + ddlItemType.val() + "</td>";
                 var td3 = "<td>" + $("#ddlItemType option:selected").text() + "</td>";
 
@@ -208,14 +207,20 @@
                 var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
                 var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + "</tr>";
-                $("#tblWarehouseStock tbody").append(tr);
+                if ($("#tblWarehouseStock tbody tr").length == 0) {
+                    $("#tblWarehouseStock tbody").append(tr);
+                }
+                else {
+                    $("#tblWarehouseStock tbody tr").eq(0).before(tr);
+                }
                 clearCtrl();
             }
         });
 
         function clearCtrl() {
             ddlItemType.val('');
-            ddlItem.val('');
+            //ddlItem.val('');
+            clearDropdown("ddlItem")
             txtStockInQty.val('');
             unitName.text('');
             txtRemarks.val('');
@@ -223,11 +228,12 @@
         //
         $(document).on("click", "a.data-onfly-del", function (e) {
             e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
             if (bootbox.confirm("Are you sure you want to delete?", function (result) {
                 if (result === true) {
-                    var index = $(this).parent().parents('tbody tr').index();
                     removeTableRow("#tblWarehouseStock tbody", index);
-                    fnFixTheTbodyRowSerial("#tblWarehouseStock", index);
+                    //fnFixTheTbodyRowSerial("#tblWarehouseStock", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblWarehouseStock", index);
                     $("#tblWarehouseStock tbody tr").removeClass("btn-success");
                 };
             }));

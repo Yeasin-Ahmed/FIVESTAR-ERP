@@ -126,7 +126,7 @@
                         <table class="table m-0">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Faculty</th>
+                                    <th class="text-center">Faulty</th>
                                     <th class="text-center">Total</th>
                                 </tr>
                             </thead>
@@ -174,7 +174,7 @@
                     <table class="table table-striped table-valign-middle">
                         <thead>
                             <tr>
-                                <th class="">Faculty</th>
+                                <th class="">Faulty</th>
                                 <th class="text-center">Total</th>
                             </tr>
                         </thead>
@@ -225,7 +225,10 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionAccepted).StateStatus)</span>
-                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionAccepted).TotalCount)</span>
+                                <span class="info-box-number">
+                                    <a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionAccepted).TotalCount)</a> 
+                                
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -236,7 +239,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionApproved).StateStatus)</span>
-                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionApproved).TotalCount)</span>
+                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionApproved).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>
@@ -247,7 +250,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionPending).StateStatus)</span>
-                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionPending).TotalCount)</span>
+                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionPending).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>
@@ -258,7 +261,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionRecheck).StateStatus)</span>
-                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionRecheck).TotalCount)</span>
+                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionRecheck).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>
@@ -269,7 +272,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionCancel).StateStatus)</span>
-                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionCancel).TotalCount)</span>
+                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionCancel).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>
@@ -280,7 +283,7 @@
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionReject).StateStatus)</span>
-                                <span class="info-box-number">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionReject).TotalCount)</span>
+                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RequisitionReject).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>
