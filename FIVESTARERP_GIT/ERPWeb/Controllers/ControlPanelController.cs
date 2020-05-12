@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace ERPWeb.Controllers
 {
     [CustomAuthorize]
-    public class ControlPanelController : Controller
+    public class ControlPanelController : BaseController
     {
         private readonly IOrganizationBusiness _organizationBusiness;
         private readonly IBranchBusiness _branchBusiness;
@@ -24,10 +24,11 @@ namespace ERPWeb.Controllers
         private readonly ISubMenuBusiness _subMenuBusiness;
         private readonly IOrganizationAuthBusiness _organizationAuthBusiness;
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
+        private readonly IRoleAuthorizationBusiness _roleAuthorizationBusiness;
         private readonly long UserId = 1;
         private readonly long OrgId = 1;
 
-        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness, IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness, IOrganizationAuthBusiness organizationAuthBusiness, IUserAuthorizationBusiness userAuthorizationBusiness)
+        public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness, IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness, IOrganizationAuthBusiness organizationAuthBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IRoleAuthorizationBusiness roleAuthorizationBusiness)
         {
             this._organizationBusiness = organizationBusiness;
             this._branchBusiness = branchBusiness;
@@ -38,8 +39,10 @@ namespace ERPWeb.Controllers
             this._subMenuBusiness = subMenuBusiness;
             this._organizationAuthBusiness= organizationAuthBusiness;
             this._userAuthorizationBusiness = userAuthorizationBusiness;
+            this._roleAuthorizationBusiness = roleAuthorizationBusiness;
         }
         // GET: ControlPanel
+
         #region Organization
         [HttpGet]
         public ActionResult GetOrganizations()
@@ -197,7 +200,7 @@ namespace ERPWeb.Controllers
 
             //ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
 
-            IPagedList<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(OrgId).Select(user => new AppUserViewModel
+            IEnumerable<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(OrgId).Select(user => new AppUserViewModel
             {
                 UserId = user.UserId,
                 EmployeeId = user.EmployeeId,
@@ -216,10 +219,10 @@ namespace ERPWeb.Controllers
                 BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, OrgId).BranchName),
                 RoleId = user.RoleId,
                 RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, OrgId).RoleName),
-            }).OrderBy(user => user.UserId).ToPagedList(page ?? 1, 15);
-            IEnumerable<AppUserViewModel> appUserViewModelForPage = new List<AppUserViewModel>();
+            }).OrderBy(user => user.UserId).ToList();
             return View(appUserViewModels);
         }
+        [HttpPost,ValidateJsonAntiForgeryToken]
         public ActionResult SaveAppUser(AppUserViewModel appUserViewModel)
         {
             bool isSuccess = false;
@@ -420,8 +423,10 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+        #endregion
 
-        public ActionResult SetUserCustomAuthorization(string flag, long? userId, long? orgId )
+        #region User Custom Authorization
+        public ActionResult SetUserCustomAuthorization(string flag, long? userId, long? orgId)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -436,7 +441,7 @@ namespace ERPWeb.Controllers
             {
                 List<VmUserModule> listVmUserModule = new List<VmUserModule>();
                 IEnumerable<UserCustomMenusDTO> userCustomMenus = _userAuthorizationBusiness.GetUserCustomMenus(userId.Value, orgId.Value);
-                 var userDto =_appUserBusiness.GetUserDetail(userId.Value, orgId.Value);
+                var userDto = _appUserBusiness.GetUserDetail(userId.Value, orgId.Value);
                 UserDetaildViewModel userDetaildViewModel = new UserDetaildViewModel();
                 AutoMapper.Mapper.Map(userDto, userDetaildViewModel);
                 if (userCustomMenus.Count() > 0)
@@ -477,22 +482,149 @@ namespace ERPWeb.Controllers
                         listVmUserModule.Add(vmUserModule);
                     }
                 }
-                return Json(new {userDetail=userDetaildViewModel,menuDetail=listVmUserModule });
+                return Json(new { userDetail = userDetaildViewModel, menuDetail = listVmUserModule });
             }
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveUserAuthorization(List<UserAuthorizationViewModel> models)
         {
             bool IsSuccess = false;
-            if(models.Count > 0)
+            if (models.Count > 0)
             {
                 List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
-                IsSuccess=_userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, UserId, OrgId);
+                IsSuccess = _userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, UserId, OrgId);
             }
             return Json(IsSuccess);
         }
         #endregion
+
+        #region User Role Authorization
+        public ActionResult SetUserRoleAuthorization(string flag, long? roleId, long? orgId)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlOrganization = _organizationBusiness.GetAllOrganizations().Select(o => new SelectListItem
+                {
+                    Text = o.OrganizationName,
+                    Value = o.OrganizationId.ToString()
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                List<VmUserModule> listVmUserModule = new List<VmUserModule>();
+                IEnumerable<UserCustomMenusDTO> userCustomMenus = _roleAuthorizationBusiness.GetUserRoleMenus(roleId.Value, orgId.Value);
+                if (userCustomMenus.Count() > 0)
+                {
+                    var modules = (from m in userCustomMenus
+                                   select new { MId = m.ModuleId, ModuleName = m.ModuleName }).Distinct().ToList();
+                    foreach (var item in modules)
+                    {
+                        VmUserModule vmUserModule = new VmUserModule();
+                        vmUserModule.ModuleId = item.MId;
+                        vmUserModule.ModuleName = item.ModuleName;
+                        List<VmUserMenu> vmUserMenus = new List<VmUserMenu>();
+                        var mainmenu = (from m in userCustomMenus
+                                        where m.ModuleId == item.MId
+                                        select new { MenuId = m.MainmenuId, MenuName = m.MainmenuName }).Distinct().ToList();
+                        foreach (var mm in mainmenu)
+                        {
+                            VmUserMenu vmUserMenu = new VmUserMenu();
+                            vmUserMenu.MenuId = mm.MenuId;
+                            vmUserMenu.MenuName = mm.MenuName;
+                            vmUserMenu.SubMenus = userCustomMenus.Where(s => s.MainmenuId == mm.MenuId).Select(s => new VmUserSubmenu
+                            {
+                                SubmenuId = s.SubmenuId,
+                                SubMenuName = s.SubMenuName,
+                                ParentSubMenuId = s.ParentSubMenuId,
+                                Add = s.Add,
+                                Edit = s.Edit,
+                                Detail = s.Detail,
+                                Delete = s.Delete,
+                                Approval = s.Approval,
+                                Report = s.Report,
+                                TaskId = s.TaskId
+                            }).ToList();
+                            vmUserMenus.Add(vmUserMenu);
+                        }
+
+                        vmUserModule.Menus = vmUserMenus;
+                        listVmUserModule.Add(vmUserModule);
+                    }
+                }
+                return Json(new {menuDetail = listVmUserModule });
+            }
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRoleAuthorization(List<RoleAuthorizationViewModel> models)
+        {
+            bool IsSuccess = false;
+            if (models.Count > 0)
+            {
+                List<RoleAuthorizationDTO> roleAuthorizationDTOs = new List<RoleAuthorizationDTO>();
+                AutoMapper.Mapper.Map(models, roleAuthorizationDTOs);
+                IsSuccess = _roleAuthorizationBusiness.SaveRoleAuthorization(roleAuthorizationDTOs, UserId, OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+
+        #region Used By Client
+        public ActionResult GetClientUsers()
+        {
+            IEnumerable<AppUserDTO> appUserDto = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId).Select(user => new AppUserDTO
+            {
+                UserId = user.UserId,
+                EmployeeId = user.EmployeeId,
+                FullName = user.FullName,
+                MobileNo = user.MobileNo,
+                Address = user.Address,
+                Email = user.Email,
+                Desigation = user.Desigation,
+                UserName = user.UserName,
+                Password = Utility.Decrypt(user.Password),
+                StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
+                StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
+                OrganizationId = user.OrganizationId,
+                OrganizationName = (_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+                BranchId = user.BranchId,
+                BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, OrgId).BranchName),
+                RoleId = user.RoleId,
+                RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, OrgId).RoleName),
+            }).OrderBy(user => user.UserId).ToList();
+            IEnumerable<AppUserViewModel> appUserViewModels = new List<AppUserViewModel>();
+            AutoMapper.Mapper.Map(appUserDto, appUserViewModels);
+            return View(appUserViewModels);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveClientUser(AppUserViewModel appUserViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    AppUserDTO dto = new AppUserDTO();
+                    appUserViewModel.OrganizationId = User.OrgId;
+                    appUserViewModel.Password = Utility.Encrypt(appUserViewModel.Password);
+                    AutoMapper.Mapper.Map(appUserViewModel, dto);
+                    isSuccess = _appUserBusiness.SaveAppUser(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }

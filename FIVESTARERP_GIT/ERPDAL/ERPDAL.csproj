@@ -53,6 +53,10 @@
     <Compile Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.Designer.cs">
       <DependentUpon>202004281022349_ControlPanel_28-April-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlPanelContextMigrations\202005110829498_ControlPanel_RoleAuth.cs" />
+    <Compile Include="ControlPanelContextMigrations\202005110829498_ControlPanel_RoleAuth.Designer.cs">
+      <DependentUpon>202005110829498_ControlPanel_RoleAuth.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelRepository.cs" />
@@ -89,6 +93,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.resx">
       <DependentUpon>202004281022349_ControlPanel_28-April-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202005110829498_ControlPanel_RoleAuth.resx">
+      <DependentUpon>202005110829498_ControlPanel_RoleAuth.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>

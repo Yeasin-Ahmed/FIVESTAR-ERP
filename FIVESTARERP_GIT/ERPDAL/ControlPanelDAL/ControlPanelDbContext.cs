@@ -23,5 +23,6 @@ namespace ERPDAL.ControlPanelDAL
         public DbSet<SubMenu> tblSubMenus { get; set; }
         public DbSet<OrganizationAuthorization> tblOrganizationAuthorization { get; set; }
         public DbSet<UserAuthorization> tblUserAuthorization { get; set; }
+        public DbSet<RoleAuthorization> tblRoleAuthorization { get; set; }
     }
 }

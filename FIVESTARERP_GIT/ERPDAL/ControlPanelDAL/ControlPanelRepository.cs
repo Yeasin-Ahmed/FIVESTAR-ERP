@@ -43,4 +43,8 @@ namespace ERPDAL.ControlPanelDAL
     {
         public UserAuthorizationRepository(IControlPanelUnitOfWork controlPanelUnitOfWork) : base(controlPanelUnitOfWork) { }
     }
+    public class RoleAuthorizationRepository : ControlPanelBaseRepository<RoleAuthorization>
+    {
+        public RoleAuthorizationRepository(IControlPanelUnitOfWork controlPanelUnitOfWork) : base(controlPanelUnitOfWork) { }
+    }
 }

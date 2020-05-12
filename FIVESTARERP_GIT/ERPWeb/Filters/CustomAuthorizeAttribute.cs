@@ -67,7 +67,7 @@ namespace ERPWeb.Filters
 
                         if (submenu != null)
                         {
-                            var roleMenu = (List<UserAuthorizeMenusViewModels>)HttpContext.Current.Session["RoleAuthorizeMenus"];
+                            var roleMenu = (List<UserAuthorizeMenusViewModels>)HttpContext.Current.Session["UserAuthorizeMenus"];
                             var authSubmenu = roleMenu.FirstOrDefault(rm => rm.SubmenuId == submenu.SubMenuId);
                             if (authSubmenu == null)
                             {

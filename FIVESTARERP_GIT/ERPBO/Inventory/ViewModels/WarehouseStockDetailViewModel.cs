@@ -30,10 +30,8 @@ namespace ERPBO.Inventory.ViewModels
         [Range(1, long.MaxValue)]
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-
         [StringLength(150)]
         public string RefferenceNumber { get; set; }
-
         [StringLength(150)]
         public string StockStatus { get; set; }
 

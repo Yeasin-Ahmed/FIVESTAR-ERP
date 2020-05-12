@@ -1,23 +1,30 @@
 ﻿
 @{
     ViewBag.Title = "List Of Faulty Items & Returned Goods";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
-                <a href="/Production/GetProductionFaultyOrReturnItemDetailList" class="float-left btn btn-sm btn-outline-secondary" title="Details View">
-                    <i class="fas fa-eye"></i> Go To Details View
-                </a>
+                @if (privilege != null && privilege.Detail)
+                {
+                    <a href="/Production/GetProductionFaultyOrReturnItemDetailList" class="float-left btn btn-sm btn-outline-secondary" title="Details View">
+                        <i class="fas fa-eye"></i> Go To Details View
+                    </a>
+                }
             </div>
             <div class="col-md-6 text-center">
                 <h4><b style="color:darkblue">List Of Faulty Items & Returned Goods</b></h4>
             </div>
             <div class="col-md-3">
-                @*<label class="col-form-label font-weight-bold" style="visibility:hidden">+ Faulty & Good Return</label>
-                    <br />*@
-                <a href="/Production/CreateFaultyGoodReturn" style="background-color:darkblue" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Faulty & Goods Return</a>
+                @if (privilege != null && privilege.Add)
+                {
+                    <a href="/Production/CreateFaultyGoodReturn" class="btn btn-outline-primary btn-sm float-right" id="btnAddNew">
+                        <i class="fa fa-plus"></i> Faulty & Goods Return
+                    </a>
+                }
             </div>
         </div>
         <hr />
@@ -167,17 +174,14 @@
             }
         })
 
-        function LoadDataTable()
-        {
-            var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(),0) };
+        function LoadDataTable() {
+            var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(), 0) };
             console.log(data);
 
-            $.when(getReqWithData(dataType.html, type.post, '/Production/GetItemReturnList', data)).then(function (res, status)
-            {
+            $.when(getReqWithData(dataType.html, type.post, '/Production/GetItemReturnList', data)).then(function (res, status) {
                 console.log(res);
                 console.log(status);
-                if (status === "success")
-                {
+                if (status === "success") {
                     $("#dataContainer").empty();
                     $("#dataContainer").append(res);
                 }

@@ -63,7 +63,7 @@ namespace ERPWeb.Controllers
         {
             // This is a three level menu //
             List<UserMainMenuViewModel> listOfUserMainMenuViewModel = new List<UserMainMenuViewModel>();
-            if (User.UserId > 0 && User.OrgId > 0 && User.IsRoleActive ==false) // When Users Role is Inactive //
+            if (User.UserId > 0 && User.OrgId > 0 && User.IsUserActive ==true)
             {
                 var userAllMenus = (List<UserAuthorizeMenusViewModels>)Session["UserAuthorizeMenus"]; //_userAuthorizationBusiness.GetUserAuthorizeMenus(UserId, OrgId);
                 
@@ -130,11 +130,6 @@ namespace ERPWeb.Controllers
                 }
                 
             }
-            else
-            {
-                // When users role is active //
-            }
-
             return PartialView("_sidebar", listOfUserMainMenuViewModel);
         }
         #endregion
@@ -401,11 +396,30 @@ namespace ERPWeb.Controllers
             return Json(data);
         }
 
+        [HttpPost]
+        public ActionResult GetRolesByOrg(long orgId)
+        {
+            List<Dropdown> list = new List<Dropdown>();
+            if (orgId > 0)
+            {
+                if (_organizationBusiness.GetOrganizationById(orgId) != null)
+                {
+                    list = _roleBusiness.GetAllRoleByOrgId(orgId).Select(u => new Dropdown
+                    {
+                        text = u.RoleName,
+                        value = u.RoleId.ToString()
+                    }).ToList();
+
+                }
+            }
+            return Json(list);
+        }
+
         #endregion
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    base.Dispose(disposing);
-        //}
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 }

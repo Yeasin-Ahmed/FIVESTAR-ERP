@@ -18,6 +18,7 @@ using System.Data.Entity;
 using ERPBO.Production.DomainModels;
 using ERPBO.Common;
 using PagedList;
+using ERPBO.ControlPanel.ViewModels;
 
 namespace ERPWeb.Controllers
 {
@@ -102,6 +103,7 @@ namespace ERPWeb.Controllers
             }).ToList();
             List<WarehouseViewModel> warehouseViewModels = new List<WarehouseViewModel>();
             AutoMapper.Mapper.Map(warehousesDomains, warehouseViewModels);
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseList");
             return View(warehouseViewModels);
         }
 
@@ -109,7 +111,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveWarehouse(WarehouseViewModel viewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("Inventory", "GetWarehouseList");
+            var permission = (viewModel.Id == 0 && pre.Add) || (viewModel.Id > 0 && pre.Edit);
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -132,8 +136,6 @@ namespace ERPWeb.Controllers
         {
             ViewBag.pageNum = page.ToString();
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
-
-
             var allData = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId);
             IPagedList<ItemTypeViewModel> itemTypesDomains = allData.Select(item => new ItemTypeViewModel
             {
@@ -149,16 +151,17 @@ namespace ERPWeb.Controllers
             IEnumerable<ItemTypeViewModel> itemTypeViewModelsForPage =new List<ItemTypeViewModel>();
             //List<ItemTypeViewModel> itemTypeViewModels = new List<ItemTypeViewModel>();
             //AutoMapper.Mapper.Map(itemTypesDomains, itemTypeViewModels);
-
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemTypeList");
             ViewBag.ItemCount = allData.Count();
-
             return View(itemTypesDomains);
         }
 
         public ActionResult SaveItemType(ItemTypeViewModel itemTypeViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var privilege = UserPrivilege("Inventory", "GetItemTypeList");
+            bool permission = (itemTypeViewModel.ItemId == 0 && privilege.Add) || (itemTypeViewModel.ItemId > 0 && privilege.Edit);
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -178,6 +181,7 @@ namespace ERPWeb.Controllers
         #region Unit - Table
         public ActionResult GetAllUnitList()
         {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetAllUnitList");
             IEnumerable<UnitDomainDTO> unitDomains = _unitBusiness.GetAllUnitByOrgId(1).Select(unit => new UnitDomainDTO
             {
                 UnitId = unit.UnitId,
@@ -194,7 +198,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveUnit(UnitViewModel unitViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var privilege = UserPrivilege("Inventory", "GetAllUnitList");
+            var permission = (unitViewModel.UnitId == 0 && privilege.Add) || (unitViewModel.UnitId > 0 && privilege.Edit);
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -215,6 +221,7 @@ namespace ERPWeb.Controllers
         public ActionResult GetItemList(int? page)
         {
             ViewBag.pageNum = page.ToString();
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemList");
             ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
 
             ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
@@ -241,7 +248,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveItem(ItemViewModel itemViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var privilege = UserPrivilege("Inventory", "GetItemList");
+            var permission = (itemViewModel.ItemId == 0 && privilege.Add) || (itemViewModel.ItemId > 0 && privilege.Edit);
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -278,6 +287,7 @@ namespace ERPWeb.Controllers
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
             }).ToList();
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
             return View();
         }
 
@@ -327,7 +337,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveWarehouseStockIn(List<WarehouseStockDetailViewModel> models)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid && models.Count > 0)
+            var pre = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
+            var permission = ((pre.Add) || (pre.Edit));
+            if (ModelState.IsValid && models.Count > 0 && permission)
             {
                 try
                 {
@@ -361,7 +373,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _warehouseStockDetailBusiness.GetWarehouseStockDetailInfoLists(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,OrgId);
+                var dto = _warehouseStockDetailBusiness.GetWarehouseStockDetailInfoLists(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,OrgId).OrderByDescending(s=> s.StockDetailId).ToList();
                 IEnumerable<WarehouseStockDetailInfoListViewModel> viewModel = new List<WarehouseStockDetailInfoListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModel);
                 return PartialView("_GetWarehouseStockDetailInfoList", viewModel);
@@ -375,6 +387,7 @@ namespace ERPWeb.Controllers
         public ActionResult GetReqInfoList()
         {
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
+
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
             ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Accepted || status.value == RequisitionStatus.Rejected).Select(st => new SelectListItem
@@ -436,10 +449,11 @@ namespace ERPWeb.Controllers
                 ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, OrgId).Select(s => s.ItemId).Distinct().Count(),
                 RequisitionType = info.RequisitionType
-            }).ToList();
+            }).OrderByDescending(s=> s.ReqInfoId).ToList();
 
             List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
             AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetReqInfoList");
             return PartialView(requsitionInfoViewModels);
         }
 
@@ -459,7 +473,7 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(requsitionDetailDTO, requsitionDetailViewModels);
 
             ViewBag.RequisitionStatus = _requsitionInfoBusiness.GetRequisitionById(reqId.Value, OrgId).StateStatus;
-
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetReqInfoList");
             return PartialView("_GetRequsitionDetails", requsitionDetailViewModels);
         }
 
@@ -467,7 +481,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveRequisitionStatus(long reqId, string status)
         {
             bool IsSuccess = false;
-            if (reqId > 0 && !string.IsNullOrEmpty(status))
+            var pre = UserPrivilege("Inventory", "GetReqInfoList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (reqId > 0 && !string.IsNullOrEmpty(status) && permission)
             {
                 if (RequisitionStatus.Rejected == status || RequisitionStatus.Recheck == status)
                 {
@@ -519,6 +535,7 @@ namespace ERPWeb.Controllers
         #region Item Return -Table
         public ActionResult GetItemReturnList(string flag, string code, long? lineId, long? modelId, long? warehouseId, string status, string returnType, string faultyCase, string fromDate, string toDate)
         {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemReturnList");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ReturnType = Utility.ListOfReturnType().Select(s => new SelectListItem() { Text = s.text, Value = s.value }).ToList();
@@ -585,7 +602,7 @@ namespace ERPWeb.Controllers
                     StateStatus = i.StateStatus,
                     EntryDate = i.EntryDate
 
-                }).ToList();
+                }).OrderByDescending(s=> s.IRInfoId).ToList();
 
                 List<ItemReturnInfoViewModel> itemReturnInfoViewModels = new List<ItemReturnInfoViewModel>();
                 AutoMapper.Mapper.Map(itemReturnInfoDTOs, itemReturnInfoViewModels);
@@ -595,6 +612,7 @@ namespace ERPWeb.Controllers
 
         public ActionResult GetProductionItemReturnDetails(long itemReturnInfoId)
         {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemReturnList");
             var items = _itemBusiness.GetAllItemByOrgId(OrgId);
             var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(OrgId);
             var units = _unitBusiness.GetAllUnitByOrgId(OrgId);
@@ -631,7 +649,8 @@ namespace ERPWeb.Controllers
         public ActionResult SaveWarehouseStockInByItemReturn(long returnInfoId, string status)
         {
             bool IsSuccess = false;
-            if (returnInfoId > 0 && !string.IsNullOrEmpty(status))
+            var privilege = UserPrivilege("Inventory", "GetItemReturnList");
+            if (returnInfoId > 0 && !string.IsNullOrEmpty(status) && privilege.Edit)
             {
                 IsSuccess = _warehouseStockDetailBusiness.SaveWarehouseStockInByProductionItemReturn(returnInfoId, status, OrgId, UserId);
             }
@@ -645,6 +664,7 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetRepairStockInfoList");
                 ViewBag.ListOfLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId).Select(l => new SelectListItem
                 {
                     Text = l.LineNumber,
@@ -694,7 +714,7 @@ namespace ERPWeb.Controllers
                 && (LineId == null || LineId == 0 || ws.LineId == LineId)
                 && (ModelId == null || ModelId == 0 || ws.DescriptionId == ModelId)
                 && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
-                ).ToList();
+                ).OrderByDescending(s=> s.RStockInfoId).ToList();
 
                 List<RepairStockInfoViewModel> repairStockInfoViewModels = new List<RepairStockInfoViewModel>();
                 AutoMapper.Mapper.Map(repairStockInfoDTOs, repairStockInfoViewModels);
@@ -728,15 +748,13 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _repairStockDetailBusiness.GetRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,OrgId);
+                var dto = _repairStockDetailBusiness.GetRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,OrgId).OrderByDescending(s=> s.RStockDetailId).ToList();
                 IEnumerable<RepairStockDetailListViewModel> viewModel = new List<RepairStockDetailListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModel);
                 return PartialView("_GetRepairStockDetailInfoList", viewModel);
             }
             return View();
         }
-
-
 
         #endregion
 
@@ -765,6 +783,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
+                ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetFinishGoodsSendToWarehouse");
                 var tblwarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(OrgId);
                 var tblLine = _productionLineBusiness.GetAllProductionLineByOrgId(OrgId);
                 var tblModel = _descriptionBusiness.GetDescriptionByOrgId(OrgId);
@@ -802,7 +821,7 @@ namespace ERPWeb.Controllers
                          Remarks = f.Remarks,
                          EntryDate = f.EntryDate,
                          RefferenceNumber = f.RefferenceNumber
-                     }).ToList();
+                     }).OrderByDescending(s=>s.SendId).ToList();
 
                 List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
                 AutoMapper.Mapper.Map(listOfFinishGoodsSendInfo, listOfFinishGoodsSendToWarehouseInfoViewModels);
@@ -813,6 +832,7 @@ namespace ERPWeb.Controllers
         public ActionResult GetFinishGoodsSendItemDetail(long sendId)
         {
             List<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetFinishGoodsSendToWarehouse");
             if (sendId > 0)
             {
                 var info = _finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodsSendToWarehouseById(sendId, OrgId);
@@ -837,7 +857,7 @@ namespace ERPWeb.Controllers
                     ItemName = _itemBusiness.GetItemById(f.ItemId, OrgId).ItemName,
                     UnitName = _unitBusiness.GetUnitOneByOrgId(f.UnitId, OrgId).UnitSymbol,
                     Quantity = f.Quantity
-                }).ToList();
+                }).OrderByDescending(s=> s.SendDetailId).ToList();
 
                 AutoMapper.Mapper.Map(dtos, viewModels);
             }
@@ -848,7 +868,8 @@ namespace ERPWeb.Controllers
         public ActionResult SaveFinishGoodsItems(long sendId)
         {
             bool IsSuccess = false;
-            if(sendId > 0)
+            var privilege = UserPrivilege("Inventory", "GetWarehouseList");
+            if (sendId > 0 && privilege.Edit)
             {
                 IsSuccess=_finishGoodsSendToWarehouseInfoBusiness.SaveFinishGoodsStatus(sendId, UserId, OrgId);
             }

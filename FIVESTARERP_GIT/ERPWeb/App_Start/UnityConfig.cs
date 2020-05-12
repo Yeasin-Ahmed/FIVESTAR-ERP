@@ -69,6 +69,7 @@ namespace ERPWeb
             container.RegisterType<IModuleBusiness, ModuleBusiness>();
             container.RegisterType<IOrganizationAuthBusiness, OrganizationAuthBusiness>();
             container.RegisterType<IUserAuthorizationBusiness, UserAuthorizationBusiness>();
+            container.RegisterType<IRoleAuthorizationBusiness, RoleAuthorizationBusiness>();
             container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
             #endregion
 

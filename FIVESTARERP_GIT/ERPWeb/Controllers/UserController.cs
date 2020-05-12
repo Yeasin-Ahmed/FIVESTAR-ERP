@@ -119,7 +119,10 @@ namespace ERPWeb.Controllers
                 var qtys = data2.Where(c => c.ModelName == item).Select(c => c.Quantity).ToList();
                 charts2.Add(qtys);
             }
+            
             return Json(new {lines= lineNumber, months= months, charts= charts, models= modelNames, charts2=charts2,months2= months2 });
+
+            
         }
 
         protected override void Dispose(bool disposing)

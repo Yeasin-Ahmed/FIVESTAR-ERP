@@ -55,12 +55,14 @@
     <Compile Include="Common\Dropdown.cs" />
     <Compile Include="Common\ExecutionStateWithText.cs" />
     <Compile Include="Common\UserInformation.cs" />
+    <Compile Include="Common\UserPrivilege.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\MainMenu.cs" />
     <Compile Include="ControlPanel\DomainModels\Module.cs" />
     <Compile Include="ControlPanel\DomainModels\OrganizationAuthorization.cs" />
     <Compile Include="ControlPanel\DomainModels\Role.cs" />
+    <Compile Include="ControlPanel\DomainModels\RoleAuthorization.cs" />
     <Compile Include="ControlPanel\DomainModels\SubMenu.cs" />
     <Compile Include="ControlPanel\DomainModels\UserAuthorization.cs" />
     <Compile Include="ControlPanel\DTOModels\AppUserDTO.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="ControlPanel\DTOModels\OrgAuthMenusDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\RoleDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\SubMenuDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\RoleAuthorizationDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\UserAuthorizationDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\UserAuthorizeMenusDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\UserCustomMenusDTO.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="ControlPanel\ViewModels\OrganizationViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\OrgAuthMenusDTO.cs" />
     <Compile Include="ControlPanel\ViewModels\OrgAuthUIViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\RoleAuthorizationViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\RoleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\SubMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserAuthorizationViewModel.cs" />

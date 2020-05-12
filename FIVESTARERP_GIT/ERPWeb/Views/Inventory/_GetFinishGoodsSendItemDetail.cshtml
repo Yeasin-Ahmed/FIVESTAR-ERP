@@ -3,6 +3,7 @@
 @{
     int sl = 0;
     FinishGoodsSendToWarehouseInfoViewModel info = ((FinishGoodsSendToWarehouseInfoViewModel)ViewBag.FinishGoodsSendInfo);
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
     <tbody>
@@ -57,7 +58,7 @@
     </tbody>
 </table>
 
-@if (info.StateStatus == "Send")
+@if (info.StateStatus == "Send" && privilege.Edit)
 {
     <div class="modal-footer">
         <button type="submit" class="btn btn-sm btn-outline-success btnSubmit"> Receive <i class="fas fa-ship"></i></button>
