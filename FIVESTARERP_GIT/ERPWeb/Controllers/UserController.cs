@@ -22,10 +22,8 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsStockDetailBusiness _finishGoodsStockDetailBusiness;
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
 
-        private readonly long UserId = 1;
-        private readonly long OrgId = 1;
 
-        public UserController(IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness)
+        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
@@ -36,7 +34,7 @@ namespace ERPWeb.Controllers
         public ActionResult Index()
         {
            // Requisition Summery
-           IEnumerable<DashboardRequisitionSummeryDTO> dto = _requsitionInfoBusiness.DashboardRequisitionSummery(OrgId);
+           IEnumerable<DashboardRequisitionSummeryDTO> dto = _requsitionInfoBusiness.DashboardRequisitionSummery(User.OrgId);
            IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
             ViewBag.RequisitionSummery = viewModel;
@@ -62,25 +60,25 @@ namespace ERPWeb.Controllers
 
             //--------------------//
             // Line wise daily Production
-            IEnumerable<DashboardLineWiseProductionDTO> dashboardLineWises = _finishGoodsStockDetailBusiness.DashboardLineWiseDailyProduction(OrgId);
+            IEnumerable<DashboardLineWiseProductionDTO> dashboardLineWises = _finishGoodsStockDetailBusiness.DashboardLineWiseDailyProduction(User.OrgId);
             IEnumerable<DashboardLineWiseProductionViewModel> dashboardLines = new List<DashboardLineWiseProductionViewModel>();
             AutoMapper.Mapper.Map(dashboardLineWises, dashboardLines);
             ViewBag.DashboardLineWiseProductionViewModel = dashboardLines;
 
             // Line wise OverAll Production
-            IEnumerable<DashboardLineWiseProductionDTO> overalldto = _finishGoodsStockDetailBusiness.DashboardLineWiseOverAllProduction(OrgId);
+            IEnumerable<DashboardLineWiseProductionDTO> overalldto = _finishGoodsStockDetailBusiness.DashboardLineWiseOverAllProduction(User.OrgId);
             IEnumerable<DashboardLineWiseProductionViewModel> overallViews = new List<DashboardLineWiseProductionViewModel>();
             AutoMapper.Mapper.Map(overalldto, overallViews);
             ViewBag.DashboardLineWiseOverallProductionViewModel = overallViews;
 
             // Faculty daily wise Production
-            IEnumerable<DashboardFacultyWiseProductionDTO> dailyFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyDayWiseProduction(OrgId);
+            IEnumerable<DashboardFacultyWiseProductionDTO> dailyFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyDayWiseProduction(User.OrgId);
             IEnumerable<DashboardFacultyWiseProductionViewModel> dailyFacultyViews = new List<DashboardFacultyWiseProductionViewModel>();
             AutoMapper.Mapper.Map(dailyFacultyDTO, dailyFacultyViews);
             ViewBag.DashboardFacultyWiseProductionViewModel = dailyFacultyViews;
 
             // Faculty wise OveAll Production
-            IEnumerable<DashboardFacultyWiseProductionDTO> OverAllFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyOverAllWiseProduction(OrgId);
+            IEnumerable<DashboardFacultyWiseProductionDTO> OverAllFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyOverAllWiseProduction(User.OrgId);
             IEnumerable<DashboardFacultyWiseProductionViewModel> OverAllFacultyViews = new List<DashboardFacultyWiseProductionViewModel>();
             AutoMapper.Mapper.Map(OverAllFacultyDTO, OverAllFacultyViews);
             ViewBag.DashboardFacultyWiseOverAllProductionViewModel = OverAllFacultyViews;

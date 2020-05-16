@@ -411,6 +411,10 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\ControlPanel\SetUserCustomAuthorization.cshtml" />
     <Content Include="Views\ControlPanel\GetClientUsers.cshtml" />
+    <Content Include="Views\Inventory\GetItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\_GetItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\CreateItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\_GetItemPreparationDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

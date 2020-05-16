@@ -54,11 +54,25 @@ namespace ERPBLL.Common
         public static readonly string SystemAdmin = "System Admin";
         public static readonly string Admin = "Admin";
     }
-
     public class RequisitionType
     {
         public static readonly string CKD = "CKD";
         public static readonly string SKD = "SKD";
+    }
+    public class Flag
+    {
+        public static readonly string View = "View";
+        public static readonly string Search = "Search";
+        public static readonly string Info = "Info";
+        public static readonly string Detail = "Detail";
+        public static readonly string Report = "Report";
+        public static readonly string Delete = "Delete";
+    }
+
+    public class RequisitionExecuationType
+    {
+        public static readonly string Single = "Single";
+        public static readonly string Bundle = "Bundle";
     }
 
 }

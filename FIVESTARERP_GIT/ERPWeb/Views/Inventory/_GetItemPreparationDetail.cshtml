@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ERPBO.Inventory.ViewModels.ItemPreparationDetailViewModel>
+
+@{
+    int sl = 0;
+    var info = (ERPBO.Inventory.ViewModels.ItemPreparationInfoViewModel)ViewBag.Info;
+}
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg">
+    <tr>
+        <td style="width:13%">Model Name</td>
+        <td style="width:15%"><b>@info.ModelName</b></td>
+        <td style="width:18%">ItemType Name</td>
+        <td style="width:20%"><b>@info.ItemTypeName</b></td>
+        <td style="width:13%">Item Name</td>
+        <td style="width:20%"><b>@info.ItemName</b></td>
+    </tr>
+</table>
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReturnItems">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th>Warehouse Name</th>
+            <th>ItemType Name</th>
+            <th>Item Name</th>
+            <th>Qty.</th>
+            <th>Type Of Unit</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center text-bold">@sl</td>
+                <td>@item.WarehouseName</td>
+                <td>@item.ItemTypeName</td>
+                <td>@item.ItemName</td>
+                <td class="text-center text-bold">@item.Quantity</td>
+                <td class="text-center text-bold">@item.UnitName</td>
+                <td>@item.Remarks</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

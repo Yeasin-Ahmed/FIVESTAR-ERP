@@ -23,6 +23,14 @@ var reqStatus = {
     canceled: "Canceled"
 };
 
+var flag = {
+    view: "View",
+    search: "Search",
+    info: "Info",
+    detail: "Detail",
+    report: "Report"
+}
+
 var stockStatus = {
     stockIn: "Stock-In",
     stockOut: "Stock-Out",

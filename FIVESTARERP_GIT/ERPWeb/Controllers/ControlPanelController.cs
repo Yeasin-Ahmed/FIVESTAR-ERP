@@ -25,8 +25,6 @@ namespace ERPWeb.Controllers
         private readonly IOrganizationAuthBusiness _organizationAuthBusiness;
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         private readonly IRoleAuthorizationBusiness _roleAuthorizationBusiness;
-        private readonly long UserId = 1;
-        private readonly long OrgId = 1;
 
         public ControlPanelController(IOrganizationBusiness organizationBusiness, IBranchBusiness branchBusiness, IRoleBusiness roleBusiness, IAppUserBusiness appUserBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness, IOrganizationAuthBusiness organizationAuthBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IRoleAuthorizationBusiness roleAuthorizationBusiness)
         {
@@ -106,7 +104,7 @@ namespace ERPWeb.Controllers
             {
                 OrganizationDTO dto = new OrganizationDTO();
                 AutoMapper.Mapper.Map(model, dto);
-                IsSuccess = _organizationBusiness.SaveOrganization(dto, UserId);
+                IsSuccess = _organizationBusiness.SaveOrganization(dto, User.UserId);
             }
             return Json(IsSuccess);
         }
@@ -117,7 +115,7 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-            IPagedList<BranchViewModel> branchViewModels = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new BranchViewModel
+            IPagedList<BranchViewModel> branchViewModels = _branchBusiness.GetBranchByOrgId(User.OrgId).Select(br => new BranchViewModel
             {
                 BranchId = br.BranchId,
                 BranchName = br.BranchName,
@@ -129,12 +127,11 @@ namespace ERPWeb.Controllers
                 StateStatus = (br.IsActive == true ? "Active" : "Inactive"),
                 Remarks = br.Remarks,
                 OrgId = br.OrganizationId,
-                OrganizationName = (_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+                OrganizationName = (_organizationBusiness.GetOrganizationById(User.OrgId).OrganizationName),
             }).OrderBy(br => br.BranchId).ToPagedList(page ?? 1, 15);
             IEnumerable<BranchViewModel> branchViewModelForPage = new List<BranchViewModel>();
             return View(branchViewModels);
         }
-
         public ActionResult SaveBranch(BranchViewModel branchViewModel)
         {
             bool isSuccess = false;
@@ -144,7 +141,7 @@ namespace ERPWeb.Controllers
                 {
                     BranchDTO dto = new BranchDTO();
                     AutoMapper.Mapper.Map(branchViewModel, dto);
-                    isSuccess = _branchBusiness.SaveBranch(dto, UserId, OrgId);
+                    isSuccess = _branchBusiness.SaveBranch(dto, User.UserId, User.OrgId);
                 }
                 catch (Exception ex)
                 {
@@ -160,12 +157,12 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-            IPagedList<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(OrgId).Select(role => new RoleViewModel
+            IPagedList<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(role => new RoleViewModel
             {
                 RoleId = role.RoleId,
                 RoleName = role.RoleName,
                 OrganizationId = role.OrganizationId,
-                OrganizationName = (_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+                OrganizationName = (_organizationBusiness.GetOrganizationById(role.OrganizationId).OrganizationName),
             }).OrderBy(role => role.RoleId).ToPagedList(page ?? 1, 15);
             IEnumerable<RoleViewModel> roleViewModelForPage = new List<RoleViewModel>();
             return View(roleViewModels);
@@ -180,7 +177,7 @@ namespace ERPWeb.Controllers
                 {
                     RoleDTO dto = new RoleDTO();
                     AutoMapper.Mapper.Map(roleViewModel, dto);
-                    isSuccess = _roleBusiness.SaveRole(dto, UserId, OrgId);
+                    isSuccess = _roleBusiness.SaveRole(dto, User.UserId, User.OrgId);
                 }
                 catch (Exception ex)
                 {
@@ -196,11 +193,11 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-            //ViewBag.ddlRoleName = _roleBusiness.GetAllRoleByOrgId(OrgId).Select(br => new SelectListItem { Text = br.RoleName, Value = br.RoleId.ToString() });
+            //ViewBag.ddlRoleName = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(br => new SelectListItem { Text = br.RoleName, Value = br.RoleId.ToString() });
 
-            //ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
+            //ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
 
-            IEnumerable<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(OrgId).Select(user => new AppUserViewModel
+            IEnumerable<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId).Select(user => new AppUserViewModel
             {
                 UserId = user.UserId,
                 EmployeeId = user.EmployeeId,
@@ -214,11 +211,11 @@ namespace ERPWeb.Controllers
                 StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
                 StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
                 OrganizationId = user.OrganizationId,
-                OrganizationName = (_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+                OrganizationName = (_organizationBusiness.GetOrganizationById(user.OrganizationId).OrganizationName),
                 BranchId = user.BranchId,
-                BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, OrgId).BranchName),
+                BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, user.OrganizationId).BranchName),
                 RoleId = user.RoleId,
-                RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, OrgId).RoleName),
+                RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, user.OrganizationId).RoleName),
             }).OrderBy(user => user.UserId).ToList();
             return View(appUserViewModels);
         }
@@ -233,7 +230,7 @@ namespace ERPWeb.Controllers
                     AppUserDTO dto = new AppUserDTO();
                     appUserViewModel.Password = Utility.Encrypt(appUserViewModel.Password);
                     AutoMapper.Mapper.Map(appUserViewModel, dto);
-                    isSuccess = _appUserBusiness.SaveAppUser(dto, UserId, OrgId);
+                    isSuccess = _appUserBusiness.SaveAppUser(dto, User.UserId, User.OrgId);
                 }
                 catch (Exception ex)
                 {
@@ -268,7 +265,7 @@ namespace ERPWeb.Controllers
                 {
                     ModuleDTO dto = new ModuleDTO();
                     AutoMapper.Mapper.Map(moduleViewModel, dto);
-                    isSuccess = _moduleBusiness.SaveModule(dto, UserId);
+                    isSuccess = _moduleBusiness.SaveModule(dto, User.UserId);
                 }
                 catch (Exception ex)
                 {
@@ -304,7 +301,7 @@ namespace ERPWeb.Controllers
                 {
                     MainMenuDTO dto = new MainMenuDTO();
                     AutoMapper.Mapper.Map(mainMenuViewModel, dto);
-                    isSuccess = _maniMenuBusiness.SaveMainMenu(dto, UserId);
+                    isSuccess = _maniMenuBusiness.SaveMainMenu(dto, User.UserId);
                 }
                 catch (Exception ex)
                 {
@@ -357,7 +354,7 @@ namespace ERPWeb.Controllers
                 {
                     SubMenuDTO dto = new SubMenuDTO();
                     AutoMapper.Mapper.Map(subMenuViewModel, dto);
-                    isSuccess = _subMenuBusiness.SaveSubMenu(dto, UserId);
+                    isSuccess = _subMenuBusiness.SaveSubMenu(dto, User.UserId);
                 }
                 catch (Exception ex)
                 {
@@ -419,7 +416,7 @@ namespace ERPWeb.Controllers
             {
                 OrgAuthMenusDTO dto = new OrgAuthMenusDTO();
                 AutoMapper.Mapper.Map(viewModels, dto);
-                IsSuccess = this._organizationAuthBusiness.SaveOrganizationAuthMenus(dto, UserId);
+                IsSuccess = this._organizationAuthBusiness.SaveOrganizationAuthMenus(dto, User.UserId);
             }
             return Json(IsSuccess);
         }
@@ -494,7 +491,7 @@ namespace ERPWeb.Controllers
             {
                 List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
-                IsSuccess = _userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, UserId, OrgId);
+                IsSuccess = _userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, User.UserId, User.OrgId);
             }
             return Json(IsSuccess);
         }
@@ -566,7 +563,7 @@ namespace ERPWeb.Controllers
             {
                 List<RoleAuthorizationDTO> roleAuthorizationDTOs = new List<RoleAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, roleAuthorizationDTOs);
-                IsSuccess = _roleAuthorizationBusiness.SaveRoleAuthorization(roleAuthorizationDTOs, UserId, OrgId);
+                IsSuccess = _roleAuthorizationBusiness.SaveRoleAuthorization(roleAuthorizationDTOs, User.UserId, User.OrgId);
             }
             return Json(IsSuccess);
         }
@@ -590,11 +587,11 @@ namespace ERPWeb.Controllers
                 StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
                 StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
                 OrganizationId = user.OrganizationId,
-                OrganizationName = (_organizationBusiness.GetOrganizationById(OrgId).OrganizationName),
+                OrganizationName = (_organizationBusiness.GetOrganizationById(User.OrgId).OrganizationName),
                 BranchId = user.BranchId,
-                BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, OrgId).BranchName),
+                BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, User.OrgId).BranchName),
                 RoleId = user.RoleId,
-                RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, OrgId).RoleName),
+                RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, User.OrgId).RoleName),
             }).OrderBy(user => user.UserId).ToList();
             IEnumerable<AppUserViewModel> appUserViewModels = new List<AppUserViewModel>();
             AutoMapper.Mapper.Map(appUserDto, appUserViewModels);

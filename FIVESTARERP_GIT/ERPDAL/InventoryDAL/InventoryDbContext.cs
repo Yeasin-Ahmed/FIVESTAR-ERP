@@ -23,5 +23,7 @@ namespace ERPDAL.InventoryDAL
         public DbSet<WarehouseStockDetail> tblWarehouseStockDetails { get; set; }
         public DbSet<RepairStockInfo> tblRepairStockInfo { get; set; }
         public DbSet<RepairStockDetail> tblRepairStockDetails { get; set; }
+        public DbSet<ItemPreparationInfo> tblItemPreparationInfo { get; set; }
+        public DbSet<ItemPreparationDetail> tblItemPreparationDetail { get; set; }
     }
 }

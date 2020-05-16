@@ -67,6 +67,10 @@
     <Compile Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.Designer.cs">
       <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202005120845496_ItemPreparation.cs" />
+    <Compile Include="InventoryContextMigrations\202005120845496_ItemPreparation.Designer.cs">
+      <DependentUpon>202005120845496_ItemPreparation.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -99,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202005120845496_ItemPreparation.resx">
+      <DependentUpon>202005120845496_ItemPreparation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
