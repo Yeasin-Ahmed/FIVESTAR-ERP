@@ -48,7 +48,7 @@ namespace ERPBLL.ControlPanel
                 branch.IsActive = branchDTO.IsActive;
                 branch.EntryDate = DateTime.Now;
                 branch.EUserId = userId;
-                branch.OrganizationId = orgId;
+                branch.OrganizationId = branchDTO.OrgId;
                 branch.Remarks = branchDTO.Remarks;
                 branchRepository.Insert(branch);
 
@@ -65,7 +65,7 @@ namespace ERPBLL.ControlPanel
                 branch.IsActive = branchDTO.IsActive;
                 branch.UpdateDate = DateTime.Now;
                 branch.UpUserId = userId;
-                branch.OrganizationId = orgId;
+                branch.OrganizationId = branchDTO.OrgId;
                 branch.Remarks = branchDTO.Remarks;
                 branchRepository.Update(branch);
             }

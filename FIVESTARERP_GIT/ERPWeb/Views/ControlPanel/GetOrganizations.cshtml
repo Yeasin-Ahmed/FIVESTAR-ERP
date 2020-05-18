@@ -4,6 +4,7 @@
     ViewBag.Title = "List Of Organization";
     int sl = 0;
     string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -19,7 +20,10 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4 text-right">
-                <a href="/ControlPanel/CreateOrganization" class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Organization</a>
+                @if (privilege != null && privilege.Add)
+                {
+                    <a href="/ControlPanel/CreateOrganization" class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Organization</a>
+                }
             </div>
         </div>
     </div>
@@ -61,7 +65,10 @@
                             @item.EntryDate.Value.ToString("dd-MMM-yyyy")
                         </td>
                         <td class="text-center">
-                            <a href="@Url.Action("CreateOrganization","ControlPanel",new {oId=item.OrgId })" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@item.OrgId"><i class="fa fa-pen"></i> Edit</a>
+                            @if (privilege != null && privilege.Edit)
+                            {
+                                <a href="@Url.Action("CreateOrganization","ControlPanel",new {oId=item.OrgId })" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@item.OrgId"><i class="fa fa-pen"></i> Edit</a>
+                            }
                         </td>
                     </tr>
                 }

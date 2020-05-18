@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "GetRoleList";
     int sl = 0;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -19,7 +20,11 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Role</button>
+                @if (privilege != null && privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Role</button>
+                }
+
             </div>
         </div>
     </div>
@@ -46,7 +51,11 @@
                         <td class="hide">@role.OrganizationId</td>
                         <td>@role.OrganizationName</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@role.RoleId"><i class="fa fa-pen"></i> Edit</a>
+                            @if (privilege != null && privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@role.RoleId"><i class="fa fa-pen"></i> Edit</a>
+                            }
+
                         </td>
                     </tr>
                 }
@@ -79,10 +88,12 @@
                             <input type="text" name="role" value="" id="txtRoleName" class="form-control form-control-sm" />
                             <span class="error hide required-roleName font-weight-bold">Input Role Name!</span>
                             <span class="error hide duplicate-roleName font-weight-bold">Already RoleName Exist!</span>
+                            <span class="error hide invalid-roleName font-weight-bold">Invalid Role!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ddlOrganizationName" class="control-label font-weight-bold">OrganizationName</label>
                             @Html.DropDownList("ddlOrganizationName", (IEnumerable<SelectListItem>)ViewBag.ddlOrganizationName, "--Select OrganizationName--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide req-org font-weight-bold">Organization is required!</span>
                         </div>
                     </div>
                 </form>
@@ -137,13 +148,17 @@
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
+            if (ddlOrganizationName.val() === "") {
+                $(".req-org").removeClass('hide');
+                isValid = false;
+            }
             if ($.trim(txtRoleName.val()) == "") {
                 $(".required-roleName").removeClass("hide");
                 isValid = false;
             }
             else {
                 var id = TryParseInt(hdfRoleId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, roleName: txtRoleName.val().trim() }), '/Common/IsDuplicateRoleName', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ roleId: id, roleName: txtRoleName.val().trim(), orgId: ddlOrganizationName.val() }), '/Common/IsDuplicateRoleName', getToken()) == true) {
                     $(".duplicate-roleName").removeClass("hide");
                     isValid = false;
                 }

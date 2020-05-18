@@ -90,7 +90,7 @@ Where U.UserName = '{0}' And U.[Password] = '{1}'", loginModel.UserName, loginMo
                 appUser.IsRoleActive = appUserDTO.IsRoleActive;
                 appUser.EUserId = userId;
                 appUser.EntryDate = DateTime.Now;
-                appUser.OrganizationId = orgId;
+                appUser.OrganizationId = appUserDTO.OrganizationId;
                 appUser.BranchId = appUserDTO.BranchId;
                 appUser.RoleId = appUserDTO.RoleId;
                 appUserRepository.Insert(appUser);
@@ -112,7 +112,7 @@ Where U.UserName = '{0}' And U.[Password] = '{1}'", loginModel.UserName, loginMo
                 appUser.IsRoleActive = appUserDTO.IsRoleActive;
                 appUser.UpUserId = userId;
                 appUser.UpdateDate = DateTime.Now;
-                appUser.OrganizationId = orgId;
+                appUser.OrganizationId = appUserDTO.OrganizationId;
                 appUser.BranchId = appUserDTO.BranchId;
                 appUser.RoleId = appUserDTO.RoleId;
                 appUserRepository.Update(appUser);

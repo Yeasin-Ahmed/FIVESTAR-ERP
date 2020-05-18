@@ -384,6 +384,8 @@
                 <button type="button" class="hide toastrDefaultError"></button>
                 <button type="button" class="hide toastrReqSuccess"></button>
                 <button type="button" class="hide toastrReqError"></button>
+                <button type="button" class="hide toastrDefaultDelete"></button>
+                
             </div>
             <!-- /.content -->
         </div>
@@ -452,6 +454,9 @@
             bsCustomFileInput.init();
             $('.toastrDefaultSuccess').click(function () {
                 toastr.success(execuStatus.successSave)
+            });
+            $('.toastrDefaultDelete').click(function () {
+                toastr.success(execuStatus.successDelete)
             });
             $('.toastrDefaultError').click(function () {
                 toastr.error(execuStatus.fail)

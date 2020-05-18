@@ -23,6 +23,14 @@ var reqStatus = {
     canceled: "Canceled"
 };
 
+var flag = {
+    view: "View",
+    search: "Search",
+    info: "Info",
+    detail: "Detail",
+    report: "Report"
+}
+
 var stockStatus = {
     stockIn: "Stock-In",
     stockOut: "Stock-Out",
@@ -394,6 +402,27 @@ function ajaxBooleanChecker2(data, url) {
         url: url,
         async: false,
         data: data,
+        success: function (result) {
+            console.log(result);
+            returnVal = result;
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+    return returnVal;
+}
+
+function ajaxValueReturnable(data, url, token) {
+    var returnVal;
+    $.ajax({
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'POST',
+        url: url,
+        async: false,
+        data: data,
+        headers: token,
         success: function (result) {
             console.log(result);
             returnVal = result;

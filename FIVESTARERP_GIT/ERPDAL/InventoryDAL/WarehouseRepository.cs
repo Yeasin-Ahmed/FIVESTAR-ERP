@@ -7,7 +7,6 @@ using ERPBO.Inventory.DomainModels;
 
 namespace ERPDAL.InventoryDAL
 {
-
     public class DescriptionRepository : InventoryBaseRepository<Description>
     {
         public DescriptionRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
@@ -43,5 +42,13 @@ namespace ERPDAL.InventoryDAL
     public class RepairStockDetailRepository : InventoryBaseRepository<RepairStockDetail>
     {
         public RepairStockDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+    }
+    public class ItemPreparationInfoRepository : InventoryBaseRepository<ItemPreparationInfo>
+    {
+        public ItemPreparationInfoRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+    }
+    public class ItemPreparationDetailRepository : InventoryBaseRepository<ItemPreparationDetail>
+    {
+        public ItemPreparationDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
 }

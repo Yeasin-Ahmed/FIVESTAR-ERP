@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RequsitionInfoViewModel>
 @{
     ViewBag.Title = "List of Requisition Information";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -11,7 +12,10 @@
                 <h4><b style="color:darkblue">Production Requisition Info</b></h4>
             </div>
             <div class="col-md-3">
-                <a href="/Production/CreateRequsition" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create New Requisition</a>
+                @if (privilege != null && privilege.Add)
+                {
+                    <a href="/Production/CreateRequsition" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create New Requisition</a>
+                }
             </div>
         </div>
         
@@ -102,7 +106,10 @@
             <div class="modal-body" id="dataContainer2">
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-success" id="btnUpdate">Save <i class="fas fa-paper-plane"></i></button>
+                @if (privilege != null && privilege.Edit)
+                {
+                    <button type="submit" class="btn btn-outline-success" id="btnUpdate">Save <i class="fas fa-paper-plane"></i></button>
+                }
             </div>
         </div>
     </div>
@@ -312,12 +319,14 @@
                         var trinfo2 = $('#tblReqInfoForEdit tbody').children('tr').eq('1');
                         var warid = trinfo2.children('td').eq('0').html();
                         var desid = trinfo2.children('td').eq('3').html();
+                        var rtype = trinfo2.children('td').eq('6').html();
 
                         var requsitionInfo = {
                             ReqInfoId:TryParseInt(reqid, 0),
                             LineId: TryParseInt(lineid, 0),
                             WarehouseId:TryParseInt(warid, 0),
                             DescriptionId: TryParseInt(desid, 0),
+                            RequisitionType: rtype,
                             ReqDetails: reqDetails
                         };
                         console.log(requsitionInfo);

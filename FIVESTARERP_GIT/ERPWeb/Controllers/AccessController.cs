@@ -20,12 +20,14 @@ namespace ERPWeb.Controllers
     {
         private readonly IAppUserBusiness _appUserBusiness;
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
+        private readonly IRoleAuthorizationBusiness _roleAuthorizationBusiness;
         private readonly ISubMenuBusiness _subMenuBusiness;
-        public AccessController(IAppUserBusiness appUserBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, ISubMenuBusiness subMenuBusiness)
+        public AccessController(IAppUserBusiness appUserBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, ISubMenuBusiness subMenuBusiness, IRoleAuthorizationBusiness roleAuthorizationBusiness)
         {
             this._appUserBusiness = appUserBusiness;
             this._userAuthorizationBusiness = userAuthorizationBusiness;
             this._subMenuBusiness = subMenuBusiness;
+            this._roleAuthorizationBusiness = roleAuthorizationBusiness;
         }
 
         [HttpGet]
@@ -104,6 +106,10 @@ namespace ERPWeb.Controllers
                             else
                             {
                                 // Role Auth..
+                                var userAuth = _roleAuthorizationBusiness.GetRoleAuthorizeMenus(userInformation.RoleId, userInformation.OrganizationId);
+                                IEnumerable<UserAuthorizeMenusViewModels> userCustomMenus = new List<UserAuthorizeMenusViewModels>();
+                                AutoMapper.Mapper.Map(userAuth, userCustomMenus);
+                                Session["UserAuthorizeMenus"] = userCustomMenus;
                             }
 
                             if(userInformation.RoleName == UserType.SystemAdmin)
@@ -138,14 +144,7 @@ namespace ERPWeb.Controllers
         {
             Session["UserDetail"] = null;
             Session["AllSubmenus"] = null;
-            if (User.IsRoleActive)
-            {
-                Session["RoleAuthorizeMenus"] = null;
-            }
-            else
-            {
-                Session["UserAuthorizeMenus"] = null;
-            }
+            Session["UserAuthorizeMenus"] = null;
             System.Web.HttpContext.Current.Session.Clear();
             System.Web.HttpContext.Current.Session.Abandon();
             System.Web.HttpContext.Current.Session.RemoveAll();

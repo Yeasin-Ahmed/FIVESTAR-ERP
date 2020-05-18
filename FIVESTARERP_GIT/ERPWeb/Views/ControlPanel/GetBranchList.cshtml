@@ -5,6 +5,7 @@
     ViewBag.Title = "GetBranchList";
     int sl = 0;
     string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 <div class="row">
     <div class="col-md-12 text-center">
@@ -19,7 +20,10 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4 text-right">
-                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Branch</button>
+                @if (privilege != null && privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Branch</button>
+                }
             </div>
         </div>
     </div>
@@ -63,7 +67,10 @@
                     </td>
                     <td>@br.Remarks</td>
                     <td class="text-center">
-                        <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@br.BranchId"><i class="fa fa-pen"></i> Edit</a>
+                        @if (privilege != null && privilege.Edit)
+                        {
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@br.BranchId"><i class="fa fa-pen"></i> Edit</a>
+                        }
                     </td>
                 </tr>
                 }

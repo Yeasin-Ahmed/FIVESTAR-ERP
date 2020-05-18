@@ -5,6 +5,8 @@
     ViewBag.Title = "GetItemTypeList";
     int sl = 0;
     string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+
     if(((string)ViewBag.pageNum) != "")
     {
         Layout = null;
@@ -23,11 +25,14 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New ItemType</button>
+                @if (privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New ItemType</button>
+                }
             </div>
         </div>
     </div>
-    <div class="col-md-12"  >
+    <div class="col-md-12">
         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblItemTypeData">
             <thead class="btn-dark">
                 <tr class="text-center">
@@ -59,7 +64,10 @@
                         </td>
                         <td class="text-center">@item.ShortName</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                            @if (privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                            }
                         </td>
                     </tr>
                 }
@@ -74,12 +82,12 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-end">
-            @if((int)ViewBag.ItemCount > 15)
+            @if ((int)ViewBag.ItemCount > 15)
             {
                 @Html.PagedListPager((IPagedList)@Model, page => Url.Action("GetItemTypeList", new { page = page }),
            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "body-container", InsertionMode = InsertionMode.Replace }))
             }
-           
+
         </div>
     </div>
 </div>
@@ -113,7 +121,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="txtShortName" class="control-label font-weight-bold">Short Name</label>
-                            <input type="text" name="txtShortName" value="" id="txtShortName" class="form-control form-control-sm" maxlength="3"/>
+                            <input type="text" name="txtShortName" value="" id="txtShortName" class="form-control form-control-sm" maxlength="3" />
                             <span class="error hide required-shortName font-weight-bold">Input Short Name!</span>
                             <span class="error hide duplicate-shortName font-weight-bold">Already Short Name Exist!</span>
                         </div>
@@ -191,7 +199,7 @@
             }
             else {
                 var id = TryParseInt(hdfItemTypeId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, itemTypeName: txtitemTypeName.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(),0) }), '/Common/IsDuplicateItemTypeName', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, itemTypeName: txtitemTypeName.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0) }), '/Common/IsDuplicateItemTypeName', getToken()) == true) {
                     $(".duplicate-itemTypeName").removeClass("hide");
                     isValid = false;
                 }
@@ -219,7 +227,7 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
-                var data = JSON.stringify({ ItemId: TryParseInt(hdfItemTypeId.val(), 0), WarehouseId: ddlWarehouseName.val(), ItemName: txtitemTypeName.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked"),ShortName:txtShortName.val().trim() });
+                var data = JSON.stringify({ ItemId: TryParseInt(hdfItemTypeId.val(), 0), WarehouseId: ddlWarehouseName.val(), ItemName: txtitemTypeName.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked"), ShortName: txtShortName.val().trim() });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItemType', data, getToken())).then(function (res, status) {
                     console.log(status);
@@ -277,5 +285,5 @@
             chkStatestatus.prop("checked", false);
         }
     </script>
-    }
+}
 

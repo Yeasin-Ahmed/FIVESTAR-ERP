@@ -401,7 +401,7 @@
     <Content Include="Views\Production\_GetFinishGoodsSendItemDetailList.cshtml" />
     <Content Include="Views\Production\_GetFinishGoodsSendToWarehouse.cshtml" />
     <Content Include="Views\ControlPanel\GetMainMenusForOrgAuth.cshtml" />
-    <Content Include="Views\ControlPanel\SetUserCustomAuthorization.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserRoleAuthorization.cshtml" />
     <Content Include="Views\Common\_sidebar.cshtml" />
     <Content Include="Views\Access\LogIn.cshtml" />
     <Content Include="Views\Access\_token.cshtml" />
@@ -409,6 +409,15 @@
     <Content Include="Views\Error\ServerError.cshtml" />
     <Content Include="Views\Error\AccessDenied.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserCustomAuthorization.cshtml" />
+    <Content Include="Views\ControlPanel\GetClientUsers.cshtml" />
+    <Content Include="Views\Inventory\GetItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\_GetItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\CreateItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\_GetItemPreparationDetail.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserCustomPermission.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserRolePermission.cshtml" />
+    <Content Include="Views\ControlPanel\GetUserRoleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

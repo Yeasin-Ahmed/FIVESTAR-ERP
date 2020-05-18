@@ -4,6 +4,7 @@
     int sl = 0;
     Layout = null;
     ItemReturnInfoViewModel info = ((ItemReturnInfoViewModel)ViewBag.ReturnInfoViewModel);
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 <table class="table table-bordered table-striped table-sm table-responsive-lg">
     <tr>
@@ -48,7 +49,7 @@
     </tbody>
 </table>
 
-@if ((string)ViewBag.RequisitionStatus == "Approved")
+@if ((string)ViewBag.RequisitionStatus == "Approved" && privilege.Edit)
 {
     <div class="modal-footer">
         <button class="btn btn-sm btn-success btnAccept">Accept</button>

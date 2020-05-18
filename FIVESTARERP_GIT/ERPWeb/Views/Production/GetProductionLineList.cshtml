@@ -5,6 +5,7 @@
     ViewBag.Title = "Production Line List";
     int sl = 0;
     string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -20,7 +21,10 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4 text-right">
-                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Line</button>
+                @if (privilege != null && privilege.Add)
+                {
+                    <button class="btn btn-outline-primary btn-sm" id="btnAddNew"><i class="fa fa-plus"></i> Create Line</button>
+                }
             </div>
         </div>
     </div>
@@ -52,7 +56,10 @@
                         </td>
                         <td>@line.Remarks</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@line.LineId"><i class="fa fa-pen"></i> Edit</a>
+                            @if (privilege != null && privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@line.LineId"><i class="fa fa-pen"></i> Edit</a>
+                            }
                         </td>
                     </tr>
                 }
@@ -134,7 +141,7 @@
         var txtIncharge = $("#txtIncharge");
         var chkStatestatus = $("#chkStatestatus");
         var txtRemarks = $("#txtRemarks");
-        
+
 
         $(document).ready(function () {
             $('#tblLineData').DataTable({
@@ -179,7 +186,7 @@
                 $(".required-incharge").removeClass("hide");
                 isValid = false;
             }
-            
+
             return isValid;
         }
         //Data Save to database
@@ -187,8 +194,10 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
-                var data = JSON.stringify({ LineId: TryParseInt(hdfLineId.val(), 0), LineNumber: txtLineNumber.val(), LineIncharge: txtIncharge.val(), Remarks: txtRemarks.val(),
-                    IsActive: chkStatestatus.is(":checked") });
+                var data = JSON.stringify({
+                    LineId: TryParseInt(hdfLineId.val(), 0), LineNumber: txtLineNumber.val(), LineIncharge: txtIncharge.val(), Remarks: txtRemarks.val(),
+                    IsActive: chkStatestatus.is(":checked")
+                });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveProductionLine', data, getToken())).then(function (res, status) {
                     console.log(status);
@@ -234,7 +243,7 @@
             txtIncharge.val('');
             chkStatestatus.prop("checked", false);
             txtRemarks.val('');
-            
+
 
         }
         $(".data-edit-item").click(function (e) {
@@ -244,4 +253,4 @@
             $("#spanSaveText").text('Update');
         });
     </script>
-    }
+}

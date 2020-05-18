@@ -41,7 +41,7 @@ namespace ERPBLL.ControlPanel
             {
                 role.RoleName = roleDTO.RoleName;
                 role.EUserId = userId;
-                role.OrganizationId = orgId;
+                role.OrganizationId = roleDTO.OrganizationId;
                 role.EntryDate = DateTime.Now;
                 roleRepository.Insert(role);
             }
@@ -50,7 +50,7 @@ namespace ERPBLL.ControlPanel
                 role = GetRoleOneById(roleDTO.RoleId, orgId);
                 role.RoleName = roleDTO.RoleName;
                 role.UpUserId = userId;
-                role.OrganizationId = orgId;
+                //role.OrganizationId = roleDTO.OrganizationId;
                 role.UpdateDate = DateTime.Now;
                 roleRepository.Update(role);
             }

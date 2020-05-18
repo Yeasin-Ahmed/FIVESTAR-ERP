@@ -106,7 +106,6 @@
         //casced dropdown load for itemtype
         ddlWarehouse.change(function () {
             $("#unitName").text('');
-
             clearDropdown("ddlItemType");
             clearDropdown("ddlItem");
             if (ddlWarehouse.val() != "") {
@@ -232,9 +231,7 @@
             if (bootbox.confirm("Are you sure you want to delete?", function (result) {
                 if (result === true) {
                     removeTableRow("#tblWarehouseStock tbody", index);
-                    //fnFixTheTbodyRowSerial("#tblWarehouseStock", index);
                     fnFixTheTbodyRowSerialInDecsOrder("#tblWarehouseStock", index);
-                    $("#tblWarehouseStock tbody tr").removeClass("btn-success");
                 };
             }));
         })

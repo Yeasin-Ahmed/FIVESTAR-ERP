@@ -2,8 +2,9 @@
 @{
     int sl = 0;
     Layout = null;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
-    
+
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReturnItems">
     <thead class="thead-dark">
         <tr class="text-center">
@@ -34,15 +35,19 @@
         }
     </tbody>
 </table>
-@if ((string)ViewBag.RequisitionStatus == "Approved")
+@if (privilege != null && privilege.Edit)
 {
-    <div class="modal-footer">
-        <button class="btn btn-sm btn-success btnAccept">Accept</button>
-    </div>
+    if ((string)ViewBag.RequisitionStatus == "Approved")
+    {
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-success btnAccept">Accept</button>
+        </div>
+    }
+    if ((string)ViewBag.RequisitionStatus == "Recheck")
+    {
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-success btnRecheck">Check Done</button>
+        </div>
+    }
 }
-@if ((string)ViewBag.RequisitionStatus == "Recheck")
-{
-    <div class="modal-footer">
-        <button class="btn btn-sm btn-success btnRecheck">Check Done</button>
-    </div>
-}
+

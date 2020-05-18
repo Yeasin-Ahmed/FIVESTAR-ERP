@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RequsitionDetailViewModel>
 @using ERPBO.Production.ViewModels;
 @{
-    var sl = 0;
-    Layout = null;
-    RequsitionInfoViewModel info = ((RequsitionInfoViewModel)ViewBag.RequsitionInfoViewModel);
+                /**/
+
+                var sl = 0;
+                Layout = null;
+                RequsitionInfoViewModel info = ((RequsitionInfoViewModel)ViewBag.RequsitionInfoViewModel);
 
 }
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReqInfoForEdit">
@@ -15,6 +17,7 @@
             <td class="hide">@info.LineId</td>
             <td style="width:15%">Line Number</td>
             <td style="width:35%"><b>@info.LineNumber</b></td>
+            <td class="hide"></td>
         </tr>
         <tr>
             <td class="hide">@info.WarehouseId</td>
@@ -23,6 +26,7 @@
             <td class="hide">@info.DescriptionId</td>
             <td style="width:15%">Model</td>
             <td style="width:35%"><b>@info.ModelName</b></td>
+            <td class="hide">@info.RequisitionType</td>
         </tr>
     </tbody>
 </table>
@@ -37,28 +41,28 @@
             <th>Item Name</th>
             <th>Qty.</th>
             <th>Type Of Unit</th>
-            @*<th>Actions</th>*@
+            
         </tr>
     </thead>
     <tbody>
         @foreach (var detail in Model)
         {
             sl = sl + 1;
-        <tr>
-            <td class="text-center" width="10%"><b>@sl</b></td>
-            <td class="hide">@detail.ReqDetailId</td>
-            <td class="hide">@detail.ItemTypeId</td>
-            <td>@detail.ItemTypeName</td>
-            <td class="hide">@detail.ItemId</td>
-            <td>@detail.ItemName</td>
-            <td class="text-center" style="width:15%">
-                <input type="number" value="@detail.Quantity" class="form-control form-control-sm"/>
-            </td>
-            <td class="text-center">@detail.UnitName</td>
-            @*<td class="text-center">
-                <a href="#" class="btn btn-danger btn-sm data-onfly-del" data-edit-item="@detail.ReqDetailId"><i class="fa fa-pen"></i> Delete</a>
-            </td>*@
-        </tr>
+            <tr>
+                <td class="text-center" width="10%"><b>@sl</b></td>
+                <td class="hide">@detail.ReqDetailId</td>
+                <td class="hide">@detail.ItemTypeId</td>
+                <td>@detail.ItemTypeName</td>
+                <td class="hide">@detail.ItemId</td>
+                <td>@detail.ItemName</td>
+                <td class="text-center" style="width:15%">
+                    <input type="number" value="@detail.Quantity" class="form-control form-control-sm" />
+                </td>
+                <td class="text-center">@detail.UnitName</td>
+                @*<td class="text-center">
+                        <a href="#" class="btn btn-danger btn-sm data-onfly-del" data-edit-item="@detail.ReqDetailId"><i class="fa fa-pen"></i> Delete</a>
+                    </td>*@
+            </tr>
         }
     </tbody>
 </table>

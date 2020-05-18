@@ -120,7 +120,7 @@ Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
             string shortName = _itemTypeBusiness.GetItemType(itemTypeId, OrgId).ShortName;
 
             var lastItem = itemRepository.GetAll(i => i.ItemTypeId == itemTypeId && i.OrganizationId == OrgId).OrderByDescending(i => i.ItemId).FirstOrDefault();
-            if (string.IsNullOrEmpty(lastItem.ItemCode))
+            if (lastItem == null)
             {
                 newCode = shortName + "00001";
             }
@@ -130,10 +130,6 @@ Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
                 code = (Convert.ToInt32(code) + 1).ToString();
                 newCode = shortName + code.PadLeft(5, '0');
             }
-            //code = GetAllItemByOrgId(OrgId).OrderByDescending(i => i.ItemId).FirstOrDefault().ItemCode;
-            //code = code.Substring(3);
-            //code = (Convert.ToInt32(code) + 1).ToString();
-            //newCode = "ITM"+code.PadLeft(5, '0');
             return newCode;
         }
     }

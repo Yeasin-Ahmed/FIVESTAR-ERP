@@ -22,26 +22,41 @@
     <div class="col-md-12">
         <form id="frmReqDetails">
             @Html.AntiForgeryToken()
+            @*<div class="row">
+                    <div class="col-md-3">
+                        <label for="ddlExecutionType" class="control-label">Production Line</label>
+                        @Html.DropDownList("ddlExecutionType", (IEnumerable<SelectListItem>)ViewBag.ddlExecutionType, new { @class = "form-control form-control-sm" })
+                        <span class="error hide req-line">Line Number is required</span>
+                    </div>
+                </div>*@
             <div class="row">
+                <div class="col-md-3">
+                    <label class="control-label">
+                        Requisition Type
+                        <div class="icheck-primary d-inline text-primary">
+                            <input type="checkbox" id="chkIsBundle">
+                            <label for="chkIsBundle">
+                                (Is Bundle?)
+                            </label>
+                        </div>
+                    </label>
+                    @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                    <span class="error hide req-type">Requisition Type is required</span>
+                </div>
                 <div class="col-md-3">
                     <label for="ddlLineNumber" class="control-label">Production Line</label>
                     @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line Number--", new { @class = "form-control form-control-sm" })
                     <span class="error hide req-line">Line Number is required</span>
                 </div>
                 <div class="col-md-3">
-                    <label class="control-label">Requisition Type</label>
-                    @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
-                    <span class="error hide req-type">Requisition Type is required</span>
+                    <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                    <span class="error hide require-model">Model is required</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                     @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
                     <span class="error hide req-warehouse">Warehouse Name is required</span>
-                </div>
-                <div class="col-md-3">
-                    <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
-                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
-                    <span class="error hide require-model">Model is required</span>
                 </div>
             </div>
             <div class="row">
@@ -64,9 +79,9 @@
                     <label for="txtQuantity" class="control-label font-weight-bold">Quantity</label>
                     <div class="input-group col-md-8">
                         <input type="number" name="quantity" id="txtQuantity" class="form-control form-control-sm" />
-                        <span class="error hide require-quantity">Quantity is required</span>
                         <span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
                     </div>
+                    <span class="error hide require-quantity">Quantity is required</span>
                 </div>
                 <div class="col-md-2">
                     <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -98,6 +113,8 @@
                             <th>Type Of Unit</th>
                             <th>Remarks</th>
                             <th>Action</th>
+                            <th class="hide"></th>
+                            <th class="hide"></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -119,6 +136,7 @@
         var txtQuantity = $("#txtQuantity");
         var ddlModelName = $("#ddlModelName");
         var ddlRequisitionType = $("ddlRequisitionType");
+        var chkIsBundle = $("#chkIsBundle");
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -129,6 +147,67 @@
                 theme: 'bootstrap4'
             });
         })
+
+        ddlModelName.change(function () {
+            if (chkIsBundle.is(":checked")) {
+                chkIsBundle.trigger('change')
+            }
+        })
+
+        chkIsBundle.change(function () {
+            $("#tblRequsitionDetailsData tbody tr").empty();
+            if (chkIsBundle.is(":checked")) {
+                if (TryParseInt(ddlWarehouse.val()) > 0) {
+                    disable("#ddlWarehouse");
+                }
+                $("#btnAddToList").addClass('hide');
+                if (TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0) {
+                    var data = JSON.stringify({ modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
+                        console.log(res);
+                        loadDataTabelForBundle(res);
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+            } else {
+                enable("#ddlWarehouse");
+                $("#btnAddToList").removeClass('hide');
+            }
+        })
+
+        function loadDataTabelForBundle(obj) {
+            if (!$.isEmptyObject(obj))
+            {
+                $.each(obj, function (index, item) {
+                    var re = (item.Remarks === null) ? "" : item.Remarks;
+                    var td1 = "<td class='text-center'><b>" + (index + 1) + "</b></td>"
+                    var td2 = "<td class='hide'>" + item.ItemTypeId + "</td>";
+                    var td3 = "<td>" + item.ItemTypeName + "</td>";
+                    var td4 = "<td class='hide'>" + item.ItemId + "</td>";
+                    var td5 = "<td>" + item.ItemName + "</td>";
+
+                    var td6 = "<td class='text-center'>" + TryParseInt(txtQuantity.val(), 0) * item.Quantity + "</td>";
+                    var td7 = "<td class='text-center'>" + item.UnitName + "</td>";
+                    var td8 = "<td>" + re + "</td>";
+                    var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del hide'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                    var td10 = "<td class='hide'>" + item.WarehouseId + "</td>";
+                    var td11 = "<td class='hide'>" + item.Quantity + "</td>";
+
+                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + "</tr>";
+
+                    $("#tblRequsitionDetailsData tbody").append(tr);
+
+                    //$("#tblRequsitionDetailsData tbody").append(tr);
+                    //clearCtrl();
+                })
+            }
+            else {
+                bootbox.alert('Bundle not found');
+            }
+        }
+
         ddlLineNumber.change(function () {
             disable("#ddlLineNumber")
         })
@@ -167,12 +246,15 @@
                     consoleLog(error);
                 })
             }
+
+            chkIsBundle.trigger('change');
         })
 
         //click addlist button and save data in list
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
             if (validateInput() == true) {
+                disable("#ddlWarehouse");
                 var sl = $("#tblRequsitionDetailsData tbody tr").length;
                 var td1 = "<td class='text-center'><b>" + (sl + 1) + "</b></td>"
                 var td2 = "<td class='hide'>" + ddlItemType.val() + "</td>";
@@ -185,8 +267,10 @@
                 var td7 = "<td class='text-center'>" + unitName.text() + "</td>";
                 var td8 = "<td>" + txtRemarks.val() + "</td>";
                 var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                var td10 = "<td class='hide'>" + 0 + "</td>";
+                var td11 = "<td class='hide'>" + 0 + "</td>";
 
-                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + "</tr>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + "</tr>";
 
                 if ($("#tblRequsitionDetailsData tbody tr").length == 0) {
                     $("#tblRequsitionDetailsData tbody").append(tr);
@@ -223,20 +307,42 @@
                 isValid = false;
                 $(".req-type").removeClass("hide");
             }
+
+            if (chkIsBundle.is(":checked")) {
+                if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                    isValid = false;
+                    $(".require-quantity").removeClass("hide");
+                }
+            }
             return isValid;
         }
 
+        txtQuantity.keyup(function () {
+            if (chkIsBundle.is(":checked") && TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0 && $("#tblRequsitionDetailsData tbody tr").length > 0 && TryParseInt(txtQuantity.val(),0) > 0) {
+
+                $.each($("#tblRequsitionDetailsData tbody tr"), function (index, item) {
+                    var qty = TryParseInt($(this).children('td').eq(10).html(), 0);
+                    console.log('Qty ' + qty);
+                    
+                    var t = qty * TryParseInt(txtQuantity.val(), 0)
+                    console.log('Total ' +t);
+                    $("#tblRequsitionDetailsData tbody").children('tr').eq(index).children('td').eq(5).html(t);
+                })
+            }
+        })
 
         $("#btnReset").click(function (e) {
             clearDropdown("ddlItem");
             enable("#ddlWarehouse");
             enable("#ddlLineNumber");
+            ddlWarehouse.val("");
             $("#tblRequsitionDetailsData tbody").empty();
             ddlItemType.val('');
             e.preventDefault();
             txtQuantity.val('');
             unitName.text('');
             txtRemarks.val('');
+            $(".error").addClass('hide');
         })
 
         function clearCtrl() {
@@ -305,7 +411,15 @@
                     if (result === true)
                     {
                         var reqDetails = [];
-                    reqDetails.length = 0;
+                        reqDetails.length = 0;
+
+                        var wi = 0;
+                        if (chkIsBundle.is(":checked")) {
+                            wi = $("#tblRequsitionDetailsData tbody").children('tr').eq(0).children('td').eq(9).html();
+                        }
+                        else {
+                            wi = TryParseInt(ddlWarehouse.val(), 0);
+                        }
                     $.each($("#tblRequsitionDetailsData tbody tr"), function (index, item) {
                         var tds = $(this).children('td');
                         var iTypeId = tds.eq('1').html();
@@ -325,7 +439,7 @@
                     var requsitionInfo = {
                     ReqInfoId: 0,
                     LineId: TryParseInt(ddlLineNumber.val(), 0),
-                    WarehouseId: TryParseInt(ddlWarehouse.val(), 0),
+                    WarehouseId: wi,
                     DescriptionId: TryParseInt(ddlModelName.val(), 0),
                     RequisitionType: $("#ddlRequisitionType").val(),
                     ReqDetails: reqDetails
@@ -359,6 +473,8 @@
         function redirectPage(page) {
             window.location.replace(page);
         }
+
+       
 
     </script>
 }

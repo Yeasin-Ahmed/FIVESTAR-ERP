@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionStockInfoViewModel>
 @{
     ViewBag.Title = "Production Stock Info";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
     <div class="col-md-12 text-center">
         <div class="row">
             <div class="col-md-3">
-                <a href="/Production/GetProductionStockDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                    <i class="fas fa-eye"></i> Go To Details View
-                </a>
+                @if (privilege != null && privilege.Detail)
+                {
+                    <a href="/Production/GetProductionStockDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                        <i class="fas fa-eye"></i> Go To Details View
+                    </a>
+                }
             </div>
             <div class="col-md-6 text-center">
                 <h4><b style="color:darkblue">Production Stock Info</b></h4>

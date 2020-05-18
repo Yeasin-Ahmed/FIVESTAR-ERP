@@ -2,6 +2,7 @@
 @{
     int sl = 0;
     Layout = null;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReturnItems">
     <thead class="thead-dark">
@@ -36,7 +37,7 @@
 <br />
 <div id="alert-error"></div>
 
-@if ((string)ViewBag.RequisitionStatus == "Pending")
+@if ((string)ViewBag.RequisitionStatus == "Pending" && privilege.Edit)
 {
     <div class="modal-footer">
         <button class="btn btn-sm btn-danger btnReject">Reject</button>

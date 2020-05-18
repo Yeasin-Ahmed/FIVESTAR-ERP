@@ -3,8 +3,8 @@
 @{
     ViewBag.Title = "Organization Authorization";
     string checkboxId = string.Empty;
-    //todoCheck
-    //todo1
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+
 }
 <div class="row">
     <div class="col-md-12 text-center">
@@ -28,7 +28,10 @@
 
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" id="btnSubmit" class="btn float-right btn-outline-success"> Save <i class="fas fa-paper-plane"></i></button>
+                        @if (privilege != null && (privilege.Add || privilege.Edit))
+                        {
+                            <button type="submit" id="btnSubmit" class="btn float-right btn-outline-success"> Save <i class="fas fa-paper-plane"></i></button>
+                        }
                     </div>
                 </div>
             </div>

@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "List Of Item Preparation";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h4><b style="color:darkblue">List Of Item Preparation</b></h4>
+            </div>
+            <div class="col-md-3">
+                @if (privilege != null && privilege.Add)
+                {
+                    <a href="/Inventory/CreateItemPreparation" class="btn btn-outline-primary btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Item Preparation</a>
+                }
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlModelName" class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlWarehouseName" class="col-form-label">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlItemType">ItemType Name</label>
+                <select id="ddlItemType" class="form-control form-control-sm ctrl-changed">
+                    <option value="">--Select ItemType--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label" for="ddlItem">Item Name</label>
+                <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
+                    <option value="">--Select Item--</option>
+                </select>
+            </div>
+        </div>
+        <br />
+    </div>
+    <div class="col-md-12" id="dataContainer">
+        @{Html.RenderAction("GetItemPreparation", "Inventory", new { @flag = "View" });}
+    </div>
+</div>
+
+<div class="modal fade" id="itemPreparationDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title">Item Preparation Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer2">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlWarehouse = $("#ddlWarehouseName");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var ddlModelName = $("#ddlModelName");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        ddlWarehouse.change(function () {
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlItemType.change(function () {
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlModelName.change(function () {
+            LoadDataTable();
+        })
+
+        ddlItem.change(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "View", modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), id:0};
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetItemPreparation', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").empty();
+                    $("#dataContainer").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on('click', 'a.data-item-detail', function (e) {
+            e.preventDefault();
+            $("#dataContainer2").empty();
+            var id = $(this).parent().parents('tr').children('td').eq(1).html();
+            if (TryParseInt(id, 0) > 0) {
+                var data = { flag: "Detail", modelId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, id: id };
+                $.when(getReqWithData('html', 'GET', '/Inventory/GetItemPreparation', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res);
+                        $("#itemPreparationDetails").modal('show');
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+        })
+
+        $(document).on('click', 'a.data-item-del', function (e) {
+            e.preventDefault();
+            var id = $(this).parent().parents('tr').children('td').eq(1).html();
+            var index = $(this).parent().parents('tr').index;
+            bootbox.confirm('Are you sure you want to delete?', function (result) {
+                if (result === true) {
+                    if (TryParseInt(id, 0) > 0) {
+                        var data = JSON.stringify({ flag: "Delete", modelId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, id: id });
+                        $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Inventory/GetItemPreparation', data)).then(function (res, status) {
+                            console.log(status);
+                            if (res === true && status === "success") {
+                                fnRemoveARowFromTbody("#tblItemPreparationList", index);
+                                $('.toastrDefaultDelete').trigger('click');
+                                LoadDataTable();
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            console.log(error);
+                        })
+                    }
+                }
+            })
+        })
+
+        $(document).on('click', 'a.data-item-edit', function (e) {
+            e.preventDefault();
+        })
+        
+    </script>
+}

@@ -6,7 +6,7 @@
 <table class="table table-bordered table-sm table-striped" id="tblWarehouseStockInfo">
     <thead class="btn-dark">
         <tr class="text-center">
-            <th>SL No.</th>
+            <th>#SL</th>
             <th class="hide"></th>
             <th class="hide"></th>
             <th>Warehouse</th>
@@ -29,7 +29,7 @@
             sl = sl + 1;
             stock = (info.StockInQty.Value - info.StockOutQty.Value);
             <tr>
-                <td class="text-center" width="10%">@sl</td>
+                <td class="text-center text-bold">@sl</td>
                 <td class="hide">@info.StockInfoId</td>
                 <td class="hide">@info.WarehouseId</td>
                 <td>@info.Warehouse</td>

@@ -2,6 +2,7 @@
 @{
     int sl = 0;
     string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblFinishGoodsSendToWarehouseDetailList">
@@ -39,7 +40,10 @@
                 <td class="text-center">@item.RefferenceNumber</td>
                 <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
                 <td class="text-center">
-                    <a href="#" class="btn btn-sm btn-outline-secondary data-item-details" title="View Details" data-item-details="@item.SendId"><i class="fas fa-eye"></i></a>
+                    @if (privilege.Detail)
+                    {
+                        <a href="#" class="btn btn-sm btn-outline-secondary data-item-details" title="View Details" data-item-details="@item.SendId"><i class="fas fa-eye"></i></a>
+                    }
                 </td>
             </tr>
         }
