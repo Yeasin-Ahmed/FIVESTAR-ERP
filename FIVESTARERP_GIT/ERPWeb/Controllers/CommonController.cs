@@ -314,6 +314,13 @@ namespace ERPWeb.Controllers
             IsDuplicate=_itemPreparationInfoBusiness.IsDuplicationItemPreparation(itemId, modelId, User.OrgId) != null;
             return Json(IsDuplicate);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateRoleName(long roleId, string roleName, long orgId)
+        {
+            bool IsDuplicate = false;
+            IsDuplicate =_roleBusiness.IsDuplicateRoleName(roleName, roleId, orgId);
+            return Json(IsDuplicate);
+        }
 
         #region Dropdown List
         [HttpPost]

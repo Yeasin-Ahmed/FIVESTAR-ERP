@@ -3,7 +3,7 @@ namespace ERPDAL.InventoryContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Inventory_AllEntities_03May2020 : DbMigration
+    public partial class Inventory_AllEntities_16May2020 : DbMigration
     {
         public override void Up()
         {
@@ -23,6 +23,47 @@ namespace ERPDAL.InventoryContextMigrations
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.DescriptionId);
+            
+            CreateTable(
+                "dbo.tblItemPreparationDetail",
+                c => new
+                    {
+                        PreparationDetailId = c.Long(nullable: false, identity: true),
+                        WarehouseId = c.Long(nullable: false),
+                        ItemTypeId = c.Long(nullable: false),
+                        ItemId = c.Long(nullable: false),
+                        UnitId = c.Long(nullable: false),
+                        Quantity = c.Int(nullable: false),
+                        Remarks = c.String(),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                        PreparationInfoId = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => t.PreparationDetailId)
+                .ForeignKey("dbo.tblItemPreparationInfo", t => t.PreparationInfoId, cascadeDelete: true)
+                .Index(t => t.PreparationInfoId);
+            
+            CreateTable(
+                "dbo.tblItemPreparationInfo",
+                c => new
+                    {
+                        PreparationInfoId = c.Long(nullable: false, identity: true),
+                        WarehouseId = c.Long(nullable: false),
+                        ItemTypeId = c.Long(nullable: false),
+                        ItemId = c.Long(nullable: false),
+                        UnitId = c.Long(nullable: false),
+                        DescriptionId = c.Long(nullable: false),
+                        Remarks = c.String(),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.PreparationInfoId);
             
             CreateTable(
                 "dbo.tblItems",
@@ -199,10 +240,12 @@ namespace ERPDAL.InventoryContextMigrations
             DropForeignKey("dbo.tblRepairStockDetails", "RepairStockInfo_RStockInfoId", "dbo.tblRepairStockInfo");
             DropForeignKey("dbo.tblItems", "ItemTypeId", "dbo.tblItemTypes");
             DropForeignKey("dbo.tblItemTypes", "WarehouseId", "dbo.tblWarehouses");
+            DropForeignKey("dbo.tblItemPreparationDetail", "PreparationInfoId", "dbo.tblItemPreparationInfo");
             DropIndex("dbo.tblWarehouseStockDetails", new[] { "WarehouseStockInfo_StockInfoId" });
             DropIndex("dbo.tblRepairStockDetails", new[] { "RepairStockInfo_RStockInfoId" });
             DropIndex("dbo.tblItemTypes", new[] { "WarehouseId" });
             DropIndex("dbo.tblItems", new[] { "ItemTypeId" });
+            DropIndex("dbo.tblItemPreparationDetail", new[] { "PreparationInfoId" });
             DropTable("dbo.tblWarehouseStockInfo");
             DropTable("dbo.tblWarehouseStockDetails");
             DropTable("dbo.tblUnits");
@@ -211,6 +254,8 @@ namespace ERPDAL.InventoryContextMigrations
             DropTable("dbo.tblWarehouses");
             DropTable("dbo.tblItemTypes");
             DropTable("dbo.tblItems");
+            DropTable("dbo.tblItemPreparationInfo");
+            DropTable("dbo.tblItemPreparationDetail");
             DropTable("dbo.tblDescriptions");
         }
     }

@@ -870,7 +870,7 @@ namespace ERPWeb.Controllers
         public ActionResult SaveFinishGoodsItems(long sendId)
         {
             bool IsSuccess = false;
-            var privilege = UserPrivilege("Inventory", "GetWarehouseList");
+            var privilege = UserPrivilege("Inventory", "GetFinishGoodsSendToWarehouse");
             if (sendId > 0 && privilege.Edit)
             {
                 IsSuccess=_finishGoodsSendToWarehouseInfoBusiness.SaveFinishGoodsStatus(sendId, User.UserId, User.OrgId);
@@ -883,6 +883,7 @@ namespace ERPWeb.Controllers
         #region Item Preparation
         public ActionResult GetItemPreparation(string flag,long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? id)
         {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemPreparation");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
@@ -932,21 +933,30 @@ namespace ERPWeb.Controllers
                 var units = _unitBusiness.GetAllUnitByOrgId(User.OrgId).ToList();
                 var mobileModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).ToList();
                 var info = _itemPreparationInfoBusiness.GetItemPreparationInfoOneByOrgId(id.Value, User.OrgId);
-                ViewBag.Info = new ItemPreparationInfoViewModel
+
+                List<ItemPreparationDetailViewModel> details = new List<ItemPreparationDetailViewModel>();
+                if (info != null)
                 {
-                    ModelName = mobileModels.FirstOrDefault(it => it.DescriptionId == info.DescriptionId).DescriptionName,
-                    ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == info.ItemTypeId).ItemName,
-                    ItemName = items.FirstOrDefault(it => it.ItemId == info.ItemId).ItemName
-                };
-                var details = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(id.Value, User.OrgId).Select(i => new ItemPreparationDetailViewModel
+                    ViewBag.Info = new ItemPreparationInfoViewModel
+                    {
+                        ModelName = mobileModels.FirstOrDefault(it => it.DescriptionId == info.DescriptionId).DescriptionName,
+                        ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == info.ItemTypeId).ItemName,
+                        ItemName = items.FirstOrDefault(it => it.ItemId == info.ItemId).ItemName
+                    };
+                    details = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(id.Value, User.OrgId).Select(i => new ItemPreparationDetailViewModel
+                    {
+                        WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
+                        ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == i.ItemTypeId).ItemName,
+                        ItemName = items.FirstOrDefault(it => it.ItemId == i.ItemId).ItemName,
+                        UnitName = units.FirstOrDefault(u => u.UnitId == i.UnitId).UnitSymbol,
+                        Quantity = i.Quantity,
+                        Remarks = i.Remarks
+                    }).ToList();
+                }
+                else
                 {
-                    WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
-                    ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == it.ItemId).ItemName,
-                    ItemName = items.FirstOrDefault(it => it.ItemId == it.ItemId).ItemName,
-                    UnitName = units.FirstOrDefault(u => u.UnitId == u.UnitId).UnitSymbol,
-                    Quantity = i.Quantity,
-                    Remarks = i.Remarks
-                });
+                    ViewBag.Info = new ItemPreparationInfoViewModel();
+                }
                 return PartialView("_GetItemPreparationDetail", details);
             }
             else
@@ -986,7 +996,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveItemPreparation(ItemPreparationInfoViewModel info, List<ItemPreparationDetailViewModel> details)
         {
             bool IsSuccess = false;
-            if(ModelState.IsValid && details.Count > 0)
+            var pre = UserPrivilege("Inventory", "CreateItemPreparation");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && details.Count > 0 && permission)
             {
                 ItemPreparationInfoDTO infoDTO = new ItemPreparationInfoDTO();
                 List<ItemPreparationDetailDTO> detailDTOs = new List<ItemPreparationDetailDTO>();

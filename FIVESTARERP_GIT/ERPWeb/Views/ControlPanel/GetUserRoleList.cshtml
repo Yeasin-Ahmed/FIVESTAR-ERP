@@ -2,14 +2,14 @@
 @using PagedList;
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "GetRoleList";
+    ViewBag.Title = "User Role List";
     int sl = 0;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">List Of Role</b></h4>
+        <h4><b style="color:darkblue">List Of User Roles</b></h4>
         <hr />
     </div>
     <div class="col-md-12 mb-2">
@@ -24,7 +24,6 @@
                 {
                     <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Role</button>
                 }
-
             </div>
         </div>
     </div>
@@ -54,8 +53,8 @@
                             @if (privilege != null && privilege.Edit)
                             {
                                 <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@role.RoleId"><i class="fa fa-pen"></i> Edit</a>
-                            }
 
+                            }
                         </td>
                     </tr>
                 }
@@ -73,7 +72,7 @@
 </div>
 
 <div class="modal fade" id="modalRole" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
                 <h4 id="modalHeading" class="modal-title"><i class="fas fa-angle-double-right"></i><span id="spanModalHead">Add New Role</span></h4>
@@ -83,23 +82,18 @@
                 <form id="frmRole">
                     <input type="hidden" name="Id" id="hdfRoleId" />
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label for="txtRoleName" class="control-label font-weight-bold">Role Name</label>
                             <input type="text" name="role" value="" id="txtRoleName" class="form-control form-control-sm" />
                             <span class="error hide required-roleName font-weight-bold">Input Role Name!</span>
                             <span class="error hide duplicate-roleName font-weight-bold">Already RoleName Exist!</span>
                             <span class="error hide invalid-roleName font-weight-bold">Invalid Role!</span>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="ddlOrganizationName" class="control-label font-weight-bold">OrganizationName</label>
-                            @Html.DropDownList("ddlOrganizationName", (IEnumerable<SelectListItem>)ViewBag.ddlOrganizationName, "--Select OrganizationName--", new { @class = "form-control form-control-sm" })
-                            <span class="error hide req-org font-weight-bold">Organization is required!</span>
-                        </div>
                     </div>
                 </form>
             </div>
 
-            <div class="modal-footer btn-light">
+            <div class="modal-footer">
                 <div class="col-md-6">
                     <div id="msg1" class="alert alert-success hide float-left">
                         Data has been saved Successful!
@@ -108,8 +102,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
             </div>
         </div>
     </div>
@@ -119,7 +113,6 @@
     <script type="text/javascript">
         var hdfRoleId = $("#hdfRoleId");
         var txtRoleName = $("#txtRoleName");
-        var ddlOrganizationName = $("#ddlOrganizationName");
 
         $(document).ready(function () {
             $('#tblRoleData').DataTable({
@@ -148,24 +141,26 @@
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
-            if (ddlOrganizationName.val() === "") {
-                $(".req-org").removeClass('hide');
-                isValid = false;
-            }
             if ($.trim(txtRoleName.val()) == "") {
                 $(".required-roleName").removeClass("hide");
                 isValid = false;
             }
             else {
                 var id = TryParseInt(hdfRoleId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ roleId: id, roleName: txtRoleName.val().trim(), orgId: ddlOrganizationName.val() }), '/Common/IsDuplicateRoleName', getToken()) == true) {
-                    $(".duplicate-roleName").removeClass("hide");
+                if (txtRoleName.val() === 'System Admin') {
+                    $(".invalid-roleName").removeClass("hide");
                     isValid = false;
                 }
+                else {
+                    if (ajaxBooleanChecker(JSON.stringify({ roleId: id, roleName: txtRoleName.val().trim(),orgId:'@User.OrgId' }), '/Common/IsDuplicateRoleName', getToken()) == true) {
+                        $(".duplicate-roleName").removeClass("hide");
+                        isValid = false;
+                    }
+                }
+                
             }
             return isValid;
         }
-
 
         //Data add
         $("#btnSubmit").click(function (e) {
@@ -175,10 +170,10 @@
                 var data = JSON.stringify({
                     RoleId: TryParseInt(hdfRoleId.val(), 0),
                     RoleName: txtRoleName.val(),
-                    OrganizationId: ddlOrganizationName.val(),
+                    OrganizationId: '@User.OrgId',
                 });
                 console.log(data);
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/ControlPanel/SaveRole', data, getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/ControlPanel/SaveUserRole', data, getToken())).then(function (res, status) {
                     console.log(status);
                     console.log(res);
                     if (res == true) {
@@ -193,7 +188,6 @@
                     enable("#btnSubmit");
                 });
             }
-
         })
 
         $(document).on("click", "a.data-edit-item", function (e) {
@@ -206,14 +200,10 @@
 
             hdfRoleId.val(td1);
             txtRoleName.val(td2);
-            ddlOrganizationName.val(td3);
-
         })
         function clearCtrl() {
             hdfRoleId.val('0');
             txtRoleName.val('');
-            ddlOrganizationName.val('');
-
         }
         $(".data-edit-item").click(function (e) {
             e.preventDefault()

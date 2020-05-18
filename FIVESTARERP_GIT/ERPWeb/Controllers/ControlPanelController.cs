@@ -66,6 +66,7 @@ namespace ERPWeb.Controllers
 
             List<OrganizationViewModel> OrganizationViewModels = new List<OrganizationViewModel>();
             AutoMapper.Mapper.Map(organizationDTOs, OrganizationViewModels);
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetOrganizations");
             return View(OrganizationViewModels);
         }
 
@@ -99,8 +100,10 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveOrganization(OrganizationViewModel model)
         {
+            var privilege = UserPrivilege("ControlPanel", "CreateOrganization");
+            var permission = (model.OrgId == 0 && privilege.Add) || (model.OrgId > 0 && privilege.Edit);
             bool IsSuccess = false;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && permission)
             {
                 OrganizationDTO dto = new OrganizationDTO();
                 AutoMapper.Mapper.Map(model, dto);
@@ -113,6 +116,7 @@ namespace ERPWeb.Controllers
         #region Branch
         public ActionResult GetBranchList(int? page)
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetBranchList");
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
             IPagedList<BranchViewModel> branchViewModels = _branchBusiness.GetBranchByOrgId(User.OrgId).Select(br => new BranchViewModel
@@ -134,8 +138,10 @@ namespace ERPWeb.Controllers
         }
         public ActionResult SaveBranch(BranchViewModel branchViewModel)
         {
+            var pre = UserPrivilege("ControlPanel", "GetBranchList");
+            var permission = ((pre.Edit) || (pre.Add));
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -155,6 +161,7 @@ namespace ERPWeb.Controllers
         #region Role
         public ActionResult GetRoleList(int? page)
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetRoleList");
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
             IPagedList<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(role => new RoleViewModel
@@ -171,7 +178,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveRole(RoleViewModel roleViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("ControlPanel", "GetRoleList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -189,13 +198,10 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region AppUser
-        public ActionResult GetAppUserList(int? page)
+        public ActionResult GetAppUserList()
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetAppUserList");
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
-
-            //ViewBag.ddlRoleName = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(br => new SelectListItem { Text = br.RoleName, Value = br.RoleId.ToString() });
-
-            //ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Select(br => new SelectListItem { Text = br.BranchName, Value = br.BranchId.ToString() });
 
             IEnumerable<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId).Select(user => new AppUserViewModel
             {
@@ -223,7 +229,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveAppUser(AppUserViewModel appUserViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("ControlPanel", "GetAppUserList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -244,6 +252,7 @@ namespace ERPWeb.Controllers
         #region Module
         public ActionResult GetModuleList()
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetModuleList");
             IEnumerable<ModuleDTO> moduleDTO = _moduleBusiness.GetAllModules().Select(m => new ModuleDTO
             {
                 MId = m.MId,
@@ -259,7 +268,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveModule(ModuleViewModel moduleViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("ControlPanel", "GetModuleList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -279,6 +290,7 @@ namespace ERPWeb.Controllers
         #region MainMenu
         public ActionResult GetMainMenuList()
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetMainMenuList");
             ViewBag.ddlModuleName = _moduleBusiness.GetAllModules().Select(br => new SelectListItem { Text = br.ModuleName, Value = br.MId.ToString() });
 
             IEnumerable<MainMenuDTO> mainMenuDTO = _maniMenuBusiness.GetAllMainMenu().Select(mainmenu => new MainMenuDTO
@@ -295,7 +307,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveMainMenu(MainMenuViewModel mainMenuViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("ControlPanel", "GetMainMenuList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -315,6 +329,7 @@ namespace ERPWeb.Controllers
         #region SubMenu
         public ActionResult GetSubMenuList()
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetSubMenuList");
             ViewBag.ddlMainMenu = _maniMenuBusiness.GetAllMainMenu().Select(br => new SelectListItem { Text = br.MenuName, Value = br.MMId.ToString() });
 
             ViewBag.ddlParentSubMenu = _subMenuBusiness.GetAllSubMenu().Where(s => s.IsActAsParent == true).Select(s => new SelectListItem
@@ -348,7 +363,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveSubMenu(SubMenuViewModel subMenuViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("ControlPanel", "GetSubMenuList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -368,6 +385,7 @@ namespace ERPWeb.Controllers
         #region Orgainzation Auth
         public ActionResult GetMainMenusForOrgAuth(string flag,long? orgId)
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetMainMenusForOrgAuth");
             if (string.IsNullOrEmpty(flag))
             {
                 var allmainmenus = _organizationAuthBusiness.GetMainMenusForOrgAuth();
@@ -412,7 +430,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveOrganizationAuthMenus(OrgAuthMenusViewModels viewModels)
         {
             bool IsSuccess = false;
-            if(ModelState.IsValid && viewModels.Menus.Count > 0)
+            var pre = UserPrivilege("ControlPanel", "GetMainMenusForOrgAuth");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && viewModels.Menus.Count > 0 && permission)
             {
                 OrgAuthMenusDTO dto = new OrgAuthMenusDTO();
                 AutoMapper.Mapper.Map(viewModels, dto);
@@ -425,6 +445,7 @@ namespace ERPWeb.Controllers
         #region User Custom Authorization
         public ActionResult SetUserCustomAuthorization(string flag, long? userId, long? orgId)
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "SetUserCustomAuthorization");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlOrganization = _organizationBusiness.GetAllOrganizations().Select(o => new SelectListItem
@@ -487,7 +508,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveUserAuthorization(List<UserAuthorizationViewModel> models)
         {
             bool IsSuccess = false;
-            if (models.Count > 0)
+            var pre = UserPrivilege("ControlPanel", "SetUserCustomAuthorization");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (models.Count > 0 && permission)
             {
                 List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
@@ -500,6 +523,7 @@ namespace ERPWeb.Controllers
         #region User Role Authorization
         public ActionResult SetUserRoleAuthorization(string flag, long? roleId, long? orgId)
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "SetUserRoleAuthorization");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlOrganization = _organizationBusiness.GetAllOrganizations().Select(o => new SelectListItem
@@ -559,7 +583,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveRoleAuthorization(List<RoleAuthorizationViewModel> models)
         {
             bool IsSuccess = false;
-            if (models.Count > 0)
+            var pre = UserPrivilege("ControlPanel", "SetUserRoleAuthorization");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (models.Count > 0 && permission)
             {
                 List<RoleAuthorizationDTO> roleAuthorizationDTOs = new List<RoleAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, roleAuthorizationDTOs);
@@ -569,10 +595,12 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-
         #region Used By Client
+
+        #region User
         public ActionResult GetClientUsers()
         {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetClientUsers");
             IEnumerable<AppUserDTO> appUserDto = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId).Select(user => new AppUserDTO
             {
                 UserId = user.UserId,
@@ -601,7 +629,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveClientUser(AppUserViewModel appUserViewModel)
         {
             bool isSuccess = false;
-            if (ModelState.IsValid)
+            var pre = UserPrivilege("ControlPanel", "GetClientUsers");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -619,6 +649,199 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
         #endregion
+
+        #region User Custom Permission
+        public ActionResult SetUserCustomPermission(string flag, long? userId, long? orgId)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "SetUserCustomPermission");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlUsers = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId).Select(o => new SelectListItem
+                {
+                    Text = o.UserName,
+                    Value = o.UserId.ToString()
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                List<VmUserModule> listVmUserModule = new List<VmUserModule>();
+                IEnumerable<UserCustomMenusDTO> userCustomMenus = _userAuthorizationBusiness.GetUserCustomMenus(userId.Value, orgId.Value);
+                var userDto = _appUserBusiness.GetUserDetail(userId.Value, orgId.Value);
+                UserDetaildViewModel userDetaildViewModel = new UserDetaildViewModel();
+                AutoMapper.Mapper.Map(userDto, userDetaildViewModel);
+                if (userCustomMenus.Count() > 0)
+                {
+                    var modules = (from m in userCustomMenus
+                                   select new { MId = m.ModuleId, ModuleName = m.ModuleName }).Distinct().ToList();
+                    foreach (var item in modules)
+                    {
+                        VmUserModule vmUserModule = new VmUserModule();
+                        vmUserModule.ModuleId = item.MId;
+                        vmUserModule.ModuleName = item.ModuleName;
+                        List<VmUserMenu> vmUserMenus = new List<VmUserMenu>();
+                        var mainmenu = (from m in userCustomMenus
+                                        where m.ModuleId == item.MId
+                                        select new { MenuId = m.MainmenuId, MenuName = m.MainmenuName }).Distinct().ToList();
+                        foreach (var mm in mainmenu)
+                        {
+                            VmUserMenu vmUserMenu = new VmUserMenu();
+                            vmUserMenu.MenuId = mm.MenuId;
+                            vmUserMenu.MenuName = mm.MenuName;
+                            vmUserMenu.SubMenus = userCustomMenus.Where(s => s.MainmenuId == mm.MenuId).Select(s => new VmUserSubmenu
+                            {
+                                SubmenuId = s.SubmenuId,
+                                SubMenuName = s.SubMenuName,
+                                ParentSubMenuId = s.ParentSubMenuId,
+                                Add = s.Add,
+                                Edit = s.Edit,
+                                Detail = s.Detail,
+                                Delete = s.Delete,
+                                Approval = s.Approval,
+                                Report = s.Report,
+                                TaskId = s.TaskId
+                            }).ToList();
+                            vmUserMenus.Add(vmUserMenu);
+                        }
+
+                        vmUserModule.Menus = vmUserMenus;
+                        listVmUserModule.Add(vmUserModule);
+                    }
+                }
+                return Json(new { userDetail = userDetaildViewModel, menuDetail = listVmUserModule });
+            }
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveUserPermission(List<UserAuthorizationViewModel> models)
+        {
+            bool IsSuccess = false;
+            var pre = UserPrivilege("ControlPanel", "SetUserCustomPermission");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (models.Count > 0 && permission)
+            {
+                List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
+                AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
+                IsSuccess = _userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region User Role Permission
+        public ActionResult SetUserRolePermission(string flag, long? roleId, long? orgId)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "SetUserRolePermission");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlRoles = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(o => new SelectListItem
+                {
+                    Text = o.RoleName,
+                    Value = o.RoleId.ToString()
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                List<VmUserModule> listVmUserModule = new List<VmUserModule>();
+                IEnumerable<UserCustomMenusDTO> userCustomMenus = _roleAuthorizationBusiness.GetUserRoleMenus(roleId.Value, orgId.Value);
+                if (userCustomMenus.Count() > 0)
+                {
+                    var modules = (from m in userCustomMenus
+                                   select new { MId = m.ModuleId, ModuleName = m.ModuleName }).Distinct().ToList();
+                    foreach (var item in modules)
+                    {
+                        VmUserModule vmUserModule = new VmUserModule();
+                        vmUserModule.ModuleId = item.MId;
+                        vmUserModule.ModuleName = item.ModuleName;
+                        List<VmUserMenu> vmUserMenus = new List<VmUserMenu>();
+                        var mainmenu = (from m in userCustomMenus
+                                        where m.ModuleId == item.MId
+                                        select new { MenuId = m.MainmenuId, MenuName = m.MainmenuName }).Distinct().ToList();
+                        foreach (var mm in mainmenu)
+                        {
+                            VmUserMenu vmUserMenu = new VmUserMenu();
+                            vmUserMenu.MenuId = mm.MenuId;
+                            vmUserMenu.MenuName = mm.MenuName;
+                            vmUserMenu.SubMenus = userCustomMenus.Where(s => s.MainmenuId == mm.MenuId).Select(s => new VmUserSubmenu
+                            {
+                                SubmenuId = s.SubmenuId,
+                                SubMenuName = s.SubMenuName,
+                                ParentSubMenuId = s.ParentSubMenuId,
+                                Add = s.Add,
+                                Edit = s.Edit,
+                                Detail = s.Detail,
+                                Delete = s.Delete,
+                                Approval = s.Approval,
+                                Report = s.Report,
+                                TaskId = s.TaskId
+                            }).ToList();
+                            vmUserMenus.Add(vmUserMenu);
+                        }
+
+                        vmUserModule.Menus = vmUserMenus;
+                        listVmUserModule.Add(vmUserModule);
+                    }
+                }
+                return Json(new { menuDetail = listVmUserModule });
+            }
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRolePermission(List<RoleAuthorizationViewModel> models)
+        {
+            bool IsSuccess = false;
+            var pre = UserPrivilege("ControlPanel", "SetUserRolePermission");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (models.Count > 0 && permission)
+            {
+                List<RoleAuthorizationDTO> roleAuthorizationDTOs = new List<RoleAuthorizationDTO>();
+                AutoMapper.Mapper.Map(models, roleAuthorizationDTOs);
+                IsSuccess = _roleAuthorizationBusiness.SaveRoleAuthorization(roleAuthorizationDTOs, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region User Role
+        public ActionResult GetUserRoleList(int? page)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetUserRoleList");
+            IPagedList<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(role => new RoleViewModel
+            {
+                RoleId = role.RoleId,
+                RoleName = role.RoleName,
+                OrganizationId = role.OrganizationId,
+                OrganizationName = (_organizationBusiness.GetOrganizationById(role.OrganizationId).OrganizationName),
+            }).OrderBy(role => role.RoleId).ToPagedList(page ?? 1, 15);
+            IEnumerable<RoleViewModel> roleViewModelForPage = new List<RoleViewModel>();
+            return View(roleViewModels);
+        }
+
+        public ActionResult SaveUserRole(RoleViewModel roleViewModel)
+        {
+            bool isSuccess = false;
+            var pre = UserPrivilege("ControlPanel", "GetUserRoleList");
+            var permission = ((pre.Edit) || (pre.Add));
+            if (ModelState.IsValid && permission)
+            {
+                try
+                {
+                    RoleDTO dto = new RoleDTO();
+                    AutoMapper.Mapper.Map(roleViewModel, dto);
+                    isSuccess = _roleBusiness.SaveRole(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        } 
+        #endregion
+
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -3,7 +3,7 @@ namespace ERPDAL.ControlPanelContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ControlPanel_28April2020 : DbMigration
+    public partial class ControlPanel_AllEntities_16May2020 : DbMigration
     {
         public override void Up()
         {
@@ -151,6 +151,30 @@ namespace ERPDAL.ControlPanelContextMigrations
                 .PrimaryKey(t => t.OAuthId);
             
             CreateTable(
+                "dbo.tblRoleAuthorization",
+                c => new
+                    {
+                        TaskId = c.Long(nullable: false, identity: true),
+                        RoleId = c.Long(nullable: false),
+                        ModuleId = c.Long(nullable: false),
+                        MainmenuId = c.Long(nullable: false),
+                        SubmenuId = c.Long(nullable: false),
+                        ParentSubmenuId = c.Long(nullable: false),
+                        Add = c.Boolean(nullable: false),
+                        Edit = c.Boolean(nullable: false),
+                        Detail = c.Boolean(nullable: false),
+                        Delete = c.Boolean(nullable: false),
+                        Approval = c.Boolean(nullable: false),
+                        Report = c.Boolean(nullable: false),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.TaskId);
+            
+            CreateTable(
                 "dbo.tblRoles",
                 c => new
                     {
@@ -203,6 +227,7 @@ namespace ERPDAL.ControlPanelContextMigrations
             DropIndex("dbo.tblApplicationUsers", new[] { "BranchId" });
             DropTable("dbo.tblUserAuthorization");
             DropTable("dbo.tblRoles");
+            DropTable("dbo.tblRoleAuthorization");
             DropTable("dbo.tblOrganizationAuthorization");
             DropTable("dbo.tblSubMenus");
             DropTable("dbo.tblModules");

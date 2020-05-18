@@ -283,7 +283,8 @@ namespace ERPWeb.Controllers
                 WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, User.OrgId).WarehouseName,
                 WarehouseId = info.WarehouseId,
                 ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId, User.OrgId).DescriptionName,
-                DescriptionId = info.DescriptionId
+                DescriptionId = info.DescriptionId,
+                RequisitionType = info.RequisitionType
             };
 
             ViewBag.RequsitionInfoViewModel = requsitionInfoView;
@@ -295,25 +296,29 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetBundleItems(long modelId, long itemId)
         {
-            var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).ToList();
-            var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).ToList();
-            var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
-            var units = _unitBusiness.GetAllUnitByOrgId(User.OrgId).ToList();
-            var mobileModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).ToList();
             var info = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItem(modelId, itemId, User.OrgId);
-
-            var details = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(info.PreparationInfoId, User.OrgId).Select(i => new ItemPreparationDetailViewModel
+            List<ItemPreparationDetailViewModel> details = new List<ItemPreparationDetailViewModel>();
+            if(info != null)
             {
-                WarehouseId = i.WarehouseId,
-                WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
-                ItemTypeId = i.ItemTypeId,
-                ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == it.ItemId).ItemName,
-                ItemId = i.ItemId,
-                ItemName = items.FirstOrDefault(it => it.ItemId == it.ItemId).ItemName,
-                UnitName = units.FirstOrDefault(u => u.UnitId == u.UnitId).UnitSymbol,
-                Quantity = i.Quantity,
-                Remarks = i.Remarks
-            });
+                var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).ToList();
+                var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).ToList();
+                var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
+                var units = _unitBusiness.GetAllUnitByOrgId(User.OrgId).ToList();
+                var mobileModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).ToList();
+
+                details = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(info.PreparationInfoId, User.OrgId).Select(i => new ItemPreparationDetailViewModel
+                {
+                    WarehouseId = i.WarehouseId,
+                    WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
+                    ItemTypeId = i.ItemTypeId,
+                    ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == i.ItemTypeId).ItemName,
+                    ItemId = i.ItemId,
+                    ItemName = items.FirstOrDefault(it => it.ItemId == i.ItemId).ItemName,
+                    UnitName = units.FirstOrDefault(u => u.UnitId == i.UnitId).UnitSymbol,
+                    Quantity = i.Quantity,
+                    Remarks = i.Remarks
+                }).ToList();
+            }
             return Json(details);
         }
         #endregion

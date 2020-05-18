@@ -413,6 +413,27 @@ function ajaxBooleanChecker2(data, url) {
     return returnVal;
 }
 
+function ajaxValueReturnable(data, url, token) {
+    var returnVal;
+    $.ajax({
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'POST',
+        url: url,
+        async: false,
+        data: data,
+        headers: token,
+        success: function (result) {
+            console.log(result);
+            returnVal = result;
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+    return returnVal;
+}
+
 // Changing Modal Heading And Button Text
 function fnModalHeadChange(HeadText) {
     if ($.trim(HeadText) !== '') {

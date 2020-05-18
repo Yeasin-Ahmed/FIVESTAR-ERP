@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "GetModuleList";
     int sl = 0;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 <div class="row">
     <div class="col-md-12 text-center">
@@ -16,7 +17,10 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Module</button>
+                @if (privilege != null && privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Module</button>
+                }
             </div>
         </div>
     </div>
@@ -43,7 +47,10 @@
                         <td>@module.IconName</td>
                         <td>@module.IconColor</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@module.MId"><i class="fa fa-pen"></i> Edit</a>
+                            @if (privilege != null && privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@module.MId"><i class="fa fa-pen"></i> Edit</a>
+                            }
                         </td>
                     </tr>
                 }

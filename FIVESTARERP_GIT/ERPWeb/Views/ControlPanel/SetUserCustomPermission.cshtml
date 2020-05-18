@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "User Role Authorization";
+    ViewBag.Title = "User Custom Permission";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
@@ -7,7 +7,7 @@
     <div class="col-md-12 text-center">
         <div class="card card-gray">
             <div class="card-header">
-                <h4>Role Authorization</h4>
+                <h4>User Permission</h4>
             </div>
         </div>
     </div>
@@ -18,13 +18,10 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-4">
-                        @Html.AntiForgeryToken()
-                        @Html.DropDownList("ddlOrganization", (List<SelectListItem>)ViewBag.ddlOrganization, "---Select Organization---", new { @class = "form-control" })
+                        @Html.DropDownList("ddlUsers", (List<SelectListItem>)ViewBag.ddlUsers, "---Select User---", new { @class = "form-control select2 select2-danger", @style = "width: 100%;" })
                     </div>
                     <div class="col-md-4">
-                        <select class="form-control select2 select2-danger" id="ddlRoles" style="width: 100%;">
-                            <option value="">---Select Role---</option>
-                        </select>
+                        
                     </div>
                     <div class="col-md-4">
                         @if (privilege != null && (privilege.Add || privilege.Edit))
@@ -42,11 +39,78 @@
     <div class="col-md-12">
         <div class="card">
             @Html.AntiForgeryToken()
+            <div class="card-header">
+                <div class="row" id="dataContainer">
+                    @*<div class="col-md-12">
+                            <table class="table table-striped table-bordered table-sm table-responsive-lg mb-0">
+                                <tr class="text-bold">
+                                    <td style="width:18%">Organization Name</td>
+                                    <td style="width:23%">PlayOn 24</td>
+                                    <td style="width:15%">User Name</td>
+                                    <td style="width:18%">yeasinahmed</td>
+                                    <td style="width:10%">Employee Id</td>
+                                    <td style="width:15%">001002</td>
+                                </tr>
+                                <tr class="text-bold">
+                                    <td style="width:18%">Full Name</td>
+                                    <td style="width:23%">Yeasin Ahmed</td>
+                                    <td style="width:15%">Email</td>
+                                    <td style="width:18%">N/A</td>
+                                    <td style="width:10%">Desigation</td>
+                                    <td style="width:15%">N/A</td>
+                                </tr>
+                                <tr class="text-bold">
+                                    <td style="width:18%">User Status</td>
+                                    <td style="width:23%">Active</td>
+                                    <td style="width:15%">Role Name</td>
+                                    <td style="width:18%">Admin</td>
+                                    <td style="width:10%">Role Status</td>
+                                    <td style="width:15%">Active</td>
+                                </tr>
+                            </table>
+                        </div>*@
+                </div>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
                         <h5 class="text-center" id="text-unload">Please Load Menu's Data</h5>
                         <table class="table table-sm table-avatar table-responsive-lg" id="tblMenuData">
+                            @*<tr class="btn-info">
+                                        <td colspan="9" title="Module" class="text-center text-bold text-lg">
+                                            Control Panel
+                                        </td>
+                                    </tr>
+                                <tr class="text-bold" data-item-name="menurow">
+                                        <td title="Mainmenu" class="text-center" style="vertical-align:middle" data-mainmenu-item="" data-module-item="">
+                                            User Management
+                                        </td>
+                                        <td class="btn btn-secondary" title="Submenu"><input type="checkbox" id="submenuId" data-item-sub="" data-item-menu="" data-item-module="" /> Organization List</td>
+                                        <td>
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="allSubmenuId" value="" /> All
+                                        </td>
+                                        <td >
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="addSubmenuId" value="" />Add
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="editSubmenuId" value="" /> Edit
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="detailSubmenuId" value="" />Detail
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="deleteSubmenuId" value="" />
+                                            Delete
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="approvalSubmenuId" value="" />
+                                            Approval
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-control-for="action" data-action-for="submenuId" id="reportSubmenuId" value="" />
+                                            Report
+                                        </td>
+                                    </tr>*@
                         </table>
                     </div>
                 </div>
@@ -57,8 +121,7 @@
 
 @section scripts{
     <script type="text/javascript">
-        var ddlOrganization = $("#ddlOrganization");
-        var ddlRoles = $("#ddlRoles");
+        var ddlUsers = $("#ddlUsers");
         var tblMenuData = $("#tblMenuData");
         var btnSubmit = $("#btnSubmit");
 
@@ -72,17 +135,10 @@
             });
         })
 
-        ddlOrganization.change(function () {
-            clearDropdown("ddlRoles");
-            if (ddlOrganization.val() !== "") {
-                LoadDropDown('/Common/GetRolesByOrg', 'POST', ddlRoles, JSON.stringify({ orgId: ddlOrganization.val() }));
-            }
-        })
-
-        ddlRoles.change(function () {
-            if (TryParseInt(ddlOrganization.val(), 0) > 0 && TryParseInt(ddlRoles.val(), 0) > 0) {
-                var data = JSON.stringify({ flag: "load", roleId: ddlRoles.val(), orgId: ddlOrganization.val() });
-                $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserRoleAuthorization', data)).then(function (res, status) {
+        ddlUsers.change(function () {
+            if (TryParseInt(ddlUsers.val(), 0) > 0) {
+                var data = JSON.stringify({ flag: "load", userId: ddlUsers.val(), orgId: '@User.OrgId' });
+                $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserCustomPermission', data)).then(function (res, status) {
                     if (status === 'success') {
                         console.log(res);
                         SetUserMenuUI(res);
@@ -93,14 +149,48 @@
             }
             else {
                 $("#text-unload").removeClass('hide');
+                $("#dataContainer").empty();
                 tblMenuData.empty();
             }
         })
 
         function SetUserMenuUI(obj) {
             if (!$.isEmptyObject(obj)) {
+                var userDetail =
+                    (
+                        '<div class="col-md-12">' +
+                        '<table class="table table-striped table-bordered table-sm table-responsive-lg mb-0">' +
+                        '<tr class="text-bold">' +
+                        '<td style="width:18%">Organization Name</td>' +
+                        '<td style = "width:23%">' + obj.userDetail.OrganizationName + '</td >' +
+                        '<td style="width:15%">User Name</td>' +
+                        '<td style="width:18%">' + obj.userDetail.UserName + '</td>' +
+                        '<td style="width:10%">Employee Id</td>' +
+                        '<td style="width:15%">' + obj.userDetail.EmployeeId + '</td>'
+                        + '</tr>' +
+                        '<tr class="text-bold">' +
+                        '<td style="width:18%">Full Name</td>' +
+                        '<td style = "width:23%">' + obj.userDetail.FullName + '</td >' +
+                        '<td style="width:15%">Email</td>' +
+                        '<td style="width:18%">' + obj.userDetail.Email + '</td>' +
+                        '<td style="width:10%">Designation</td>' +
+                        '<td style="width:15%">' + obj.userDetail.Designation + '</td>'
+                        + '</tr>' +
+                        '<tr class="text-bold">' +
+                        '<td style="width:18%">User Status</td>' +
+                        '<td style = "width:23%">' + obj.userDetail.UserStatus + '</td >' +
+                        '<td style="width:15%">Role Name</td>' +
+                        '<td style="width:18%">' + obj.userDetail.RoleName + '</td>' +
+                        '<td style="width:10%">Role Status</td>' +
+                        '<td style="width:15%">' + obj.userDetail.RoleStatus + '</td>'
+                        + '</tr>'
+                        + '</table>'
+                        + '</div>');
                 $("#text-unload").addClass('hide');
+                $("#dataContainer").empty();
+                $("#dataContainer").append(userDetail);
                 tblMenuData.empty();
+
                 var menus = obj.menuDetail;
                 $.each(menus, function (index, item) {
 
@@ -247,7 +337,8 @@
 
                         dataAry.push({
                             TaskId: taskId,
-                            RoleId: TryParseInt(ddlRoles.val(), 0),
+                            UserId: TryParseInt(ddlUsers.val(), 0),
+                            RoleId: 0,
                             ModuleId: moduleId,
                             MainmenuId: mainmenuId,
                             SubmenuId: submenuId,
@@ -258,7 +349,7 @@
                             Delete: del,
                             Approval: approval,
                             Report: rpt,
-                            OrganizationId: TryParseInt(ddlOrganization.val(), 0)
+                            OrganizationId: '@User.OrgId'
                         })
                     }
                     console.log(tdLength);
@@ -270,7 +361,7 @@
                 
                 var data = JSON.stringify({ models: dataAry });
                 console.log(dataAry);
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SaveRoleAuthorization', data, getToken())).then(function (res,status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SaveUserPermission', data, getToken())).then(function (res,status) {
                     if(res === true && status === 'success') {
                         $('.toastrDefaultSuccess').trigger("click");
                         $('.toastrDefaultSuccess').fadeOut(500);

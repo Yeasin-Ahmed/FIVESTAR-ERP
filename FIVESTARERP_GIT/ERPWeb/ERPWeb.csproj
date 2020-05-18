@@ -415,6 +415,9 @@
     <Content Include="Views\Inventory\_GetItemPreparation.cshtml" />
     <Content Include="Views\Inventory\CreateItemPreparation.cshtml" />
     <Content Include="Views\Inventory\_GetItemPreparationDetail.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserCustomPermission.cshtml" />
+    <Content Include="Views\ControlPanel\SetUserRolePermission.cshtml" />
+    <Content Include="Views\ControlPanel\GetUserRoleList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

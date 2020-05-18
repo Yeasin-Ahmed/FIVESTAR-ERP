@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "User Role Authorization";
+    ViewBag.Title = "User Role Permission";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
@@ -7,7 +7,7 @@
     <div class="col-md-12 text-center">
         <div class="card card-gray">
             <div class="card-header">
-                <h4>Role Authorization</h4>
+                <h4>Role Permission</h4>
             </div>
         </div>
     </div>
@@ -19,12 +19,9 @@
                 <div class="row">
                     <div class="col-md-4">
                         @Html.AntiForgeryToken()
-                        @Html.DropDownList("ddlOrganization", (List<SelectListItem>)ViewBag.ddlOrganization, "---Select Organization---", new { @class = "form-control" })
+                        @Html.DropDownList("ddlRoles", (List<SelectListItem>)ViewBag.ddlRoles, "---Select Role---", new { @class = "form-control select2 select2-danger", @style = "width: 100%;" })
                     </div>
                     <div class="col-md-4">
-                        <select class="form-control select2 select2-danger" id="ddlRoles" style="width: 100%;">
-                            <option value="">---Select Role---</option>
-                        </select>
                     </div>
                     <div class="col-md-4">
                         @if (privilege != null && (privilege.Add || privilege.Edit))
@@ -41,7 +38,6 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            @Html.AntiForgeryToken()
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -72,17 +68,12 @@
             });
         })
 
-        ddlOrganization.change(function () {
-            clearDropdown("ddlRoles");
-            if (ddlOrganization.val() !== "") {
-                LoadDropDown('/Common/GetRolesByOrg', 'POST', ddlRoles, JSON.stringify({ orgId: ddlOrganization.val() }));
-            }
-        })
+        
 
         ddlRoles.change(function () {
-            if (TryParseInt(ddlOrganization.val(), 0) > 0 && TryParseInt(ddlRoles.val(), 0) > 0) {
-                var data = JSON.stringify({ flag: "load", roleId: ddlRoles.val(), orgId: ddlOrganization.val() });
-                $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserRoleAuthorization', data)).then(function (res, status) {
+            if (TryParseInt(ddlRoles.val(), 0) > 0) {
+                var data = JSON.stringify({ flag: "load", roleId: ddlRoles.val(), orgId: '@User.OrgId' });
+                $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserRolePermission', data)).then(function (res, status) {
                     if (status === 'success') {
                         console.log(res);
                         SetUserMenuUI(res);
@@ -258,7 +249,7 @@
                             Delete: del,
                             Approval: approval,
                             Report: rpt,
-                            OrganizationId: TryParseInt(ddlOrganization.val(), 0)
+                            OrganizationId: '@User.OrgId'
                         })
                     }
                     console.log(tdLength);
@@ -270,7 +261,7 @@
                 
                 var data = JSON.stringify({ models: dataAry });
                 console.log(dataAry);
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SaveRoleAuthorization', data, getToken())).then(function (res,status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SaveRolePermission', data, getToken())).then(function (res,status) {
                     if(res === true && status === 'success') {
                         $('.toastrDefaultSuccess').trigger("click");
                         $('.toastrDefaultSuccess').fadeOut(500);

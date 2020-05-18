@@ -4,6 +4,7 @@
     int sl = 0;
     string badge = string.Empty;
     string badge1 = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -19,7 +20,11 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create New User</button>
+                @if (privilege != null && privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create New User</button>
+                }
+
             </div>
         </div>
     </div>
@@ -80,7 +85,10 @@
                         <td class="hide">@user.RoleId</td>
                         <td>@user.RoleName</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@user.UserId"><i class="fa fa-pen"></i> Edit</a>
+                            @if (privilege != null && privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@user.UserId"><i class="fa fa-pen"></i> Edit</a>
+                            }
                         </td>
                     </tr>
                 }

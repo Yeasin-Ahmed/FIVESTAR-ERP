@@ -25,7 +25,9 @@
                     @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-6" style="border-right:2px solid #efefef">
-                            <h4 style="border-bottom:2px solid #f6eaaa">Finish Goods Info</h4>
+                            <h4 style="border-bottom:2px solid #f6eaaa">
+                                Finish Goods Info
+                            </h4>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="col-form-label">Production Line</label>
@@ -60,12 +62,25 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Production Quantity</label>
+                                    <label class="col-form-label">
+                                        Quantity
+                                        <div class="icheck-primary d-inline text-primary">
+                                            <input type="checkbox" id="chkUseBundle">
+                                            <label for="chkUseBundle">
+                                                (Use Bundle?)
+                                            </label>
+                                        </div>
+                                    </label>
                                     <div class="input-group">
                                         <input type="number" class="form-control form-control-sm" id="txtFinishQty" style="width:70%" />
                                         <span id="finishUnit"></span>
                                     </div>
                                     <span class="error hide req-qty">Production Quantity is require</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" id="itemQtyError">
+
                                 </div>
                             </div>
                         </div>
@@ -124,6 +139,7 @@
                                                 <th>Item Name</th>
                                                 <th>Quantity</th>
                                                 <th>Action</th>
+                                                <th class="hide"></th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -155,6 +171,80 @@
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var txtStockOutQty = $("#txtStockOutQty");
+        var chkUseBundle = $("#chkUseBundle");
+
+        chkUseBundle.change(function () {
+            $(".error").addClass('hide');
+            $("#tblMaterials tbody tr").empty();
+            if (chkUseBundle.is(":checked")) {
+                $("#btnAddToList").addClass('hide');
+                if (TryParseInt(ddlModel.val(), 0) > 0 && TryParseInt(ddlFinishItems.val(), 0) > 0) {
+                    var data = JSON.stringify({ modelId: TryParseInt(ddlModel.val(), 0), itemId: TryParseInt(ddlFinishItems.val(), 0) });
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
+                        console.log(res);
+                        loadDataTabelForBundle(res);
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+            }
+            else {
+                enable("#ddlWarehouse2");
+                $("#btnAddToList").removeClass('hide');
+            }
+        })
+
+        txtFinishQty.keyup(function () {
+            if (chkUseBundle.is(":checked")) {
+                if ($("#tblMaterials tbody tr").length > 0 && TryParseInt(txtFinishQty.val(),0) > 0) {
+                    $.each($("#tblMaterials tbody tr"), function (index,item) {
+                        var qty = $(this).children('td').eq(7).html();
+                        //console.log('Qty ' + qty);
+                        var t = qty * TryParseInt(txtFinishQty.val(), 0)
+                        //console.log('Total ' + t);
+                        $("#tblMaterials tbody").children('tr').eq(index).children('td').eq(5).html(t);
+                    })
+                }
+            }
+        })
+
+
+        function loadDataTabelForBundle(obj) {
+            if (!$.isEmptyObject(obj) && obj !==null) {
+                $.each(obj, function (index, item) {
+                    //console.log('Sever Quantity');
+                    //console.log(item.Quantity);
+                    //console.log('Client Quantity');
+                    //console.log(txtFinishQty.val());
+                    var total = item.Quantity * TryParseInt(txtFinishQty.val(), 0);
+                    //console.log('Total');
+                    //console.log(total);
+                    if (index == 0) {
+                        ddlWarehouse2.val(item.WarehouseId);
+                        disable("#ddlWarehouse2");
+                        ddlItemType.val("");
+                        ddlItemType.trigger('change');
+                    }
+
+                    var td1 = '<td class="text-center"><b>' + (index+1) + '</b></td>';
+                    var td2 = '<td class="hide">' + item.ItemTypeId + '</td>';
+                    var td3 = '<td class="text-center">' + item.ItemTypeName + '</td>';
+                    var td4 = '<td class="hide">' + item.ItemId + '</td>';
+                    var td5 = '<td class="text-center">' + item.ItemName + '</td>';
+                    var td6 = '<td class="text-center">' + total + '</td>';
+                    var td7 = '<td class="text-center"><a href="#" class="btn btn-sm btn-outline-danger hide data-del-item" title="Remove"><i class="fas fa-trash"></i></a></td>';
+                    var td8 = '<td class="hide">' + item.Quantity + '</td>';
+                    var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8+'</tr>'
+
+                   $("#tblMaterials tbody").append(tr);
+
+                })
+            }
+            else {
+                bootbox.alert("Bundle not found")
+            }
+        }
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -172,7 +262,12 @@
 
         ddlModel.change(function () {
             $("#tblMaterials tbody").empty();
-            LoadItemStock()
+            if (!chkUseBundle.is(":checked")) {
+                LoadItemStock()
+            }
+            else {
+                chkUseBundle.trigger('change');
+            }
         })
 
         ddlWarehouse.change(function () {
@@ -181,6 +276,7 @@
             if (ddlWarehouse.val() != "") {
                 LoadDropDown('/Common/GetItemsByWarehouseId', 'POST', ddlFinishItems, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
             }
+            chkUseBundle.trigger('change');
         })
 
         ddlFinishItems.change(function () {
@@ -195,6 +291,7 @@
                     console.log(error);
                 })
             }
+            chkUseBundle.trigger('change');
         })
 
         ddlProductionLine.change(function () {
@@ -241,6 +338,20 @@
             }
         }
 
+        function checkItemQty(itemId, lineId, modelId, qty, itemName) {
+            var text = "";
+            //console.log('Item Id....');
+            //console.log(itemId);
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, lineId: lineId, modelId: modelId }), '/Common/GetItemUnitAndPDNStockQtyByLineAndModelId', getToken());
+
+            if (val.stockQty < qty) {
+                text += itemName + ',';
+            }
+            //console.log("ajaxValueReturnable");
+            //console.log(val);
+            return text;
+        }
+
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
             //if (ddlWarehouse2.val() !== '' && ddlItemType.val() !== '' && ddlItem.val() !== '' && TryParseInt(txtStockOutQty.val(), 0) > 0)
@@ -278,6 +389,7 @@
 
         function validateAddToList() {
             var isValid = true;
+            $("#itemQtyError").empty();
             $('.error').addClass('hide');
             isValid = validateCommon();
             if (ddlWarehouse2.val() === '') {
@@ -318,10 +430,29 @@
 
         function validateForm() {
             var isValid = true;
+            $("#itemQtyError").empty();
             $('.error').addClass('hide');
+            var errorTxt = "";
             isValid = validateCommon();
             if ($('#tblMaterials tbody tr').length === 0) {
                 bootbox.alert('No data found in the table');
+                isValid = false;
+            }
+            else {
+                if (ddlModel.val() != "" && ddlProductionLine.val() != "") {
+                    $.each($('#tblMaterials tbody tr'), function (index, item) {
+                        var itemId = $(this).children('td').eq(3).html();
+                        var itemName = $(this).children('td').eq(4).html();
+                        var qty = $(this).children('td').eq(5).html();
+                        errorTxt+=checkItemQty(itemId, ddlProductionLine.val(), ddlModel.val(), qty, itemName);
+                    })
+                }
+            }            
+            if (errorTxt.length > 0) {
+                errorTxt = errorTxt.substr(0, errorTxt.length - 1);
+                errorTxt += " does not have enough stock."
+                $("#itemQtyError").append("<br/><div class='alert alert-danger alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button><h5><i class='icon fas fa-ban'></i> Warning!</h5>" + errorTxt+"</div>");
+                //bootbox.alert(errorTxt);
                 isValid = false;
             }
             return isValid;
@@ -378,8 +509,9 @@
             var td5 = '<td class="text-center">' + $("#ddlItem option:selected").text() + '</td>';
             var td6 = '<td class="text-center">' + txtStockOutQty.val() + '</td>';
             var td7 = '<td class="text-center"><a href="#" class="btn btn-sm btn-outline-danger data-del-item" title="Remove"><i class="fas fa-trash"></i></a></td>';
+            var td8 = '<td class="hide">'+0+'</td>';
 
-            var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + '</tr>'
+            var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 +td8+ '</tr>'
             //$("#tblMaterials tbody").append(tr);
             if ($("#tblMaterials tbody tr").length == 0) {
                 $("#tblMaterials tbody").append(tr);

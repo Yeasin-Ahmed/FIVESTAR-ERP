@@ -49,13 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.cs" />
-    <Compile Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.Designer.cs">
-      <DependentUpon>202004281022349_ControlPanel_28-April-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPanelContextMigrations\202005110829498_ControlPanel_RoleAuth.cs" />
-    <Compile Include="ControlPanelContextMigrations\202005110829498_ControlPanel_RoleAuth.Designer.cs">
-      <DependentUpon>202005110829498_ControlPanel_RoleAuth.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202005161441017_ControlPanel_AllEntities_16-May-2020.cs" />
+    <Compile Include="ControlPanelContextMigrations\202005161441017_ControlPanel_AllEntities_16-May-2020.Designer.cs">
+      <DependentUpon>202005161441017_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -63,13 +59,9 @@
     <Compile Include="ControlPanelDAL\IControlPanelUnitOfWork.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelBaseRepository.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelUnitOfWork.cs" />
-    <Compile Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.cs" />
-    <Compile Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.Designer.cs">
-      <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202005120845496_ItemPreparation.cs" />
-    <Compile Include="InventoryContextMigrations\202005120845496_ItemPreparation.Designer.cs">
-      <DependentUpon>202005120845496_ItemPreparation.cs</DependentUpon>
+    <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.Designer.cs">
+      <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
@@ -95,17 +87,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202004281022349_ControlPanel_28-April-2020.resx">
-      <DependentUpon>202004281022349_ControlPanel_28-April-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202005161441017_ControlPanel_AllEntities_16-May-2020.resx">
+      <DependentUpon>202005161441017_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202005110829498_ControlPanel_RoleAuth.resx">
-      <DependentUpon>202005110829498_ControlPanel_RoleAuth.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202005030559388_Inventory_AllEntities_03-May-2020.resx">
-      <DependentUpon>202005030559388_Inventory_AllEntities_03-May-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202005120845496_ItemPreparation.resx">
-      <DependentUpon>202005120845496_ItemPreparation.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.resx">
+      <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
