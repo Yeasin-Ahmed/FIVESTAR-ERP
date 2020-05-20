@@ -19,5 +19,6 @@ namespace ERPBO.Production.ViewModels
         public string StockStatus { get; set; }
         public string EntryDate { get; set; }
         public string RefferenceNumber { get; set; }
+        public string EntryUser { get; set; }
     }
 }

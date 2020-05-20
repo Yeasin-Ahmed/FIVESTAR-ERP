@@ -114,7 +114,7 @@ namespace ERPBLL.Production
             }
 
             query = string.Format(@"Select ird.IRDetailId,iri.IRCode,iri.ReturnType,ISNULL(iri.FaultyCase,'') 'FaultyCase',de.DescriptionName 'ModelName',pl.LineNumber,w.WarehouseName,itype.ItemName 'ItemTypeName',item.ItemName,ird.Quantity,un.UnitSymbol,iri.StateStatus
-,ISNULL(ird.Remarks,'') 'Remarks',Convert(nvarchar(30),iri.EntryDate,100) 'EntryDate' From tblItemReturnDetail ird
+,ISNULL(ird.Remarks,'') 'Remarks',Convert(nvarchar(30),iri.EntryDate,100) 'EntryDate',au.UserName 'EntryUser' From tblItemReturnDetail ird
 Inner Join tblItemReturnInfo iri on ird.IRInfoId = iri.IRInfoId
 Inner Join tblProductionLines Pl on iri.LineId= pl.LineId
 Inner Join [Inventory].dbo.tblDescriptions de on iri.DescriptionId= de.DescriptionId
@@ -122,6 +122,7 @@ Inner Join [Inventory].dbo.[tblWarehouses] w on iri.WarehouseId = w.Id
 Inner Join [Inventory].dbo.[tblItemTypes] itype on ird.ItemTypeId = itype.ItemId
 Inner Join [Inventory].dbo.[tblItems] item on ird.ItemId = item.ItemId
 Inner Join [Inventory].dbo.[tblUnits] un on item.UnitId = un.UnitId
+Left Join [ControlPanel].dbo.tblApplicationUsers au on ird.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }

@@ -38,7 +38,7 @@
                     <th style="vertical-align:middle" class="hide">Mobile No</th>
                     <th style="vertical-align:middle" class="hide">Address</th>
                     <th style="vertical-align:middle">Email</th>
-                    <th style="vertical-align:middle">Desigation</th>
+                    <th style="vertical-align:middle" class="hide">Desigation</th>
                     <th style="vertical-align:middle">User Name</th>
                     <th style="vertical-align:middle">Password</th>
                     <th style="vertical-align:middle">User Status</th>
@@ -49,6 +49,8 @@
                     <th style="vertical-align:middle">Branch</th>
                     <th class="hide"></th>
                     <th style="vertical-align:middle">Role</th>
+                    <th style="vertical-align:middle">Entry User</th>
+                    <th style="vertical-align:middle" class="hide">Update User</th>
                     <th style="vertical-align:middle">Actions</th>
                 </tr>
             </thead>
@@ -58,38 +60,40 @@
                     sl += 1;
                     badge = (user.StateStatus == "Active" ? "badge bg-success" : "badge bg-danger");
                     badge1 = (user.StateStatusRole == "Active" ? "badge bg-success" : "badge bg-danger");
-                    <tr>
-                        <td class="text-center">
-                            <b>@sl</b>
-                        </td>
-                        <td class="hide">@user.UserId</td>
-                        <td>@user.EmployeeId</td>
-                        <td>@user.FullName</td>
-                        <td class="hide">@user.MobileNo</td>
-                        <td class="hide">@user.Address</td>
-                        <td>@user.Email</td>
-                        <td>@user.Desigation</td>
-                        <td>@user.UserName</td>
-                        <td>@user.Password</td>
-                        <td class="text-center" data-val="@user.StateStatus">
-                            <span class="@badge">@user.StateStatus</span>
-                        </td>
-                        <td class="text-center" data-val="@user.StateStatusRole">
-                            <span class="@badge1">@user.StateStatusRole</span>
-                        </td>
-                        <td class="hide">@user.OrganizationId</td>
-                        <td>@user.OrganizationName</td>
-                        <td class="hide">@user.BranchId</td>
-                        <td>@user.BranchName</td>
-                        <td class="hide">@user.RoleId</td>
-                        <td>@user.RoleName</td>
-                        <td class="text-center">
-                            @if (privilege != null && privilege.Edit)
-                            {
-                                <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@user.UserId"><i class="fa fa-pen"></i> Edit</a>
-                            }
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="text-center">
+                        <b>@sl</b>
+                    </td>
+                    <td class="hide">@user.UserId</td>
+                    <td>@user.EmployeeId</td>
+                    <td>@user.FullName</td>
+                    <td class="hide">@user.MobileNo</td>
+                    <td class="hide">@user.Address</td>
+                    <td>@user.Email</td>
+                    <td class="hide">@user.Desigation</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Password</td>
+                    <td class="text-center" data-val="@user.StateStatus">
+                        <span class="@badge">@user.StateStatus</span>
+                    </td>
+                    <td class="text-center" data-val="@user.StateStatusRole">
+                        <span class="@badge1">@user.StateStatusRole</span>
+                    </td>
+                    <td class="hide">@user.OrganizationId</td>
+                    <td>@user.OrganizationName</td>
+                    <td class="hide">@user.BranchId</td>
+                    <td>@user.BranchName</td>
+                    <td class="hide">@user.RoleId</td>
+                    <td>@user.RoleName</td>
+                    <td class="text-sm">@user.EntryUser</td>
+                    <td class="hide">@user.UpdateUser</td>
+                    <td class="text-center">
+                        @if (privilege != null && privilege.Edit)
+                        {
+                            <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@user.UserId"><i class="fa fa-pen"></i> Edit</a>
+                        }
+                    </td>
+                </tr>
                 }
                 @if(Model.Count() == 0)
                 {

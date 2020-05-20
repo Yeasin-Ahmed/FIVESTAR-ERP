@@ -19,5 +19,7 @@ namespace ERPBO.Production.DTOModel
         public string StockStatus { get; set; }
         public string EntryDate { get; set; }
         public string RefferenceNumber { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

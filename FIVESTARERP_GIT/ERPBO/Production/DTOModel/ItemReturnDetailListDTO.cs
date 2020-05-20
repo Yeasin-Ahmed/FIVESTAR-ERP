@@ -8,7 +8,6 @@ namespace ERPBO.Production.DTOModel
 {
     public class ItemReturnDetailListDTO
     {
-        //IRDetailId,IRCode,ReturnType,FaultyCase,LineNumber,WarehouseName,ItemTypeName,ItemName,Quantity,UnitSymbol,StateStatus,Remarks,EntryDate
         public long IRDetailId { get; set; }
         public string IRCode { get; set; }
         public string ReturnType { get; set; }
@@ -23,5 +22,7 @@ namespace ERPBO.Production.DTOModel
         public string StateStatus { get; set; }
         public string Remarks { get; set; }
         public string EntryDate { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

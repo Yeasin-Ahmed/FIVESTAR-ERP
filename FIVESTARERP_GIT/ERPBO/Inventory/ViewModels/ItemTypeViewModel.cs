@@ -31,5 +31,7 @@ namespace ERPBO.Inventory.ViewModels
 
         [StringLength(100)]
         public string WarehouseName { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

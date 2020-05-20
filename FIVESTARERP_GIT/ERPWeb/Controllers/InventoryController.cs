@@ -83,7 +83,9 @@ namespace ERPWeb.Controllers
                 EUserId = des.EUserId,
                 EntryDate = des.EntryDate,
                 UpUserId = des.UpUserId,
-                UpdateDate = des.UpdateDate
+                UpdateDate = des.UpdateDate,
+                EntryUser = UserForEachRecord(des.EUserId.Value).UserName,
+                UpdateUser = (des.UpUserId == null || des.UpUserId == 0)? "": UserForEachRecord(des.UpUserId.Value).UserName
 
             }).OrderBy(des => des.DescriptionId).ToPagedList(page ?? 1, 15);
             IEnumerable<DescriptionViewModel> descriptionViewModelForPage = new List<DescriptionViewModel>();
@@ -101,7 +103,10 @@ namespace ERPWeb.Controllers
                 WarehouseName = ware.WarehouseName,
                 Remarks = ware.Remarks,
                 StateStatus = (ware.IsActive == true ? "Active" : "Inactive"),
-                OrganizationId = ware.OrganizationId
+                OrganizationId = ware.OrganizationId,
+                EntryUser = UserForEachRecord(ware.EUserId.Value).UserName,
+                UpdateUser = (ware.UpUserId == null || ware.UpUserId == 0) ? "" : UserForEachRecord(ware.UpUserId.Value).UserName
+
             }).ToList();
             List<WarehouseViewModel> warehouseViewModels = new List<WarehouseViewModel>();
             AutoMapper.Mapper.Map(warehousesDomains, warehouseViewModels);
@@ -148,7 +153,9 @@ namespace ERPWeb.Controllers
                 Remarks = item.Remarks,
                 StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = item.OrganizationId,
-                WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(item.WarehouseId, User.OrgId).WarehouseName)
+                WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(item.WarehouseId, User.OrgId).WarehouseName),
+                EntryUser = UserForEachRecord(item.EUserId.Value).UserName,
+                UpdateUser = (item.UpUserId == null || item.UpUserId == 0) ? "" : UserForEachRecord(item.UpUserId.Value).UserName
             }).OrderBy(item => item.ItemId).ToPagedList(page?? 1, 15);
             IEnumerable<ItemTypeViewModel> itemTypeViewModelsForPage =new List<ItemTypeViewModel>();
             //List<ItemTypeViewModel> itemTypeViewModels = new List<ItemTypeViewModel>();
@@ -184,13 +191,15 @@ namespace ERPWeb.Controllers
         public ActionResult GetAllUnitList()
         {
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetAllUnitList");
-            IEnumerable<UnitDomainDTO> unitDomains = _unitBusiness.GetAllUnitByOrgId(1).Select(unit => new UnitDomainDTO
+            IEnumerable<UnitDomainDTO> unitDomains = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new UnitDomainDTO
             {
                 UnitId = unit.UnitId,
                 UnitName = unit.UnitName,
                 UnitSymbol = unit.UnitSymbol,
                 Remarks = unit.Remarks,
-                OrganizationId = unit.OrganizationId
+                OrganizationId = unit.OrganizationId,
+                EntryUser = UserForEachRecord(unit.EUserId.Value).UserName,
+                UpdateUser = (unit.UpUserId == null || unit.UpUserId == 0) ? "" : UserForEachRecord(unit.UpUserId.Value).UserName
             }).ToList();
             List<UnitViewModel> unitViewModels = new List<UnitViewModel>();
             AutoMapper.Mapper.Map(unitDomains, unitViewModels);
@@ -240,7 +249,9 @@ namespace ERPWeb.Controllers
                 ItemTypeName = _itemTypeBusiness.GetItemType(item.ItemTypeId, User.OrgId).ItemName,
                 UnitId = item.UnitId,
                 UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, User.OrgId).UnitName,
-                ItemCode = item.ItemCode
+                ItemCode = item.ItemCode,
+                EntryUser = UserForEachRecord(item.EUserId.Value).UserName,
+                UpdateUser = (item.UpUserId == null || item.UpUserId == 0) ? "" : UserForEachRecord(item.UpUserId.Value).UserName
             }).OrderBy(item => item.ItemId).ToPagedList(page ?? 1, 15);
             //IEnumerable<ItemViewModel> itemViewModelsForPage = new List<ItemViewModel>();
             //AutoMapper.Mapper.Map(itemDomains, itemViewModels);
@@ -267,7 +278,6 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetItemById(long id)
         {
@@ -310,7 +320,7 @@ namespace ERPWeb.Controllers
                 StockInQty = info.StockInQty,
                 StockOutQty = info.StockOutQty,
                 Remarks = info.Remarks,
-                OrganizationId = info.OrganizationId,
+                OrganizationId = info.OrganizationId
             }).AsEnumerable();
 
             warehouseStockInfoDTO = warehouseStockInfoDTO.Where(ws =>
@@ -450,7 +460,9 @@ namespace ERPWeb.Controllers
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, User.OrgId).WarehouseName),
                 ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, User.OrgId).Select(s => s.ItemId).Distinct().Count(),
-                RequisitionType = info.RequisitionType
+                RequisitionType = info.RequisitionType,
+                EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
+                UpdateUser = (info.UpUserId == null || info.UpUserId == 0) ? "" : UserForEachRecord(info.UpUserId.Value).UserName
             }).OrderByDescending(s=> s.ReqInfoId).ToList();
 
             List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
@@ -489,7 +501,7 @@ namespace ERPWeb.Controllers
             {
                 if (RequisitionStatus.Rejected == status || RequisitionStatus.Recheck == status)
                 {
-                    IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId);
+                    IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId,User.UserId);
                 }
                 else if (RequisitionStatus.Approved == status)
                 {
@@ -602,7 +614,9 @@ namespace ERPWeb.Controllers
                     WarehouseName = warehouses.Where(w => w.Id == i.WarehouseId).FirstOrDefault().WarehouseName,
                     Qty = _itemReturnDetailBusiness.GetItemReturnDetailsByReturnInfoId(User.OrgId, i.IRInfoId).Count(),
                     StateStatus = i.StateStatus,
-                    EntryDate = i.EntryDate
+                    EntryDate = i.EntryDate,
+                    EntryUser = UserForEachRecord(i.EUserId.Value).UserName,
+                    UpdateUser = (i.UpUserId == null || i.UpUserId == 0) ? "" : UserForEachRecord(i.UpUserId.Value).UserName
 
                 }).OrderByDescending(s=> s.IRInfoId).ToList();
 
@@ -822,7 +836,9 @@ namespace ERPWeb.Controllers
                          ItemCount = this._finishGoodsSendToWarehouseDetailBusiness.GetFinishGoodsDetailByInfoId(f.SendId, User.OrgId).Count(),
                          Remarks = f.Remarks,
                          EntryDate = f.EntryDate,
-                         RefferenceNumber = f.RefferenceNumber
+                         RefferenceNumber = f.RefferenceNumber,
+                         EntryUser = UserForEachRecord(f.EUserId.Value).UserName,
+                         UpdateUser = (f.UpUserId == null || f.UpUserId == 0) ? "" : UserForEachRecord(f.UpUserId.Value).UserName
                      }).OrderByDescending(s=>s.SendId).ToList();
 
                 List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
@@ -918,7 +934,9 @@ namespace ERPWeb.Controllers
                     UnitName = units.FirstOrDefault(it => it.UnitId == i.UnitId).UnitSymbol,
                     ModelName = mobileModels.FirstOrDefault(it => it.DescriptionId == i.DescriptionId).DescriptionName,
                     ItemCount = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(i.PreparationInfoId, User.OrgId).Count(),
-                    EntryDate = i.EntryDate
+                    EntryDate = i.EntryDate,
+                    EntryUser = UserForEachRecord(i.EUserId.Value).UserName,
+                    UpdateUser = (i.UpUserId == null || i.UpUserId == 0) ? "" : UserForEachRecord(i.UpUserId.Value).UserName
                 });
 
                 List<ItemPreparationInfoViewModel> viewModels = new List<ItemPreparationInfoViewModel>();

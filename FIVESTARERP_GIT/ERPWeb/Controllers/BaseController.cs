@@ -1,4 +1,5 @@
 ﻿using ERPBO.Common;
+using ERPBO.ControlPanel.DTOModels;
 using ERPBO.ControlPanel.ViewModels;
 using ERPWeb.Infrastructure;
 using System;
@@ -31,6 +32,15 @@ namespace ERPWeb.Controllers
                 Report = d.Report
             }).FirstOrDefault();
             return privilege;
+        }
+
+        [NonAction]
+        public AppUserDTO UserForEachRecord(long userId)
+        {
+            AppUserDTO entityUser = new AppUserDTO();
+            var data = (List<AppUserDTO>)Session["UserList"];
+            entityUser = data.FirstOrDefault(u => u.UserId == userId);
+            return entityUser;
         }
     }
 }

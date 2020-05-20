@@ -35,6 +35,8 @@
                     <th>MenuName</th>
                     <th class="hide"></th>
                     <th>ModuleName</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -48,6 +50,8 @@
                         <td>@mainmenu.MenuName</td>
                         <td class="hide">@mainmenu.MId</td>
                         <td>@mainmenu.ModuleName</td>
+                        <td class="text-center text-sm">@mainmenu.EntryUser</td>
+                        <td class="text-center text-sm">@mainmenu.UpdateUser</td>
                         <td class="text-center">
                             @if (privilege != null && privilege.Edit)
                             {

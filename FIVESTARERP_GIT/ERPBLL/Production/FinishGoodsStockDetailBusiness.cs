@@ -143,7 +143,7 @@ namespace ERPBLL.Production
             query = string.Format(@"Select fsd.FinishGoodsStockDetailId 'StockDetailId',ISNULL(pl.LineNumber,'') 'LineNumber', ISNULL(de.DescriptionName,'') 'ModelName', 
 ISNULL(wh.WarehouseName,'') 'WarehouseName', ISNULL(it.ItemName,'') 'ItemTypeName', ISNULL(i.ItemName,'') 'ItemName',
 ISNULL(u.UnitSymbol,'') 'UnitName', fsd.Quantity,fsd.StockStatus,CONVERT(nvarchar(30),fsd.EntryDate,100) 'EntryDate',
-fsd.RefferenceNumber
+fsd.RefferenceNumber,au.UserName 'EntryUser'
 From tblFinishGoodsStockDetail fsd
 Left Join tblProductionLines pl on fsd.LineId= pl.LineId
 Left Join [Inventory].dbo.[tblDescriptions] de on fsd.DescriptionId= de.DescriptionId
@@ -151,6 +151,7 @@ Left Join [Inventory].dbo.[tblWarehouses] wh on fsd.WarehouseId = wh.Id
 Left Join [Inventory].dbo.[tblItemTypes] it on fsd.ItemTypeId = it.ItemId
 Left Join [Inventory].dbo.[tblItems] i on fsd.ItemId = i.ItemId
 Left Join [Inventory].dbo.[tblUnits] u on fsd.UnitId = u.UnitId
+Left Join [ControlPanel].dbo.tblApplicationUsers au on fsd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;

@@ -30,8 +30,6 @@ namespace ERPBLL.Inventory
             return itemTypeRepository.GetAll(item => item.OrganizationId == orgId).ToList();
         }
 
-        
-
         public bool SaveItemType(ItemTypeDTO itemTypeDTO, long userId, long orgId)
         {
             ItemType itemType = new ItemType();
@@ -53,7 +51,7 @@ namespace ERPBLL.Inventory
                 //itemType.ItemName = itemTypeDTO.ItemName;
                 itemType.Remarks = itemTypeDTO.Remarks;
                 itemType.IsActive = itemTypeDTO.IsActive;
-                itemType.UpUserId = itemTypeDTO.UpUserId;
+                itemType.UpUserId = userId;
                 itemType.UpdateDate = DateTime.Now;
                 itemType.OrganizationId = orgId;
                 itemTypeRepository.Update(itemType);

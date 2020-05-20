@@ -75,10 +75,10 @@ namespace ERPWeb.Controllers
                 Remarks = line.Remarks,
                 StateStatus = (line.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = line.OrganizationId,
-                EUserId = line.EUserId,
                 EntryDate = line.EntryDate,
-                UpUserId = line.UpUserId,
-                UpdateDate = line.UpdateDate
+                UpdateDate = line.UpdateDate,
+                EntryUser = UserForEachRecord(line.EUserId.Value).UserName,
+                UpdateUser = (line.UpUserId == null || line.UpUserId == 0) ? "" : UserForEachRecord(line.UpUserId.Value).UserName
             }).OrderBy(line => line.LineId).ToPagedList(page ?? 1, 15);
             IEnumerable<ProductionLineViewModel> productionLineViewModelForPage = new List<ProductionLineViewModel>();
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetProductionLineList");
@@ -96,7 +96,7 @@ namespace ERPWeb.Controllers
                 {
                     ProductionLineDTO dto = new ProductionLineDTO();
                     AutoMapper.Mapper.Map(productionLineViewModel, dto);
-                    isSuccess = _productionLineBusiness.SaveUnit(dto, User.UserId, User.OrgId);
+                    isSuccess = _productionLineBusiness.SaveLine(dto, User.UserId, User.OrgId);
                 }
                 catch (Exception ex)
                 {
@@ -211,7 +211,9 @@ namespace ERPWeb.Controllers
                 WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, User.OrgId).WarehouseName),
                 ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
                 Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, User.OrgId).Select(s => s.ItemId).Distinct().Count(),
-                RequisitionType = info.RequisitionType
+                RequisitionType = info.RequisitionType,
+                EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
+                UpdateUser = (info.UpUserId == null || info.UpUserId == 0) ? "" : UserForEachRecord(info.UpUserId.Value).UserName
             }).OrderByDescending(s => s.ReqInfoId).ToList();
             List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
             AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);
@@ -251,7 +253,7 @@ namespace ERPWeb.Controllers
                 }
                 else
                 {
-                    IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId);
+                    IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId,User.UserId);
                 }
             }
             return Json(IsSuccess);
@@ -480,8 +482,9 @@ namespace ERPWeb.Controllers
                     StateStatus = i.StateStatus,
                     EntryDate = i.EntryDate,
                     DescriptionId = i.DescriptionId,
-                    Model = descriptions.FirstOrDefault(d => d.DescriptionId == i.DescriptionId).DescriptionName
-
+                    Model = descriptions.FirstOrDefault(d => d.DescriptionId == i.DescriptionId).DescriptionName,
+                    EntryUser = UserForEachRecord(i.EUserId.Value).UserName,
+                    UpdateUser = (i.UpUserId == null || i.UpUserId == 0) ? "" : UserForEachRecord(i.UpUserId.Value).UserName
                 }).OrderByDescending(s => s.IRInfoId).ToList();
 
                 List<ItemReturnInfoViewModel> itemReturnInfoViewModels = new List<ItemReturnInfoViewModel>();
@@ -870,7 +873,9 @@ namespace ERPWeb.Controllers
                          ItemCount = this._finishGoodsSendToWarehouseDetailBusiness.GetFinishGoodsDetailByInfoId(f.SendId, User.OrgId).Count(),
                          Remarks = f.Remarks,
                          EntryDate = f.EntryDate,
-                         RefferenceNumber = f.RefferenceNumber
+                         RefferenceNumber = f.RefferenceNumber,
+                         EntryUser = UserForEachRecord(f.EUserId.Value).UserName,
+                         UpdateUser = (f.UpUserId == null || f.UpUserId == 0) ? "" : UserForEachRecord(f.UpUserId.Value).UserName
                      }).OrderByDescending(s => s.SendId).ToList();
                 List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
                 AutoMapper.Mapper.Map(listOfFinishGoodsSendInfo, listOfFinishGoodsSendToWarehouseInfoViewModels);
@@ -911,7 +916,6 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSucess);
         }
-
         public ActionResult GetFinishGoodsSendItemDetail(long sendId)
         {
             List<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
@@ -944,7 +948,6 @@ namespace ERPWeb.Controllers
             }
             return PartialView("_GetFinishGoodsSendItemDetail", viewModels);
         }
-
         public ActionResult GetFinishGoodsSendItemDetailList(string flag, long? lineId, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string refNum, string fromDate, string toDate)
         {
             if (string.IsNullOrEmpty(flag))

@@ -93,12 +93,13 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
-        public bool SaveRequisitionStatus(long reqId, string status, long orgId)
+        public bool SaveRequisitionStatus(long reqId, string status, long orgId, long userId)
         {
            var reqInfo = requsitionInfoRepository.GetOneByOrg(req => req.ReqInfoId == reqId && req.OrganizationId == orgId);
             if(reqInfo != null)
             {
                 reqInfo.StateStatus = status;
+                reqInfo.UpUserId = userId;
                 requsitionInfoRepository.Update(reqInfo);
             }
             return requsitionInfoRepository.Save();

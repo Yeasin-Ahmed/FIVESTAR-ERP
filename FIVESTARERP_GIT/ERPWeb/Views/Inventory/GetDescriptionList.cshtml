@@ -29,6 +29,8 @@
                     <th>Model Name</th>
                     <th>StateStatus</th>
                     <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +47,8 @@
                             <span class="@badge">@des.StateStatus</span>
                         </td>
                         <td>@des.Remarks</td>
+                        <td class="text-center">@des.EntryUser</td>
+                        <td class="text-center">@des.UpdateUser</td>
                     </tr>
                 }
                 @if (Model.Count() == 0)

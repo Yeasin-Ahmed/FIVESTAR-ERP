@@ -20,5 +20,7 @@ namespace ERPBO.Inventory.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         //custom
         public string StateStatus { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

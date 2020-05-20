@@ -3,20 +3,22 @@
     int sl = 0;
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
- }
+}
 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblReturnAndFaultyItem">
     <thead class="btn-dark">
         <tr class="text-center">
             <th>#SL</th>
             <th class="hide"></th>
-            <th>Return Code</th>
-            <th>Return Type</th>
-            <th>Faulty Case</th>
-            <th>Line</th>
-            <th>Warehouse</th>
-            <th>Item Count</th>
-            <th>StateStatus</th>
-            <th>EntryDate</th>
+            <th style="vertical-align:middle">Return Code</th>
+            <th style="vertical-align:middle">Return Type</th>
+            <th style="vertical-align:middle">Faulty Case</th>
+            <th style="vertical-align:middle">Line</th>
+            <th style="vertical-align:middle">Warehouse</th>
+            <th style="vertical-align:middle">Item Count</th>
+            <th style="vertical-align:middle">StateStatus</th>
+            <th style="vertical-align:middle">EntryDate</th>
+            <th style="vertical-align:middle">Entry User</th>
+            <th style="vertical-align:middle">Update User</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -38,6 +40,8 @@
                     <span class="@badge">@item.StateStatus</span>
                 </td>
                 <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                <td class="text-center">@item.EntryUser</td>
+                <td class="text-center">@item.UpdateUser</td>
                 <td class="text-center">
                     @if (privilege.Detail)
                     {

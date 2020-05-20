@@ -32,11 +32,13 @@
         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblRoleData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL No.</th>
+                    <th>#SL</th>
                     <th class="hide"></th>
                     <th>RoleName</th>
                     <th class="hide"></th>
                     <th>OrganizationName</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -44,25 +46,27 @@
                 @foreach (var role in Model)
                 {
                     sl = sl + 1;
-                    <tr>
-                        <td class="text-center" width="10%">@sl</td>
-                        <td class="hide">@role.RoleId</td>
-                        <td>@role.RoleName</td>
-                        <td class="hide">@role.OrganizationId</td>
-                        <td>@role.OrganizationName</td>
-                        <td class="text-center">
-                            @if (privilege != null && privilege.Edit)
-                            {
-                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@role.RoleId"><i class="fa fa-pen"></i> Edit</a>
-                            }
+                <tr>
+                    <td class="text-center text-bold">@sl</td>
+                    <td class="hide">@role.RoleId</td>
+                    <td>@role.RoleName</td>
+                    <td class="hide">@role.OrganizationId</td>
+                    <td>@role.OrganizationName</td>
+                    <td class="text-center text-sm">@role.EntryUser</td>
+                    <td class="text-center text-sm">@role.UpdateUser</td>
+                    <td class="text-center">
+                        @if (privilege != null && privilege.Edit)
+                        {
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@role.RoleId"><i class="fa fa-pen"></i> Edit</a>
+                        }
 
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
                 }
                 @if (Model.Count() == 0)
                 {
                     <tr class="text-center empty-row">
-                        <td colspan="6">
+                        <td colspan="8">
                             No Rows Found
                         </td>
                     </tr>

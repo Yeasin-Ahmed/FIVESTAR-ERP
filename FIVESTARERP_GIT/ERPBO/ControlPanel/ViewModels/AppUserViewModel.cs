@@ -47,5 +47,7 @@ namespace ERPBO.ControlPanel.ViewModels
         public string OrganizationName { get; set; }
         public string StateStatus { get; set; }
         public string StateStatusRole { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

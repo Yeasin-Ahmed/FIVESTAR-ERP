@@ -10,15 +10,17 @@
         <tr class="text-center">
             <th>#SL</th>
             <th class="hide"></th>
-            <th>Line Number</th>
-            <th>Warehouse Name</th>
-            <th>Model Name</th>
-            <th>Total Item</th>
-            <th>State Status</th>
-            <th>Remarks</th>
-            <th>Refference Number</th>
-            <th>EntryDate</th>
-            <th>Action</th>
+            <th style="vertical-align:middle">Line Number</th>
+            <th style="vertical-align:middle">Warehouse Name</th>
+            <th style="vertical-align:middle">Model Name</th>
+            <th style="vertical-align:middle">Total Item</th>
+            <th style="vertical-align:middle">State Status</th>
+            <th style="vertical-align:middle">Remarks</th>
+            <th style="vertical-align:middle">Refference Number</th>
+            <th style="vertical-align:middle">EntryDate</th>
+            <th style="vertical-align:middle">Entry User</th>
+            <th style="vertical-align:middle">Update User</th>
+            <th style="vertical-align:middle">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +41,8 @@
                 <td>@item.Remarks</td>
                 <td class="text-center">@item.RefferenceNumber</td>
                 <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                <td class="text-center">@item.EntryUser</td>
+                <td class="text-center">@item.UpdateUser</td>
                 <td class="text-center">
                     @if (privilege.Detail)
                     {
@@ -50,7 +54,7 @@
         @if (Model.Count() == 0)
         {
             <tr class="text-center empty-row">
-                <td colspan="11">
+                <td colspan="13">
                     No data found in table
                 </td>
             </tr>

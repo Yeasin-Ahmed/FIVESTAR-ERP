@@ -23,7 +23,9 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
 
-        //Custom P
+        //Custom Property
         public string StateStatus { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

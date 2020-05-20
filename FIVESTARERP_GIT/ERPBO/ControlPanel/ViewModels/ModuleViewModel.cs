@@ -21,5 +21,7 @@ namespace ERPBO.ControlPanel.ViewModels
         [Range(1, long.MaxValue)]
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }
