@@ -41,5 +41,7 @@ namespace ERPBO.ControlPanel.DTOModels
         public string StateStatus { get; set; }
         public HttpPostedFileBase OrgImage { get; set; }
         public HttpPostedFileBase ReportImage { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

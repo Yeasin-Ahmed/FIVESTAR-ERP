@@ -44,6 +44,8 @@
                     <th>Remarks</th>
                     <th>State Status</th>
                     <th>Short Name</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -52,24 +54,26 @@
                 {
                     sl = sl + 1;
                     badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                    <tr>
-                        <td class="text-center" width="10%">@sl</td>
-                        <td class="hide">@item.ItemId</td>
-                        <td class="hide">@item.WarehouseId</td>
-                        <td>@item.WarehouseName</td>
-                        <td>@item.ItemName</td>
-                        <td>@item.Remarks</td>
-                        <td class="text-center" data-val="@item.StateStatus">
-                            <span class="@badge">@item.StateStatus</span>
-                        </td>
-                        <td class="text-center">@item.ShortName</td>
-                        <td class="text-center">
-                            @if (privilege.Edit)
-                            {
-                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
-                            }
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="text-center" width="10%">@sl</td>
+                    <td class="hide">@item.ItemId</td>
+                    <td class="hide">@item.WarehouseId</td>
+                    <td>@item.WarehouseName</td>
+                    <td>@item.ItemName</td>
+                    <td>@item.Remarks</td>
+                    <td class="text-center" data-val="@item.StateStatus">
+                        <span class="@badge">@item.StateStatus</span>
+                    </td>
+                    <td class="text-center">@item.ShortName</td>
+                    <td class="text-center">@item.EntryUser</td>
+                    <td class="text-center">@item.UpdateUser</td>
+                    <td class="text-center">
+                        @if (privilege.Edit)
+                        {
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                        }
+                    </td>
+                </tr>
                 }
                 @if (Model.Count() == 0)
                 {

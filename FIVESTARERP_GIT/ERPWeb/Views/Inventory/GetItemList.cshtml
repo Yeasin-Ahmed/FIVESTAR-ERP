@@ -36,7 +36,7 @@
         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblItemData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL No.</th>
+                    <th>#SL </th>
                     <th class="hide"></th>
                     <th>ItemType Name</th>
                     <th>Item Name</th>
@@ -44,6 +44,8 @@
                     <th>Unit Name</th>
                     <th>Remarks</th>
                     <th>StateStatus</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -53,7 +55,7 @@
                     sl = sl + 1;
                     badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
                     <tr>
-                        <td class="text-center" width="10%">@sl</td>
+                        <td class="text-center"><b>@sl</b></td>
                         <td class="hide">@item.ItemId</td>
                         <td>@item.ItemTypeName</td>
                         <td>@item.ItemName</td>
@@ -63,6 +65,8 @@
                         <td class="text-center" data-val="@item.StateStatus">
                             <span class="@badge">@item.StateStatus</span>
                         </td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.UpdateUser</td>
                         <td class="text-center">
                             @if (privilege.Edit)
                             {

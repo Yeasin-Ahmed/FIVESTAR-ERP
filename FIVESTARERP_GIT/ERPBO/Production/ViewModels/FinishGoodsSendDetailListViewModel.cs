@@ -21,5 +21,7 @@ namespace ERPBO.Production.ViewModels
         public string Flag { get; set; }
         public string EntryDate { get; set; }
         public string StateStatus { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

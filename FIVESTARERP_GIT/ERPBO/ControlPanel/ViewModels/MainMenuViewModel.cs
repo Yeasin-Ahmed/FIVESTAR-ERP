@@ -24,5 +24,7 @@ namespace ERPBO.ControlPanel.ViewModels
         //custom
         [StringLength(100)]
         public string ModuleName { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

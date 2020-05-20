@@ -61,7 +61,9 @@ namespace ERPWeb.Controllers
                 IsActive = org.IsActive,
                 StateStatus = org.IsActive ? "Active" : "Inactive",
                 EUserId = org.EUserId,
-                EntryDate = org.EntryDate
+                EntryDate = org.EntryDate,
+                EntryUser = UserForEachRecord(org.EUserId.Value).UserName,
+                UpdateUser = (org.UpUserId == null || org.UpUserId == 0) ? "" : UserForEachRecord(org.UpUserId.Value).UserName
             }).ToList();
 
             List<OrganizationViewModel> OrganizationViewModels = new List<OrganizationViewModel>();
@@ -132,6 +134,8 @@ namespace ERPWeb.Controllers
                 Remarks = br.Remarks,
                 OrgId = br.OrganizationId,
                 OrganizationName = (_organizationBusiness.GetOrganizationById(User.OrgId).OrganizationName),
+                EntryUser = UserForEachRecord(br.EUserId.Value).UserName,
+                UpdateUser = (br.UpUserId == null || br.UpUserId == 0) ? "" : UserForEachRecord(br.UpUserId.Value).UserName
             }).OrderBy(br => br.BranchId).ToPagedList(page ?? 1, 15);
             IEnumerable<BranchViewModel> branchViewModelForPage = new List<BranchViewModel>();
             return View(branchViewModels);
@@ -170,11 +174,12 @@ namespace ERPWeb.Controllers
                 RoleName = role.RoleName,
                 OrganizationId = role.OrganizationId,
                 OrganizationName = (_organizationBusiness.GetOrganizationById(role.OrganizationId).OrganizationName),
+                EntryUser = UserForEachRecord(role.EUserId.Value).UserName,
+                UpdateUser = (role.UpUserId == null || role.UpUserId == 0) ? "" : UserForEachRecord(role.UpUserId.Value).UserName
             }).OrderBy(role => role.RoleId).ToPagedList(page ?? 1, 15);
             IEnumerable<RoleViewModel> roleViewModelForPage = new List<RoleViewModel>();
             return View(roleViewModels);
         }
-
         public ActionResult SaveRole(RoleViewModel roleViewModel)
         {
             bool isSuccess = false;
@@ -222,6 +227,8 @@ namespace ERPWeb.Controllers
                 BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, user.OrganizationId).BranchName),
                 RoleId = user.RoleId,
                 RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, user.OrganizationId).RoleName),
+                EntryUser = UserForEachRecord(user.EUserId.Value).UserName,
+                UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
             }).OrderBy(user => user.UserId).ToList();
             return View(appUserViewModels);
         }
@@ -259,6 +266,8 @@ namespace ERPWeb.Controllers
                 ModuleName = m.ModuleName,
                 IconName = m.IconName,
                 IconColor = m.IconColor,
+                EntryUser = UserForEachRecord(m.EUserId.Value).UserName,
+                UpdateUser = (m.UpUserId == null || m.UpUserId == 0) ? "" : UserForEachRecord(m.UpUserId.Value).UserName
             }).ToList();
             List<ModuleViewModel> moduleViewModels = new List<ModuleViewModel>();
             AutoMapper.Mapper.Map(moduleDTO, moduleViewModels);
@@ -299,6 +308,8 @@ namespace ERPWeb.Controllers
                 MenuName = mainmenu.MenuName,
                 MId = mainmenu.MId,
                 ModuleName = (_moduleBusiness.GetModuleOneById(mainmenu.MId).ModuleName),
+                EntryUser = UserForEachRecord(mainmenu.EUserId.Value).UserName,
+                UpdateUser = (mainmenu.UpUserId == null || mainmenu.UpUserId == 0) ? "" : UserForEachRecord(mainmenu.UpUserId.Value).UserName
             }).ToList();
             IEnumerable<MainMenuViewModel> mainMenuViewModels = new List<MainMenuViewModel>();
             AutoMapper.Mapper.Map(mainMenuDTO, mainMenuViewModels);
@@ -355,6 +366,9 @@ namespace ERPWeb.Controllers
                 ParentSubmenuName = (sub.ParentSubMenuId > 0 ? _subMenuBusiness.GetSubMenuOneById(sub.ParentSubMenuId.Value).SubMenuName : ""),
                 MMId = sub.MMId,
                 MenuName = (_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
+                
+                EntryUser = UserForEachRecord(sub.EUserId.Value).UserName,
+                UpdateUser = (sub.UpUserId == null || sub.UpUserId == 0) ? "" : UserForEachRecord(sub.UpUserId.Value).UserName
             }).ToList();
             IEnumerable<SubMenuViewModel> subMenuViewModels = new List<SubMenuViewModel>();
             AutoMapper.Mapper.Map(subMenuDTO, subMenuViewModels);
@@ -620,6 +634,9 @@ namespace ERPWeb.Controllers
                 BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, User.OrgId).BranchName),
                 RoleId = user.RoleId,
                 RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, User.OrgId).RoleName),
+                EntryUser = UserForEachRecord(user.EUserId.Value).UserName,
+                UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
+
             }).OrderBy(user => user.UserId).ToList();
             IEnumerable<AppUserViewModel> appUserViewModels = new List<AppUserViewModel>();
             AutoMapper.Mapper.Map(appUserDto, appUserViewModels);
@@ -813,6 +830,9 @@ namespace ERPWeb.Controllers
                 RoleName = role.RoleName,
                 OrganizationId = role.OrganizationId,
                 OrganizationName = (_organizationBusiness.GetOrganizationById(role.OrganizationId).OrganizationName),
+                EntryUser = UserForEachRecord(role.EUserId.Value).UserName,
+                UpdateUser = (role.UpUserId == null || role.UpUserId == 0) ? "" : UserForEachRecord(role.UpUserId.Value).UserName
+
             }).OrderBy(role => role.RoleId).ToPagedList(page ?? 1, 15);
             IEnumerable<RoleViewModel> roleViewModelForPage = new List<RoleViewModel>();
             return View(roleViewModels);

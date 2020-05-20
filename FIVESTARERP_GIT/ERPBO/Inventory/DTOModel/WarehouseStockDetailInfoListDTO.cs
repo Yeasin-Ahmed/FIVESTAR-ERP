@@ -27,5 +27,6 @@ namespace ERPBO.Inventory.DTOModel
         public string EntryUser { get; set; }
         [StringLength(150)]
         public string RefferenceNumber { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

@@ -17,5 +17,7 @@ namespace ERPBO.ControlPanel.DTOModels
         public long MId { get; set; }
         //custom
         public string ModuleName { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

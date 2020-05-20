@@ -38,5 +38,7 @@ namespace ERPBO.Production.ViewModels
         public int Qty { get; set; }
         [StringLength(100)]
         public string Model { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

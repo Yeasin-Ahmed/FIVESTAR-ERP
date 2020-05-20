@@ -30,11 +30,13 @@
         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL No.</th>
+                    <th>#SL</th>
                     <th class="hide"></th>
                     <th>Warehouse Name</th>
                     <th>Remarks</th>
                     <th>StateStatus</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -44,13 +46,15 @@
                     sl = sl + 1;
                     badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
                     <tr>
-                        <td class="text-center" width="10%">@sl</td>
+                        <td class="text-center">@sl</td>
                         <td class="hide">@item.Id</td>
                         <td>@item.WarehouseName</td>
                         <td>@item.Remarks</td>
                         <td class="text-center" data-val="@item.StateStatus">
                             <span class="@badge">@item.StateStatus</span>
                         </td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.UpdateUser</td>
                         <td class="text-center">
                             @if (privilege.Edit)
                             {
@@ -60,13 +64,13 @@
                     </tr>
                 }
                 @*@if (Model.Count() == 0)
-                {
-                    <tr class="text-center empty-row">
-                        <td colspan="6">
-                            No Rows Found
-                        </td>
-                    </tr>
-                }*@
+                    {
+                        <tr class="text-center empty-row">
+                            <td colspan="6">
+                                No Rows Found
+                            </td>
+                        </tr>
+                    }*@
             </tbody>
         </table>
     </div>
@@ -207,21 +211,19 @@
         });
 
 
-        function validateForm()
-        {
+        function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
             if ($.trim(txtWarehouseName.val()) == "") {
                 $(".required-warehouseName").removeClass("hide");
                 isValid = false;
             }
-            else
-            {
+            else {
                 var id = TryParseInt(hdfWarehouseId.val(), 0);
                 if (ajaxBooleanChecker(JSON.stringify({ Id: id, WarehouseName: txtWarehouseName.val().trim() }), '/Common/IsDuplicateWarehouseName', getToken()) == true) {
                     $(".duplicate-warehouseName").removeClass("hide");
                     isValid = false;
-                }  
+                }
             }
             return isValid;
         }

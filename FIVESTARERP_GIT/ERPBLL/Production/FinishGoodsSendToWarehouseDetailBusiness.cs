@@ -86,7 +86,7 @@ namespace ERPBLL.Production
 
             query = string.Format(@"Select d.SendDetailId,l.LineNumber,w.WarehouseName,de.DescriptionName 'ModelName', 
 it.ItemName 'ItemTypeName', ii.ItemName,d.Quantity,u.UnitSymbol,i.RefferenceNumber,d.Remarks,
-d.Flag,CONVERT(nvarchar(50),i.EntryDate,100) 'EntryDate',i.StateStatus
+d.Flag,CONVERT(nvarchar(50),i.EntryDate,100) 'EntryDate',i.StateStatus,au.UserName 'EntryUser'
 From tblFinishGoodsSendToWarehouseDetail d
 Inner Join tblFinishGoodsSendToWarehouseInfo i on i.SendId = d.SendId
 Inner Join tblProductionLines l on i.LineId = l.LineId
@@ -95,6 +95,7 @@ Inner Join [Inventory].dbo.[tblDescriptions] de on i.DescriptionId = de.Descript
 Inner Join [Inventory].dbo.[tblItemTypes] it on d.ItemTypeId = it.ItemId
 Inner Join [Inventory].dbo.[tblItems] ii on d.ItemId = ii.ItemId
 Inner Join [Inventory].dbo.[tblUnits] u on d.UnitId = u.UnitId
+Left Join [ControlPanel].dbo.tblApplicationUsers au on d.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;

@@ -11,7 +11,7 @@ namespace ERPBLL.Production.Interface
    public interface IProductionLineBusiness
     {
         IEnumerable<ProductionLine> GetAllProductionLineByOrgId(long orgId);
-        bool SaveUnit(ProductionLineDTO lineDTO, long userId, long orgId);
+        bool SaveLine(ProductionLineDTO lineDTO, long userId, long orgId);
         bool IsDuplicateLineNumber(string lineNumber, long id, long orgId);
         ProductionLine GetProductionLineOneByOrgId(long id, long orgId);
     }

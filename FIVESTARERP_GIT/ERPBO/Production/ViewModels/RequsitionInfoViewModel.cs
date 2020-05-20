@@ -40,5 +40,7 @@ namespace ERPBO.Production.ViewModels
         [Required,StringLength(50)]
         public string RequisitionType { get; set; }
         public int TotalReqCount { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

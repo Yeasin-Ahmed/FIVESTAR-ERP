@@ -37,6 +37,8 @@ namespace ERPBO.Production.DTOModel
         [StringLength(100)]
         public string ModelName { get; set; }
         public int TotalReqCount { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
 
     }
 }

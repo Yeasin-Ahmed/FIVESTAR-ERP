@@ -20,6 +20,7 @@
             <th style="vertical-align:middle">StateStatus</th>
             <th style="vertical-align:middle">Remarks</th>
             <th style="vertical-align:middle">EntryDate</th>
+            <th style="vertical-align:middle">Entry User</th>
         </tr>
     </thead>
     <tbody>
@@ -43,13 +44,14 @@
                     <span class="@badge">@item.StateStatus</span>
                 </td>
                 <td class="text-center">@item.Remarks</td>
-                <td class="text-center">@item.EntryDate</td>
+                <td class="text-center text-sm">@item.EntryDate</td>
+                <td class="text-center text-sm">@item.EntryUser</td>
             </tr>
         }
         @if (Model.Count() == 0)
         {
             <tr class="text-center empty-row">
-                <td colspan="14">No data found in the table</td>
+                <td colspan="16">No data found in the table</td>
             </tr>
         }
     </tbody>

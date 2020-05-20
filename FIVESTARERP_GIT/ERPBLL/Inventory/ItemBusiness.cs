@@ -103,7 +103,7 @@ Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
                 items.ItemName = itemDomain.ItemName;
                 items.Remarks = itemDomain.Remarks;
                 items.IsActive = itemDomain.IsActive;
-                items.UpUserId = itemDomain.UpUserId;
+                items.UpUserId = userId;
                 items.UpdateDate = DateTime.Now;
                 items.ItemTypeId = itemDomain.ItemTypeId;
                 items.UnitId = itemDomain.UnitId;

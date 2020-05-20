@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ERPBO.Common;
 using ERPWeb.Filters;
 using System.Web.Security;
+using ERPBO.ControlPanel.DTOModels;
 
 namespace ERPWeb.Controllers
 {
@@ -94,6 +95,14 @@ namespace ERPWeb.Controllers
                             #endregion
 
                             Session["UserDetail"] = serializeModel;
+                            Session["UserList"] = _appUserBusiness.GetAllAppUserByOrgId(serializeModel.OrgId).Select(u=> new AppUserDTO {
+                                UserId = u.UserId,
+                                UserName = u.UserName,
+                                IsActive = u.IsActive,
+                                IsRoleActive = u.IsRoleActive,
+                                FullName = u.FullName,
+                                Desigation = u.Desigation
+                            }).ToList();
 
                             if (userInformation.IsRoleActive == false)
                             {
@@ -145,6 +154,7 @@ namespace ERPWeb.Controllers
             Session["UserDetail"] = null;
             Session["AllSubmenus"] = null;
             Session["UserAuthorizeMenus"] = null;
+            Session["UserList"] = null;
             System.Web.HttpContext.Current.Session.Clear();
             System.Web.HttpContext.Current.Session.Abandon();
             System.Web.HttpContext.Current.Session.RemoveAll();

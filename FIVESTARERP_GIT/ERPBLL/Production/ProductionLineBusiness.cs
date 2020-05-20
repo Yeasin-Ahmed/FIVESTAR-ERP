@@ -35,7 +35,7 @@ namespace ERPBLL.Production
             return productionLineRepository.GetOneByOrg(line => line.LineNumber == lineNumber && line.LineId != id && line.OrganizationId == orgId) != null ? true : false;
         }
 
-        public bool SaveUnit(ProductionLineDTO lineDTO, long userId, long orgId)
+        public bool SaveLine(ProductionLineDTO lineDTO, long userId, long orgId)
         {
             ProductionLine line = new ProductionLine();
             if (lineDTO.LineId == 0)
@@ -46,7 +46,7 @@ namespace ERPBLL.Production
                 line.Remarks = lineDTO.Remarks;
                 line.IsActive = lineDTO.IsActive;
                 line.OrganizationId = orgId;
-                line.EUserId = lineDTO.EUserId;
+                line.EUserId = userId;
                 line.EntryDate = DateTime.Now;
                 productionLineRepository.Insert(line);
             }
@@ -58,7 +58,7 @@ namespace ERPBLL.Production
                 line.Remarks = lineDTO.Remarks;
                 line.IsActive = lineDTO.IsActive;
                 line.OrganizationId = orgId;
-                line.UpUserId = lineDTO.UpUserId;
+                line.UpUserId = userId;
                 line.UpdateDate = DateTime.Now;
                 productionLineRepository.Update(line);
             }

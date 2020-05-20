@@ -21,5 +21,7 @@ namespace ERPBO.ControlPanel.DTOModels
         //custom
         [StringLength(100)]
         public string OrganizationName { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

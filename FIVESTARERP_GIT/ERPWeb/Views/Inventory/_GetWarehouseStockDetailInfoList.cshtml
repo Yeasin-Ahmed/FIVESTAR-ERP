@@ -17,6 +17,7 @@
             <th>Entry Date</th>
             <th class="hide">Entry User</th>
             <th>Ref Number</th>
+            <th>Entry User</th>
         </tr>
     </thead>
     <tbody>
@@ -37,12 +38,13 @@
                 <td class="text-center">@item.EntryDate</td>
                 <td class="hide"></td>
                 <td>@item.RefferenceNumber</td>
+                <td class="text-center">@item.EntryUser</td>
             </tr>
         }
         @if (Model.Count() == 0)
         {
-            <tr class="text-center">
-                <td colspan="10">No data found in the table</td>
+            <tr class="text-center text-bold">
+                <td colspan="11">No data found in the table</td>
             </tr>
         }
     </tbody>

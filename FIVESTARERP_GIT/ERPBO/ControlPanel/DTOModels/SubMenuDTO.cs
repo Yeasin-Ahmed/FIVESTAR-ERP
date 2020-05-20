@@ -27,5 +27,7 @@ namespace ERPBO.ControlPanel.DTOModels
         public string ParentSubmenuName { get; set; }
         public string IsViewableStatus { get; set; }
         public string IsActAsParentStatus { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

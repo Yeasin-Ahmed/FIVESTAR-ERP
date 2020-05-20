@@ -35,5 +35,8 @@ namespace ERPBO.Inventory.DTOModel
         //Custom Property
         [StringLength(10)]
         public string StateStatus { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
+
     }
 }

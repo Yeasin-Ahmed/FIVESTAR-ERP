@@ -39,5 +39,7 @@ namespace ERPBO.Inventory.DTOModel
         public string Item { get; set; }
         [StringLength(100)]
         public string Unit { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

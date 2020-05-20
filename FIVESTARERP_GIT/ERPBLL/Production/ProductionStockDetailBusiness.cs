@@ -97,6 +97,7 @@ namespace ERPBLL.Production
             List<ProductionStockDetail> productionStockDetails = new List<ProductionStockDetail>();
             if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn || flag == StockOutReason.StockOutByProductionForProduceGoods)
             {
+                string status = (flag == StockOutReason.StockOutByProductionForProduceGoods) ? StockStatus.StockOut : StockStatus.StockReturn;
                 foreach (var item in productionStockDetailDTOs)
                 {
                     ProductionStockDetail stockDetail = new ProductionStockDetail();
@@ -112,7 +113,7 @@ namespace ERPBLL.Production
                     stockDetail.LineId = item.LineId;
                     stockDetail.DescriptionId = item.DescriptionId;
                     stockDetail.EntryDate = item.EntryDate;
-                    stockDetail.StockStatus = StockStatus.StockReturn;
+                    stockDetail.StockStatus = status;
                     productionStockDetails.Add(stockDetail);
                     var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(orgId, item.ItemId.Value, item.LineId.Value,item.DescriptionId.Value);
                     stockInfo.StockOutQty += stockDetail.Quantity;
@@ -151,7 +152,7 @@ namespace ERPBLL.Production
                 }
                 if(SaveProductionStockIn(productionStockDetailDTOs, userId, orgId) == true)
                 {
-                   return _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, orgId);
+                   return _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, orgId, userId);
                 }
             }
             return false;
@@ -217,7 +218,7 @@ namespace ERPBLL.Production
             query = string.Format(@"Select psd.StockDetailId,ISNULL(pl.LineNumber,'') 'LineNumber', ISNULL(de.DescriptionName,'') 'ModelName', 
 ISNULL(w.WarehouseName,'') 'WarehouseName', ISNULL(it.ItemName,'') 'ItemTypeName', ISNULL(i.ItemName,'') 'ItemName',
 ISNULL(u.UnitSymbol,'') 'UnitName', psd.Quantity,psd.StockStatus,CONVERT(nvarchar(30),psd.EntryDate,100) 'EntryDate',
-psd.RefferenceNumber
+psd.RefferenceNumber,au.UserName 'EntryUser'
 From tblProductionStockDetail psd
 Left Join tblProductionLines pl on psd.LineId= pl.LineId
 Left Join [Inventory].dbo.tblDescriptions de on psd.DescriptionId= de.DescriptionId
@@ -225,6 +226,7 @@ Left Join [Inventory].dbo.[tblWarehouses] w on psd.WarehouseId = w.Id
 Left Join [Inventory].dbo.[tblItemTypes] it on psd.ItemTypeId = it.ItemId
 Left Join [Inventory].dbo.[tblItems] i on psd.ItemId = i.ItemId
 Left Join [Inventory].dbo.[tblUnits] u on psd.UnitId = u.UnitId
+Left Join [ControlPanel].dbo.tblApplicationUsers au on psd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;

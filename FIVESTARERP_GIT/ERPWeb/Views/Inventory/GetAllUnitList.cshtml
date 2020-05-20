@@ -34,6 +34,8 @@
                     <th>UnitName</th>
                     <th>Unit Symbol</th>
                     <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -41,19 +43,21 @@
                 @foreach (var unit in Model)
                 {
                     sl = sl + 1;
-                    <tr>
-                        <td class="text-center" width="10%">@sl</td>
-                        <td class="hide">@unit.UnitId</td>
-                        <td>@unit.UnitName</td>
-                        <td class="text-center">@unit.UnitSymbol</td>
-                        <td>@unit.Remarks</td>
-                        <td class="text-center">
-                            @if (privilege.Edit)
-                            {
-                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
-                            }
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="text-center" width="10%">@sl</td>
+                    <td class="hide">@unit.UnitId</td>
+                    <td>@unit.UnitName</td>
+                    <td class="text-center">@unit.UnitSymbol</td>
+                    <td>@unit.Remarks</td>
+                    <td class="text-center">@unit.EntryUser</td>
+                    <td class="text-center">@unit.UpdateUser</td>
+                    <td class="text-center">
+                        @if (privilege.Edit)
+                        {
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
+                        }
+                    </td>
+                </tr>
                 }
                 @if (Model.Count() == 0)
                 {

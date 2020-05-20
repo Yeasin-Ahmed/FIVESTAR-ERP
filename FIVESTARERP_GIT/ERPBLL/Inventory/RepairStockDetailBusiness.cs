@@ -149,13 +149,14 @@ namespace ERPBLL.Inventory
             }
 
             query = string.Format(@"Select rsd.RStockDetailId,pl.LineNumber,de.DescriptionName 'ModelName',wh.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',rsd.Quantity,rsd.StockStatus
-,Convert(nvarchar(20),rsd.EntryDate,106) 'EntryDate', ISNULL(rsd.RefferenceNumber,'N/A') as 'RefferenceNumber'  From tblRepairStockDetails rsd
+,Convert(nvarchar(20),rsd.EntryDate,106) 'EntryDate', ISNULL(rsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser'  From tblRepairStockDetails rsd
 Left Join tblWarehouses wh on rsd.WarehouseId = wh.Id
 Left Join tblItemTypes it on rsd.ItemTypeId = it.ItemId
 Left Join tblItems i on rsd.ItemId  = i.ItemId
 Left Join tblUnits u on rsd.UnitId= u.UnitId
 Left Join tblDescriptions de on rsd.DescriptionId = de.DescriptionId
 Left Join [Production].dbo.[tblProductionLines] pl on rsd.LineId = pl.LineId
+Left Join [ControlPanel].dbo.tblApplicationUsers au on rsd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }

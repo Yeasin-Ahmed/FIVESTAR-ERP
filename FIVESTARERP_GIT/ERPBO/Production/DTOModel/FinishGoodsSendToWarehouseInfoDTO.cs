@@ -34,5 +34,7 @@ namespace ERPBO.Production.DTOModel
         public string WarehouseName { get; set; }
         public string ModelName { get; set; }
         public int? ItemCount { get; set; }
+        public string EntryUser { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

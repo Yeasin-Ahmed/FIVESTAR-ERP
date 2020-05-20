@@ -74,6 +74,7 @@ namespace ERPBLL.Inventory
                 if (warehouseInfo != null)
                 {
                     warehouseInfo.StockInQty += item.Quantity;
+                    warehouseInfo.UpUserId = userId;
                     warehouseStockInfoRepository.Update(warehouseInfo);
                 }
                 else
@@ -180,7 +181,7 @@ namespace ERPBLL.Inventory
                 }
                 if (SaveWarehouseStockOut(stockDetailDTOs, userId, orgId, "Production Requistion") == true)
                 {
-                    return _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, orgId);
+                    return _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, orgId,userId);
                 }
             }
             return false;
@@ -306,11 +307,12 @@ namespace ERPBLL.Inventory
             }
 
             query = string.Format(@"Select wsd.StockDetailId,wh.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',wsd.Quantity,wsd.StockStatus
-,Convert(nvarchar(20),wsd.EntryDate,106) 'EntryDate', ISNULL(wsd.RefferenceNumber,'N/A') as 'RefferenceNumber'  From tblWarehouseStockDetails wsd
+,Convert(nvarchar(20),wsd.EntryDate,106) 'EntryDate', ISNULL(wsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser'  From tblWarehouseStockDetails wsd
 Left Join tblWarehouses wh on wsd.WarehouseId = wh.Id
 Left Join tblItemTypes it on wsd.ItemTypeId = it.ItemId
 Left Join tblItems i on wsd.ItemId  = i.ItemId
 Left Join tblUnits u on wsd.UnitId= u.UnitId
+Left Join [ControlPanel].dbo.tblApplicationUsers au on wh.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }

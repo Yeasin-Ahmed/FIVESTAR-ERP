@@ -27,5 +27,7 @@ namespace ERPBO.Inventory.ViewModels
         public string EntryUser { get; set; }
         [StringLength(150)]
         public string RefferenceNumber { get; set; }
+        [StringLength(150)]
+        public string UpdateUser { get; set; }
     }
 }
