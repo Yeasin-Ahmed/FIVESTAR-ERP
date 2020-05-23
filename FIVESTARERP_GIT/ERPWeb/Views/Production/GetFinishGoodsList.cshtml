@@ -7,12 +7,6 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">                
-                @if (privilege != null && privilege.Detail)
-                {
-                    <a href="/Production/GetFinishGoodsStockDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                        <i class="fas fa-eye"></i> Go To Details View
-                    </a>
-                }
             </div>
             <div class="col-md-6 text-center">
                 <h4><b style="color:darkblue">List Of Finish Goods</b></h4>
@@ -113,6 +107,7 @@
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var txtLessOrEq = $("#txtLessOrEq");
+        var pageNo = 1;
 
         $(document).ready(function () {
 
@@ -181,20 +176,35 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", lineId: TryParseInt(ddlLines.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemName: TryParseInt(ddlItem.val(), 0), finishQty: txtLessOrEq.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { flag: "search", lineId: TryParseInt(ddlLines.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemName: TryParseInt(ddlItem.val(), 0), finishQty: txtLessOrEq.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
             console.log(data);
 
             $.when(getReqWithData(dataType.html, type.post, '/Production/GetFinishGoodsList', data)).then(function (res, status) {
                 console.log(res);
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer").empty();
-                    $("#dataContainer").append(res);
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
                 }
             }).fail(function (error) {
                 consoleLog(error);
-            })
+            });
+            pageNo = 1;
         }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
 
         function OpenModal() {
             $("#modalMaterialDetails").modal('show');

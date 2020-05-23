@@ -106,6 +106,7 @@
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var ddlModelName = $("#ddlModelName");
+        var pageNo = 1;
 
         $(document).ready(function ()
         {
@@ -174,19 +175,32 @@
 
         function LoadDataTable()
         {
-            var data = { flag: "search", refNum: txtCode.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(),modelId:TryParseInt(ddlModelName.val(),0) };
+            var data = { flag: "search", refNum: txtCode.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(), 0), page: pageNo};
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Production/GetProductionFaultyOrReturnItemDetailList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer").empty();
-                    $("#dataContainer").append(res);
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
                 }
             }).fail(function (error) {
                 console.log(error);
             })
         }
-        
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
     </script>    
 }
 

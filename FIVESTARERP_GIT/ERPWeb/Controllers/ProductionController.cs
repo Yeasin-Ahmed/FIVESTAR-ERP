@@ -65,9 +65,9 @@ namespace ERPWeb.Controllers
         }
 
         #region ProductionLine
-        public ActionResult GetProductionLineList(int? page)
+        public ActionResult GetProductionLineList()
         {
-            IPagedList<ProductionLineViewModel> productionLineViewModels = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new ProductionLineViewModel
+            IEnumerable<ProductionLineDTO> dto = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new ProductionLineDTO
             {
                 LineId = line.LineId,
                 LineNumber = line.LineNumber,
@@ -79,10 +79,11 @@ namespace ERPWeb.Controllers
                 UpdateDate = line.UpdateDate,
                 EntryUser = UserForEachRecord(line.EUserId.Value).UserName,
                 UpdateUser = (line.UpUserId == null || line.UpUserId == 0) ? "" : UserForEachRecord(line.UpUserId.Value).UserName
-            }).OrderBy(line => line.LineId).ToPagedList(page ?? 1, 15);
-            IEnumerable<ProductionLineViewModel> productionLineViewModelForPage = new List<ProductionLineViewModel>();
+            }).OrderBy(line => line.LineId).ToList();
+            IEnumerable<ProductionLineViewModel> viewModel = new List<ProductionLineViewModel>();
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetProductionLineList");
-            return View(productionLineViewModels);
+            AutoMapper.Mapper.Map(dto, viewModel);
+            return View(viewModel);
         }
         [HttpPost]
         public ActionResult SaveProductionLine(ProductionLineViewModel productionLineViewModel)
@@ -171,11 +172,11 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
         // Used By  GetReqInfoList ActionMethod
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? modelId, long? line, string fromDate, string toDate, string requisitionType)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? modelId, long? line, string fromDate, string toDate, string requisitionType, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetReqInfoList");
             var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
-            IEnumerable<RequsitionInfoDTO> requsitionInfoDTO = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
+            IEnumerable<RequsitionInfoDTO> dto = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
                 //req.StateStatus != RequisitionStatus.Pending &&
                 (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode)) &&
                 (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId) &&
@@ -215,8 +216,13 @@ namespace ERPWeb.Controllers
                 EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
                 UpdateUser = (info.UpUserId == null || info.UpUserId == 0) ? "" : UserForEachRecord(info.UpUserId.Value).UserName
             }).OrderByDescending(s => s.ReqInfoId).ToList();
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+            dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            //-----------------//
+
             List<RequsitionInfoViewModel> requsitionInfoViewModels = new List<RequsitionInfoViewModel>();
-            AutoMapper.Mapper.Map(requsitionInfoDTO, requsitionInfoViewModels);
+            AutoMapper.Mapper.Map(dto, requsitionInfoViewModels);
             return PartialView(requsitionInfoViewModels);
         }
         public ActionResult GetRequsitionDetails(long? reqId)
@@ -343,9 +349,9 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq)
+        public ActionResult GetProductionStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq, int page = 1)
         {
-            IEnumerable<ProductionStockInfoDTO> productionStockInfoDTO = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(User.OrgId).Select(info => new ProductionStockInfoDTO
+            IEnumerable<ProductionStockInfoDTO> dto = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(User.OrgId).Select(info => new ProductionStockInfoDTO
             {
                 StockInfoId = info.ProductionStockInfoId,
                 LineId = info.LineId.Value,
@@ -366,7 +372,7 @@ namespace ERPWeb.Controllers
                 ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, info.OrganizationId).DescriptionName)
             }).AsEnumerable();
 
-            productionStockInfoDTO = productionStockInfoDTO.Where(ws =>
+            dto = dto.Where(ws =>
             (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId)
             && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId)
             && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)
@@ -375,12 +381,17 @@ namespace ERPWeb.Controllers
             && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
             ).OrderByDescending(s => s.StockInfoId).ToList();
 
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+            dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            //-----------------//
+
             List<ProductionStockInfoViewModel> productionStockInfoViews = new List<ProductionStockInfoViewModel>();
-            AutoMapper.Mapper.Map(productionStockInfoDTO, productionStockInfoViews);
+            AutoMapper.Mapper.Map(dto, productionStockInfoViews);
             return PartialView("_productionStockInfoList", productionStockInfoViews);
         }
 
-        public ActionResult GetProductionStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        public ActionResult GetProductionStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -404,6 +415,9 @@ namespace ERPWeb.Controllers
             else
             {
                 var dto = _productionStockDetailBusiness.GetProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId).OrderByDescending(s => s.StockDetailId).ToList();
+
+                ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+                dto = dto.Skip((page - 1) * 15).Take(15).ToList();
                 IEnumerable<ProductionStockDetailInfoListViewModel> viewModels = new List<ProductionStockDetailInfoListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetProductionStockDetailInfoList", viewModels);
@@ -413,7 +427,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Item Return
-        public ActionResult GetItemReturnList(string flag, string code, long? lineId, long? warehouseId, string status, string returnType, string faultyCase, string fromDate, string toDate, long? modelId)
+        public ActionResult GetItemReturnList(string flag, string code, long? lineId, long? warehouseId, string status, string returnType, string faultyCase, string fromDate, string toDate, long? modelId, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetItemReturnList");
             if (string.IsNullOrEmpty(flag))
@@ -445,7 +459,7 @@ namespace ERPWeb.Controllers
                 var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).ToList();
                 var lines = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).ToList();
                 var descriptions = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).ToList();
-                IEnumerable<ItemReturnInfoDTO> itemReturnInfoDTOs = _itemReturnInfoBusiness.GetItemReturnInfos(User.OrgId).Where(i => 1 == 1
+                IEnumerable<ItemReturnInfoDTO> dto = _itemReturnInfoBusiness.GetItemReturnInfos(User.OrgId).Where(i => 1 == 1
                 && (code == null || code.Trim() == "" || i.IRCode.Contains(code))
                 && (lineId == null || lineId <= 0 || i.LineId == lineId)
                 && (warehouseId == null || warehouseId <= 0 || i.WarehouseId == warehouseId)
@@ -487,8 +501,13 @@ namespace ERPWeb.Controllers
                     UpdateUser = (i.UpUserId == null || i.UpUserId == 0) ? "" : UserForEachRecord(i.UpUserId.Value).UserName
                 }).OrderByDescending(s => s.IRInfoId).ToList();
 
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 List<ItemReturnInfoViewModel> itemReturnInfoViewModels = new List<ItemReturnInfoViewModel>();
-                AutoMapper.Mapper.Map(itemReturnInfoDTOs, itemReturnInfoViewModels);
+                AutoMapper.Mapper.Map(dto, itemReturnInfoViewModels);
                 return PartialView("_GetItemReturnList", itemReturnInfoViewModels);
             }
         }
@@ -569,7 +588,7 @@ namespace ERPWeb.Controllers
             return PartialView("_GetProductionItemReturnDetails", itemReturnDetailViews);
         }
 
-        public ActionResult GetProductionFaultyOrReturnItemDetailList(string flag, string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate, long? modelId)
+        public ActionResult GetProductionFaultyOrReturnItemDetailList(string flag, string refNum, string returnType, string faultyCase, long? lineId, long? warehouseId, string status, long? itemTypeId, long? itemId, string fromDate, string toDate, long? modelId, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -597,9 +616,15 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                IEnumerable<ItemReturnDetailListDTO> listdto = _itemReturnDetailBusiness.GetItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate, modelId, User.OrgId).OrderByDescending(s => s.IRDetailId).ToList();
+                IEnumerable<ItemReturnDetailListDTO> dto = _itemReturnDetailBusiness.GetItemReturnDetailList(refNum, returnType, faultyCase, lineId, warehouseId, status, itemTypeId, itemId, fromDate, toDate, modelId, User.OrgId).OrderByDescending(s => s.IRDetailId).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 IEnumerable<ItemReturnDetailListViewModel> listViewModels = new List<ItemReturnDetailListViewModel>();
-                AutoMapper.Mapper.Map(listdto, listViewModels);
+                AutoMapper.Mapper.Map(dto, listViewModels);
                 return PartialView("_GetProductionFaultyOrReturnItemDetailList", listViewModels);
             }
         }
@@ -654,7 +679,7 @@ namespace ERPWeb.Controllers
             return Json(IsSucess);
         }
 
-        public ActionResult GetFinishGoodsList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string finishQty, string fromDate, string toDate)
+        public ActionResult GetFinishGoodsList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string finishQty, string fromDate, string toDate, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetFinishGoodsList");
             if (string.IsNullOrEmpty(flag))
@@ -672,7 +697,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                IEnumerable<FinishGoodsInfoDTO> finishGoodsInfoDTOs = _finishGoodsInfoBusiness.GetFinishGoodsByOrg(User.OrgId).Select(info => new FinishGoodsInfoDTO
+                IEnumerable<FinishGoodsInfoDTO> dto = _finishGoodsInfoBusiness.GetFinishGoodsByOrg(User.OrgId).Select(info => new FinishGoodsInfoDTO
                 {
                     FinishGoodsInfoId = info.FinishGoodsInfoId,
                     ProductionLineId = info.ProductionLineId,
@@ -692,7 +717,7 @@ namespace ERPWeb.Controllers
                     EntryDate = info.EntryDate
                 }).AsEnumerable();
 
-                finishGoodsInfoDTOs = finishGoodsInfoDTOs.Where(fg =>
+                dto = dto.Where(fg =>
                (warehouseId == null || warehouseId == 0 || fg.WarehouseId == warehouseId)
                && (itemTypeId == null || itemTypeId == 0 || fg.ItemTypeId == itemTypeId)
                && (itemId == null || itemId == 0 || fg.ItemId == itemId)
@@ -701,8 +726,13 @@ namespace ERPWeb.Controllers
                && (string.IsNullOrEmpty(finishQty) || fg.Quanity <= Convert.ToInt32(finishQty))
                ).OrderByDescending(s => s.FinishGoodsInfoId).ToList();
 
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 IEnumerable<FinishGoodsInfoViewModel> finishGoodsInfoViewModels = new List<FinishGoodsInfoViewModel>();
-                AutoMapper.Mapper.Map(finishGoodsInfoDTOs, finishGoodsInfoViewModels);
+                AutoMapper.Mapper.Map(dto, finishGoodsInfoViewModels);
                 return PartialView("_GetFinishGoodsList", finishGoodsInfoViewModels);
             }
         }
@@ -725,7 +755,7 @@ namespace ERPWeb.Controllers
             return PartialView("_GetFinishGoodsMaterialDetails", viewModels);
         }
 
-        public ActionResult GetFinishGoodsStockInfo(string flag, long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq)
+        public ActionResult GetFinishGoodsStockInfo(string flag, long? WarehouseId, long? ItemTypeId, long? ItemId, long? LineId, long? ModelId, string lessOrEq, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetFinishGoodsStockInfo");
             if (string.IsNullOrEmpty(flag))
@@ -743,7 +773,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                IEnumerable<FinishGoodsStockInfoDTO> finishGoodsStockInfoDTOs = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(User.OrgId).Select(info => new FinishGoodsStockInfoDTO
+                IEnumerable<FinishGoodsStockInfoDTO> dto = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(User.OrgId).Select(info => new FinishGoodsStockInfoDTO
                 {
                     FinishGoodsStockInfoId = info.FinishGoodsStockInfoId,
                     LineId = info.LineId.Value,
@@ -764,7 +794,7 @@ namespace ERPWeb.Controllers
                     ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, info.OrganizationId).DescriptionName)
                 }).AsEnumerable();
 
-                finishGoodsStockInfoDTOs = finishGoodsStockInfoDTOs.Where(fs =>
+                dto = dto.Where(fs =>
                 (WarehouseId == null || WarehouseId == 0 || fs.WarehouseId == WarehouseId)
                 && (ItemTypeId == null || ItemTypeId == 0 || fs.ItemTypeId == ItemTypeId)
                 && (ItemId == null || ItemId == 0 || fs.ItemId == ItemId)
@@ -773,13 +803,18 @@ namespace ERPWeb.Controllers
                 && (string.IsNullOrEmpty(lessOrEq) || (fs.StockInQty - fs.StockOutQty) <= Convert.ToInt32(lessOrEq))
                 ).ToList();
 
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 List<FinishGoodsStockInfoViewModel> finishGoodsStockInfoViewModels = new List<FinishGoodsStockInfoViewModel>();
-                AutoMapper.Mapper.Map(finishGoodsStockInfoDTOs, finishGoodsStockInfoViewModels);
+                AutoMapper.Mapper.Map(dto, finishGoodsStockInfoViewModels);
                 return PartialView("_GetFinishGoodsStockInfo", finishGoodsStockInfoViewModels);
             }
         }
 
-        public ActionResult GetFinishGoodsStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
+        public ActionResult GetFinishGoodsStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -803,6 +838,12 @@ namespace ERPWeb.Controllers
             else
             {
                 var dto = _finishGoodsStockDetailBusiness.GetFinishGoodsStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum).OrderByDescending(s => s.StockDetailId).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 IEnumerable<FinishGoodsStockDetailInfoListViewModel> viewModels = new List<FinishGoodsStockDetailInfoListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetFinishGoodsStockDetailInfoList", viewModels);
@@ -811,7 +852,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Finish Goods Send To Warehouse
-        public ActionResult GetFinishGoodsSendToWarehouse(string flag, long? lineId, long? warehouseId, long? modelId, string status, string fromDate, string toDate, string refNo)
+        public ActionResult GetFinishGoodsSendToWarehouse(string flag, long? lineId, long? warehouseId, long? modelId, string status, string fromDate, string toDate, string refNo, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetFinishGoodsSendToWarehouse");
             if (string.IsNullOrEmpty(flag))
@@ -841,7 +882,7 @@ namespace ERPWeb.Controllers
                 var tblLine = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId);
                 var tblModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
 
-                List<FinishGoodsSendToWarehouseInfoDTO> listOfFinishGoodsSendInfo = _finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodsSendToWarehouseList(User.OrgId)
+                List<FinishGoodsSendToWarehouseInfoDTO> dto = _finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodsSendToWarehouseList(User.OrgId)
                      .Where(f => 1 == 1 &&
                          (refNo == null || refNo.Trim() == "" || f.RefferenceNumber.Contains(refNo)) &&
                          (warehouseId == null || warehouseId <= 0 || f.WarehouseId == warehouseId) &&
@@ -877,8 +918,14 @@ namespace ERPWeb.Controllers
                          EntryUser = UserForEachRecord(f.EUserId.Value).UserName,
                          UpdateUser = (f.UpUserId == null || f.UpUserId == 0) ? "" : UserForEachRecord(f.UpUserId.Value).UserName
                      }).OrderByDescending(s => s.SendId).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
-                AutoMapper.Mapper.Map(listOfFinishGoodsSendInfo, listOfFinishGoodsSendToWarehouseInfoViewModels);
+                AutoMapper.Mapper.Map(dto, listOfFinishGoodsSendToWarehouseInfoViewModels);
                 return PartialView("_GetFinishGoodsSendToWarehouse", listOfFinishGoodsSendToWarehouseInfoViewModels);
             }
         }
@@ -948,7 +995,7 @@ namespace ERPWeb.Controllers
             }
             return PartialView("_GetFinishGoodsSendItemDetail", viewModels);
         }
-        public ActionResult GetFinishGoodsSendItemDetailList(string flag, long? lineId, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string refNum, string fromDate, string toDate)
+        public ActionResult GetFinishGoodsSendItemDetailList(string flag, long? lineId, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string refNum, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -969,6 +1016,12 @@ namespace ERPWeb.Controllers
             else
             {
                 IEnumerable<FinishGoodsSendDetailListDTO> dto = _finishGoodsSendToWarehouseDetailBusiness.GetGoodsSendDetailList(lineId, warehouseId, modelId, itemTypeId, itemId, status, refNum, User.OrgId, fromDate, toDate).OrderByDescending(s => s.SendDetailId).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
                 IEnumerable<FinishGoodsSendDetailListViewModel> viewModels = new List<FinishGoodsSendDetailListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetFinishGoodsSendItemDetailList", viewModels);

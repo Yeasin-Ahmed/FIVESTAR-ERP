@@ -86,7 +86,6 @@
 
 @section scripts{
     <script type="text/javascript">
-
         var txtReqCode = $("#txtReqCode");
         var ddlWarehouseName = $("#ddlWarehouseName");
         var ddlModelName = $("#ddlModelName");
@@ -97,6 +96,7 @@
         var hdfReqInfoId = $("#hdfReqInfoId");
         var hdfRowIndex = $("#hdfRowIndex");
         var ddlRequisitionType = $("#ddlRequisitionType")
+        var pageNo = 1;
 
         $(document).ready(function () {
 
@@ -149,19 +149,21 @@
 
         function LoadDataTable()
         {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(),requisitionType: ddlRequisitionType.val() };
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType: ddlRequisitionType.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Inventory/GetReqInfoParitalList', data)).then(function (res, status)
             {
-                if (status == "success")
-                {
-                    $("#dataContainer1").empty();
-                    $("#dataContainer1").append(res);
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
                 }
             }).fail(function (error) {
                 console.log(error);
             })
-            console.log(data);
+            //console.log(data);
+            pageNo = 1;
         }
 
         function OpenModal()
@@ -250,5 +252,16 @@
             }
         }
 
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
     </script>
 }
