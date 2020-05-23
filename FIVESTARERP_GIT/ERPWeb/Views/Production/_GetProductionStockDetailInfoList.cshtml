@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionStockDetailInfoListViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string badge = string.Empty;
 }
 
@@ -14,8 +15,8 @@
             <th style="vertical-align:middle">Warehouse</th>
             <th style="vertical-align:middle">ItemType Name</th>
             <th style="vertical-align:middle">Item Name</th>
-            <th style="vertical-align:middle">Type Of Unit</th>
             <th style="vertical-align:middle">Quantity</th>
+            <th style="vertical-align:middle">Type Of Unit</th>
             <th style="vertical-align:middle">Stock Status</th>
             <th style="vertical-align:middle">Entry Date</th>
             <th style="vertical-align:middle">Entry User</th>
@@ -53,3 +54,4 @@
         }
     </tbody>
 </table>
+@Html.Partial("_Pagination", pagerData)

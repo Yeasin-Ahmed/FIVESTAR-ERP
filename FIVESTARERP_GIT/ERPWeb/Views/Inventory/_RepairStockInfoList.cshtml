@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Inventory.ViewModels.RepairStockInfoViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     int stock = 0;
 }
 <table class="table table-bordered table-sm table-striped" id="tblWarehouseStockInfo">
@@ -59,3 +60,4 @@
         }
     </tbody>
 </table>
+@Html.Partial("_Pagination", pagerData)

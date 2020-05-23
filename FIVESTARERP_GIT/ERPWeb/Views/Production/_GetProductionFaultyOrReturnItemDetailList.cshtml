@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.ItemReturnDetailListViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string badge = string.Empty;
 }
 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblReturnAndFaultyItemDetailList">
@@ -56,4 +57,4 @@
         }
     </tbody>
 </table>
-
+@Html.Partial("_Pagination", pagerData)

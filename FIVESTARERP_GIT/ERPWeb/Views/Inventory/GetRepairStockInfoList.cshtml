@@ -74,6 +74,7 @@
         var ddlLineNumber = $("#ddlLineNumber");
         var ddlModelName = $("#ddlModelName");
         var txtLessOrEq = $("#txtLessOrEq");
+        var pageNo = 1;
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -122,16 +123,34 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", LineId: TryParseInt(ddlLineNumber.val(), 0), ModelId: TryParseInt(ddlModelName.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val() };
+            var data = {
+                flag: "search", LineId: TryParseInt(ddlLineNumber.val(), 0), ModelId: TryParseInt(ddlModelName.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(), page: pageNo
+            };
             $.when(getReqWithData('html', 'GET', '/Inventory/GetRepairStockInfoList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer").empty();
-                    $("#dataContainer").append(res);
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
                 }
             }).fail(function (error) {
                 console.log(error);
-            })
+            });
+            pageNo = 1;
         }
+
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
     </script>
 }

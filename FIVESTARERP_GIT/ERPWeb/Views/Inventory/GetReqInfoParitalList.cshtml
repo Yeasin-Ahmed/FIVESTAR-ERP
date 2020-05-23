@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RequsitionInfoViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
     //Layout = null;
@@ -68,10 +69,11 @@
         @if (Model.Count() == 0)
         {
             <tr class="text-center empty-row">
-                <td colspan="9">
+                <td colspan="13">
                     No Rows Found
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@Html.Partial("_Pagination", pagerData)

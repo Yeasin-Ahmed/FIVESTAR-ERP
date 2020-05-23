@@ -123,6 +123,7 @@
         var hdfReturnInfoId = $("#hdfReturnInfoId");
         var hdfRowIndex = $("#hdfRowIndex");
         var ddlModelName = $("#ddlModelName");
+        var pageNo = 1;
 
         $(document).ready(function () {
 
@@ -175,20 +176,34 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(), 0) };
+            var data = { flag: "search", code: txtCode.val().trim(), lineId: TryParseInt(ddlLines.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStatus.val(), returnType: ddlReturnType.val(), faultyCase: ddlFaultyCase.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), modelId: TryParseInt(ddlModelName.val(), 0), page: pageNo };
             console.log(data);
 
             $.when(getReqWithData(dataType.html, type.post, '/Production/GetItemReturnList', data)).then(function (res, status) {
                 console.log(res);
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer").empty();
-                    $("#dataContainer").append(res);
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
                 }
             }).fail(function (error) {
                 consoleLog(error);
             })
         }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
 
         function OpenModal() {
             $("#dataContainer1").empty();

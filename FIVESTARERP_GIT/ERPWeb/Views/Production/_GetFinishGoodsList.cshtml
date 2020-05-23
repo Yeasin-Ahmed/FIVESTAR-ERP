@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.FinishGoodsInfoViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 <table class="table table-sm table-bordered table-responsive-lg" id="tblFinishGoodsInfoList">
@@ -52,4 +53,4 @@
         }
     </tbody>
 </table>
-
+@Html.Partial("_Pagination", pagerData)

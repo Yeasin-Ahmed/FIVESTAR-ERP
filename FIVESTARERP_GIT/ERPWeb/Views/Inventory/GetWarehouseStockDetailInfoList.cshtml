@@ -86,6 +86,7 @@
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var ddlStockStatus = $("#ddlStockStatus");
+        var pageNo = 1;
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -110,8 +111,7 @@
 
         $(document).on('click', 'div.remove-date', function () {
             if ($(this).hasClass("dptToDate")) {
-                if (dptToDate.val() !== '')
-                {
+                if (dptToDate.val() !== '') {
                     dptToDate.val('');
                     LoadDataTable();
                 }
@@ -146,18 +146,33 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val() };
+            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val(), page:pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockDetailInfoList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer").empty();
-                    $("#dataContainer").append(res);
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
                 }
             }).fail(function (error) {
                 console.log(error);
             })
+            pageNo = 1;
         }
+        
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
     </script>
 }

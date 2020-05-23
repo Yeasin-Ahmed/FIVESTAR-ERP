@@ -12,6 +12,7 @@ namespace ERPWeb.Controllers
 {
     public class BaseController : Controller
     {
+        public const int pageSize = 15;
         protected virtual new CustomPrincipal User
         {
             get { return HttpContext.User as CustomPrincipal; }
@@ -41,6 +42,15 @@ namespace ERPWeb.Controllers
             var data = (List<AppUserDTO>)Session["UserList"];
             entityUser = data.FirstOrDefault(u => u.UserId == userId);
             return entityUser;
+        }
+
+        [NonAction]
+        public PagerData GetPagerData(int recordCount, int perPage, int currentPage)
+        {
+            PagerData pagerData = new PagerData(recordCount, perPage);
+            pagerData.Current = currentPage;
+            pagerData.Serial = (currentPage == 1) ? 0 : ((currentPage - 1) * perPage);
+            return pagerData;
         }
     }
 }

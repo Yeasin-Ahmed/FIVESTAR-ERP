@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.ItemReturnInfoViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
@@ -58,4 +59,4 @@
         }
     </tbody>
 </table>
-
+@Html.Partial("_Pagination", pagerData)
