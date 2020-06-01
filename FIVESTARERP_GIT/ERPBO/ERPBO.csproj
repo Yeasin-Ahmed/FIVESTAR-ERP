@@ -56,6 +56,15 @@
     <Compile Include="Common\ExecutionStateWithText.cs" />
     <Compile Include="Common\UserInformation.cs" />
     <Compile Include="Common\UserPrivilege.cs" />
+    <Compile Include="Configuration\DomainModels\Accessories.cs" />
+    <Compile Include="Configuration\DomainModels\ClientProblem.cs" />
+    <Compile Include="Configuration\DomainModels\MobilePart.cs" />
+    <Compile Include="Configuration\DTOModels\AccessoriesDTO.cs" />
+    <Compile Include="Configuration\DTOModels\ClientProblemDTO.cs" />
+    <Compile Include="Configuration\DTOModels\MobilePartDTO.cs" />
+    <Compile Include="Configuration\ViewModels\AccessoriesViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\ClientProblemViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\MobilePartViewModel.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\MainMenu.cs" />
@@ -200,6 +209,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Configuration\ReportModels\" />
     <Folder Include="ControlPanel\ReportModels\" />
     <Folder Include="Inventory\ReportModels\" />
   </ItemGroup>

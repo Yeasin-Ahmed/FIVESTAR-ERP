@@ -69,6 +69,12 @@
   <ItemGroup>
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="Configuration\AccessoriesBusiness.cs" />
+    <Compile Include="Configuration\ClientProblemBusiness.cs" />
+    <Compile Include="Configuration\Interface\IAccessoriesBusiness.cs" />
+    <Compile Include="Configuration\Interface\IClientProblemBusiness.cs" />
+    <Compile Include="Configuration\Interface\IMobilePartBusiness.cs" />
+    <Compile Include="Configuration\MobilePartBusiness.cs" />
     <Compile Include="ControlPanel\AppUserBusiness.cs" />
     <Compile Include="ControlPanel\BranchBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IAppUserBusiness.cs" />
