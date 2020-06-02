@@ -62,6 +62,8 @@ namespace ERPBLL.Inventory
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.DescriptionId = item.DescriptionId;
                 stockDetail.LineId = item.LineId;
+                stockDetail.ReturnType = item.ReturnType;
+                stockDetail.FaultyCase= item.FaultyCase;
 
                 var repairStockInfo = _repairStockInfoBusiness.GetRepairStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (repairStockInfo != null)
@@ -91,14 +93,14 @@ namespace ERPBLL.Inventory
             return repairStockDetailRepository.Save();
         }
 
-        public IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId)
+        public IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId, string returnType, string faultyCase)
         {
             IEnumerable<RepairStockDetailListDTO> repairStockDetailListDTOs = new List<RepairStockDetailListDTO>();
-            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<RepairStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId)).ToList();
+            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<RepairStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId, returnType, faultyCase)).ToList();
             return repairStockDetailListDTOs;
         }
 
-        private string QueryForRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
+        private string QueryForRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId, string returnType, string faultyCase)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -131,6 +133,16 @@ namespace ERPBLL.Inventory
             {
                 param += string.Format(@" and rsd.RefferenceNumber Like'%{0}%'", refNum);
             }
+
+            if (!string.IsNullOrEmpty(returnType) && returnType.Trim() != "")
+            {
+                param += string.Format(@" and rsd.ReturnType ='{0}'", returnType);
+            }
+            if (!string.IsNullOrEmpty(faultyCase) && faultyCase.Trim() != "")
+            {
+                param += string.Format(@" and rsd.FaultyCase ='{0}'", faultyCase);
+            }
+
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
                 string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
@@ -149,7 +161,7 @@ namespace ERPBLL.Inventory
             }
 
             query = string.Format(@"Select rsd.RStockDetailId,pl.LineNumber,de.DescriptionName 'ModelName',wh.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',rsd.Quantity,rsd.StockStatus
-,Convert(nvarchar(20),rsd.EntryDate,106) 'EntryDate', ISNULL(rsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser'  From tblRepairStockDetails rsd
+,Convert(nvarchar(20),rsd.EntryDate,106) 'EntryDate', ISNULL(rsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser',rsd.ReturnType,rsd.FaultyCase  From tblRepairStockDetails rsd
 Left Join tblWarehouses wh on rsd.WarehouseId = wh.Id
 Left Join tblItemTypes it on rsd.ItemTypeId = it.ItemId
 Left Join tblItems i on rsd.ItemId  = i.ItemId

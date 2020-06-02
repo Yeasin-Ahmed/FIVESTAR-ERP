@@ -761,7 +761,7 @@ namespace ERPWeb.Controllers
             }
         }
 
-        public ActionResult GetRepairStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, int page = 1)
+        public ActionResult GetRepairStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, string returnType,string faultyCase, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -784,10 +784,22 @@ namespace ERPWeb.Controllers
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+
+                ViewBag.ddlReturnType = Utility.ListOfReturnType().Where(r => r.text == ReturnType.RepairFaultyReturn || r.text == ReturnType.ProductionFaultyReturn).Select(r => new SelectListItem
+                {
+                    Text = r.text,
+                    Value = r.value
+                }).ToList();
+
+                ViewBag.ddlFaultyCase = Utility.ListOfFaultyCase().Select(f => new SelectListItem
+                {
+                    Text = f.text,
+                    Value = f.value
+                }).ToList();
             }
             else
             {
-                var dto = _repairStockDetailBusiness.GetRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId).OrderByDescending(s => s.RStockDetailId).ToList();
+                var dto = _repairStockDetailBusiness.GetRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId, returnType, faultyCase).OrderByDescending(s => s.RStockDetailId).ToList();
 
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);

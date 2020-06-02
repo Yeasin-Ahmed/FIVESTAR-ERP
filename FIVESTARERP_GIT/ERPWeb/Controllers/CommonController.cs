@@ -8,6 +8,7 @@ using ERPBO.Inventory.DTOModel;
 using ERPBLL.ControlPanel.Interface;
 using System.Collections.Generic;
 using ERPBO.ControlPanel.ViewModels;
+using ERPBLL.Common;
 
 namespace ERPWeb.Controllers
 {
@@ -322,6 +323,23 @@ namespace ERPWeb.Controllers
             return Json(IsDuplicate);
         }
 
+        [HttpPost]
+        public ActionResult IsCurrentUserPasswordCorrect(string password)
+        {
+            bool IsCorrect = false;
+            UserLogInViewModel loginModel = new UserLogInViewModel
+            {
+                UserName = User.UserName
+            };
+            loginModel.Password = Utility.Encrypt(password);
+            var user =_appUserBusiness.GetAppUserOneById(User.UserId,User.OrgId);
+            if(user != null)
+            {
+                IsCorrect = user.Password == Utility.Encrypt(password);
+            }
+            return Json(IsCorrect);
+        }
+
         #region Dropdown List
         [HttpPost]
         public ActionResult GetItemsByLine(long lineId)
@@ -427,6 +445,8 @@ namespace ERPWeb.Controllers
         }
 
         #endregion
+
+        
 
         protected override void Dispose(bool disposing)
         {

@@ -167,6 +167,21 @@ namespace ERPWeb.Controllers
             return PartialView("_token");
         }
 
+        [CustomAuthorize]
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                model.NewPassword = Utility.Encrypt(model.NewPassword);
+                ChangePasswordDTO dto = new ChangePasswordDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _appUserBusiness.ChangePassword(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

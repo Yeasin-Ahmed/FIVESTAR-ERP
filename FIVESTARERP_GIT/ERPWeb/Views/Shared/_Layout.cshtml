@@ -63,49 +63,11 @@
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Notifications Dropdown Menu -->
-                @*<li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-bell"></i>
-                            <span class="badge badge-warning navbar-badge">15</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-header">15 Notifications</span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i> 4 new messages
-                                <span class="float-right text-muted text-sm">3 mins</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i> 8 friend requests
-                                <span class="float-right text-muted text-sm">12 hours</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-file mr-2"></i> 3 new reports
-                                <span class="float-right text-muted text-sm">2 days</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                        </div>
-                    </li>*@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="fas fa-user-circle fa-stack-1x"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        @*<span class="dropdown-header">
-                                <b class="">User Settings</b>
-                            </span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-tools mr-2"></i> Change Username/Password
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Log Out
-                            </a>*@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-primary card-outline" style="margin-bottom:0px">
@@ -119,13 +81,15 @@
                                         <p class="text-muted text-center">@User.Designation</p>
                                         <ul class="list-group list-group-unbordered mb-3">
                                             <li class="list-group-item">
-                                                @*<b>Followers</b> <a class="float-right">1,322</a>*@
-                                                <a href="#">
+                                                <a href="#" id="changePassword">
                                                     <i class="fas fa-tools mr-2"></i> Change Username/Password
                                                 </a>
                                             </li>
                                             <li class="list-group-item">
                                                 <b>Status</b> <a class="float-right">Active</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <b>Role</b> <a class="float-right">@User.RoleName</a>
                                             </li>
                                         </ul>
                                         <a href="#" class="btn btn-primary btn-block" id="logOut"><b>Log Out</b> <i class="fas fa-sign-out-alt"></i></a>
@@ -162,236 +126,12 @@
                 {
                     { Html.RenderAction("GetUserMenus", "Common"); }
                 }
-                @*<nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                    with font-awesome or any other icon font library -->
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-user-shield"></i>
-                                <p>
-                                    Control Panel
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetOrganizations" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Organization List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetAppUserList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>User List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetRoleList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Role List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetModuleList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Module List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetMainMenuList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>MainMenu</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetSubMenuList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Submenu</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetBranchList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Branch List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/GetMainMenusForOrgAuth" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Organization Auth</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/ControlPanel/SetUserCustomAuthorization" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>User Authorization</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-store"></i>
-                                <p>
-                                    Warehouse
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetWarehouseList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Warehouse List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetDescriptionList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Description</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetItemTypeList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>ItemType List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetAllUnitList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Unit List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetItemList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Item Name</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetWarehouseStockInfoList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Warehouse Stock</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetReqInfoList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Product Requisition</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetItemReturnList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Production Return Item</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetRepairStockInfoList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Repair Stock</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Inventory/GetFinishGoodsSendToWarehouse" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Receive Finish Goods</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-gavel"></i>
-                                <p>
-                                    Production
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/Production/GetProductionLineList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Production Line</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Production/GetReqInfoList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Item Requsition</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Production/GetProductionStockInfoList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Production Stock</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Production/GetItemReturnList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Return Items</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Production/GetFinishGoodsList" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Finish Goods List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Production/GetFinishGoodsStockInfo" class="nav-link">
-                                        <i class="fas fa-circle fa-1x nav-icon"></i>
-                                        <p>Finish Goods Stock</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            </li>
-                            </ul>
-                            </nav>*@
                 <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->
-        <!--style="background-color:#fff"-->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            @*<div class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Starter Page</h1>
-                            </div><!-- /.col -->
-                            <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Starter Page</li>
-                                </ol>
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
-                    </div><!-- /.container-fluid -->
-                </div>*@
-            <!-- /.content-header -->
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
@@ -439,6 +179,48 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header btn-primary">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Your Password</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="frmChangePassword" autocomplete="off">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="txtCurrentPassword" class="control-label font-weight-bold">Current Password</label>
+                                        <input type="password" autocomplete="off" id="txtCurrentPassword" class="form-control form-control-sm" />
+                                        <span class="error hide required-current-password font-weight-bold">Input Current Password!</span>
+                                        <span class="error hide incorrect-password font-weight-bold">Incorrect Password!</span>
+
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="txtPassword" class="control-label font-weight-bold">Password</label>
+                                        <input type="password" autocomplete="off" id="txtPassword" class="form-control form-control-sm" />
+                                        <span class="error hide required-password font-weight-bold">Input New Password!</span>
+                                        <span class="error hide password-lenght font-weight-bold">Password Min length 6!</span>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="txtConfirmPassword" class="control-label font-weight-bold">Confirm Password</label>
+                                        <input type="password" autocomplete="off" id="txtConfirmPassword" class="form-control form-control-sm" />
+                                        <span class="error hide required-confirmPassword font-weight-bold">Input Confirm password!</span>
+                                        <span class="error hide compare-password font-weight-bold">New Password & Confirm Password does not match!</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                            <button type="button" id="btnChangePassword" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </div>
     <!-- ./wrapper -->
@@ -467,6 +249,10 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/download.js"></script>
     <script type="text/javascript">
+        var txtCurrentPassword = $("#txtCurrentPassword");
+        var txtPassword = $("#txtPassword");
+        var txtConfirmPassword = $("#txtConfirmPassword");
+
         $(document).ready(function () {
             bsCustomFileInput.init();
             $('.toastrDefaultSuccess').click(function () {
@@ -601,6 +387,74 @@
         $("#logOut").click(function (e) {
             e.preventDefault();
             $("#logoutModal").modal("show");
+        })
+
+        // Change Password
+        $("#changePassword").click(function (e) {
+            e.preventDefault();
+            txtCurrentPassword.val('');
+            txtPassword.val('');
+            txtConfirmPassword.val('');
+            $(".error").addClass("hide");
+            $("#changePasswordModal").modal("show");
+        })
+
+        function validateChangePassword() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if (txtCurrentPassword.val() === "") {
+                $(".required-current-password").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Checking in database//
+                if (ajaxBooleanChecker2(JSON.stringify({ password: txtCurrentPassword.val() }), '/Common/IsCurrentUserPasswordCorrect') === false) {
+                    $(".incorrect-password").removeClass('hide');
+                    isValid = false;
+                }
+            }
+            if (txtPassword.val() === "") {
+                $(".required-password").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                if (txtPassword.val().length < 6) {
+                    $(".password-lenght").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if (txtConfirmPassword.val() === "") {
+                $(".required-confirmPassword").removeClass("hide");
+                isValid = false;
+            }
+            
+            if (txtPassword.val() !== txtConfirmPassword.val()) {
+                $(".compare-password").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnChangePassword").click(function (e) {
+            e.preventDefault();
+            if (validateChangePassword()) {
+                var data = JSON.stringify({ "CurrentPassword": txtCurrentPassword.val(), "NewPassword": txtPassword.val() });
+                console.log(data);
+                $.when(postReqWithData(dataType.applicationJson, dataType.json, 'POST', '/Access/ChangePassword', data)).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        $('.toastrDefaultSuccess').trigger('click');
+                        $("#changePasswordModal").modal("toggle");
+                    }
+                    else {
+                        $('.toastrDefaultError').trigger('click');
+                    }
+                }).fail(function (err) {
+                    $('.toastrDefaultError').trigger('click');
+                    console.log(err);
+                });
+            }
         })
     </script>
     @RenderSection("scripts", false)

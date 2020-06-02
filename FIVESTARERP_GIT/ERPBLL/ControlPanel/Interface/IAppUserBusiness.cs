@@ -19,5 +19,6 @@ namespace ERPBLL.ControlPanel.Interface
         IEnumerable<AppUser> GetAllAppUsers();
         UserDetaildDTO GetUserDetail(long userId, long orgId);
         Task<UserInformation> GetUserInformation(UserLogInViewModel loginModel);
+        bool ChangePassword(ChangePasswordDTO dto, long userId, long orgId);
     }
 }

@@ -20,6 +20,10 @@ namespace ERPBO.Inventory.DomainModels
         public long? LineId { get; set; }
         public long? DescriptionId { get; set; }
         public int Quantity { get; set; }
+        [StringLength(50)]
+        public string ReturnType { get; set; }
+        [StringLength(50)]
+        public string FaultyCase { get; set; }
         public Nullable<DateTime> ExpireDate { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }

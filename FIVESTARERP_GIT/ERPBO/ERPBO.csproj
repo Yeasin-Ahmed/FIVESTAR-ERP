@@ -67,6 +67,7 @@
     <Compile Include="ControlPanel\DomainModels\UserAuthorization.cs" />
     <Compile Include="ControlPanel\DTOModels\AppUserDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\BranchDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\ChangePasswordDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\ManiMenuDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\ModuleDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\OrganizationAuthorizationDTO.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="ControlPanel\DTOModels\UserMenuDTO.cs" />
     <Compile Include="ControlPanel\ViewModels\AppUserViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\BranchViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\ModuleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\OrganizationAuthorizationViewModel.cs" />

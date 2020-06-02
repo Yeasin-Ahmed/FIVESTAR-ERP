@@ -63,6 +63,10 @@
     <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.Designer.cs">
       <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs" />
+    <Compile Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.Designer.cs">
+      <DependentUpon>202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.resx">
       <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.resx">
+      <DependentUpon>202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>

@@ -53,5 +53,9 @@ namespace ERPBO.Inventory.DTOModel
         public string ModelName { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
+        [StringLength(50)]
+        public string ReturnType { get; set; }
+        [StringLength(50)]
+        public string FaultyCase { get; set; }
     }
 }
