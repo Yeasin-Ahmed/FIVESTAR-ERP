@@ -9,6 +9,7 @@ using ERPBLL.ControlPanel.Interface;
 using System.Collections.Generic;
 using ERPBO.ControlPanel.ViewModels;
 using ERPBLL.Configuration.Interface;
+using ERPBLL.Common;
 
 namespace ERPWeb.Controllers
 {
@@ -370,6 +371,23 @@ namespace ERPWeb.Controllers
             bool IsDuplicate = false;
             IsDuplicate =_roleBusiness.IsDuplicateRoleName(roleName, roleId, orgId);
             return Json(IsDuplicate);
+        }
+
+        [HttpPost]
+        public ActionResult IsCurrentUserPasswordCorrect(string password)
+        {
+            bool IsCorrect = false;
+            UserLogInViewModel loginModel = new UserLogInViewModel
+            {
+                UserName = User.UserName
+            };
+            loginModel.Password = Utility.Encrypt(password);
+            var user = _appUserBusiness.GetAppUserOneById(User.UserId, User.OrgId);
+            if (user != null)
+            {
+                IsCorrect = user.Password == Utility.Encrypt(password);
+            }
+            return Json(IsCorrect);
         }
 
         #region Dropdown List
