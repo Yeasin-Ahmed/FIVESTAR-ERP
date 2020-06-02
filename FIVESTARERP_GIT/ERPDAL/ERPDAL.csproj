@@ -57,6 +57,18 @@
     <Compile Include="ConfigurationContextMigrations\202005310714228_Configuration_Changes.Designer.cs">
       <DependentUpon>202005310714228_Configuration_Changes.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006011340398_Configuration_DbtblCustomer.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006011340398_Configuration_DbtblCustomer.Designer.cs">
+      <DependentUpon>202006011340398_Configuration_DbtblCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006020530382_Configuration_DbtblTS.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006020530382_Configuration_DbtblTS.Designer.cs">
+      <DependentUpon>202006020530382_Configuration_DbtblTS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006020813036_Configuration_DbtblCS.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006020813036_Configuration_DbtblCS.Designer.cs">
+      <DependentUpon>202006020813036_Configuration_DbtblCS.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -106,6 +118,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202005310714228_Configuration_Changes.resx">
       <DependentUpon>202005310714228_Configuration_Changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006011340398_Configuration_DbtblCustomer.resx">
+      <DependentUpon>202006011340398_Configuration_DbtblCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006020530382_Configuration_DbtblTS.resx">
+      <DependentUpon>202006020530382_Configuration_DbtblTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006020813036_Configuration_DbtblCS.resx">
+      <DependentUpon>202006020813036_Configuration_DbtblCS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

@@ -424,6 +424,9 @@
     <Content Include="Views\Configuration\AccessoriesList.cshtml" />
     <Content Include="Views\Configuration\CilentProblemList.cshtml" />
     <Content Include="Views\Configuration\MobilePartList.cshtml" />
+    <Content Include="Views\Configuration\CustomerList.cshtml" />
+    <Content Include="Views\Configuration\TechnicalServiceEngList.cshtml" />
+    <Content Include="Views\Configuration\CustomerServiceList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

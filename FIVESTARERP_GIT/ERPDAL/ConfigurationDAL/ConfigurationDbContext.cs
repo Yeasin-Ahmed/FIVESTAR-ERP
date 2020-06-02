@@ -17,5 +17,8 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<Accessories> tblAccessories { get; set; }
         public DbSet<ClientProblem> tblClientProblems { get; set; }
         public DbSet<MobilePart> tblMobileParts { get; set; }
+        public DbSet<Customer> tblCustomers { get; set; }
+        public DbSet<TechnicalServiceEng> tblTechnicalServiceEngs { get; set; }
+        public DbSet<CustomerService> tblCustomerServices { get; set; }
     }
 }

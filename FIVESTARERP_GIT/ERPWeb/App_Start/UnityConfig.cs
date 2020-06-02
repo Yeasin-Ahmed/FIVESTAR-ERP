@@ -78,8 +78,11 @@ namespace ERPWeb
             container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
             #endregion
 
-            // ControlPanel Database
+            // Configuration Database
             #region Configuration
+            container.RegisterType<ICustomerServiceBusiness, CustomerServiceBusiness>();
+            container.RegisterType<ITechnicalServiceBusiness, TechnicalServiceBusiness>();
+            container.RegisterType<ICustomerBusiness, CustomerBusiness>();
             container.RegisterType<IMobilePartBusiness, MobilePartBusiness>();
             container.RegisterType<IClientProblemBusiness, ClientProblemBusiness>();
             container.RegisterType<IAccessoriesBusiness, AccessoriesBusiness>();

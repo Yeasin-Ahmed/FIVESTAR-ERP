@@ -19,4 +19,16 @@ namespace ERPDAL.ConfigurationDAL
     {
         public MobilePartRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
+    public class CustomerRepository : ConfigurationBaseRepository<Customer>
+    {
+        public CustomerRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class TechnicalServiceRepository : ConfigurationBaseRepository<TechnicalServiceEng>
+    {
+        public TechnicalServiceRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class CustomerServiceRepository : ConfigurationBaseRepository<CustomerService>
+    {
+        public CustomerServiceRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
 }
