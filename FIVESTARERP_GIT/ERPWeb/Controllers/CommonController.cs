@@ -8,7 +8,7 @@ using ERPBO.Inventory.DTOModel;
 using ERPBLL.ControlPanel.Interface;
 using System.Collections.Generic;
 using ERPBO.ControlPanel.ViewModels;
-using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 
 namespace ERPWeb.Controllers
 {
@@ -30,6 +30,14 @@ namespace ERPWeb.Controllers
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
 
+        //Configuration
+        private readonly IAccessoriesBusiness _accessoriesBusiness;
+        private readonly IClientProblemBusiness _clientProblemBusiness;
+        private readonly IMobilePartBusiness _mobilePartBusiness;
+        private readonly ICustomerBusiness _customerBusiness;
+        private readonly ITechnicalServiceBusiness _technicalServiceBusiness;
+        private readonly ICustomerServiceBusiness _customerServiceBusiness;
+
         // ControlPanel
         private readonly IAppUserBusiness _appUserBusiness;
         private readonly IRoleBusiness _roleBusiness;
@@ -37,7 +45,7 @@ namespace ERPWeb.Controllers
         private readonly IOrganizationBusiness _organizationBusiness;
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -55,6 +63,11 @@ namespace ERPWeb.Controllers
             this._organizationBusiness = organizationBusiness;
             this._userAuthorizationBusiness = userAuthorizationBusiness;
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
+            this._accessoriesBusiness = accessoriesBusiness;
+            this._clientProblemBusiness = clientProblemBusiness;
+            this._mobilePartBusiness = mobilePartBusiness;
+            this._customerBusiness = customerBusiness;
+            this._technicalServiceBusiness = technicalServiceBusiness;
         }
 
         #region User Menus
@@ -176,6 +189,42 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateEmployeeId(string employeeId, long id)
         {
             bool isExist = _appUserBusiness.IsDuplicateEmployeeId(employeeId, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateAccessoriesName(string accessoriesName, long id)
+        {
+            bool isExist = _accessoriesBusiness.IsDuplicateAccessoriesName(accessoriesName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateProblemName(string problemName, long id)
+        {
+            bool isExist = _clientProblemBusiness.IsDuplicateProblemName(problemName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateMobilePartName(string mobilePartName, long id)
+        {
+            bool isExist = _mobilePartBusiness.IsDuplicateMobilePart(mobilePartName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateCustomer(string customerName, long id)
+        {
+            bool isExist = _customerBusiness.IsDuplicateCustomerName(customerName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateTSName(string name, long id)
+        {
+            bool isExist = _technicalServiceBusiness.IsDuplicateTechnicalName(name, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateCsName(string name, long id)
+        {
+            bool isExist = _customerServiceBusiness.IsDuplicateCustomerServiceName(name, id, User.OrgId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -323,23 +372,6 @@ namespace ERPWeb.Controllers
             return Json(IsDuplicate);
         }
 
-        [HttpPost]
-        public ActionResult IsCurrentUserPasswordCorrect(string password)
-        {
-            bool IsCorrect = false;
-            UserLogInViewModel loginModel = new UserLogInViewModel
-            {
-                UserName = User.UserName
-            };
-            loginModel.Password = Utility.Encrypt(password);
-            var user =_appUserBusiness.GetAppUserOneById(User.UserId,User.OrgId);
-            if(user != null)
-            {
-                IsCorrect = user.Password == Utility.Encrypt(password);
-            }
-            return Json(IsCorrect);
-        }
-
         #region Dropdown List
         [HttpPost]
         public ActionResult GetItemsByLine(long lineId)
@@ -445,8 +477,6 @@ namespace ERPWeb.Controllers
         }
 
         #endregion
-
-        
 
         protected override void Dispose(bool disposing)
         {

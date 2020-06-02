@@ -7,18 +7,25 @@ Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ControlPanelDAL.
 
 Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ProductionDAL.ProductionDbContext –MigrationsDirectory ProductionContextMigrations
 
-Add-Migration 'ControlPanelDbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
+Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ConfigurationDAL.ConfigurationDbContext –MigrationsDirectory ConfigurationContextMigrations
+
+Add-Migration 'ControlPanel_AllEntities_16-May-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Add-Migration 'Inventory_AllEntities_14-April-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Add-Migration 'Production_AllEntities_14-April-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
+Add-Migration 'Configuration_DbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
 
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
+Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
+
 
 --- Scripts
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
+Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
+
 
 -- Yeasin
 

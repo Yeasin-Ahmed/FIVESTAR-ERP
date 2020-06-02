@@ -1,0 +1,254 @@
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.CustomerServiceViewModel>
+@{
+    ViewBag.Title = "CustomerServiceList";
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h4><b style="color:darkblue">C.S List</b></h4>
+        <hr />
+    </div>
+    <div class="col-md-12 mb-2">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblCustomerServiceData tbody tr',this)" />
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-right">
+                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New C.S</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped" id="tblCustomerServiceData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>SL No.</th>
+                    <th class="hide"></th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone No.</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model)
+                {
+                    sl = sl + 1;
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@service.CsId</td>
+                        <td>@service.Name</td>
+                        <td>@service.Address</td>
+                        <td>@service.PhoneNumber</td>
+                        <td class="text-center">@service.Remarks</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@service.CsId"><i class="fa fa-pen"></i> Edit</a>
+                            <a href="#" class="btn btn-danger btn-sm data-del-item" data-del-item="@service.CsId"><i class="fa fa-pen"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="5">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCS" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New C.S</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCs">
+                    <input type="hidden" name="Id" id="hdfCSId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtName" class="control-label font-weight-bold">C.S Name</label>
+                            <input type="text" name="txtName" value="" id="txtName" class="form-control form-control-sm" />
+                            <span class="error hide required-cSName font-weight-bold">Input CS Name!</span>
+                            <span class="error hide duplicate-cSName font-weight-bold">Already CS Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtAddress" class="control-label font-weight-bold">Address</label>
+                            <input type="text" name="txtAddress" value="" id="txtAddress" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtPhone" class="control-label font-weight-bold">Phone Number</label>
+                            <input type="text" name="txtPhone" value="" id="txtPhone" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var hdfCSId = $("#hdfCSId");
+        var txtName = $("#txtName");
+        var txtAddress = $("#txtAddress");
+        var txtPhone = $("#txtPhone");
+        var txtRemarks = $("#txtRemarks");
+
+        $(document).ready(function () {
+            $('#tblCustomerServiceData').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+            });
+        })
+
+        function OpenModal() {
+            clearCtrl();
+            $("#spanModalHead").text('Add New T.S');
+            $("#spanSaveText").text('Save');
+            $("#modalCS").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNew").click(function (e) {
+            e.preventDefault();
+            clearCtrl();
+            OpenModal();
+        })
+
+        function validateForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtName.val()) == "") {
+                $(".required-cSName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfCSId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, name: txtName.val().trim() }), '/Common/IsDuplicateCsName', getToken()) == true) {
+                    $(".duplicate-cSName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateForm() == true) {
+                var data = JSON.stringify({
+                    CsId: TryParseInt(hdfCSId.val(), 0),
+                    Name: txtName.val(),
+                    Address: txtAddress.val(),
+                    PhoneNumber: txtPhone.val(),
+                    Remarks: txtRemarks.val()
+                });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveCustomerService', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblCustomerServiceData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+
+        })
+        $(document).on("click", "a.data-edit-item", function (e) {
+            e.preventDefault()
+            OpenModal()
+            $("#spanModalHead").text('Update C.S');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+            var td5 = row.find('td:eq(5)').html();
+
+            hdfCSId.val(td1);
+            txtName.val(td2);
+            txtAddress.val(td3)
+            txtPhone.val(td4);
+            txtRemarks.val(td5)
+
+        })
+
+        function clearCtrl() {
+            hdfCSId.val('0');
+            txtName.val('');
+            txtAddress.val('');
+            txtPhone.val('');
+            txtRemarks.val('');
+        }
+
+        $(document).on('click', 'a.data-del-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-item');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteCustomerService', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblCustomerServiceData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+    </script>
+}

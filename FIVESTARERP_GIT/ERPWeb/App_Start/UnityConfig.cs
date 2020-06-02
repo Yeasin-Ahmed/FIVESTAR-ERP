@@ -1,3 +1,5 @@
+using ERPBLL.Configuration;
+using ERPBLL.Configuration.Interface;
 using ERPBLL.ControlPanel;
 using ERPBLL.ControlPanel.Interface;
 using ERPBLL.Inventory;
@@ -6,6 +8,7 @@ using ERPBLL.Production;
 using ERPBLL.Production.Interface;
 using ERPBLL.Report;
 using ERPBLL.Report.Interface;
+using ERPDAL.ConfigurationDAL;
 using ERPDAL.ControlPanelDAL;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
@@ -74,6 +77,18 @@ namespace ERPWeb
             container.RegisterType<IRoleAuthorizationBusiness, RoleAuthorizationBusiness>();
             container.RegisterType<IControlPanelUnitOfWork, ControlPanelUnitOfWork>();
             #endregion
+
+            // Configuration Database
+            #region Configuration
+            container.RegisterType<ICustomerServiceBusiness, CustomerServiceBusiness>();
+            container.RegisterType<ITechnicalServiceBusiness, TechnicalServiceBusiness>();
+            container.RegisterType<ICustomerBusiness, CustomerBusiness>();
+            container.RegisterType<IMobilePartBusiness, MobilePartBusiness>();
+            container.RegisterType<IClientProblemBusiness, ClientProblemBusiness>();
+            container.RegisterType<IAccessoriesBusiness, AccessoriesBusiness>();
+            container.RegisterType<IConfigurationUnitOfWork, ConfigurationUnitOfWork>();
+            #endregion
+
 
             #region Report
 

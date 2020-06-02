@@ -56,6 +56,24 @@
     <Compile Include="Common\ExecutionStateWithText.cs" />
     <Compile Include="Common\UserInformation.cs" />
     <Compile Include="Common\UserPrivilege.cs" />
+    <Compile Include="Configuration\DomainModels\Accessories.cs" />
+    <Compile Include="Configuration\DomainModels\ClientProblem.cs" />
+    <Compile Include="Configuration\DomainModels\Customer.cs" />
+    <Compile Include="Configuration\DomainModels\CustomerService.cs" />
+    <Compile Include="Configuration\DomainModels\MobilePart.cs" />
+    <Compile Include="Configuration\DomainModels\TechnicalServiceEng.cs" />
+    <Compile Include="Configuration\DTOModels\AccessoriesDTO.cs" />
+    <Compile Include="Configuration\DTOModels\ClientProblemDTO.cs" />
+    <Compile Include="Configuration\DTOModels\CustomerDTO.cs" />
+    <Compile Include="Configuration\DTOModels\CustomerServiceDTO.cs" />
+    <Compile Include="Configuration\DTOModels\MobilePartDTO.cs" />
+    <Compile Include="Configuration\DTOModels\TechnicalServiceEngDTO.cs" />
+    <Compile Include="Configuration\ViewModels\AccessoriesViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\ClientProblemViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\CustomerServiceViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\CustomerViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\MobilePartViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\TechnicalServiceEngViewModel.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\MainMenu.cs" />
@@ -202,6 +220,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Configuration\ReportModels\" />
     <Folder Include="ControlPanel\ReportModels\" />
     <Folder Include="Inventory\ReportModels\" />
   </ItemGroup>
