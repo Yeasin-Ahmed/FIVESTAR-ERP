@@ -305,10 +305,12 @@
     <Compile Include="Controllers\AccessController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Common2Controller.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ControlPanelController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FrontDeskController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -427,6 +429,10 @@
     <Content Include="Views\Configuration\CustomerList.cshtml" />
     <Content Include="Views\Configuration\TechnicalServiceEngList.cshtml" />
     <Content Include="Views\Configuration\CustomerServiceList.cshtml" />
+    <Content Include="Views\FrontDesk\CreateJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobOrders.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrders.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrderDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -438,6 +444,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Common2\" />
     <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>

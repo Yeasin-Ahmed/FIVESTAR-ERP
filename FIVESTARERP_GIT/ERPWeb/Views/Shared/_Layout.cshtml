@@ -145,6 +145,8 @@
                 <button type="button" class="hide toastrReqSuccess"></button>
                 <button type="button" class="hide toastrReqError"></button>
                 <button type="button" class="hide toastrDefaultDelete"></button>
+                <button type="button" class="hide toastrJobOrderSuccess"></button>
+                <button type="button" class="hide toastrJobOrderError"></button>
 
             </div>
             <!-- /.content -->
@@ -269,6 +271,14 @@
             });
             $('.toastrReqError').click(function () {
                 toastr.error(execuStatus.reqStatusFail)
+            });
+
+            $('.toastrJobOrderSuccess').click(function () {
+                toastr.success('JobOrder status has been changed successfully');
+            });
+
+            $('.toastrJobOrderError').click(function () {
+                toastr.error('JobOrder status cannot be changed');
             });
 
             $('.toastrDefaultInfo').click(function () {

@@ -2,6 +2,8 @@ using ERPBLL.Configuration;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.ControlPanel;
 using ERPBLL.ControlPanel.Interface;
+using ERPBLL.FrontDesk;
+using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Inventory;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production;
@@ -10,6 +12,7 @@ using ERPBLL.Report;
 using ERPBLL.Report.Interface;
 using ERPDAL.ConfigurationDAL;
 using ERPDAL.ControlPanelDAL;
+using ERPDAL.FrontDeskDAL;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
 using System.Web.Mvc;
@@ -89,6 +92,11 @@ namespace ERPWeb
             container.RegisterType<IConfigurationUnitOfWork, ConfigurationUnitOfWork>();
             #endregion
 
+            // FrontDesk Database
+            #region FrontDesk
+            container.RegisterType<IJobOrderBusiness, JobOrderBusiness>();
+            container.RegisterType<IFrontDeskUnitOfWork, FrontDeskUnitOfWork>();
+            #endregion
 
             #region Report
 

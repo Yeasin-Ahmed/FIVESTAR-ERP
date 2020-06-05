@@ -101,6 +101,8 @@
     <Compile Include="ControlPanel\RoleAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\UserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\SubMenuBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IJobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\JobOrderBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockDetailBusiness.cs" />

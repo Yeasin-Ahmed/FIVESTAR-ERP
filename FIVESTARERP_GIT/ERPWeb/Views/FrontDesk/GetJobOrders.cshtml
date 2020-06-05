@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewBag.Title = "Job Order List";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">List of Job Order</b></h4>
+            </div>
+            <div class="col-md-3">
+                <a href="/FrontDesk/CreateJobOrder" class="btn btn-outline-primary btn-sm float-lg-right" id="btnReset"><i class="fas fa-plus"></i> Add Job Order</a>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Mobile No</label>
+                <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile"/>
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">JobCode</label>
+                <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">StateStatus</label>
+                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "Select Model", new { @class = "form-control form-control-sm ctrl-changed " })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mt-2" id="dataContainer">
+        @{Html.RenderAction("GetJobOrders", new { @flag = "view" });}
+    </div>
+</div>
+
+<div class="modal fade" id="modalJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdfJobOrderId" />
+                <h4 id="modalHeading" class="modal-title">JobOrder Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer2">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var pageNo = 1;
+        var ddlModelName = $("#ddlModelName");
+        var txtMobileNo = $("#txtMobileNo");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var txtJobCode = $("#txtJobCode");
+        var hdfJobOrderId = $("#hdfJobOrderId");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        txtMobileNo.keyup(function () {
+            LoadDataTable();
+            
+        })
+
+        txtJobCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(),  jobCode:txtJobCode.val(), page: pageNo };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+            pageNo = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+
+        // View Job Order
+        $(document).on('click', 'a.data-item-details', function (e) {
+            e.preventDefault();
+            hdfJobOrderId.val("0");
+            var id = $(this).attr("data-item-details");
+            if (TryParseInt(id) > 0) {
+                hdfJobOrderId.val(id)
+                var data = { flag: "Detail", modelId: 0, jobOrderId: id, mobileNo: '',status: "", jobCode:"", page: 1 };
+
+                console.log(data);
+                $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                        $("#modalJobOrderDetails").modal("show");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
+            }
+        })
+
+
+        // edit status
+        function validateStatus() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($(".ddlJobOrderType").val() === "") {
+                $(".require-type").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $(document).on('click', '.btnDisapproved', function (e) {
+            e.preventDefault();
+            if (validateStatus()) {
+
+                bootbox.confirm("Are you sure you want to change the status to <b>Disapproved<b>?", function (result) {
+                    if (result) {
+                        changeJobOrderStatus(jobOrderStatus.customerDisapproved);
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '.btnApproved', function (e) {
+            e.preventDefault();
+            if (validateStatus()) {
+                bootbox.confirm("Are you sure you want to change the status to <b>Approved<b>?", function (result) {
+                    if (result) {
+                        changeJobOrderStatus(jobOrderStatus.customerApproved);
+                    }
+                })
+            }
+        })
+
+        function changeJobOrderStatus(status) {
+            disable(".btnDisapproved");
+            disable(".btnApproved");
+            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val(), status: status, type: $(".ddlJobOrderType").val() });
+
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderStatus', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $("#modalJobOrderDetails").modal("toggle");
+                    $('.toastrJobOrderSuccess').trigger('click');
+                    LoadDataTable();
+                }
+                else {
+                    $('.toastrJobOrderError').trigger('click');
+                }
+                enable(".btnDisapproved");
+                enable(".btnApproved");
+            }).fail(function (error) {
+                enable(".btnDisapproved");
+                enable(".btnApproved");
+                console.log(error);
+            })
+
+            console.log(data);
+            enable(".btnDisapproved");
+            enable(".btnApproved");
+        }
+
+    </script>
+}

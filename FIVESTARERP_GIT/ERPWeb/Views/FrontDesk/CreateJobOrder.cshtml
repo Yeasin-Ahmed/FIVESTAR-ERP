@@ -1,0 +1,398 @@
+﻿
+@{
+    ViewBag.Title = "Create Job Order";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="/FrontDesk/GetJobOrders" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-center">Create Job Order</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/FrontDesk/GetJobOrders" class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            <form id="frmJobOrder">
+                @Html.AntiForgeryToken()
+                @Html.Hidden("customerId")
+                <div class="card-body">
+                    <div class="row" style="border-bottom:1px solid #cecece">
+                        <div class="col-md-5">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer By Mobile No" id="txtSearchCustomer"/>
+                                <div class="input-group-append" style="cursor:pointer">
+                                    <a id="searchCustomer" href="#" class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" id="btnCustomer" class="btn btn-sm btn-primary" title="If the Customer is not exist with this Mobile No then please add here"><i class="fas fa-plus"></i> Add Customer</button>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" id="btnSubmit" class="btn btn-sm btn-success float-right" title="Submit the form for save"><i class="fas fa-paper-plane"></i> Place Job Order </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="txtCustomer" class="control-label font-weight-bold">Customer Name</label>
+                            <input type="text" class="form-control form-control-sm" id="txtCustomer" />
+                            <span class="error hide require-customer font-weight-bold">Customer name is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="txtMobileNumber" class="control-label font-weight-bold">Mobile Number</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtMobileNumber" />
+                            <span class="error hide require-mobile font-weight-bold">Mobile No is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="txtAddress" class="control-label font-weight-bold">Address</label>
+                            <textarea id="txtAddress" class="form-control form-control-sm disabled" cols="10" rows="1"></textarea>
+                            <span class="error hide require-address font-weight-bold">Mobile No is required</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="ddlDescriptions" class="control-label font-weight-bold">Model Name</label>
+                            @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide require-modelName font-weight-bold">Model is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlAccessories" class="control-label font-weight-bold">Accessories</label>
+                            @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-accessories font-weight-bold">Accessories is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlProblems" class="control-label font-weight-bold">Problems</label>
+                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Problem--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-problem font-weight-bold">Problem is required</span>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-control form-control-sm clearfix">
+                                <input type="checkbox" id="chkIsWarrentyAvailable" />
+                                <b>&nbsp; Is Warrenty Available?</b>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-control form-control-sm clearfix">
+                                <b>Warrenty Paper Enclosed?</b>
+                                <input type="radio" name="Enclosed" id="enclosedYes"/><b> Yes</b> 
+                                <input type="radio" name="Enclosed" id="enclosedNo" checked/><b> No</b>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCustomer" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Customer</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCustomer">
+                    <input type="hidden" name="Id" id="hdfCustomerId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtCustomerName" class="control-label font-weight-bold">Name</label>
+                            <input type="text" name="txtCustomerName" value="" id="txtCustomerName" class="form-control form-control-sm" />
+                            <span class="error hide required-customerName font-weight-bold">Input Customer Name!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtCustomerAddress" class="control-label font-weight-bold">Address</label>
+                            <input type="text" name="txtCustomerAddress" value="" id="txtCustomerAddress" class="form-control form-control-sm" />
+                            <span class="error hide required-custaddress font-weight-bold">Input Address!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtCustomerPhone" class="control-label font-weight-bold">Phone Number</label>
+                            <input type="text" name="txtCustomerPhone" value="" id="txtCustomerPhone" class="form-control form-control-sm" />
+                            <span class="error hide required-custphone font-weight-bold">Input Address!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitCustomer"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var ddlAccessories = $("#ddlAccessories");
+        var txtSearchCustomer = $("#txtSearchCustomer");
+        var txtCustomer = $("#txtCustomer");
+        var txtMobileNumber = $("#txtMobileNumber");
+        var txtAddress = $("#txtAddress");
+        var ddlDescriptions = $("#ddlDescriptions");
+        var ddlAccessories = $("#ddlAccessories");
+        var ddlProblems = $("#ddlProblems");
+        var chkIsWarrentyAvailable = $("#chkIsWarrentyAvailable");
+        var rdnEnclosedYes = $("#enclosedYes");
+        var rdnEnclosedNo = $("#enclosedNo");
+        var customerId = $("#customerId");
+
+        $(document).ready(function () {
+            //ddlAccessories
+            customerId.val('0');
+            $("#ddlAccessories").attr("data-placeholder", "Select Accessories");
+            $("#ddlProblems").attr("data-placeholder", "Select Problems");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            disable("#txtCustomer");
+            disable("#txtMobileNumber");
+            disable("#txtAddress");
+        })
+
+        $("#searchCustomer").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchCustomer.val()) !== "") {
+                getCustomer($.trim(txtSearchCustomer.val()));
+            }
+        })
+
+        function getCustomer(mobileNo) {
+            var data = JSON.stringify({ mobileNo: mobileNo });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetCustomerByMobileNo', data)).then(function (res, status) {
+                if (status === "success") {
+                    if (res.CustomerId > 0) {
+                        txtCustomer.val(res.CustomerName);
+                        txtMobileNumber.val(res.CustomerPhone);
+                        txtAddress.val(res.CustomerAddress);
+                        customerId.val(res.CustomerId);
+                    }
+                    else {
+                        bootbox.alert('Customer is not found');
+                    }
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        function validateForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+
+            if (txtCustomer.val() === "") {
+                $(".require-customer").removeClass("hide");
+                isValid = false;
+            }
+            if (txtMobileNumber.val() === "") {
+                $(".require-mobile").removeClass("hide");
+                isValid = false;
+            }
+            if (txtAddress.val() === "") {
+                $(".require-address").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlDescriptions.val() === "") {
+                $(".require-modelName").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlAccessories.val().length === 0) {
+                $(".require-accessories").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlProblems.val().length === 0) {
+                $(".require-problem").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateForm()) {
+
+                var jobOrder = { CustomerId:customerId.val(),CustomerName: txtCustomer.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: ddlDescriptions.val(), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked") };
+
+                var aryAccessories = []; aryAccessories.length = 0;
+                var accessories = ddlAccessories.val();
+                for (var i = 0; i < accessories.length; i++) {
+                    aryAccessories.push({
+                        AccessoriesId: accessories[i]
+                    });
+                }
+
+                var aryProblems = []; aryProblems.length = 0;
+                var problems = ddlProblems.val();
+                for (var i = 0; i < problems.length; i++) {
+                    aryProblems.push({
+                        ProblemId: problems[i]
+                    });
+                }
+
+                var data = JSON.stringify({ jobOrder: jobOrder, jobOrderAccessories: aryAccessories, jobOrderProblems: aryProblems });
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrder', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        $('.toastrDefaultSuccess').trigger('click');
+                        setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobOrders")');
+                        }, 1000);
+                    }
+                    else {
+                        $('.toastrDefaultError').trigger('click');
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    $('.toastrDefaultError').trigger('click');
+                });
+            }
+        });
+
+        $("#btnReset").click(function (e) {
+            e.preventDefault();
+
+            $("#txtSearchCustomer").val('');
+            txtCustomer.val("");
+            txtMobileNumber.val("");
+            txtAddress.val("");
+            customerId.val('0');
+
+            ddlDescriptions.val("");
+            ddlDescriptions.trigger("change");
+            ddlAccessories.val([]);
+            ddlAccessories.trigger("change");
+            ddlProblems.val([]);
+            ddlProblems.trigger("change");;
+            chkIsWarrentyAvailable.prop("checked", false);
+            rdnEnclosedNo.prop("checked", true);
+
+            clearCtrl();
+        })
+
+        // Add Customer
+        var hdfCustomerId = $("#hdfCustomerId");
+        var txtCustomerName = $("#txtCustomerName");
+        var txtCustomerAddress = $("#txtCustomerAddress");
+        var txtCustomerPhone = $("#txtCustomerPhone");
+        var txtRemarks = $("#txtRemarks");
+
+        function OpenModal() {
+            clearCtrl();
+            $("#spanModalHead").text('Add New Customer');
+            $("#spanSaveText").text('Save');
+            $("#modalCustomer").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnCustomer").click(function (e) {
+            e.preventDefault();
+            clearCtrl();
+            OpenModal();
+        })
+
+        function validateCustomer() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtCustomerName.val()) == "") {
+                $(".required-customerName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtCustomerAddress.val()) == "") {
+                $(".required-custaddress").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtCustomerPhone.val()) == "") {
+                $(".required-custphone").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitCustomer").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateCustomer() == true) {
+                disable("#btnSubmitCustomer");
+                var data = JSON.stringify({
+                    CustomerId: TryParseInt(hdfCustomerId.val(), 0),
+                    CustomerName: txtCustomerName.val(),
+                    CustomerAddress: txtCustomerAddress.val(),
+                    CustomerPhone: $.trim(txtCustomerPhone.val()),
+                    Remarks: txtRemarks.val()
+                });
+
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveCustomer', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1");
+                        getCustomer($.trim(txtCustomerPhone.val()));
+                        setTimeout(function () {
+                            $("#modalCustomer").modal("toggle");
+                        }, 1000);
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmitCustomer");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitCustomer");
+                });
+            }
+
+        })
+
+        function clearCtrl() {
+            hdfCustomerId.val('0');
+            txtCustomerName.val('');
+            txtCustomerAddress.val('');
+            txtCustomerPhone.val('');
+            txtRemarks.val('');
+        }
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+    </script>    
+}
+
+

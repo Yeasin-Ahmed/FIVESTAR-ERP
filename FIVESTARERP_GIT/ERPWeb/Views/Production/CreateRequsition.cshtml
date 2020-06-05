@@ -454,7 +454,7 @@
                     enable("#btnSubmit");
                     if (res == true) {
                         $('.toastrDefaultSuccess').trigger('click');
-                        alert(execuStatus.successSave);
+                        
                         setTimeout(function () {
                                 redirectPage('@Url.Action("GetReqInfoList")');
                             }, 1000);
