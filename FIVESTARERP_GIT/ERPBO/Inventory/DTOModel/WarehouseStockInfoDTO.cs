@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 namespace ERPBO.Inventory.DTOModel
 {
    public class WarehouseStockInfoDTO
-    {
+   {
         public long StockInfoId { get; set; }
         [Range(1, long.MaxValue)]
         public long? WarehouseId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? DescriptionId { get; set; }
         [Range(1, long.MaxValue)]
         public long? ItemTypeId { get; set; }
         [Range(1, long.MaxValue)]
@@ -29,10 +31,11 @@ namespace ERPBO.Inventory.DTOModel
         [Range(1, long.MaxValue)]
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-
         //Custom Pop
         [StringLength(100)]
         public string Warehouse { get; set; }
+        [StringLength(100)]
+        public string ModelName { get; set; }
         [StringLength(100)]
         public string ItemType { get; set; }
         [StringLength(100)]

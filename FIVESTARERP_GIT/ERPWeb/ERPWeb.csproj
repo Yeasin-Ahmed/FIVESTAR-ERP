@@ -433,6 +433,10 @@
     <Content Include="Views\FrontDesk\GetJobOrders.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrders.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrderDetail.cshtml" />
+    <Content Include="Views\Configuration\CreateMobilePartStock.cshtml" />
+    <Content Include="Views\Configuration\MobilePartStockInfoList.cshtml" />
+    <Content Include="Views\Configuration\ServicesWarehouseList.cshtml" />
+    <Content Include="Views\Configuration\_MobilePartStockInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
