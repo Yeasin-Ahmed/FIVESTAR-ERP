@@ -15,5 +15,6 @@ namespace ERPBLL.Configuration.Interface
         bool IsDuplicateCustomerName(string customerName, long id, long orgId);
         Customer GetCustomerOneByOrgId(long id, long orgId);
         bool DeleteCustomer(long id, long orgId);
+        Customer GetCustomerByMobileNo(string mobileNo, long orgId);
     }
 }

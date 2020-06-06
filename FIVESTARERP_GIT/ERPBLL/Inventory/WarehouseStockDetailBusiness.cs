@@ -242,7 +242,9 @@ namespace ERPBLL.Inventory
                                 StockStatus = StockStatus.StockIn,
                                 RefferenceNumber = irInfo.IRCode,
                                 DescriptionId = irInfo.DescriptionId,
-                                LineId = irInfo.LineId
+                                LineId = irInfo.LineId,
+                                ReturnType = irInfo.ReturnType,
+                                FaultyCase = irInfo.FaultyCase
                             };
                             repairStockDetailDTOs.Add(stockDetailDTO);
                         }

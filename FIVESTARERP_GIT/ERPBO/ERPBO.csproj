@@ -94,6 +94,7 @@
     <Compile Include="ControlPanel\DomainModels\UserAuthorization.cs" />
     <Compile Include="ControlPanel\DTOModels\AppUserDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\BranchDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\ChangePasswordDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\ManiMenuDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\ModuleDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\OrganizationAuthorizationDTO.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="ControlPanel\DTOModels\UserMenuDTO.cs" />
     <Compile Include="ControlPanel\ViewModels\AppUserViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\BranchViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\ModuleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\OrganizationAuthorizationViewModel.cs" />
@@ -126,6 +128,15 @@
     <Compile Include="ControlPanel\ViewModels\UserLogInViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
+    <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
+    <Compile Include="FrontDesk\DomainModels\JobOrderAccessories.cs" />
+    <Compile Include="FrontDesk\DomainModels\JobOrderProblem.cs" />
+    <Compile Include="FrontDesk\DTOModels\JobOrderAccessoriesDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\JobOrderDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\JobOrderProblemDTO.cs" />
+    <Compile Include="FrontDesk\ViewModels\JobOrderAccessoriesViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\JobOrderProblemViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\JobOrderViewModel.cs" />
     <Compile Include="Inventory\DomainModels\Description.cs" />
     <Compile Include="Inventory\DomainModels\ItemPreparationDetail.cs" />
     <Compile Include="Inventory\DomainModels\ItemPreparationInfo.cs" />
@@ -229,6 +240,7 @@
   <ItemGroup>
     <Folder Include="Configuration\ReportModels\" />
     <Folder Include="ControlPanel\ReportModels\" />
+    <Folder Include="FrontDesk\ReportModels\" />
     <Folder Include="Inventory\ReportModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

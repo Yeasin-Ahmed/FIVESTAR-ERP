@@ -55,26 +55,25 @@ namespace ERPWeb.Filters
                         }
                     }
                     
-                    else if (controller == "Common" || controller == "Error") //User.RoleName == UserType.SystemAdmin
+                    else if (controller == "Common" || controller == "Error" || controller == "Common2") //User.RoleName == UserType.SystemAdmin
                     {
                         // Nothing to do...
                     }
+                    //else if (User.IsRoleActive == true)
+                    //{
+                    //    var submenuList = (List<SubMenu>)HttpContext.Current.Session["AllSubmenus"];
+                    //    var submenu = submenuList.FirstOrDefault(sb => sb.ActionName == action && sb.ControllerName == controller);
 
-                    else if (User.IsRoleActive == true)
-                    {
-                        var submenuList = (List<SubMenu>)HttpContext.Current.Session["AllSubmenus"];
-                        var submenu = submenuList.FirstOrDefault(sb => sb.ActionName == action && sb.ControllerName == controller);
-
-                        if (submenu != null)
-                        {
-                            var roleMenu = (List<UserAuthorizeMenusViewModels>)HttpContext.Current.Session["UserAuthorizeMenus"];
-                            var authSubmenu = roleMenu.FirstOrDefault(rm => rm.SubmenuId == submenu.SubMenuId);
-                            if (authSubmenu == null)
-                            {
-                                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Error", action = "AccessDenied" }));
-                            }
-                        }
-                    }
+                    //    if (submenu != null)
+                    //    {
+                    //        var roleMenu = (List<UserAuthorizeMenusViewModels>)HttpContext.Current.Session["UserAuthorizeMenus"];
+                    //        var authSubmenu = roleMenu.FirstOrDefault(rm => rm.SubmenuId == submenu.SubMenuId);
+                    //        if (authSubmenu == null)
+                    //        {
+                    //            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Error", action = "AccessDenied" }));
+                    //        }
+                    //    }
+                    //}
                     else
                     {
                         var submenuList = (List<SubMenu>)HttpContext.Current.Session["AllSubmenus"];

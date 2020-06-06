@@ -82,6 +82,26 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfJobOrderStatus()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=JobOrderStatus.PendingJobOrder,value=JobOrderStatus.PendingJobOrder},
+                new Dropdown(){text=JobOrderStatus.CustomerApproved,value=JobOrderStatus.CustomerApproved},
+                new Dropdown(){text=JobOrderStatus.CustomerDisapproved,value=JobOrderStatus.CustomerDisapproved}
+            };
+            return dropdowns;
+        }
+        public static IEnumerable<Dropdown> ListOfJobOrderType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=JobOrderTypes.Warrenty,value=JobOrderTypes.Warrenty},
+                new Dropdown(){text=JobOrderTypes.Billing,value=JobOrderTypes.Billing}
+            };
+            return dropdowns;
+        }
+
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

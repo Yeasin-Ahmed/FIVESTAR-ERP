@@ -68,11 +68,21 @@ namespace ERPBLL.Common
         public static readonly string Report = "Report";
         public static readonly string Delete = "Delete";
     }
-
     public class RequisitionExecuationType
     {
         public static readonly string Single = "Single";
         public static readonly string Bundle = "Bundle";
+    }
+    public class JobOrderStatus
+    {
+        public static readonly string PendingJobOrder = "Pending-JobOrder";
+        public static readonly string CustomerApproved = "Customer-Approved";
+        public static readonly string CustomerDisapproved = "Customer-Disapproved";
+    }
+    public class JobOrderTypes
+    {
+        public static readonly string Warrenty = "Warrenty";
+        public static readonly string Billing = "Billing";
     }
 
 }

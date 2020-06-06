@@ -30,6 +30,12 @@ namespace ERPBLL.Configuration
             return customerRepository.GetAll(cus => cus.OrganizationId == orgId).ToList();
         }
 
+        public Customer GetCustomerByMobileNo(string mobileNo,long orgId)
+        {
+            mobileNo = mobileNo.Trim();
+            return customerRepository.GetOneByOrg(cus => cus.CustomerPhone == mobileNo && cus.OrganizationId == orgId);
+        }
+
         public Customer GetCustomerOneByOrgId(long id, long orgId)
         {
             return customerRepository.GetOneByOrg(cus => cus.CustomerId == id && cus.OrganizationId == orgId);

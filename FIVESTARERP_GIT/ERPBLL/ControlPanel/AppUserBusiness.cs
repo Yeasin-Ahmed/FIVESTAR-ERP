@@ -22,6 +22,21 @@ namespace ERPBLL.ControlPanel
             this._controlPanelUnitOfWork = controlPanelUnitOfWork;
             appUserRepository = new AppUserRepository(this._controlPanelUnitOfWork);
         }
+
+        public bool ChangePassword(ChangePasswordDTO dto, long userId, long orgId)
+        {
+            var user =GetAppUserOneById(userId, orgId);
+            if(user != null && dto !=null)
+            {
+                user.Password = dto.NewPassword;
+                user.ConfirmPassword = dto.NewPassword;
+                user.UpUserId = userId;
+                user.UpdateDate = DateTime.Now;
+                appUserRepository.Update(user);
+            }
+            return appUserRepository.Save();
+        }
+
         public IEnumerable<AppUser> GetAllAppUserByOrgId(long orgId)
         {
             return appUserRepository.GetAll(user => user.OrganizationId == orgId).ToList();

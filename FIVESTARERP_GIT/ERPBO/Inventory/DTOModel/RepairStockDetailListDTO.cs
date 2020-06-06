@@ -21,5 +21,7 @@ namespace ERPBO.Inventory.DTOModel
         public string RefferenceNumber { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public string ReturnType { get; set; }
+        public string FaultyCase { get; set; }
     }
 }

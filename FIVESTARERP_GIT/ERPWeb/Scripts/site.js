@@ -37,6 +37,12 @@ var stockStatus = {
     stockReturn: "Stock-Return"
 };
 
+var jobOrderStatus = {
+    pendingJobOrder: "Pending-JobOrder",
+    customerApproved: "Customer-Approved",
+    customerDisapproved: "Customer-Disapproved"
+};
+
 // Execuation Status ...
 var execuStatus = {
     successSave: 'Data has been save successfully',

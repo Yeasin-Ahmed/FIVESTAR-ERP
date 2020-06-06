@@ -93,9 +93,31 @@
     <Compile Include="ControlPanelDAL\IControlPanelUnitOfWork.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelBaseRepository.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelUnitOfWork.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006030537280_FrontDesk_DbInitialize.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006030537280_FrontDesk_DbInitialize.Designer.cs">
+      <DependentUpon>202006030537280_FrontDesk_DbInitialize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006051058296_FrontDesk_AddNewColumnsInJobOrder.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006051058296_FrontDesk_AddNewColumnsInJobOrder.Designer.cs">
+      <DependentUpon>202006051058296_FrontDesk_AddNewColumnsInJobOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006051150370_FrontDesk_JobOrderCode.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006051150370_FrontDesk_JobOrderCode.Designer.cs">
+      <DependentUpon>202006051150370_FrontDesk_JobOrderCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
+    <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
+    <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
+    <Compile Include="FrontDeskDAL\FrontDeskUnitOfWork.cs" />
+    <Compile Include="FrontDeskDAL\FrontDeskBaseRepository.cs" />
+    <Compile Include="FrontDeskDAL\IFrontDeskUnitOfWork.cs" />
     <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.cs" />
     <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.Designer.cs">
       <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs" />
+    <Compile Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.Designer.cs">
+      <DependentUpon>202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
@@ -145,8 +167,20 @@
     <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006030537280_FrontDesk_DbInitialize.resx">
+      <DependentUpon>202006030537280_FrontDesk_DbInitialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006051058296_FrontDesk_AddNewColumnsInJobOrder.resx">
+      <DependentUpon>202006051058296_FrontDesk_AddNewColumnsInJobOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006051150370_FrontDesk_JobOrderCode.resx">
+      <DependentUpon>202006051150370_FrontDesk_JobOrderCode.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.resx">
       <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.resx">
+      <DependentUpon>202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>

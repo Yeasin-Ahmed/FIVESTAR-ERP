@@ -9,15 +9,19 @@ Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ProductionDAL.Pr
 
 Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ConfigurationDAL.ConfigurationDbContext –MigrationsDirectory ConfigurationContextMigrations
 
+Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.FrontDeskDAL.FrontDeskDbContext –MigrationsDirectory FrontDeskContextMigrations
+
 Add-Migration 'ControlPanel_AllEntities_16-May-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Add-Migration 'Inventory_AllEntities_14-April-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Add-Migration 'Production_AllEntities_14-April-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Add-Migration 'Configuration_DbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
+Add-Migration 'FrontDesk_DbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
 
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
+Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
 
 
 --- Scripts
@@ -25,7 +29,7 @@ Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.Cont
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
-
+Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
 
 -- Yeasin
 
