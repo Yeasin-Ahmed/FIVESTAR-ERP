@@ -69,6 +69,14 @@
     <Compile Include="ConfigurationContextMigrations\202006020813036_Configuration_DbtblCS.Designer.cs">
       <DependentUpon>202006020813036_Configuration_DbtblCS.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006031001288_Configuration_DbtblServicesWarehouse.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006031001288_Configuration_DbtblServicesWarehouse.Designer.cs">
+      <DependentUpon>202006031001288_Configuration_DbtblServicesWarehouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.Designer.cs">
+      <DependentUpon>202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -127,6 +135,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202006020813036_Configuration_DbtblCS.resx">
       <DependentUpon>202006020813036_Configuration_DbtblCS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006031001288_Configuration_DbtblServicesWarehouse.resx">
+      <DependentUpon>202006031001288_Configuration_DbtblServicesWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.resx">
+      <DependentUpon>202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

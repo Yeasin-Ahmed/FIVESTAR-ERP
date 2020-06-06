@@ -1,0 +1,229 @@
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.ServicesWarehouseViewModel>
+@{
+    ViewBag.Title = "ServicesWarehouseList";
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h4><b style="color:darkblue">ServicesWarehouse List</b></h4>
+        <hr />
+    </div>
+    <div class="col-md-12 mb-2">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblServicesWarehouseData tbody tr',this)" />
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text-right">
+                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New S.W</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped" id="tblServicesWarehouseData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>SL No.</th>
+                    <th class="hide"></th>
+                    <th>ServicesWarehouseName</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ware in Model)
+                {
+                    sl = sl + 1;
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@ware.SWarehouseId</td>
+                        <td>@ware.ServicesWarehouseName</td>
+                        <td class="text-center">@ware.Remarks</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@ware.SWarehouseId"><i class="fa fa-pen"></i> Edit</a>
+                            <a href="#" class="btn btn-danger btn-sm data-del-item" data-del-item="@ware.SWarehouseId"><i class="fa fa-pen"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="5">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modalServicesWarehouse" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New S.Warehouse</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmWarehouse">
+                    <input type="hidden" name="Id" id="hdfServicesWarehouseId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtWarehouseName" class="control-label font-weight-bold">ServicesWarehouseName</label>
+                            <input type="text" name="txtWarehouseName" value="" id="txtWarehouseName" class="form-control form-control-sm" />
+                            <span class="error hide required-warehouseName font-weight-bold">Input S.Warehouse Name!</span>
+                            <span class="error hide duplicate-warehouseName font-weight-bold">Already S.Warehouse Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var hdfServicesWarehouseId = $("#hdfServicesWarehouseId");
+        var txtWarehouseName = $("#txtWarehouseName");
+        var txtRemarks = $("#txtRemarks");
+
+        $(document).ready(function () {
+            $('#tblAccessoriesData').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+            });
+        })
+
+        function OpenModal() {
+            clearCtrl();
+            $("#spanModalHead").text('Add New S.Warehouse');
+            $("#spanSaveText").text('Save');
+            $("#modalServicesWarehouse").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNew").click(function (e) {
+            e.preventDefault();
+            clearCtrl();
+            OpenModal();
+        })
+
+        function validateForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtWarehouseName.val()) == "") {
+                $(".required-warehouseName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfServicesWarehouseId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, sWarehouseName: txtWarehouseName.val().trim() }), '/Common/IsDuplicateAccessoriesName', getToken()) == true) {
+                    $(".duplicate-warehouseName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateForm() == true) {
+                var data = JSON.stringify({ SWarehouseId: TryParseInt(hdfServicesWarehouseId.val(), 0), ServicesWarehouseName: txtWarehouseName.val(), Remarks: txtRemarks.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveServicesWarehouse', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#modalServicesWarehouse");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+
+        })
+
+        $(document).on("click", "a.data-edit-item", function (e) {
+            e.preventDefault()
+            OpenModal()
+            $("#spanModalHead").text('Update ServicesWarehouse');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+
+            hdfServicesWarehouseId.val(td1);
+            txtWarehouseName.val(td2);
+            txtRemarks.val(td3)
+
+        })
+
+        function clearCtrl() {
+            hdfServicesWarehouseId.val('0');
+            txtWarehouseName.val('');
+            txtRemarks.val('');
+
+        }
+
+        //data-del-item
+
+        $(document).on('click', 'a.data-del-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-item');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteServicesWarehouse', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblServicesWarehouseData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+
+    </script>
+}

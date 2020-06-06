@@ -427,6 +427,10 @@
     <Content Include="Views\Configuration\CustomerList.cshtml" />
     <Content Include="Views\Configuration\TechnicalServiceEngList.cshtml" />
     <Content Include="Views\Configuration\CustomerServiceList.cshtml" />
+    <Content Include="Views\Configuration\ServicesWarehouseList.cshtml" />
+    <Content Include="Views\Configuration\MobilePartStockInfoList.cshtml" />
+    <Content Include="Views\Configuration\CreateMobilePartStock.cshtml" />
+    <Content Include="Views\Configuration\_MobilePartStockInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -20,8 +20,11 @@ namespace ERPWeb.Controllers
         private readonly ICustomerBusiness _customerBusiness;
         private readonly ITechnicalServiceBusiness _technicalServiceBusiness;
         private readonly ICustomerServiceBusiness _customerServiceBusiness;
+        private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
+        private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
+        private readonly IMobilePartStockDetailBusiness _mobilePartStockDetailBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness,ICustomerServiceBusiness customerServiceBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness,ICustomerServiceBusiness customerServiceBusiness,IServicesWarehouseBusiness servicesWarehouseBusiness,IMobilePartStockInfoBusiness mobilePartStockInfoBusiness,IMobilePartStockDetailBusiness mobilePartStockDetailBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -29,6 +32,9 @@ namespace ERPWeb.Controllers
             this._customerBusiness = customerBusiness;
             this._technicalServiceBusiness = technicalServiceBusiness;
             this._customerServiceBusiness = customerServiceBusiness;
+            this._servicesWarehouseBusiness = servicesWarehouseBusiness;
+            this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
+            this._mobilePartStockDetailBusiness = mobilePartStockDetailBusiness;
         }
         #region tblAccessories
         public ActionResult AccessoriesList()
@@ -367,6 +373,123 @@ namespace ERPWeb.Controllers
                 try
                 {
                     isSuccess = _customerServiceBusiness.DeleteCustomerService(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region tblServicesWarehouse
+        public ActionResult ServicesWarehouseList()
+        {
+            IEnumerable<ServicesWarehouseDTO> servicesWarehouseDTO = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(1).Select(ware => new ServicesWarehouseDTO
+            {
+                SWarehouseId = ware.SWarehouseId,
+                ServicesWarehouseName = ware.ServicesWarehouseName,
+                Remarks = ware.Remarks,
+                OrganizationId = ware.OrganizationId,
+                EUserId = ware.EUserId,
+                EntryDate = DateTime.Now,
+                UpUserId = ware.UpUserId,
+                UpdateDate = DateTime.Now,
+            }).ToList();
+            List<ServicesWarehouseViewModel> viewModel = new List<ServicesWarehouseViewModel>();
+            AutoMapper.Mapper.Map(servicesWarehouseDTO, viewModel);
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveServicesWarehouse(ServicesWarehouseViewModel servicesWarehouseViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ServicesWarehouseDTO dto = new ServicesWarehouseDTO();
+                    AutoMapper.Mapper.Map(servicesWarehouseViewModel, dto);
+                    isSuccess = _servicesWarehouseBusiness.SaveServiceWarehouse(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteServicesWarehouse(long id)
+        {
+            bool isSuccess = false;
+            if (id > 0)
+            {
+                try
+                {
+                    isSuccess = _servicesWarehouseBusiness.DeleteServicesWarehouse(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region MobilePartStock
+        public ActionResult MobilePartStockInfoList()
+        {
+            ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+            return View();
+        }
+
+        public ActionResult CreateMobilePartStock()
+        {
+            ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+            return View();
+        }
+        public ActionResult MobilePartStockInfoPartialList()
+        {
+            IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId).Select(info => new MobilePartStockInfoDTO
+            {
+                MobilePartStockInfoId = info.MobilePartStockInfoId,
+                SWarehouseId=info.SWarehouseId,
+                ServicesWarehouseName= (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId).ServicesWarehouseName),
+                MobilePartId=info.MobilePartId,
+                MobilePartName= (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
+                StockInQty = info.StockInQty,
+                StockOutQty = info.StockOutQty,
+                Remarks = info.Remarks,
+                OrganizationId = info.OrganizationId
+            }).ToList();
+            List<MobilePartStockInfoViewModel> warehouseStockInfoViews = new List<MobilePartStockInfoViewModel>();
+            AutoMapper.Mapper.Map(partStockInfoDTO, warehouseStockInfoViews);
+            return PartialView("_MobilePartStockInfoList",warehouseStockInfoViews);
+        }
+
+        [HttpPost]
+        public ActionResult SaveMobilePartStockIn(List<MobilePartStockDetailViewModel> models)
+        {
+            bool isSuccess = false;
+            var pre = UserPrivilege("Configuration", "MobilePartStockInfoList");
+            var permission = ((pre.Add) || (pre.Edit));
+            if (ModelState.IsValid && models.Count > 0 && permission)
+            {
+                try
+                {
+                    List<MobilePartStockDetailDTO> dtos = new List<MobilePartStockDetailDTO>();
+                    AutoMapper.Mapper.Map(models, dtos);
+                    isSuccess = _mobilePartStockDetailBusiness.SaveMobilePartStockIn(dtos, User.UserId, User.OrgId);
                 }
                 catch (Exception ex)
                 {

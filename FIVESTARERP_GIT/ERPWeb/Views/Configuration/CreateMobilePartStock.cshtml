@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "CreateMobilePartStock";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/Configuration/MobilePartStockInfoList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+            </div>
+            <div class="col-md-6 text-center">
+                <h4 style="color:darkblue"><b>MobilePart Stock-In</b></h4>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <form id="frmStockDetails">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
+                    @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="col-md-4">
+                    <label for="ddlMobilePart" class="control-label font-weight-bold">MobilePart Name</label>
+                    @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select MobilePart--", new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="col-md-4">
+                    <label for="txtStockInQty" class="control-label font-weight-bold">Stock-In Qty.</label>
+                    <div class="input-group">
+                        <div class="col-sm-8">
+                            <input type="number" placeholder="Qty" name="quantity" id="txtStockInQty" class="form-control form-control-sm" />
+                        </div>
+                        <span id="unitName" class="font-weight-bold mt-3" style="color:darkblue"> </span>
+                    </div>
+                    <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group col-md-12">
+                        <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                        <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
+                    <div class="clearfix">
+                        <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblServicesWarehouseStock">
+                    <thead>
+                        <tr>
+                            <th colspan="9">
+                                <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                            </th>
+                        </tr>
+                        <tr class="btn-dark text-center">
+                            <th>#SL</th>
+                            <th class="hide"></th>
+                            <th>MobilePart Name</th>
+                            <th>Stock-In Qty.</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlServicesWarehouse = $("#ddlServicesWarehouse");
+        var ddlMobilePart = $("#ddlMobilePart");
+        var txtStockStatus = $("#txtStockStatus");
+        var txtStockInQty = $("#txtStockInQty");
+        var txtRemarks = $("#txtRemarks");
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+
+                disable("#ddlServicesWarehouse");
+                var sl = $("#tblServicesWarehouseStock tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
+                var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
+                var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
+                var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+                var td5 = "<td>" + txtRemarks.val() + "</td>";
+                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
+            if ($("#tblServicesWarehouseStock tbody tr").length == 0) {
+                $("#tblServicesWarehouseStock tbody").append(tr);
+                }
+            else {
+                $("#tblServicesWarehouseStock tbody tr").eq(0).before(tr);
+                }
+                clearCtrl();
+        });
+
+        function clearCtrl() {
+            ddlMobilePart.val('');
+            txtStockStatus.val('');
+            txtStockInQty.val('');
+            txtRemarks.val('');
+        }
+
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblServicesWarehouseStock tbody", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblServicesWarehouseStock", index);
+                };
+            }));
+        })
+
+        //add
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (ddlServicesWarehouse.val() != '' && $("#tblServicesWarehouseStock tbody tr").length > 0)
+            {
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result === true)
+                    {
+                        var reqData = [];
+                        reqData.length = 0;
+                        $.each($("#tblServicesWarehouseStock tbody tr"), function (index, item) {
+                            var td = $(this).children('td');
+                            reqData.push({
+                                SWarehouseId: ddlServicesWarehouse.val(),
+                                MobilePartId: td.eq(1).html(),
+                                Quantity: td.eq(3).html(),
+                                Remarks: td.eq(4).html()
+                            });
+                        })
+                        reqData = JSON.stringify({ models: reqData });
+                        console.log(reqData);
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveMobilePartStockIn', reqData, getToken())).then(function (res, status)
+                        {
+                            if (res == true) {
+                                setTimeout(function () {
+                                    $('.toastrDefaultSuccess').trigger('click');
+                                    redirectPage('@Url.Action("MobilePartStockInfoList")');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            alert(execuStatus.fail);
+                        })
+                    }
+                  })
+            }
+        })
+
+        $("#btnReset").click(function (e) {
+            clearDropdown("ddlMobilePart");
+            enable("#ddlServicesWarehouse");
+            $("#tblServicesWarehouseStock tbody").empty();
+            e.preventDefault();
+            txtStockInQty.val('');
+            txtRemarks.val('');
+        })
+    </script>
+    }
