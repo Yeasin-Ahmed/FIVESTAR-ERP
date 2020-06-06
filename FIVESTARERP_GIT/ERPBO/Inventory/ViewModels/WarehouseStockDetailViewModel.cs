@@ -13,6 +13,8 @@ namespace ERPBO.Inventory.ViewModels
         [Range(1, long.MaxValue)]
         public long? WarehouseId { get; set; }
         [Range(1, long.MaxValue)]
+        public long? DescriptionId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? ItemTypeId { get; set; }
         [Range(1, long.MaxValue)]
         public long? ItemId { get; set; }
@@ -38,6 +40,8 @@ namespace ERPBO.Inventory.ViewModels
         //Custom Prop
         [StringLength(100)]
         public string Warehouse { get; set; }
+        [StringLength(100)]
+        public string ModelName { get; set; }
         [StringLength(100)]
         public string ItemType { get; set; }
         [StringLength(100)]
