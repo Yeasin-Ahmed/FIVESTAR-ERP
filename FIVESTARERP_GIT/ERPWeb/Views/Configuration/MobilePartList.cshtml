@@ -145,7 +145,7 @@
             }
             else {
                 var id = TryParseInt(hdfMobilePartId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, mobilePartName: txtMobilePartName.val().trim() }), '/Common/IsDuplicateMobilePartName', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, mobilePartName: txtMobilePartName.val().trim() }), '/Common2/IsDuplicateMobilePartName', getToken()) == true) {
                     $(".duplicate-mobilePartName").removeClass("hide");
                     isValid = false;
                 }

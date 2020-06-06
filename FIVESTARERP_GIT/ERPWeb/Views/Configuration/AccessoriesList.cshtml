@@ -145,7 +145,7 @@
             }
             else {
                 var id = TryParseInt(hdfAccessoriesId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, accessoriesName: txtAccessoriesName.val().trim() }), '/Common/IsDuplicateAccessoriesName', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, accessoriesName: txtAccessoriesName.val().trim() }), '/Common2/IsDuplicateAccessoriesName', getToken()) == true) {
                     $(".duplicate-accessoriesName").removeClass("hide");
                     isValid = false;
                 }

@@ -145,7 +145,7 @@
             }
             else {
                 var id = TryParseInt(hdfProblemId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, problemName: txtProblemName.val().trim() }), '/Common/IsDuplicateProblemName', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, problemName: txtProblemName.val().trim() }), '/Common2/IsDuplicateProblemName', getToken()) == true) {
                     $(".duplicate-problemName").removeClass("hide");
                     isValid = false;
                 }

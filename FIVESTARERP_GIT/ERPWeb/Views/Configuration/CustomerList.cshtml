@@ -161,7 +161,7 @@
             }
             else {
                 var id = TryParseInt(hdfCustomerId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, customerName: txtCustomerName.val().trim() }), '/Common/IsDuplicateCustomer', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, customerName: txtCustomerName.val().trim() }), '/Common2/IsDuplicateCustomer', getToken()) == true) {
                     $(".duplicate-customerName").removeClass("hide");
                     isValid = false;
                 }

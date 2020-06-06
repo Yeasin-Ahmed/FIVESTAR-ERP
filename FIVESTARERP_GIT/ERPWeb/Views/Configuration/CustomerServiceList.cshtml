@@ -161,7 +161,7 @@
             }
             else {
                 var id = TryParseInt(hdfCSId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, name: txtName.val().trim() }), '/Common/IsDuplicateCsName', getToken()) == true) {
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, name: txtName.val().trim() }), '/Common2/IsDuplicateCsName', getToken()) == true) {
                     $(".duplicate-cSName").removeClass("hide");
                     isValid = false;
                 }

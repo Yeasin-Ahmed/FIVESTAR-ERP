@@ -498,6 +498,10 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
+        public ActionResult MobilePartStockDetailList()
+        {
+            return View();
+        }
         #endregion
     }
 }

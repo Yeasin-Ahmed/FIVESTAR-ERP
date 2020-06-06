@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Configuration.Interface;
 using ERPBO.Configuration.ViewModels;
+using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,42 @@ namespace ERPWeb.Controllers
         }
 
         #endregion
-
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateAccessoriesName(string accessoriesName, long id)
+        {
+            bool isExist = _accessoriesBusiness.IsDuplicateAccessoriesName(accessoriesName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateProblemName(string problemName, long id)
+        {
+            bool isExist = _clientProblemBusiness.IsDuplicateProblemName(problemName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateMobilePartName(string mobilePartName, long id)
+        {
+            bool isExist = _mobilePartBusiness.IsDuplicateMobilePart(mobilePartName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateCustomer(string customerName, long id)
+        {
+            bool isExist = _customerBusiness.IsDuplicateCustomerName(customerName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateTSName(string name, long id)
+        {
+            bool isExist = _technicalServiceBusiness.IsDuplicateTechnicalName(name, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateCsName(string name, long id)
+        {
+            bool isExist = _customerServiceBusiness.IsDuplicateCustomerServiceName(name, id, User.OrgId);
+            return Json(isExist);
+        }
         #region Front-Desk Module
 
         #endregion
