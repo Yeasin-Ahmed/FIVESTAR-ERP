@@ -1,4 +1,5 @@
-﻿using ERPBLL.Configuration.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
 using ERPWeb.Filters;
@@ -458,20 +459,22 @@ namespace ERPWeb.Controllers
 
             return View();
         }
-        public ActionResult MobilePartStockInfoPartialList()
+        public ActionResult MobilePartStockInfoPartialList(long? SwerehouseId, long? MobilePartId, string lessOrEq)
         {
             IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId).Select(info => new MobilePartStockInfoDTO
             {
                 MobilePartStockInfoId = info.MobilePartStockInfoId,
-                SWarehouseId=info.SWarehouseId,
-                ServicesWarehouseName= (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId).ServicesWarehouseName),
-                MobilePartId=info.MobilePartId,
-                MobilePartName= (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
+                SWarehouseId = info.SWarehouseId,
+                ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId).ServicesWarehouseName),
+                MobilePartId = info.MobilePartId,
+                MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
                 StockInQty = info.StockInQty,
                 StockOutQty = info.StockOutQty,
                 Remarks = info.Remarks,
                 OrganizationId = info.OrganizationId
-            }).ToList();
+            }).AsEnumerable();
+            partStockInfoDTO = partStockInfoDTO.Where(s => (SwerehouseId == null || SwerehouseId == 0 || s.SWarehouseId == SwerehouseId) && (MobilePartId == null || MobilePartId == 0 || s.MobilePartId == MobilePartId) && (string.IsNullOrEmpty(lessOrEq) || (s.StockInQty - s.StockOutQty) <= Convert.ToInt32(lessOrEq))).ToList();
+
             List<MobilePartStockInfoViewModel> warehouseStockInfoViews = new List<MobilePartStockInfoViewModel>();
             AutoMapper.Mapper.Map(partStockInfoDTO, warehouseStockInfoViews);
             return PartialView("_MobilePartStockInfoList",warehouseStockInfoViews);
@@ -498,9 +501,61 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
-        public ActionResult MobilePartStockDetailList()
+        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate)
         {
-            return View();
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+
+                ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+                ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
+                {
+                    Text = s.text,
+                    Value = s.value
+                }).ToList();
+                return View();
+            }
+            else
+            {
+                IEnumerable<MobilePartStockDetailDTO> partStockDetailDTO = _mobilePartStockDetailBusiness.GelAllMobilePartStockDetailByOrgId(User.OrgId).Select(detail => new MobilePartStockDetailDTO
+                {
+                    MobilePartStockDetailId = detail.MobilePartStockDetailId,
+                    SWarehouseId = detail.SWarehouseId,
+                    ServicesWarehouseName =( _servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(detail.SWarehouseId.Value,User.OrgId).ServicesWarehouseName),
+                    MobilePartId = detail.MobilePartId,
+                    MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
+                    Quantity = detail.Quantity,
+                    StockStatus = detail.StockStatus,
+                    Remarks = detail.Remarks,
+                    EUserId = detail.EUserId,
+                    EntryDate=detail.EntryDate,
+
+                }).AsEnumerable();
+                // Search start from here..
+                partStockDetailDTO = partStockDetailDTO.Where(f => 1 == 1 &&
+                         (swarehouseId == null || swarehouseId <= 0 || f.SWarehouseId == swarehouseId) &&
+                         (stockStatus == null || stockStatus.Trim() == "" || f.StockStatus == stockStatus.Trim()) &&
+                         (mobilePartId == null || mobilePartId <= 0 || f.MobilePartId == mobilePartId) &&
+                         (
+                             (fromDate == null && toDate == null)
+                             ||
+                              (fromDate == "" && toDate == "")
+                             ||
+                             (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                                 f.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                                 f.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                             ||
+                             (fromDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                             ||
+                             (toDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                         )
+                     );
+                List<MobilePartStockDetailViewModel> mobilePartStockDetailViewModels = new List<MobilePartStockDetailViewModel>();
+                AutoMapper.Mapper.Map(partStockDetailDTO, mobilePartStockDetailViewModels);
+                return PartialView("_MobilePartStockDetailList", mobilePartStockDetailViewModels);
+            }
         }
         #endregion
     }

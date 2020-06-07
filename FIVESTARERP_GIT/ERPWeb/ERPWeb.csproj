@@ -437,6 +437,8 @@
     <Content Include="Views\Configuration\MobilePartStockInfoList.cshtml" />
     <Content Include="Views\Configuration\ServicesWarehouseList.cshtml" />
     <Content Include="Views\Configuration\_MobilePartStockInfoList.cshtml" />
+    <Content Include="Views\Configuration\MobilePartStockDetailList.cshtml" />
+    <Content Include="Views\Configuration\_MobilePartStockDetailList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
