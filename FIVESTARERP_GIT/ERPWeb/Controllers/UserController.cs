@@ -106,6 +106,9 @@ namespace ERPWeb.Controllers
                 var jobOrderDisapproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.CustomerDisapproved);
                 ViewBag.JobOrderDisapproved = (jobOrderDisapproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.CustomerDisapproved, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderDisapproved.StateStatus, TotalCount = jobOrderDisapproved.TotalCount };
 
+                var jobOrdeAssignToTS = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.AssignToTS);
+                ViewBag.JobOrdeAssignToTS = (jobOrdeAssignToTS == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.AssignToTS, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrdeAssignToTS.StateStatus, TotalCount = jobOrdeAssignToTS.TotalCount };
+
                 return View("Index2");
             }
         }

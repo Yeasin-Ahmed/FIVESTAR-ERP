@@ -27,7 +27,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="info-box">
                             <span class="info-box-icon bg-warning">
                                 <i class="fas fa-flag"></i>
@@ -35,31 +35,42 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderPending).StateStatus)</span>
                                 <span class="info-box-number">
-                                    <a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderPending).TotalCount)</a>
+                                    <a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderPending).TotalCount)</a>
 
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="info-box">
                             <span class="info-box-icon bg-success">
                                 <i class="fas fa-flag"></i>
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).StateStatus)</span>
-                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).TotalCount)</a></span>
+                                <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-secondary">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).StateStatus)</span>
+                                <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).TotalCount)</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="info-box">
                             <span class="info-box-icon bg-danger">
                                 <i class="fas fa-flag"></i>
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderDisapproved).StateStatus)</span>
-                                <span class="info-box-number"><a href="/Production/GetReqInfoList" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderDisapproved).TotalCount)</a></span>
+                                <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderDisapproved).TotalCount)</a></span>
                             </div>
                         </div>
                     </div>

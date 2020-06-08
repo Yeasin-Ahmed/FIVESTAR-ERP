@@ -85,7 +85,7 @@ Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCo
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
-Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 {0}) tbl", Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -162,6 +162,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.CustomerApproved)
             {
                 jobOrder.TSId = tsId;
+                jobOrder.StateStatus = JobOrderStatus.AssignToTS;
                 jobOrder.UpUserId = userId;
                 jobOrder.UpdateDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrder);

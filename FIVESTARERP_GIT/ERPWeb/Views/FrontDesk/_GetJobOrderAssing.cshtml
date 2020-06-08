@@ -42,7 +42,7 @@
             @Model.JobOrderType
         </td>
     </tr>
-    @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.CustomerApproved)
+    @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.CustomerApproved || Model.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS)
     {
         <tr>
             <td class="text-purple">
