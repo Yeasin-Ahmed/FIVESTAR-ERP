@@ -82,7 +82,7 @@ namespace ERPWeb.Controllers
         public ActionResult SaveJobOrder(JobOrderViewModel jobOrder, List<JobOrderAccessoriesViewModel> jobOrderAccessories, List<JobOrderProblemViewModel> jobOrderProblems)
         {
             bool IsSuccess = false;
-            if(ModelState.IsValid && jobOrderAccessories.Count > 0 && jobOrderProblems.Count > 0)
+            if(ModelState.IsValid && jobOrderProblems.Count > 0)
             {
                 JobOrderDTO jobOrderDTO = new JobOrderDTO();
                 List<JobOrderAccessoriesDTO> listJobOrderAccessoriesDTO = new List<JobOrderAccessoriesDTO>();

@@ -227,7 +227,6 @@
             if (validateByStock() === true) {
                 fnRequisitionStateChange(hdfReqInfoId.val(), hdfRowIndex.val(), reqStatus.approved);
             }
-            
         })
 
         function fnRequisitionStateChange(id, index, status) {
@@ -239,9 +238,8 @@
                         $("#modalReqDetails").modal("toggle").toggle("fast");
                         hdfReqInfoId.val('0');
                         hdfRowIndex.val("");
-                        alert("Requisition State has been changed successfully");
                         removeTableRow("#tblReqInfoData tbody", index);
-                        $('.toastrDefaultSuccess').trigger('click');
+                        $('.toastrReqSuccess').trigger('click');
                         setTimeout(function () {
                             LoadDataTable();
                         }, 1500);

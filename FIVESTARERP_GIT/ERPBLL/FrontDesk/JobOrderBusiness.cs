@@ -116,7 +116,11 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 };
                 listJobOrderAccessories.Add(jobOrderAccessories);
             }
-            jobOrder.JobOrderAccessories = listJobOrderAccessories;
+
+            if(jobOrderAccessoriesDto.Count > 0)
+            {
+                jobOrder.JobOrderAccessories = listJobOrderAccessories;
+            }
 
             List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
             foreach (var item in jobOrderProblemsDto)

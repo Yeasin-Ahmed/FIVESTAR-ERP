@@ -13,6 +13,8 @@ namespace ERPBO.Inventory.ViewModels
         [StringLength(150)]
         public string WarehouseName { get; set; }
         [StringLength(150)]
+        public string ModelName { get; set; }
+        [StringLength(150)]
         public string ItemTypeName { get; set; }
         [StringLength(150)]
         public string ItemName { get; set; }
