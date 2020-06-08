@@ -27,6 +27,10 @@
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
+                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+            </div>
+            <div class="col-md-3">
                 <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm">
                     <option value="">--Select Item Type--</option>
@@ -38,12 +42,12 @@
                     <option value="">--Select Item--</option>
                 </select>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label class="control-label font-weight-bold">Refference Number</label>
                 <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Ref Num." />
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label">From Date</label>
                 <div class="input-group input-group-sm ">
@@ -52,7 +56,6 @@
                         <span class="input-group-text">&#10008;</span>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">To Date</label>
@@ -67,7 +70,6 @@
                 <label class="col-form-label">Stock Status</label>
                 @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
-            <div class="col-md-3"></div>
         </div>
         <hr />
     </div>
@@ -85,6 +87,7 @@
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var ddlStockStatus = $("#ddlStockStatus");
+        var ddlModelName = $("#ddlModelName");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -101,6 +104,14 @@
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
                 todayHighlight: true
+            });
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
             });
         })
 
@@ -145,7 +156,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val(), page:pageNo };
+            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val(), page:pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockDetailInfoList', data)).then(function (res, status) {

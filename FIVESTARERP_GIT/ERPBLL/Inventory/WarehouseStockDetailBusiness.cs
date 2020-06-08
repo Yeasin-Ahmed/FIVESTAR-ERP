@@ -69,8 +69,9 @@ namespace ERPBLL.Inventory
                 stockDetail.EntryDate = DateTime.Now;
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
+                stockDetail.DescriptionId = item.DescriptionId;
 
-                var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId).FirstOrDefault();
+                var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (warehouseInfo != null)
                 {
                     warehouseInfo.StockInQty += item.Quantity;
@@ -81,6 +82,7 @@ namespace ERPBLL.Inventory
                 {
                     WarehouseStockInfo warehouseStockInfo = new WarehouseStockInfo();
                     warehouseStockInfo.WarehouseId = item.WarehouseId;
+                    warehouseStockInfo.DescriptionId = item.DescriptionId;
                     warehouseStockInfo.ItemTypeId = item.ItemTypeId;
                     warehouseStockInfo.ItemId = item.ItemId;
                     warehouseStockInfo.UnitId = stockDetail.UnitId;
@@ -106,13 +108,14 @@ namespace ERPBLL.Inventory
                 #region Production Requistion
          "Production Requistion":
                     var items = warehouseStockDetailDTOs.Select(s => s.ItemId).ToList();
-                    var stock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => items.Contains(s.ItemId.Value)).Select(s => s.ItemId).ToList();
+                    var des = warehouseStockDetailDTOs.Select(s => s.DescriptionId).FirstOrDefault();
+                    var stock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => items.Contains(s.ItemId.Value) && des == s.DescriptionId).Select(s => s.ItemId).ToList();
 
                     if (items.Count() == stock.Count())
                     {
                         foreach (var item in warehouseStockDetailDTOs)
                         {
-                            var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => s.ItemId == item.ItemId && (s.StockInQty - s.StockOutQty) >= item.Quantity).FirstOrDefault();
+                            var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => s.ItemId == item.ItemId && (s.StockInQty - s.StockOutQty) >= item.Quantity && s.DescriptionId== item.DescriptionId).FirstOrDefault();
                             if (warehouseInfo != null)
                             {
                                 warehouseInfo.StockOutQty += item.Quantity;
@@ -122,6 +125,7 @@ namespace ERPBLL.Inventory
                                 WarehouseStockDetail warehouseStockDetail = new WarehouseStockDetail()
                                 {
                                     WarehouseId = item.WarehouseId,
+                                    DescriptionId = item.DescriptionId,
                                     ItemTypeId = item.ItemTypeId,
                                     ItemId = item.ItemId,
                                     Quantity = item.Quantity,
@@ -166,6 +170,7 @@ namespace ERPBLL.Inventory
                     WarehouseStockDetailDTO stockDetailDTO = new WarehouseStockDetailDTO
                     {
                         WarehouseId = reqInfo.WarehouseId,
+                        DescriptionId =reqInfo.DescriptionId,
                         ItemTypeId = item.ItemTypeId.Value,
                         ItemId = item.ItemId,
                         UnitId = item.UnitId.Value,
@@ -258,14 +263,14 @@ namespace ERPBLL.Inventory
             return executionStatus;
         }
 
-        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
+        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId,long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             IEnumerable<WarehouseStockDetailInfoListDTO> warehouseStockDetailInfoLists = new List<WarehouseStockDetailInfoListDTO>();
-            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, orgId)).ToList();
+            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, modelId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, orgId)).ToList();
             return warehouseStockDetailInfoLists;
         }
 
-        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
+        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -274,6 +279,10 @@ namespace ERPBLL.Inventory
             if (warehouseId != null && warehouseId > 0)
             {
                 param += string.Format(@" and wh.Id={0}", warehouseId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and de.DescriptionId={0}", modelId);
             }
             if (itemTypeId != null && itemTypeId > 0)
             {
@@ -308,9 +317,10 @@ namespace ERPBLL.Inventory
                 param += string.Format(@" and Cast(wsd.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select wsd.StockDetailId,wh.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',wsd.Quantity,wsd.StockStatus
+            query = string.Format(@"Select wsd.StockDetailId,wh.WarehouseName,de.DescriptionName 'ModelName',it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',wsd.Quantity,wsd.StockStatus
 ,Convert(nvarchar(20),wsd.EntryDate,106) 'EntryDate', ISNULL(wsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser'  From tblWarehouseStockDetails wsd
 Left Join tblWarehouses wh on wsd.WarehouseId = wh.Id
+Left Join tblDescriptions de on wsd.DescriptionId =de.DescriptionId
 Left Join tblItemTypes it on wsd.ItemTypeId = it.ItemId
 Left Join tblItems i on wsd.ItemId  = i.ItemId
 Left Join tblUnits u on wsd.UnitId= u.UnitId

@@ -298,13 +298,14 @@ namespace ERPWeb.Controllers
         private ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
         {
             ExecutionStateWithText stateWithText = new ExecutionStateWithText();
+            var descriptionId = _requsitionInfoBusiness.GetRequisitionById(reqInfoId.Value, User.OrgId).DescriptionId;
              var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, User.OrgId).ToList();
             var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId);
             var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
             stateWithText.isSuccess = true;
             foreach (var item in reqDetail)
             {
-                var w = warehouseStock.Where(wr => wr.ItemId == item.ItemId).FirstOrDefault();
+                var w = warehouseStock.Where(wr => wr.ItemId == item.ItemId && wr.DescriptionId == descriptionId).FirstOrDefault();
                 if (w != null)
                 {
                     if ((w.StockInQty - w.StockOutQty) < item.Quantity)

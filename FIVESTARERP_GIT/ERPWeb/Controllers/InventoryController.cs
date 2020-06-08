@@ -299,18 +299,22 @@ namespace ERPWeb.Controllers
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
             }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
             return View();
         }
 
         [HttpGet]
-        public ActionResult GetWarehouseStockInfoPartialList(long? WarehouseId, long? ItemTypeId, long? ItemId, string lessOrEq,int page=1)
+        public ActionResult GetWarehouseStockInfoPartialList(long? WarehouseId, long? modelId, long? ItemTypeId, long? ItemId, string lessOrEq,int page=1)
         {
             IEnumerable<WarehouseStockInfoDTO> dto = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId).Select(info => new WarehouseStockInfoDTO
             {
                 StockInfoId = info.StockInfoId,
                 WarehouseId = info.WarehouseId,
+                DescriptionId = info.DescriptionId,
                 Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value,User.OrgId).DescriptionName),
                 ItemTypeId = info.ItemTypeId,
                 ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
                 ItemId = info.ItemId,
@@ -325,6 +329,7 @@ namespace ERPWeb.Controllers
 
             dto = dto.Where(ws =>
             (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId)
+            && (modelId == null || modelId == 0 || ws.DescriptionId == modelId)
             && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId)
             && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)
             && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
@@ -347,6 +352,9 @@ namespace ERPWeb.Controllers
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
             }).ToList();
+
+            ViewBag.ddlModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
             return View();
         }
 
@@ -372,7 +380,7 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
 
-        public ActionResult GetWarehouseStockDetailInfoList(string flag, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, int page = 1)
+        public ActionResult GetWarehouseStockDetailInfoList(string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -386,10 +394,11 @@ namespace ERPWeb.Controllers
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
             }
             else
             {
-                var dto = _warehouseStockDetailBusiness.GetWarehouseStockDetailInfoLists(warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId).OrderByDescending(s => s.StockDetailId).ToList();
+                var dto = _warehouseStockDetailBusiness.GetWarehouseStockDetailInfoLists(warehouseId,modelId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId).OrderByDescending(s => s.StockDetailId).ToList();
 
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
@@ -531,6 +540,7 @@ namespace ERPWeb.Controllers
         private ExecutionStateWithText GetExecutionStockAvailableForRequisition(long? reqInfoId)
         {
             ExecutionStateWithText stateWithText = new ExecutionStateWithText();
+            var descriptionId = _requsitionInfoBusiness.GetRequisitionById(reqInfoId.Value, User.OrgId).DescriptionId;
             var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, User.OrgId).ToArray();
             var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId).ToList();
             var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
@@ -538,7 +548,7 @@ namespace ERPWeb.Controllers
 
             for (int i = 0; i < reqDetail.Length; i++)
             {
-                var w = warehouseStock.FirstOrDefault(wr => wr.ItemId == reqDetail[i].ItemId);
+                var w = warehouseStock.FirstOrDefault(wr => wr.ItemId == reqDetail[i].ItemId && wr.DescriptionId == descriptionId);
                 if (w != null)
                 {
                     if ((w.StockInQty - w.StockOutQty) < reqDetail[i].Quantity)

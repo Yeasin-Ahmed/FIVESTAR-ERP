@@ -28,6 +28,11 @@
                     <span class="error hide require-warehouse font-weight-bold">Warehouse is required</span>
                 </div>
                 <div class="col-md-3">
+                    <label for="ddlModel" class="control-label font-weight-bold">Model Name</label>
+                    @Html.DropDownList("ddlModel", (IEnumerable<SelectListItem>)ViewBag.ddlModel, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                    <span class="error hide require-model font-weight-bold">Model is required</span>
+                </div>
+                <div class="col-md-3">
                     <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
                     <select id="ddlItemType" class="form-control form-control-sm">
                         <option value="">--Select Item Type--</option>
@@ -42,6 +47,10 @@
                     <span class="error hide require-item font-weight-bold">Item is required</span>
                     <span class="error hide duplicate-itemName font-weight-bold">This Item is already exist!</span>
                 </div>
+
+            </div>
+            <div class="row">
+                
                 <div class="col-md-3">
                     <label for="txtStockInQty" class="control-label font-weight-bold">Stock-In Qty.</label>
                     <div class="input-group">
@@ -52,8 +61,6 @@
                     </div>
                     <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -66,6 +73,7 @@
                         <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
                     </div>
                 </div>
+                <div class="col-md-3"></div>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseStock">
@@ -102,6 +110,17 @@
         var txtStockInQty = $("#txtStockInQty");
         var txtRemarks = $("#txtRemarks");
         var unitName = $("#unitName");
+        var ddlModel = $("#ddlModel");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
 
         //casced dropdown load for itemtype
         ddlWarehouse.change(function () {
@@ -165,6 +184,11 @@
                 $(".require-warehouse").removeClass("hide");
             }
 
+            if (TryParseInt(ddlModel.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-model").removeClass("hide");
+            }
+
             if (TryParseInt(ddlItemType.val(),0) <=0)
             {
                 isValid = false;
@@ -192,6 +216,7 @@
             if (validateInput() == true) {
 
                 disable("#ddlWarehouse");
+                disable("#ddlModel");
                 var sl = $("#tblWarehouseStock tbody tr").length;
                 var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
                 var td2 = "<td class='hide'>" + ddlItemType.val() + "</td>";
@@ -238,20 +263,23 @@
 
         $("#btnReset").click(function (e)
         {
+            e.preventDefault();
             clearDropdown("ddlItem");
             enable("#ddlWarehouse");
+            ddlWarehouse.val("");
+            enable("#ddlModel");
+            ddlModel.val('');
+            ddlModel.trigger("change");
             $("#tblWarehouseStock tbody").empty();
-            ddlItemType.val('');
-            e.preventDefault();
-            txtStockInQty.val('');
+            clearDropdown("ddlItemType")
+            txtStockInQty.val('0');
             unitName.text('');
             txtRemarks.val('');
-            //$('.toastrDefaultSuccess').trigger('click');
         })
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            if (ddlWarehouse.val() != '' && $("#tblWarehouseStock tbody tr").length > 0)
+            if (ddlWarehouse.val() != '' && ddlModel.val() !='' && $("#tblWarehouseStock tbody tr").length > 0)
             {
                 bootbox.confirm("Are you sure you want to save?", function (result) {
                     if (result === true)
@@ -262,6 +290,7 @@
                             var td = $(this).children('td');
                             reqData.push({
                                 WarehouseId: ddlWarehouse.val(),
+                                DescriptionId:ddlModel.val(),
                                 ItemTypeId: td.eq(1).html(),
                                 ItemId: td.eq(3).html(),
                                 Quantity: td.eq(5).html(),

@@ -118,6 +118,7 @@ namespace ERPBLL.Production
                     WarehouseStockDetailDTO warehouse = new WarehouseStockDetailDTO()
                     {
                         WarehouseId =info.WarehouseId,
+                        DescriptionId = info.DescriptionId,
                         ItemTypeId = item.ItemTypeId,
                         ItemId = item.ItemId,
                         UnitId = item.UnitId,
