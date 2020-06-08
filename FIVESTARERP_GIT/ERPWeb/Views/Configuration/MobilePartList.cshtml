@@ -27,7 +27,8 @@
                 <tr class="text-center">
                     <th>SL No.</th>
                     <th class="hide"></th>
-                    <th>MobilePartName</th>
+                    <th>MobileParts Name</th>
+                    <th>Parts Code</th>
                     <th>Remarks</th>
                     <th>Entry Date</th>
                     <th>Action</th>
@@ -41,6 +42,7 @@
                         <td class="text-center" width="10%">@sl</td>
                         <td class="hide">@part.MobilePartId</td>
                         <td>@part.MobilePartName</td>
+                        <td class="text-center">@part.MobilePartCode</td>
                         <td class="text-center">@part.Remarks</td>
                         <td>@part.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                         <td class="text-center">
@@ -82,6 +84,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
+                            <label for="txtMobilePartCode" class="control-label font-weight-bold">Parts Code</label>
+                            <input type="text" name="txtMobilePartCode" value="" id="txtMobilePartCode" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
@@ -109,6 +117,7 @@
     <script type="text/javascript">
         var hdfMobilePartId = $("#hdfMobilePartId");
         var txtMobilePartName = $("#txtMobilePartName");
+        var txtMobilePartCode = $("#txtMobilePartCode");
         var txtRemarks = $("#txtRemarks");
 
         $(document).ready(function () {
@@ -157,7 +166,12 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
-                var data = JSON.stringify({ MobilePartId: TryParseInt(hdfMobilePartId.val(), 0), MobilePartName: txtMobilePartName.val(), Remarks: txtRemarks.val() });
+                var data = JSON.stringify({
+                    MobilePartId: TryParseInt(hdfMobilePartId.val(), 0),
+                    MobilePartName: txtMobilePartName.val(),
+                    MobilePartCode: txtMobilePartCode.val(),
+                    Remarks: txtRemarks.val()
+                });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveMobilePart', data, getToken())).then(function (res, status) {
                     console.log(status);
@@ -186,16 +200,19 @@
             var td1 = row.find('td:eq(1)').html();
             var td2 = row.find('td:eq(2)').html();
             var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
 
             hdfMobilePartId.val(td1);
             txtMobilePartName.val(td2);
-            txtRemarks.val(td3)
+            txtMobilePartCode.val(td3);
+            txtRemarks.val(td4)
 
         })
 
         function clearCtrl() {
             hdfMobilePartId.val('0');
             txtMobilePartName.val('');
+            txtMobilePartCode.val('');
             txtRemarks.val('');
         }
 

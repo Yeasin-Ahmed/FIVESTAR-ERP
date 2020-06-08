@@ -47,6 +47,7 @@ namespace ERPBLL.Configuration
             if (mobilePartDTO.MobilePartId == 0)
             {
                 mobilePart.MobilePartName = mobilePartDTO.MobilePartName;
+                mobilePart.MobilePartCode = mobilePartDTO.MobilePartCode;
                 mobilePart.Remarks = mobilePartDTO.Remarks;
                 mobilePart.OrganizationId = orgId;
                 mobilePart.EUserId = userId;
@@ -57,6 +58,7 @@ namespace ERPBLL.Configuration
             {
                 mobilePart = GetMobilePartOneByOrgId(mobilePartDTO.MobilePartId, orgId);
                 mobilePart.MobilePartName = mobilePartDTO.MobilePartName;
+                mobilePart.MobilePartCode = mobilePartDTO.MobilePartCode;
                 mobilePart.Remarks = mobilePartDTO.Remarks;
                 mobilePart.OrganizationId = orgId;
                 mobilePart.UpUserId = userId;

@@ -47,6 +47,7 @@ namespace ERPBLL.Configuration
             if (accessoriesDTO.AccessoriesId == 0)
             {
                 accessories.AccessoriesName = accessoriesDTO.AccessoriesName;
+                accessories.AccessoriesCode = accessoriesDTO.AccessoriesCode;
                 accessories.Remarks = accessoriesDTO.Remarks;
                 accessories.EUserId = userId;
                 accessories.EntryDate = DateTime.Now;
@@ -57,6 +58,7 @@ namespace ERPBLL.Configuration
             {
                 accessories = GetAccessoriesOneByOrgId(accessoriesDTO.AccessoriesId, orgId);
                 accessories.AccessoriesName = accessoriesDTO.AccessoriesName;
+                accessories.AccessoriesCode = accessoriesDTO.AccessoriesCode;
                 accessories.Remarks = accessoriesDTO.Remarks;
                 accessories.UpUserId = userId;
                 accessories.UpdateDate = DateTime.Now;

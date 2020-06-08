@@ -77,6 +77,14 @@
     <Compile Include="ConfigurationContextMigrations\202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.Designer.cs">
       <DependentUpon>202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006080719517_Configuration_AddNewColumn.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006080719517_Configuration_AddNewColumn.Designer.cs">
+      <DependentUpon>202006080719517_Configuration_AddNewColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006080821407_Configuration_AddNColumn.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006080821407_Configuration_AddNColumn.Designer.cs">
+      <DependentUpon>202006080821407_Configuration_AddNColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -167,6 +175,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.resx">
       <DependentUpon>202006040757239_Configuration_DbtblmobilePartStockInfo&amp;Detail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006080719517_Configuration_AddNewColumn.resx">
+      <DependentUpon>202006080719517_Configuration_AddNewColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006080821407_Configuration_AddNColumn.resx">
+      <DependentUpon>202006080821407_Configuration_AddNColumn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

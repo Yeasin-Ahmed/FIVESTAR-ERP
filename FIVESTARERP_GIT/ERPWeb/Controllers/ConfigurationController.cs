@@ -44,6 +44,7 @@ namespace ERPWeb.Controllers
             {
                 AccessoriesId = access.AccessoriesId,
                 AccessoriesName = access.AccessoriesName,
+                AccessoriesCode=access.AccessoriesCode,
                 Remarks = access.Remarks,
                 StateStatus = (access.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = access.OrganizationId,
@@ -158,6 +159,7 @@ namespace ERPWeb.Controllers
             {
                 MobilePartId = part.MobilePartId,
                 MobilePartName = part.MobilePartName,
+                MobilePartCode=part.MobilePartCode,
                 Remarks = part.Remarks,
                 OrganizationId = part.OrganizationId,
                 EUserId = part.EUserId,

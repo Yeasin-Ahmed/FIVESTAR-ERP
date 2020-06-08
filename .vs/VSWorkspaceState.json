@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\FIVESTARERP_GIT",
+    "\\FIVESTARERP_GIT\\ERPWeb",
+    "\\FIVESTARERP_GIT\\ERPWeb\\Views",
+    "\\FIVESTARERP_GIT\\ERPWeb\\Views\\Configuration"
   ],
+  "SelectedNode": "\\FIVESTARERP_GIT\\ERPWeb\\Views\\Configuration\\CustomerServiceList.cshtml",
   "PreviewInSolutionExplorer": false
 }

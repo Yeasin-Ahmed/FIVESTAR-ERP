@@ -28,6 +28,7 @@
                     <th>SL No.</th>
                     <th class="hide"></th>
                     <th>AccessoriesName</th>
+                    <th>AccessoriesCode</th>
                     <th>Remarks</th>
                     <th>Entry Date</th>
                     <th>Action</th>
@@ -41,6 +42,7 @@
                     <td class="text-center" width="10%">@sl</td>
                     <td class="hide">@access.AccessoriesId</td>
                     <td>@access.AccessoriesName</td>
+                    <td class="text-center">@access.AccessoriesCode</td>
                     <td class="text-center">@access.Remarks</td>
                     <td>@access.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                     <td class="text-center">
@@ -82,6 +84,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
+                            <label for="txtAccessoriesCode" class="control-label font-weight-bold">AccessoriesCode</label>
+                            <input type="text" name="txtAccessoriesCode" value="" id="txtAccessoriesCode" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
@@ -109,6 +117,7 @@
     <script type="text/javascript">
         var hdfAccessoriesId = $("#hdfAccessoriesId");
         var txtAccessoriesName = $("#txtAccessoriesName");
+        var txtAccessoriesCode = $("#txtAccessoriesCode");
         var txtRemarks = $("#txtRemarks");
 
         $(document).ready(function () {
@@ -157,7 +166,12 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
-                var data = JSON.stringify({ AccessoriesId: TryParseInt(hdfAccessoriesId.val(), 0), AccessoriesName: txtAccessoriesName.val(),Remarks: txtRemarks.val() });
+                var data = JSON.stringify({
+                    AccessoriesId: TryParseInt(hdfAccessoriesId.val(), 0),
+                    AccessoriesName: txtAccessoriesName.val(),
+                    AccessoriesCode: txtAccessoriesCode.val(),
+                    Remarks: txtRemarks.val()
+                });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveAccessories', data, getToken())).then(function (res, status) {
                     console.log(status);
@@ -186,16 +200,19 @@
             var td1 = row.find('td:eq(1)').html();
             var td2 = row.find('td:eq(2)').html();
             var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
 
             hdfAccessoriesId.val(td1);
             txtAccessoriesName.val(td2);
-            txtRemarks.val(td3)
+            txtAccessoriesCode.val(td3);
+            txtRemarks.val(td4)
 
         })
 
         function clearCtrl() {
             hdfAccessoriesId.val('0');
             txtAccessoriesName.val('');
+            txtAccessoriesCode.val('');
             txtRemarks.val('');
 
         }

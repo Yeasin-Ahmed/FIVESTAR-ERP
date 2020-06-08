@@ -10,6 +10,7 @@ namespace ERPBO.Configuration.DTOModels
     {
         public long MobilePartId { get; set; }
         public string MobilePartName { get; set; }
+        public string MobilePartCode { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }

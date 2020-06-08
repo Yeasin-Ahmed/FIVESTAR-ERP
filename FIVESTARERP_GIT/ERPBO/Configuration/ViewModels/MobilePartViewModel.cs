@@ -12,6 +12,7 @@ namespace ERPBO.Configuration.ViewModels
         public long MobilePartId { get; set; }
         [StringLength(100)]
         public string MobilePartName { get; set; }
+        public string MobilePartCode { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }

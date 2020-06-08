@@ -12,6 +12,7 @@ namespace ERPBO.Configuration.ViewModels
         public long AccessoriesId { get; set; }
         [StringLength(100)]
         public string AccessoriesName { get; set; }
+        public string AccessoriesCode { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public bool IsActive { get; set; }

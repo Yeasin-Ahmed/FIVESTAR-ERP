@@ -10,6 +10,7 @@ namespace ERPBO.Configuration.DTOModels
     {
         public long AccessoriesId { get; set; }
         public string AccessoriesName { get; set; }
+        public string AccessoriesCode { get; set; }
         public string Remarks { get; set; }
         public bool IsActive { get; set; }
         public long OrganizationId { get; set; }
