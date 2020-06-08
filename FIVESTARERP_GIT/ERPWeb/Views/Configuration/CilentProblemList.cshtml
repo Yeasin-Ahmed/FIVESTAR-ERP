@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">ClientProblem List</b></h4>
+        <h4><b style="color:darkblue">Handset Symptom List</b></h4>
         <hr />
     </div>
     <div class="col-md-12 mb-2">
@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4 text-right">
-                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Problem</button>
+                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Symtom</button>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
                 <tr class="text-center">
                     <th>SL No.</th>
                     <th class="hide"></th>
-                    <th>ProblemName</th>
+                    <th>Handset Symptom Name</th>
                     <th>Remarks</th>
                     <th>Entry Date</th>
                     <th>Action</th>
@@ -66,7 +66,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Problem</span></h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Symptom</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -74,10 +74,10 @@
                     <input type="hidden" name="Id" id="hdfProblemId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtProblemName" class="control-label font-weight-bold">ProblemName</label>
+                            <label for="txtProblemName" class="control-label font-weight-bold">Handset Symptom Name</label>
                             <input type="text" name="txtProblemName" value="" id="txtProblemName" class="form-control form-control-sm" />
-                            <span class="error hide required-problemName font-weight-bold">Input Problem Name!</span>
-                            <span class="error hide duplicate-problemName font-weight-bold">Already Problem Name Exist!</span>
+                            <span class="error hide required-problemName font-weight-bold">Input Symptom Name!</span>
+                            <span class="error hide duplicate-problemName font-weight-bold">Already Symptom Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">

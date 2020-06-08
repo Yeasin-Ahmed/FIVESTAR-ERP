@@ -1,4 +1,5 @@
-﻿using ERPBLL.Configuration.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 using ERPBO.Configuration.DomainModels;
 using ERPBO.Configuration.DTOModels;
 using ERPDAL.ConfigurationDAL;
@@ -40,13 +41,14 @@ namespace ERPBLL.Configuration
             {
                 MobilePartStockDetail StockDetail = new MobilePartStockDetail();
                 StockDetail.MobilePartStockDetailId = item.MobilePartStockDetailId;
+                StockDetail.MobilePartId = item.MobilePartId;
                 StockDetail.SWarehouseId = item.SWarehouseId;
                 StockDetail.Quantity = item.Quantity;
                 StockDetail.Remarks = item.Remarks;
                 StockDetail.OrganizationId = orgId;
                 StockDetail.EUserId = userId;
                 StockDetail.EntryDate = DateTime.Now;
-
+                StockDetail.StockStatus = StockStatus.StockIn;
 
                 var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId).Where(o => o.MobilePartId == item.MobilePartId).FirstOrDefault();
                 if (warehouseInfo != null)
