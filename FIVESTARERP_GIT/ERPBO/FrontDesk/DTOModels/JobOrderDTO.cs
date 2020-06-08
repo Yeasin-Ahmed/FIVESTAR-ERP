@@ -24,6 +24,7 @@ namespace ERPBO.FrontDesk.DTOModels
         [StringLength(50)]
         public string JobOrderType { get; set; }
         public long? CustomerId { get; set; }
+        public long? TSId { get; set; }
         [StringLength(100)]
         public string JobOrderCode { get; set; }
         public long OrganizationId { get; set; }
@@ -34,6 +35,7 @@ namespace ERPBO.FrontDesk.DTOModels
         // Custom Properties
         public string ModelName { get; set; }
         public string AccessoriesNames { get; set; }
+        public string  TSName { get; set; }
         public string Problems { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }

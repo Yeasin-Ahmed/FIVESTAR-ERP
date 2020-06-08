@@ -27,6 +27,7 @@ namespace ERPBO.FrontDesk.DomainModels
         [StringLength(50)]
         public string JobOrderType { get; set; }
         public long? CustomerId { get; set; }
+        public long? TSId { get; set; }
         [StringLength(100)]
         public string JobOrderCode { get; set; }
         public long OrganizationId { get; set; }
