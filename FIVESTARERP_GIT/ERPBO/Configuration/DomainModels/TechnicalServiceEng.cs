@@ -22,5 +22,9 @@ namespace ERPBO.Configuration.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+
+        public string TsCode { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

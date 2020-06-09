@@ -276,8 +276,11 @@ namespace ERPWeb.Controllers
             {
                 EngId = ts.EngId,
                 Name = ts.Name,
+                TsCode=ts.TsCode,
                 Address = ts.Address,
                 PhoneNumber = ts.PhoneNumber,
+                UserName=ts.UserName,
+                Password=ts.Password,
                 Remarks = ts.Remarks,
                 OrganizationId = ts.OrganizationId,
                 EUserId = ts.EUserId,

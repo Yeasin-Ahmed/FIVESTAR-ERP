@@ -46,8 +46,11 @@ namespace ERPBLL.Configuration
             if (technicalServiceEngDTO.EngId == 0)
             {
                 technicalServiceEng.Name = technicalServiceEngDTO.Name;
+                technicalServiceEng.TsCode = technicalServiceEngDTO.TsCode;
                 technicalServiceEng.Address = technicalServiceEngDTO.Address;
                 technicalServiceEng.PhoneNumber = technicalServiceEngDTO.PhoneNumber;
+                technicalServiceEng.UserName = technicalServiceEngDTO.UserName;
+                technicalServiceEng.Password = technicalServiceEngDTO.Password;
                 technicalServiceEng.Remarks = technicalServiceEngDTO.Remarks;
                 technicalServiceEng.OrganizationId = orgId;
                 technicalServiceEng.EUserId = userId;
@@ -58,8 +61,11 @@ namespace ERPBLL.Configuration
             {
                 technicalServiceEng = GetTechnicalServiceOneByOrgId(technicalServiceEngDTO.EngId, orgId);
                 technicalServiceEng.Name = technicalServiceEngDTO.Name;
+                technicalServiceEng.TsCode = technicalServiceEngDTO.TsCode;
                 technicalServiceEng.Address = technicalServiceEngDTO.Address;
                 technicalServiceEng.PhoneNumber = technicalServiceEngDTO.PhoneNumber;
+                technicalServiceEng.UserName = technicalServiceEngDTO.UserName;
+                technicalServiceEng.Password = technicalServiceEngDTO.Password;
                 technicalServiceEng.Remarks = technicalServiceEngDTO.Remarks;
                 technicalServiceEng.OrganizationId = orgId;
                 technicalServiceEng.UpUserId = userId;

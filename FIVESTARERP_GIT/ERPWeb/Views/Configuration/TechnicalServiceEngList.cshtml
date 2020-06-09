@@ -28,8 +28,11 @@
                     <th>SL No.</th>
                     <th class="hide"></th>
                     <th>Name</th>
+                    <th>T.S Code</th>
                     <th>Address</th>
                     <th>Phone No.</th>
+                    <th>Username</th>
+                    <th>Password</th>
                     <th>Remarks</th>
                     <th>Action</th>
                 </tr>
@@ -42,8 +45,11 @@
                         <td class="text-center" width="10%">@sl</td>
                         <td class="hide">@ts.EngId</td>
                         <td>@ts.Name</td>
+                        <td>@ts.TsCode</td>
                         <td>@ts.Address</td>
                         <td>@ts.PhoneNumber</td>
+                        <td>@ts.UserName</td>
+                        <td>@ts.Password</td>
                         <td class="text-center">@ts.Remarks</td>
                         <td class="text-center">
                             <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@ts.EngId"><i class="fa fa-pen"></i> Edit</a>
@@ -84,6 +90,13 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
+                            <label for="txtTechnicalServicesCode" class="control-label font-weight-bold">T.S Code</label>
+                            <input type="text" name="txtTechnicalServicesCode" value="" id="txtTechnicalServicesCode" class="form-control form-control-sm" />
+                            <span class="error hide required-tSCode font-weight-bold">Input TS Code!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
                             <label for="txtAddress" class="control-label font-weight-bold">Address</label>
                             <input type="text" name="txtAddress" value="" id="txtAddress" class="form-control form-control-sm" />
                         </div>
@@ -92,6 +105,20 @@
                         <div class="form-group col-md-12">
                             <label for="txtPhone" class="control-label font-weight-bold">Phone Number</label>
                             <input type="text" name="txtPhone" value="" id="txtPhone" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtUsername" class="control-label font-weight-bold">Username</label>
+                            <input type="text" name="txtUsername" value="" id="txtUsername" class="form-control form-control-sm" />
+                            <span class="error hide required-userName font-weight-bold">Input Username Code!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtPassword" class="control-label font-weight-bold">Password</label>
+                            <input type="text" name="txtPassword" value="" id="txtPassword" class="form-control form-control-sm" />
+                            <span class="error hide required-password font-weight-bold">Input Password Code!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -123,8 +150,11 @@
     <script type="text/javascript">
         var hdfTSId = $("#hdfTSId");
         var txtName = $("#txtName");
+        var txtTechnicalServicesCode = $("#txtTechnicalServicesCode");
         var txtAddress = $("#txtAddress");
         var txtPhone = $("#txtPhone");
+        var txtUsername = $("#txtUsername");
+        var txtPassword = $("#txtPassword");
         var txtRemarks = $("#txtRemarks");
 
         $(document).ready(function () {
@@ -159,12 +189,25 @@
                 $(".required-tSName").removeClass("hide");
                 isValid = false;
             }
-            else {
+            else
+            {
                 var id = TryParseInt(hdfTSId.val(), 0);
                 if (ajaxBooleanChecker(JSON.stringify({ id: id, name: txtName.val().trim() }), '/Common2/IsDuplicateTSName', getToken()) == true) {
                     $(".duplicate-tSName").removeClass("hide");
                     isValid = false;
                 }
+            }
+            if ($.trim(txtTechnicalServicesCode.val()) == "") {
+                $(".required-tSCode").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtUsername.val()) == "") {
+                $(".required-userName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtPassword.val()) == "") {
+                $(".required-password").removeClass("hide");
+                isValid = false;
             }
             return isValid;
         }
@@ -176,8 +219,11 @@
                 var data = JSON.stringify({
                     EngId: TryParseInt(hdfTSId.val(), 0),
                     Name: txtName.val(),
+                    TsCode: txtTechnicalServicesCode.val(),
                     Address: txtAddress.val(),
                     PhoneNumber: txtPhone.val(),
+                    UserName: txtUsername.val(),
+                    Password: txtPassword.val(),
                     Remarks: txtRemarks.val()
                 });
                 console.log(data);
@@ -209,20 +255,29 @@
             var td3 = row.find('td:eq(3)').html();
             var td4 = row.find('td:eq(4)').html();
             var td5 = row.find('td:eq(5)').html();
+            var td6 = row.find('td:eq(6)').html();
+            var td7 = row.find('td:eq(7)').html();
+            var td8 = row.find('td:eq(8)').html();
 
             hdfTSId.val(td1);
             txtName.val(td2);
-            txtAddress.val(td3)
-            txtPhone.val(td4);
-            txtRemarks.val(td5)
+            txtTechnicalServicesCode.val(td3);
+            txtAddress.val(td4)
+            txtPhone.val(td5);
+            txtUsername.val(td6);
+            txtPassword.val(td7);
+            txtRemarks.val(td8)
 
         })
 
         function clearCtrl() {
             hdfTSId.val('0');
             txtName.val('');
+            txtTechnicalServicesCode.val('');
             txtAddress.val('');
             txtPhone.val('');
+            txtUsername.val('');
+            txtPassword.val('');
             txtRemarks.val('');
         }
 
