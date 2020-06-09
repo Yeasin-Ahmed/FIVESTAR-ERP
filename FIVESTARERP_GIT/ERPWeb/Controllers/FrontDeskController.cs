@@ -20,19 +20,21 @@ namespace ERPWeb.Controllers
         private readonly IAccessoriesBusiness _accessoriesBusiness;
         private readonly IClientProblemBusiness _clientProblemBusiness;
         private readonly ITechnicalServiceBusiness _technicalServiceBusiness;
+        private readonly ICustomerBusiness _customerBusiness;
         // Warehouse
         private readonly IDescriptionBusiness _descriptionBusiness;
 
         // Front-Desk
         private readonly IJobOrderBusiness _jobOrderBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
             this._descriptionBusiness = descriptionBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
             this._technicalServiceBusiness = technicalServiceBusiness;
+            this._customerBusiness = customerBusiness;
         }
 
         [HttpGet]
@@ -127,6 +129,25 @@ namespace ERPWeb.Controllers
                 IsSuccess = _jobOrderBusiness.AssignTSForJobOrder(jobOrderId, tsId, User.UserId, User.OrgId);
             }
             return Json(IsSuccess);
+        }
+        [HttpGet]
+        public ActionResult GetJobOrdersTS(string flag, long? modelId, long? jobOrderId, string mobileNo = "", string jobCode = "")
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign"))
+            {
+                var dto = _jobOrderBusiness.GetJobOrdersTS(mobileNo.Trim(), modelId, jobOrderId, jobCode, User.OrgId);
+
+                IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetJobOrdersTS", viewModels);
+            }
+            return View();
         }
     }
 }

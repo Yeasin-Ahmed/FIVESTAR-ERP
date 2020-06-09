@@ -17,5 +17,7 @@ namespace ERPBLL.FrontDesk.Interface
         bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId);
         bool AssignTSForJobOrder(long jobOrderId, long tsId, long userId, long orgId);
         IEnumerable<DashboardRequisitionSummeryDTO> DashboardJobOrderSummery(long orgId);
+        IEnumerable<JobOrder> GetAllJobOrdersByOrgId(long orgId);
+        IEnumerable<JobOrderDTO> GetJobOrdersTS(string mobileNo, long? modelId, long? jobOrderId, string jobCode, long orgId);
     }
 }

@@ -174,5 +174,66 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
         {
             return _frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardRequisitionSummeryDTO>(string.Format(@"select StateStatus, count(*) as TotalCount from tblJobOrders Where OrganizationId={0} group by StateStatus", orgId)).ToList();
         }
+
+        public IEnumerable<JobOrder> GetAllJobOrdersByOrgId(long orgId)
+        {
+            return _jobOrderRepository.GetAll(access => access.OrganizationId == orgId).ToList();
+        }
+        private string QueryForJobOrderTS(string mobileNo, long? modelId, long? jobOrderId, string jobCode, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (jobOrderId != null && jobOrderId > 0) // Single Job Order Searching
+            {
+                param += string.Format(@"and jo.JodOrderId ={0}", jobOrderId);
+            }
+            else
+            {
+                // Multiple Job Order Searching
+                if (!string.IsNullOrEmpty(mobileNo))
+                {
+                    param += string.Format(@"and jo.MobileNo Like '%{0}%'", mobileNo);
+                }
+                if (modelId != null && modelId > 0)
+                {
+                    param += string.Format(@"and de.DescriptionId ={0}", modelId);
+                }
+                if (!string.IsNullOrEmpty(jobCode))
+                {
+                    param += string.Format(@"and jo.JobOrderCode Like '%{0}%'", jobCode);
+                }
+            }
+            if (orgId > 0)
+            {
+                param += string.Format(@"and jo.OrganizationId={0}", orgId);
+            }
+
+            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
+
+Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
+Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
+Where joa.JobOrderId = jo.JodOrderId
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
+
+Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
+Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
+Where jop.JobOrderId = jo.JodOrderId
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName'
+
+from tblJobOrders jo
+Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.StateStatus='TS-Assigned' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+            return query;
+        }
+
+        public IEnumerable<JobOrderDTO> GetJobOrdersTS(string mobileNo, long? modelId, long? jobOrderId, string jobCode, long orgId)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderTS(mobileNo, modelId, jobOrderId, jobCode, orgId)).ToList();
+        }
     }
 }

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "T.S. Job Order List";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">T.S. Job Order List</b></h4>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-form-label">Model Name</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">Mobile No</label>
+                <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">JobCode</label>
+                <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mt-2" id="dataContainer">
+        @{Html.RenderAction("GetJobOrdersTS", new { @flag = "view" });}
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var ddlModelName = $("#ddlModelName");
+        var txtMobileNo = $("#txtMobileNo");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var txtJobCode = $("#txtJobCode");
+        var hdfJobOrderId = $("#hdfJobOrderId");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        txtMobileNo.keyup(function () {
+            LoadDataTable();
+
+        })
+
+        txtJobCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), jobCode: txtJobCode.val(), page: 1 };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrdersTS', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+    </script>
+    }
