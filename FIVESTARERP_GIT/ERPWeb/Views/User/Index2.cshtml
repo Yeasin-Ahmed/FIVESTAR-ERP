@@ -1,0 +1,81 @@
+﻿@using ERPBO.Production.ViewModels
+@{
+    ViewBag.Title = "Index";
+    int sl = 0;
+    string badge = string.Empty;
+}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="m-0 text-dark"><i class="fas fa-fire" style="color:#ff7615"></i> Dashboard</h1>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    @Html.AntiForgeryToken()
+    <div class="col-md-12">
+        <div class="card card-gray">
+            <div class="card-header border-transparent">
+                <h3 class="card-title text-bold text-white"><i class="fas fa-gavel"></i> Job Order Status Summery</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-warning">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderPending).StateStatus)</span>
+                                <span class="info-box-number">
+                                    <a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderPending).TotalCount)</a>
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).StateStatus)</span>
+                                <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).TotalCount)</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-secondary">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).StateStatus)</span>
+                                <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).TotalCount)</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-danger">
+                                <i class="fas fa-flag"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderDisapproved).StateStatus)</span>
+                                <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderDisapproved).TotalCount)</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

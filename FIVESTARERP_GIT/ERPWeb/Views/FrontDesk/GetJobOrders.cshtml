@@ -123,11 +123,23 @@
         // View Job Order
         $(document).on('click', 'a.data-item-details', function (e) {
             e.preventDefault();
-            hdfJobOrderId.val("0");
             var id = $(this).attr("data-item-details");
+            getJobOrderDetail("Detail",id);
+        })
+
+
+        // assign a T.S.
+        $(document).on('click', 'a.data-item-assignTS', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-assignTS");
+            getJobOrderDetail("Assign", id);
+        })
+
+        function getJobOrderDetail(flag, id) {
+            hdfJobOrderId.val("0");
             if (TryParseInt(id) > 0) {
                 hdfJobOrderId.val(id)
-                var data = { flag: "Detail", modelId: 0, jobOrderId: id, mobileNo: '',status: "", jobCode:"", page: 1 };
+                var data = { flag: flag, modelId: 0, jobOrderId: id, mobileNo: '', status: "", jobCode: "", page: 1 };
 
                 console.log(data);
                 $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {
@@ -141,8 +153,7 @@
                     console.log(error);
                 });
             }
-        })
-
+        }
 
         // edit status
         function validateStatus() {
@@ -203,6 +214,53 @@
             console.log(data);
             enable(".btnDisapproved");
             enable(".btnApproved");
+        }
+
+        //btnAssignTS
+
+        function validateTS() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($(".ddlTSName").val() === "") {
+                $(".require-ts").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $(document).on('click', '.btnAssignTS', function (e) {
+            e.preventDefault();
+            if (validateTS()) {
+                bootbox.confirm("Are you sure you want to Assign this T.S. to the Job Order?", function (result) {
+                    if (result) {
+                        assignTStoTheJobOrder();
+                    }
+                })
+            }
+        })
+
+        function assignTStoTheJobOrder() {
+
+            disable(".btnAssignTS");
+            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val(), tsId: $(".ddlTSName").val() });
+
+            console.log(data);
+
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/AssignTSForJobOrder', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $("#modalJobOrderDetails").modal("toggle");
+                    $('.toastrDefaultSuccess').trigger('click');
+                    LoadDataTable();
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+                enable(".btnAssignTS");
+            }).fail(function (error) {
+                enable(".btnAssignTS");
+                console.log(error);
+            })
+            enable(".btnAssignTS");
         }
 
     </script>

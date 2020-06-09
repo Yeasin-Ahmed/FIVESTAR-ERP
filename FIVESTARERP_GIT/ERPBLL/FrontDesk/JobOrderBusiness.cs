@@ -2,6 +2,7 @@
 using ERPBLL.FrontDesk.Interface;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
+using ERPBO.Production.DTOModel;
 using ERPDAL.FrontDeskDAL;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ namespace ERPBLL.FrontDesk
 
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
-SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems'
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
 From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
@@ -79,11 +80,12 @@ Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames'
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
 Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName'
 
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
-Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 {0}) tbl", Utility.ParamChecker(param));
+Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -152,6 +154,25 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 _jobOrderRepository.Update(jobOrder);
             }
             return _jobOrderRepository.Save();
+        }
+
+        public bool AssignTSForJobOrder(long jobOrderId, long tsId, long userId, long orgId)
+        {
+            var jobOrder = GetJobOrderById(jobOrderId, orgId);
+            if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.CustomerApproved)
+            {
+                jobOrder.TSId = tsId;
+                jobOrder.StateStatus = JobOrderStatus.AssignToTS;
+                jobOrder.UpUserId = userId;
+                jobOrder.UpdateDate = DateTime.Now;
+                _jobOrderRepository.Update(jobOrder);
+            }
+            return _jobOrderRepository.Save();
+        }
+
+        public IEnumerable<DashboardRequisitionSummeryDTO> DashboardJobOrderSummery(long orgId)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardRequisitionSummeryDTO>(string.Format(@"select StateStatus, count(*) as TotalCount from tblJobOrders Where OrganizationId={0} group by StateStatus", orgId)).ToList();
         }
     }
 }

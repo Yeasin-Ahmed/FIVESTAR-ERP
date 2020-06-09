@@ -88,7 +88,8 @@ namespace ERPBLL.Common
             {
                 new Dropdown(){text=JobOrderStatus.PendingJobOrder,value=JobOrderStatus.PendingJobOrder},
                 new Dropdown(){text=JobOrderStatus.CustomerApproved,value=JobOrderStatus.CustomerApproved},
-                new Dropdown(){text=JobOrderStatus.CustomerDisapproved,value=JobOrderStatus.CustomerDisapproved}
+                new Dropdown(){text=JobOrderStatus.CustomerDisapproved,value=JobOrderStatus.CustomerDisapproved},
+                 new Dropdown(){text=JobOrderStatus.AssignToTS,value=JobOrderStatus.AssignToTS}
             };
             return dropdowns;
         }

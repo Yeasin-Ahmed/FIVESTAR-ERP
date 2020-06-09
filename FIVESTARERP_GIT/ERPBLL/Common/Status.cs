@@ -78,6 +78,7 @@ namespace ERPBLL.Common
         public static readonly string PendingJobOrder = "Pending-JobOrder";
         public static readonly string CustomerApproved = "Customer-Approved";
         public static readonly string CustomerDisapproved = "Customer-Disapproved";
+        public static readonly string AssignToTS = "TS-Assigned";
     }
     public class JobOrderTypes
     {

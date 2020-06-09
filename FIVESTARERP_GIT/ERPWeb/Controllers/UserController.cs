@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
 using ERPBO.Production.DTOModel;
@@ -21,69 +22,95 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
         private readonly IFinishGoodsStockDetailBusiness _finishGoodsStockDetailBusiness;
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
+        private readonly IJobOrderBusiness _jobOrderBusiness;
 
 
-        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness)
+        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
             this._productionLineBusiness = productionLineBusiness;
             this._finishGoodsStockDetailBusiness = finishGoodsStockDetailBusiness;
             this._itemReturnInfoBusiness = itemReturnInfoBusiness;
+            this._jobOrderBusiness = jobOrderBusiness;
         }
         public ActionResult Index()
         {
-           // Requisition Summery
-           IEnumerable<DashboardRequisitionSummeryDTO> dto = _requsitionInfoBusiness.DashboardRequisitionSummery(User.OrgId);
-           IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
-            AutoMapper.Mapper.Map(dto, viewModel);
-            ViewBag.RequisitionSummery = viewModel;
-            // Requisition Status // YSN
+            if(User.UserName != "sagarnew")
+            {
+                // Requisition Summery
+                IEnumerable<DashboardRequisitionSummeryDTO> dto = _requsitionInfoBusiness.DashboardRequisitionSummery(User.OrgId);
+                IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                ViewBag.RequisitionSummery = viewModel;
+                // Requisition Status // YSN
 
-             var reqAccepted = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Accepted);
-            ViewBag.RequisitionAccepted = (reqAccepted == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Accepted", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel {StateStatus= reqAccepted.StateStatus,TotalCount= reqAccepted.TotalCount };
+                var reqAccepted = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Accepted);
+                ViewBag.RequisitionAccepted = (reqAccepted == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Accepted", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqAccepted.StateStatus, TotalCount = reqAccepted.TotalCount };
 
-            var reqApproved = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Approved);
-            ViewBag.RequisitionApproved = (reqApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Approved", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqApproved.StateStatus, TotalCount = reqApproved.TotalCount };
+                var reqApproved = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Approved);
+                ViewBag.RequisitionApproved = (reqApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Approved", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqApproved.StateStatus, TotalCount = reqApproved.TotalCount };
 
-            var reqPending = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Pending);
-            ViewBag.RequisitionPending = (reqPending == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Pending", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqPending.StateStatus, TotalCount = reqPending.TotalCount };
+                var reqPending = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Pending);
+                ViewBag.RequisitionPending = (reqPending == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Pending", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqPending.StateStatus, TotalCount = reqPending.TotalCount };
 
-            var reqRecheck = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Recheck);
-            ViewBag.RequisitionRecheck = (reqRecheck == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Recheck", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqRecheck.StateStatus, TotalCount = reqRecheck.TotalCount };
+                var reqRecheck = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Recheck);
+                ViewBag.RequisitionRecheck = (reqRecheck == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Recheck", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqRecheck.StateStatus, TotalCount = reqRecheck.TotalCount };
 
-            var reqCancel = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Canceled);
-            ViewBag.RequisitionCancel = (reqCancel == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Cancel", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqCancel.StateStatus, TotalCount = reqCancel.TotalCount };
+                var reqCancel = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Canceled);
+                ViewBag.RequisitionCancel = (reqCancel == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Cancel", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqCancel.StateStatus, TotalCount = reqCancel.TotalCount };
 
-            var reqReject = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Rejected);
-            ViewBag.RequisitionReject = (reqReject == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Rejected", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqReject.StateStatus, TotalCount = reqReject.TotalCount };
+                var reqReject = dto.FirstOrDefault(req => req.StateStatus == RequisitionStatus.Rejected);
+                ViewBag.RequisitionReject = (reqReject == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = "Rejected", TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = reqReject.StateStatus, TotalCount = reqReject.TotalCount };
 
-            //--------------------//
-            // Line wise daily Production
-            IEnumerable<DashboardLineWiseProductionDTO> dashboardLineWises = _finishGoodsStockDetailBusiness.DashboardLineWiseDailyProduction(User.OrgId);
-            IEnumerable<DashboardLineWiseProductionViewModel> dashboardLines = new List<DashboardLineWiseProductionViewModel>();
-            AutoMapper.Mapper.Map(dashboardLineWises, dashboardLines);
-            ViewBag.DashboardLineWiseProductionViewModel = dashboardLines;
+                //--------------------//
+                // Line wise daily Production
+                IEnumerable<DashboardLineWiseProductionDTO> dashboardLineWises = _finishGoodsStockDetailBusiness.DashboardLineWiseDailyProduction(User.OrgId);
+                IEnumerable<DashboardLineWiseProductionViewModel> dashboardLines = new List<DashboardLineWiseProductionViewModel>();
+                AutoMapper.Mapper.Map(dashboardLineWises, dashboardLines);
+                ViewBag.DashboardLineWiseProductionViewModel = dashboardLines;
 
-            // Line wise OverAll Production
-            IEnumerable<DashboardLineWiseProductionDTO> overalldto = _finishGoodsStockDetailBusiness.DashboardLineWiseOverAllProduction(User.OrgId);
-            IEnumerable<DashboardLineWiseProductionViewModel> overallViews = new List<DashboardLineWiseProductionViewModel>();
-            AutoMapper.Mapper.Map(overalldto, overallViews);
-            ViewBag.DashboardLineWiseOverallProductionViewModel = overallViews;
+                // Line wise OverAll Production
+                IEnumerable<DashboardLineWiseProductionDTO> overalldto = _finishGoodsStockDetailBusiness.DashboardLineWiseOverAllProduction(User.OrgId);
+                IEnumerable<DashboardLineWiseProductionViewModel> overallViews = new List<DashboardLineWiseProductionViewModel>();
+                AutoMapper.Mapper.Map(overalldto, overallViews);
+                ViewBag.DashboardLineWiseOverallProductionViewModel = overallViews;
 
-            // Faculty daily wise Production
-            IEnumerable<DashboardFacultyWiseProductionDTO> dailyFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyDayWiseProduction(User.OrgId);
-            IEnumerable<DashboardFacultyWiseProductionViewModel> dailyFacultyViews = new List<DashboardFacultyWiseProductionViewModel>();
-            AutoMapper.Mapper.Map(dailyFacultyDTO, dailyFacultyViews);
-            ViewBag.DashboardFacultyWiseProductionViewModel = dailyFacultyViews;
+                // Faculty daily wise Production
+                IEnumerable<DashboardFacultyWiseProductionDTO> dailyFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyDayWiseProduction(User.OrgId);
+                IEnumerable<DashboardFacultyWiseProductionViewModel> dailyFacultyViews = new List<DashboardFacultyWiseProductionViewModel>();
+                AutoMapper.Mapper.Map(dailyFacultyDTO, dailyFacultyViews);
+                ViewBag.DashboardFacultyWiseProductionViewModel = dailyFacultyViews;
 
-            // Faculty wise OveAll Production
-            IEnumerable<DashboardFacultyWiseProductionDTO> OverAllFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyOverAllWiseProduction(User.OrgId);
-            IEnumerable<DashboardFacultyWiseProductionViewModel> OverAllFacultyViews = new List<DashboardFacultyWiseProductionViewModel>();
-            AutoMapper.Mapper.Map(OverAllFacultyDTO, OverAllFacultyViews);
-            ViewBag.DashboardFacultyWiseOverAllProductionViewModel = OverAllFacultyViews;
+                // Faculty wise OveAll Production
+                IEnumerable<DashboardFacultyWiseProductionDTO> OverAllFacultyDTO = _itemReturnInfoBusiness.DashboardFacultyOverAllWiseProduction(User.OrgId);
+                IEnumerable<DashboardFacultyWiseProductionViewModel> OverAllFacultyViews = new List<DashboardFacultyWiseProductionViewModel>();
+                AutoMapper.Mapper.Map(OverAllFacultyDTO, OverAllFacultyViews);
+                ViewBag.DashboardFacultyWiseOverAllProductionViewModel = OverAllFacultyViews;
 
-            return View();
+                return View();
+            }
+            else
+            {
+                IEnumerable<DashboardRequisitionSummeryDTO> dto = _jobOrderBusiness.DashboardJobOrderSummery(User.OrgId);
+                IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                ViewBag.JobOrderSummery = viewModel;
+
+                var jobOrderPending = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.PendingJobOrder);
+                ViewBag.JobOrderPending = (jobOrderPending == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.PendingJobOrder, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderPending.StateStatus, TotalCount = jobOrderPending.TotalCount };
+
+                var jobOrderApproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.CustomerApproved);
+                ViewBag.JobOrderApproved = (jobOrderApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.CustomerApproved, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderApproved.StateStatus, TotalCount = jobOrderApproved.TotalCount };
+
+                var jobOrderDisapproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.CustomerDisapproved);
+                ViewBag.JobOrderDisapproved = (jobOrderDisapproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.CustomerDisapproved, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderDisapproved.StateStatus, TotalCount = jobOrderDisapproved.TotalCount };
+
+                var jobOrdeAssignToTS = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.AssignToTS);
+                ViewBag.JobOrdeAssignToTS = (jobOrdeAssignToTS == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.AssignToTS, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrdeAssignToTS.StateStatus, TotalCount = jobOrdeAssignToTS.TotalCount };
+
+                return View("Index2");
+            }
         }
 
         [HttpPost,ValidateJsonAntiForgeryToken]
