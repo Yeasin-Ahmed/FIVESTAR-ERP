@@ -68,7 +68,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Part</span></h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Parts</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -76,10 +76,10 @@
                     <input type="hidden" name="Id" id="hdfMobilePartId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtMobilePartName" class="control-label font-weight-bold">MobilePartName</label>
+                            <label for="txtMobilePartName" class="control-label font-weight-bold">Mobile Parts Name</label>
                             <input type="text" name="txtMobilePartName" value="" id="txtMobilePartName" class="form-control form-control-sm" />
-                            <span class="error hide required-mobilePartName font-weight-bold">Input MobilePart Name!</span>
-                            <span class="error hide duplicate-mobilePartName font-weight-bold">Already MobilePart Name Exist!</span>
+                            <span class="error hide required-mobilePartName font-weight-bold">Input Mobile Parts Name!</span>
+                            <span class="error hide duplicate-mobilePartName font-weight-bold">Already MobileParts Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -133,7 +133,7 @@
 
         function OpenModal() {
             clearCtrl();
-            $("#spanModalHead").text('Add New MobilePart');
+            $("#spanModalHead").text('Add New Mobile Parts');
             $("#spanSaveText").text('Save');
             $("#modalMobilePart").modal("show");
             $(".error").addClass("hide");
@@ -194,7 +194,7 @@
         $(document).on("click", "a.data-edit-item", function (e) {
             e.preventDefault()
             OpenModal()
-            $("#spanModalHead").text('Update MobilePart');
+            $("#spanModalHead").text('Update Mobile Parts');
             $("#spanSaveText").text('Update');
             var row = $(this).parent().parents('tr');
             var td1 = row.find('td:eq(1)').html();

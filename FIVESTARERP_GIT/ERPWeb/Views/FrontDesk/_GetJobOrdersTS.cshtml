@@ -29,7 +29,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            badge = item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary";
+            badge = item.StateStatus == "TS-Assigned" ? "badge bg-primary" : "badge bg-primary";
             sl = sl + 1;
             isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
             isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
