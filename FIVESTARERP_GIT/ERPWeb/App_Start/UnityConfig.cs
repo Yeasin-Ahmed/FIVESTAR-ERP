@@ -83,6 +83,7 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IBranchBusiness2, BranchBusiness2>();
             container.RegisterType<IMobilePartStockDetailBusiness, MobilePartStockDetailBusiness>();
             container.RegisterType<IMobilePartStockInfoBusiness, MobilePartStockInfoBusiness>();
             container.RegisterType<IServicesWarehouseBusiness, ServicesWarehouseBusiness>();

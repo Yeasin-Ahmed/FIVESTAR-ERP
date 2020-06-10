@@ -24,8 +24,9 @@ namespace ERPWeb.Controllers
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
         private readonly IMobilePartStockDetailBusiness _mobilePartStockDetailBusiness;
+        private readonly IBranchBusiness2 _branchBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness,ICustomerServiceBusiness customerServiceBusiness,IServicesWarehouseBusiness servicesWarehouseBusiness,IMobilePartStockInfoBusiness mobilePartStockInfoBusiness,IMobilePartStockDetailBusiness mobilePartStockDetailBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness,ICustomerServiceBusiness customerServiceBusiness,IServicesWarehouseBusiness servicesWarehouseBusiness,IMobilePartStockInfoBusiness mobilePartStockInfoBusiness,IMobilePartStockDetailBusiness mobilePartStockDetailBusiness,IBranchBusiness2 branchBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -36,6 +37,7 @@ namespace ERPWeb.Controllers
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
             this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
             this._mobilePartStockDetailBusiness = mobilePartStockDetailBusiness;
+            this._branchBusiness = branchBusiness;
         }
         #region tblAccessories
         public ActionResult AccessoriesList()
@@ -561,6 +563,64 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(partStockDetailDTO, mobilePartStockDetailViewModels);
                 return PartialView("_MobilePartStockDetailList", mobilePartStockDetailViewModels);
             }
+        }
+        #endregion
+
+        #region tblBranch
+        public ActionResult BranchList()
+        {
+            IEnumerable<BranchDTO> branchDTO = _branchBusiness.GetAllBranchByOrgId(User.OrgId).Select(branch => new BranchDTO
+            {
+                BranchId = branch.BranchId,
+                BranchName = branch.BranchName,
+                BranchAddress = branch.BranchAddress,
+                Remarks = branch.Remarks,
+                OrganizationId = branch.OrganizationId,
+                EUserId = branch.EUserId,
+                EntryDate = DateTime.Now,
+                UpUserId = branch.UpUserId,
+                UpdateDate = branch.UpdateDate,
+            }).ToList();
+            List<BranchViewModel> viewModel = new List<BranchViewModel>();
+            AutoMapper.Mapper.Map(branchDTO, viewModel);
+            return View(viewModel);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveBranch(BranchViewModel branchViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    BranchDTO dto = new BranchDTO();
+                    AutoMapper.Mapper.Map(branchViewModel, dto);
+                    isSuccess = _branchBusiness.SaveBranch(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteBranch(long id)
+        {
+            bool isSuccess = false;
+            if (id > 0)
+            {
+                try
+                {
+                    isSuccess = _branchBusiness.DeleteBranch(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         #endregion
     }

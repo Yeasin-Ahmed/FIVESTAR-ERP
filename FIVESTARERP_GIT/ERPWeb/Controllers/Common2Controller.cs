@@ -23,8 +23,9 @@ namespace ERPWeb.Controllers
         private readonly ICustomerBusiness _customerBusiness;
         private readonly ITechnicalServiceBusiness _technicalServiceBusiness;
         private readonly ICustomerServiceBusiness _customerServiceBusiness;
+        private readonly IBranchBusiness2 _branchBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -32,6 +33,7 @@ namespace ERPWeb.Controllers
             this._customerBusiness = customerBusiness;
             this._technicalServiceBusiness = technicalServiceBusiness;
             this._customerServiceBusiness = customerServiceBusiness;
+            this._branchBusiness = branchBusiness;
         }
 
         #region Configuration Module
@@ -86,6 +88,11 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateCsName(string name, long id)
         {
             bool isExist = _customerServiceBusiness.IsDuplicateCustomerServiceName(name, id, User.OrgId);
+            return Json(isExist);
+        }
+        public ActionResult IsDuplicateBranchName(string branchName, long id)
+        {
+            bool isExist = _branchBusiness.IsDuplicateBranchName(branchName, id, User.OrgId);
             return Json(isExist);
         }
         #region Front-Desk Module

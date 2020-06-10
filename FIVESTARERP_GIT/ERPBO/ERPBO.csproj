@@ -57,6 +57,7 @@
     <Compile Include="Common\UserInformation.cs" />
     <Compile Include="Common\UserPrivilege.cs" />
     <Compile Include="Configuration\DomainModels\Accessories.cs" />
+    <Compile Include="Configuration\DomainModels\Branch.cs" />
     <Compile Include="Configuration\DomainModels\ClientProblem.cs" />
     <Compile Include="Configuration\DomainModels\Customer.cs" />
     <Compile Include="Configuration\DomainModels\CustomerService.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Configuration\DomainModels\ServiceWarehouse.cs" />
     <Compile Include="Configuration\DomainModels\TechnicalServiceEng.cs" />
     <Compile Include="Configuration\DTOModels\AccessoriesDTO.cs" />
+    <Compile Include="Configuration\DTOModels\BranchDTO.cs" />
     <Compile Include="Configuration\DTOModels\ClientProblemDTO.cs" />
     <Compile Include="Configuration\DTOModels\CustomerDTO.cs" />
     <Compile Include="Configuration\DTOModels\CustomerServiceDTO.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Configuration\DTOModels\ServicesWarehouseDTO.cs" />
     <Compile Include="Configuration\DTOModels\TechnicalServiceEngDTO.cs" />
     <Compile Include="Configuration\ViewModels\AccessoriesViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\BranchViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ClientProblemViewModel.cs" />
     <Compile Include="Configuration\ViewModels\CustomerServiceViewModel.cs" />
     <Compile Include="Configuration\ViewModels\CustomerViewModel.cs" />
