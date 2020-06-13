@@ -43,4 +43,8 @@ namespace ERPDAL.ConfigurationDAL
     {
         public MobilePartStockDetailRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
+    public class BranchRepository : ConfigurationBaseRepository<Branch>
+    {
+        public BranchRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
 }

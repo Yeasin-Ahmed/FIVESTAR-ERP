@@ -23,5 +23,6 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<ServiceWarehouse> tblServicesWarehouses { get; set; }
         public DbSet<MobilePartStockInfo> tblMobilePartStockInfo { get; set; }
         public DbSet<MobilePartStockDetail> tblMobilePartStockDetails { get; set; }
+        public DbSet<Branch> tblBranches { get; set; }
     }
 }
