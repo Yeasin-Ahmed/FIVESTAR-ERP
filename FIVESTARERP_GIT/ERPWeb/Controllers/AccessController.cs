@@ -91,7 +91,9 @@ namespace ERPWeb.Controllers
 
                             string[] roleArray = new string[2];
                             roleArray[0] = userInformation.RoleName;
-                            serializeModel.roles = roleArray; 
+                            serializeModel.roles = roleArray;
+                            serializeModel.BranchId = userInformation.BranchId;
+                            serializeModel.BranchName = userInformation.BranchName;
                             #endregion
 
                             Session["UserDetail"] = serializeModel;

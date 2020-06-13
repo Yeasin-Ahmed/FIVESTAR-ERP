@@ -23,5 +23,11 @@ namespace ERPDAL.ProductionDAL
         public DbSet<FinishGoodsStockDetail> tblFinishGoodsStockDetail { get; set; }
         public DbSet<FinishGoodsSendToWarehouseInfo> tblFinishGoodsSendToWarehouseInfo { get; set; }
         public DbSet<FinishGoodsSendToWarehouseDetail> tblFinishGoodsSendToWarehouseDetail { get; set; }
+        public DbSet<AssemblyLine> tblAssemblyLines { get; set; }
+        public DbSet<TransferStockToAssemblyInfo> tblTransferStockToAssemblyInfo { get; set; }
+        public DbSet<TransferStockToAssemblyDetail> tblTransferStockToAssemblyDetail { get; set; }
+        public DbSet<AssemblyLineStockInfo> tblAssemblyLineStockInfo { get; set; }
+        public DbSet<AssemblyLineStockDetail> tblAssemblyLineStockDetail { get; set; }
+        public DbSet<QualityControl> tblQualityControl { get; set; }
     }
 }

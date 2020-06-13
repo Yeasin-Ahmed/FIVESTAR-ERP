@@ -40,5 +40,7 @@ namespace ERPWeb.Infrastructure
         public string MobileNo { get; set; }
         public string EmployeeId { get; set; }
         public string Designation { get; set; }
+        public long BranchId { get; set; }
+        public string BranchName { get; set; }
     }
 }

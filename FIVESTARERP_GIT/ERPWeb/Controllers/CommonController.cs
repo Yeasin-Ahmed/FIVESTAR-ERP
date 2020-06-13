@@ -30,6 +30,7 @@ namespace ERPWeb.Controllers
         private readonly IProductionLineBusiness _productionLineBusiness;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
+        private readonly IAssemblyLineBusiness _assemblyLineBusiness;
 
         //Configuration
         private readonly IAccessoriesBusiness _accessoriesBusiness;
@@ -46,7 +47,7 @@ namespace ERPWeb.Controllers
         private readonly IOrganizationBusiness _organizationBusiness;
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -69,6 +70,7 @@ namespace ERPWeb.Controllers
             this._mobilePartBusiness = mobilePartBusiness;
             this._customerBusiness = customerBusiness;
             this._technicalServiceBusiness = technicalServiceBusiness;
+            this._assemblyLineBusiness = assemblyLineBusiness;
         }
 
         #region User Menus
@@ -331,6 +333,7 @@ namespace ERPWeb.Controllers
             IsDuplicate=_itemPreparationInfoBusiness.IsDuplicationItemPreparation(itemId, modelId, User.OrgId) != null;
             return Json(IsDuplicate);
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateRoleName(long roleId, string roleName, long orgId)
         {
@@ -354,6 +357,13 @@ namespace ERPWeb.Controllers
                 IsCorrect = user.Password == Utility.Encrypt(password);
             }
             return Json(IsCorrect);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateAssemblyInLine(long lineId, long id,string assemblyName)
+        {
+           var assembly =  _assemblyLineBusiness.GetAssemblyLines(User.OrgId).FirstOrDefault(a => a.ProductionLineId == lineId && a.AssemblyLineName == assemblyName && a.AssemblyLineId != id) != null;
+            return Json(assembly);
         }
 
         #region Dropdown List
@@ -460,6 +470,16 @@ namespace ERPWeb.Controllers
             return Json(list);
         }
 
+        [HttpPost]
+        public ActionResult GetAssembliesByLine(long lineId)
+        {
+            var data = _assemblyLineBusiness.GetAssemblyLines(User.OrgId).Where(a=> a.ProductionLineId == lineId).Select(i => new Dropdown
+            {
+                value = i.AssemblyLineId.ToString(),
+                text = i.AssemblyLineName
+            }).ToList();
+            return Json(data);
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

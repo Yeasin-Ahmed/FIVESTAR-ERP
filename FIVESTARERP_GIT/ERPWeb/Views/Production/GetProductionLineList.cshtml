@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionLineViewModel>
 @{
-    ViewBag.Title = "Production Line List";
+    ViewBag.Title = "Production Floor List";
     int sl = 0;
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
@@ -13,7 +13,7 @@
                 @Html.AntiForgeryToken()
             </div>
             <div class="col-md-6">
-                <h4><b style="color:darkblue">Production Line List</b></h4>
+                <h4><b style="color:darkblue">Production Floor List</b></h4>
 
             </div>
             <div class="col-md-3 text-right">

@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Inventory.Interface;
+using ERPBLL.Production;
 using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DTOModel;
 using ERPBO.Inventory.ViewModels;
@@ -18,50 +19,73 @@ namespace ERPWeb.Controllers
     public class ProductionController : BaseController
     {
         // GET: Production
-        private readonly IWarehouseBusiness _warehouseBusiness;
+        #region Production Business Classes
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IProductionLineBusiness _productionLineBusiness;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
         private readonly IProductionStockDetailBusiness _productionStockDetailBusiness;
-        
-        private readonly IItemBusiness _itemBusiness;
-        private readonly IItemTypeBusiness _itemTypeBusiness;
-        private readonly IUnitBusiness _unitBusiness;
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
         private readonly IItemReturnDetailBusiness _itemReturnDetailBusiness;
-        private readonly IDescriptionBusiness _descriptionBusiness;
         private readonly IFinishGoodsInfoBusiness _finishGoodsInfoBusiness;
         private readonly IFinishGoodsRowMaterialBusiness _finishGoodsRowMaterialBusiness;
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
         private readonly IFinishGoodsStockDetailBusiness _finishGoodsStockDetailBusiness;
         private readonly IFinishGoodsSendToWarehouseInfoBusiness _finishGoodsSendToWarehouseInfoBusiness;
         private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
+
+        private readonly IAssemblyLineBusiness _assemblyLineBusiness;
+        private readonly ITransferStockToAssemblyInfoBusiness _transferStockToAssemblyInfoBusiness;
+        private readonly ITransferStockToAssemblyDetailBusiness _transferStockToAssemblyDetailBusiness;
+        private readonly IAssemblyLineStockInfoBusiness _assemblyLineStockInfoBusiness;
+        private readonly IAssemblyLineStockDetailBusiness _assemblyLineStockDetailBusiness;
+
+        private readonly IQualityControlBusiness _qualityControlBusiness;
+        #endregion
+
+        #region Inventory Business Classes
+        private readonly IWarehouseBusiness _warehouseBusiness;
+        private readonly IDescriptionBusiness _descriptionBusiness;
+        private readonly IItemBusiness _itemBusiness;
+        private readonly IItemTypeBusiness _itemTypeBusiness;
+        private readonly IUnitBusiness _unitBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
+        #endregion
 
-        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness)
+        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness)
         {
+            #region Production
             this._requsitionInfoBusiness = requsitionInfoBusiness;
-            this._warehouseBusiness = warehouseBusiness;
             this._requsitionDetailBusiness = requsitionDetailBusiness;
             this._productionLineBusiness = productionLineBusiness;
-            this._itemBusiness = itemBusiness;
-            this._itemTypeBusiness = itemTypeBusiness;
-            this._unitBusiness = unitBusiness;
             this._productionStockDetailBusiness = productionStockDetailBusiness;
             this._productionStockInfoBusiness = productionStockInfoBusiness;
             this._itemReturnInfoBusiness = itemReturnInfoBusiness;
             this._itemReturnDetailBusiness = itemReturnDetailBusiness;
-            this._descriptionBusiness = descriptionBusiness;
             this._finishGoodsInfoBusiness = finishGoodsInfoBusiness;
             this._finishGoodsRowMaterialBusiness = finishGoodsRowMaterialBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
             this._finishGoodsStockDetailBusiness = finishGoodsStockDetailBusiness;
             this._finishGoodsSendToWarehouseInfoBusiness = finishGoodsSendToWarehouseInfoBusiness;
             this._finishGoodsSendToWarehouseDetailBusiness = finishGoodsSendToWarehouseDetailBusiness;
+            this._assemblyLineBusiness = assemblyLineBusiness;
+            this._transferStockToAssemblyInfoBusiness = transferStockToAssemblyInfoBusiness;
+            this._transferStockToAssemblyDetailBusiness = transferStockToAssemblyDetailBusiness;
+            this._assemblyLineStockInfoBusiness = assemblyLineStockInfoBusiness;
+            this._assemblyLineStockDetailBusiness = assemblyLineStockDetailBusiness;
+            this._qualityControlBusiness = qualityControlBusiness;
+            #endregion
+
+            #region Inventory
+            this._warehouseBusiness = warehouseBusiness;
+            this._itemBusiness = itemBusiness;
+            this._itemTypeBusiness = itemTypeBusiness;
+            this._unitBusiness = unitBusiness;
+            this._descriptionBusiness = descriptionBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
+            #endregion
         }
 
         #region ProductionLine
@@ -259,7 +283,7 @@ namespace ERPWeb.Controllers
                 }
                 else
                 {
-                    IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId,User.UserId);
+                    IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId, User.UserId);
                 }
             }
             return Json(IsSuccess);
@@ -306,7 +330,7 @@ namespace ERPWeb.Controllers
         {
             var info = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItem(modelId, itemId, User.OrgId);
             List<ItemPreparationDetailViewModel> details = new List<ItemPreparationDetailViewModel>();
-            if(info != null)
+            if (info != null)
             {
                 var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).ToList();
                 var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).ToList();
@@ -332,6 +356,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Production -Stock
+
         [HttpGet]
         public ActionResult GetProductionStockInfoList()
         {
@@ -391,7 +416,7 @@ namespace ERPWeb.Controllers
             return PartialView("_productionStockInfoList", productionStockInfoViews);
         }
 
-        public ActionResult GetProductionStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,int page=1)
+        public ActionResult GetProductionStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -421,6 +446,344 @@ namespace ERPWeb.Controllers
                 IEnumerable<ProductionStockDetailInfoListViewModel> viewModels = new List<ProductionStockDetailInfoListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetProductionStockDetailInfoList", viewModels);
+            }
+        }
+
+        // Transfer stock to Assembly
+        public ActionResult GetFloorStockTransferList(string flag, long? lineId, long? assemblyId, long? modelId, long? warehouseId, string status, string transferCode, string fromDate, string toDate, long? transferInfoId, int page = 1)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetFloorStockTransferList");
+            if (string.IsNullOrEmpty(flag))
+            {
+                //ViewBag.UserPrivilege = UserPrivilege("Production", "GetTransferStockToAssemblyList");
+                ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.value == RequisitionStatus.Approved || s.value == RequisitionStatus.Accepted).Select(st => new SelectListItem
+                {
+                    Text = st.text,
+                    Value = st.value
+                }).ToList();
+
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+
+                return View();
+            }
+            else if (flag.Trim().ToLower() == Flag.View.ToLower() || flag.Trim().ToLower() == Flag.Search.ToLower())
+            {
+                var dto = _transferStockToAssemblyInfoBusiness.GetStockToAssemblyInfos(User.OrgId).Select(t => new TransferStockToAssemblyInfoDTO
+                {
+                    TSAInfoId = t.TSAInfoId,
+                    LineId = t.LineId,
+                    LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(t.LineId.Value, User.OrgId).LineNumber,
+                    AssemblyId = t.AssemblyId,
+                    AssemblyName = _assemblyLineBusiness.GetAssemblyLineById(t.AssemblyId.Value, User.OrgId).AssemblyLineName,
+                    DescriptionId = t.DescriptionId,
+                    ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(t.DescriptionId.Value, User.OrgId).DescriptionName,
+                    WarehouseId = t.WarehouseId,
+                    WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(t.WarehouseId.Value, User.OrgId).WarehouseName,
+                    EntryUser = UserForEachRecord(t.EUserId.Value).UserName,
+                    UpdateUser = (t.UpUserId == null || t.UpUserId == 0) ? "" : UserForEachRecord(t.UpUserId.Value).UserName,
+                    EntryDate = t.EntryDate,
+                    Remarks = t.Remarks,
+                    TransferCode = t.TransferCode,
+                    StateStatus = t.StateStatus,
+                    ItemCount = _transferStockToAssemblyDetailBusiness.GetTransferStockToAssemblyDetailByInfo(t.TSAInfoId, User.OrgId).Count()
+                }).AsEnumerable();
+
+                dto = dto.Where(t =>
+                (assemblyId == null || assemblyId <= 0 || t.AssemblyId == assemblyId) &&
+                (modelId == null || modelId <= 0 || t.DescriptionId == modelId) &&
+                (lineId == null || lineId <= 0 || t.LineId == lineId) &&
+                (warehouseId == null || warehouseId <= 0 || t.WarehouseId == warehouseId) &&
+                (transferCode == null || transferCode.Trim() == "" || t.TransferCode.Contains(transferCode)) &&
+                (status == null || status.Trim() == "" || t.StateStatus == status.Trim()) &&
+                (
+                    (fromDate == null && toDate == null)
+                    ||
+                     (fromDate == "" && toDate == "")
+                    ||
+                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                        t.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                        t.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                    ||
+                    (fromDate.Trim() != "" && t.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                    ||
+                    (toDate.Trim() != "" && t.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                )).OrderByDescending(t => t.EntryDate).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
+                IEnumerable<TransferStockToAssemblyInfoViewModel> viewModels = new List<TransferStockToAssemblyInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetFloorStockTransferList", viewModels);
+            }
+            else
+            {
+                // Details Part
+                var infoDomain = _transferStockToAssemblyInfoBusiness.GetStockToAssemblyInfoById(transferInfoId.Value, User.OrgId);
+
+                TransferStockToAssemblyInfoDTO info = new TransferStockToAssemblyInfoDTO
+                {
+                    AssemblyName = _assemblyLineBusiness.GetAssemblyLineById(infoDomain.AssemblyId.Value,User.OrgId).AssemblyLineName,
+                     TSAInfoId = infoDomain.TSAInfoId,
+                     TransferCode = infoDomain.TransferCode,
+                     ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(infoDomain.DescriptionId.Value,User.OrgId).DescriptionName,
+                     LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(infoDomain.LineId.Value,User.OrgId).LineNumber,
+                     WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(infoDomain.WarehouseId.Value,User.OrgId).WarehouseName,
+                     StateStatus = infoDomain.StateStatus
+                };
+
+                var details = _transferStockToAssemblyDetailBusiness.GetTransferStockToAssemblyDetailByInfo(transferInfoId.Value, User.OrgId)
+                    .Select(s => new TransferStockToAssemblyDetailDTO
+                    {
+                        ItemTypeName = _itemTypeBusiness.GetItemTypeOneByOrgId(s.ItemTypeId.Value, infoDomain.WarehouseId.Value,User.OrgId).ItemName,
+                        ItemName = _itemBusiness.GetItemOneByOrgId(s.ItemId.Value,  User.OrgId).ItemName,
+                        Quantity = s.Quantity,
+                        UnitName = _unitBusiness.GetUnitOneByOrgId(s.UnitId.Value,User.OrgId).UnitSymbol,
+                        Remarks = s.Remarks
+                    }).ToList();
+
+                TransferStockToAssemblyInfoViewModel viewModel = new TransferStockToAssemblyInfoViewModel();
+
+                IEnumerable<TransferStockToAssemblyDetailViewModel> list = new List<TransferStockToAssemblyDetailViewModel>();
+
+                AutoMapper.Mapper.Map(info, viewModel);
+                AutoMapper.Mapper.Map(details, list);
+
+                ViewBag.Info = viewModel;
+                return PartialView("_GetFloorStockTransferDetail", list);
+            }
+        }
+
+        public ActionResult CreateFloorStockTransfer()
+        {
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            {
+                Text = ware.WarehouseName,
+                Value = ware.Id.ToString()
+            }).ToList();
+            return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveTransferStockAssembly(TransferStockToAssemblyInfoViewModel info, List<TransferStockToAssemblyDetailViewModel> details)
+        {
+            bool IsSuccess = false;
+            var privilege = UserPrivilege("Production", "GetFloorStockTransferList");
+            var permission = (info.TSAInfoId == 0 && privilege.Add) || (info.TSAInfoId > 0 && privilege.Edit);
+            if (ModelState.IsValid && details.Count() > 0 && permission)
+            {
+                TransferStockToAssemblyInfoDTO dtoInfo = new TransferStockToAssemblyInfoDTO();
+                List<TransferStockToAssemblyDetailDTO> dtoDetail = new List<TransferStockToAssemblyDetailDTO>();
+                AutoMapper.Mapper.Map(info, dtoInfo);
+                AutoMapper.Mapper.Map(details, dtoDetail);
+                IsSuccess = _transferStockToAssemblyInfoBusiness.SaveTransferStockAssembly(dtoInfo, dtoDetail, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveTransferStockStatus(long transferId,string status)
+        {
+            bool IsSuccess = false;
+            var privilege = UserPrivilege("Production", "GetFloorStockTransferList");
+            if (transferId  > 0 && !string.IsNullOrEmpty(status) && status.Trim() != "" && status == RequisitionStatus.Accepted && (privilege.Approval || privilege.Edit))
+            {
+                IsSuccess=_assemblyLineStockDetailBusiness.SaveAssemblyStockInByProductionLine(transferId, status,User.OrgId,User.UserId);
+            }
+            return Json(IsSuccess);
+        }
+
+        // Assembly Stock Info
+        public ActionResult GetAssemblyLineStockInfo(string flag,long? lineId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,int page=1)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetAssemblyLineStockInfo");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+
+                return View();
+            }
+            else
+            {
+                IEnumerable<AssemblyLineStockInfoDTO> dto = _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfos(User.OrgId).Select(info => new AssemblyLineStockInfoDTO
+                {
+                    ALSInfo = info.ALSInfo,
+                    ProductionLineId = info.ProductionLineId.Value,
+                    ProductionLineName = _productionLineBusiness.GetProductionLineOneByOrgId(info.ProductionLineId.Value, User.OrgId).LineNumber,
+                    AssemblyLineId = info.AssemblyLineId,
+                    AssemblyLineName = _assemblyLineBusiness.GetAssemblyLineById(info.AssemblyLineId.Value,User.OrgId).AssemblyLineName,
+                    DescriptionId = info.DescriptionId,
+                    ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, info.OrganizationId).DescriptionName),
+                    WarehouseId = info.WarehouseId,
+                    WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+                    ItemTypeId = info.ItemTypeId,
+                    ItemTypeName = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
+                    ItemId = info.ItemId,
+                    ItemName = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, User.OrgId).ItemName),
+                    UnitId = info.UnitId,
+                    UnitName = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, User.OrgId).UnitSymbol),
+                    StockInQty = info.StockInQty,
+                    StockOutQty = info.StockOutQty,
+                    Remarks = info.Remarks,
+                    OrganizationId = info.OrganizationId
+                    
+                }).AsEnumerable();
+
+                dto = dto.Where(ws =>
+                (lineId == null || lineId == 0 || ws.ProductionLineId == lineId)
+                && (assemblyId == null || assemblyId == 0 || ws.AssemblyLineId == assemblyId)
+                && (modelId == null || modelId == 0 || ws.DescriptionId == modelId)
+                && (warehouseId == null || warehouseId == 0 || ws.WarehouseId == warehouseId)
+                && (itemTypeId == null || itemTypeId == 0 || ws.ItemTypeId == itemTypeId)
+                && (itemId == null || itemId == 0 || ws.ItemId == itemId)
+                && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
+                ).OrderByDescending(s => s.ALSInfo).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
+                List<AssemblyLineStockInfoViewModel> viewModels = new List<AssemblyLineStockInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetAssemblyLineStockInfo", viewModels);
+            }
+        }
+
+        public ActionResult GetReceiveStockFromFloor(string flag, long? lineId, long? assemblyId, long? modelId, long? warehouseId, string status, string transferCode, string fromDate, string toDate, long? transferInfoId, int page = 1)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetReceiveStockFromFloor");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.value == RequisitionStatus.Approved || s.value == RequisitionStatus.Accepted).Select(st => new SelectListItem
+                {
+                    Text = st.text,
+                    Value = st.value
+                }).ToList();
+
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+
+                return View();
+            }
+            else if (flag.Trim().ToLower() == Flag.View.ToLower() || flag.Trim().ToLower() == Flag.Search.ToLower())
+            {
+                var dto = _transferStockToAssemblyInfoBusiness.GetStockToAssemblyInfos(User.OrgId).Select(t => new TransferStockToAssemblyInfoDTO
+                {
+                    TSAInfoId = t.TSAInfoId,
+                    LineId = t.LineId,
+                    LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(t.LineId.Value, User.OrgId).LineNumber,
+                    AssemblyId = t.AssemblyId,
+                    AssemblyName = _assemblyLineBusiness.GetAssemblyLineById(t.AssemblyId.Value, User.OrgId).AssemblyLineName,
+                    DescriptionId = t.DescriptionId,
+                    ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(t.DescriptionId.Value, User.OrgId).DescriptionName,
+                    WarehouseId = t.WarehouseId,
+                    WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(t.WarehouseId.Value, User.OrgId).WarehouseName,
+                    EntryUser = UserForEachRecord(t.EUserId.Value).UserName,
+                    UpdateUser = (t.UpUserId == null || t.UpUserId == 0) ? "" : UserForEachRecord(t.UpUserId.Value).UserName,
+                    EntryDate = t.EntryDate,
+                    Remarks = t.Remarks,
+                    TransferCode = t.TransferCode,
+                    StateStatus = t.StateStatus,
+                    ItemCount = _transferStockToAssemblyDetailBusiness.GetTransferStockToAssemblyDetailByInfo(t.TSAInfoId, User.OrgId).Count()
+                }).AsEnumerable();
+
+                dto = dto.Where(t =>
+                (assemblyId == null || assemblyId <= 0 || t.AssemblyId == assemblyId) &&
+                (modelId == null || modelId <= 0 || t.DescriptionId == modelId) &&
+                (lineId == null || lineId <= 0 || t.LineId == lineId) &&
+                (warehouseId == null || warehouseId <= 0 || t.WarehouseId == warehouseId) &&
+                (transferCode == null || transferCode.Trim() == "" || t.TransferCode.Contains(transferCode)) &&
+                (status == null || status.Trim() == "" || t.StateStatus == status.Trim()) &&
+                (
+                    (fromDate == null && toDate == null)
+                    ||
+                     (fromDate == "" && toDate == "")
+                    ||
+                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                        t.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                        t.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                    ||
+                    (fromDate.Trim() != "" && t.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                    ||
+                    (toDate.Trim() != "" && t.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                )).OrderByDescending(t => t.EntryDate).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+
+                IEnumerable<TransferStockToAssemblyInfoViewModel> viewModels = new List<TransferStockToAssemblyInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetFloorStockTransferList", viewModels);
+            }
+            else
+            {
+                // Details Part
+                var infoDomain = _transferStockToAssemblyInfoBusiness.GetStockToAssemblyInfoById(transferInfoId.Value, User.OrgId);
+
+                TransferStockToAssemblyInfoDTO info = new TransferStockToAssemblyInfoDTO
+                {
+                    AssemblyName = _assemblyLineBusiness.GetAssemblyLineById(infoDomain.AssemblyId.Value, User.OrgId).AssemblyLineName,
+                    TSAInfoId = infoDomain.TSAInfoId,
+                    TransferCode = infoDomain.TransferCode,
+                    ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(infoDomain.DescriptionId.Value, User.OrgId).DescriptionName,
+                    LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(infoDomain.LineId.Value, User.OrgId).LineNumber,
+                    WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(infoDomain.WarehouseId.Value, User.OrgId).WarehouseName,
+                    StateStatus = infoDomain.StateStatus
+                };
+
+                var details = _transferStockToAssemblyDetailBusiness.GetTransferStockToAssemblyDetailByInfo(transferInfoId.Value, User.OrgId)
+                    .Select(s => new TransferStockToAssemblyDetailDTO
+                    {
+                        ItemTypeName = _itemTypeBusiness.GetItemTypeOneByOrgId(s.ItemTypeId.Value, infoDomain.WarehouseId.Value, User.OrgId).ItemName,
+                        ItemName = _itemBusiness.GetItemOneByOrgId(s.ItemId.Value, User.OrgId).ItemName,
+                        Quantity = s.Quantity,
+                        UnitName = _unitBusiness.GetUnitOneByOrgId(s.UnitId.Value, User.OrgId).UnitSymbol,
+                        Remarks = s.Remarks
+                    }).ToList();
+
+                TransferStockToAssemblyInfoViewModel viewModel = new TransferStockToAssemblyInfoViewModel();
+
+                IEnumerable<TransferStockToAssemblyDetailViewModel> list = new List<TransferStockToAssemblyDetailViewModel>();
+
+                AutoMapper.Mapper.Map(info, viewModel);
+                AutoMapper.Mapper.Map(details, list);
+
+                ViewBag.Info = viewModel;
+                return PartialView("_GetReceiveStockFromFloorDetail", list);
             }
         }
 
@@ -1028,6 +1391,75 @@ namespace ERPWeb.Controllers
             }
         }
 
+        #endregion
+
+        #region Assembly
+        public ActionResult GetAssemblyLines()
+        {
+            var assemblyLinesDtos = _assemblyLineBusiness.GetAssemblyLines(User.OrgId).Select(a => new AssemblyLineDTO
+            {
+                AssemblyLineId = a.AssemblyLineId,
+                AssemblyLineName = a.AssemblyLineName,
+                ProductionLineId = a.ProductionLineId,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(a.ProductionLineId, User.OrgId).LineNumber,
+                IsActive = a.IsActive,
+                OrganizationId = a.OrganizationId,
+                EntryDate = DateTime.Now,
+                Remarks = a.Remarks,
+                EntryUser = UserForEachRecord(a.EUserId.Value).UserName,
+                UpdateUser = (a.UpUserId == null || a.UpUserId == 0) ? "" : UserForEachRecord(a.UpUserId.Value).UserName
+            }).ToList();
+
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetAssemblyLines");
+
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            IEnumerable<AssemblyLineViewModel> assemblyLineViewModels = new List<AssemblyLineViewModel>();
+
+            AutoMapper.Mapper.Map(assemblyLinesDtos, assemblyLineViewModels);
+            return View(assemblyLineViewModels);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveAssemblyLine(AssemblyLineViewModel model)
+        {
+            bool IsSuccess = false;
+            var privilege = UserPrivilege("Production", "GetAssemblyLines");
+            var permission = (model.AssemblyLineId == 0 && privilege.Add) || (model.AssemblyLineId > 0 && privilege.Edit);
+
+            if (ModelState.IsValid && permission)
+            {
+                AssemblyLineDTO dto = new AssemblyLineDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _assemblyLineBusiness.SaveAssembly(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region Quality Control
+        public ActionResult GetQualityControls()
+        {
+            var dto = _qualityControlBusiness.GetQualityControls(User.OrgId).Select(s => new QualityControlDTO {
+                QCId= s.QCId,
+                QCName = s.QCName,
+                IsActive = s.IsActive,
+                ProductionLineId = s.ProductionLineId,
+                LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(s.ProductionLineId,User.OrgId).LineNumber,
+                Remarks = s.Remarks,
+                EntryUser= UserForEachRecord(s.EUserId.Value).UserName,
+                UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                EntryDate = s.EntryDate,
+                UpdateDate = s.UpdateDate
+            }).ToList();
+
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetAssemblyLines");
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            IEnumerable<QualityControlViewModel> viewModels = new List<QualityControlViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return View(viewModels);
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

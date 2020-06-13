@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Production.DomainModels
 {
-    [Table("tblProductionLines")]
+   [Table("tblProductionLines")]
    public class ProductionLine
     {
         [Key]
@@ -25,5 +25,7 @@ namespace ERPBO.Production.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public ICollection<AssemblyLine> AssemblyLines { get; set; }
+        public ICollection<QualityControl> QualityControls { get; set; }
     }
 }

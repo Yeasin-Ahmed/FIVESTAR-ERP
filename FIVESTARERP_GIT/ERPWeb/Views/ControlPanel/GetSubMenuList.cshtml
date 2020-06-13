@@ -147,6 +147,7 @@
                         <div class="form-group col-md-6">
                             <label for="ddlParentSubMenu" class="control-label font-weight-bold">Parent Submenu</label>
                             @Html.DropDownList("ddlParentSubMenu", (IEnumerable<SelectListItem>)ViewBag.ddlParentSubMenu, "--Select SubMenuName--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide invalid-submenu">A parent submenu cannot be child of another parent submenu.</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ddlMainMenu" class="control-label font-weight-bold">Mainmenu</label>
@@ -224,6 +225,10 @@
 
                 if (chkIsViewable.is(":checked") === false) {
                     $('.req-chkViewable').removeClass("hide");
+                    isValid = false;
+                }
+                if (ddlParentSubMenu.val() !== "") {
+                    $(".invalid-submenu").removeClass('hide');
                     isValid = false;
                 }
             }
@@ -318,8 +323,6 @@
             ddlParentSubMenu.val('0');
             ddlMainMenu.val('');
         }
-
-
 
     </script>
 }

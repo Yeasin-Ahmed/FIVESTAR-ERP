@@ -43,6 +43,7 @@ namespace ERPBLL.Common
     public class StockOutReason
     {
         public static readonly string StockOutByProductionForProduceGoods = "StockOutByProductionForProduceGoods";
+        public static readonly string StockOutByTransferToAssembly = "StockOutByTransferToAssembly";
     }
     public class FinishGoodsSendStatus
     {

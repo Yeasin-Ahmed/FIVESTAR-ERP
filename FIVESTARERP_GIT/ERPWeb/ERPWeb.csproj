@@ -355,7 +355,7 @@
     <Content Include="Views\Inventory\GetReqInfoList.cshtml" />
     <Content Include="Views\Production\_GetRequsitionDetails.cshtml" />
     <Content Include="Views\Inventory\_GetRequsitionDetails.cshtml" />
-    <Content Include="Views\Production\GetProductionStockInfoList.cshtml" />
+    <Content Include="Views\Production\GetFloorStockTransferList.cshtml" />
     <Content Include="Views\Production\_ProductionStockInfoList.cshtml" />
     <Content Include="Views\ControlPanel\GetOrganizations.cshtml" />
     <Content Include="Views\ControlPanel\CreateOrganization.cshtml" />
@@ -443,6 +443,17 @@
     <Content Include="Views\User\Index2.cshtml" />
     <Content Include="Views\FrontDesk\GetJobOrdersTS.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrdersTS.cshtml" />
+    <Content Include="Views\Production\GetAssemblyLines.cshtml" />
+    <Content Include="Views\Production\GetProductionStockInfoList.cshtml" />
+    <Content Include="Views\Production\_GetFloorStockTransferList.cshtml" />
+    <Content Include="Views\Production\CreateFloorStockTransfer.cshtml" />
+    <Content Include="Views\Production\_GetFloorStockTransferDetail.cshtml" />
+    <Content Include="Views\Production\GetAssemblyLineStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetAssemblyLineStockInfo.cshtml" />
+    <Content Include="Views\Production\GetReceiveStockFromFloor.cshtml" />
+    <Content Include="Views\Production\_GetReceiveStockFromFloor.cshtml" />
+    <Content Include="Views\Production\_GetReceiveStockFromFloorDetail.cshtml" />
+    <Content Include="Views\Production\GetQualityControls.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

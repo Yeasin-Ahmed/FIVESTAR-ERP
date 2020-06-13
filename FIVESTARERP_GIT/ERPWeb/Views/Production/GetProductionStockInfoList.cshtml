@@ -19,6 +19,12 @@
                 <h4><b style="color:darkblue">Production Stock Info</b></h4>
             </div>
             <div class="col-md-3">
+                @if (privilege.Edit)
+                {
+                    <a href="/Production/GetFloorStockTransferList" class="float-right btn btn-sm btn-outline-success" title="Transfer Stock To Assembly">
+                        <i class="fas fa-list"></i> Transfer List
+                    </a>
+                }
             </div>
         </div>
         <hr />
@@ -93,7 +99,7 @@
             var dateval = $(this).val();
             console.log(dateval);
         })
-        
+
         ddlWarehouse.change(function () {
             $("#unitName").text('');
             clearDropdown("ddlItemType");

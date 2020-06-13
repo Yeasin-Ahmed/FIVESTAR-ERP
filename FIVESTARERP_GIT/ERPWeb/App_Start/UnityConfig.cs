@@ -62,6 +62,13 @@ namespace ERPWeb
             container.RegisterType<IFinishGoodsStockDetailBusiness, FinishGoodsStockDetailBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseInfoBusiness, FinishGoodsSendToWarehouseInfoBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseDetailBusiness, FinishGoodsSendToWarehouseDetailBusiness>();
+
+            container.RegisterType<IAssemblyLineBusiness, AssemblyLineBusiness>();
+            container.RegisterType<ITransferStockToAssemblyInfoBusiness, TransferStockToAssemblyInfoBusiness>();
+            container.RegisterType<ITransferStockToAssemblyDetailBusiness, TransferStockToAssemblyDetailBusiness>();
+            container.RegisterType<IAssemblyLineStockInfoBusiness, AssemblyLineStockInfoBusiness>();
+            container.RegisterType<IAssemblyLineStockDetailBusiness, AssemblyLineStockDetailBusiness>();
+            container.RegisterType<IQualityControlBusiness, QualityControlBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 

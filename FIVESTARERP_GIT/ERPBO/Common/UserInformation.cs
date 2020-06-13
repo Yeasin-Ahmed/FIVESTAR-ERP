@@ -25,5 +25,7 @@ namespace ERPBO.Common
         public string RoleName { get; set; }
         public long RoleId { get; set; }
         public bool IsRoleActive { get; set; }
+        public long BranchId { get; set; }
+        public string BranchName { get; set; }
     }
 }

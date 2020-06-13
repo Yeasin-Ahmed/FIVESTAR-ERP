@@ -48,7 +48,9 @@ namespace ERPWeb
                         OrgName= model.OrgName,
                         RoleId = model.RoleId,
                         RoleName = model.RoleName,
-                        roles = model.roles 
+                        roles = model.roles,
+                        BranchId = model.BranchId,
+                        BranchName = model.BranchName
                     };                    
                     HttpContext.Current.User = newUser;
                 }

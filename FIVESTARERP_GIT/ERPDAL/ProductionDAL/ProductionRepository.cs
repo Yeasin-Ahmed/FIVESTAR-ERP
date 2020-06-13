@@ -19,55 +19,68 @@ namespace ERPDAL.ProductionDAL
     {
         public ProductionLineRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class ProductionStockInfoRepository : ProductionBaseRepository<ProductionStockInfo>
     {
         public ProductionStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class ProductionStockDetailRepository : ProductionBaseRepository<ProductionStockDetail>
     {
         public ProductionStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class ItemReturnInfoRepository : ProductionBaseRepository<ItemReturnInfo>
     {
         public ItemReturnInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class ItemReturnDetailRepository : ProductionBaseRepository<ItemReturnDetail>
     {
         public ItemReturnDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class FinishGoodsInfoRepository : ProductionBaseRepository<FinishGoodsInfo>
     {
         public FinishGoodsInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class FinishGoodsRowMaterialRepository : ProductionBaseRepository<FinishGoodsRowMaterial>
     {
         public FinishGoodsRowMaterialRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class FinishGoodsStockInfoRepository : ProductionBaseRepository<FinishGoodsStockInfo>
     {
         public FinishGoodsStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class FinishGoodsStockDetailRepository : ProductionBaseRepository<FinishGoodsStockDetail>
     {
         public FinishGoodsStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
-    public class FinishGoodsSendToWarehouseInfoRepository: ProductionBaseRepository<FinishGoodsSendToWarehouseInfo>
+    public class FinishGoodsSendToWarehouseInfoRepository : ProductionBaseRepository<FinishGoodsSendToWarehouseInfo>
     {
         public FinishGoodsSendToWarehouseInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class FinishGoodsSendToWarehouseDetailRepository : ProductionBaseRepository<FinishGoodsSendToWarehouseDetail>
     {
         public FinishGoodsSendToWarehouseDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
+    public class AssemblyLineRepository : ProductionBaseRepository<AssemblyLine>
+    {
+        public AssemblyLineRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferStockToAssemblyInfoRepository : ProductionBaseRepository<TransferStockToAssemblyInfo>
+    {
+        public TransferStockToAssemblyInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferStockToAssemblyDetailRepository : ProductionBaseRepository<TransferStockToAssemblyDetail>
+    {
+        public TransferStockToAssemblyDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class AssemblyLineStockInfoRepository: ProductionBaseRepository<AssemblyLineStockInfo>
+    {
+        public AssemblyLineStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class AssemblyLineStockDetailRepository : ProductionBaseRepository<AssemblyLineStockDetail>
+    {
+        public AssemblyLineStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class QualityControlRepository : ProductionBaseRepository<QualityControl>
+    {
+        public QualityControlRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
 }

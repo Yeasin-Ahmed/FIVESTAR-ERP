@@ -146,6 +146,22 @@
     <Compile Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.Designer.cs">
       <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006110006244_Production_AssemblyLine.cs" />
+    <Compile Include="ProductionContextMigrations\202006110006244_Production_AssemblyLine.Designer.cs">
+      <DependentUpon>202006110006244_Production_AssemblyLine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006110035492_Production_TransferStockToAssembly.cs" />
+    <Compile Include="ProductionContextMigrations\202006110035492_Production_TransferStockToAssembly.Designer.cs">
+      <DependentUpon>202006110035492_Production_TransferStockToAssembly.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006120127472_Production_AssemblyStock.cs" />
+    <Compile Include="ProductionContextMigrations\202006120127472_Production_AssemblyStock.Designer.cs">
+      <DependentUpon>202006120127472_Production_AssemblyStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006121106580_Production_QualityControl.cs" />
+    <Compile Include="ProductionContextMigrations\202006121106580_Production_QualityControl.Designer.cs">
+      <DependentUpon>202006121106580_Production_QualityControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -219,6 +235,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
       <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006110006244_Production_AssemblyLine.resx">
+      <DependentUpon>202006110006244_Production_AssemblyLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006110035492_Production_TransferStockToAssembly.resx">
+      <DependentUpon>202006110035492_Production_TransferStockToAssembly.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006120127472_Production_AssemblyStock.resx">
+      <DependentUpon>202006120127472_Production_AssemblyStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006121106580_Production_QualityControl.resx">
+      <DependentUpon>202006121106580_Production_QualityControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
