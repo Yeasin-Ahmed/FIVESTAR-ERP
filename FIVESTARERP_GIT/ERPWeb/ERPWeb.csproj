@@ -454,6 +454,7 @@
     <Content Include="Views\Production\_GetReceiveStockFromFloor.cshtml" />
     <Content Include="Views\Production\_GetReceiveStockFromFloorDetail.cshtml" />
     <Content Include="Views\Production\GetQualityControls.cshtml" />
+    <Content Include="Views\Configuration\BranchList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
