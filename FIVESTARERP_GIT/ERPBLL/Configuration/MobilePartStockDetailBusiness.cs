@@ -29,12 +29,12 @@ namespace ERPBLL.Configuration
             this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
         }
 
-        public IEnumerable<MobilePartStockDetail> GelAllMobilePartStockDetailByOrgId(long orgId)
+        public IEnumerable<MobilePartStockDetail> GelAllMobilePartStockDetailByOrgId(long orgId, long branchId)
         {
-            return mobilePartStockDetailRepository.GetAll(detail => detail.OrganizationId == orgId).ToList();
+            return mobilePartStockDetailRepository.GetAll(detail => detail.OrganizationId == orgId && detail.BranchId== branchId).ToList();
         }
 
-        public bool SaveMobilePartStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId)
+        public bool SaveMobilePartStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId, long branchId)
         {
             List<MobilePartStockDetail> mobilePartStockDetails = new List<MobilePartStockDetail>();
             foreach(var item in mobilePartStockDetailDTO)
@@ -46,11 +46,12 @@ namespace ERPBLL.Configuration
                 StockDetail.Quantity = item.Quantity;
                 StockDetail.Remarks = item.Remarks;
                 StockDetail.OrganizationId = orgId;
+                StockDetail.BranchId = branchId;
                 StockDetail.EUserId = userId;
                 StockDetail.EntryDate = DateTime.Now;
                 StockDetail.StockStatus = StockStatus.StockIn;
 
-                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId).Where(o => o.MobilePartId == item.MobilePartId).FirstOrDefault();
+                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId,branchId).Where(o => o.MobilePartId == item.MobilePartId ).FirstOrDefault();
                 if (warehouseInfo != null)
                 {
                     warehouseInfo.StockInQty += item.Quantity;
@@ -65,11 +66,38 @@ namespace ERPBLL.Configuration
                     mobilePartStockInfo.StockInQty = item.Quantity;
                     mobilePartStockInfo.StockOutQty = 0;
                     mobilePartStockInfo.OrganizationId = orgId;
+                    mobilePartStockInfo.BranchId = branchId;
                     mobilePartStockInfo.EUserId = userId;
                     mobilePartStockInfo.EntryDate = DateTime.Now;
                     mobilePartStockInfoRepository.Insert(mobilePartStockInfo);
                 }
                 mobilePartStockDetails.Add(StockDetail);
+            }
+            mobilePartStockDetailRepository.InsertAll(mobilePartStockDetails);
+            return mobilePartStockDetailRepository.Save();
+        }
+
+        public bool SaveMobilePartStockOut(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId, long branchId)
+        {
+            List<MobilePartStockDetail> mobilePartStockDetails = new List<MobilePartStockDetail>();
+            foreach (var item in mobilePartStockDetailDTO)
+            {
+                MobilePartStockDetail StockDetail = new MobilePartStockDetail();
+                StockDetail.MobilePartStockDetailId = item.MobilePartStockDetailId;
+                StockDetail.MobilePartId = item.MobilePartId;
+                StockDetail.SWarehouseId = item.SWarehouseId;
+                StockDetail.Quantity = item.Quantity;
+                StockDetail.Remarks = item.Remarks;
+                StockDetail.OrganizationId = orgId;
+                StockDetail.BranchId = branchId;
+                StockDetail.EUserId = userId;
+                StockDetail.EntryDate = DateTime.Now;
+                StockDetail.StockStatus = StockStatus.StockIn;
+
+                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(o => item.SWarehouseId == item.SWarehouseId && o.MobilePartId == item.MobilePartId).FirstOrDefault();
+                warehouseInfo.StockOutQty += item.Quantity;
+                warehouseInfo.UpUserId = userId;
+                mobilePartStockInfoRepository.Update(warehouseInfo);
             }
             mobilePartStockDetailRepository.InsertAll(mobilePartStockDetails);
             return mobilePartStockDetailRepository.Save();

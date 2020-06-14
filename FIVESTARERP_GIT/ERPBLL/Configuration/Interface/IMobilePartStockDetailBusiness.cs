@@ -10,7 +10,8 @@ namespace ERPBLL.Configuration.Interface
 {
    public interface IMobilePartStockDetailBusiness
     {
-        IEnumerable<MobilePartStockDetail> GelAllMobilePartStockDetailByOrgId(long orgId);
-        bool SaveMobilePartStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId);
+        IEnumerable<MobilePartStockDetail> GelAllMobilePartStockDetailByOrgId(long orgId,long branchId);
+        bool SaveMobilePartStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId, long branchId);
+        bool SaveMobilePartStockOut(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId, long branchId);
     }
 }

@@ -93,6 +93,14 @@
     <Compile Include="ConfigurationContextMigrations\202006101141523_Configuration_tblBranchAdd.Designer.cs">
       <DependentUpon>202006101141523_Configuration_tblBranchAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006130759207_Configuration_DbBranch.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006130759207_Configuration_DbBranch.Designer.cs">
+      <DependentUpon>202006130759207_Configuration_DbBranch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006140400238_Configuration_DbTransferInfo&amp;Details.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006140400238_Configuration_DbTransferInfo&amp;Details.Designer.cs">
+      <DependentUpon>202006140400238_Configuration_DbTransferInfo&amp;Details.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -227,6 +235,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202006101141523_Configuration_tblBranchAdd.resx">
       <DependentUpon>202006101141523_Configuration_tblBranchAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006130759207_Configuration_DbBranch.resx">
+      <DependentUpon>202006130759207_Configuration_DbBranch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006140400238_Configuration_DbTransferInfo&amp;Details.resx">
+      <DependentUpon>202006140400238_Configuration_DbTransferInfo&amp;Details.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

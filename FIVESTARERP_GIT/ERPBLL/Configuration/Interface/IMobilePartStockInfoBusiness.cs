@@ -9,6 +9,6 @@ namespace ERPBLL.Configuration.Interface
 {
    public interface IMobilePartStockInfoBusiness
     {
-        IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoByOrgId(long orgId);
+        IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoByOrgId(long orgId,long branchId);
     }
 }

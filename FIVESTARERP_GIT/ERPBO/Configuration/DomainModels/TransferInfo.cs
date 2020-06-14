@@ -8,21 +8,22 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Configuration.DomainModels
 {
-    [Table("tblMobilePartStockInfo")]
-   public class MobilePartStockInfo
+    [Table("tblTransferInfo")]
+   public class TransferInfo
     {
         [Key]
-        public long MobilePartStockInfoId { get; set; }
-        public long? MobilePartId { get; set; }
-        public long? SWarehouseId { get; set; }
-        public int? StockInQty { get; set; }
-        public int? StockOutQty { get; set; }
+        public long TransferInfoId { get; set; }
+        public string TransferCode { get; set; }
+        public long? BranchTo { get; set; }
+        public long? WarehouseId { get; set; }
+        public string StateStatus { get; set; }
         public string Remarks { get; set; }
+        public long? BranchId { get; set; }
         public long OrganizationId { get; set; }
-        public long BranchId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public ICollection<TransferDetail> TransferDetails { get; set; }
     }
 }

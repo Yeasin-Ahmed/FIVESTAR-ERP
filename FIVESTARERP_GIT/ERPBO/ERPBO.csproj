@@ -66,6 +66,8 @@
     <Compile Include="Configuration\DomainModels\MobilePartStockInfo.cs" />
     <Compile Include="Configuration\DomainModels\ServiceWarehouse.cs" />
     <Compile Include="Configuration\DomainModels\TechnicalServiceEng.cs" />
+    <Compile Include="Configuration\DomainModels\TransferDetail.cs" />
+    <Compile Include="Configuration\DomainModels\TransferInfo.cs" />
     <Compile Include="Configuration\DTOModels\AccessoriesDTO.cs" />
     <Compile Include="Configuration\DTOModels\BranchDTO.cs" />
     <Compile Include="Configuration\DTOModels\ClientProblemDTO.cs" />
@@ -76,6 +78,8 @@
     <Compile Include="Configuration\DTOModels\MobilePartStockInfoDTO.cs" />
     <Compile Include="Configuration\DTOModels\ServicesWarehouseDTO.cs" />
     <Compile Include="Configuration\DTOModels\TechnicalServiceEngDTO.cs" />
+    <Compile Include="Configuration\DTOModels\TransferDetailDTO.cs" />
+    <Compile Include="Configuration\DTOModels\TransferInfoDTO.cs" />
     <Compile Include="Configuration\ViewModels\AccessoriesViewModel.cs" />
     <Compile Include="Configuration\ViewModels\BranchViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ClientProblemViewModel.cs" />
@@ -86,6 +90,8 @@
     <Compile Include="Configuration\ViewModels\MobilePartViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ServicesWarehouseViewModel.cs" />
     <Compile Include="Configuration\ViewModels\TechnicalServiceEngViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\TransferDetailViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\TransferInfoViewModel.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\MainMenu.cs" />

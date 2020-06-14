@@ -10,10 +10,10 @@ namespace ERPBLL.Configuration.Interface
 {
    public interface IServicesWarehouseBusiness
     {
-        IEnumerable<ServiceWarehouse> GetAllServiceWarehouseByOrgId(long orgId);
-        bool SaveServiceWarehouse(ServicesWarehouseDTO servicesWarehouseDTO, long userId, long orgId);
-        bool IsDuplicateServicesWarehouseName(string sWName, long id, long orgId);
-        ServiceWarehouse GetServiceWarehouseOneByOrgId(long id, long orgId);
-        bool DeleteServicesWarehouse(long id, long orgId);
+        IEnumerable<ServiceWarehouse> GetAllServiceWarehouseByOrgId(long orgId,long branchId);
+        bool SaveServiceWarehouse(ServicesWarehouseDTO servicesWarehouseDTO, long userId, long orgId,long branchId);
+        bool IsDuplicateServicesWarehouseName(string sWName, long id, long orgId, long branchId);
+        ServiceWarehouse GetServiceWarehouseOneByOrgId(long id, long orgId, long branchId);
+        bool DeleteServicesWarehouse(long id, long orgId, long branchId);
     }
 }
