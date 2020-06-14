@@ -456,6 +456,9 @@
     <Content Include="Views\Production\GetQualityControls.cshtml" />
     <Content Include="Views\Configuration\BranchList.cshtml" />
     <Content Include="Views\Inventory\GetSuppliers.cshtml" />
+    <Content Include="Views\Configuration\CreateStockTransfer.cshtml" />
+    <Content Include="Views\Configuration\TransferInfoList.cshtml" />
+    <Content Include="Views\Configuration\_StockTransferInfoPartialList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
