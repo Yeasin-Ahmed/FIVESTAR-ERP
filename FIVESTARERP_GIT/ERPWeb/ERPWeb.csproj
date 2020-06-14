@@ -459,6 +459,9 @@
     <Content Include="Views\Production\GetAssemblyStockTransferList.cshtml" />
     <Content Include="Views\Production\_GetAssemblyStockTransferList.cshtml" />
     <Content Include="Views\Production\CreateAssemblyStockTransfer.cshtml" />
+    <Content Include="Views\Configuration\CreateStockTransfer.cshtml" />
+    <Content Include="Views\Configuration\TransferInfoList.cshtml" />
+    <Content Include="Views\Configuration\_StockTransferInfoPartialList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
