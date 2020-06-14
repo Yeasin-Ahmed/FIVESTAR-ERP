@@ -185,8 +185,12 @@
     <Compile Include="Production\DomainModels\FinishGoodsStockInfo.cs" />
     <Compile Include="Production\DomainModels\ProductionStockInfo.cs" />
     <Compile Include="Production\DomainModels\QualityControl.cs" />
+    <Compile Include="Production\DomainModels\QualityControlLineStockDetail.cs" />
+    <Compile Include="Production\DomainModels\QualityControlLineStockInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyDetail.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyInfo.cs" />
+    <Compile Include="Production\DomainModels\TransferStockToQCDetail.cs" />
+    <Compile Include="Production\DomainModels\TransferStockToQCInfo.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockInfoDTO.cs" />
@@ -223,6 +227,8 @@
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToAssemblyDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToAssemblyInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferStockToQCDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferStockToQCInfoDTO.cs" />
     <Compile Include="Production\ReportModels\ProductionRequisitionReport.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockInfoViewModel.cs" />
@@ -250,6 +256,8 @@
     <Compile Include="Inventory\ViewModels\WarehouseViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferStockToAssemblyDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferStockToAssemblyInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferStockToQCDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferStockToQCInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\VmReqInfoDetails.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockInfoViewModel.cs" />

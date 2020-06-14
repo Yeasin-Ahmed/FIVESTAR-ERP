@@ -34,5 +34,7 @@ namespace ERPBLL.Production
         {
             return _assemblyLineStockInfoRepository.GetAll(s => s.OrganizationId == orgId);
         }
+
+
     }
 }

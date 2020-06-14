@@ -12,5 +12,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<AssemblyLineStockDetail> GetAssemblyLineStockDetails(long orgId);
         bool SaveAssemblyLineStockIn(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId);
         bool SaveAssemblyStockInByProductionLine(long transferId, string status, long orgId, long userId);
+
+        bool SaveAssemblyLineStockOut(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId,string flag);
     }
 }
