@@ -51,4 +51,8 @@ namespace ERPDAL.InventoryDAL
     {
         public ItemPreparationDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
+    public class SupplierRepository :InventoryBaseRepository<Supplier>
+    {
+        public SupplierRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+    }
 }

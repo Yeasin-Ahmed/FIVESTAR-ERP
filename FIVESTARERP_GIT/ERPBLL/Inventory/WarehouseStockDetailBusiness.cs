@@ -70,6 +70,8 @@ namespace ERPBLL.Inventory
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.OrderQty = item.OrderQty;
+                stockDetail.SupplierId = item.SupplierId;
 
                 var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (warehouseInfo != null)
@@ -263,14 +265,14 @@ namespace ERPBLL.Inventory
             return executionStatus;
         }
 
-        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId,long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
+        public IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId,long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long? supplierId, long orgId)
         {
             IEnumerable<WarehouseStockDetailInfoListDTO> warehouseStockDetailInfoLists = new List<WarehouseStockDetailInfoListDTO>();
-            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, modelId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, orgId)).ToList();
+            warehouseStockDetailInfoLists = this._inventoryDb.Db.Database.SqlQuery<WarehouseStockDetailInfoListDTO>(QueryForWarehouseStockDetailInfo(warehouseId, modelId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, supplierId, orgId)).ToList();
             return warehouseStockDetailInfoLists;
         }
 
-        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
+        private string QueryForWarehouseStockDetailInfo(long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long? supplierId, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -300,6 +302,10 @@ namespace ERPBLL.Inventory
             {
                 param += string.Format(@" and wsd.RefferenceNumber Like'%{0}%'", refNum);
             }
+            if (supplierId != null && supplierId > 0)
+            {
+                param += string.Format(@" and sup.SupplierId={0}", supplierId);
+            }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
                 string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
@@ -318,13 +324,14 @@ namespace ERPBLL.Inventory
             }
 
             query = string.Format(@"Select wsd.StockDetailId,wh.WarehouseName,de.DescriptionName 'ModelName',it.ItemName 'ItemTypeName',i.ItemName,u.UnitSymbol 'UnitName',wsd.Quantity,wsd.StockStatus
-,Convert(nvarchar(20),wsd.EntryDate,106) 'EntryDate', ISNULL(wsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser'  From tblWarehouseStockDetails wsd
+,Convert(nvarchar(20),wsd.EntryDate,106) 'EntryDate', ISNULL(wsd.RefferenceNumber,'N/A') as 'RefferenceNumber',au.UserName 'EntryUser',sup.SupplierName,wsd.OrderQty  From tblWarehouseStockDetails wsd
 Left Join tblWarehouses wh on wsd.WarehouseId = wh.Id
 Left Join tblDescriptions de on wsd.DescriptionId =de.DescriptionId
 Left Join tblItemTypes it on wsd.ItemTypeId = it.ItemId
 Left Join tblItems i on wsd.ItemId  = i.ItemId
 Left Join tblUnits u on wsd.UnitId= u.UnitId
-Left Join [ControlPanel].dbo.tblApplicationUsers au on wh.EUserId = au.UserId
+Left Join tblSupplier sup on wsd.SupplierId = sup.SupplierId      
+Left Join [ControlPanel].dbo.tblApplicationUsers au on wsd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }

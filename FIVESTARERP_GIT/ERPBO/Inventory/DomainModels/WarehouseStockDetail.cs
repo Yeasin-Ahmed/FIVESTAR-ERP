@@ -19,6 +19,8 @@ namespace ERPBO.Inventory.DomainModels
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
         public int Quantity { get; set; }
+        public int OrderQty { get; set; }
+        public long? SupplierId { get; set; }
         public Nullable<DateTime> ExpireDate { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }

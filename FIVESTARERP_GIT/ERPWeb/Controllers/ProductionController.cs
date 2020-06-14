@@ -1460,6 +1460,18 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(dto, viewModels);
             return View(viewModels);
         }
+
+        public ActionResult SaveQualityControl(QualityControlViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                QualityControlDTO dto = new QualityControlDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _qualityControlBusiness.SaveQualityControl(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

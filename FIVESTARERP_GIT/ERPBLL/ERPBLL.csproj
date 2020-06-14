@@ -121,12 +121,14 @@
     <Compile Include="Inventory\Interface\IRepairStockInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemTypeBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemBusiness.cs" />
+    <Compile Include="Inventory\Interface\ISupplierBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseStockInfoBusiness.cs" />
     <Compile Include="Inventory\ItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\ItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\RepairStockDetailBusiness.cs" />
     <Compile Include="Inventory\RepairStockInfoBusiness.cs" />
+    <Compile Include="Inventory\SupplierBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
     <Compile Include="Production\AssemblyLineBusiness.cs" />

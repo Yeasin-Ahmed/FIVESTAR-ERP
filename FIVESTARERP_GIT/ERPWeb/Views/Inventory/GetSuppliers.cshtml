@@ -1,0 +1,305 @@
+﻿@model IEnumerable<ERPBO.Inventory.ViewModels.SupplierViewModel>
+@{
+    ViewBag.Title = "List Of Supplier";
+    int sl = 0;
+    string badge = string.Empty;
+    string status = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <h4><b style="color:darkblue">List Of Supplier</b></h4>
+            </div>
+            <div class="col-md-3">
+                @if (privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add Supplier</button>
+                }
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblSupplierData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Supplier Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>PhoneNumber</th>
+                    <th>Moblie</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.IsActive ? "badge bg-success" : "badge bg-danger";
+                    status = item.IsActive ? "Active" : "Inactive";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.SupplierId</td>
+                        <td>@item.SupplierName</td>
+                        <td class="text-center">@item.Address</td>
+                        <td>@item.Email</td>
+                        <td class="text-center">@item.PhoneNumber</td>
+                        <td class="text-center">@item.MobileNumber</td>
+                        <td class="text-center" data-val="@item.IsActive">
+                            <span class="@badge">@status</span>
+                        </td>
+                        <td class="text-center">@item.Remarks</td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.UpdateUser</td>
+                        <td class="text-center">
+                            @if (privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.SupplierId"><i class="fa fa-pen"></i> Edit</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="12">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSupplier" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><i class="fas fa-angle-double-right"></i><span id="spanModalHead">Add New Supplier</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmSupplier">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" id="hdSupplierId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtSupplierName" class="control-label font-weight-bold">Supplier Name</label>
+                            <input type="text" id="txtSupplierName" class="form-control form-control-sm" />
+                            <span class="error hide required-supplierName font-weight-bold">Supplier Name is required!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtAddress" class="control-label font-weight-bold">Address</label>
+                            <input type="text" id="txtAddress" class="form-control form-control-sm" />
+                            <span class="error hide required-address font-weight-bold">Address is required!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtPhoneNumber" class="control-label font-weight-bold">Phone Number</label>
+                            <input type="text" value="" id="txtPhoneNumber" class="form-control form-control-sm" />
+                            <span class="error hide duplicate-phone font-weight-bold">Duplicate Phone Number!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtMoblieNo" class="control-label font-weight-bold">Mobile Number</label>
+                            <input type="text" value="" id="txtMoblieNo" class="form-control form-control-sm" />
+                            <span class="error hide required-moblie font-weight-bold">Mobile Number is required!</span>
+                            <span class="error hide duplicate-mobile font-weight-bold">Duplicate Mobile Number!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtEmail" class="control-label font-weight-bold">Email</label>
+                            <input type="email" value="" id="txtEmail" class="form-control form-control-sm" />
+                            <span class="error hide duplicate-email font-weight-bold">Duplicate Email!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="chkStatestatus" class="control-label font-weight-bold" style="visibility:hidden">Is Active?</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatus" /><b> Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successfully!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var hdSupplierId = $("#hdSupplierId");
+        var txtSupplierName = $("#txtSupplierName");
+        var txtAddress = $("#txtAddress");
+        var txtPhoneNumber = $("#txtPhoneNumber");
+        var txtMoblieNo = $("#txtMoblieNo");
+        var txtEmail = $("#txtEmail");
+        var txtRemarks = $("#txtRemarks");
+        var chkStatestatus = $("#chkStatestatus");
+
+        $(document).ready(function () {
+            $('#tblSupplierData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+                "pageLength": 10,
+                "language": {
+                    searchPlaceholder: "Search By Anything",
+                    search: ""
+                }
+            });
+            $('.dataTables_filter input[type="search"]').css(
+                { 'width': '350px', 'display': 'inline-block' }
+            );
+        })
+
+        function OpenModal() {
+            $("#spanModalHead").text('Add New Supplier');
+            $("#spanSaveText").text('Save');
+            $("#modalSupplier").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNew").click(function (e) {
+            e.preventDefault();
+            OpenModal();
+            clearCtrl();
+        })
+
+        function clearCtrl() {
+            hdSupplierId.val('0');
+            txtSupplierName.val('');
+            txtAddress.val('');
+            txtPhoneNumber.val('');
+            txtMoblieNo.val('');
+            txtEmail.val('');
+            txtRemarks.val('');
+            chkStatestatus.prop('checked', false);
+        }
+
+        function validateForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($.trim(txtSupplierName.val()) === "") {
+                $(".required-supplierName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtAddress.val()) === "") {
+                $(".required-address").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtPhoneNumber.val()) !== "") {
+                if (ajaxBooleanChecker2(JSON.stringify({ supId: TryParseInt(hdSupplierId.val(), 0), phoneNum: txtPhoneNumber.val().trim() }), '/Common/IsSupplierPhoneNumDuplicate') === true) {
+                    $(".duplicate-phone").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(txtMoblieNo.val()) === "") {
+                $(".required-moblie").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking
+                if (ajaxBooleanChecker2(JSON.stringify({ supId: TryParseInt(hdSupplierId.val(), 0), mobileNum: txtMoblieNo.val().trim() }), '/Common/IsSupplierMoblieNumDuplicate') === true) {
+                    $(".duplicate-mobile").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(txtEmail.val()) !== "") {
+                // Duplicate Checking
+                if (ajaxBooleanChecker2(JSON.stringify({ supId: TryParseInt(hdSupplierId.val(), 0), email: txtEmail.val().trim() }), '/Common/IsSupplierEmailDuplicate') == true) {
+                    $(".duplicate-mobile").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".data-edit-item", function (e) {
+            e.preventDefault();
+            var tds = $(this).parent().parents('tr').children('td');
+            var supId = tds.eq(1).html();
+            var supName = tds.eq(2).html();
+            var address = tds.eq(3).html();
+            var email = tds.eq(4).html();
+            var phone = tds.eq(5).html();
+            var mobile = tds.eq(6).html();
+            var status = tds.eq(7).attr("data-val");
+            var rmk = tds.eq(8).html();
+            
+            OpenModal();
+            clearCtrl();
+            fnModalHeadChange("Update Supplier");
+            hdSupplierId.val(supId);
+            txtSupplierName.val(supName);
+            txtAddress.val(address);
+            txtEmail.val(email);
+            txtPhoneNumber.val(phone);
+            txtMoblieNo.val(mobile);
+            txtRemarks.val(rmk);
+            if (status === "True") {
+                chkStatestatus.prop("checked", true);
+            }
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateForm()) {
+                disable("#btnSubmit");
+                var data = JSON.stringify({ SupplierId: TryParseInt(hdSupplierId.val(), 0), SupplierName: txtSupplierName.val(), Email: txtEmail.val(), Address: txtAddress.val(), PhoneNumber: txtPhoneNumber.val(), MobileNumber: txtMoblieNo.val(), IsActive: chkStatestatus.is(":checked"), Remarks: txtRemarks.val() });
+
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveSupplier', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res === true) {
+                        message("#msg1", "#modalSupplier");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (error) {
+                    console.log(error);
+                })
+                enable("#btnSubmit");
+            }
+        })
+
+    </script>
+}
+

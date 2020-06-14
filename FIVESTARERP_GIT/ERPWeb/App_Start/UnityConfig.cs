@@ -42,6 +42,7 @@ namespace ERPWeb
             container.RegisterType<IRepairStockDetailBusiness, RepairStockDetailBusiness>();
             container.RegisterType<IItemPreparationInfoBusiness, ItemPreparationInfoBusiness>();
             container.RegisterType<IItemPreparationDetailBusiness, ItemPreparationDetailBusiness>();
+            container.RegisterType<ISupplierBusiness,SupplierBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
 
