@@ -47,4 +47,12 @@ namespace ERPDAL.ConfigurationDAL
     {
         public BranchRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
+    public class TransferInfoRepository : ConfigurationBaseRepository<TransferInfo>
+    {
+        public TransferInfoRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class TransferDetailRepository : ConfigurationBaseRepository<TransferDetail>
+    {
+        public TransferDetailRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
 }

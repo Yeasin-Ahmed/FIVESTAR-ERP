@@ -16,6 +16,8 @@ namespace ERPBO.Configuration.ViewModels
         public string StockStatus { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
+        public long BranchId { get; set; }
+        public string BranchName { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }

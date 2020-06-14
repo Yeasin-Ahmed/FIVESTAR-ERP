@@ -84,11 +84,15 @@
     <Compile Include="Configuration\Interface\IMobilePartStockInfoBusiness.cs" />
     <Compile Include="Configuration\Interface\IServicesWarehouseBusiness.cs" />
     <Compile Include="Configuration\Interface\ITechnicalServiceBusiness.cs" />
+    <Compile Include="Configuration\Interface\ITransferDetailBusiness.cs" />
+    <Compile Include="Configuration\Interface\ITransferInfoBusiness.cs" />
     <Compile Include="Configuration\MobilePartBusiness.cs" />
     <Compile Include="Configuration\MobilePartStockDetailBusiness.cs" />
     <Compile Include="Configuration\MobilePartStockInfoBusiness.cs" />
     <Compile Include="Configuration\ServicesWarehouseBusiness.cs" />
     <Compile Include="Configuration\TechnicalServiceBusiness.cs" />
+    <Compile Include="Configuration\TransferDetailBusiness.cs" />
+    <Compile Include="Configuration\TransferInfoBusiness.cs" />
     <Compile Include="ControlPanel\AppUserBusiness.cs" />
     <Compile Include="ControlPanel\BranchBusiness.cs" />
     <Compile Include="ControlPanel\Interface\IAppUserBusiness.cs" />

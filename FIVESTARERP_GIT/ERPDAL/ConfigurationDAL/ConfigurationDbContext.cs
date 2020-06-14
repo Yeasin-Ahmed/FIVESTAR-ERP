@@ -24,5 +24,7 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<MobilePartStockInfo> tblMobilePartStockInfo { get; set; }
         public DbSet<MobilePartStockDetail> tblMobilePartStockDetails { get; set; }
         public DbSet<Branch> tblBranches { get; set; }
+        public DbSet<TransferInfo> tblTransferInfo { get; set; }
+        public DbSet<TransferDetail> tblTransferDetails { get; set; }
     }
 }
