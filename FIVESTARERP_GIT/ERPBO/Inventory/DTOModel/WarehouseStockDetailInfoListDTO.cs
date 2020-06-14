@@ -30,5 +30,7 @@ namespace ERPBO.Inventory.DTOModel
         [StringLength(150)]
         public string RefferenceNumber { get; set; }
         public string UpdateUser { get; set; }
+        public int OrderQty{ get; set; }
+        public string SupplierName { get; set; }
     }
 }

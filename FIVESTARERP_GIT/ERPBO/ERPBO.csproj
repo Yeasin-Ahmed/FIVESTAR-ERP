@@ -144,6 +144,7 @@
     <Compile Include="Inventory\DomainModels\ItemPreparationDetail.cs" />
     <Compile Include="Inventory\DomainModels\ItemPreparationInfo.cs" />
     <Compile Include="Inventory\DomainModels\RepairStockDetail.cs" />
+    <Compile Include="Inventory\DomainModels\Supplier.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\RepairStockInfo.cs" />
     <Compile Include="Inventory\DomainModels\WarehouseStockInfo.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Inventory\DTOModel\ItemTypeDomainModel.cs" />
     <Compile Include="Inventory\DTOModel\RepairStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\RepairStockDetailListDTO.cs" />
+    <Compile Include="Inventory\DTOModel\SupplierDTO.cs" />
     <Compile Include="Inventory\DTOModel\WarehouseStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\RepairStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\WarehouseStockDetailInfoListDTO.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Inventory\ViewModels\RepairStockDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\RepairStockInfoViewModel.cs" />
+    <Compile Include="Inventory\ViewModels\SupplierViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailInfoListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseStockInfoViewModel.cs" />

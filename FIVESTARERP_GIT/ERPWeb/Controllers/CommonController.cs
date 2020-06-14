@@ -16,61 +16,63 @@ namespace ERPWeb.Controllers
     [CustomAuthorize]
     public class CommonController : BaseController
     {
-        // Warehouse
+        #region Inventory
         private readonly IWarehouseBusiness _warehouseBusiness;
         private readonly IItemTypeBusiness _itemTypeBusiness;
         private readonly IUnitBusiness _unitBusiness;
         private readonly IItemBusiness _itemBusiness;
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
+        private readonly ISupplierBusiness _supplierBusiness;
+        #endregion
 
-        // Production
+        #region Production
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IProductionLineBusiness _productionLineBusiness;
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness;
         private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
         private readonly IAssemblyLineBusiness _assemblyLineBusiness;
+        private readonly IQualityControlBusiness _qualityControlBusiness;
+        #endregion
 
-        //Configuration
-        private readonly IAccessoriesBusiness _accessoriesBusiness;
-        private readonly IClientProblemBusiness _clientProblemBusiness;
-        private readonly IMobilePartBusiness _mobilePartBusiness;
-        private readonly ICustomerBusiness _customerBusiness;
-        private readonly ITechnicalServiceBusiness _technicalServiceBusiness;
-        private readonly ICustomerServiceBusiness _customerServiceBusiness;
-
-        // ControlPanel
+        #region ControlPanel
         private readonly IAppUserBusiness _appUserBusiness;
         private readonly IRoleBusiness _roleBusiness;
         private readonly IBranchBusiness _branchBusiness;
         private readonly IOrganizationBusiness _organizationBusiness;
-        private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
+        private readonly IUserAuthorizationBusiness _userAuthorizationBusiness; 
+        #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness)
         {
+            #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
             this._unitBusiness = unitBusiness;
             this._itemBusiness = itemBusiness;
+            this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
+            this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
+            this._supplierBusiness = supplierBusiness;
+            #endregion
+
+            #region Production Module
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._requsitionDetailBusiness = requsitionDetailBusiness;
             this._productionLineBusiness = productionLineBusiness;
             this._productionStockInfoBusiness = productionStockInfoBusiness;
+            this._assemblyLineBusiness = assemblyLineBusiness;
+            this._qualityControlBusiness = qualityControlBusiness;
+            this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
+            #endregion
+
+            #region ControlPanel
             this._appUserBusiness = appUserBusiness;
-            this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
             this._roleBusiness = roleBusiness;
             this._branchBusiness = branchBusiness;
-            this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
             this._organizationBusiness = organizationBusiness;
-            this._userAuthorizationBusiness = userAuthorizationBusiness;
-            this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
-            this._accessoriesBusiness = accessoriesBusiness;
-            this._clientProblemBusiness = clientProblemBusiness;
-            this._mobilePartBusiness = mobilePartBusiness;
-            this._customerBusiness = customerBusiness;
-            this._technicalServiceBusiness = technicalServiceBusiness;
-            this._assemblyLineBusiness = assemblyLineBusiness;
+            this._userAuthorizationBusiness = userAuthorizationBusiness; 
+            #endregion
         }
 
         #region User Menus
@@ -176,18 +178,21 @@ namespace ERPWeb.Controllers
             bool isExist = _unitBusiness.IsDuplicateUnitName(unitName, id, User.OrgId);
             return Json(isExist);
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateItemName(string itemName, long id)
         {
             bool isExist = _itemBusiness.IsDuplicateItemName(itemName, id, User.OrgId);
             return Json(isExist);
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateLineNumber(string lineNumber, long id)
         {
             bool isExist = _productionLineBusiness.IsDuplicateLineNumber(lineNumber, id, User.OrgId);
             return Json(isExist);
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateEmployeeId(string employeeId, long id)
         {
@@ -479,6 +484,41 @@ namespace ERPWeb.Controllers
                 text = i.AssemblyLineName
             }).ToList();
             return Json(data);
+        }
+        #endregion
+
+
+        #region Production Module
+
+        #region Validate Checker
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateQCName(long lineId,long id,string qcName)
+        {
+            var qualityControl = _qualityControlBusiness.GetQualityControls(User.OrgId).FirstOrDefault(qc => qc.ProductionLineId == lineId && qc.QCName == qcName && qc.QCId != id) != null;
+            return Json(qualityControl);
+        }
+        #endregion
+
+        #endregion
+
+        #region Inventory Module
+        [HttpPost]
+        public ActionResult IsSupplierPhoneNumDuplicate(long supId,string phoneNum)
+        {
+            var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.PhoneNumber == phoneNum && s.SupplierId != supId) != null;
+            return Json(supplierInDb);
+        }
+        [HttpPost]
+        public ActionResult IsSupplierMoblieNumDuplicate(long supId, string mobileNum)
+        {
+            var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.MobileNumber == mobileNum && s.SupplierId != supId) != null;
+            return Json(supplierInDb);
+        }
+        [HttpPost]
+        public ActionResult IsSupplierEmailDuplicate(long supId,string email)
+        {
+            var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.Email == email && s.SupplierId != supId) != null;
+            return Json(supplierInDb);
         }
         #endregion
 

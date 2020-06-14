@@ -22,6 +22,8 @@ namespace ERPBO.Inventory.ViewModels
         public long? UnitId { get; set; }
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
+        public int OrderQty { get; set; }
+        public long? SupplierId { get; set; }
         public Nullable<DateTime> ExpireDate { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
@@ -48,5 +50,7 @@ namespace ERPBO.Inventory.ViewModels
         public string Item { get; set; }
         [StringLength(100)]
         public string Unit { get; set; }
+        [StringLength(150)]
+        public string SupplierName { get; set; }
     }
 }

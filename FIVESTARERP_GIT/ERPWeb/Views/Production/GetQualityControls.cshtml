@@ -1,5 +1,4 @@
-﻿@model ERPBO.Production.ViewModels.QualityControlViewModel
-@model IEnumerable<ERPBO.Production.ViewModels.QualityControlViewModel>
+﻿@model IEnumerable<ERPBO.Production.ViewModels.QualityControlViewModel>
 @{
     ViewBag.Title = "List Of QC Line";
     int sl = 0;
@@ -197,7 +196,7 @@
                 var lineId = $.trim(ddlLineNumber.val()) === "" ? 0 : TryParseInt(ddlLineNumber.val(), 0);
                 var data = JSON.stringify({ lineId: lineId, id: TryParseInt(hdfQCId.val(), 0), qcName: txtQCName.val() });
 
-                if (ajaxBooleanChecker(data, '/Common/IsDuplicateQCLine', getToken()) === true) {
+                if (ajaxBooleanChecker(data, '/Common/IsDuplicateQCName', getToken()) === true) {
                     $('.duplicate-qcName').removeClass('hide');
                     isValid = false;
                 }
@@ -230,7 +229,7 @@
             e.preventDefault();
             if (validateForm()) {
                 disable("#btnSubmit");
-                var data = JSON.stringify({ QCId: TryParseInt(hdfAssemblyId.val(), 0), QCName: txtAssemblyLineName.val(), ProductionLineId: ddlLineNumber.val(), IsActive: chkStatestatus.is(":checked"), Remarks: txtRemarks.val() });
+                var data = JSON.stringify({ QCId: TryParseInt(hdfQCId.val(), 0), QCName: txtQCName.val(), ProductionLineId: ddlLineNumber.val(), IsActive: chkStatestatus.is(":checked"), Remarks: txtRemarks.val() });
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQualityControl', data, getToken())).then(function (res, status) {
                     console.log(status);

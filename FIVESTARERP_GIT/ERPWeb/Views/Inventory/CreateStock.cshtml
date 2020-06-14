@@ -39,7 +39,7 @@
                     </select>
                     <span class="error hide require-itemType font-weight-bold">Item Type is required</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
                     <select id="ddlItem" class="form-control form-control-sm">
                         <option value="">--Select Item--</option>
@@ -47,60 +47,138 @@
                     <span class="error hide require-item font-weight-bold">Item is required</span>
                     <span class="error hide duplicate-itemName font-weight-bold">This Item is already exist!</span>
                 </div>
-
+                <div class="col-md-1">
+                    <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
+                    <div class="clearfix">
+                        <button type="submit" class="btn btn-sm btn-primary float-left mr-1" id="btnAddItem" title="Add Item"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="txtStockInQty" class="control-label font-weight-bold">Stock-In Qty.</label>
                     <div class="input-group">
-                        <div class="col-sm-8">
-                            <input type="number" placeholder="Qty" name="quantity" id="txtStockInQty" class="form-control form-control-sm" />
-                        </div>
-                        <span id="unitName" class="font-weight-bold mt-3" style="color:darkblue"> </span>
+                        <input type="number" placeholder="Qty" name="quantity" id="txtStockInQty" class="form-control form-control-sm" />
+                        <span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
                     </div>
                     <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group col-md-12">
-                        <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
-                        <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                <div class="col-md-2">
+                    <label for="txtOrderQty" class="control-label font-weight-bold">Order Qty.</label>
+                    <div class="input-group">
+                        <input type="number" placeholder="Qty" name="quantity" id="txtOrderQty" class="form-control form-control-sm" />
+                        @*<span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>*@
                     </div>
+                    <span class="error hide required-orderqty font-weight-bold">Order Qty is required!</span>
                 </div>
                 <div class="col-md-3">
+                    <label for="ddlSupplier" class="control-label font-weight-bold">Supplier Name</label>
+                    @Html.DropDownList("ddlSupplier", (IEnumerable<SelectListItem>)ViewBag.ddlSupplier, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                    <span class="error hide require-supplier font-weight-bold">Supplier is required</span>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                    <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
                     <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
                     <div class="clearfix">
-                        <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
+                        <button type="submit" class="btn btn-sm btn-warning float-left mr-1" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
-                <div class="col-md-3"></div>
             </div>
-            <div class="col-md-12">
-                <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseStock">
-                    <thead>
-                        <tr>
-                            <th colspan="9">
-                                <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
-                            </th>
-                        </tr>
-                        <tr class="btn-dark text-center">
-                            <th>#SL</th>
-                            <th class="hide"></th>
-                            <th>Item Type Name</th>
-                            <th class="hide"></th>
-                            <th>Item Name</th>
-                            <th>Stock-In Qty.</th>
-                            <th>Unit</th>
-                            <th>Remarks</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseStock">
+                        <thead>
+                            <tr>
+                                <th colspan="9">
+                                    <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                                </th>
+                            </tr>
+                            <tr class="btn-dark text-center">
+                                <th>#SL</th>
+                                <th class="hide"></th>
+                                <th>Item Type Name</th>
+                                <th class="hide"></th>
+                                <th>Item Name</th>
+                                <th>Stock-In Qty.</th>
+                                <th>Order Qty</th>
+                                <th>Unit</th>
+                                <th class="hide"></th>
+                                <th>Supplier Name</th>
+                                <th>Remarks</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </form>
     </div>
 </div>
+
+<div class="modal fade" id="modalItem" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Item</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmItem">
+                    <input type="hidden" name="Id" id="hdfItemId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtItemName" class="control-label font-weight-bold">Item Name</label>
+                            <input type="text" name="itemName" value="" id="txtItemName" class="form-control form-control-sm" />
+                            <span class="error hide required-itemName font-weight-bold">Input Item Name!</span>
+                            <span class="error hide duplicate-itemName font-weight-bold">Already ItemName Exist!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ddlItemTypeName" class="control-label font-weight-bold">ItemType Name</label>
+                            @Html.DropDownList("ddlItemTypeName", (IEnumerable<SelectListItem>)ViewBag.ddlItemTypeName, "--Select ItemType--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-itemTypeName font-weight-bold">Required ItemType Name!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlUnitName" class="control-label font-weight-bold">Unit Name</label>
+                            @Html.DropDownList("ddlUnitName", (IEnumerable<SelectListItem>)ViewBag.ddlUnitName, "--Select UnitName--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-UnitName font-weight-bold">Required Unit Name!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtItemRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtItemRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatus" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitItem"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section scripts{
     <script type="text/javascript">
@@ -111,6 +189,16 @@
         var txtRemarks = $("#txtRemarks");
         var unitName = $("#unitName");
         var ddlModel = $("#ddlModel");
+        var txtOrderQty = $("#txtOrderQty");
+        var ddlSupplier = $("#ddlSupplier");
+
+        var txtItemName = $('#txtItemName');
+        var ddlItemTypeName = $("#ddlItemTypeName");
+        var ddlUnitName = $('#ddlUnitName');
+        var txtItemRemarks = $("#txtItemRemarks");
+        var chkStatestatus = $("#chkStatestatus");
+
+        
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -166,7 +254,6 @@
             $('.error').addClass('hide');
             var isValid = true;
             var count = $("#tblWarehouseStock tbody tr").length;
-
             if (count > 0)
             {
                 $.each($("#tblWarehouseStock tbody tr"), function (index, item) {
@@ -177,35 +264,37 @@
                     }
                 })
             }
-
             if (TryParseInt(ddlWarehouse.val(),0) <=0)
             {
                 isValid = false;
                 $(".require-warehouse").removeClass("hide");
             }
-
             if (TryParseInt(ddlModel.val(), 0) <= 0) {
                 isValid = false;
                 $(".require-model").removeClass("hide");
             }
-
             if (TryParseInt(ddlItemType.val(),0) <=0)
             {
                 isValid = false;
                 $(".require-itemType").removeClass("hide");
             }
-
             if (TryParseInt(ddlItem.val(),0) <=0)
             {
                 isValid = false;
                 $(".require-item").removeClass("hide");
             }
-
             if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0)
             {
                 isValid = false;
                 $(".required-qty").removeClass("hide");
-
+            }
+            if (txtOrderQty.val() == "" || TryParseInt(txtOrderQty.val(), 0) <= 0) {
+                isValid = false;
+                $(".required-orderqty").removeClass("hide");
+            }
+            if (TryParseInt(ddlSupplier.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-supplier").removeClass("hide");
             }
             return isValid;
         }
@@ -226,11 +315,14 @@
                 var td5 = "<td>" + $("#ddlItem option:selected").text() + "</td>";
 
                 var td6 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
-                var td7 = "<td class='text-center'>" + unitName.text() + "</td>";
-                var td8 = "<td>" + txtRemarks.val() + "</td>";
-                var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                var td7 = "<td class='text-center'>" + txtOrderQty.val() + "</td>";
+                var td8 = "<td class='text-center'>" + unitName.text() + "</td>";
+                var td9 = "<td class='hide'>" + ddlSupplier.val() + "</td>";
+                var td10 = "<td class='text-center'>" + $("#ddlSupplier option:selected").text() + "</td>";
+                var td11 = "<td>" + txtRemarks.val() + "</td>";
+                var td12 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + "</tr>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + td12 + "</tr>";
                 if ($("#tblWarehouseStock tbody tr").length == 0) {
                     $("#tblWarehouseStock tbody").append(tr);
                 }
@@ -248,6 +340,9 @@
             txtStockInQty.val('');
             unitName.text('');
             txtRemarks.val('');
+            txtOrderQty.val('');
+            ddlSupplier.val('');
+            ddlSupplier.trigger('change');
         }
         //
         $(document).on("click", "a.data-onfly-del", function (e) {
@@ -294,9 +389,12 @@
                                 ItemTypeId: td.eq(1).html(),
                                 ItemId: td.eq(3).html(),
                                 Quantity: td.eq(5).html(),
-                                Remarks: td.eq(7).html()
+                                OrderQty: td.eq(6).html(),
+                                SupplierId: td.eq(8).html(),
+                                Remarks: td.eq(10).html()
                             });
                         })
+
                         reqData = JSON.stringify({ models: reqData });
                         console.log(reqData);
 
@@ -321,6 +419,83 @@
 
         function redirectPage(page) {
             window.location.replace(page);
+        }
+
+        function OpenModal() {
+            $("#spanModalHead").text('Add New Item');
+            $("#spanSaveText").text('Save');
+            $("#modalItem").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddItem").click(function (e) {
+            e.preventDefault();
+            clearItemCtrl();
+            OpenModal();
+        })
+
+        function clearItemCtrl() {
+            txtItemName.val('');
+            ddlItemTypeName.val('');
+            ddlUnitName.val('');
+            txtItemRemarks.val('');
+        }
+
+        $("#btnSubmitItem").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateForm() == true) {
+
+                var data = JSON.stringify({ ItemId: 0, ItemName: txtItemName.val(), ItemTypeId: ddlItemTypeName.val(), UnitId: ddlUnitName.val(), Remarks: txtItemRemarks.val(), IsActive: chkStatestatus.is(":checked") });
+
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItem', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1");
+                        setTimeout(function () {
+                            $(".toastrDefaultSuccess").trigger('click');
+                            clearItemCtrl();
+                            $("#modalItem").modal("toggle");
+                        },1500)   
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+
+        })
+
+        //validation
+        function validateForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtItemName.val()) == "") {
+                $(".required-itemName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                if (ajaxBooleanChecker(JSON.stringify({ id: 0, itemName: txtItemName.val().trim() }), '/Common/IsDuplicateItemName', getToken()) == true) {
+                    $(".duplicate-itemName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(ddlItemTypeName.val()) == "") {
+                $(".required-itemTypeName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(ddlUnitName.val()) == "") {
+                $(".required-UnitName").removeClass("hide");
+                isValid = false;
+            }
+
+            return isValid;
         }
 
     </script>

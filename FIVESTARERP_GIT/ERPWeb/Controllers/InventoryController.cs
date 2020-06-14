@@ -46,8 +46,9 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
+        private readonly ISupplierBusiness _supplierBusiness;
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -67,6 +68,7 @@ namespace ERPWeb.Controllers
             this._finishGoodsSendToWarehouseDetailBusiness = finishGoodsSendToWarehouseDetailBusiness;
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
+            this._supplierBusiness = supplierBusiness;
         }
 
         // GET: Account
@@ -90,7 +92,7 @@ namespace ERPWeb.Controllers
 
             }).OrderBy(des => des.DescriptionId).ToList();
 
-            
+
             IEnumerable<DescriptionViewModel> viewModel = new List<DescriptionViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
             return View(viewModel);
@@ -306,7 +308,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetWarehouseStockInfoPartialList(long? WarehouseId, long? modelId, long? ItemTypeId, long? ItemId, string lessOrEq,int page=1)
+        public ActionResult GetWarehouseStockInfoPartialList(long? WarehouseId, long? modelId, long? ItemTypeId, long? ItemId, string lessOrEq, int page = 1)
         {
             IEnumerable<WarehouseStockInfoDTO> dto = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId).Select(info => new WarehouseStockInfoDTO
             {
@@ -314,7 +316,7 @@ namespace ERPWeb.Controllers
                 WarehouseId = info.WarehouseId,
                 DescriptionId = info.DescriptionId,
                 Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value,User.OrgId).DescriptionName),
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, User.OrgId).DescriptionName),
                 ItemTypeId = info.ItemTypeId,
                 ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
                 ItemId = info.ItemId,
@@ -355,6 +357,12 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
 
+            ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
+
+            ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
+
+            ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
+
             return View();
         }
 
@@ -380,7 +388,7 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
 
-        public ActionResult GetWarehouseStockDetailInfoList(string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, int page = 1)
+        public ActionResult GetWarehouseStockDetailInfoList(string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long? supplierId, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -395,10 +403,11 @@ namespace ERPWeb.Controllers
                     Value = s.value
                 }).ToList();
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
             }
             else
             {
-                var dto = _warehouseStockDetailBusiness.GetWarehouseStockDetailInfoLists(warehouseId,modelId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId).OrderByDescending(s => s.StockDetailId).ToList();
+                var dto = _warehouseStockDetailBusiness.GetWarehouseStockDetailInfoLists(warehouseId, modelId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, supplierId, User.OrgId).OrderByDescending(s => s.StockDetailId).ToList();
 
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
@@ -435,7 +444,7 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType,int page=1)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType, int page = 1)
         {
             var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
             IEnumerable<RequsitionInfoDTO> dto = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
@@ -570,7 +579,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Item Return -Table
-        public ActionResult GetItemReturnList(string flag, string code, long? lineId, long? modelId, long? warehouseId, string status, string returnType, string faultyCase, string fromDate, string toDate,int page=1)
+        public ActionResult GetItemReturnList(string flag, string code, long? lineId, long? modelId, long? warehouseId, string status, string returnType, string faultyCase, string fromDate, string toDate, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemReturnList");
             if (string.IsNullOrEmpty(flag))
@@ -771,7 +780,7 @@ namespace ERPWeb.Controllers
             }
         }
 
-        public ActionResult GetRepairStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, string returnType,string faultyCase, int page = 1)
+        public ActionResult GetRepairStockDetailInfoList(string flag, long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, string returnType, string faultyCase, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -1086,6 +1095,45 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+        #endregion
+
+        #region Supplier
+        public ActionResult GetSuppliers()
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetSuppliers");
+            var supplierDto = _supplierBusiness.GetSuppliers(User.OrgId).Select(s => new SupplierDTO
+            {
+                SupplierId = s.SupplierId,
+                SupplierName = s.SupplierName,
+                Address = s.Address,
+                Email = s.Email,
+                PhoneNumber = s.PhoneNumber,
+                MobileNumber = s.MobileNumber,
+                IsActive = s.IsActive,
+                Remarks = s.Remarks,
+                EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
+            }).ToList();
+            IEnumerable<SupplierViewModel> viewModels = new List<SupplierViewModel>();
+            AutoMapper.Mapper.Map(supplierDto, viewModels);
+            return View(viewModels);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveSupplier(SupplierViewModel model)
+        {
+            bool IsSuccess = false;
+            var privilege = UserPrivilege("Inventory", "GetSuppliers");
+            var permission = (model.SupplierId == 0 && privilege.Add) || (model.SupplierId > 0 && privilege.Edit);
+            if (ModelState.IsValid && permission)
+            {
+                SupplierDTO dto = new SupplierDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _supplierBusiness.SaveSupplier(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
         #endregion
 
         protected override void Dispose(bool disposing)

@@ -71,9 +71,15 @@
                 @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlSupplier" class="control-label font-weight-bold">Supplier Name</label>
+                @Html.DropDownList("ddlSupplier", (IEnumerable<SelectListItem>)ViewBag.ddlSupplier, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+            </div>
+        </div>
         <hr />
     </div>
-    <div class="col-md-12" id="dataContainer">
+    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
         @{Html.RenderAction("GetWarehouseStockDetailInfoList", new { @flag = "load" });}
     </div>
 </div>
@@ -88,6 +94,7 @@
         var dptToDate = $("#dptToDate");
         var ddlStockStatus = $("#ddlStockStatus");
         var ddlModelName = $("#ddlModelName");
+        var ddlSupplier = $("#ddlSupplier");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -156,7 +163,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val(), page:pageNo };
+            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val(), supplierId: TryParseInt(ddlSupplier.val(),0), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockDetailInfoList', data)).then(function (res, status) {

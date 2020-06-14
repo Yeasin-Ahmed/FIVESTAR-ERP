@@ -31,5 +31,7 @@ namespace ERPBO.Inventory.ViewModels
         public string RefferenceNumber { get; set; }
         [StringLength(150)]
         public string UpdateUser { get; set; }
+        public int OrderQty { get; set; }
+        public string SupplierName { get; set; }
     }
 }
