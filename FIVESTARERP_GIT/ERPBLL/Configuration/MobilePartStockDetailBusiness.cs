@@ -50,6 +50,8 @@ namespace ERPBLL.Configuration
                 StockDetail.EUserId = userId;
                 StockDetail.EntryDate = DateTime.Now;
                 StockDetail.StockStatus = StockStatus.StockIn;
+                StockDetail.BranchFrom = item.BranchFrom;
+                StockDetail.ReferrenceNumber = item.ReferrenceNumber;
 
                 var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId,branchId).Where(o => o.MobilePartId == item.MobilePartId ).FirstOrDefault();
                 if (warehouseInfo != null)
@@ -92,15 +94,26 @@ namespace ERPBLL.Configuration
                 StockDetail.BranchId = branchId;
                 StockDetail.EUserId = userId;
                 StockDetail.EntryDate = DateTime.Now;
-                StockDetail.StockStatus = StockStatus.StockIn;
+                StockDetail.StockStatus = StockStatus.StockOut;
+                StockDetail.ReferrenceNumber = item.ReferrenceNumber;
 
                 var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(o => item.SWarehouseId == item.SWarehouseId && o.MobilePartId == item.MobilePartId).FirstOrDefault();
                 warehouseInfo.StockOutQty += item.Quantity;
                 warehouseInfo.UpUserId = userId;
                 mobilePartStockInfoRepository.Update(warehouseInfo);
+                mobilePartStockDetails.Add(StockDetail);
+
             }
             mobilePartStockDetailRepository.InsertAll(mobilePartStockDetails);
             return mobilePartStockDetailRepository.Save();
+        }
+
+        public bool StockInByBranchTransferApproval(long transferId, string status, long userId, long branchId, long orgId)
+        {
+            bool IsSuccess = false;
+            
+            return IsSuccess;
+
         }
     }
 }

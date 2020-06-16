@@ -1,18 +1,16 @@
 ﻿
 @{
-    ViewBag.Title = "Stock Transfer B-B";
+    ViewBag.Title = "Receives Stock From Transfer";
 }
-
 <div class="row">
     <div class="col-md-12 text-center">
         <div class="row">
             <div class="col-md-3">
             </div>
             <div class="col-md-6">
-                <h4><b style="color:darkblue">Parts Transfer List</b></h4>
+                <h4><b style="color:darkblue">Receives Stock From Transfer</b></h4>
             </div>
             <div class="col-md-3">
-                <a href="/Configuration/CreateStockTransfer" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Stock Transfer</a>
             </div>
         </div>
         <hr />
@@ -28,7 +26,7 @@
         </div>
     </div>
     <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("StockTransferInfoPartialList");}
+        @{Html.RenderAction("RecevieStockFromTransferInfoPartialList");}
     </div>
     <div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -60,7 +58,7 @@
             var data = { sWerehouseId: TryParseInt(ddlServicesWarehouse.val(), 0)};
 
             console.log(data);
-            $.when(getReqWithData('html', 'GET', '/Configuration/StockTransferInfoPartialList', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Configuration/RecevieStockFromTransferInfoPartialList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {
@@ -79,7 +77,7 @@
             hdfTransferInfoId.val("0")
             var id = $(this).attr("data-item-details");
             hdfTransferInfoId.val(id);
-            $.when(getReqWithData('html', type.get, '/Configuration/TransferStockDetails', { transferId: id })).then(function (res, status) {
+            $.when(getReqWithData('html', type.get, '/Configuration/TransferStockReciveDetails', { transferId: id })).then(function (res, status) {
                 if (status === "success") {
                     $("#dataContainer1").empty();
                     $("#dataContainer1").append(res);

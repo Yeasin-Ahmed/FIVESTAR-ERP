@@ -27,5 +27,7 @@ namespace ERPBO.Configuration.DomainModels
         [ForeignKey("TransferInfo")]
         public long TransferInfoId { get; set; }
         public TransferInfo TransferInfo { get; set; }
+        //
+        public long? BranchTo { get; set; }
     }
 }

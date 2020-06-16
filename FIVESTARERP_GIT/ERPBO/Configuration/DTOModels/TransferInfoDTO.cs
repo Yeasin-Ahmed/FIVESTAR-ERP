@@ -24,5 +24,10 @@ namespace ERPBO.Configuration.DTOModels
         //custom p
         public string SWarehouseName { get; set; }
         public string BranchName { get; set; }
+        //
+        public long? ABWarehouse { get; set; }
+        public string BranchToName { get; set; }
+        public int? ItemCount { get; set; }
+        public long? WarehouseIdTo { get; set; }
     }
 }
