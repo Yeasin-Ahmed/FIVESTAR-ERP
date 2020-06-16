@@ -24,5 +24,8 @@ namespace ERPBO.Configuration.DTOModels
         public long TransferInfoId { get; set; }
         public string PartsName { get; set; }
         public string BranchName { get; set; }
+
+        //
+        public long? BranchTo { get; set; }
     }
 }

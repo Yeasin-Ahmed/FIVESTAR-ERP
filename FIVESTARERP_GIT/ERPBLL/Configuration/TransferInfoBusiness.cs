@@ -11,39 +11,83 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.Configuration
 {
-   public class TransferInfoBusiness: ITransferInfoBusiness
+    public class TransferInfoBusiness : ITransferInfoBusiness
     {
         private readonly IConfigurationUnitOfWork _configurationDb; // database
         private readonly TransferInfoRepository transferInfoRepository; // repo
         private readonly IMobilePartStockDetailBusiness _mobilePartStockDetailBusiness;
-        public TransferInfoBusiness(IConfigurationUnitOfWork configurationDb,IMobilePartStockDetailBusiness mobilePartStockDetailBusiness)
+
+        private readonly ITransferDetailBusiness _transferDetailBusiness;
+        public TransferInfoBusiness(IConfigurationUnitOfWork configurationDb, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITransferDetailBusiness transferDetailBusiness)
         {
             this._mobilePartStockDetailBusiness = mobilePartStockDetailBusiness;
+            this._transferDetailBusiness = transferDetailBusiness;
             this._configurationDb = configurationDb;
             transferInfoRepository = new TransferInfoRepository(this._configurationDb);
         }
 
-        public IEnumerable<TransferInfo> GetAllStockTransferByOrgId(long orgId, long branchId)
+        public IEnumerable<TransferInfo> GetAllStockTransferByOrgId(long orgId)
         {
-            return transferInfoRepository.GetAll(ts => ts.OrganizationId == orgId && ts.BranchId==branchId).ToList();
+            return transferInfoRepository.GetAll(ts => ts.OrganizationId == orgId).ToList();
+        }
+
+        public IEnumerable<TransferInfo> GetAllStockTransferByOrgIdAndBranch(long orgId, long branchId)
+        {
+            return transferInfoRepository.GetAll(ts => ts.OrganizationId == orgId && ts.BranchId == branchId).ToList();
         }
 
         public TransferInfo GetStockTransferInfoById(long id, long orgId, long branchId)
         {
-            return transferInfoRepository.GetOneByOrg(t => t.TransferInfoId == id && t.OrganizationId == orgId && t.BranchId==branchId);
+            return transferInfoRepository.GetOneByOrg(t => t.TransferInfoId == id && t.OrganizationId == orgId && t.BranchId == branchId);
         }
 
-        public bool SaveTransferInfoStateStatus(long transferId, string status, long userId, long orgId, long branchId)
+        public TransferInfo GetStockTransferInfoById(long id, long orgId)
         {
-            var info = GetStockTransferInfoById(transferId, orgId,branchId);
+            return transferInfoRepository.GetOneByOrg(t => t.TransferInfoId == id && t.OrganizationId == orgId);
+        }
+
+        public bool SaveTransferInfoStateStatus(long transferId,long swarehouse, string status, long userId, long orgId, long branchId)
+        {
+            bool IsSuccess = false;
+            var info = GetStockTransferInfoById(transferId, orgId);
             if (info != null && info.StateStatus == RequisitionStatus.Approved)
             {
+                info.WarehouseIdTo = swarehouse;
                 info.StateStatus = RequisitionStatus.Accepted;
                 info.UpUserId = userId;
                 info.UpdateDate = DateTime.Now;
                 transferInfoRepository.Update(info);
+                if (transferInfoRepository.Save())
+                {
+                    var details = _transferDetailBusiness.GetAllTransferDetailByInfoId(transferId,orgId);
+                    if (details.Count() > 0)
+                    {
+                        List<MobilePartStockDetailDTO> stockDetails = new List<MobilePartStockDetailDTO>();
+                        foreach (var item in details)
+                        {
+                            MobilePartStockDetailDTO detailItem = new MobilePartStockDetailDTO()
+                            {
+                                BranchFrom = info.BranchId,
+                                BranchId = info.BranchTo.Value,
+
+                                SWarehouseId = swarehouse,
+                                MobilePartId = item.PartsId,
+                                StockStatus = StockStatus.StockIn,
+                                Quantity = item.Quantity,
+                                EUserId = userId,
+                                EntryDate = DateTime.Now,
+                                OrganizationId = orgId,
+                                ReferrenceNumber = info.TransferCode,
+                                Remarks = "Stock In By Another Branch ("+info.TransferCode+")",
+                            };
+                            stockDetails.Add(detailItem);
+                        }
+                        IsSuccess = _mobilePartStockDetailBusiness.SaveMobilePartStockIn(stockDetails, userId, orgId, info.BranchTo.Value);
+                    }
+                }
             }
-            return transferInfoRepository.Save();
+
+            return IsSuccess;
         }
 
         public bool SaveTransferStockInfo(TransferInfoDTO info, List<TransferDetailDTO> detailDTO, long userId, long orgId, long branchId)
@@ -52,7 +96,7 @@ namespace ERPBLL.Configuration
             TransferInfo transferInfo = new TransferInfo
             {
                 TransferInfoId = info.TransferInfoId,
-                BranchTo=info.BranchTo,
+                BranchTo = info.BranchTo,
                 BranchId = branchId,
                 WarehouseId = info.SWarehouseId,
                 OrganizationId = orgId,
@@ -72,6 +116,8 @@ namespace ERPBLL.Configuration
                     PartsId = item.PartsId,
                     Quantity = item.Quantity,
                     Remarks = item.Remarks,
+                    BranchTo=info.BranchTo,
+                    BranchId= branchId,
                     OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now,
@@ -87,7 +133,8 @@ namespace ERPBLL.Configuration
                     OrganizationId = orgId,
                     EntryDate = DateTime.Now,
                     EUserId = userId,
-                    BranchId = branchId
+                    BranchId = branchId,
+                    ReferrenceNumber= transferInfo.TransferCode
                 };
                 TransferStockOutItems.Add(stockOutItem);
             }

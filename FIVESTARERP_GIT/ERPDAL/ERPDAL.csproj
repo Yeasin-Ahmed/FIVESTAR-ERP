@@ -101,6 +101,18 @@
     <Compile Include="ConfigurationContextMigrations\202006140400238_Configuration_DbTransferInfo&amp;Details.Designer.cs">
       <DependentUpon>202006140400238_Configuration_DbTransferInfo&amp;Details.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006151329341_Configuration_DbnewColumnadd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006151329341_Configuration_DbnewColumnadd.Designer.cs">
+      <DependentUpon>202006151329341_Configuration_DbnewColumnadd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006160532385_Configuration_DbnewColumnadd1.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006160532385_Configuration_DbnewColumnadd1.Designer.cs">
+      <DependentUpon>202006160532385_Configuration_DbnewColumnadd1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006160538357_Configuration_RefNumStockDetail.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006160538357_Configuration_RefNumStockDetail.Designer.cs">
+      <DependentUpon>202006160538357_Configuration_RefNumStockDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -237,6 +249,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202006140400238_Configuration_DbTransferInfo&amp;Details.resx">
       <DependentUpon>202006140400238_Configuration_DbTransferInfo&amp;Details.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006151329341_Configuration_DbnewColumnadd.resx">
+      <DependentUpon>202006151329341_Configuration_DbnewColumnadd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006160532385_Configuration_DbnewColumnadd1.resx">
+      <DependentUpon>202006160532385_Configuration_DbnewColumnadd1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006160538357_Configuration_RefNumStockDetail.resx">
+      <DependentUpon>202006160538357_Configuration_RefNumStockDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

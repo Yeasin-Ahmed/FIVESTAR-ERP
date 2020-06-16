@@ -27,5 +27,9 @@ namespace ERPBO.Configuration.ViewModels
         public string PartsName { get; set; }
         [StringLength(100)]
         public string BranchName { get; set; }
+
+        //
+        public long? BranchTo { get; set; }
+
     }
 }

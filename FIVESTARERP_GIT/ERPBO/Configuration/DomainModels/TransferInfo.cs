@@ -25,5 +25,8 @@ namespace ERPBO.Configuration.DomainModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<TransferDetail> TransferDetails { get; set; }
+        //
+        public long? ABWarehouse { get; set; }
+        public long? WarehouseIdTo { get; set; }
     }
 }

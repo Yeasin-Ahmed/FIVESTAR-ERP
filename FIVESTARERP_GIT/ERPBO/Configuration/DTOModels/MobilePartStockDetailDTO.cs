@@ -25,5 +25,7 @@ namespace ERPBO.Configuration.DTOModels
         //Custom p
         public string MobilePartName { get; set; }
         public string ServicesWarehouseName { get; set; }
+        public long? BranchFrom { get; set; }
+        public string ReferrenceNumber { get; set; }
     }
 }
