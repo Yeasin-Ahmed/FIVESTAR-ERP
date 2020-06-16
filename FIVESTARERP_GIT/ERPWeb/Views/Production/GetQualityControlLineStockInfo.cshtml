@@ -1,7 +1,7 @@
 ﻿@{
-    ViewBag.Title = "Assembly Line Stock Info";
+    ViewBag.Title = "QC Line Stock Info";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-}
+}   
 
 <div class="row">
     <div class="col-md-12 text-center">
@@ -15,12 +15,12 @@
                 }
             </div>
             <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Assembly Line Stock Info</b></h4>
+                <h4><b style="color:darkblue">QC Line Stock Info</b></h4>
             </div>
             <div class="col-md-3">
                 @if (privilege.Edit)
                 {
-                    <a href="/Production/GetReceiveStockFromFloor" class="float-right btn btn-sm btn-outline-success" title="Transfer Stock To Assembly">
+                    <a href="/Production/GetReceiveStockFromAssembly" class="float-right btn btn-sm btn-outline-success" title="Receive Stock From Assembly">
                         <i class="fas fa-plus"></i> Stock In
                     </a>
                 }
@@ -44,15 +44,21 @@
                 </select>
             </div>
             <div class="col-md-3">
+                <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
+                <select id="ddlQCLine" class="form-control form-control-sm">
+                    <option value="0">--Select QC Line--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
                 <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm">
@@ -69,22 +75,11 @@
                 <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
                 <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
             </div>
-            @if (privilege.Edit)
-            {
-                <div class="col-md-3">
-                    <label for="" class="control-label font-weight-bold" style="visibility:hidden">Transfer Stock</label>
-                    <div>
-                        <a href="/Production/GetAssemblyStockTransferList" class="float-right btn btn-sm btn-outline-danger" title="Transfer Stock To QC">
-                            <i class="fas fa-plus"></i> Transfer Stock
-                        </a>
-                    </div>
-                </div>
-            }
         </div>
         <hr />
     </div>
     <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
-        @{Html.RenderAction("GetAssemblyLineStockInfo",new {@flag="View" });}
+        @{Html.RenderAction("GetQualityControlLineStockInfo", new {@flag="View" });}
     </div>
 </div>
 
@@ -97,6 +92,7 @@
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var txtLessOrEq = $("#txtLessOrEq");
+        var ddlQCLine = $("#ddlQCLine");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -111,8 +107,10 @@
 
         ddlLineNumber.change(function () {
             clearDropdown("ddlAssembly");
+            clearDropdown("ddlQCLine");
             if (ddlLineNumber.val() != "") {
                 LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssembly, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
             }
             LoadDataTable();
         })
@@ -136,6 +134,10 @@
             LoadDataTable();
         })
 
+        ddlQCLine.change(function () {
+            LoadDataTable();
+        })
+
         $(document).on('change', '.ctrl-change', function () {
             LoadDataTable();
         })
@@ -147,9 +149,9 @@
         function LoadDataTable() {
 
             //string flag,long? lineId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,int page=1
-            var data = { flag: "search", lineId: ddlLineNumber.val(), assemblyId: ddlAssembly.val(), modelId:ddlModelName.val(), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val(), page: pageNo };
+            var data = { flag: "search", lineId: ddlLineNumber.val(), assemblyId: ddlAssembly.val(), modelId: ddlModelName.val(), qcId: TryParseInt(ddlQCLine.val(),0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val(), page: pageNo };
 
-            $.when(getReqWithData('html', 'GET', '/Production/GetAssemblyLineStockInfo', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Production/GetQualityControlLineStockInfo', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {

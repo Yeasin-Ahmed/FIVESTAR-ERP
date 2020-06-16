@@ -73,7 +73,7 @@ Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).Single();
                 {
                     user = await _controlPanelUnitOfWork.Db.Database.SqlQuery<UserInformation>(string.Format(@"Select U.UserId,U.UserName,U.Desigation 'Designation',U.EmployeeId,U.Email,U.[Address],U.MobileNo,U.FullName,U.IsActive,O.OrganizationId,O.OrganizationName,O.OrgLogoPath,
 O.ReportLogoPath, 
-R.RoleName,R.RoleId,O.IsActive 'IsOrgActive',U.IsRoleActive,U.BranchId,brn.BranchName From tblApplicationUsers U
+R.RoleName,R.RoleId,O.IsActive 'IsOrgActive',U.IsRoleActive,U.BranchId,brn.BranchName,O.AppType From tblApplicationUsers U
 Inner Join tblOrganizations O on U.OrganizationId = O.OrganizationId
 Inner Join tblBranch brn on U.BranchId = brn.BranchId
 Inner Join tblRoles R On U.RoleId = R.RoleId And R.OrganizationId = U.OrganizationId

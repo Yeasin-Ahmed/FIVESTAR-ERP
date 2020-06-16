@@ -24,7 +24,6 @@ namespace ERPWeb.Controllers
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
         private readonly IJobOrderBusiness _jobOrderBusiness;
 
-
         public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
@@ -36,7 +35,7 @@ namespace ERPWeb.Controllers
         }
         public ActionResult Index()
         {
-            if(User.UserName != "sagarnew")
+            if(User.AppType == ApplicationType.ERP)
             {
                 // Requisition Summery
                 IEnumerable<DashboardRequisitionSummeryDTO> dto = _requsitionInfoBusiness.DashboardRequisitionSummery(User.OrgId);

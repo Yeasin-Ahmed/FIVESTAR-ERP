@@ -102,7 +102,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
-
+        public static IEnumerable<Dropdown> ListOfAppType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=ApplicationType.ERP,value=ApplicationType.ERP},
+                new Dropdown(){text=ApplicationType.Service,value=ApplicationType.Service}
+            };
+            return dropdowns;
+        }
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

@@ -78,6 +78,7 @@ namespace ERPDAL.ControlPanelContextMigrations
                         EUserId = c.Long(),
                         EntryDate = c.DateTime(),
                         UpUserId = c.Long(),
+                        AppType = c.String(),
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.OrganizationId);

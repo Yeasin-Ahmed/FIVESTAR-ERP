@@ -217,6 +217,8 @@
     <Compile Include="Production\DTOModel\FinishGoodsStockDetailInfoListDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailInfoListDTO.cs" />
     <Compile Include="Production\DTOModel\QualityControlDTO.cs" />
+    <Compile Include="Production\DTOModel\QualityControlLineStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\QualityControlLineStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionInfoDTO.cs" />
@@ -255,6 +257,8 @@
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />
+    <Compile Include="Production\ViewModels\QualityControlLineStockDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\QualityControlLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />

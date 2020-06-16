@@ -94,6 +94,7 @@ namespace ERPWeb.Controllers
                             serializeModel.roles = roleArray;
                             serializeModel.BranchId = userInformation.BranchId;
                             serializeModel.BranchName = userInformation.BranchName;
+                            serializeModel.AppType = userInformation.AppType;
                             #endregion
 
                             Session["UserDetail"] = serializeModel;

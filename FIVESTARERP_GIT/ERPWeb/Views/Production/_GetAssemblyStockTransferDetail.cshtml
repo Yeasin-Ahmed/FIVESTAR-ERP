@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.TransferStockToQCDetailViewModel>
+@using ERPBO.Production.ViewModels;
+@using ERPBLL.Common;
+@{
+    Layout = null;
+    int sl = 0;
+    TransferStockToQCInfoViewModel info = (TransferStockToQCInfoViewModel)ViewBag.Info;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
+    <tbody>
+        <tr>
+            <td class="hide">@info.TSQInfoId</td>
+            <td style="width:15%">Transfer Code</td>
+            <td style="width:25%"><b>@info.TransferCode</b></td>
+            <td style="width:10%">Floor No</td>
+            <td style="width:10%"><b>@info.ProductionLineName</b></td>
+            <td style="width:15%">Assembly Line</td>
+            <td style="width:25%"><b>@info.AssemblyLineName</b></td>
+        </tr>
+
+        <tr>
+            <td style="width:15%">QC Line</td>
+            <td style="width:25%"><b>@info.QCLineName</b></td>
+            <td style="width:15%">Warehouse Name</td>
+            <td style="width:25%"><b>@info.WarehouseName</b></td>
+            <td style="width:10%">Model Name</td>
+            <td style="width:10%"><b>@info.ModelName</b></td>
+        </tr>
+        <tr>
+            <td style="width:15%">StateStatus</td>
+            <td colspan="5"><b>@info.StateStatus</b></td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th class="hide"></th>
+            <th class="hide"></th>
+            <th>ItemType Name</th>
+            <th class="hide"></th>
+            <th>Item Name</th>
+            <th>Qty.</th>
+            <th>Type Of Unit</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center" width="10%"><b>@sl</b></td>
+                <td class="hide">@detail.TSQDetailId</td>
+                <td class="hide">@detail.ItemTypeId</td>
+                <td>@detail.ItemTypeName</td>
+                <td class="hide">@detail.ItemId</td>
+                <td>@detail.ItemName</td>
+                <td class="text-center">
+                    @detail.Quantity
+                </td>
+                <td class="text-center">@detail.UnitName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (info.StateStatus == RequisitionStatus.Approved && privilege.Approval)
+{
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-success btnAccepted">Accepted</button>
+    </div>
+}
+

@@ -132,7 +132,9 @@
     <Compile Include="Inventory\WarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
     <Compile Include="Production\AssemblyLineBusiness.cs" />
+    <Compile Include="Production\QCLineStockDetailBusiness.cs" />
     <Compile Include="Production\AssemblyLineStockDetailBusiness.cs" />
+    <Compile Include="Production\QCLineStockInfoBusiness.cs" />
     <Compile Include="Production\AssemblyLineStockInfoBusiness.cs" />
     <Compile Include="Production\FinishGoodsInfoBusiness.cs" />
     <Compile Include="Inventory\DescriptionBusiness.cs" />
@@ -142,7 +144,9 @@
     <Compile Include="Production\FinishGoodsStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IDescriptionBusiness.cs" />
     <Compile Include="Production\Interface\IAssemblyLine.cs" />
+    <Compile Include="Production\Interface\IQCLineStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IAssemblyLineStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IQCLineStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IAssemblyLineStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IFinishGoodsInfoBusiness.cs" />
     <Compile Include="Production\Interface\IFinishGoodsRowMaterialBusiness.cs" />

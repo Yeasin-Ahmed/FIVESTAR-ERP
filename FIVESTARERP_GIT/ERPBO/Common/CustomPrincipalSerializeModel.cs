@@ -32,5 +32,6 @@ namespace ERPBO.Common
         public string Designation { get; set; }
         public long BranchId { get; set; }
         public string BranchName { get; set; }
+        public string AppType { get; set; }
     }
 }

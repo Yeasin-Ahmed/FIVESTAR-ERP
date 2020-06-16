@@ -38,6 +38,7 @@ namespace ERPBO.ControlPanel.DomainModels
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
+        public string AppType { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<Branch> Branches { get; set; }
     }

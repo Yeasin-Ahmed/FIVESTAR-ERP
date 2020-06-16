@@ -107,9 +107,9 @@
     <Compile Include="ConfigurationDAL\ConfigurationRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationUnitOfWork.cs" />
     <Compile Include="ConfigurationDAL\IConfigurationUnitOfWork.cs" />
-    <Compile Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.cs" />
-    <Compile Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.Designer.cs">
-      <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
+    <Compile Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.cs" />
+    <Compile Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.Designer.cs">
+      <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
@@ -186,6 +186,10 @@
     <Compile Include="ProductionContextMigrations\202006140645018_Production_TransferStockToQC.Designer.cs">
       <DependentUpon>202006140645018_Production_TransferStockToQC.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006150031287_Production_QCStock.cs" />
+    <Compile Include="ProductionContextMigrations\202006150031287_Production_QCStock.Designer.cs">
+      <DependentUpon>202006150031287_Production_QCStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -242,8 +246,8 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202006140400238_Configuration_DbTransferInfo&amp;Details.resx">
       <DependentUpon>202006140400238_Configuration_DbTransferInfo&amp;Details.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ControlPanelContextMigrations\202005310139214_ControlPanel_AllEntities_16-May-2020.resx">
-      <DependentUpon>202005310139214_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
+      <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202006030537280_FrontDesk_DbInitialize.resx">
       <DependentUpon>202006030537280_FrontDesk_DbInitialize.cs</DependentUpon>
@@ -289,6 +293,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006140645018_Production_TransferStockToQC.resx">
       <DependentUpon>202006140645018_Production_TransferStockToQC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006150031287_Production_QCStock.resx">
+      <DependentUpon>202006150031287_Production_QCStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

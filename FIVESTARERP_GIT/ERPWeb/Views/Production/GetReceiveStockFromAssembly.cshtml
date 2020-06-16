@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Assembly Stock Transfer List";
+    ViewBag.Title = "Receive Stock From Assembly";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
@@ -10,15 +10,10 @@
             <div class="col-md-3">
             </div>
             <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Assembly Stock Transfer List</b></h4>
+                <h4><b style="color:darkblue">Receive Stock From Assembly</b></h4>
             </div>
             <div class="col-md-3">
-                @if (privilege.Add)
-                {
-                    <a href="/Production/CreateAssemblyStockTransfer" class="float-right btn btn-sm btn-outline-success" title="Transfer Stock">
-                        <i class="fas fa-paper-plane"></i> Transfer Stock To QC
-                    </a>
-                }
+                
             </div>
         </div>
         <hr />
@@ -201,7 +196,7 @@
 
             var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), assemblyId: TryParseInt(ddlAssembly.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), qcId: TryParseInt(ddlQCLine.val(),0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), transferCode: txtTSQCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId:0, page: pageNo };
 
-            $.when(getReqWithData('html', 'GET', '/Production/GetAssemblyStockTransferList', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Production/GetReceiveStockFromAssembly', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {
@@ -229,12 +224,11 @@
             hdfTSQInfoId.val("0")
             var id = $(this).attr("data-item-detail");
             hdfTSQInfoId.val(id);
-            $.when(getReqWithData('html', type.get, '/Production/GetAssemblyStockTransferList',{ flag: "detail", transferInfoId: id })).then(function (res, status) {
+            $.when(getReqWithData('html', type.get, '/Production/GetReceiveStockFromAssembly',{ flag: "detail", transferInfoId: id })).then(function (res, status) {
                 if (status === "success") {
                     $("#dataContainer1").empty();
                     $("#dataContainer1").append(res);
                     $("#modalTransferDetails").modal("toggle");
-                    $(".btnAccepted").addClass('hide');
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -249,7 +243,7 @@
 
         function fnTransferStateChange(id, status) {
             var data = JSON.stringify({ transferId: id, status: status});
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveTransferStockStatus', data,getToken())).then(function (res, status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveAssemblyStockTransferStatus', data,getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $("#modalTransferDetails").modal("toggle").toggle("fast");
                     hdfTSQInfoId.val('0');

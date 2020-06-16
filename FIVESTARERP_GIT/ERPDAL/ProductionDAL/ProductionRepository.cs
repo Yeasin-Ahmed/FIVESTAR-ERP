@@ -83,7 +83,6 @@ namespace ERPDAL.ProductionDAL
     {
         public QualityControlRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class TransferStockToQCInfoRepository : ProductionBaseRepository<TransferStockToQCInfo>
     {
         public TransferStockToQCInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
@@ -91,6 +90,14 @@ namespace ERPDAL.ProductionDAL
     public class TransferStockToQCDetailRepository : ProductionBaseRepository<TransferStockToQCDetail>
     {
         public TransferStockToQCDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class QualityControlLineStockInfoRepository : ProductionBaseRepository<QualityControlLineStockInfo>
+    {
+        public QualityControlLineStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class QualityControlLineStockDetailRepository : ProductionBaseRepository<QualityControlLineStockDetail>
+    {
+        public QualityControlLineStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
 
 }

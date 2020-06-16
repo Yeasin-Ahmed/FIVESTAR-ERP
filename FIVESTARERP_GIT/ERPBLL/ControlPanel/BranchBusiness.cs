@@ -36,40 +36,49 @@ namespace ERPBLL.ControlPanel
 
         public bool SaveBranch(BranchDTO branchDTO, long userId, long orgId)
         {
-            Branch branch = new Branch();
-            if (branchDTO.BranchId == 0)
+            
+            try
             {
-                branch.BranchName = branchDTO.BranchName;
-                branch.ShortName = branchDTO.ShortName;
-                branch.MobileNo = branchDTO.MobileNo;
-                branch.Email = branchDTO.Email;
-                branch.PhoneNo = branchDTO.PhoneNo;
-                branch.Fax = branchDTO.Fax;
-                branch.IsActive = branchDTO.IsActive;
-                branch.EntryDate = DateTime.Now;
-                branch.EUserId = userId;
-                branch.OrganizationId = branchDTO.OrgId;
-                branch.Remarks = branchDTO.Remarks;
-                branchRepository.Insert(branch);
+                if (branchDTO.BranchId == 0)
+                {
+                    Branch branch = new Branch();
+                    branch.BranchName = branchDTO.BranchName;
+                    branch.ShortName = branchDTO.ShortName;
+                    branch.MobileNo = branchDTO.MobileNo;
+                    branch.Email = branchDTO.Email;
+                    branch.PhoneNo = branchDTO.PhoneNo;
+                    branch.Fax = branchDTO.Fax;
+                    branch.IsActive = branchDTO.IsActive;
+                    branch.EntryDate = DateTime.Now;
+                    branch.EUserId = userId;
+                    branch.OrganizationId = branchDTO.OrgId;
+                    branch.Remarks = branchDTO.Remarks;
+                    branchRepository.Insert(branch);
 
+                }
+                else
+                {
+                    var branchInDb = GetBranchOneByOrgId(branchDTO.BranchId, orgId);
+                    branchInDb.BranchName = branchDTO.BranchName;
+                    branchInDb.ShortName = branchDTO.ShortName;
+                    branchInDb.MobileNo = branchDTO.MobileNo;
+                    branchInDb.Email = branchDTO.Email;
+                    branchInDb.PhoneNo = branchDTO.PhoneNo;
+                    branchInDb.Fax = branchDTO.Fax;
+                    branchInDb.IsActive = branchDTO.IsActive;
+                    branchInDb.UpdateDate = DateTime.Now;
+                    branchInDb.UpUserId = userId;
+                    branchInDb.Remarks = branchDTO.Remarks;
+                    branchRepository.Update(branchInDb);
+                }
+                return branchRepository.Save();
             }
-            else
+            catch (Exception ex)
             {
-                branch = GetBranchOneByOrgId(branchDTO.BranchId, orgId);
-                branch.BranchName = branchDTO.BranchName;
-                branch.ShortName = branchDTO.ShortName;
-                branch.MobileNo = branchDTO.MobileNo;
-                branch.Email = branchDTO.Email;
-                branch.PhoneNo = branchDTO.PhoneNo;
-                branch.Fax = branchDTO.Fax;
-                branch.IsActive = branchDTO.IsActive;
-                branch.UpdateDate = DateTime.Now;
-                branch.UpUserId = userId;
-                branch.OrganizationId = branchDTO.OrgId;
-                branch.Remarks = branchDTO.Remarks;
-                branchRepository.Update(branch);
+
+                throw;
             }
-            return branchRepository.Save();
+            
         }
     }
 }

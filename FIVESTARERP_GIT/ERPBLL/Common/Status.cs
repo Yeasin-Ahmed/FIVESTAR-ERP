@@ -88,4 +88,10 @@ namespace ERPBLL.Common
         public static readonly string Billing = "Billing";
     }
 
+    public class ApplicationType
+    {
+        public static readonly string ERP = "ERP";
+        public static readonly string Service = "Service";
+
+    }
 }
