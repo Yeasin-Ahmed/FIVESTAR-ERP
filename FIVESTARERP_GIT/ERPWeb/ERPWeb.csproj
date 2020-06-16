@@ -466,6 +466,10 @@
     <Content Include="Views\Production\_GetQualityControlLineStockInfo.cshtml" />
     <Content Include="Views\Production\GetReceiveStockFromAssembly.cshtml" />
     <Content Include="Views\Production\_GetAssemblyStockTransferDetail.cshtml" />
+    <Content Include="Views\Configuration\RecevieStockFromTransfer.cshtml" />
+    <Content Include="Views\Configuration\RecevieStockFromTransferInfoPartialList.cshtml" />
+    <Content Include="Views\Configuration\_TransferStockDetails.cshtml" />
+    <Content Include="Views\Configuration\_TransferStockReciveDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
