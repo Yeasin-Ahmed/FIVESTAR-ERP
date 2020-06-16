@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.TransferStockToQCInfoViewModel>
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+    string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+
+<table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblFloorStockTransferInfoData">
+    <thead class="btn-dark">
+        <tr class="text-center">
+            <th style="vertical-align:middle">#SL</th>
+            <th class="hide"></th>
+            <th style="vertical-align:middle">Transfer Code</th>
+            <th style="vertical-align:middle">Line Number</th>
+            <th style="vertical-align:middle">Assembly Line</th>
+            <th style="vertical-align:middle">QC Line</th>
+            <th style="vertical-align:middle">Model</th>
+            <th style="vertical-align:middle">Warehouse Name</th>
+            <th style="vertical-align:middle">Total Item</th>
+            <th style="vertical-align:middle">State Status</th>
+            <th style="vertical-align:middle">Remarks</th>
+            <th style="vertical-align:middle">EntryDate</th>
+            <th style="vertical-align:middle">Entry User</th>
+            <th style="vertical-align:middle">Update User</th>
+            <th style="vertical-align:middle">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var info in Model)
+        {
+            sl = sl + 1;
+            badge = info.StateStatus == "Approved" ? "badge bg-success" : "badge bg-primary";
+        <tr>
+            <td class="text-center text-bold">@sl</td>
+            <td class="hide">@info.TSQInfoId</td>
+            <td>@info.TransferCode</td>
+            <td>@info.ProductionLineName</td>
+            <td>@info.AssemblyLineName</td>
+            <td>@info.QCLineName</td>
+            <td>@info.ModelName</td>
+            <td>@info.WarehouseName</td>
+            <td class="text-center">@info.ItemCount</td>
+            <td class="text-center" data-val="@info.StateStatus">
+                <span class="@badge">@info.StateStatus</span>
+            </td>
+            <td>@info.Remarks</td>
+            <td class="text-center text-sm">@info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")</td>
+            <td class="text-center text-sm">@info.EntryUser</td>
+            <td class="text-center text-sm">@info.UpdateUser</td>
+            <td class="text-center">
+                @if (privilege != null && privilege.Detail)
+                {
+                    <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Details" data-item-detail="@info.TSQInfoId"><i class="fas fa-eye"></i></a>
+                }
+                @if (privilege != null && privilege.Report)
+                {
+                    <a href="#" class="btn btn-sm btn-outline-danger data-report-item" title="Pdf Report" data-report-item="@info.TSQInfoId"><i class="fas fa-file-pdf"></i></a>
+                }
+            </td>
+        </tr>
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr class="text-center empty-row">
+                <td colspan="15">
+                    No data found in table
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("_Pagination", pagerData)

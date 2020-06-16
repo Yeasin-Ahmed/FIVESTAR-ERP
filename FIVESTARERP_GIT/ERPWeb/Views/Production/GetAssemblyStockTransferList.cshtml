@@ -1,6 +1,6 @@
-﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionStockInfoViewModel>
+﻿
 @{
-    ViewBag.Title = "Floor Stock Transfer List";
+    ViewBag.Title = "Assembly Stock Transfer List";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
@@ -10,13 +10,13 @@
             <div class="col-md-3">
             </div>
             <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Floor Stock Transfer List</b></h4>
+                <h4><b style="color:darkblue">Assembly Stock Transfer List</b></h4>
             </div>
             <div class="col-md-3">
                 @if (privilege.Add)
                 {
-                    <a href="/Production/CreateFloorStockTransfer" class="float-right btn btn-sm btn-outline-success" title="Transfer Stock">
-                        <i class="fas fa-paper-plane"></i> Transfer Stock To Assembly
+                    <a href="/Production/CreateAssemblyStockTransfer" class="float-right btn btn-sm btn-outline-success" title="Transfer Stock">
+                        <i class="fas fa-paper-plane"></i> Transfer Stock To QC
                     </a>
                 }
             </div>
@@ -39,22 +39,24 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
+                <select id="ddlQCLine" class="form-control form-control-sm">
+                    <option value="0">--Select QC Line--</option>
+                </select>
             </div>
             <div class="col-md-3">
-                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
-                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm " })
+                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
             </div>
         </div>
         <div class="row">
             <div class="col-md-3">
-                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
-                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm " })
             </div>
             <div class="col-md-3">
-                <label for="txtTSACode" class="control-label font-weight-bold">Transfer Code</label>
-                <input type="text" id="txtTSACode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
+                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
                 <label class="control-label font-weight-bold">From Date</label>
@@ -76,16 +78,22 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="txtTSQCode" class="control-label font-weight-bold">Transfer Code</label>
+                <input type="text" id="txtTSQCode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
+            </div>
+        </div>
         <hr />
     </div>
     <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
-        @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View" });}
+        @{Html.RenderAction("GetAssemblyStockTransferList", new { @flag = "View" });}
     </div>
     <div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header alert-primary">
-                    <input type="hidden" id="hdfTSAInfoId" />
+                    <input type="hidden" id="hdfTSQInfoId" />
                     <input type="hidden" id="hdfRowIndex" />
                     <h4 id="modalHeading" class="modal-title">Transfer Details</h4>
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
@@ -105,10 +113,11 @@
         var ddlModelName = $("#ddlModelName");
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlStateStatus = $("#ddlStateStatus");
-        var txtTSACode = $("#txtTSACode");
+        var txtTSQCode = $("#txtTSQCode");
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
-        var hdfTSAInfoId = $("#hdfTSAInfoId");
+        var hdfTSQInfoId = $("#hdfTSQInfoId");
+        var ddlQCLine = $("#ddlQCLine");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -137,13 +146,19 @@
 
         ddlLineNumber.change(function () {
             clearDropdown("ddlAssembly");
+            clearDropdown("ddlQCLine");
             if (ddlLineNumber.val() != "") {
                 LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssembly, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
             }
             LoadDataTable();
         })
 
         ddlAssembly.change(function myfunction() {
+            LoadDataTable();
+        })
+
+        ddlQCLine.change(function myfunction() {
             LoadDataTable();
         })
 
@@ -163,7 +178,7 @@
             LoadDataTable();
         })
 
-        txtTSACode.keyup(function () {
+        txtTSQCode.keyup(function () {
             LoadDataTable();
         })
 
@@ -184,9 +199,9 @@
 
         function LoadDataTable() {
 
-            var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), assemblyId: TryParseInt(ddlAssembly.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId:0, page: pageNo };
+            var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), assemblyId: TryParseInt(ddlAssembly.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), qcId: TryParseInt(ddlQCLine.val(),0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), transferCode: txtTSQCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId:0, page: pageNo };
 
-            $.when(getReqWithData('html', 'GET', '/Production/GetFloorStockTransferList', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Production/GetAssemblyStockTransferList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {
@@ -211,10 +226,10 @@
 
         $(document).on('click', 'a.data-item-detail', function (e) {
             e.preventDefault();
-            hdfTSAInfoId.val("0")
+            hdfTSQInfoId.val("0")
             var id = $(this).attr("data-item-detail");
-            hdfTSAInfoId.val(id);
-            $.when(getReqWithData('html', type.get, '/Production/GetFloorStockTransferList',{ flag: "detail", transferInfoId: id })).then(function (res, status) {
+            hdfTSQInfoId.val(id);
+            $.when(getReqWithData('html', type.get, '/Production/GetAssemblyStockTransferList',{ flag: "detail", transferInfoId: id })).then(function (res, status) {
                 if (status === "success") {
                     $("#dataContainer1").empty();
                     $("#dataContainer1").append(res);
@@ -228,15 +243,15 @@
         // accept the transfer stock
         $(document).on("click", ".btnAccepted", function (e) {
             e.preventDefault();
-            fnTransferStateChange(hdfTSAInfoId.val(), reqStatus.accepted);
+            fnTransferStateChange(hdfTSQInfoId.val(), reqStatus.accepted);
         })
 
         function fnTransferStateChange(id, status) {
             var data = JSON.stringify({ transferId: id, status: status});
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveProductionTransferStockStatus', data,getToken())).then(function (res, status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveTransferStockStatus', data,getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $("#modalTransferDetails").modal("toggle").toggle("fast");
-                    hdfTSAInfoId.val('0');
+                    hdfTSQInfoId.val('0');
                     $('.toastrReqSuccess').trigger('click');
                     $("#dataContainer1").empty();
                     setTimeout(function () {

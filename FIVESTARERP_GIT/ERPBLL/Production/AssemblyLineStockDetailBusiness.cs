@@ -87,6 +87,37 @@ namespace ERPBLL.Production
             return _assemblyLineStockDetailRepository.Save();
         }
 
+        public bool SaveAssemblyLineStockOut(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId, string flag)
+        {
+            List<AssemblyLineStockDetail> assemblyLineStockDetail = new List<AssemblyLineStockDetail>();
+            foreach (var item in assemblyLineStockDetailDTO)
+            {
+                AssemblyLineStockDetail stockDetail = new AssemblyLineStockDetail();
+                stockDetail.AssemblyLineId = item.AssemblyLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var assemblyStockInfo = _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.AssemblyLineId == item.AssemblyLineId).FirstOrDefault();
+                assemblyStockInfo.StockOutQty += item.Quantity;
+                _assemblyLineStockInfoRepository.Update(assemblyStockInfo);
+                assemblyLineStockDetail.Add(stockDetail);
+            }
+            _assemblyLineStockDetailRepository.InsertAll(assemblyLineStockDetail);
+            return _assemblyLineStockDetailRepository.Save();
+        }
+
         public bool SaveAssemblyStockInByProductionLine(long transferId, string status, long orgId, long userId)
         {
             bool IsSuccess = false;

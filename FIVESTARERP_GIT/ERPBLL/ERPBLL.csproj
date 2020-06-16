@@ -162,7 +162,9 @@
     <Compile Include="Inventory\ItemBusiness.cs" />
     <Compile Include="Inventory\ItemTypeBusiness.cs" />
     <Compile Include="Production\Interface\IProductionStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\ITransferStockToQCDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferStockToAssemblyDetailBusiness.cs" />
+    <Compile Include="Production\Interface\ITransferStockToQCInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITransferStockToAssemblyInfoBusiness.cs" />
     <Compile Include="Production\ItemReturnDetailBusiness.cs" />
     <Compile Include="Production\ItemReturnInfoBusiness.cs" />
@@ -175,7 +177,9 @@
     <Compile Include="Production\RequsitionInfoBusiness.cs" />
     <Compile Include="Inventory\UnitBusiness.cs" />
     <Compile Include="Inventory\WarehouseBusiness.cs" />
+    <Compile Include="Production\TransferStockToQCDetailBusiness.cs" />
     <Compile Include="Production\TransferStockToAssemblyDetailBusiness.cs" />
+    <Compile Include="Production\TransferStockToQCInfoBusiness.cs" />
     <Compile Include="Production\TransferStockToAssemblyInfoBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report\Interface\IProductionReportBusiness.cs" />
