@@ -208,7 +208,9 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetAppUserList");
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-            IEnumerable<AppUserViewModel> appUserViewModels = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId).Select(user => new AppUserViewModel
+             var data =_appUserBusiness.GetAllAppUsers();
+
+            IEnumerable<AppUserViewModel> appUserViewModels = data.Select(user => new AppUserViewModel
             {
                 UserId = user.UserId,
                 EmployeeId = user.EmployeeId,
@@ -857,7 +859,54 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
-        } 
+        }
+        #endregion
+
+        #region Branch
+        public ActionResult GetBranchListForClient(int? page)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetBranchListForClient");
+            ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
+
+            IPagedList<BranchViewModel> branchViewModels = _branchBusiness.GetBranchByOrgId(User.OrgId).Select(br => new BranchViewModel
+            {
+                BranchId = br.BranchId,
+                BranchName = br.BranchName,
+                ShortName = br.ShortName,
+                MobileNo = br.MobileNo,
+                Email = br.Email,
+                PhoneNo = br.PhoneNo,
+                Fax = br.Fax,
+                StateStatus = (br.IsActive == true ? "Active" : "Inactive"),
+                Remarks = br.Remarks,
+                OrgId = br.OrganizationId,
+                OrganizationName = (_organizationBusiness.GetOrganizationById(User.OrgId).OrganizationName),
+                EntryUser = UserForEachRecord(br.EUserId.Value).UserName,
+                UpdateUser = (br.UpUserId == null || br.UpUserId == 0) ? "" : UserForEachRecord(br.UpUserId.Value).UserName
+            }).OrderBy(br => br.BranchId).ToPagedList(page ?? 1, 15);
+            IEnumerable<BranchViewModel> branchViewModelForPage = new List<BranchViewModel>();
+            return View(branchViewModels);
+        }
+        public ActionResult SaveBranchForClient(BranchViewModel branchViewModel)
+        {
+            var pre = UserPrivilege("ControlPanel", "GetBranchListForClient");
+            var permission = ((pre.Edit) || (pre.Add));
+            bool isSuccess = false;
+            if (ModelState.IsValid && permission)
+            {
+                try
+                {
+                    BranchDTO dto = new BranchDTO();
+                    AutoMapper.Mapper.Map(branchViewModel, dto);
+                    isSuccess = _branchBusiness.SaveBranch(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
         #endregion
 
         #endregion

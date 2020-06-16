@@ -98,7 +98,7 @@ namespace ERPWeb.Controllers
                             #endregion
 
                             Session["UserDetail"] = serializeModel;
-                            Session["UserList"] = _appUserBusiness.GetAllAppUserByOrgId(serializeModel.OrgId).Select(u=> new AppUserDTO {
+                            Session["UserList"] = _appUserBusiness.GetAllAppUsers().Select(u=> new AppUserDTO {
                                 UserId = u.UserId,
                                 UserName = u.UserName,
                                 IsActive = u.IsActive,

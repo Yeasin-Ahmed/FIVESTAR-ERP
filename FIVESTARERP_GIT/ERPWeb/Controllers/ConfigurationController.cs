@@ -49,7 +49,7 @@ namespace ERPWeb.Controllers
         #region tblAccessories
         public ActionResult AccessoriesList()
         {
-            IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(1).Select(access => new AccessoriesDTO
+            IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Select(access => new AccessoriesDTO
             {
                 AccessoriesId = access.AccessoriesId,
                 AccessoriesName = access.AccessoriesName,
@@ -108,7 +108,7 @@ namespace ERPWeb.Controllers
         #region tblClientProblem
         public ActionResult CilentProblemList()
         {
-            IEnumerable<ClientProblemDTO> clientDTO = _clientProblemBusiness.GetAllClientProblemByOrgId(1).Select(client => new ClientProblemDTO
+            IEnumerable<ClientProblemDTO> clientDTO = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(client => new ClientProblemDTO
             {
                 ProblemId = client.ProblemId,
                 ProblemName = client.ProblemName,
@@ -164,7 +164,7 @@ namespace ERPWeb.Controllers
         #region tblMobilePart
         public ActionResult MobilePartList()
         {
-            IEnumerable<MobilePartDTO> mobilePartDTO = _mobilePartBusiness.GetAllMobilePartByOrgId(1).Select(part => new MobilePartDTO
+            IEnumerable<MobilePartDTO> mobilePartDTO = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(part => new MobilePartDTO
             {
                 MobilePartId = part.MobilePartId,
                 MobilePartName = part.MobilePartName,
@@ -221,7 +221,7 @@ namespace ERPWeb.Controllers
         #region tblCustomers
         public ActionResult CustomerList()
         {
-            IEnumerable<CustomerDTO> customerDTO = _customerBusiness.GetAllCustomerByOrgId(1).Select(cus => new CustomerDTO
+            IEnumerable<CustomerDTO> customerDTO = _customerBusiness.GetAllCustomerByOrgId(User.OrgId).Select(cus => new CustomerDTO
             {
                 CustomerId = cus.CustomerId,
                 CustomerName = cus.CustomerName,
@@ -281,7 +281,7 @@ namespace ERPWeb.Controllers
         #region T.S.
         public ActionResult TechnicalServiceEngList()
         {
-            IEnumerable<TechnicalServiceEngDTO> engDTO = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(1).Select(ts => new TechnicalServiceEngDTO
+            IEnumerable<TechnicalServiceEngDTO> engDTO = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId).Select(ts => new TechnicalServiceEngDTO
             {
                 EngId = ts.EngId,
                 Name = ts.Name,
@@ -342,7 +342,7 @@ namespace ERPWeb.Controllers
         #region tblCustomerServices
         public ActionResult CustomerServiceList()
         {
-            IEnumerable<CustomerServiceDTO> customerServiceDTO = _customerServiceBusiness.GetAllCustomerServiceByOrgId(1).Select(service => new CustomerServiceDTO
+            IEnumerable<CustomerServiceDTO> customerServiceDTO = _customerServiceBusiness.GetAllCustomerServiceByOrgId(User.OrgId).Select(service => new CustomerServiceDTO
             {
                 CsId = service.CsId,
                 Name = service.Name,

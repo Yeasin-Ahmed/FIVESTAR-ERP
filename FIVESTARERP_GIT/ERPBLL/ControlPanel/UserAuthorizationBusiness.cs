@@ -76,7 +76,7 @@ Where oa.OrganizationId = {1} and IsActAsParent = 0", userId,orgId)).ToList();
                 var appOrgId = userAuthorizationDTOs.FirstOrDefault().OrganizationId;
                 var userAuthInDb = GetUserAuthorizationByUserId(appUser, appOrgId);
 
-                var userRoleId = _appUserBusiness.GetAppUserOneById(appOrgId, appOrgId).RoleId;
+                var userRoleId = _appUserBusiness.GetAppUserOneById(appUser, appOrgId).RoleId;
 
                 var userAuthSubmenuInModel = userAuthorizationDTOs.Select(u => u.SubmenuId).ToList();
                 //Delete

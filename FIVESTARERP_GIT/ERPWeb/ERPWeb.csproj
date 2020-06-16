@@ -470,6 +470,7 @@
     <Content Include="Views\Configuration\RecevieStockFromTransferInfoPartialList.cshtml" />
     <Content Include="Views\Configuration\_TransferStockDetails.cshtml" />
     <Content Include="Views\Configuration\_TransferStockReciveDetails.cshtml" />
+    <Content Include="Views\ControlPanel\GetBranchListForClient.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
