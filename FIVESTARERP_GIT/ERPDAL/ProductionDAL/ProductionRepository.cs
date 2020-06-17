@@ -99,5 +99,12 @@ namespace ERPDAL.ProductionDAL
     {
         public QualityControlLineStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
+    public class RepairLineRepository : ProductionBaseRepository<RepairLine>
+    {
+        public RepairLineRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class PackagingLineRepository : ProductionBaseRepository<PackagingLine>
+    {
+        public PackagingLineRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
 }

@@ -35,6 +35,8 @@ namespace ERPWeb.Controllers
         private readonly IAssemblyLineBusiness _assemblyLineBusiness;
         private readonly IQualityControlBusiness _qualityControlBusiness;
         private readonly IAssemblyLineStockInfoBusiness _assemblyLineStockInfoBusiness;
+        private readonly IRepairLineBusiness _repairLineBusiness;
+        private readonly IPackagingLineBusiness _packagingLineBusiness;
         #endregion
 
         #region ControlPanel
@@ -45,7 +47,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness; 
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -66,6 +68,8 @@ namespace ERPWeb.Controllers
             this._qualityControlBusiness = qualityControlBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
             this._assemblyLineStockInfoBusiness = assemblyLineStockInfoBusiness;
+            this._repairLineBusiness = repairLineBusiness;
+            this._packagingLineBusiness = packagingLineBusiness;
             #endregion
 
             #region ControlPanel
@@ -523,6 +527,18 @@ namespace ERPWeb.Controllers
         {
             var qualityControl = _qualityControlBusiness.GetQualityControls(User.OrgId).FirstOrDefault(qc => qc.ProductionLineId == lineId && qc.QCName == qcName && qc.QCId != id) != null;
             return Json(qualityControl);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateRepairName(long lineId, long id, string rlName)
+        {
+            var repairLine = _repairLineBusiness.GetRepairLinesByOrgId(User.OrgId).FirstOrDefault(rl => rl.ProductionLineId == lineId && rl.RepairLineName== rlName && rl.RepairLineId != id) != null;
+            return Json(repairLine);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicatePackagingLineName(long lineId, long id, string plName)
+        {
+            var packagingLine = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).FirstOrDefault(pl => pl.ProductionLineId == lineId && pl.PackagingLineName == plName && pl.PackagingLineId != id) != null;
+            return Json(packagingLine);
         }
         #endregion
 

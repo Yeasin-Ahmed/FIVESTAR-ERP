@@ -1,0 +1,253 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.PackagingLineViewModel>
+@{
+    ViewBag.Title = "List Of Packaging Line";
+    int sl = 0;
+    string badge = string.Empty;
+    string status = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <h4><b style="color:darkblue">List Of Packaging Line</b></h4>
+            </div>
+            <div class="col-md-3">
+                @if (privilege.Add)
+                {
+                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add Packaging Line</button>
+                }
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblPackagingLine">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Packaging Line Name</th>
+                    <th class="hide"></th>
+                    <th>Floor</th>
+                    <th class="hide">Status</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.IsActive ? "badge bg-success" : "badge bg-danger";
+                    status = item.IsActive ? "Active" : "Inactive";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.PackagingLineId</td>
+                        <td>@item.PackagingLineName</td>
+                        <td class="hide">@item.ProductionLineId</td>
+                        <td class="text-center">@item.ProductionLineName</td>
+                        <td class="text-center hide" data-val="@item.IsActive">
+                            <span class="@badge">@status</span>
+                        </td>
+                        <td class="text-center">@item.Remarks</td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.UpdateUser</td>
+                        <td class="text-center">
+                            @if (privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.PackagingLineId"><i class="fa fa-pen"></i> Edit</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="9">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPl" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><i class="fas fa-angle-double-right"></i><span id="spanModalHead">Add New Packaging Line</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmWarehouse">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" id="hdfPackagingLineId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlLineNumber" class="control-label font-weight-bold">Production Line</label>
+                            @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line Number--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-productionLine font-weight-bold">Production Line is required!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtPackagingLineName" class="control-label font-weight-bold">Packaging Line Name</label>
+                            <input type="text" value="" id="txtPackagingLineName" class="form-control form-control-sm" />
+                            <span class="error hide required-plName font-weight-bold">Input Packaging Line Name!</span>
+                            <span class="error hide duplicate-plName font-weight-bold">Duplicate Packaging line!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="chkStatestatus" class="control-label font-weight-bold" style="visibility:hidden">Is Active?</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatus" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var txtPackagingLineName = $("#txtPackagingLineName");
+        var txtRemarks = $("#txtRemarks");
+        var chkStatestatus = $("#chkStatestatus");
+        var hdfPackagingLineId = $("#hdfPackagingLineId");
+
+        $(document).ready(function () {
+            $('#tblPackagingLine').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+                "pageLength": 10,
+                "language": {
+                    searchPlaceholder: "Search By Anything",
+                    search: ""
+                }
+            });
+            $('.dataTables_filter input[type="search"]').css(
+                { 'width': '350px', 'display': 'inline-block' }
+            );
+        })
+
+        function OpenModal() {
+            $("#spanModalHead").text('Add Packaging Line');
+            $("#spanSaveText").text('Save');
+            $("#modalPl").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNew").click(function (e) {
+            e.preventDefault();
+            OpenModal();
+            clearCtrl();
+        })
+
+        function clearCtrl() {
+            hdfPackagingLineId.val("0");
+            ddlLineNumber.val('');
+            txtPackagingLineName.val('');
+            txtRemarks.val('');
+            chkStatestatus.prop('checked', false);
+        }
+
+        function validateForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($.trim(ddlLineNumber.val()) === "") {
+                $(".required-productionLine").removeClass('hide');
+                isValid = false;
+            }
+            if (txtPackagingLineName.val() === "") {
+                $(".required-plName").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                var lineId = $.trim(ddlLineNumber.val()) === "" ? 0 : TryParseInt(ddlLineNumber.val(), 0);
+                var data = JSON.stringify({ lineId: lineId, id: TryParseInt(hdfPackagingLineId.val(), 0), plName: txtPackagingLineName.val() });
+
+                if (ajaxBooleanChecker(data, '/Common/IsDuplicatePackagingLineName', getToken()) === true) {
+                    $('.duplicate-plName').removeClass('hide');
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".data-edit-item", function (e) {
+            e.preventDefault();
+            var tds = $(this).parent().parents('tr').children('td');
+            var td1 = tds.eq(1).html();
+            var td2 = tds.eq(2).html();
+            var td3 = tds.eq(3).html();
+            var td4 = tds.eq(5).attr("data-val");
+            var td5 = tds.eq(6).html();
+
+            OpenModal();
+            clearCtrl();
+            fnModalHeadChange("Update Packaging Line");
+            hdfPackagingLineId.val(td1);
+            txtPackagingLineName.val(td2);
+            ddlLineNumber.val(td3);
+            if (td4 === "True") {
+                chkStatestatus.prop("checked", true);
+            }
+            txtRemarks.val(td5);
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateForm()) {
+                disable("#btnSubmit");
+                var data = JSON.stringify({ PackagingLineId: TryParseInt(hdfPackagingLineId.val(), 0), PackagingLineName: txtPackagingLineName.val(), ProductionLineId: ddlLineNumber.val(), IsActive: chkStatestatus.is(":checked"), Remarks: txtRemarks.val() });
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackagingLines', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res === true) {
+                        message("#msg1", "#modalPl");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (error) {
+                    console.log(error);
+                })
+                enable("#btnSubmit");
+            }
+        })
+
+    </script>
+}
+

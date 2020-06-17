@@ -471,6 +471,8 @@
     <Content Include="Views\Configuration\_TransferStockDetails.cshtml" />
     <Content Include="Views\Configuration\_TransferStockReciveDetails.cshtml" />
     <Content Include="Views\ControlPanel\GetBranchListForClient.cshtml" />
+    <Content Include="Views\Production\GetRepairLines.cshtml" />
+    <Content Include="Views\Production\GetPackagingLines.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

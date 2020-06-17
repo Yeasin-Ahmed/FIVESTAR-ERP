@@ -33,5 +33,7 @@ namespace ERPDAL.ProductionDAL
         public DbSet<TransferStockToQCDetail> tblTransferStockToQCDetail { get; set; }
         public DbSet<QualityControlLineStockInfo> tblQualityControlLineStockInfo { get; set; }
         public DbSet<QualityControlLineStockDetail> tblQualityControlLineStockDetail { get; set; }
+        public DbSet<RepairLine> tblRepairLine { get; set; }
+        public DbSet<PackagingLine> tblPackagingLine { get; set; }
     }
 }

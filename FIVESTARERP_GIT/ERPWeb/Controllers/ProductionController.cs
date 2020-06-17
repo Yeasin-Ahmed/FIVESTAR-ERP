@@ -45,6 +45,8 @@ namespace ERPWeb.Controllers
         private readonly ITransferStockToQCDetailBusiness _transferStockToQCDetailBusiness;
         private readonly IQCLineStockInfoBusiness _qCLineStockInfoBusiness;
         private readonly IQCLineStockDetailBusiness _qCLineStockDetailBusiness;
+        private readonly IRepairLineBusiness _repairLineBusiness;
+        private readonly IPackagingLineBusiness _packagingLineBusiness;
         #endregion
 
         #region Inventory Business Classes
@@ -57,7 +59,7 @@ namespace ERPWeb.Controllers
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         #endregion
 
-        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness)
+        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness)
         {
             #region Production
             this._requsitionInfoBusiness = requsitionInfoBusiness;
@@ -83,6 +85,8 @@ namespace ERPWeb.Controllers
             this._transferStockToQCDetailBusiness = transferStockToQCDetailBusiness;
             this._qCLineStockInfoBusiness = qCLineStockInfoBusiness;
             this._qCLineStockDetailBusiness = qCLineStockDetailBusiness;
+            this._repairLineBusiness = repairLineBusiness;
+            this._packagingLineBusiness = packagingLineBusiness;
             #endregion
 
             #region Inventory
@@ -1613,7 +1617,7 @@ namespace ERPWeb.Controllers
                 UpdateDate = s.UpdateDate
             }).ToList();
 
-            ViewBag.UserPrivilege = UserPrivilege("Production", "GetAssemblyLines");
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetQualityControls");
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
             IEnumerable<QualityControlViewModel> viewModels = new List<QualityControlViewModel>();
@@ -1835,6 +1839,84 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
+        #endregion
+
+        #region Repair Line
+        public ActionResult GetRepairLines()
+        {
+            var dto = _repairLineBusiness.GetRepairLinesByOrgId(User.OrgId).Select(s => new RepairLineDTO
+            {
+                RepairLineId = s.RepairLineId,
+                RepairLineName = s.RepairLineName,
+                IsActive = s.IsActive,
+                ProductionLineId = s.ProductionLineId,
+                ProductionLineName = _productionLineBusiness.GetProductionLineOneByOrgId(s.ProductionLineId, User.OrgId).LineNumber,
+                Remarks = s.Remarks,
+                EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                EntryDate = s.EntryDate,
+                UpdateDate = s.UpdateDate
+            }).ToList();
+
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetRepairLines");
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            IEnumerable<RepairLineViewModel> viewModels = new List<RepairLineViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return View(viewModels);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRepairLine(RepairLineViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                RepairLineDTO dto = new RepairLineDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _repairLineBusiness.SaveRepairLine(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region Packaging Line
+        public ActionResult GetPackagingLines()
+        {
+            var dto = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).Select(s => new PackagingLineDTO
+            {
+                PackagingLineId = s.PackagingLineId,
+                PackagingLineName = s.PackagingLineName,
+                IsActive = s.IsActive,
+                ProductionLineId = s.ProductionLineId,
+                ProductionLineName = _productionLineBusiness.GetProductionLineOneByOrgId(s.ProductionLineId, User.OrgId).LineNumber,
+                Remarks = s.Remarks,
+                EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                EntryDate = s.EntryDate,
+                UpdateDate = s.UpdateDate
+            }).ToList();
+
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetPackagingLines");
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            IEnumerable<PackagingLineViewModel> viewModels = new List<PackagingLineViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return View(viewModels);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SavePackagingLines(PackagingLineViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                PackagingLineDTO dto = new PackagingLineDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _packagingLineBusiness.SavePackagingLine(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

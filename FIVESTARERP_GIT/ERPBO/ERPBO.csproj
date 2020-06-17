@@ -140,6 +140,8 @@
     <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderAccessories.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderProblem.cs" />
+    <Compile Include="Production\DomainModels\PackagingLine.cs" />
+    <Compile Include="Production\DomainModels\RepairLine.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderAccessoriesDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderProblemDTO.cs" />
@@ -213,12 +215,14 @@
     <Compile Include="Production\DTOModel\ItemReturnDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ItemReturnDetailListDTO.cs" />
     <Compile Include="Production\DTOModel\ItemReturnInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\PackagingLineDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionLineDTO.cs" />
     <Compile Include="Production\DTOModel\FinishGoodsStockDetailInfoListDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailInfoListDTO.cs" />
     <Compile Include="Production\DTOModel\QualityControlDTO.cs" />
     <Compile Include="Production\DTOModel\QualityControlLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QualityControlLineStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairLineDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionInfoDTO.cs" />
@@ -255,11 +259,13 @@
     <Compile Include="Production\ViewModels\ItemReturnDetailListViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\PackagingLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairLineViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\UnitViewModel.cs" />

@@ -202,6 +202,14 @@
     <Compile Include="ProductionContextMigrations\202006150031287_Production_QCStock.Designer.cs">
       <DependentUpon>202006150031287_Production_QCStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006170431259_Production_RepairLine.cs" />
+    <Compile Include="ProductionContextMigrations\202006170431259_Production_RepairLine.Designer.cs">
+      <DependentUpon>202006170431259_Production_RepairLine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006170846254_Production_PackagingLine.cs" />
+    <Compile Include="ProductionContextMigrations\202006170846254_Production_PackagingLine.Designer.cs">
+      <DependentUpon>202006170846254_Production_PackagingLine.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -317,6 +325,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006150031287_Production_QCStock.resx">
       <DependentUpon>202006150031287_Production_QCStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006170431259_Production_RepairLine.resx">
+      <DependentUpon>202006170431259_Production_RepairLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006170846254_Production_PackagingLine.resx">
+      <DependentUpon>202006170846254_Production_PackagingLine.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

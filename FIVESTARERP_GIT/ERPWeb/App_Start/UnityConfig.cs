@@ -74,6 +74,8 @@ namespace ERPWeb
             container.RegisterType<ITransferStockToQCDetailBusiness, TransferStockToQCDetailBusiness>();
             container.RegisterType<IQCLineStockInfoBusiness, QCLineStockInfoBusiness>();
             container.RegisterType<IQCLineStockDetailBusiness, QCLineStockDetailBusiness>();
+            container.RegisterType<IRepairLineBusiness, RepairLineBusiness>();
+            container.RegisterType<IPackagingLineBusiness, PackagingLineBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 
