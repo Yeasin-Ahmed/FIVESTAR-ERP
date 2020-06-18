@@ -473,6 +473,10 @@
     <Content Include="Views\ControlPanel\GetBranchListForClient.cshtml" />
     <Content Include="Views\Production\GetRepairLines.cshtml" />
     <Content Include="Views\Production\GetPackagingLines.cshtml" />
+    <Content Include="Views\Production\GetQCStockTransferList.cshtml" />
+    <Content Include="Views\Production\_GetQCStockTransferList.cshtml" />
+    <Content Include="Views\Production\CreateQCStockTransfer.cshtml" />
+    <Content Include="Views\Production\_GetQCStockTransferDetailList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

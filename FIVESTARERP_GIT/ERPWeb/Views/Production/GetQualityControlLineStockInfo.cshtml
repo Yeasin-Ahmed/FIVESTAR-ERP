@@ -37,7 +37,7 @@
                 <label for="ddlLineNumber" class="control-label font-weight-bold">Line</label>
                 @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 hide">
                 <label for="ddlAssembly" class="control-label font-weight-bold">Assembly Line</label>
                 <select id="ddlAssembly" class="form-control form-control-sm ctrl-change">
                     <option value="0">--Select Assembly Line--</option>
@@ -53,12 +53,12 @@
                 <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm">

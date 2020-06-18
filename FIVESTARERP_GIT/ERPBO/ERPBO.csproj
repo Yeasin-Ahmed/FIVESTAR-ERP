@@ -197,7 +197,9 @@
     <Compile Include="Production\DomainModels\QualityControlLineStockInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyDetail.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyInfo.cs" />
+    <Compile Include="Production\DomainModels\TransferFromQCDetail.cs" />
     <Compile Include="Production\DomainModels\TransferStockToQCDetail.cs" />
+    <Compile Include="Production\DomainModels\TransferFromQCInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToQCInfo.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
@@ -237,6 +239,8 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferFromQCDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferFromQCInfoDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToAssemblyDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToAssemblyInfoDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToQCDetailDTO.cs" />
@@ -270,6 +274,8 @@
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\UnitViewModel.cs" />
     <Compile Include="Inventory\ViewModels\WarehouseViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferFromQCDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferFromQCInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferStockToAssemblyDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferStockToAssemblyInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferStockToQCDetailViewModel.cs" />

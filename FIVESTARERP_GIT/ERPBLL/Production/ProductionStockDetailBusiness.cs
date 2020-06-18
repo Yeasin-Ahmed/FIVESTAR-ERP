@@ -95,9 +95,9 @@ namespace ERPBLL.Production
         {
             var executionStatus = false;
             List<ProductionStockDetail> productionStockDetails = new List<ProductionStockDetail>();
-            if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn || flag == StockOutReason.StockOutByProductionForProduceGoods)
+            if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn || flag == StockOutReason.StockOutByProductionForProduceGoods || flag == StockOutReason.StockOutByTransferToAssembly)
             {
-                string status = (flag == StockOutReason.StockOutByProductionForProduceGoods) ? StockStatus.StockOut : StockStatus.StockReturn;
+                string status = (flag == StockOutReason.StockOutByProductionForProduceGoods || flag == StockOutReason.StockOutByTransferToAssembly) ? StockStatus.StockOut : StockStatus.StockReturn;
                 foreach (var item in productionStockDetailDTOs)
                 {
                     ProductionStockDetail stockDetail = new ProductionStockDetail();

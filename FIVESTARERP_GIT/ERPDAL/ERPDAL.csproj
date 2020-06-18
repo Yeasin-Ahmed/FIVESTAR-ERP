@@ -210,6 +210,10 @@
     <Compile Include="ProductionContextMigrations\202006170846254_Production_PackagingLine.Designer.cs">
       <DependentUpon>202006170846254_Production_PackagingLine.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006171405548_Production_TransferFromQC.cs" />
+    <Compile Include="ProductionContextMigrations\202006171405548_Production_TransferFromQC.Designer.cs">
+      <DependentUpon>202006171405548_Production_TransferFromQC.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -331,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006170846254_Production_PackagingLine.resx">
       <DependentUpon>202006170846254_Production_PackagingLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006171405548_Production_TransferFromQC.resx">
+      <DependentUpon>202006171405548_Production_TransferFromQC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

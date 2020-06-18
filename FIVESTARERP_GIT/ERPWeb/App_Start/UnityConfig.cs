@@ -63,7 +63,6 @@ namespace ERPWeb
             container.RegisterType<IFinishGoodsStockDetailBusiness, FinishGoodsStockDetailBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseInfoBusiness, FinishGoodsSendToWarehouseInfoBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseDetailBusiness, FinishGoodsSendToWarehouseDetailBusiness>();
-
             container.RegisterType<IAssemblyLineBusiness, AssemblyLineBusiness>();
             container.RegisterType<ITransferStockToAssemblyInfoBusiness, TransferStockToAssemblyInfoBusiness>();
             container.RegisterType<ITransferStockToAssemblyDetailBusiness, TransferStockToAssemblyDetailBusiness>();
@@ -76,7 +75,10 @@ namespace ERPWeb
             container.RegisterType<IQCLineStockDetailBusiness, QCLineStockDetailBusiness>();
             container.RegisterType<IRepairLineBusiness, RepairLineBusiness>();
             container.RegisterType<IPackagingLineBusiness, PackagingLineBusiness>();
+            container.RegisterType<ITransferFromQCInfoBusiness, TransferFromQCInfoBusiness>();
+            container.RegisterType < ITransferFromQCDetailBusiness, TransferFromQCDetailBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
+
             #endregion
 
             // ControlPanel Database

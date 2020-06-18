@@ -228,6 +228,22 @@
                 isValid = false;
                 $(".require-quantity").removeClass("hide");
             }
+            else {
+                if ($("#stockQty").text() === '') {
+                    $('.req-stockOver').removeClass('hide');
+                    isValid = false;
+                }
+                else {
+                    var sq = $("#stockQty").text().trim();
+                    sq = sq.substring(1, sq.length - 1);
+                    //console.log("Stock Qty");
+                    //console.log(sq);
+                    if (TryParseInt(txtQuantity.val(), 0) > TryParseInt(sq, 0)) {
+                        isValid = false;
+                        $('.req-stockOver').removeClass('hide');
+                    }
+                }
+            }
             return isValid;
         }
 
@@ -366,15 +382,16 @@
 
                                 setTimeout(function () {
                                     redirectPage('@Url.Action("GetFloorStockTransferList")');
-                                }, 1000);
+                                }, 500);
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
                             }
                         }).fail(function (error) {
                             consoleLog(error)
+                            enable("#btnSubmit");
                             })
-                        enable("#btnSubmit");
+
                     }
                 })
             }

@@ -134,6 +134,8 @@
     <Compile Include="Production\AssemblyLineBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingLineBusiness.cs" />
     <Compile Include="Production\Interface\IRepairLineBusiness.cs" />
+    <Compile Include="Production\Interface\ITransferFromQCInfoBusiness.cs" />
+    <Compile Include="Production\Interface\ITransferFromQCDetailBusiness.cs" />
     <Compile Include="Production\QCLineStockDetailBusiness.cs" />
     <Compile Include="Production\AssemblyLineStockDetailBusiness.cs" />
     <Compile Include="Production\QCLineStockInfoBusiness.cs" />
@@ -185,6 +187,8 @@
     <Compile Include="Production\RequsitionInfoBusiness.cs" />
     <Compile Include="Inventory\UnitBusiness.cs" />
     <Compile Include="Inventory\WarehouseBusiness.cs" />
+    <Compile Include="Production\TransferFromQCInfoBusiness.cs" />
+    <Compile Include="Production\TransferFromQCDetailBusiness.cs" />
     <Compile Include="Production\TransferStockToQCDetailBusiness.cs" />
     <Compile Include="Production\TransferStockToAssemblyDetailBusiness.cs" />
     <Compile Include="Production\TransferStockToQCInfoBusiness.cs" />

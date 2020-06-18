@@ -37,6 +37,7 @@ namespace ERPWeb.Controllers
         private readonly IAssemblyLineStockInfoBusiness _assemblyLineStockInfoBusiness;
         private readonly IRepairLineBusiness _repairLineBusiness;
         private readonly IPackagingLineBusiness _packagingLineBusiness;
+        private readonly IQCLineStockInfoBusiness _qCLineStockInfoBusiness;
         #endregion
 
         #region ControlPanel
@@ -47,7 +48,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness; 
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -70,6 +71,7 @@ namespace ERPWeb.Controllers
             this._assemblyLineStockInfoBusiness = assemblyLineStockInfoBusiness;
             this._repairLineBusiness = repairLineBusiness;
             this._packagingLineBusiness = packagingLineBusiness;
+            this._qCLineStockInfoBusiness = qCLineStockInfoBusiness;
             #endregion
 
             #region ControlPanel
@@ -272,6 +274,20 @@ namespace ERPWeb.Controllers
             if (assemblyStock != null)
             {
                 itemStock = (assemblyStock.StockInQty - assemblyStock.StockOutQty).Value;
+            }
+            return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetQCLineStockInfoByQCAndItemAndModelId(long itemId, long qcId, long modelId)
+        {
+            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
+            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
+            var qcStock = _qCLineStockInfoBusiness.GetQCLineStockInfoByQCAndItemAndModelId(qcId, itemId, modelId, User.OrgId);
+            var itemStock = 0;
+            if (qcStock != null)
+            {
+                itemStock = (qcStock.StockInQty - qcStock.StockOutQty).Value;
             }
             return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
         }
@@ -513,6 +529,28 @@ namespace ERPWeb.Controllers
             {
                 value = i.QCId.ToString(),
                 text = i.QCName
+            }).ToList();
+            return Json(data);
+        }
+
+        [HttpPost]
+        public ActionResult GetRepairLineByLine(long lineId)
+        {
+            var data = _repairLineBusiness.GetRepairLinesByOrgId(User.OrgId).Where(a => a.ProductionLineId == lineId).Select(i => new Dropdown
+            {
+                value = i.RepairLineId.ToString(),
+                text = i.RepairLineName
+            }).ToList();
+            return Json(data);
+        }
+
+        [HttpPost]
+        public ActionResult GetPackagingLineByLine(long lineId)
+        {
+            var data = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).Where(a => a.ProductionLineId == lineId).Select(i => new Dropdown
+            {
+                value = i.PackagingLineId.ToString(),
+                text = i.PackagingLineName
             }).ToList();
             return Json(data);
         }

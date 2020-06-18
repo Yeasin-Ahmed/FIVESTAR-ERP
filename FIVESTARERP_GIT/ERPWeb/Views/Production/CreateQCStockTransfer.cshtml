@@ -1,15 +1,15 @@
 ﻿
 @{
-    ViewBag.Title = "Transfer Stock To QC Line";
+    ViewBag.Title = "Transfer Stock From QC Line";
 }
 <div class="row">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
-                <a href="/Production/GetAssemblyStockTransferList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                <a href="/Production/GetQCStockTransferList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
             </div>
             <div class="col-md-6 text-center">
-                <h4 style="color:darkblue"><b>Transfer Stock To QC Line</b></h4>
+                <h4 style="color:darkblue"><b>Transfer Stock From QC Line</b></h4>
             </div>
             <div class="col-md-3">
                 <button class="btn btn-outline-danger btn-sm float-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></button>
@@ -27,25 +27,41 @@
                     <span class="error hide req-line">Line Number is required</span>
                 </div>
                 <div class="col-md-3">
-                    <label for="ddlAssembly" class="control-label font-weight-bold">Assembly Line</label>
-                    <select id="ddlAssembly" class="form-control form-control-sm">
-                        <option value="0">--Select Assembly Line--</option>
-                    </select>
-                    <span class="error hide req-assembly">Assembly is required</span>
+                    <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                    <span class="error hide require-model">Model is required</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
                     <select id="ddlQCLine" class="form-control form-control-sm">
                         <option value="0">--Select QC Line--</option>
                     </select>
+                    <span class="error hide require-qc">QC line is required</span>
                 </div>
                 <div class="col-md-3">
-                    <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
-                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
-                    <span class="error hide require-model">Model is required</span>
+                    <label for="ddlTransferFor" class="control-label font-weight-bold">Transfer For</label>
+                    @Html.DropDownList("ddlTransferFor", (IEnumerable<SelectListItem>)ViewBag.ddlTransferFor, new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-tsfor">Transfer For is required</span>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3">
+                    <span id="RepairLine" class="transferFor">
+                        <label for="ddlRepairLine" class="control-label font-weight-bold">Repair Line</label>
+                        <select id="ddlRepairLine" class="form-control form-control-sm">
+                            <option value="0">--Select Repair Line--</option>
+                        </select>
+                        <span class="error hide req-repair">Repair line is required</span>
+                    </span>
+                    <span id="PackagingLine" class="hide transferFor">
+                        <label for="ddlPackagingLine" class="control-label font-weight-bold">Packaging Line</label>
+                        <select id="ddlPackagingLine" class="form-control form-control-sm">
+                            <option value="0">--Select Packaging Line--</option>
+                        </select>
+                        <span class="error hide req-packaging">Packaging line is required</span>
+                    </span>
+
+                </div>
                 <div class="col-md-3">
                     <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                     @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm " })
@@ -66,6 +82,8 @@
                     <span class="error hide req-item">Item Name is required</span>
                     <span class="error hide duplicate-itemName">The Item is already exist!</span>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     <label for="txtQuantity" class="control-label font-weight-bold">
                         Quantity
@@ -78,8 +96,6 @@
                     <span class="error hide require-quantity">Quantity is required</span>
                     <span class="error hide req-stockOver">Stock not available</span>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-3">
                     <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                     <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtRemarks" class="form-control form-control-sm"></textarea>
@@ -128,7 +144,9 @@
     <script type="text/javascript">
 
         var ddlLineNumber = $("#ddlLineNumber");
-        var ddlAssembly = $("#ddlAssembly");
+        var ddlTransferFor = $("#ddlTransferFor");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var ddlPackagingLine = $("#ddlPackagingLine");
         var ddlModelName = $("#ddlModelName");
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlItemType = $("#ddlItemType");
@@ -148,12 +166,26 @@
             });
         })
 
+        ddlTransferFor.change(function () {
+            $(".transferFor").addClass("hide");
+            if (ddlTransferFor.val() == "Repair Line") {
+                $("#RepairLine").removeClass("hide");
+            }
+            else {
+                $("#PackagingLine").removeClass("hide");
+            }
+        })
+
         ddlLineNumber.change(function () {
-            clearDropdown("ddlAssembly");
+            clearDropdown("ddlRepairLine");
             clearDropdown("ddlQCLine");
+            clearDropdown("ddlPackagingLine");
             if (ddlLineNumber.val() != "") {
-                LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssembly, JSON.stringify({ lineId: ddlLineNumber.val() }));
                 LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                // Packaging line
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                // Repair line
+                LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackagingLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
             }
         })
 
@@ -186,8 +218,8 @@
             $("#unitName").text('');
             $("#stockQty").text('(0)');
             txtQuantity.val('0');
-            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlAssembly.val() !== "" && TryParseInt(ddlAssembly.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetAssemblyLineStockInfoByAssemblyAndItemAndModelId', JSON.stringify({ itemId: ddlItem.val(), assemblyId: ddlAssembly.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
+            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlQCLine.val() !== "" && TryParseInt(ddlQCLine.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetQCLineStockInfoByQCAndItemAndModelId', JSON.stringify({ itemId: ddlItem.val(), qcId: ddlQCLine.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {
@@ -217,10 +249,30 @@
                 isValid = false;
                 $(".req-line").removeClass("hide");
             }
-            if (TryParseInt(ddlAssembly.val(), 0) <= 0) {
+            if (TryParseInt(ddlQCLine.val(), 0) <= 0) {
                 isValid = false;
-                $(".req-assembly").removeClass("hide");
+                $(".req-qc").removeClass("hide");
             }
+
+            if (ddlTransferFor.val() === "") {
+                isValid = false;
+                $(".require-tsfor").removeClass("hide");
+            }
+            else {
+                if (ddlTransferFor.val() === "Repair Line") {
+                    if (TryParseInt(ddlRepairLine.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".req-repair").removeClass("hide");
+                    }
+                }
+                else {
+                    if (TryParseInt(ddlPackagingLine.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".req-packaging").removeClass("hide");
+                    }
+                }
+            }
+
             if (TryParseInt(ddlModelName.val(), 0) <= 0) {
                 isValid = false;
                 $(".require-model").removeClass("hide");
@@ -265,7 +317,9 @@
             if (validateInput() == true) {
 
                 disable("#ddlLineNumber");
-                disable("#ddlAssembly");
+                disable("#ddlTransferFor");
+                disable("#ddlPackagingLine");
+                disable("#ddlRepairLine");
                 disable("#ddlModelName");
                 disable("#ddlWarehouse");
                 disable("#ddlQCLine");
@@ -319,9 +373,28 @@
                 isValid = false;
                 $(".req-line").removeClass("hide");
             }
-            if (TryParseInt(ddlAssembly.val(), 0) <= 0) {
+            if (TryParseInt(ddlQCLine.val(), 0) <= 0) {
                 isValid = false;
-                $(".req-assembly").removeClass("hide");
+                $(".req-qc").removeClass("hide");
+            }
+
+            if (ddlTransferFor.val() === "") {
+                isValid = false;
+                $(".require-tsfor").removeClass("hide");
+            }
+            else {
+                if (ddlTransferFor.val() === "Repair Line") {
+                    if (TryParseInt(ddlRepairLine.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".req-repair").removeClass("hide");
+                    }
+                }
+                else {
+                    if (TryParseInt(ddlPackagingLine.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".req-packaging").removeClass("hide");
+                    }
+                }
             }
             if (TryParseInt(ddlModelName.val(), 0) <= 0) {
                 isValid = false;
@@ -341,7 +414,10 @@
             enable("#ddlLineNumber");
             ddlLineNumber.val("");
             ddlLineNumber.trigger("change");
-            enable("#ddlAssembly");
+            ddlTransferFor.val("Repair Line");
+            ddlTransferFor.trigger("change");
+            enable("#ddlRepairLine");
+            enable("#ddlPackagingLine");
             enable("#ddlQCLine");
             enable("#ddlModelName");
             ddlModelName.val('');
@@ -361,13 +437,12 @@
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");
+            if (validateTable()) {
+                disable("#btnSubmit");
 
-            if (validateTable())
-            {
-                bootbox.confirm("Are you sure you want to Transfer the Stock to" + $("#ddlQCLine option:selected").text(), function (result) {
+                bootbox.confirm("Are you sure you want to Transfer Stock", function (result) {
                     if (result) {
-                        disable("#btnSubmit");
-                        var info = { DescriptionId: ddlModelName.val(), LineId: ddlLineNumber.val(), AssemblyId: ddlAssembly.val(), WarehouseId: ddlWarehouse.val(), QCLineId:ddlQCLine.val() };
+                        var info = { LineId: TryParseInt(ddlLineNumber.val(), 0), DescriptionId: TryParseInt(ddlModelName.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), TransferFor: ddlTransferFor.val(), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), PackagingLineId: TryParseInt(ddlPackagingLine.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0) };
 
                         var details = []; details.length = 0;
                         $.each($("#tblData tbody tr"), function (index, item) {
@@ -378,7 +453,7 @@
                             var rmk = tds.eq('7').html();
 
                             details.push({
-                                TSQDetailId: 0,
+                                TFQDetailId: 0,
                                 ItemTypeId: TryParseInt(iTypeId, 0),
                                 ItemId: TryParseInt(iId, 0),
                                 Quantity: TryParseInt(qty, 0),
@@ -391,7 +466,7 @@
                         console.log("Transfer Stock Data");
                         console.log(data);
 
-                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveAssemblyStockTransfer', data, getToken())).then(function (res, status) {
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveTransferStockFromQC', data, getToken())).then(function (res, status) {
                             console.log(res);
                             console.log(status);
                             enable("#btnSubmit");
@@ -399,21 +474,21 @@
                                 $('.toastrDefaultSuccess').trigger('click');
 
                                 setTimeout(function () {
-                                    redirectPage('@Url.Action("GetAssemblyStockTransferList")');
-                                }, 500);
+                                    redirectPage('@Url.Action("GetQCStockTransferList")');
+                                }, 1000);
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
                             }
                         }).fail(function (error) {
                             consoleLog(error)
-                            enable("#btnSubmit");
-                            })
-                        
+                        })
+                        enable("#btnSubmit");
                     }
                 })
+                //---- bootbox
             }
-            //--------
+            //-------validation
         })
 
         function redirectPage(page) {

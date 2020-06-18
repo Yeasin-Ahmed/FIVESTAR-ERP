@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.TransferFromQCDetailViewModel>
+@using ERPBO.Production.ViewModels;
+@using ERPBLL.Common;
+@{
+    Layout = null;
+    int sl = 0;
+    TransferFromQCInfoViewModel info = (TransferFromQCInfoViewModel)ViewBag.Info;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
+    <tbody>
+        <tr>
+            <td class="hide">@info.TFQInfoId</td>
+            <td style="width:15%">Transfer Code</td>
+            <td style="width:20%"><b>@info.TransferCode</b></td>
+            <td style="width:20%">Floor No</td>
+            <td style="width:15%"><b>@info.LineName</b></td>
+            <td style="width:15%">QC Line Name</td>
+            <td style="width:15%"><b>@info.QCLineName</b></td>
+        </tr>
+        <tr>
+            <td style="width:15%">Transfer For</td>
+            <td style="width:20%"><b>@info.TransferFor</b></td>
+            <td style="width:20%">Warehouse Name</td>
+            <td style="width:15%"><b>@info.WarehouseName</b></td>
+            <td style="width:15%">Model Name</td>
+            <td style="width:15%"><b>@info.ModelName</b></td>
+        </tr>
+        <tr>
+            <td style="width:15%">StateStatus</td>
+            <td colspan="5"><b>@info.StateStatus</b></td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th class="hide"></th>
+            <th class="hide"></th>
+            <th>ItemType Name</th>
+            <th class="hide"></th>
+            <th>Item Name</th>
+            <th>Qty.</th>
+            <th>Type Of Unit</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center" width="10%"><b>@sl</b></td>
+                <td class="hide">@detail.TFQDetailId</td>
+                <td class="hide">@detail.ItemTypeId</td>
+                <td>@detail.ItemTypeName</td>
+                <td class="hide">@detail.ItemId</td>
+                <td>@detail.ItemName</td>
+                <td class="text-center">
+                    @detail.Quantity
+                </td>
+                <td class="text-center">@detail.UnitName</td>
+            </tr>
+        }
+    </tbody>
+</table>
