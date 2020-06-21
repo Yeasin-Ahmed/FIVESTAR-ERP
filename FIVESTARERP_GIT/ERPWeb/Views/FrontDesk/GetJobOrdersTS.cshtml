@@ -17,6 +17,7 @@
     </div>
     <div class="col-md-12">
         <div class="row">
+            <a href="~/Views/FrontDesk/_GetJobOrdersTS.cshtml"></a>
             <div class="col-md-3">
                 <label class="col-form-label">Model Name</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
@@ -31,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 mt-2" id="dataContainer">
+    <div class="col-md-12 mt-2" id="dataContainer" style="overflow-y:scroll">
         @{Html.RenderAction("GetJobOrdersTS", new { @flag = "view" });}
     </div>
 </div>

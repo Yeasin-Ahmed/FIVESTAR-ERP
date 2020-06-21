@@ -91,7 +91,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                IEnumerable<DashboardRequisitionSummeryDTO> dto = _jobOrderBusiness.DashboardJobOrderSummery(User.OrgId);
+                IEnumerable<DashboardRequisitionSummeryDTO> dto = _jobOrderBusiness.DashboardJobOrderSummery(User.OrgId,User.BranchId);
                 IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModel);
                 ViewBag.JobOrderSummery = viewModel;

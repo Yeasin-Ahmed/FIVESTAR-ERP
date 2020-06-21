@@ -79,7 +79,6 @@
                             <label for="txtCustomerName" class="control-label font-weight-bold">CustomerName</label>
                             <input type="text" name="txtCustomerName" value="" id="txtCustomerName" class="form-control form-control-sm" />
                             <span class="error hide required-customerName font-weight-bold">Input Customer Name!</span>
-                            <span class="error hide duplicate-customerName font-weight-bold">Already Customer Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -90,8 +89,10 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtCustomerPhone" class="control-label font-weight-bold">CustomerPhone Number</label>
+                            <label for="txtCustomerPhone" class="control-label font-weight-bold">CustomerMobile Number</label>
                             <input type="text" name="txtCustomerPhone" value="" id="txtCustomerPhone" class="form-control form-control-sm" />
+                            <span class="error hide required-customerPhone font-weight-bold">Input Customer Mobile No!</span>
+                            <span class="error hide duplicate-customerPhone font-weight-bold">Already Customer Mobile No Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -155,16 +156,20 @@
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
-            if ($.trim(txtCustomerName.val()) == "") {
-                $(".required-customerName").removeClass("hide");
+            if ($.trim(txtCustomerPhone.val()) == "") {
+                $(".required-customerPhone").removeClass("hide");
                 isValid = false;
             }
             else {
                 var id = TryParseInt(hdfCustomerId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, customerName: txtCustomerName.val().trim() }), '/Common2/IsDuplicateCustomer', getToken()) == true) {
-                    $(".duplicate-customerName").removeClass("hide");
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, CustomerPhone: txtCustomerPhone.val().trim() }), '/Common2/IsDuplicateCustomerPhone', getToken()) == true) {
+                    $(".duplicate-customerPhone").removeClass("hide");
                     isValid = false;
                 }
+            }
+            if ($.trim(txtCustomerName.val()) == "") {
+                $(".required-customerName").removeClass("hide");
+                isValid = false;
             }
             return isValid;
         }

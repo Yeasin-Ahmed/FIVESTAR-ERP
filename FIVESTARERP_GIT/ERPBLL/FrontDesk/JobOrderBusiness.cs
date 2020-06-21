@@ -170,9 +170,9 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             return _jobOrderRepository.Save();
         }
 
-        public IEnumerable<DashboardRequisitionSummeryDTO> DashboardJobOrderSummery(long orgId)
+        public IEnumerable<DashboardRequisitionSummeryDTO> DashboardJobOrderSummery(long orgId, long branchId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardRequisitionSummeryDTO>(string.Format(@"select StateStatus, count(*) as TotalCount from tblJobOrders Where OrganizationId={0} group by StateStatus", orgId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardRequisitionSummeryDTO>(string.Format(@"select StateStatus, count(*) as TotalCount from tblJobOrders Where OrganizationId={0} and BranchId={1} group by StateStatus", orgId,branchId)).ToList();
         }
 
         public IEnumerable<JobOrder> GetAllJobOrdersByOrgId(long orgId)

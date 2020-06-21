@@ -145,62 +145,38 @@
     <Compile Include="FrontDeskContextMigrations\202006081153588_FrontDesk_AddTSToJobOrder.Designer.cs">
       <DependentUpon>202006081153588_FrontDesk_AddTSToJobOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006170405450_FrontDesk_DbInitialize_17_June.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006170405450_FrontDesk_DbInitialize_17_June.Designer.cs">
+      <DependentUpon>202006170405450_FrontDesk_DbInitialize_17_June.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006170444383_FrontDesk_DbInitialize_17_June_FK.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006170444383_FrontDesk_DbInitialize_17_June_FK.Designer.cs">
+      <DependentUpon>202006170444383_FrontDesk_DbInitialize_17_June_FK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006210354566_FrontDesk_DbTechnicalServicesStock.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006210354566_FrontDesk_DbTechnicalServicesStock.Designer.cs">
+      <DependentUpon>202006210354566_FrontDesk_DbTechnicalServicesStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006211035293_FrontDesk_dbtblJoborderBranchId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006211035293_FrontDesk_dbtblJoborderBranchId.Designer.cs">
+      <DependentUpon>202006211035293_FrontDesk_dbtblJoborderBranchId.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskUnitOfWork.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskBaseRepository.cs" />
     <Compile Include="FrontDeskDAL\IFrontDeskUnitOfWork.cs" />
-    <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.cs" />
-    <Compile Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.Designer.cs">
-      <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs" />
-    <Compile Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.Designer.cs">
-      <DependentUpon>202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202006061025091_Inventory_AddModelToWarehouseStock.cs" />
-    <Compile Include="InventoryContextMigrations\202006061025091_Inventory_AddModelToWarehouseStock.Designer.cs">
-      <DependentUpon>202006061025091_Inventory_AddModelToWarehouseStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202006131158584_Inventory_SupplierAndStockInOrderQty.cs" />
-    <Compile Include="InventoryContextMigrations\202006131158584_Inventory_SupplierAndStockInOrderQty.Designer.cs">
-      <DependentUpon>202006131158584_Inventory_SupplierAndStockInOrderQty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202006131404374_Inventory_UpdateSupplierTable.cs" />
-    <Compile Include="InventoryContextMigrations\202006131404374_Inventory_UpdateSupplierTable.Designer.cs">
-      <DependentUpon>202006131404374_Inventory_UpdateSupplierTable.cs</DependentUpon>
+    <Compile Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.Designer.cs">
+      <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.Designer.cs">
-      <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006110006244_Production_AssemblyLine.cs" />
-    <Compile Include="ProductionContextMigrations\202006110006244_Production_AssemblyLine.Designer.cs">
-      <DependentUpon>202006110006244_Production_AssemblyLine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006110035492_Production_TransferStockToAssembly.cs" />
-    <Compile Include="ProductionContextMigrations\202006110035492_Production_TransferStockToAssembly.Designer.cs">
-      <DependentUpon>202006110035492_Production_TransferStockToAssembly.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006120127472_Production_AssemblyStock.cs" />
-    <Compile Include="ProductionContextMigrations\202006120127472_Production_AssemblyStock.Designer.cs">
-      <DependentUpon>202006120127472_Production_AssemblyStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006121106580_Production_QualityControl.cs" />
-    <Compile Include="ProductionContextMigrations\202006121106580_Production_QualityControl.Designer.cs">
-      <DependentUpon>202006121106580_Production_QualityControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006140645018_Production_TransferStockToQC.cs" />
-    <Compile Include="ProductionContextMigrations\202006140645018_Production_TransferStockToQC.Designer.cs">
-      <DependentUpon>202006140645018_Production_TransferStockToQC.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006150031287_Production_QCStock.cs" />
-    <Compile Include="ProductionContextMigrations\202006150031287_Production_QCStock.Designer.cs">
-      <DependentUpon>202006150031287_Production_QCStock.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202006181343102_Production_AllEntities_16-June-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202006181343102_Production_AllEntities_16-June-2020.Designer.cs">
+      <DependentUpon>202006181343102_Production_AllEntities_16-June-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -282,41 +258,23 @@
     <EmbeddedResource Include="FrontDeskContextMigrations\202006081153588_FrontDesk_AddTSToJobOrder.resx">
       <DependentUpon>202006081153588_FrontDesk_AddTSToJobOrder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202005161421487_Inventory_AllEntities_16-May-2020.resx">
-      <DependentUpon>202005161421487_Inventory_AllEntities_16-May-2020.cs</DependentUpon>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006170405450_FrontDesk_DbInitialize_17_June.resx">
+      <DependentUpon>202006170405450_FrontDesk_DbInitialize_17_June.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202005311148115_Inventory_AddReturnType&amp;FaultyCase.resx">
-      <DependentUpon>202005311148115_Inventory_AddReturnType&amp;FaultyCase.cs</DependentUpon>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006170444383_FrontDesk_DbInitialize_17_June_FK.resx">
+      <DependentUpon>202006170444383_FrontDesk_DbInitialize_17_June_FK.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202006061025091_Inventory_AddModelToWarehouseStock.resx">
-      <DependentUpon>202006061025091_Inventory_AddModelToWarehouseStock.cs</DependentUpon>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006210354566_FrontDesk_DbTechnicalServicesStock.resx">
+      <DependentUpon>202006210354566_FrontDesk_DbTechnicalServicesStock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202006131158584_Inventory_SupplierAndStockInOrderQty.resx">
-      <DependentUpon>202006131158584_Inventory_SupplierAndStockInOrderQty.cs</DependentUpon>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006211035293_FrontDesk_dbtblJoborderBranchId.resx">
+      <DependentUpon>202006211035293_FrontDesk_dbtblJoborderBranchId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202006131404374_Inventory_UpdateSupplierTable.resx">
-      <DependentUpon>202006131404374_Inventory_UpdateSupplierTable.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
+      <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202005030603424_Production_AllEntities_03-May-2020.resx">
-      <DependentUpon>202005030603424_Production_AllEntities_03-May-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006110006244_Production_AssemblyLine.resx">
-      <DependentUpon>202006110006244_Production_AssemblyLine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006110035492_Production_TransferStockToAssembly.resx">
-      <DependentUpon>202006110035492_Production_TransferStockToAssembly.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006120127472_Production_AssemblyStock.resx">
-      <DependentUpon>202006120127472_Production_AssemblyStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006121106580_Production_QualityControl.resx">
-      <DependentUpon>202006121106580_Production_QualityControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006140645018_Production_TransferStockToQC.resx">
-      <DependentUpon>202006140645018_Production_TransferStockToQC.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006150031287_Production_QCStock.resx">
-      <DependentUpon>202006150031287_Production_QCStock.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202006181343102_Production_AllEntities_16-June-2020.resx">
+      <DependentUpon>202006181343102_Production_AllEntities_16-June-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

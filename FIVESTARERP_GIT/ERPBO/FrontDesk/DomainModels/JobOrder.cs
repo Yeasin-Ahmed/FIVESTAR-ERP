@@ -37,5 +37,6 @@ namespace ERPBO.FrontDesk.DomainModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<JobOrderAccessories> JobOrderAccessories { get; set; }
         public ICollection<JobOrderProblem> JobOrderProblems { get; set; }
+        public long? BranchId { get; set; }
     }
 }

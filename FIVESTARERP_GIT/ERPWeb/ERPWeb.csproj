@@ -471,6 +471,13 @@
     <Content Include="Views\Configuration\_TransferStockDetails.cshtml" />
     <Content Include="Views\Configuration\_TransferStockReciveDetails.cshtml" />
     <Content Include="Views\ControlPanel\GetBranchListForClient.cshtml" />
+    <Content Include="Views\FrontDesk\RequsitionInfoForJobOrderList.cshtml" />
+    <Content Include="Views\FrontDesk\RequsitionInfoForJobOrderPartialListList.cshtml" />
+    <Content Include="Views\FrontDesk\RequsitionForJobOrderDetails.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionInfoForJobOrderList.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionInfoForJobOrderPartialListList.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionForJobOrderDetails.cshtml" />
+    <Content Include="Views\FrontDesk\TechnicalSetvicesStockList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

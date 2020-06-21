@@ -18,5 +18,8 @@ namespace ERPDAL.FrontDeskDAL
         public DbSet<JobOrder> tblJobOrders { get; set; }
         public DbSet<JobOrderAccessories> tblJobOrderAccessories { get; set; }
         public DbSet<JobOrderProblem> tblJobOrderProblems { get; set; }
+        public DbSet<RequsitionInfoForJobOrder> tblRequsitionInfoForJobOrders { get; set; }
+        public DbSet<RequsitionDetailForJobOrder> tblRequsitionDetailForJobOrders { get; set; }
+        public DbSet<TechnicalServicesStock> tblTechnicalServicesStocks { get; set; }
     }
 }

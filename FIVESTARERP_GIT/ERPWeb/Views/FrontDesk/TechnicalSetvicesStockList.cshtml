@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel>
+@{
+    ViewBag.Title = "Stock For T.S";
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/FrontDesk/GetJobOrdersTS" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Technical Services Stock</b></h4>
+            </div>
+            <div class="col-md-3">
+                
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped" id="tblTechnicalServicesStockData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>SL No.</th>
+                    <th class="hide"></th>
+                    <th class="hide"></th>
+                    <th>SWarehouseName</th>
+                    <th class="hide"></th>
+                    <th>PartsName</th>
+                    <th>StockInQty</th>
+                    <th>UsedQty</th>
+                    <th>TotalQty</th>
+                    <th>ReturnQty</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stock in Model)
+                {
+                    sl = sl + 1;
+                <tr>
+                    <td class="text-center" width="10%">@sl</td>
+                    <td class="hide">@stock.TsStockId</td>
+                    <td class="hide">@stock.SWarehouseId</td>
+                    <td>@stock.SWarehouseName</td>
+                    <td class="hide">@stock.PartsId</td>
+                    <td>@stock.PartsName</td>
+                    <td class="text-center">@stock.Quantity</td>
+                    <td class="text-center">@stock.UsedQty</td>
+                    <td class="text-center">@stock.TotalQty</td>
+                    <td class="text-center">@stock.ReturnQty</td>
+                    <td class="text-center">@stock.Remarks</td>
+                </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="8">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

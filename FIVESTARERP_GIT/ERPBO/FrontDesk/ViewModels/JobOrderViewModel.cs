@@ -40,5 +40,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public string Problems { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public long? BranchId { get; set; }
     }
 }

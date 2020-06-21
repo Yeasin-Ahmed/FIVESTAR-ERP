@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
+using ERPBLL.FrontDesk.Interface;
 using ERPBO.Configuration.DomainModels;
 using ERPBO.Configuration.DTOModels;
 using ERPDAL.ConfigurationDAL;
@@ -19,7 +20,9 @@ namespace ERPBLL.Configuration
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         private readonly IMobilePartBusiness _mobilePartBusiness;
         private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
-        public MobilePartStockDetailBusiness(IConfigurationUnitOfWork configurationDb,IServicesWarehouseBusiness servicesWarehouseBusiness,IMobilePartBusiness mobilePartBusiness,IMobilePartStockInfoBusiness mobilePartStockInfoBusiness)
+        private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
+        private readonly IRequsitionDetailForJobOrderBusiness _requsitionDetailForJobOrderBusiness;
+        public MobilePartStockDetailBusiness(IConfigurationUnitOfWork configurationDb,IServicesWarehouseBusiness servicesWarehouseBusiness,IMobilePartBusiness mobilePartBusiness,IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness)
         {
             this._configurationDb = configurationDb;
             mobilePartStockDetailRepository = new MobilePartStockDetailRepository(this._configurationDb);
@@ -27,11 +30,45 @@ namespace ERPBLL.Configuration
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
             this._mobilePartBusiness = mobilePartBusiness;
             this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
+            this._requsitionInfoForJobOrderBusiness = requsitionInfoForJobOrderBusiness;
+            this._requsitionDetailForJobOrderBusiness = requsitionDetailForJobOrderBusiness;
         }
 
         public IEnumerable<MobilePartStockDetail> GelAllMobilePartStockDetailByOrgId(long orgId, long branchId)
         {
             return mobilePartStockDetailRepository.GetAll(detail => detail.OrganizationId == orgId && detail.BranchId== branchId).ToList();
+        }
+
+        public bool SaveMobilePartsStockOutByTSRequistion(long reqId, string status, long orgId, long userId, long branchId)
+        {
+            var reqInfo = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(reqId, orgId);
+            var reqDetail = _requsitionDetailForJobOrderBusiness.GetAllRequsitionDetailForJobOrderId(reqId, orgId,branchId);
+            if (reqInfo != null && reqDetail.Count() > 0)
+            {
+                List<MobilePartStockDetailDTO> stockDetailDTOs = new List<MobilePartStockDetailDTO>();
+                foreach (var item in reqDetail)
+                {
+                    MobilePartStockDetailDTO stockDetailDTO = new MobilePartStockDetailDTO
+                    {
+                        SWarehouseId = reqInfo.SWarehouseId,
+                        MobilePartId = item.PartsId,
+                        OrganizationId = item.OrganizationId,
+                        Quantity = (int)item.Quantity,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        BranchId=branchId,
+                        Remarks = "Stock Out By Production Requistion " + "(" + reqInfo.RequsitionCode + ")",
+                        ReferrenceNumber = reqInfo.RequsitionCode,
+                        StockStatus = StockStatus.StockOut
+                    };
+                    stockDetailDTOs.Add(stockDetailDTO);
+                }
+                if (SaveMobilePartStockOut(stockDetailDTOs, userId, orgId, branchId) == true)
+                {
+                    return _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(reqId, status, userId, orgId, branchId);
+                }
+            }
+            return false;
         }
 
         public bool SaveMobilePartStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO, long userId, long orgId, long branchId)

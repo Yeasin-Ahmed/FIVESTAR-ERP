@@ -114,7 +114,13 @@
     <Compile Include="ControlPanel\UserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\SubMenuBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IRequsitionDetailForJobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IRequsitionInfoForJobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\ITechnicalServicesStockBusiness.cs" />
+    <Compile Include="FrontDesk\RequsitionDetailForJobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\RequsitionInfoForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\TechnicalServicesStockBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockDetailBusiness.cs" />

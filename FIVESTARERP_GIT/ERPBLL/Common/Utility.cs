@@ -19,7 +19,7 @@ namespace ERPBLL.Common
                 new Dropdown{text=RequisitionStatus.Recheck,value=RequisitionStatus.Recheck },
                 new Dropdown{text=RequisitionStatus.Approved,value=RequisitionStatus.Approved },
                 new Dropdown{text=RequisitionStatus.Accepted,value=RequisitionStatus.Accepted },
-                new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Pending },
+                new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Rejected },
                 new Dropdown{text=RequisitionStatus.Canceled,value=RequisitionStatus.Canceled }
             };
             return dropdowns;

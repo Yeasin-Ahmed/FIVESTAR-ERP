@@ -19,4 +19,16 @@ namespace ERPDAL.FrontDeskDAL
     {
         public JobOrderProblemRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
     }
+    public class RequsitionInfoForJobOrderRepository : FrontDeskBaseRepository<RequsitionInfoForJobOrder>
+    {
+        public RequsitionInfoForJobOrderRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
+    public class RequsitionDetailForJobOrderRepository : FrontDeskBaseRepository<RequsitionDetailForJobOrder>
+    {
+        public RequsitionDetailForJobOrderRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
+    public class TechnicalServicesStockRepository : FrontDeskBaseRepository<TechnicalServicesStock>
+    {
+        public TechnicalServicesStockRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
 }

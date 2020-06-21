@@ -73,9 +73,9 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicateCustomer(string customerName, long id)
+        public ActionResult IsDuplicateCustomerPhone(string customerPhone, long id)
         {
-            bool isExist = _customerBusiness.IsDuplicateCustomerName(customerName, id, User.OrgId);
+            bool isExist = _customerBusiness.IsDuplicateCustomerPhone(customerPhone, id, User.OrgId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

@@ -41,9 +41,9 @@ namespace ERPBLL.Configuration
             return customerRepository.GetOneByOrg(cus => cus.CustomerId == id && cus.OrganizationId == orgId);
         }
 
-        public bool IsDuplicateCustomerName(string customerName, long id, long orgId)
+        public bool IsDuplicateCustomerPhone(string customerPhone, long id, long orgId)
         {
-            return customerRepository.GetOneByOrg(cus => cus.CustomerName == customerName && cus.CustomerId != id && cus.OrganizationId == orgId) != null ? true : false;
+            return customerRepository.GetOneByOrg(cus => cus.CustomerPhone == customerPhone && cus.CustomerId != id && cus.OrganizationId == orgId) != null ? true : false;
         }
 
         public bool SaveCustomer(CustomerDTO customerDTO, long userId, long orgId)

@@ -12,7 +12,7 @@ namespace ERPBLL.Configuration.Interface
     {
         IEnumerable<Customer> GetAllCustomerByOrgId(long orgId);
         bool SaveCustomer(CustomerDTO customerDTO, long userId, long orgId);
-        bool IsDuplicateCustomerName(string customerName, long id, long orgId);
+        bool IsDuplicateCustomerPhone(string customerPhone, long id, long orgId);
         Customer GetCustomerOneByOrgId(long id, long orgId);
         bool DeleteCustomer(long id, long orgId);
         Customer GetCustomerByMobileNo(string mobileNo, long orgId);
