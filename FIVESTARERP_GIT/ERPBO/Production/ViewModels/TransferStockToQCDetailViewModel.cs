@@ -12,6 +12,8 @@ namespace ERPBO.Production.ViewModels
     {
         [Key]
         public long TSQDetailId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? WarehouseId { get; set; }
         [Range(1,long.MaxValue)]
         public long? ItemTypeId { get; set; }
         [Range(1, long.MaxValue)]
@@ -29,6 +31,7 @@ namespace ERPBO.Production.ViewModels
         public long TSQInfoId { get; set; }
 
         // Custom Property
+        public string WarehouseName { get; set; }
         [StringLength(100)]
         public string ItemTypeName { get; set; }
         [StringLength(100)]

@@ -12,6 +12,7 @@ namespace ERPBO.Production.ViewModels
     {        
         public long FinishGoodsStockDetailId { get; set; }
         public long? LineId { get; set; }
+        public long? PackagingLineId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
@@ -32,6 +33,7 @@ namespace ERPBO.Production.ViewModels
         public string RefferenceNumber { get; set; }
         //Custom Property
         public string LineNumber { get; set; }
+        public string PackagingLineName { get; set; }
         public string ModelName { get; set; }
         public string WarehouseName { get; set; }
         public string ItemTypeName { get; set; }

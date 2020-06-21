@@ -12,6 +12,7 @@ namespace ERPBO.Production.DTOModel
     {
         public long SendId { get; set; }
         public long LineId { get; set; }
+        public long PackagingLineId { get; set; }
         public long WarehouseId { get; set; }
         public long DescriptionId { get; set; }
         [StringLength(150)]
@@ -30,6 +31,7 @@ namespace ERPBO.Production.DTOModel
         // Custom Property 
         [StringLength(100)]
         public string LineNumber { get; set; }
+        public string PackagingLineName { get; set; }
         [StringLength(100)]
         public string WarehouseName { get; set; }
         public string ModelName { get; set; }

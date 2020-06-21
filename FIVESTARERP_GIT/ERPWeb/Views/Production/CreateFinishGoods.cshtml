@@ -41,10 +41,13 @@
                                     <span class="error hide req-proType">Production Type is require</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Warehouse (To)</label>
-                                    @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--- Select Warehouse ---", new { @class = "form-control form-control-sm" })
-                                    <span class="error hide req-warehouseTo">Warehouse is require</span>
+                                    <label for="ddlPackagingLine" class="control-label font-weight-bold">Packaging Line</label>
+                                    <select id="ddlPackagingLine" class="form-control form-control-sm">
+                                        <option value="0">--From Packaging Line--</option>
+                                    </select>
+                                    <span class="error hide req-packaging">From Packaging line is required</span>
                                 </div>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -53,12 +56,11 @@
                                     <span class="error hide req-model">Model is require</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Items</label>
-                                    <select class="form-control form-control-sm" id="ddlFinishItems">
-                                        <option value="">---Select Items---</option>
-                                    </select>
-                                    <span class="error hide req-productionItem">Item is require</span>
+                                    <label class="col-form-label">Warehouse (To)</label>
+                                    @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--- Select Warehouse ---", new { @class = "form-control form-control-sm" })
+                                    <span class="error hide req-warehouseTo">Warehouse is require</span>
                                 </div>
+                               
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -76,6 +78,13 @@
                                         <span id="finishUnit"></span>
                                     </div>
                                     <span class="error hide req-qty">Production Quantity is require</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Items</label>
+                                    <select class="form-control form-control-sm" id="ddlFinishItems">
+                                        <option value="">---Select Items---</option>
+                                    </select>
+                                    <span class="error hide req-productionItem">Item is require</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -172,10 +181,38 @@
         var ddlItem = $("#ddlItem");
         var txtStockOutQty = $("#txtStockOutQty");
         var chkUseBundle = $("#chkUseBundle");
+        var ddlPackagingLine = $("#ddlPackagingLine");
+
+        $(document).ready(function () {
+            chkUseBundle.prop("checked", true);
+            disable("#chkUseBundle");
+            chkUseBundle.trigger("change");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        function checkItemQty(itemId, packagingId, modelId, qty, itemName) {
+            var text = "";
+            //console.log('Item Id....');
+            //console.log(itemId);
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, packagingId: packagingId, modelId: modelId }), '/Common/GetPackagingLineStockInfoByPLAndItemAndModelId', getToken());
+
+            if (val.stockQty < qty) {
+                text += itemName + ',';
+            }
+            //console.log("ajaxValueReturnable");
+            //console.log(val);
+            return text;
+        }
 
         chkUseBundle.change(function () {
             $(".error").addClass('hide');
-            $("#tblMaterials tbody tr").empty();
+            $("#tblMaterials tbody").empty();
             if (chkUseBundle.is(":checked")) {
                 $("#btnAddToList").addClass('hide');
                 if (TryParseInt(ddlModel.val(), 0) > 0 && TryParseInt(ddlFinishItems.val(), 0) > 0) {
@@ -208,7 +245,6 @@
                 }
             }
         })
-
 
         function loadDataTabelForBundle(obj) {
             if (!$.isEmptyObject(obj) && obj !==null) {
@@ -245,16 +281,6 @@
                 bootbox.alert("Bundle not found")
             }
         }
-
-        $(document).ready(function () {
-            //Initialize Select2 Elements
-            $('.select2').select2();
-
-            //Initialize Select2 Elements
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            });
-        })
 
         ddlItem.change(function () {
             LoadItemStock()
@@ -296,8 +322,10 @@
 
         ddlProductionLine.change(function () {
             clearDropdown("ddlWarehouse2");
+            clearDropdown("ddlPackagingLine");
             if (ddlProductionLine.val() !== '') {
                 LoadDropDown('/Common/GetWarehouseByProductionLineId', 'POST', ddlWarehouse2, JSON.stringify({ lineId: ddlProductionLine.val() }));
+                LoadDropDown('/Common/GetLastPackagingLineByProductionId', 'POST', ddlPackagingLine, JSON.stringify({ lineId: ddlProductionLine.val() }));
             }
             $("#tblMaterials tbody").empty();
             LoadItemStock();
@@ -336,20 +364,6 @@
                     consoleLog(error);
                 })
             }
-        }
-
-        function checkItemQty(itemId, lineId, modelId, qty, itemName) {
-            var text = "";
-            //console.log('Item Id....');
-            //console.log(itemId);
-            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, lineId: lineId, modelId: modelId }), '/Common/GetItemUnitAndPDNStockQtyByLineAndModelId', getToken());
-
-            if (val.stockQty < qty) {
-                text += itemName + ',';
-            }
-            //console.log("ajaxValueReturnable");
-            //console.log(val);
-            return text;
         }
 
         $("#btnAddToList").click(function (e) {
@@ -439,12 +453,12 @@
                 isValid = false;
             }
             else {
-                if (ddlModel.val() != "" && ddlProductionLine.val() != "") {
+                if (ddlModel.val() != "" && ddlPackagingLine.val() != "") {
                     $.each($('#tblMaterials tbody tr'), function (index, item) {
                         var itemId = $(this).children('td').eq(3).html();
                         var itemName = $(this).children('td').eq(4).html();
                         var qty = $(this).children('td').eq(5).html();
-                        errorTxt+=checkItemQty(itemId, ddlProductionLine.val(), ddlModel.val(), qty, itemName);
+                        errorTxt += checkItemQty(itemId, ddlPackagingLine.val(), ddlModel.val(), qty, itemName);
                     })
                 }
             }            
@@ -461,7 +475,7 @@
         $('#btnSubmit').click(function (e) {
             e.preventDefault();
             if (validateForm() === true) {
-                var info = { FinishGoodsInfoId: 0, ProductionLineId: TryParseInt(ddlProductionLine.val(), 0), DescriptionId: TryParseInt(ddlModel.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: 0, ItemId: TryParseInt(ddlFinishItems.val(), 0), Quanity: TryParseInt(txtFinishQty.val(), 0), ProductionType: '' };
+                var info = { FinishGoodsInfoId: 0, ProductionLineId: TryParseInt(ddlProductionLine.val(), 0), DescriptionId: TryParseInt(ddlModel.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: 0, ItemId: TryParseInt(ddlFinishItems.val(), 0), Quanity: TryParseInt(txtFinishQty.val(), 0), ProductionType: '', PackagingLineId: TryParseInt(ddlPackagingLine.val(),0) };
 
                 var details = [];
                 details.length = 0;

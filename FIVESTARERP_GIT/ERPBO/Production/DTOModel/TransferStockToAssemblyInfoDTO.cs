@@ -25,6 +25,9 @@ namespace ERPBO.Production.DTOModel
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? ItemTypeId { get; set; }
+        public long? ItemId { get; set; }
+        public int? ForQty { get; set; }
 
         // Custom Property
         public string ModelName { get; set; }
@@ -34,5 +37,7 @@ namespace ERPBO.Production.DTOModel
         public int ItemCount { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public string ItemTypeName { get; set; }
+        public string ItemName { get; set; }
     }
 }

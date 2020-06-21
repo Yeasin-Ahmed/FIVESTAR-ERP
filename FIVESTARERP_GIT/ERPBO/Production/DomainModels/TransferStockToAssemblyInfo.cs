@@ -29,5 +29,10 @@ namespace ERPBO.Production.DomainModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<TransferStockToAssemblyDetail> TransferStockToAssemblyDetails { get; set; }
+
+        // 19-Jun-2020
+        public long? ItemTypeId { get; set; }
+        public long? ItemId { get; set; }
+        public int? ForQty { get; set; }
     }
 }

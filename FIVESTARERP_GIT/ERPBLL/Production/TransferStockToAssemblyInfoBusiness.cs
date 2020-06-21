@@ -62,6 +62,9 @@ namespace ERPBLL.Production
                 WarehouseId = infoDto.WarehouseId,
                 OrganizationId = orgId,
                 StateStatus = RequisitionStatus.Approved,
+                ItemTypeId = infoDto.ItemTypeId,
+                ItemId = infoDto.ItemId,
+                ForQty = infoDto.ForQty,
                 Remarks = "",
                 EUserId = userId,
                 EntryDate = DateTime.Now,
@@ -74,6 +77,7 @@ namespace ERPBLL.Production
             {
                 TransferStockToAssemblyDetail detail = new TransferStockToAssemblyDetail
                 {
+                    WarehouseId = item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
                     UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId,
@@ -88,7 +92,7 @@ namespace ERPBLL.Production
                 {
                     LineId = info.LineId,
                     DescriptionId = info.DescriptionId,
-                    WarehouseId = info.WarehouseId,
+                    WarehouseId = item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
                     UnitId = detail.UnitId,

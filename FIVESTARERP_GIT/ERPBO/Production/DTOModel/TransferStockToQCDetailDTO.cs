@@ -10,8 +10,8 @@ namespace ERPBO.Production.DTOModel
 {
     public class TransferStockToQCDetailDTO
     {
-        [Key]
         public long TSQDetailId { get; set; }
+        public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
@@ -26,6 +26,7 @@ namespace ERPBO.Production.DTOModel
         public long TSQInfoId { get; set; }
 
         // Custom Property
+        public string WarehouseName { get; set; }
         [StringLength(100)]
         public string ItemTypeName { get; set; }
         [StringLength(100)]

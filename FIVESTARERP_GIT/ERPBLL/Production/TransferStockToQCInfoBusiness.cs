@@ -66,7 +66,10 @@ namespace ERPBLL.Production
                 Remarks = "",
                 EUserId = userId,
                 EntryDate = DateTime.Now,
-                TransferCode = ("TSQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"))
+                TransferCode = ("TSQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
+                ItemTypeId = infoDto.ItemTypeId,
+                ItemId = infoDto.ItemId,
+                ForQty = infoDto.ForQty
             };
             List<TransferStockToQCDetail> details = new List<TransferStockToQCDetail>();
             List<AssemblyLineStockDetailDTO> assemblyStockOutItems = new List<AssemblyLineStockDetailDTO>();
@@ -75,7 +78,7 @@ namespace ERPBLL.Production
             {
                 TransferStockToQCDetail detail = new TransferStockToQCDetail
                 {
-                    
+                    WarehouseId= item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
                     UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId,
@@ -90,7 +93,7 @@ namespace ERPBLL.Production
                 {
                     ProductionLineId = info.LineId,
                     DescriptionId = info.DescriptionId,
-                    WarehouseId = info.WarehouseId,
+                    WarehouseId = item.WarehouseId,
                     AssemblyLineId = info.AssemblyId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
@@ -101,7 +104,8 @@ namespace ERPBLL.Production
                     OrganizationId = orgId,
                     EntryDate = DateTime.Now,
                     EUserId = userId,
-                    RefferenceNumber = info.TransferCode
+                    RefferenceNumber = info.TransferCode,
+                    
                 };
                 assemblyStockOutItems.Add(stockOutItem);
             }

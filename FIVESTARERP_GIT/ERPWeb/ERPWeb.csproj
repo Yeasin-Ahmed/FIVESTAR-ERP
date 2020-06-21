@@ -477,6 +477,25 @@
     <Content Include="Views\Production\_GetQCStockTransferList.cshtml" />
     <Content Include="Views\Production\CreateQCStockTransfer.cshtml" />
     <Content Include="Views\Production\_GetQCStockTransferDetailList.cshtml" />
+    <Content Include="Views\Production\_GetReceiveStockFromQC.cshtml" />
+    <Content Include="Views\Production\_GetReceiveStockFromQCDetail.cshtml" />
+    <Content Include="Views\Production\GetReceiveStockFromQC.cshtml" />
+    <Content Include="Views\Production\GetPackagingLineStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetPackagingLineStockInfo.cshtml" />
+    <Content Include="Views\Production\CreatePackgingStockTransfer.cshtml" />
+    <Content Include="Views\Production\GetPackagingListTransferList.cshtml" />
+    <Content Include="Views\Production\_GetPackagingListTransferList.cshtml" />
+    <Content Include="Views\Production\_GetPackagingListTransferDetail.cshtml" />
+    <Content Include="Views\Production\GetReceiveStockForRepairFromQC.cshtml" />
+    <Content Include="Views\Production\_GetReceiveStockForRepairFromQC.cshtml" />
+    <Content Include="Views\Production\_GetReceiveStockForRepairFromQCDetail.cshtml" />
+    <Content Include="Views\Production\GetRepairLineStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetRepairLineStockInfo.cshtml" />
+    <Content Include="Views\Production\CreateRepairStockTransfer.cshtml" />
+    <Content Include="Views\Production\GetTransferItemForQCList.cshtml" />
+    <Content Include="Views\Production\_GetTransferItemForQCList.cshtml" />
+    <Content Include="Views\Production\_GetTransferItemForQCDetail.cshtml" />
+    <Content Include="Views\Production\GetReceiveItemFormRepairList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

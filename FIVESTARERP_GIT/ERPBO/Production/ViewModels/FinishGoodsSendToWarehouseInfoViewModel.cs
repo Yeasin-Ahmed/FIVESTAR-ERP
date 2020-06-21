@@ -14,6 +14,8 @@ namespace ERPBO.Production.ViewModels
         [Range(1, long.MaxValue)]
         public long LineId { get; set; }
         [Range(1, long.MaxValue)]
+        public long PackagingLineId { get; set; }
+        [Range(1, long.MaxValue)]
         public long WarehouseId { get; set; }
         [Range(1, long.MaxValue)]
         public long DescriptionId { get; set; }
@@ -33,6 +35,7 @@ namespace ERPBO.Production.ViewModels
         // Custom Property 
         [StringLength(100)]
         public string LineNumber { get; set; }
+        public string PackagingLineName { get; set; }
         [StringLength(100)]
         public string WarehouseName { get; set; }
         public string ModelName { get; set; }

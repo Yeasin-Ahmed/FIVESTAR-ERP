@@ -11,6 +11,7 @@ namespace ERPBO.Production.ViewModels
     public class TransferFromQCDetailViewModel
     {
         public long TFQDetailId { get; set; }
+        public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
@@ -24,6 +25,7 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public long TSQInfoId { get; set; }
         // Custom property
+        public string WarehouseName { get; set; }
         public string ItemTypeName { get; set; }
         public string ItemName { get; set; }
         public string UnitName { get; set; }
