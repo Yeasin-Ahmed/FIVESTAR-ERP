@@ -496,6 +496,13 @@
     <Content Include="Views\Production\_GetTransferItemForQCList.cshtml" />
     <Content Include="Views\Production\_GetTransferItemForQCDetail.cshtml" />
     <Content Include="Views\Production\GetReceiveItemFormRepairList.cshtml" />
+    <Content Include="Views\FrontDesk\RequsitionForJobOrderDetails.cshtml" />
+    <Content Include="Views\FrontDesk\RequsitionInfoForJobOrderList.cshtml" />
+    <Content Include="Views\FrontDesk\RequsitionInfoForJobOrderPartialListList.cshtml" />
+    <Content Include="Views\FrontDesk\TechnicalSetvicesStockList.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionForJobOrderDetails.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionInfoForJobOrderList.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionInfoForJobOrderPartialListList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

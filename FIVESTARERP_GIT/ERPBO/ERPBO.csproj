@@ -140,6 +140,15 @@
     <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderAccessories.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderProblem.cs" />
+    <Compile Include="FrontDesk\DomainModels\RequsitionDetailForJobOrder.cs" />
+    <Compile Include="FrontDesk\DomainModels\RequsitionInfoForJobOrder.cs" />
+    <Compile Include="FrontDesk\DomainModels\TechnicalServicesStock.cs" />
+    <Compile Include="FrontDesk\DTOModels\RequsitionDetailForJobOrderDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\RequsitionInfoForJobOrderDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\TechnicalServicesStockDTO.cs" />
+    <Compile Include="FrontDesk\ViewModels\RequsitionDetailForJobOrderViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\RequsitionInfoForJobOrderViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\TechnicalServicesStockViewModel.cs" />
     <Compile Include="Production\DomainModels\PackagingLine.cs" />
     <Compile Include="Production\DomainModels\RepairLineStockDetail.cs" />
     <Compile Include="Production\DomainModels\RepairLineStockInfo.cs" />
