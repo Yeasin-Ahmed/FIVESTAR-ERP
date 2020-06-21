@@ -20,27 +20,36 @@
             <td style="width:25%"><b>@info.AssemblyName</b></td>
         </tr>
         <tr>
-            <td style="width:15%">Warehouse Name</td>
-            <td style="width:25%"><b>@info.WarehouseName</b></td>
             <td style="width:10%">Model Name</td>
             <td style="width:10%"><b>@info.ModelName</b></td>
             <td style="width:15%">StateStatus</td>
             <td style="width:25%"><b>@info.StateStatus</b></td>
+            <td style="width:15%">For Qty</td>
+            <td style="width:25%"><b>@info.ForQty</b></td>
+        </tr>
+        <tr>
+            <td style="width:15%">Warehouse Name</td>
+            <td style="width:25%"><b>@info.WarehouseName</b></td>
+            <td style="width:10%">ItemType</td>
+            <td style="width:10%"><b>@info.ItemTypeName</b></td>
+            <td style="width:15%">Item Name</td>
+            <td style="width:25%"><b>@info.ItemName</b></td>
         </tr>
     </tbody>
 </table>
-
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
     <thead class="thead-dark">
         <tr class="text-center">
             <th>#SL</th>
             <th class="hide"></th>
+            <th>Warehouse Name</th>
             <th class="hide"></th>
             <th>ItemType Name</th>
             <th class="hide"></th>
             <th>Item Name</th>
             <th>Qty.</th>
             <th>Type Of Unit</th>
+
         </tr>
     </thead>
     <tbody>
@@ -50,6 +59,7 @@
             <tr>
                 <td class="text-center" width="10%"><b>@sl</b></td>
                 <td class="hide">@detail.TSADetailId</td>
+                <td>@detail.WarehouseName</td>
                 <td class="hide">@detail.ItemTypeId</td>
                 <td>@detail.ItemTypeName</td>
                 <td class="hide">@detail.ItemId</td>

@@ -63,7 +63,6 @@ namespace ERPWeb
             container.RegisterType<IFinishGoodsStockDetailBusiness, FinishGoodsStockDetailBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseInfoBusiness, FinishGoodsSendToWarehouseInfoBusiness>();
             container.RegisterType<IFinishGoodsSendToWarehouseDetailBusiness, FinishGoodsSendToWarehouseDetailBusiness>();
-
             container.RegisterType<IAssemblyLineBusiness, AssemblyLineBusiness>();
             container.RegisterType<ITransferStockToAssemblyInfoBusiness, TransferStockToAssemblyInfoBusiness>();
             container.RegisterType<ITransferStockToAssemblyDetailBusiness, TransferStockToAssemblyDetailBusiness>();
@@ -74,7 +73,20 @@ namespace ERPWeb
             container.RegisterType<ITransferStockToQCDetailBusiness, TransferStockToQCDetailBusiness>();
             container.RegisterType<IQCLineStockInfoBusiness, QCLineStockInfoBusiness>();
             container.RegisterType<IQCLineStockDetailBusiness, QCLineStockDetailBusiness>();
+            container.RegisterType<IRepairLineBusiness, RepairLineBusiness>();
+            container.RegisterType<IPackagingLineBusiness, PackagingLineBusiness>();
+            container.RegisterType<ITransferFromQCInfoBusiness, TransferFromQCInfoBusiness>();
+            container.RegisterType<ITransferFromQCDetailBusiness, TransferFromQCDetailBusiness>();
+            container.RegisterType<IPackagingLineStockInfoBusiness, PackagingLineStockInfoBusiness>();
+            container.RegisterType<IPackagingLineStockDetailBusiness, PackagingLineStockDetailBusiness>();
+            container.RegisterType<ITransferStockToPackagingLine2InfoBusiness, TransferStockToPackagingLine2InfoBusiness>();
+            container.RegisterType<ITransferStockToPackagingLine2DetailBusiness, TransferStockToPackagingLine2DetailBusiness>();
+            container.RegisterType<IRepairLineStockInfoBusiness, RepairLineStockInfoBusiness>();
+            container.RegisterType<IRepairLineStockDetailBusiness, RepairLineStockDetailBusiness>();
+            container.RegisterType<ITransferRepairItemToQcInfoBusiness, TransferRepairItemToQcInfoBusiness>();
+            container.RegisterType<ITransferRepairItemToQcDetailBusiness, TransferRepairItemToQcDetailBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
+
             #endregion
 
             // ControlPanel Database

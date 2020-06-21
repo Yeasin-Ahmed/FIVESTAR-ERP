@@ -54,8 +54,9 @@ namespace ERPBLL.Production
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.LineId = item.LineId;
                 stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.PackagingLineId = item.PackagingLineId;
 
-                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId && o.WarehouseId == item.WarehouseId).FirstOrDefault();
+                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.PackagingLineId == stockDetail.PackagingLineId && o.DescriptionId == item.DescriptionId && o.WarehouseId == item.WarehouseId).FirstOrDefault();
                 if (finishGoodsStockInfoInDb != null)
                 {
                     finishGoodsStockInfoInDb.StockInQty += item.Quantity;
@@ -65,6 +66,7 @@ namespace ERPBLL.Production
                 {
                     FinishGoodsStockInfo finishGoodsStockInfo= new FinishGoodsStockInfo();
                     finishGoodsStockInfo.LineId = item.LineId;
+                    finishGoodsStockInfo.PackagingLineId = item.PackagingLineId;
                     finishGoodsStockInfo.WarehouseId = item.WarehouseId;
                     finishGoodsStockInfo.ItemTypeId = item.ItemTypeId;
                     finishGoodsStockInfo.ItemId = item.ItemId;
@@ -193,8 +195,10 @@ Where 1=1 {0}", Utility.ParamChecker(param));
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.LineId = item.LineId;
                 stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.PackagingLineId = item.PackagingLineId;
 
-                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId && o.WarehouseId == item.WarehouseId).FirstOrDefault();
+                var finishGoodsStockInfoInDb = _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId && o.WarehouseId == item.WarehouseId && o.PackagingLineId == item.PackagingLineId).FirstOrDefault();
+
                 finishGoodsStockInfoInDb.StockOutQty += item.Quantity;
                 _finishGoodsStockInfoRepository.Update(finishGoodsStockInfoInDb);
                 finishGoodsStockDetail.Add(stockDetail);

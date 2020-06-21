@@ -137,7 +137,7 @@ namespace ERPBLL.Production
                                 AssemblyLineId = info.AssemblyId,
                                 ProductionLineId = info.LineId,
                                 DescriptionId = info.DescriptionId,
-                                WarehouseId = info.WarehouseId,
+                                WarehouseId = item.WarehouseId,
                                 ItemTypeId= item.ItemTypeId,
                                 ItemId = item.ItemId,
                                 UnitId = item.UnitId,

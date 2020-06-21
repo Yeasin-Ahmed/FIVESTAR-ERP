@@ -22,7 +22,15 @@
             @Html.AntiForgeryToken()
             <div class="row">
                 <div class="col-md-3">
-                    <label for="ddlLineNumber" class="control-label font-weight-bold">Production Floor</label>
+                    <label for="ddlLineNumber" class="control-label font-weight-bold">
+                        Production Floor
+                        <div class="icheck-primary d-inline text-primary">
+                            <input type="checkbox" id="chkIsBundle">
+                            <label for="chkIsBundle">
+                                (Use Bundle?)
+                            </label>
+                        </div>
+                    </label>
                     @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
                     <span class="error hide req-line">Line Number is required</span>
                 </div>
@@ -83,6 +91,11 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12" id="itemQtyError">
+
+                </div>
+            </div>
             <hr />
             <div class="col-md-12">
                 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblData">
@@ -127,14 +140,100 @@
         var unitName = $("#unitName");
         var txtRemarks = $("#txtRemarks");
         var qty = $("#qty");
+        var chkIsBundle = $("#chkIsBundle");
 
         $(document).ready(function () {
+            chkIsBundle.prop("checked", true);
+            chkIsBundle.trigger("change");
+            disable("#chkIsBundle");
             $('.select2').select2();
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+        })
+
+        function checkItemQty(itemId, lineId, modelId, qty, itemName) {
+            var text = "";
+            //console.log('Item Id....');
+            //console.log(itemId);
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, lineId: lineId, modelId: modelId }), '/Common/GetItemUnitAndPDNStockQtyByLineAndModelId', getToken());
+
+            if (val.stockQty < qty) {
+                text += itemName + ',';
+            }
+            //console.log("ajaxValueReturnable");
+            //console.log(val);
+            return text;
+        }
+
+        chkIsBundle.change(function () {
+            $("#tblData tbody").empty();
+            if (chkIsBundle.is(":checked")) {
+                if (TryParseInt(ddlWarehouse.val()) > 0) {
+                    disable("#ddlWarehouse");
+                }
+                $("#btnAddToList").addClass('hide');
+                if (TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0) {
+                    var data = JSON.stringify({ modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
+                        console.log(res);
+                        loadDataTabelForBundle(res);
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+            } else {
+                enable("#ddlWarehouse");
+                $("#btnAddToList").removeClass('hide');
+            }
+        })
+
+        function loadDataTabelForBundle(obj) {
+            $("#tblData tbody").empty();
+            if (!$.isEmptyObject(obj)) {
+                $.each(obj, function (index, item) {
+                    var re = (item.Remarks === null) ? "" : item.Remarks;
+                    var td1 = "<td class='text-center'><b>" + (index + 1) + "</b></td>"
+                    var td2 = "<td class='hide'>" + item.ItemTypeId + "</td>";
+                    var td3 = "<td>" + item.ItemTypeName + "</td>";
+                    var td4 = "<td class='hide'>" + item.ItemId + "</td>";
+                    var td5 = "<td>" + item.ItemName + "</td>";
+                    console.log("Qty.............");
+                    var td6 = "<td class='text-center'>" + TryParseInt(txtQuantity.val(), 0) * item.Quantity + "</td>";
+                    var td7 = "<td class='text-center'>" + item.UnitName + "</td>";
+                    var td8 = "<td>" + re + "</td>";
+                    var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del hide'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                    var td10 = "<td class='hide'>" + item.WarehouseId + "</td>";
+                    var td11 = "<td class='hide'>" + item.Quantity + "</td>";
+
+                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + "</tr>";
+
+                    $("#tblData tbody").append(tr);
+
+                    //$("#tblRequsitionDetailsData tbody").append(tr);
+                    //clearCtrl();
+                })
+            }
+            else {
+                bootbox.alert('Bundle not found');
+            }
+        }
+
+        txtQuantity.keyup(function () {
+            if (chkIsBundle.is(":checked") && TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0 && $("#tblData tbody tr").length > 0 && TryParseInt(txtQuantity.val(), 0) > 0) {
+
+                $.each($("#tblData tbody tr"), function (index, item) {
+                    var qty = TryParseInt($(this).children('td').eq(10).html(), 0);
+                    console.log('Qty ' + qty);
+
+                    var t = qty * TryParseInt(txtQuantity.val(), 0)
+                    console.log('Total ' + t);
+                    $("#tblData tbody").children('tr').eq(index).children('td').eq(5).html(t);
+                })
+            }
         })
 
         ddlLineNumber.change(function () {
@@ -164,9 +263,16 @@
             }
         })
 
+        ddlModelName.change(function () {
+            if (chkIsBundle.is(":checked")) {
+                chkIsBundle.trigger('change')
+            }
+        })
+
         //unit text
         ddlItem.change(function () {
             LoadItemStock();
+            chkIsBundle.trigger('change');
         })
 
         function LoadItemStock() {
@@ -228,6 +334,22 @@
                 isValid = false;
                 $(".require-quantity").removeClass("hide");
             }
+            else {
+                if ($("#stockQty").text() === '') {
+                    $('.req-stockOver').removeClass('hide');
+                    isValid = false;
+                }
+                else {
+                    var sq = $("#stockQty").text().trim();
+                    sq = sq.substring(1, sq.length - 1);
+                    //console.log("Stock Qty");
+                    //console.log(sq);
+                    if (TryParseInt(txtQuantity.val(), 0) > TryParseInt(sq, 0)) {
+                        isValid = false;
+                        $('.req-stockOver').removeClass('hide');
+                    }
+                }
+            }
             return isValid;
         }
 
@@ -281,6 +403,7 @@
         function validateTable() {
             var isValid = true;
             $(".error").addClass("hide");
+            $("#itemQtyError").empty();
             if ($("#tblData tbody tr").length === 0) {
                 $(".empty-table").removeClass('hide');
                 isValid = false;
@@ -300,6 +423,41 @@
             if (TryParseInt(ddlWarehouse.val(), 0) <= 0) {
                 isValid = false;
                 $(".req-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlItemType.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-itemType").removeClass("hide");
+            }
+            if (TryParseInt(ddlItem.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-item").removeClass("hide");
+            }
+            if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-quantity").removeClass("hide");
+            }
+            if (!validateItemStock()) {
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        function validateItemStock() {
+            var isValid = true;
+            var errorTxt = "";
+            if (ddlModelName.val() != "" && ddlLineNumber.val() != "" && $('#tblData tbody tr').length > 0) {
+                $.each($('#tblData tbody tr'), function (index, item) {
+                    var itemId = $(this).children('td').eq(3).html();
+                    var itemName = $(this).children('td').eq(4).html();
+                    var qty = $(this).children('td').eq(5).html();
+                    errorTxt += checkItemQty(itemId, ddlLineNumber.val(), ddlModelName.val(), qty, itemName);
+                })
+            }
+            if (errorTxt.length > 0) {
+                errorTxt = errorTxt.substr(0, errorTxt.length - 1);
+                errorTxt += " does not have enough stock."
+                $("#itemQtyError").append("<br/><div class='alert alert-danger alert-dismissible'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button><h6><i class='icon fas fa-ban'></i> Warning!</h6>" + errorTxt + "</div>");
+                isValid = false;
             }
             return isValid;
         }
@@ -333,7 +491,15 @@
                 bootbox.confirm("Are you sure you want to Transfer the Stock to" + $("#ddlAssembly option:selected").text(), function (result) {
                     if (result) {
                         disable("#btnSubmit");
-                        var info = { DescriptionId: ddlModelName.val(), LineId: ddlLineNumber.val(), AssemblyId: ddlAssembly.val(), WarehouseId: ddlWarehouse.val() };
+
+                        var wi = 0;
+                        if (chkIsBundle.is(":checked")) {
+                            wi = $("#tblData tbody").children('tr').eq(0).children('td').eq(9).html();
+                        }
+                        //else {
+                        //    wi = TryParseInt(ddlWarehouse.val(), 0);
+                        //}
+                        var info = { DescriptionId:ddlModelName.val(), LineId: ddlLineNumber.val(), AssemblyId: ddlAssembly.val(), WarehouseId: ddlWarehouse.val(),ItemTypeId:ddlItemType.val(),ItemId:ddlItem.val(),ForQty:txtQuantity.val() };
 
                         var details = []; details.length = 0;
                         $.each($("#tblData tbody tr"), function (index, item) {
@@ -345,6 +511,7 @@
 
                             details.push({
                                 TSADetailId: 0,
+                                WarehouseId:wi,
                                 ItemTypeId: TryParseInt(iTypeId, 0),
                                 ItemId: TryParseInt(iId, 0),
                                 Quantity: TryParseInt(qty, 0),
@@ -360,21 +527,23 @@
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveTransferStockAssembly', data, getToken())).then(function (res, status) {
                             console.log(res);
                             console.log(status);
-                            enable("#btnSubmit");
                             if (res == true) {
+                                $("#btnReset").trigger('click');
                                 $('.toastrDefaultSuccess').trigger('click');
 
                                 setTimeout(function () {
                                     redirectPage('@Url.Action("GetFloorStockTransferList")');
-                                }, 1000);
+                                }, 500);
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
                             }
+                            enable("#btnSubmit");
                         }).fail(function (error) {
                             consoleLog(error)
+                            enable("#btnSubmit");
                             })
-                        enable("#btnSubmit");
+
                     }
                 })
             }

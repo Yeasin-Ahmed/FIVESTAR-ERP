@@ -227,7 +227,7 @@
 
         function fnTransferStateChange(id, status) {
             var data = JSON.stringify({ transferId: id, status: status});
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveTransferStockStatus', data,getToken())).then(function (res, status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveProductionTransferStockStatus', data,getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $("#modalTransferDetails").modal("toggle").toggle("fast");
                     hdfTSAInfoId.val('0');

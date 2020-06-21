@@ -71,7 +71,7 @@ namespace ERPDAL.ProductionDAL
     {
         public TransferStockToAssemblyDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-    public class AssemblyLineStockInfoRepository: ProductionBaseRepository<AssemblyLineStockInfo>
+    public class AssemblyLineStockInfoRepository : ProductionBaseRepository<AssemblyLineStockInfo>
     {
         public AssemblyLineStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
@@ -99,5 +99,52 @@ namespace ERPDAL.ProductionDAL
     {
         public QualityControlLineStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
+    public class RepairLineRepository : ProductionBaseRepository<RepairLine>
+    {
+        public RepairLineRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class PackagingLineRepository : ProductionBaseRepository<PackagingLine>
+    {
+        public PackagingLineRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferFromQCInfoRepository : ProductionBaseRepository<TransferFromQCInfo>
+    {
+        public TransferFromQCInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferFromQCDetailRepository : ProductionBaseRepository<TransferFromQCDetail>
+    {
+        public TransferFromQCDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class PackagingLineStockInfoRepository : ProductionBaseRepository<PackagingLineStockInfo>
+    {
+        public PackagingLineStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class PackagingLineStockDetailRepository : ProductionBaseRepository<PackagingLineStockDetail>
+    {
+        public PackagingLineStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferStockToPackagingLine2InfoRepository : ProductionBaseRepository<TransferStockToPackagingLine2Info>
+    {
+        public TransferStockToPackagingLine2InfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferStockToPackagingLine2DetailRepository : ProductionBaseRepository<TransferStockToPackagingLine2Detail>
+    {
+        public TransferStockToPackagingLine2DetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class RepairLineStockInfoRepository : ProductionBaseRepository<RepairLineStockInfo>
+    {
+        public RepairLineStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class RepairLineStockDetailRepository : ProductionBaseRepository<RepairLineStockDetail>
+    {
+        public RepairLineStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferRepairItemToQcInfoRepository : ProductionBaseRepository<TransferRepairItemToQcInfo>
+    {
+        public TransferRepairItemToQcInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class TransferRepairItemToQcDetailRepository : ProductionBaseRepository<TransferRepairItemToQcDetail>
+    {
+        public TransferRepairItemToQcDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
 }

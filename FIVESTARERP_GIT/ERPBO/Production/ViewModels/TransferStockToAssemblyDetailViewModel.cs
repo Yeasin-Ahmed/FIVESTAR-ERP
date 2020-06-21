@@ -12,6 +12,8 @@ namespace ERPBO.Production.ViewModels
     {
         public long TSADetailId { get; set; }
         [Range(1, long.MaxValue)]
+        public long? WarehouseId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? ItemTypeId { get; set; }
         [Range(1, long.MaxValue)]
         public long? ItemId { get; set; }
@@ -28,6 +30,7 @@ namespace ERPBO.Production.ViewModels
         public long TSAInfoId { get; set; }
 
         // Custom Properties
+        public string WarehouseName { get; set; }
         public string ItemTypeName { get; set; }
         public string ItemName { get; set; }
         public string UnitName { get; set; }

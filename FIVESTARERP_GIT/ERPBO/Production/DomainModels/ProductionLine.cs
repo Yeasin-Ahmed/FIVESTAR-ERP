@@ -27,5 +27,7 @@ namespace ERPBO.Production.DomainModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<AssemblyLine> AssemblyLines { get; set; }
         public ICollection<QualityControl> QualityControls { get; set; }
+        public ICollection<RepairLine> RepairLines { get; set; }
+        public ICollection<PackagingLine> PackagingLines { get; set; }
     }
 }

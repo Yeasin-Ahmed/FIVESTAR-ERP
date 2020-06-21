@@ -10,6 +10,7 @@ namespace ERPBO.Production.ViewModels
     {
         public long SendDetailId { get; set; }
         public string LineNumber { get; set; }
+        public string PackagingLineNumber { get; set; }
         public string WarehouseName { get; set; }
         public string ModelName { get; set; }
         public string ItemTypeName { get; set; }

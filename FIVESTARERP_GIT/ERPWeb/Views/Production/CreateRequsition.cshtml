@@ -410,9 +410,9 @@
                         if (chkIsBundle.is(":checked")) {
                             wi = $("#tblRequsitionDetailsData tbody").children('tr').eq(0).children('td').eq(9).html();
                         }
-                        else {
-                            wi = TryParseInt(ddlWarehouse.val(), 0);
-                        }
+                        //else {
+                        //    wi = TryParseInt(ddlWarehouse.val(), 0);
+                        //}
 
                         $.each($("#tblRequsitionDetailsData tbody tr"), function (index, item) {
                             var tds = $(this).children('td');
@@ -423,6 +423,7 @@
 
                             reqDetails.push({
                                 ReqDetailId: 0,
+                                WarehouseId:wi,
                                 ItemTypeId: TryParseInt(iTypeId, 0),
                                 ItemId: TryParseInt(iId, 0),
                                 Quantity: TryParseInt(qty, 0),
@@ -433,7 +434,7 @@
                     var requsitionInfo = {
                     ReqInfoId: 0,
                     LineId: TryParseInt(ddlLineNumber.val(), 0),
-                    WarehouseId: wi,
+                        WarehouseId: TryParseInt(ddlWarehouse.val(),0),
                     DescriptionId: TryParseInt(ddlModelName.val(), 0),
                     RequisitionType: $("#ddlRequisitionType").val(),
                     ReqDetails: reqDetails

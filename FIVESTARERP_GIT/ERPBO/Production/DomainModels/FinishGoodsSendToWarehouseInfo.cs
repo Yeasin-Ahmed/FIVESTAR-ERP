@@ -14,6 +14,7 @@ namespace ERPBO.Production.DomainModels
         [Key]
         public long SendId { get; set; }
         public long LineId { get; set; }
+        public long PackagingLineId { get; set; }
         public long WarehouseId { get; set; }
         public long DescriptionId { get; set; }
         [StringLength(150)]

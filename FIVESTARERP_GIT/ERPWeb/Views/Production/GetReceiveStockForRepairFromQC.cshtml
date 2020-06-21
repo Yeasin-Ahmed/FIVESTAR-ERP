@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewBag.Title = "Receive Stock From QC";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Receive Stock From QC</b></h4>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
+                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
+                <select id="ddlQCLine" class="form-control form-control-sm">
+                    <option value="0">--Select QC Line--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlRepairLine" class="control-label font-weight-bold">Repair Line</label>
+                <select id="ddlRepairLine" class="form-control form-control-sm">
+                    <option value="0">--Select Repair Line--</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm " })
+            </div>
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="txtTSQCode" class="control-label font-weight-bold">Transfer Code</label>
+                <input type="text" id="txtTSQCode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
+        @{Html.RenderAction("GetReceiveStockForRepairFromQC", new { @flag = "View" });}
+    </div>
+    <div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-primary">
+                    <input type="hidden" id="hdfTFQInfoId" />
+                    <input type="hidden" id="hdfRowIndex" />
+                    <h4 id="modalHeading" class="modal-title">Transfer Details</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" id="dataContainer1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlModelName = $("#ddlModelName");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var txtTSQCode = $("#txtTSQCode");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var hdfTFQInfoId = $("#hdfTFQInfoId");
+        var ddlQCLine = $("#ddlQCLine");
+        var ddlTransferFor = $("#ddlTransferFor");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        ddlLineNumber.change(function () {
+            clearDropdown("ddlQCLine");
+            clearDropdown("ddlRepairLine");
+            if (ddlLineNumber.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlRepairLine.change(function () {
+            LoadDataTable();
+        })
+
+        ddlQCLine.change(function () {
+            LoadDataTable();
+        })
+
+        ddlModelName.change(function () {
+            LoadDataTable();
+        })
+
+        ddlWarehouse.change(function() {
+            LoadDataTable();
+        })
+
+        ddlStateStatus.change(function() {
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        txtTSQCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        function LoadDataTable() {
+
+            var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), qcId: TryParseInt(ddlQCLine.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), transferCode: txtTSQCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, repairLineId:TryParseInt(ddlRepairLine.val(),0) };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetReceiveStockForRepairFromQC', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+
+        $(document).on('click', 'a.data-item-detail', function (e) {
+            e.preventDefault();
+            hdfTFQInfoId.val("0")
+            var id = $(this).attr("data-item-detail");
+            hdfTFQInfoId.val(id);
+            $.when(getReqWithData('html', type.get, '/Production/GetReceiveStockForRepairFromQC', { flag: "detail", transferInfoId: id })).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").empty();
+                    $("#dataContainer1").append(res);
+                    $("#modalTransferDetails").modal("toggle");
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        // accept the transfer stock
+        $(document).on("click", ".btnAccepted", function (e) {
+            e.preventDefault();
+            fnTransferStateChange(hdfTFQInfoId.val(), reqStatus.accepted);
+        })
+
+        function fnTransferStateChange(id, status) {
+            var data = JSON.stringify({ transferId: id, status: status});
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQCTransferStatus', data,getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $("#modalTransferDetails").modal("toggle").toggle("fast");
+                    hdfTFQInfoId.val('0');
+                    $('.toastrReqSuccess').trigger('click');
+                    $("#dataContainer1").empty();
+                    setTimeout(function () {
+                        LoadDataTable();
+                    }, 1500);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+    </script>
+}

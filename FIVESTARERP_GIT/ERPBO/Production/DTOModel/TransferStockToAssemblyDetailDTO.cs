@@ -11,6 +11,7 @@ namespace ERPBO.Production.DTOModel
     public class TransferStockToAssemblyDetailDTO
     {
         public long TSADetailId { get; set; }
+        public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
@@ -25,6 +26,7 @@ namespace ERPBO.Production.DTOModel
         public long TSAInfoId { get; set; }
 
         // Custom Properties
+        public string WarehouseName { get; set; }
         public string ItemTypeName { get; set; }
         public string ItemName { get; set; }
         public string UnitName { get; set; }

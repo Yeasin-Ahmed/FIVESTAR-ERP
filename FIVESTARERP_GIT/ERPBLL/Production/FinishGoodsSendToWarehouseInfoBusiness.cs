@@ -44,6 +44,7 @@ namespace ERPBLL.Production
                 LineId = info.LineId,
                 WarehouseId = info.WarehouseId,
                 DescriptionId = info.DescriptionId,
+                PackagingLineId = info.PackagingLineId,
                 Flag = ProductionTypes.SKD,
                 Remarks = "",
                 EUserId = userId,
@@ -72,6 +73,7 @@ namespace ERPBLL.Production
                 FinishGoodsStockDetailDTO stock = new FinishGoodsStockDetailDTO()
                 {
                     LineId = info.LineId,
+                    PackagingLineId = info.PackagingLineId,
                     WarehouseId = info.WarehouseId,
                     DescriptionId = info.DescriptionId,
                     ItemTypeId = item.ItemTypeId,

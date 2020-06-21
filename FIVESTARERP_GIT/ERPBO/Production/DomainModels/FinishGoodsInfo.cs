@@ -12,8 +12,9 @@ namespace ERPBO.Production.DomainModels
     public class FinishGoodsInfo
     {
         [Key]
-        public long FinishGoodsInfoId { get; set;       }
+        public long FinishGoodsInfoId { get; set;}
         public long ProductionLineId { get; set; }
+        public long PackagingLineId { get; set; }
         public long DescriptionId { get; set; }
         public long WarehouseId { get; set; }
         public long ItemTypeId { get; set; }

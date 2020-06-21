@@ -30,6 +30,5 @@ Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.Inve
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
-
 -- Yeasin
 
