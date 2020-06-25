@@ -20,8 +20,10 @@ namespace ERPBLL.Production
         private readonly IQCLineStockDetailBusiness _qCLineStockDetailBusiness;
         private readonly IItemBusiness _itemBusiness;
         private readonly IRepairLineStockDetailBusiness _repairLineStockDetailBusiness;
+        private readonly IRepairItemStockDetailBusiness _repairItemStockDetailBusiness;
+        private readonly IQCItemStockDetailBusiness _qcItemStockDetailBusiness;
 
-        public TransferRepairItemToQcInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness)
+        public TransferRepairItemToQcInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IQCItemStockDetailBusiness qcItemStockDetailBusiness)
         {
             this._productionDb = productionDb;
             this._transferRepairItemToQcInfoRepository = new TransferRepairItemToQcInfoRepository(this._productionDb);
@@ -29,6 +31,8 @@ namespace ERPBLL.Production
             this._itemBusiness = itemBusiness;
             this._transferRepairItemToQcDetailBusiness = transferRepairItemToQcDetailBusiness;
             this._repairLineStockDetailBusiness = repairLineStockDetailBusiness;
+            this._repairItemStockDetailBusiness = repairItemStockDetailBusiness;
+            this._qcItemStockDetailBusiness = qcItemStockDetailBusiness;
         }
 
         public TransferRepairItemToQcInfo GetTransferRepairItemToQcInfoById(long transferId, long orgId)
@@ -44,7 +48,7 @@ namespace ERPBLL.Production
         {
             bool IsSuccess = false;
             var transferInDb = GetTransferRepairItemToQcInfoById(transferId, orgId);
-            if(transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved)
+            if (transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved)
             {
                 transferInDb.StateStatus = RequisitionStatus.Accepted;
                 transferInDb.UpUserId = userId;
@@ -52,6 +56,25 @@ namespace ERPBLL.Production
                 _transferRepairItemToQcInfoRepository.Update(transferInDb);
                 var details = _transferRepairItemToQcDetailBusiness.GetTransferRepairItemToQcDetailByInfo(transferId, orgId);
                 List<QualityControlLineStockDetailDTO> stockDetails = new List<QualityControlLineStockDetailDTO>();
+                List<QCItemStockDetailDTO> qcItemStocks = new List<QCItemStockDetailDTO>()
+                {
+                    new QCItemStockDetailDTO()
+                    {
+                        ProductionFloorId = transferInDb.LineId,
+                        DescriptionId = transferInDb.DescriptionId,
+                        QCId = transferInDb.QCLineId,
+                        RepairLineId = transferInDb.RepairLineId,
+                        WarehouseId= transferInDb.WarehouseId,
+                        ItemTypeId = transferInDb.ItemTypeId,
+                        ItemId = transferInDb.ItemId,
+                        OrganizationId= orgId,
+                        EUserId = userId,
+                        Quantity = transferInDb.ForQty.Value,
+                        StockStatus = StockStatus.StockOut,
+                        ReferenceNumber=transferInDb.TransferCode,
+                        Remarks = "Transfer Item To QC"
+                    }
+                };
                 foreach (var item in details)
                 {
                     QualityControlLineStockDetailDTO stock = new QualityControlLineStockDetailDTO()
@@ -75,7 +98,9 @@ namespace ERPBLL.Production
                 }
                 if (_transferRepairItemToQcInfoRepository.Save())
                 {
-                    IsSuccess = _qCLineStockDetailBusiness.SaveQCLineStockIn(stockDetails, userId, orgId);
+                    if (_qCLineStockDetailBusiness.SaveQCLineStockIn(stockDetails, userId, orgId)) {
+                        IsSuccess= _qcItemStockDetailBusiness.SaveQCItemStockIn(qcItemStocks, userId, orgId);
+                    }
                 }
             }
             return IsSuccess;
@@ -98,10 +123,29 @@ namespace ERPBLL.Production
                 EntryDate = DateTime.Now,
                 ItemTypeId = infoDto.ItemTypeId,
                 ItemId = infoDto.ItemId,
-                ForQty= infoDto.ForQty
+                ForQty = infoDto.ForQty
             };
             List<TransferRepairItemToQcDetail> listOfDetail = new List<TransferRepairItemToQcDetail>();
             List<RepairLineStockDetailDTO> stockDetail = new List<RepairLineStockDetailDTO>();
+            List<RepairItemStockDetailDTO> repairStocks = new List<RepairItemStockDetailDTO>()
+            {
+                new RepairItemStockDetailDTO()
+                {
+                    ProductionFloorId = info.LineId,
+                    DescriptionId = info.DescriptionId,
+                    QCId = info.QCLineId,
+                    RepairLineId = info.RepairLineId,
+                    WarehouseId= info.WarehouseId,
+                    ItemTypeId = info.ItemTypeId,
+                    ItemId = info.ItemId,
+                    OrganizationId= orgId,
+                    EUserId = userId,
+                    Quantity = info.ForQty.Value,
+                    StockStatus = StockStatus.StockOut,
+                    ReferenceNumber=info.TransferCode,
+                    Remarks = "Transfer Item To QC"
+                }
+            };
             foreach (var item in detailDto)
             {
                 TransferRepairItemToQcDetail detail = new TransferRepairItemToQcDetail
@@ -109,12 +153,12 @@ namespace ERPBLL.Production
                     WarehouseId = item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
-                    UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value,orgId).UnitId,
+                    UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId,
                     Quantity = item.Quantity,
                     Remarks = item.Remarks,
                     OrganizationId = orgId,
                     EUserId = userId,
-                    EntryDate =  DateTime.Now
+                    EntryDate = DateTime.Now
                 };
                 listOfDetail.Add(detail);
                 RepairLineStockDetailDTO stock = new RepairLineStockDetailDTO
@@ -125,11 +169,11 @@ namespace ERPBLL.Production
                     ItemId = item.ItemId,
                     UnitId = detail.UnitId,
                     WarehouseId = item.WarehouseId,
-                    RepairLineId = info .RepairLineId,
+                    RepairLineId = info.RepairLineId,
                     QCLineId = info.QCLineId,
                     RefferenceNumber = info.TransferCode,
                     Quantity = item.Quantity,
-                    Remarks = "Stock Out For QC ("+ info.TransferCode+")",
+                    Remarks = "Stock Out For QC (" + info.TransferCode + ")",
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     OrganizationId = orgId,
@@ -139,9 +183,13 @@ namespace ERPBLL.Production
             }
             info.TransferRepairItemToQcDetails = listOfDetail;
             _transferRepairItemToQcInfoRepository.Insert(info);
+
             if (_transferRepairItemToQcInfoRepository.Save())
             {
-                IsSuccess = _repairLineStockDetailBusiness.SaveRepairLineStockOut(stockDetail, userId, orgId, "Stock Out For QC Transfer");
+                if (_repairLineStockDetailBusiness.SaveRepairLineStockOut(stockDetail, userId, orgId, "Stock Out For QC Transfer"))
+                {
+                    IsSuccess = _repairItemStockDetailBusiness.SaveRepairItemStockOut(repairStocks, userId, orgId);
+                }
             }
             return IsSuccess;
         }

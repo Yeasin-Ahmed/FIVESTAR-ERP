@@ -16,6 +16,7 @@
             <th style="vertical-align:middle">Line Number</th>
             <th style="vertical-align:middle">QC Line</th>
             <th style="vertical-align:middle">Repair Line</th>
+            <th style="vertical-align:middle">Repair Transfer Reason</th>
             <th style="vertical-align:middle">Model</th>
             <th style="vertical-align:middle">Warehouse Name</th>
             <th style="vertical-align:middle">ItemType Name</th>
@@ -42,6 +43,7 @@
             <td>@info.LineName</td>
             <td>@info.QCLineName</td>
             <td>@info.RepairLineName</td>
+            <td>@info.RepairTransferReason</td>
             <td>@info.ModelName</td>
             <td>@info.WarehouseName</td>
             <td>@info.ItemTypeName</td>
@@ -70,7 +72,7 @@
         @if (Model.Count() == 0)
         {
             <tr class="text-center empty-row">
-                <td colspan="19">
+                <td colspan="20">
                     No data found in table
                 </td>
             </tr>

@@ -19,14 +19,15 @@ namespace ERPBLL.Production
         private readonly TransferStockToPackagingLine2InfoRepository _transferStockToPackagingLine2InfoRepository;
         private readonly ITransferStockToPackagingLine2DetailBusiness _transferStockToPackagingLine2DetailBusiness;
         private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
-
-        public TransferStockToPackagingLine2InfoBusiness(IProductionUnitOfWork productionDb, IItemBusiness itemBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferStockToPackagingLine2DetailBusiness transferStockToPackagingLine2DetailBusiness)
+        private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
+        public TransferStockToPackagingLine2InfoBusiness(IProductionUnitOfWork productionDb, IItemBusiness itemBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferStockToPackagingLine2DetailBusiness transferStockToPackagingLine2DetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness)
         {
             this._productionDb = productionDb;
             this._itemBusiness = itemBusiness;
             this._transferStockToPackagingLine2InfoRepository = new TransferStockToPackagingLine2InfoRepository(this._productionDb);
             this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
             this._transferStockToPackagingLine2DetailBusiness = transferStockToPackagingLine2DetailBusiness;
+            this._packagingItemStockDetailBusiness = packagingItemStockDetailBusiness;
         }
         public TransferStockToPackagingLine2Info GetStockToPL2InfoById(long id, long orgId)
         {
@@ -40,12 +41,30 @@ namespace ERPBLL.Production
         {
             bool IsSuccess = false;
             var transferInDb = GetStockToPL2InfoById(transferId, orgId);
-            if(transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved)
+            if (transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved)
             {
                 transferInDb.StateStatus = RequisitionStatus.Accepted;
                 transferInDb.UpdateDate = DateTime.Now;
                 transferInDb.UpUserId = userId;
                 _transferStockToPackagingLine2InfoRepository.Update(transferInDb);
+
+                List<PackagingItemStockDetailDTO> packagingItemStocks = new List<PackagingItemStockDetailDTO>() {
+                    new PackagingItemStockDetailDTO(){
+                        ProductionFloorId = transferInDb.LineId,
+                        DescriptionId = transferInDb.DescriptionId,
+                        PackagingLineId = transferInDb.PackagingLineToId,
+                        WarehouseId = transferInDb.WarehouseId,
+                        ItemTypeId = transferInDb.ItemTypeId,
+                        ItemId = transferInDb.ItemId,
+                        OrganizationId = transferInDb.OrganizationId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        Quantity = transferInDb.ForQty.Value,
+                        ReferenceNumber = transferInDb.TransferCode,
+                        StockStatus= StockStatus.StockIn,
+                        Remarks ="Stock In By Packaging Transfer"
+                    }
+                };
 
                 var transferDetails = _transferStockToPackagingLine2DetailBusiness.GetTransferFromPLDetailByInfo(transferId, orgId);
                 List<PackagingLineStockDetailDTO> stockDetails = new List<PackagingLineStockDetailDTO>();
@@ -73,7 +92,10 @@ namespace ERPBLL.Production
 
                 if (_transferStockToPackagingLine2InfoRepository.Save())
                 {
-                    IsSuccess = _packagingLineStockDetailBusiness.SavePackagingLineStockIn(stockDetails, userId, orgId);
+                    if (_packagingLineStockDetailBusiness.SavePackagingLineStockIn(stockDetails, userId, orgId))
+                    {
+                        IsSuccess = _packagingItemStockDetailBusiness.SavePackagingItemStockIn(packagingItemStocks, userId, orgId);
+                    }
                 }
             }
             return IsSuccess;
@@ -102,6 +124,25 @@ namespace ERPBLL.Production
             List<TransferStockToPackagingLine2Detail> pl2details = new List<TransferStockToPackagingLine2Detail>();
             List<PackagingLineStockDetailDTO> stockDetails = new List<PackagingLineStockDetailDTO>();
 
+            List<PackagingItemStockDetailDTO> packagingItemStocks = new List<PackagingItemStockDetailDTO>() {
+                new PackagingItemStockDetailDTO(){
+                    ProductionFloorId = info.LineId,
+                    DescriptionId = info.DescriptionId,
+                    PackagingLineId = info.PackagingLineFromId,
+                    PackagingLineToId = info.PackagingLineToId,
+                    WarehouseId = info.WarehouseId,
+                    ItemTypeId = info.ItemTypeId,
+                    ItemId = info.ItemId,
+                    OrganizationId = info.OrganizationId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    Quantity = info.ForQty.Value,
+                    ReferenceNumber = info.TransferCode,
+                    StockStatus= StockStatus.StockOut,
+                    Remarks ="Stock Out By Packaging Transfer"
+                }
+            };
+
             foreach (var item in detailDto)
             {
                 TransferStockToPackagingLine2Detail pl2detail = new TransferStockToPackagingLine2Detail()
@@ -110,8 +151,8 @@ namespace ERPBLL.Production
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
                     Quantity = item.Quantity,
-                    UnitId = _itemBusiness.GetItemById(item.ItemId.Value,orgId).UnitId,
-                    OrganizationId= orgId,
+                    UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId,
+                    OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     Remarks = item.Remarks
@@ -131,18 +172,22 @@ namespace ERPBLL.Production
                     OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now,
-                    Remarks = "Stock Out By Packaging Line Transfer ("+ info.TransferCode + ")",
+                    Remarks = "Stock Out By Packaging Line Transfer (" + info.TransferCode + ")",
                     PackagingLineId = infoDto.PackagingLineFromId,
                     RefferenceNumber = info.TransferCode,
                     StockStatus = StockStatus.StockOut
                 };
                 stockDetails.Add(stock);
-            }   
+            }
             info.TransferStockToPackagingLine2Details = pl2details;
             _transferStockToPackagingLine2InfoRepository.Insert(info);
 
-            if (_transferStockToPackagingLine2InfoRepository.Save()) {
-                IsSuccess = _packagingLineStockDetailBusiness.SavePackagingLineStockOut(stockDetails, userId, orgId, "");
+            if (_transferStockToPackagingLine2InfoRepository.Save())
+            {
+                if (_packagingLineStockDetailBusiness.SavePackagingLineStockOut(stockDetails, userId, orgId, ""))
+                {
+                    IsSuccess = _packagingItemStockDetailBusiness.SavePackagingItemStockOut(packagingItemStocks, userId, orgId);
+                }
             }
 
             return IsSuccess;

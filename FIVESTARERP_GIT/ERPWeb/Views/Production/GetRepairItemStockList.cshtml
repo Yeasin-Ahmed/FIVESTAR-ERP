@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Repair Item Stock Info";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="row">
+            <div class="col-md-3">
+                @if (privilege != null && privilege.Detail)
+                {
+                    <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                        <i class="fas fa-eye"></i> Go To Details View
+                    </a>
+                }
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Repair Item Stock Info</b></h4>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlLineNumber" class="control-label font-weight-bold">Line</label>
+                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
+                <select id="ddlQCLine" class="form-control form-control-sm">
+                    <option value="0">--Select QC Line--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlRepairLine" class="control-label font-weight-bold">Repair Line</label>
+                <select id="ddlRepairLine" class="form-control form-control-sm">
+                    <option value="0">--Select Repair Line--</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-3">
+                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                <select id="ddlItemType" class="form-control form-control-sm">
+                    <option value="">--Select Item Type--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
+                    <option value="">--Select Item--</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
+                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
+        @{Html.RenderAction("GetRepairItemStockList", new {@flag="View" });}
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlQCLine = $("#ddlQCLine");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var ddlModelName = $("#ddlModelName");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtLessOrEq = $("#txtLessOrEq");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        ddlLineNumber.change(function () {
+            clearDropdown("ddlQCLine");
+            if (ddlLineNumber.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlQCLine.change(function () {
+            LoadDataTable();
+        })
+
+        ddlRepairLine.change(function () {
+            LoadDataTable();
+        })
+
+        ddlWarehouse.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlItemType.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlItem.change(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-change', function () {
+            LoadDataTable();
+        })
+
+        txtLessOrEq.keyup(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+
+            var data = { flag: "search", floorId: ddlLineNumber.val(), qcId: ddlQCLine.val(), modelId: ddlModelName.val(), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(), page: pageNo, repairId: TryParseInt(ddlRepairLine.val(),0) };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetQCItemStockList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+    </script>
+}

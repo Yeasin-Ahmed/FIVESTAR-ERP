@@ -18,5 +18,7 @@ namespace ERPBLL.Inventory.Interface
         Item GetItemOneByOrgId(long id, long orgId);
         IEnumerable<ItemDomainDTO> GetAllItemsInProductionStockByLineId(long lineId, long orgId);
         IEnumerable<Dropdown> GetItemsByWarehouseId(long warehouseId, long orgId);
+
+        IEnumerable<ItemDetailDTO> GetItemDetails(long orgId);
     }
 }

@@ -139,6 +139,12 @@
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
     <Compile Include="Production\AssemblyLineBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingLineBusiness.cs" />
+    <Compile Include="Production\Interface\IQCItemStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IQCItemStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IPackagingItemStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairItemStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IPackagingItemStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairItemStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairLineStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingLineStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRepairLineStockInfoBusiness.cs" />
@@ -150,6 +156,12 @@
     <Compile Include="Production\Interface\ITransferFromQCInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITransferFromQCDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferStockToPackagingLine2InfoBusiness.cs" />
+    <Compile Include="Production\PackagingItemStockDetailBusiness.cs" />
+    <Compile Include="Production\QCItemStockDetailBusiness.cs" />
+    <Compile Include="Production\QCItemStockInfoBusiness.cs" />
+    <Compile Include="Production\RepairItemStockDetailBusiness.cs" />
+    <Compile Include="Production\PackagingItemStockInfoBusiness.cs" />
+    <Compile Include="Production\RepairItemStockInfoBusiness.cs" />
     <Compile Include="Production\RepairLineStockDetailBusiness.cs" />
     <Compile Include="Production\PackagingLineStockDetailBusiness.cs" />
     <Compile Include="Production\RepairLineStockInfoBusiness.cs" />

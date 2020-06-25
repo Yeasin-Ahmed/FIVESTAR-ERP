@@ -147,4 +147,42 @@ namespace ERPDAL.ProductionDAL
     {
         public TransferRepairItemToQcDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
+
+    public class QCItemStockInfoRepository : ProductionBaseRepository<QCItemStockInfo>
+    {
+        public QCItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class QCItemStockDetailRepository : ProductionBaseRepository<QCItemStockDetail>
+    {
+        public QCItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class RepairItemStockInfoRepository : ProductionBaseRepository<RepairItemStockInfo>
+    {
+        public RepairItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class RepairItemStockDetailRepository : ProductionBaseRepository<RepairItemStockDetail>
+    {
+        public RepairItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class PackagingItemStockInfoRepository : ProductionBaseRepository<PackagingItemStockInfo>
+    {
+        public PackagingItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    } 
+    public class PackagingItemStockDetailRepository : ProductionBaseRepository<PackagingItemStockDetail>
+    {
+        public PackagingItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
 }

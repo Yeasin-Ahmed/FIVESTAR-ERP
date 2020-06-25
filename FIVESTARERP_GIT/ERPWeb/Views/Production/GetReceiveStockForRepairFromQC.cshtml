@@ -77,6 +77,16 @@
                 <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
                 @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
             </div>
+            <div class="col-md-3">
+                <label for="ddlRepairTransferReason" class="control-label font-weight-bold">Transfer Reason</label>
+                <select class="form-control form-control-sm" id="ddlRepairTransferReason">
+                    <option value="">Select Transfer Reason</option>
+                    <option value="Software Problem">Software Problem</option>
+                    <option value="Hardware Problem">Hardware Problem</option>
+                    <option value="Both">Both Software & Hardware Problem</option>
+                </select>
+                <span class="error hide req-tsReason">Transfer is required</span>
+            </div>
         </div>
         <hr />
     </div>
@@ -113,6 +123,7 @@
         var ddlQCLine = $("#ddlQCLine");
         var ddlTransferFor = $("#ddlTransferFor");
         var ddlRepairLine = $("#ddlRepairLine");
+        var ddlRepairTransferReason = $("#ddlRepairTransferReason");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -169,6 +180,10 @@
             LoadDataTable();
         })
 
+        ddlRepairTransferReason.change(function () {
+            LoadDataTable();
+        })
+
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
@@ -194,7 +209,7 @@
 
         function LoadDataTable() {
 
-            var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), qcId: TryParseInt(ddlQCLine.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), transferCode: txtTSQCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, repairLineId:TryParseInt(ddlRepairLine.val(),0) };
+            var data = { flag: "search", lineId: TryParseInt(ddlLineNumber.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), qcId: TryParseInt(ddlQCLine.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), transferCode: txtTSQCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, repairLineId: TryParseInt(ddlRepairLine.val(), 0), transferReason: ddlRepairTransferReason.val() };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetReceiveStockForRepairFromQC', data)).then(function (res, status) {
                 console.log(status);

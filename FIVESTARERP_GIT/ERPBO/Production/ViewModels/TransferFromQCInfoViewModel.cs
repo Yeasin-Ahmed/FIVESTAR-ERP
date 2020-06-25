@@ -21,6 +21,8 @@ namespace ERPBO.Production.ViewModels
         public long? PackagingLineId { get; set; }
         [StringLength(100)]
         public string TransferFor { get; set; } // Packaging / QC
+        [StringLength(100)]
+        public string RepairTransferReason { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(150)]

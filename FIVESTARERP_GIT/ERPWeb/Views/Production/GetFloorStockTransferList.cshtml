@@ -219,6 +219,7 @@
                     $("#dataContainer1").empty();
                     $("#dataContainer1").append(res);
                     $("#modalTransferDetails").modal("toggle");
+                    $(".btnAccepted").addClass("hide")
                 }
             }).fail(function (error) {
                 console.log(error);

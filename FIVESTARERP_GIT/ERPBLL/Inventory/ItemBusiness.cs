@@ -1,18 +1,16 @@
 ﻿using ERPBLL.Inventory.Interface;
-using ERPBO.Inventory.DTOModel;
+using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Inventory.DomainModels;
+using ERPBO.Inventory.DTOModel;
 using ERPDAL.InventoryDAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ERPBO.Common;
-using ERPBLL.Production.Interface;
 
 namespace ERPBLL.Inventory
 {
-   public class ItemBusiness:IItemBusiness
+    public class ItemBusiness:IItemBusiness
     {
         /// <summary>
         ///  BC Stands for          - Business Class
@@ -61,6 +59,17 @@ namespace ERPBLL.Inventory
                 IsActive = it.IsActive,
                 Remarks = it.Remarks
             }).FirstOrDefault();
+        }
+
+        public IEnumerable<ItemDetailDTO> GetItemDetails(long orgId)
+        {
+            IEnumerable<ItemDetailDTO> details = new List<ItemDetailDTO>();
+            details= this._inventoryDb.Db.Database.SqlQuery<ItemDetailDTO>(string.Format(@"Select (Cast(i.ItemId as nvarchar(100))+'#'+Cast(it.ItemId as nvarchar(100))+'#'+Cast(w.Id as nvarchar(100))) 'ItemId',(i.ItemName+' ['+it.ItemName+'-'+w.WarehouseName+']') as 'ItemName' From tblItems i
+Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
+Inner Join tblWarehouses w on it.WarehouseId = w.Id
+Where 1=1 and i.OrganizationId={0}
+Order By w.WarehouseName,i.ItemName", orgId)).ToList();
+            return details;
         }
 
         public Item GetItemOneByOrgId(long id, long orgId)

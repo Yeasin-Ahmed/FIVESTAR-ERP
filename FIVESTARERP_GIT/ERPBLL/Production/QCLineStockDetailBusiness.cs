@@ -20,7 +20,9 @@ namespace ERPBLL.Production
         private readonly ITransferStockToQCInfoBusiness _transferStockToQCInfoBusiness;
         private readonly IQCLineStockInfoBusiness _qCLineStockInfoBusiness;
 
-        public QCLineStockDetailBusiness(IProductionUnitOfWork productionDb, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness)
+        private readonly IQCItemStockDetailBusiness _qCItemStockDetailBusiness;
+
+        public QCLineStockDetailBusiness(IProductionUnitOfWork productionDb, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness)
         {
             this._productionDb = productionDb;
             this._qualityControlLineStockDetailRepository = new QualityControlLineStockDetailRepository(this._productionDb);
@@ -28,6 +30,7 @@ namespace ERPBLL.Production
             this._transferStockToQCDetailBusiness = transferStockToQCDetailBusiness;
             this._transferStockToQCInfoBusiness = transferStockToQCInfoBusiness;
             this._qCLineStockInfoBusiness = qCLineStockInfoBusiness;
+            this._qCItemStockDetailBusiness = qCItemStockDetailBusiness;
         }
 
         public IEnumerable<QualityControlLineStockDetail> GetQCLineStockDetails(long orgId)
@@ -135,6 +138,7 @@ namespace ERPBLL.Production
                     if (details.Count() > 0)
                     {
                         List<QualityControlLineStockDetailDTO> stockDetails = new List<QualityControlLineStockDetailDTO>();
+                        List<QCItemStockDetailDTO> qcItems = new List<QCItemStockDetailDTO>();
                         foreach (var item in details)
                         {
                             QualityControlLineStockDetailDTO detailItem = new QualityControlLineStockDetailDTO()
@@ -158,9 +162,30 @@ namespace ERPBLL.Production
                             stockDetails.Add(detailItem);
                         }
 
+                        QCItemStockDetailDTO qcItem = new QCItemStockDetailDTO
+                        {
+                            ProductionFloorId = info.LineId,
+                            AssemblyLineId = info.AssemblyId,
+                            QCId = info.QCLineId,
+                            WarehouseId = info.WarehouseId,
+                            ItemTypeId = info.ItemTypeId,
+                            ItemId = info.ItemId,
+                            Quantity = info.ForQty.Value,
+                            ReferenceNumber = info.TransferCode,
+                            DescriptionId= info.DescriptionId,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            OrganizationId = orgId,
+                            StockStatus  = StockStatus.StockIn,
+                        };
+                        qcItems.Add(qcItem);
+
                         if (_transferStockToQCInfoBusiness.SaveTransferInfoStateStatus(transferId, status, userId, orgId))
                         {
-                            IsSuccess = SaveQCLineStockIn(stockDetails, userId, orgId);
+                            if (SaveQCLineStockIn(stockDetails, userId, orgId)) {
+                                IsSuccess= _qCItemStockDetailBusiness.SaveQCItemStockIn(qcItems, userId, orgId);
+                            }
+                            // QCItem Stockss
                         }
                     }
                     // details
