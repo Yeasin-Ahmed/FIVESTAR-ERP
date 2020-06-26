@@ -37,7 +37,9 @@
         </tr>
         <tr>
             <td style="width:15%">QC Qty</td>
-            <td colspan="5"><b>@info.ForQty</b></td>
+            <td style="width:20%"><b>@info.ForQty</b></td>
+            <td style="width:20%">Transfer Reason</td>
+            <td colspan="3"><b>@info.RepairTransferReason</b></td>
         </tr>
     </tbody>
 </table>
@@ -79,6 +81,6 @@
 @if (info.StateStatus == RequisitionStatus.Approved && privilege.Approval)
 {
     <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-success btnAccepted">Accepted</button>
+        <button type="button" class="btn btn-sm btn-success btnAccepted">Accept</button>
     </div>
 }

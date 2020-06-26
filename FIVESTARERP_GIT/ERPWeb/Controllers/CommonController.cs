@@ -633,6 +633,16 @@ namespace ERPWeb.Controllers
             var packagingLine = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).FirstOrDefault(pl => pl.ProductionLineId == lineId && pl.PackagingLineName == plName && pl.PackagingLineId != id) != null;
             return Json(packagingLine);
         }
+        [HttpPost]
+        public ActionResult GetItemDetail()
+        {
+           var items = _itemBusiness.GetItemDetails(User.OrgId).Select(d => new Dropdown
+            {
+                text = d.ItemName.ToString(),
+                value= d.ItemId.ToString()
+            }).ToList();
+            return Json(items);
+        }
         #endregion
 
         #endregion

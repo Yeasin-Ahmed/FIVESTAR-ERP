@@ -23,6 +23,8 @@ namespace ERPBO.Production.DomainModels
         public long? PackagingLineId { get; set; }
         [StringLength(100)]
         public string TransferFor { get; set; }
+        [StringLength(100)]
+        public string RepairTransferReason { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(150)]

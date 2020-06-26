@@ -21,8 +21,11 @@ namespace ERPBLL.Production
         private readonly IItemBusiness _itemBusiness;
         private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
         private readonly IRepairLineStockDetailBusiness _repairLineStockDetailBusiness;
+        private readonly IQCItemStockDetailBusiness _qCItemStockDetailBusiness;
+        private readonly IRepairItemStockDetailBusiness _repairItemStockDetailBusiness;
+        private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
 
-        public TransferFromQCInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness)
+        public TransferFromQCInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness)
         {
             this._productionDb = productionDb;
             this._transferFromQCInfoRepository = new TransferFromQCInfoRepository(this._productionDb);
@@ -31,6 +34,9 @@ namespace ERPBLL.Production
             this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
             this._transferFromQCDetailBusiness = transferFromQCDetailBusiness;
             this._repairLineStockDetailBusiness = repairLineStockDetailBusiness;
+            this._qCItemStockDetailBusiness = qCItemStockDetailBusiness;
+            this._repairItemStockDetailBusiness = repairItemStockDetailBusiness;
+            this._packagingItemStockDetailBusiness = packagingItemStockDetailBusiness;
         }
 
         public TransferFromQCInfo GetTransferFromQCInfoById(long transferId, long orgId)
@@ -39,13 +45,13 @@ namespace ERPBLL.Production
         }
         public IEnumerable<TransferFromQCInfo> GetTransferFromQCInfos(long orgId)
         {
-            return _transferFromQCInfoRepository.GetAll(t =>t.OrganizationId == orgId);
+            return _transferFromQCInfoRepository.GetAll(t => t.OrganizationId == orgId);
         }
         public bool SaveTransferInfoStateStatus(long transferId, string status, long userId, long orgId)
         {
             bool IsSuccess = false;
             var transferInDb = GetTransferFromQCInfoById(transferId, orgId);
-            if(transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved)
+            if (transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved)
             {
                 transferInDb.StateStatus = RequisitionStatus.Accepted;
                 transferInDb.UpUserId = userId;
@@ -55,6 +61,26 @@ namespace ERPBLL.Production
                 if (transferInDb.TransferFor == "Packaging Line")
                 {
                     List<PackagingLineStockDetailDTO> stockDetails = new List<PackagingLineStockDetailDTO>();
+                    List<PackagingItemStockDetailDTO> packagingItemStocks = new List<PackagingItemStockDetailDTO>() {
+                        new PackagingItemStockDetailDTO(){
+
+                            ProductionFloorId = transferInDb.LineId,
+                            DescriptionId = transferInDb.DescriptionId,
+                            PackagingLineId = transferInDb.PackagingLineId,
+                            QCId = transferInDb.QCLineId,
+                            WarehouseId = transferInDb.WarehouseId,
+                            ItemTypeId = transferInDb.ItemTypeId,
+                            ItemId = transferInDb.ItemId,
+                            Quantity = transferInDb.ForQty.Value,
+                            OrganizationId= orgId,
+                            EUserId= userId,
+                            EntryDate = DateTime.Now,
+                            StockStatus = StockStatus.StockIn,
+                            Remarks="Item transfer from QC",
+                            ReferenceNumber = transferInDb.TransferCode
+                        }
+                    };
+
                     foreach (var item in details)
                     {
                         PackagingLineStockDetailDTO packaging = new PackagingLineStockDetailDTO()
@@ -79,14 +105,37 @@ namespace ERPBLL.Production
                     }
                     if (_transferFromQCInfoRepository.Save())
                     {
-                        IsSuccess= _packagingLineStockDetailBusiness.SavePackagingLineStockIn(stockDetails, userId, orgId);
+                        if (_packagingLineStockDetailBusiness.SavePackagingLineStockIn(stockDetails, userId, orgId))
+                        {
+                            IsSuccess = _packagingItemStockDetailBusiness.SavePackagingItemStockIn(packagingItemStocks, userId, orgId);
+                        }
                     }
                 }
                 else
                 {
-                    if(transferInDb.TransferFor == "Repair Line")
+                    if (transferInDb.TransferFor == "Repair Line")
                     {
                         List<RepairLineStockDetailDTO> stockDetails = new List<RepairLineStockDetailDTO>();
+
+                        List<RepairItemStockDetailDTO> repairStocks = new List<RepairItemStockDetailDTO>()
+                        {
+                            new RepairItemStockDetailDTO()
+                            {
+                                ProductionFloorId = transferInDb.LineId,
+                                DescriptionId = transferInDb.DescriptionId,
+                                QCId = transferInDb.QCLineId,
+                                RepairLineId = transferInDb.RepairLineId,
+                                WarehouseId= transferInDb.WarehouseId,
+                                ItemTypeId = transferInDb.ItemTypeId,
+                                ItemId = transferInDb.ItemId,
+                                OrganizationId= orgId,
+                                EUserId = userId,
+                                Quantity = transferInDb.ForQty.Value,
+                                StockStatus = StockStatus.StockIn,
+                                ReferenceNumber=transferInDb.TransferCode,
+                                Remarks = transferInDb.RepairTransferReason
+                            }
+                        };
                         foreach (var item in details)
                         {
                             RepairLineStockDetailDTO repair = new RepairLineStockDetailDTO()
@@ -100,7 +149,7 @@ namespace ERPBLL.Production
                                 UnitId = item.UnitId,
                                 ProductionLineId = transferInDb.LineId.Value,
                                 Quantity = item.Quantity,
-                                Remarks = "Stock In By QC (" + transferInDb.TransferCode + ")",
+                                Remarks = transferInDb.RepairTransferReason,
                                 OrganizationId = orgId,
                                 EUserId = userId,
                                 EntryDate = DateTime.Now,
@@ -111,7 +160,10 @@ namespace ERPBLL.Production
                         }
                         if (_transferFromQCInfoRepository.Save())
                         {
-                            IsSuccess = _repairLineStockDetailBusiness.SaveRepairLineStockIn(stockDetails, userId, orgId);
+                            if (_repairLineStockDetailBusiness.SaveRepairLineStockIn(stockDetails, userId, orgId))
+                            {
+                                IsSuccess = _repairItemStockDetailBusiness.SaveRepairItemStockIn(repairStocks, userId, orgId);
+                            }
                         }
                     }
                 }
@@ -131,6 +183,7 @@ namespace ERPBLL.Production
                 RepairLineId = infoDto.RepairLineId,
                 PackagingLineId = infoDto.PackagingLineId,
                 TransferFor = infoDto.TransferFor,
+                RepairTransferReason = infoDto.RepairTransferReason,
                 StateStatus = RequisitionStatus.Approved,
                 Remarks = infoDto.Remarks,
                 OrganizationId = orgId,
@@ -138,10 +191,30 @@ namespace ERPBLL.Production
                 EntryDate = DateTime.Now,
                 ItemTypeId = infoDto.ItemTypeId,
                 ItemId = infoDto.ItemId,
-                ForQty= infoDto.ForQty
+                ForQty = infoDto.ForQty
+            };
+            List<QCItemStockDetailDTO> qcItemStocks = new List<QCItemStockDetailDTO>()
+            {
+                new QCItemStockDetailDTO(){
+                    ProductionFloorId =info.LineId,
+                    QCId= info.QCLineId,
+                    DescriptionId = info.DescriptionId,
+                    RepairLineId = info.RepairLineId,
+                    PackagingLineId = info.PackagingLineId,
+                    WarehouseId = info.WarehouseId,
+                    ItemTypeId = info.ItemTypeId,
+                    ItemId =info.ItemId,
+                    Quantity = info.ForQty.Value,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    StockStatus= StockStatus.StockOut,
+                    EntryDate = DateTime.Now,
+                    ReferenceNumber= info.TransferCode,
+                }
             };
             List<TransferFromQCDetail> listOfDetail = new List<TransferFromQCDetail>();
             List<QualityControlLineStockDetailDTO> stockDetail = new List<QualityControlLineStockDetailDTO>();
+
             foreach (var item in detailDto)
             {
                 TransferFromQCDetail detail = new TransferFromQCDetail
@@ -149,12 +222,12 @@ namespace ERPBLL.Production
                     WarehouseId = item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
-                    UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value,orgId).UnitId,
+                    UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId,
                     Quantity = item.Quantity,
                     Remarks = item.Remarks,
                     OrganizationId = orgId,
                     EUserId = userId,
-                    EntryDate =  DateTime.Now
+                    EntryDate = DateTime.Now
                 };
                 listOfDetail.Add(detail);
                 QualityControlLineStockDetailDTO stock = new QualityControlLineStockDetailDTO
@@ -168,7 +241,7 @@ namespace ERPBLL.Production
                     QCLineId = info.QCLineId,
                     RefferenceNumber = info.TransferCode,
                     Quantity = item.Quantity,
-                    Remarks = "Stock Out For "+ info.TransferFor + " ("+ info.TransferCode+")",
+                    Remarks = "Stock Out For " + info.TransferFor + " (" + info.TransferCode + ")",
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     OrganizationId = orgId,
@@ -180,7 +253,12 @@ namespace ERPBLL.Production
             _transferFromQCInfoRepository.Insert(info);
             if (_transferFromQCInfoRepository.Save())
             {
-                IsSuccess = _qCLineStockDetailBusiness.SaveQCLineStockOut(stockDetail, userId, orgId, "Stock Out By QC Transfer");
+                // QC Raw Material Stocks
+                if (_qCLineStockDetailBusiness.SaveQCLineStockOut(stockDetail, userId, orgId, "Stock Out By QC Transfer"))
+                {
+                    //QC Item Stock
+                    IsSuccess = _qCItemStockDetailBusiness.SaveQCItemStockOut(qcItemStocks, userId, orgId);
+                }
             }
             return IsSuccess;
         }

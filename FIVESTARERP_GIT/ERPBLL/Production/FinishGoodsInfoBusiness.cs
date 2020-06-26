@@ -23,12 +23,12 @@ namespace ERPBLL.Production
         private readonly IFinishGoodsStockDetailBusiness _finishGoodsStockDetailBusiness;
         private readonly IProductionStockDetailBusiness _productionStockDetailBusiness;
         private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
-
         private readonly IFinishGoodsSendToWarehouseInfoBusiness
             _finishGoodsSendToWarehouseInfoBusiness;
+        private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
 
         public FinishGoodsInfoBusiness(IProductionUnitOfWork productionDb, IUnitBusiness unitBusiness, IItemTypeBusiness itemTypeBusiness, IItemBusiness itemBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness
-            finishGoodsSendToWarehouseInfoBusiness)
+            finishGoodsSendToWarehouseInfoBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness)
         {
             this._productionDb = productionDb;
             this._finishGoodsInfoRepository = new FinishGoodsInfoRepository(this._productionDb);
@@ -39,6 +39,7 @@ namespace ERPBLL.Production
             this._productionStockDetailBusiness = productionStockDetailBusiness;
             this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
             this._finishGoodsSendToWarehouseInfoBusiness = finishGoodsSendToWarehouseInfoBusiness;
+            this._packagingItemStockDetailBusiness = packagingItemStockDetailBusiness;
         }
 
         public IEnumerable<FinishGoodsInfo> GetFinishGoodsByOrg(long orgId)
@@ -90,6 +91,24 @@ namespace ERPBLL.Production
 
             // New
             List<PackagingLineStockDetailDTO> packagingLineStocks = new List<PackagingLineStockDetailDTO>();
+
+            // Packaging Item Stock
+            List<PackagingItemStockDetailDTO> packagingItemStocks = new List<PackagingItemStockDetailDTO>() {
+                new PackagingItemStockDetailDTO(){
+                    ProductionFloorId = finishGoodsInfo.ProductionLineId,
+                    PackagingLineId = finishGoodsInfo.PackagingLineId,
+                    ItemId = finishGoodsInfo.ItemId,
+                    WarehouseId = finishGoodsInfo.WarehouseId,
+                    DescriptionId = finishGoodsInfo.DescriptionId,
+                    ItemTypeId = finishGoodsInfo.ItemTypeId,
+                    OrganizationId= orgId,
+                    EUserId= userId,
+                    Quantity = finishGoodsInfo.Quanity,
+                    ReferenceNumber= "",
+                    StockStatus = StockStatus.StockIn,
+                    Remarks ="Stock Out For Finish Goods"
+                }
+            };
 
             FinishGoodsStockDetailDTO finishGoodsStockDetailDTO = new FinishGoodsStockDetailDTO()
             {
@@ -176,8 +195,12 @@ namespace ERPBLL.Production
                     // Packaging Stock Out //
                     if (_packagingLineStockDetailBusiness.SavePackagingLineStockOut(packagingLineStocks, userId, orgId, ""))
                     {
-                        // Send Finish goods to warehouse //
-                        IsSucess = _finishGoodsSendToWarehouseInfoBusiness.SaveFinishGoodsSendToWarehouse(finishGoodsSendToWarehouseInfoDTO, finishGoodsSendToWarehouseDetails, userId, orgId);
+                        // Packaging Item Stock  Out
+                        if (_packagingItemStockDetailBusiness.SavePackagingItemStockOut(packagingItemStocks, userId, orgId)) {
+
+                            // Send Finish goods to warehouse //
+                            IsSucess = _finishGoodsSendToWarehouseInfoBusiness.SaveFinishGoodsSendToWarehouse(finishGoodsSendToWarehouseInfoDTO, finishGoodsSendToWarehouseDetails, userId, orgId);
+                        }
                     }
                 }
             }

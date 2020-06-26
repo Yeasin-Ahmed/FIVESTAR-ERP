@@ -108,6 +108,16 @@
                     <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                     <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtRemarks" class="form-control form-control-sm"></textarea>
                 </div>
+                <div class="col-md-3 transferReason">
+                    <label for="ddlRepairTransferReason" class="control-label font-weight-bold">Transfer Reason</label>
+                    <select class="form-control form-control-sm" id="ddlRepairTransferReason">
+                        <option value="">Select Transfer Reason</option>
+                        <option value="Software Problem">Software Problem</option>
+                        <option value="Hardware Problem">Hardware Problem</option>
+                        <option value="Both">Both Software & Hardware Problem</option>
+                    </select>
+                    <span class="error hide req-tsReason">Transfer is required</span>
+                </div>
                 <div class="col-md-3">
                     <label for="" class="control-label font-weight-bold" style="visibility:hidden">Add To List</label>
                     <div class="clearfix">
@@ -169,7 +179,7 @@
         var ddlQCLine = $('#ddlQCLine');
         var qty = $("#qty");
         var chkIsBundle = $("#chkIsBundle");
-
+        var ddlRepairTransferReason = $("#ddlRepairTransferReason");
         $(document).ready(function () {
             chkIsBundle.prop("checked", true);
             chkIsBundle.trigger("change");
@@ -266,8 +276,11 @@
 
         ddlTransferFor.change(function () {
             $(".transferFor").addClass("hide");
+            $(".transferReason").addClass("hide");
+            ddlRepairTransferReason.val("");
             if (ddlTransferFor.val() == "Repair Line") {
                 $("#RepairLine").removeClass("hide");
+                $(".transferReason").removeClass("hide");
             }
             else {
                 $("#PackagingLine").removeClass("hide");
@@ -494,6 +507,10 @@
                         isValid = false;
                         $(".req-repair").removeClass("hide");
                     }
+                    if (ddlRepairTransferReason.val() === "") {
+                        isValid = false;
+                        $(".req-tsReason").removeClass("hide");
+                    }
                 }
                 else {
                     if (TryParseInt(ddlPackagingLine.val(), 0) <= 0) {
@@ -586,7 +603,16 @@
                         if (chkIsBundle.is(":checked")) {
                             wi = $("#tblData tbody").children('tr').eq(0).children('td').eq(9).html();
                         }
-                        var info = { LineId: TryParseInt(ddlLineNumber.val(), 0), DescriptionId: TryParseInt(ddlModelName.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), TransferFor: ddlTransferFor.val(), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), PackagingLineId: TryParseInt(ddlPackagingLine.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: ddlItemType.val(), ItemId: ddlItem.val(), ForQty: txtQuantity.val(),Remarks:txtRemarks.val() };
+
+                        var repairReason = "";
+                        if (TryParseInt(ddlRepairLine.val(), 0) <= 0) {
+                            repairReason = "";
+                        }
+                        else {
+                            repairReason = ddlRepairTransferReason.val();
+                        }
+
+                        var info = { LineId: TryParseInt(ddlLineNumber.val(), 0), DescriptionId: TryParseInt(ddlModelName.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), TransferFor: ddlTransferFor.val(), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), PackagingLineId: TryParseInt(ddlPackagingLine.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: ddlItemType.val(), ItemId: ddlItem.val(), ForQty: txtQuantity.val(), Remarks: txtRemarks.val(), RepairTransferReason: repairReason };
 
                         var details = []; details.length = 0;
                         $.each($("#tblData tbody tr"), function (index, item) {
