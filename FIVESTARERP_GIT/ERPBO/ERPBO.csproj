@@ -152,6 +152,7 @@
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
     <Compile Include="Production\DomainModels\PackagingLine.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockDetail.cs" />
+    <Compile Include="Production\DomainModels\QRCodeTrace.cs" />
     <Compile Include="Production\DomainModels\RepairItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\QCItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockInfo.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RepairItemStockDetailDTO.cs" />
@@ -306,6 +308,7 @@
     <Compile Include="Production\ViewModels\PackagingLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineViewModel.cs" />
+    <Compile Include="Production\ViewModels\QRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />
     <Compile Include="Production\ViewModels\QCItemStockDetailViewModel.cs" />

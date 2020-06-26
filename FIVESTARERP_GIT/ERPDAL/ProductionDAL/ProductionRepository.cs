@@ -147,7 +147,6 @@ namespace ERPDAL.ProductionDAL
     {
         public TransferRepairItemToQcDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
     }
-
     public class QCItemStockInfoRepository : ProductionBaseRepository<QCItemStockInfo>
     {
         public QCItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
@@ -184,5 +183,11 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class QRCodeTraceRepository : ProductionBaseRepository<QRCodeTrace>
+    {
+        public QRCodeTraceRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
 
+        }
+    }
 }
