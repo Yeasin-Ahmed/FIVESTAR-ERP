@@ -27,7 +27,7 @@ namespace ERPBLL.FrontDesk
 
         public IEnumerable<RequsitionDetailForJobOrder> GetAllRequsitionDetailForJobOrderId(long reqInfoId, long orgId, long branchId)
         {
-            return requsitionDetailForJobOrderRepository.GetAll(detail =>detail.RequsitionInfoForJobOrderId==reqInfoId && detail.OrganizationId == orgId && detail.BranchId == branchId).ToList();
+            return requsitionDetailForJobOrderRepository.GetAll(detail =>detail.RequsitionInfoForJobOrderId == reqInfoId && detail.OrganizationId == orgId && detail.BranchId == branchId).ToList();
         }
     }
 }

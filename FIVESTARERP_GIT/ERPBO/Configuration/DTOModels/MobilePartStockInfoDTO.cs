@@ -25,5 +25,8 @@ namespace ERPBO.Configuration.DTOModels
         //Custom p
         public string MobilePartName { get; set; }
         public string ServicesWarehouseName { get; set; }
+        //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
     }
 }

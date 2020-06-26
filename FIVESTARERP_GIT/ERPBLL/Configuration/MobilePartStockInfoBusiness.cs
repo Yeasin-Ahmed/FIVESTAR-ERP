@@ -19,9 +19,25 @@ namespace ERPBLL.Configuration
             mobilePartStockInfoRepository = new MobilePartStockInfoRepository(this._configurationDb);
         }
 
+        public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoById(long orgId, long branchId)
+        {
+            return mobilePartStockInfoRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId).ToList();
+        }
+
+        public MobilePartStockInfo GetAllMobilePartStockInfoByInfoId(long warehouseId, long partsId, double cprice, long orgId, long branchId)
+        {
+            return mobilePartStockInfoRepository.GetOneByOrg(info =>info.SWarehouseId==warehouseId && info.MobilePartId==partsId && info.CostPrice == cprice && info.OrganizationId == orgId && info.BranchId == branchId);
+        }
+
         public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoByOrgId(long orgId,long branchId)
         {
-            return mobilePartStockInfoRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId==branchId).ToList();
+            var  data = mobilePartStockInfoRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId).ToList();
+            return data;
+        }
+
+        public MobilePartStockInfo GetAllMobilePartStockInfoBySellPrice(long warehouseId, long partsId, double sprice, long orgId, long branchId)
+        {
+            return mobilePartStockInfoRepository.GetOneByOrg(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.SellPrice == sprice && info.OrganizationId == orgId && info.BranchId == branchId);
         }
     }
 }

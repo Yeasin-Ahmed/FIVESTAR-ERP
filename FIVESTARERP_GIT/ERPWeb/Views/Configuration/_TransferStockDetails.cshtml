@@ -16,7 +16,9 @@
             <th class="hide"></th>
             <th class="hide"></th>
             <th>Parts Name</th>
-            <th>Quantity</th>
+            <th>CostPrice</th>
+            <th>SellPrice</th>
+            <th>Transfer Qty.</th>
             <th>Remarks</th>
         </tr>
     </thead>
@@ -29,7 +31,9 @@
                 <td class="hide">@details.TransferDetailId</td>
                 <td class="hide">@details.PartsId</td>
                 <td>@details.PartsName</td>
-                <td>@details.Quantity</td>
+                <td class="text-center">@details.CostPrice.ToString("0.00 Tk")</td>
+                <td class="text-center">@details.SellPrice.ToString("0.00 Tk")</td>
+                <td class="text-center">@details.Quantity</td>
                 <td>@details.Remarks</td>
             </tr>
         }

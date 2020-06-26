@@ -69,11 +69,12 @@ namespace ERPBLL.Configuration
                             {
                                 BranchFrom = info.BranchId,
                                 BranchId = info.BranchTo.Value,
-
                                 SWarehouseId = swarehouse,
                                 MobilePartId = item.PartsId,
                                 StockStatus = StockStatus.StockIn,
                                 Quantity = item.Quantity,
+                                CostPrice=item.CostPrice,
+                                SellPrice=item.SellPrice,
                                 EUserId = userId,
                                 EntryDate = DateTime.Now,
                                 OrganizationId = orgId,
@@ -114,6 +115,8 @@ namespace ERPBLL.Configuration
                 TransferDetail detail = new TransferDetail
                 {
                     PartsId = item.PartsId,
+                    CostPrice=item.CostPrice,
+                    SellPrice=item.SellPrice,
                     Quantity = item.Quantity,
                     Remarks = item.Remarks,
                     BranchTo=info.BranchTo,
@@ -127,6 +130,8 @@ namespace ERPBLL.Configuration
                 {
                     SWarehouseId = info.SWarehouseId,
                     MobilePartId = item.PartsId,
+                    CostPrice=item.CostPrice,
+                    SellPrice=item.SellPrice,
                     Quantity = item.Quantity,
                     Remarks = transferInfo.TransferCode,
                     StockStatus = StockStatus.StockOut,

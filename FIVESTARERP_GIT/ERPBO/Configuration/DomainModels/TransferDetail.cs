@@ -29,5 +29,7 @@ namespace ERPBO.Configuration.DomainModels
         public TransferInfo TransferInfo { get; set; }
         //
         public long? BranchTo { get; set; }
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
     }
 }

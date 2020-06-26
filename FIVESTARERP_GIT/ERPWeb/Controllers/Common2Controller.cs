@@ -1,4 +1,6 @@
 ﻿using ERPBLL.Configuration.Interface;
+using ERPBO.Common;
+using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
 using ERPWeb.Filters;
 using System;
@@ -24,8 +26,9 @@ namespace ERPWeb.Controllers
         private readonly ITechnicalServiceBusiness _technicalServiceBusiness;
         private readonly ICustomerServiceBusiness _customerServiceBusiness;
         private readonly IBranchBusiness2 _branchBusiness;
+        private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -34,6 +37,7 @@ namespace ERPWeb.Controllers
             this._technicalServiceBusiness = technicalServiceBusiness;
             this._customerServiceBusiness = customerServiceBusiness;
             this._branchBusiness = branchBusiness;
+            this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
         }
 
         #region Configuration Module
@@ -95,6 +99,37 @@ namespace ERPWeb.Controllers
             bool isExist = _branchBusiness.IsDuplicateBranchName(branchName, id, User.OrgId);
             return Json(isExist);
         }
+
+        [HttpPost]
+        public ActionResult GetCostPriceForDDL(long partsId)
+        {
+            var cost = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId,User.BranchId).AsEnumerable();
+            var dropDown = cost.Where(i => i.MobilePartId == partsId).Select(i => new Dropdown { text = i.CostPrice.ToString(), value = i.CostPrice.ToString() }).ToList();
+            return Json(dropDown);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetPartsStockByPrice(long warehouseId,long partsId,double cprice)
+        {
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByInfoId(warehouseId, partsId, cprice, User.OrgId, User.BranchId);
+            int total = 0;
+            if(stock != null)
+            {
+                total = (stock.StockInQty - (stock.StockOutQty)).Value;
+            }
+            return Json(total);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetSellPriceByCostPrice(long warehouseId, long partsId, double sprice)
+        {
+            var price = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoBySellPrice(warehouseId, partsId, sprice, User.OrgId, User.BranchId);
+            MobilePartStockDetailDTO detailDTO = new MobilePartStockDetailDTO();
+            price.MobilePartStockInfoId = detailDTO.MobilePartStockDetailId;
+            price.SellPrice = detailDTO.SellPrice;
+            return Json(detailDTO);
+        }
+
         #region Front-Desk Module
 
         #endregion

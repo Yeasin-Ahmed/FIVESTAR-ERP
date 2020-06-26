@@ -26,6 +26,9 @@ namespace ERPBO.FrontDesk.DomainModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
+        //
         [ForeignKey("RequsitionInfoForJobOrder")]
         public long RequsitionInfoForJobOrderId { get; set; }
         public RequsitionInfoForJobOrder RequsitionInfoForJobOrder { get; set; }

@@ -25,5 +25,7 @@ namespace ERPBO.FrontDesk.DTOModels
         //Custom p
         public string PartsName { get; set; }
         public string SWarehouseName { get; set; }
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
     }
 }

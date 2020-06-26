@@ -23,6 +23,10 @@ namespace ERPBO.FrontDesk.DTOModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
 
+        //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
+        //
         //custom p
         public string SWarehouseName { get; set; }
         public string PartsName { get; set; }

@@ -12,6 +12,8 @@
             <th>ServicesWarehouse</th>
             <th class="hide"></th>
             <th>MobilePart</th>
+            <th>CostPrice</th>
+            <th>SellPrice</th>
             <th>Stock-In Qty</th>
             <th>Stock-Out Qty</th>
             <th>Stock Qty</th>
@@ -31,6 +33,8 @@
             <td>@info.ServicesWarehouseName</td>
             <td class="hide">@info.MobilePartId</td>
             <td>@info.MobilePartName</td>
+            <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
+            <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
             <td class="text-center">@info.StockInQty</td>
             <td class="text-center">@info.StockOutQty</td>
             <td class="text-center">@stock</td>

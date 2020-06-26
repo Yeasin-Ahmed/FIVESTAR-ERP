@@ -483,6 +483,8 @@ namespace ERPWeb.Controllers
                 ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                 MobilePartId = info.MobilePartId,
                 MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
+                CostPrice=info.CostPrice,
+                SellPrice=info.SellPrice,
                 StockInQty = info.StockInQty,
                 StockOutQty = info.StockOutQty,
                 Remarks = info.Remarks,
@@ -494,7 +496,6 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(partStockInfoDTO, warehouseStockInfoViews);
             return PartialView("_MobilePartStockInfoList", warehouseStockInfoViews);
         }
-
         [HttpPost]
         public ActionResult SaveMobilePartStockIn(List<MobilePartStockDetailViewModel> models)
         {
@@ -540,6 +541,8 @@ namespace ERPWeb.Controllers
                     ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(detail.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                     MobilePartId = detail.MobilePartId,
                     MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
+                    CostPrice=detail.CostPrice,
+                    SellPrice=detail.SellPrice,
                     Quantity = detail.Quantity,
                     StockStatus = detail.StockStatus,
                     Remarks = detail.Remarks,
@@ -661,42 +664,6 @@ namespace ERPWeb.Controllers
 
             return PartialView("_StockTransferInfoPartialList", transferInfoViewModels);
         }
-
-        public ActionResult RecevieStockFromTransfer()
-        {
-            ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
-            return View();
-        }
-
-        public ActionResult RecevieStockFromTransferInfoPartialList(long? sWerehouseId)
-        {
-            var data = _transferInfoBusiness.GetAllStockTransferByOrgId(User.OrgId).Where(s => s.BranchTo == User.BranchId).ToList();
-
-            IEnumerable<TransferInfoDTO> transferInfoDTO = data
-            .Select(trans => new TransferInfoDTO
-            {
-                TransferInfoId = trans.TransferInfoId,
-                TransferCode = trans.TransferCode,
-                BranchTo = trans.BranchTo.Value,
-                BranchToName = (_branchBusinesss.GetBranchOneByOrgId(trans.BranchTo.Value, User.OrgId).BranchName),
-                BranchId = trans.BranchId,
-                BranchName = (_branchBusinesss.GetBranchOneByOrgId(trans.BranchId.Value, User.OrgId).BranchName),
-                StateStatus = trans.StateStatus,
-                //SWarehouseId = trans.WarehouseId,
-                SWarehouseName = trans.StateStatus == RequisitionStatus.Accepted?(_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(trans.WarehouseIdTo.Value,User.OrgId, trans.BranchTo.Value).ServicesWarehouseName):"",
-                Remarks = trans.Remarks,
-                OrganizationId = trans.OrganizationId,
-                ItemCount = _transferDetailBusiness.GetAllTransferDetailByInfoId(trans.TransferInfoId, User.OrgId, User.BranchId).Count()
-            }).AsEnumerable();
-
-            transferInfoDTO = transferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.SWarehouseId == sWerehouseId)).ToList();
-
-            List<TransferInfoViewModel> transferInfoViewModels = new List<TransferInfoViewModel>();
-            AutoMapper.Mapper.Map(transferInfoDTO, transferInfoViewModels);
-
-            return PartialView(transferInfoViewModels);
-        }
-
         public ActionResult CreateStockTransfer()
         {
             ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
@@ -704,6 +671,10 @@ namespace ERPWeb.Controllers
             ViewBag.ddlBranchName = _branchBusinesss.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
 
             ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+            ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId,User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
+
+            //ViewBag.ddlSellPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
 
             return View();
         }
@@ -729,6 +700,8 @@ namespace ERPWeb.Controllers
                 TransferDetailId = details.TransferDetailId,
                 PartsId = details.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(details.PartsId.Value, User.OrgId).MobilePartName),
+                CostPrice=details.CostPrice,
+                SellPrice=details.SellPrice,
                 Quantity = details.Quantity,
                 Remarks = details.Remarks,
                 OrganizationId = details.OrganizationId,
@@ -743,15 +716,53 @@ namespace ERPWeb.Controllers
             return PartialView("_TransferStockDetails", viewModel);
         }
 
+
+        //Stock Recive Part
+        [HttpGet]
+        public ActionResult RecevieStockFromTransfer()
+        {
+            ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+            return View();
+        }
+        public ActionResult RecevieStockFromTransferInfoPartialList(long? sWerehouseId)
+        {
+            var data = _transferInfoBusiness.GetAllStockTransferByOrgId(User.OrgId).Where(s => s.BranchTo == User.BranchId).ToList();
+
+            IEnumerable<TransferInfoDTO> transferInfoDTO = data
+            .Select(trans => new TransferInfoDTO
+            {
+                TransferInfoId = trans.TransferInfoId,
+                TransferCode = trans.TransferCode,
+                BranchTo = trans.BranchTo.Value,
+                BranchToName = (_branchBusinesss.GetBranchOneByOrgId(trans.BranchTo.Value, User.OrgId).BranchName),
+                BranchId = trans.BranchId,
+                BranchName = (_branchBusinesss.GetBranchOneByOrgId(trans.BranchId.Value, User.OrgId).BranchName),
+                StateStatus = trans.StateStatus,
+                //SWarehouseId = trans.WarehouseId,
+                SWarehouseName = trans.StateStatus == RequisitionStatus.Accepted ? (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(trans.WarehouseIdTo.Value, User.OrgId, trans.BranchTo.Value).ServicesWarehouseName) : "",
+                Remarks = trans.Remarks,
+                OrganizationId = trans.OrganizationId,
+                ItemCount = _transferDetailBusiness.GetAllTransferDetailByInfoId(trans.TransferInfoId, User.OrgId, User.BranchId).Count()
+            }).AsEnumerable();
+
+            transferInfoDTO = transferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.SWarehouseId == sWerehouseId)).ToList();
+
+            List<TransferInfoViewModel> transferInfoViewModels = new List<TransferInfoViewModel>();
+            AutoMapper.Mapper.Map(transferInfoDTO, transferInfoViewModels);
+
+            return PartialView(transferInfoViewModels);
+        }
         public ActionResult TransferStockReciveDetails(long transferId)
         {
             var info = _transferInfoBusiness.GetStockTransferInfoById(transferId, User.OrgId);
             ViewBag.StateStatus = info.StateStatus;
-            IEnumerable <TransferDetailDTO> infoDTO = _transferDetailBusiness.GetAllTransferDetailByInfoId(transferId, User.OrgId).Select(details => new TransferDetailDTO
+            IEnumerable<TransferDetailDTO> infoDTO = _transferDetailBusiness.GetAllTransferDetailByInfoId(transferId, User.OrgId).Select(details => new TransferDetailDTO
             {
                 TransferDetailId = details.TransferDetailId,
                 PartsId = details.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(details.PartsId.Value, User.OrgId).MobilePartName),
+                CostPrice=details.CostPrice,
+                SellPrice=details.SellPrice,
                 Quantity = details.Quantity,
                 Remarks = details.Remarks,
                 OrganizationId = details.OrganizationId,
@@ -765,7 +776,6 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(infoDTO, viewModel);
             return PartialView("_TransferStockReciveDetails", viewModel);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveTranferStockStatus(long transferId, long swarehouse, string status)
         {

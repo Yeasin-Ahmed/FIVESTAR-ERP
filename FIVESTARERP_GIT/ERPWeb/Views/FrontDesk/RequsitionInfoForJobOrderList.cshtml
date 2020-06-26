@@ -256,7 +256,7 @@
             hdfRowIndex.val('0');
         }
         ///////
-        $(document).on('click', ".btnAccept", function (e) {
+        @*$(document).on('click', ".btnAccept", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.accepted);
         })
@@ -265,7 +265,7 @@
             if (id > 0) {
                 var data = JSON.stringify({ reqId: id, status: status });
                 console.log(data);
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveRequisitionStatus', data, getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/TSSaveRequisitionStatus', data, getToken())).then(function (res, status) {
                     if (status == "success" && res === true) {
                         $(".toastrDefaultSuccess").trigger('click');
                         $("#modalRequsitionJobOrderDetails").modal("toggle").toggle("fast");
@@ -285,7 +285,7 @@
                     $(".toastrDefaultError").trigger('click');
                 })
             }
-        }
+        }*@
         ////////
 
         function redirectPage(page) {

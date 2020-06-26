@@ -26,5 +26,9 @@ namespace ERPBO.FrontDesk.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
+        //
     }
 }

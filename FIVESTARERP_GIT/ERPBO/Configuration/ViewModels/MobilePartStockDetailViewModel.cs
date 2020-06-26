@@ -30,5 +30,9 @@ namespace ERPBO.Configuration.ViewModels
         public string ServicesWarehouseName { get; set; }
         public long? BranchFrom { get; set; }
         public string ReferrenceNumber { get; set; }
+
+        //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
     }
 }

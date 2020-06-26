@@ -35,5 +35,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public string PartsName { get; set; }
         [StringLength(100)]
         public string SWarehouseName { get; set; }
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
     }
 }

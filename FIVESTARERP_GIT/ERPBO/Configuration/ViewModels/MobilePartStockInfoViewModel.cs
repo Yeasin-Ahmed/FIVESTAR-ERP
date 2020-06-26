@@ -28,5 +28,8 @@ namespace ERPBO.Configuration.ViewModels
         public string MobilePartName { get; set; }
         [StringLength(100)]
         public string ServicesWarehouseName { get; set; }
+        //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
     }
 }

@@ -24,6 +24,10 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
 
         //custom p
+        //
+        public double CostPrice { get; set; }
+        public double SellPrice { get; set; }
+        //
         public string SWarehouseName { get; set; }
         public string PartsName { get; set; }
         public int TotalQty

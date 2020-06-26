@@ -168,6 +168,26 @@ namespace ERPWeb.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetJobOrdersPush(string flag, long? jobOrderId)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlTechnicalServicesName = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.Name, Value = d.EngId.ToString() }).ToList();
+
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign"))
+            {
+                var dto = _jobOrderBusiness.GetJobOrdersPush(jobOrderId, User.OrgId);
+
+                IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetJobOrdersPush", viewModels);
+            }
+            return View();
+        }
+
         #region Parts Request
         public ActionResult RequsitionInfoForJobOrderList(long?  joborderId)
         {
@@ -227,6 +247,8 @@ namespace ERPWeb.Controllers
                 RequsitionDetailForJobOrderId = s.RequsitionDetailForJobOrderId,
                 PartsId=s.PartsId,
                 PartsName= (_mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId.Value, User.OrgId).MobilePartName),
+                SellPrice=s.SellPrice,
+                CostPrice=s.CostPrice,
                 Quantity = s.Quantity,
                 Remarks = s.Remarks
             }).ToList();
@@ -243,18 +265,6 @@ namespace ERPWeb.Controllers
 
             AutoMapper.Mapper.Map(requsitionDetailsDto, itemReturnDetailViews);
             return PartialView("RequsitionForJobOrderDetails", itemReturnDetailViews);
-        }
-        public ActionResult SaveRequisitionStatus(long reqId, string status)
-        {
-            bool IsSuccess = false;
-            if (reqId > 0 && !string.IsNullOrEmpty(status))
-            {
-                if (reqId > 0 && !string.IsNullOrEmpty(status) && status == RequisitionStatus.Accepted)
-                {
-                    IsSuccess = _technicalServicesStockBusiness.SaveTechnicalStockInRequistion(reqId, status, User.OrgId, User.UserId,User.BranchId);
-                }
-            }
-            return Json(IsSuccess);
         }
 
         //Services Warehouse Part//
@@ -320,6 +330,8 @@ namespace ERPWeb.Controllers
                 RequsitionDetailForJobOrderId = s.RequsitionDetailForJobOrderId,
                 PartsId=s.PartsId,
                 PartsName= (_mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId.Value, User.OrgId).MobilePartName),
+                CostPrice=s.CostPrice,
+                SellPrice=s.SellPrice,
                 Quantity = s.Quantity,
                 Remarks = s.Remarks
             }).ToList();
@@ -352,12 +364,13 @@ namespace ERPWeb.Controllers
                 else
                 if (RequisitionStatus.Approved == status)
                 {
-                    if (GetExecutionStockAvailableForRequisition(reqId).isSuccess == true)
-                    {
-                        IsSuccess = _mobilePartStockDetailBusiness.SaveMobilePartsStockOutByTSRequistion(reqId, status,  User.OrgId,User.UserId, User.BranchId);
-                    }
-                    
+                    //if (GetExecutionStockAvailableForRequisition(reqId).isSuccess == true)
+                    //{
+
+                    //}
+                    IsSuccess = _mobilePartStockDetailBusiness.SaveMobilePartStockOutByReq(reqId, status, User.OrgId, User.BranchId, User.UserId);
                 }
+                
             }
             return Json(IsSuccess);
         }
@@ -404,6 +417,8 @@ namespace ERPWeb.Controllers
                 SWarehouseName= (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(stock.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                 PartsId = stock.PartsId,
                 PartsName= (_mobilePartBusiness.GetMobilePartOneByOrgId(stock.PartsId.Value, User.OrgId).MobilePartName),
+                CostPrice=stock.CostPrice,
+                SellPrice=stock.SellPrice,
                 Quantity = stock.Quantity,
                 UsedQty = stock.UsedQty,
                 ReturnQty = stock.ReturnQty,

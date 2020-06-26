@@ -35,7 +35,23 @@
                     @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select MobileParts--", new { @class = "form-control form-control-sm" })
                 </div>
                 <div class="col-md-3">
-                    <label for="txtStockInQty" class="control-label font-weight-bold">Stock Transfer Qty.</label>
+                    <label for="ddlCostPrice" class="control-label font-weight-bold">CostPrice</label>
+                    @Html.DropDownList("ddlCostPrice", (IEnumerable<SelectListItem>)ViewBag.ddlCostPrice, "--Select CostPrice--", new { @class = "form-control form-control-sm" })
+                </div>
+            </div>
+            <div class="row">
+                @*<div class="col-md-3">
+                    <label for="ddlSellPrice" class="control-label font-weight-bold">SellPrice</label>
+                    @Html.DropDownList("ddlSellPrice", (IEnumerable<SelectListItem>)ViewBag.ddlSellPrice, "--Select SellPrice--", new { @class = "form-control form-control-sm" })
+                </div>*@
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label for="txtSellPrice" class="control-label font-weight-bold">SellPrice</label>
+                        <input type="text" name="txtSellPrice" value="" id="txtSellPrice" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtStockInQty" class="control-label font-weight-bold">Transfer Qty.<span id="stockQty" class="font-weight-bold mt-2" style="color:darkblue"></span></label>
                     <div class="input-group">
                         <div class="col-sm-8">
                             <input type="number" placeholder="Qty" name="quantity" id="txtStockInQty" class="form-control form-control-sm" />
@@ -44,9 +60,6 @@
                     </div>
                     <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
                 </div>
-
-            </div>
-            <div class="row">
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -72,7 +85,9 @@
                             <th>#SL</th>
                             <th class="hide"></th>
                             <th>MobilePart Name</th>
-                            <th>Stock Transfer Qty.</th>
+                            <th>CostPrice</th>
+                            <th>SellPrice</th>
+                            <th>Transfer Qty.</th>
                             <th>Remarks</th>
                             <th>Action</th>
                         </tr>
@@ -90,7 +105,52 @@
         var ddlBranchName = $("#ddlBranchName");
         var ddlMobileParts = $("#ddlMobileParts");
         var txtStockInQty = $("#txtStockInQty");
+        var ddlCostPrice = $("#ddlCostPrice");
         var txtRemarks = $("#txtRemarks");
+        var stockQty = $("#stockQty");
+        var txtSellPrice = $("#txtSellPrice");
+        //var ddlSellPrice = $("#ddlSellPrice");
+
+        //casced dropdown load for CostPrice
+        ddlMobileParts.change(function () {
+            clearDropdown("ddlCostPrice");
+            if (ddlMobileParts.val() != "") {
+                LoadDropDown('/Common2/GetCostPriceForDDL', 'POST', ddlCostPrice, JSON.stringify({ partsId: ddlMobileParts.val() }));
+            }
+        })
+
+        //Sell text
+        ddlCostPrice.change(function () {
+            $("#txtSellPrice").text('');
+            if (ddlServicesWarehouse.val() != "", ddlMobileParts.val() != "", txtSellPrice.val() != "") {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetSellPriceByCostPrice', JSON.stringify({ warehouseId: ddlServicesWarehouse.val(), partsId: ddlMobileParts.val(), sprice: TryParseFloat(txtSellPrice.val(),0) }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (status == "success") {
+                        $("#txtSellPrice").text('(' + res.SellPrice + ')');
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+
+        })
+        //Stock text
+        ddlCostPrice.change(function () {
+            $("#stockQty").text('');
+            if (ddlServicesWarehouse.val() != "", ddlMobileParts.val() != "", ddlCostPrice.val() != "") {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetPartsStockByPrice', JSON.stringify({ warehouseId: ddlServicesWarehouse.val(), partsId: ddlMobileParts.val(), cprice: TryParseFloat(ddlCostPrice.val(), 0) }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (status == "success") {
+                        $("#stockQty").text('(' + res + ')');
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+
+        })
 
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
@@ -101,11 +161,14 @@
             var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
             var td2 = "<td class='hide'>" + ddlMobileParts.val() + "</td>";
             var td3 = "<td>" + $("#ddlMobileParts option:selected").text() + "</td>";
-            var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
-            var td5 = "<td>" + txtRemarks.val() + "</td>";
-            var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+            var td4 = "<td class='text-center'>" + ddlCostPrice.val() + "</td>";
+            //var td5 = "<td class='text-center'>" + $("#ddlCostPrice option:selected").text() + "</td>";
+            var td6 = "<td class='text-center'>" + txtSellPrice.val() + "</td>";
+            var td7 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+            var td8 = "<td>" + txtRemarks.val() + "</td>";
+            var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-            var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
+            var tr = "<tr>" + td1 + td2 + td3 + td4 + td6 + td7 + td8 + td9 + "</tr>";
             if ($("#tblStockTransfer tbody tr").length == 0) {
                 $("#tblStockTransfer tbody").append(tr);
             }
@@ -116,8 +179,11 @@
         })
         function clearCtrl() {
             ddlMobileParts.val('');
+            ddlCostPrice.val('');
+            txtSellPrice.val('');
             txtStockInQty.val('');
             txtRemarks.val('');
+            stockQty.val('');
         }
 
         $(document).on("click", "a.data-onfly-del", function (e) {
@@ -146,12 +212,16 @@
                         $.each($("#tblStockTransfer tbody tr"), function (index, item) {
                             var tds = $(this).children('td');
                             var partsId = tds.eq('1').html();
-                            var qty = tds.eq('3').html();
-                            var rmk = tds.eq('4').html();
+                            var cprice = tds.eq('3').html();
+                            var sprice = tds.eq('4').html();
+                            var qty = tds.eq('5').html();
+                            var rmk = tds.eq('6').html();
 
                             details.push({
                                 TransferDetailId: 0,
                                 PartsId: TryParseInt(partsId, 0),
+                                CostPrice: TryParseFloat(cprice, 0),
+                                SellPrice: TryParseFloat(sprice, 0),
                                 Quantity: TryParseInt(qty, 0),
                                 Remarks: rmk
                             })

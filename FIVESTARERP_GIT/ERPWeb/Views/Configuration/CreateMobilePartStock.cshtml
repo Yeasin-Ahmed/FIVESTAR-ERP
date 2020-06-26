@@ -22,15 +22,29 @@
         <form id="frmStockDetails">
             @Html.AntiForgeryToken()
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
                     @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="ddlMobilePart" class="control-label font-weight-bold">MobilePart Name</label>
                     @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select MobilePart--", new { @class = "form-control form-control-sm" })
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label for="txtCostPrice" class="control-label font-weight-bold">CostPrice</label>
+                        <input type="number" name="txtCostPrice" value="" id="txtCostPrice" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label for="txtSellPrice" class="control-label font-weight-bold">SellPrice</label>
+                        <input type="number" name="txtSellPrice" value="" id="txtSellPrice" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
                     <label for="txtStockInQty" class="control-label font-weight-bold">Stock-In Qty.</label>
                     <div class="input-group">
                         <div class="col-sm-8">
@@ -40,10 +54,7 @@
                     </div>
                     <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
                 </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                         <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
@@ -60,7 +71,7 @@
                 <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblServicesWarehouseStock">
                     <thead>
                         <tr>
-                            <th colspan="9">
+                            <th colspan="10">
                                 <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
                             </th>
                         </tr>
@@ -68,6 +79,8 @@
                             <th>#SL</th>
                             <th class="hide"></th>
                             <th>MobilePart Name</th>
+                            <th>CostPrice</th>
+                            <th>SellPrice</th>
                             <th>Stock-In Qty.</th>
                             <th>Remarks</th>
                             <th>Action</th>
@@ -87,6 +100,8 @@
         var txtStockStatus = $("#txtStockStatus");
         var txtStockInQty = $("#txtStockInQty");
         var txtRemarks = $("#txtRemarks");
+        var txtCostPrice = $("#txtCostPrice");
+        var txtSellPrice = $("#txtSellPrice");
 
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
@@ -96,11 +111,13 @@
                 var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
                 var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
                 var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
-                var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
-                var td5 = "<td>" + txtRemarks.val() + "</td>";
-                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                var td4 = "<td class='text-center'>" + txtCostPrice.val() + "</td>";
+                var td5 = "<td class='text-center'>" + txtSellPrice.val() + "</td>";
+                var td6 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+                var td7 = "<td>" + txtRemarks.val() + "</td>";
+                var td8 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
+            var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8+ "</tr>";
             if ($("#tblServicesWarehouseStock tbody tr").length == 0) {
                 $("#tblServicesWarehouseStock tbody").append(tr);
                 }
@@ -113,6 +130,8 @@
         function clearCtrl() {
             ddlMobilePart.val('');
             txtStockStatus.val('');
+            txtCostPrice.val('');
+            txtSellPrice.val('');
             txtStockInQty.val('');
             txtRemarks.val('');
         }
@@ -143,8 +162,10 @@
                             reqData.push({
                                 SWarehouseId: ddlServicesWarehouse.val(),
                                 MobilePartId: td.eq(1).html(),
-                                Quantity: td.eq(3).html(),
-                                Remarks: td.eq(4).html()
+                                CostPrice: td.eq(3).html(),
+                                SellPrice: td.eq(4).html(),
+                                Quantity: td.eq(5).html(),
+                                Remarks: td.eq(6).html()
                             });
                         })
                         reqData = JSON.stringify({ models: reqData });

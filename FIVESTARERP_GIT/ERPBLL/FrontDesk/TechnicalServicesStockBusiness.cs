@@ -41,7 +41,7 @@ namespace ERPBLL.FrontDesk
             List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
             foreach (var item in servicesStockDTOs)
             {
-                var servicesInfo = GetAllTechnicalServicesStock(item.JobOrderId.Value,orgId,branchId).Where(o =>o.SWarehouseId==item.SWarehouseId && o.PartsId == item.PartsId && o.JobOrderId==item.JobOrderId).FirstOrDefault();
+                var servicesInfo = GetAllTechnicalServicesStock(item.JobOrderId.Value,orgId,branchId).Where(o =>o.SWarehouseId==item.SWarehouseId && o.PartsId == item.PartsId && o.JobOrderId==item.JobOrderId && o.CostPrice==item.CostPrice).FirstOrDefault();
                 if (servicesInfo != null)
                 {
                     servicesInfo.Quantity += item.Quantity;
@@ -53,6 +53,8 @@ namespace ERPBLL.FrontDesk
                     stockServices.JobOrderId = item.JobOrderId;
                     stockServices.SWarehouseId = item.SWarehouseId;
                     stockServices.PartsId = item.PartsId;
+                    stockServices.CostPrice = item.CostPrice;
+                    stockServices.SellPrice = item.SellPrice;
                     stockServices.Quantity = item.Quantity;
                     stockServices.UsedQty = 0;
                     stockServices.ReturnQty = 0;
@@ -77,11 +79,13 @@ namespace ERPBLL.FrontDesk
                 List<TechnicalServicesStockDTO> technicalServicesStockDTOs = new List<TechnicalServicesStockDTO>();
                 foreach (var item in reqDetail)
                 {
-                    TechnicalServicesStockDTO technicalServicesStockDTO = new TechnicalServicesStockDTO
+                    TechnicalServicesStockDTO technicalServicesStockDTO = new TechnicalServicesStockDTO()
                     {
                         JobOrderId=reqInfo.JobOrderId,
                         SWarehouseId = reqInfo.SWarehouseId,
                         PartsId = item.PartsId,
+                        CostPrice=item.CostPrice,
+                        SellPrice=item.SellPrice,
                         Quantity = item.Quantity,
                         UsedQty= 0,
                         ReturnQty = 0,

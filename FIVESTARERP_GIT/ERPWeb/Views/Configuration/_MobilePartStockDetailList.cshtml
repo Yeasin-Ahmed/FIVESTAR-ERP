@@ -9,6 +9,8 @@
             <th>#SL</th>
             <th>ServicesWerehouse</th>
             <th>MobileParts</th>
+            <th>CostPrice</th>
+            <th>SellPrice</th>
             <th>Quantity</th>
             <th>Stock Status</th>
             <th>Entry Date</th>
@@ -19,16 +21,18 @@
         {
             sl = sl + 1;
             badge = item.StockStatus.ToLower() == "stock-in" ? "badge bg-success" : (item.StockStatus.ToLower() == "stock-out" ? "badge bg-primary" : "badge bg-danger");
-            <tr>
-                <td class="text-center"><b>@sl</b></td>
-                <td>@item.ServicesWarehouseName</td>
-                <td>@item.MobilePartName</td>
-                <td class="text-center">@item.Quantity</td>
-                <td class="text-center" data-val="@item.StockStatus">
-                    <span class="@badge">@item.StockStatus</span>
-                </td>
-                <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-            </tr>
+        <tr>
+            <td class="text-center"><b>@sl</b></td>
+            <td>@item.ServicesWarehouseName</td>
+            <td>@item.MobilePartName</td>
+            <td class="text-center">@item.CostPrice.ToString("0.00 Tk")</td>
+            <td class="text-center">@item.SellPrice.ToString("0.00 Tk")</td>
+            <td class="text-center">@item.Quantity</td>
+            <td class="text-center" data-val="@item.StockStatus">
+                <span class="@badge">@item.StockStatus</span>
+            </td>
+            <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+        </tr>
         }
         @if (Model.Count() == 0)
         {

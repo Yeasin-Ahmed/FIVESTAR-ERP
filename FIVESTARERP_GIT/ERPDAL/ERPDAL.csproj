@@ -113,6 +113,22 @@
     <Compile Include="ConfigurationContextMigrations\202006160538357_Configuration_RefNumStockDetail.designer.cs">
       <DependentUpon>202006160538357_Configuration_RefNumStockDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006220505196_Configuration_DbCostPriceAdd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006220505196_Configuration_DbCostPriceAdd.Designer.cs">
+      <DependentUpon>202006220505196_Configuration_DbCostPriceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006220911484_Configuration_DbStockTransferCostPriceAdd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006220911484_Configuration_DbStockTransferCostPriceAdd.Designer.cs">
+      <DependentUpon>202006220911484_Configuration_DbStockTransferCostPriceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006221650580_Configuration_DbStockTransferSellPriceAdd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006221650580_Configuration_DbStockTransferSellPriceAdd.Designer.cs">
+      <DependentUpon>202006221650580_Configuration_DbStockTransferSellPriceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202006230453271_Configuration_DbStockTransferSPrice&amp;CpriceAdd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202006230453271_Configuration_DbStockTransferSPrice&amp;CpriceAdd.Designer.cs">
+      <DependentUpon>202006230453271_Configuration_DbStockTransferSPrice&amp;CpriceAdd.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -160,6 +176,14 @@
     <Compile Include="FrontDeskContextMigrations\202006211035293_FrontDesk_dbtblJoborderBranchId.cs" />
     <Compile Include="FrontDeskContextMigrations\202006211035293_FrontDesk_dbtblJoborderBranchId.Designer.cs">
       <DependentUpon>202006211035293_FrontDesk_dbtblJoborderBranchId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006230943023_FrontDesk_DbCost&amp;SellPriceAdd.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006230943023_FrontDesk_DbCost&amp;SellPriceAdd.Designer.cs">
+      <DependentUpon>202006230943023_FrontDesk_DbCost&amp;SellPriceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006240935074_FrontDesk_DbCost&amp;SellPriceForTS.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006240935074_FrontDesk_DbCost&amp;SellPriceForTS.Designer.cs">
+      <DependentUpon>202006240935074_FrontDesk_DbCost&amp;SellPriceForTS.cs</DependentUpon>
     </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
@@ -287,6 +311,18 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202006160538357_Configuration_RefNumStockDetail.resx">
       <DependentUpon>202006160538357_Configuration_RefNumStockDetail.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006220505196_Configuration_DbCostPriceAdd.resx">
+      <DependentUpon>202006220505196_Configuration_DbCostPriceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006220911484_Configuration_DbStockTransferCostPriceAdd.resx">
+      <DependentUpon>202006220911484_Configuration_DbStockTransferCostPriceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006221650580_Configuration_DbStockTransferSellPriceAdd.resx">
+      <DependentUpon>202006221650580_Configuration_DbStockTransferSellPriceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202006230453271_Configuration_DbStockTransferSPrice&amp;CpriceAdd.resx">
+      <DependentUpon>202006230453271_Configuration_DbStockTransferSPrice&amp;CpriceAdd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -313,6 +349,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202006211035293_FrontDesk_dbtblJoborderBranchId.resx">
       <DependentUpon>202006211035293_FrontDesk_dbtblJoborderBranchId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006230943023_FrontDesk_DbCost&amp;SellPriceAdd.resx">
+      <DependentUpon>202006230943023_FrontDesk_DbCost&amp;SellPriceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006240935074_FrontDesk_DbCost&amp;SellPriceForTS.resx">
+      <DependentUpon>202006240935074_FrontDesk_DbCost&amp;SellPriceForTS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

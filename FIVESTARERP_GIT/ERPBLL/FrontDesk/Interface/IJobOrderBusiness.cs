@@ -19,5 +19,6 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<DashboardRequisitionSummeryDTO> DashboardJobOrderSummery(long orgId,long branchId);
         IEnumerable<JobOrder> GetAllJobOrdersByOrgId(long orgId);
         IEnumerable<JobOrderDTO> GetJobOrdersTS(string mobileNo, long? modelId, long? jobOrderId, string jobCode, long orgId);
+        IEnumerable<JobOrderDTO> GetJobOrdersPush(long? jobOrderId, long orgId);
     }
 }

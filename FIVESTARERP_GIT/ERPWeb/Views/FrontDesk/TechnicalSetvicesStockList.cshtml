@@ -29,6 +29,8 @@
                     <th>SWarehouseName</th>
                     <th class="hide"></th>
                     <th>PartsName</th>
+                    <th>CostPrice</th>
+                    <th>SellPrice</th>
                     <th>StockInQty</th>
                     <th>UsedQty</th>
                     <th>TotalQty</th>
@@ -47,6 +49,8 @@
                     <td>@stock.SWarehouseName</td>
                     <td class="hide">@stock.PartsId</td>
                     <td>@stock.PartsName</td>
+                    <td class="text-center">@stock.CostPrice.ToString("0.00 Tk")</td>
+                    <td class="text-center">@stock.SellPrice.ToString("0.00 Tk")</td>
                     <td class="text-center">@stock.Quantity</td>
                     <td class="text-center">@stock.UsedQty</td>
                     <td class="text-center">@stock.TotalQty</td>

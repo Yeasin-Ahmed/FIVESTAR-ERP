@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Push Job Order";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Push Job Orders</b></h4>
+            </div>
+            <div class="col-md-3 text-right">
+                <button class="btn btn-sm btn-outline-success" id="btnPushJob"><i class="fa fa-plus"></i> Push Job</button>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="col-form-label">Technical Services Name</label>
+                @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select T.S Name--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+            </div>
+            <div class="col-md-4"></div>
+           
+        </div>
+    </div>
+    <div class="col-md-12 mt-2" id="dataContainer" style="overflow-y:scroll">
+        @{Html.RenderAction("GetJobOrdersPush", new { @flag = "view" });}
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+
+
+    </script>
+    }
