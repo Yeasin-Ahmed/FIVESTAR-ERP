@@ -509,6 +509,8 @@
     <Content Include="Views\Production\_GetRepairItemStockList.cshtml" />
     <Content Include="Views\Production\GetPackagingItemStockList.cshtml" />
     <Content Include="Views\Production\_GetPackagingItemStockList.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobOrdersPush.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrdersPush.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
