@@ -189,6 +189,14 @@
     <Compile Include="FrontDeskContextMigrations\202006261446396_FrontDesk_JobOrderTS.Designer.cs">
       <DependentUpon>202006261446396_FrontDesk_JobOrderTS.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006270654074_FrontDesk_DbJobOrderIMEIAdd.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006270654074_FrontDesk_DbJobOrderIMEIAdd.Designer.cs">
+      <DependentUpon>202006270654074_FrontDesk_DbJobOrderIMEIAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202006271347045_FrontDesk_DbIMEI.cs" />
+    <Compile Include="FrontDeskContextMigrations\202006271347045_FrontDesk_DbIMEI.Designer.cs">
+      <DependentUpon>202006271347045_FrontDesk_DbIMEI.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -338,6 +346,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202006261446396_FrontDesk_JobOrderTS.resx">
       <DependentUpon>202006261446396_FrontDesk_JobOrderTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006270654074_FrontDesk_DbJobOrderIMEIAdd.resx">
+      <DependentUpon>202006270654074_FrontDesk_DbJobOrderIMEIAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202006271347045_FrontDesk_DbIMEI.resx">
+      <DependentUpon>202006271347045_FrontDesk_DbIMEI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

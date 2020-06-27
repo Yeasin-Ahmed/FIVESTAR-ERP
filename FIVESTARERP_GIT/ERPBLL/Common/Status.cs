@@ -87,6 +87,18 @@ namespace ERPBLL.Common
         public static readonly string Warrenty = "Warrenty";
         public static readonly string Billing = "Billing";
     }
+    public class PhoneTypes
+    {
+        public static readonly string Smartphone = "Smart phone";
+        public static readonly string Featurephone = "Feature phone";
+        public static readonly string Accessories = "Accessories";
+    }
+    public class ModelColors
+    {
+        public static readonly string Red = "Red";
+        public static readonly string Blue = "Blue";
+        public static readonly string Black = "Black";
+    }
 
     public class ApplicationType
     {

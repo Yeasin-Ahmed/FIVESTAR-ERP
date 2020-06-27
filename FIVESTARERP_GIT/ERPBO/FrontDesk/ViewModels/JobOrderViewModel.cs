@@ -41,5 +41,13 @@ namespace ERPBO.FrontDesk.ViewModels
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
         public long? BranchId { get; set; }
+
+        //
+        public string IMEI { get; set; }
+        public string Type { get; set; }
+        public string ModelColor { get; set; }
+        public Nullable<DateTime> WarrantyDate { get; set; }
+        public string Remarks { get; set; }
+        public string ReferenceNumber { get; set; }
     }
 }

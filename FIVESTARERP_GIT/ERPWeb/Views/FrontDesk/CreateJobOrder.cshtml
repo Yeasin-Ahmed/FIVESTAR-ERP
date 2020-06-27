@@ -1,4 +1,4 @@
-﻿
+﻿@model ERPBO.FrontDesk.ViewModels.JobOrderViewModel
 @{
     ViewBag.Title = "Create Job Order";
 }
@@ -21,11 +21,12 @@
             <form id="frmJobOrder">
                 @Html.AntiForgeryToken()
                 @Html.Hidden("customerId")
+                @Html.Hidden("jobOrderId")
                 <div class="card-body">
                     <div class="row" style="border-bottom:1px solid #cecece">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer By Mobile No" id="txtSearchCustomer"/>
+                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer By Mobile No" id="txtSearchCustomer" />
                                 <div class="input-group-append" style="cursor:pointer">
                                     <a id="searchCustomer" href="#" class="input-group-text">
                                         <i class="fas fa-search"></i>
@@ -33,7 +34,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer IMEI" id="txtSearchIMEI" />
+                                <div class="input-group-append" style="cursor:pointer">
+                                    <a id="SearchIMEI" href="#" class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <button type="button" id="btnCustomer" class="btn btn-sm btn-primary" title="If the Customer is not exist with this Mobile No then please add here"><i class="fas fa-plus"></i> Add Customer</button>
                         </div>
                         <div class="col-md-3">
@@ -57,39 +68,72 @@
                             <span class="error hide require-address font-weight-bold">Mobile No is required</span>
                         </div>
                     </div>
+                    <br />
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label for="txtIMEI" class="control-label font-weight-bold">IMEI</label>
+                            <input type="text" class="form-control form-control-sm" id="txtIMEI" />
+                            <span class="error hide require-IMEI font-weight-bold">Mobile IMEI is required</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type</label>
+                            @Html.DropDownList("ddlPhoneTypes", (IEnumerable<SelectListItem>)ViewBag.ddlPhoneTypes, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-Type font-weight-bold">Mobile Type is required</span>
+                        </div>
+                        <div class="col-md-3">
                             <label for="ddlDescriptions" class="control-label font-weight-bold">Model Name</label>
                             @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-modelName font-weight-bold">Model is required</span>
                         </div>
-                        <div class="col-md-4">
-                            <label for="ddlAccessories" class="control-label font-weight-bold">Accessories</label>
-                            @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
-                            <span class="error hide require-accessories font-weight-bold">Accessories is required</span>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="ddlProblems" class="control-label font-weight-bold">Problems</label>
-                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Problem--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
-                            <span class="error hide require-problem font-weight-bold">Problem is required</span>
+                        <div class="col-md-3">
+                            <label for="ddlModelColor" class="control-label font-weight-bold">ModelColor</label>
+                            @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required</span>
                         </div>
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label for="ddlAccessories" class="control-label font-weight-bold">Accessories</label>
+                            @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-accessories font-weight-bold">Accessories is required</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="ddlProblems" class="control-label font-weight-bold">Problems</label>
+                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Problem--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-problem font-weight-bold">Problem is required</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="chkIsWarrentyAvailable" style="visibility:hidden;">Available</label>
                             <div class="form-control form-control-sm clearfix">
-                                <input type="checkbox" id="chkIsWarrentyAvailable" />
+                                <input type="checkbox" onclick="showHide();" id="chkIsWarrentyAvailable" />
                                 <b>&nbsp; Is Warrenty Available?</b>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label for="" style="visibility:hidden;">Enclosed</label>
                             <div class="form-control form-control-sm clearfix">
                                 <b>Warrenty Paper Enclosed?</b>
-                                <input type="radio" name="Enclosed" id="enclosedYes"/><b> Yes</b> 
-                                <input type="radio" name="Enclosed" id="enclosedNo" checked/><b> No</b>
+                                <input type="radio" name="Enclosed" id="enclosedYes" /><b> Yes</b>
+                                <input type="radio" name="Enclosed" id="enclosedNo" checked /><b> No</b>
                             </div>
                         </div>
-                        <div class="col-md-4"></div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" class="form-control form-control-sm" id="txtRemarks" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="txtReferenceNumber" class="control-label font-weight-bold">ReferencesNumber</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
+                        </div>
+                        <div class="col-md-3" id="warrantydate">
+                            <label for="dptWarrantyDate" class="control-label font-weight-bold">WarrantyDate</label>
+                            <input type="date" class="form-control form-control-sm" id="dptWarrantyDate" />
+                        </div>
+
                     </div>
                 </div>
             </form>
@@ -168,6 +212,25 @@
         var rdnEnclosedYes = $("#enclosedYes");
         var rdnEnclosedNo = $("#enclosedNo");
         var customerId = $("#customerId");
+        //
+        var txtIMEI = $("#txtIMEI");
+        var ddlPhoneTypes = $("#ddlPhoneTypes");
+        var ddlModelColor = $("#ddlModelColor");
+        var dptWarrantyDate = $("#dptWarrantyDate");
+        var txtRemarks = $("#txtRemarks");
+        var txtReferenceNumber = $("#txtReferenceNumber");
+        var jobOrderId = $("#jobOrderId");
+        var txtSearchIMEI = $("#txtSearchIMEI");
+
+        function showHide() {
+            if (document.getElementById('chkIsWarrentyAvailable').checked) {
+                document.getElementById('warrantydate').style.visibility = 'visible';
+            }
+            else {
+                
+                document.getElementById('warrantydate').style.visibility = 'hidden';
+            }
+        }
 
         $(document).ready(function () {
             //ddlAccessories
@@ -184,6 +247,7 @@
             disable("#txtCustomer");
             disable("#txtMobileNumber");
             disable("#txtAddress");
+            disable("#txtReferenceNumber");
         })
 
         $("#searchCustomer").click(function (e) {
@@ -192,7 +256,26 @@
                 getCustomer($.trim(txtSearchCustomer.val()));
             }
         })
+        ////
+        //$(document).ready(function () {
+        //    dptWarrantyDate.prop('readonly', true);
+        //    dptWarrantyDate.css("background-color", "#fff");
+        //    $('#dptWarrantyDate').datepicker({
+        //        format: "dd MM yyyy",
+        //        orientation: "bottom auto",
+        //        todayHighlight: true
+        //    });
+        //})
 
+        //$(document).on('click', 'div.remove-date', function () {
+        //    if ($(this).hasClass("dptWarrantyDate")) {
+        //        if (dptWarrantyDate.val() !== '') {
+        //            dptWarrantyDate.val('');
+        //        }
+        //    }
+        //})
+
+        ///
         function getCustomer(mobileNo) {
             var data = JSON.stringify({ mobileNo: mobileNo });
             $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetCustomerByMobileNo', data)).then(function (res, status) {
@@ -205,6 +288,30 @@
                     }
                     else {
                         bootbox.alert('Customer is not found');
+                    }
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $("#SearchIMEI").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchIMEI.val()) !== "") {
+                getIMEI($.trim(txtSearchIMEI.val()));
+            }
+        })
+
+        function getIMEI(imei) {
+            var data = JSON.stringify({ imei: imei});
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByIMEI', data)).then(function (res, status) {
+                if (status === "success") {
+                    if (res.JodOrderId > 0) {
+                        txtIMEI.val(res.IMEI);
+                        txtReferenceNumber.val(res.ReferenceNumber);
+                    }
+                    else {
+                        bootbox.alert('References is not found');
                     }
                 }
             }).fail(function (error) {
@@ -232,6 +339,18 @@
                 $(".require-modelName").removeClass("hide");
                 isValid = false;
             }
+            if (txtIMEI.val() === "") {
+                $(".require-IMEI").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlPhoneTypes.val() === "") {
+                $(".require-Type").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlModelColor.val() === "") {
+                $(".require-ModelColor").removeClass("hide");
+                isValid = false;
+            }
             //if (ddlAccessories.val().length === 0) {
             //    $(".require-accessories").removeClass("hide");
             //    isValid = false;
@@ -247,7 +366,12 @@
             e.preventDefault();
             if (validateForm()) {
 
-                var jobOrder = { CustomerId:customerId.val(),CustomerName: txtCustomer.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: ddlDescriptions.val(), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked") };
+                var WarrantyDate = null;
+                if (chkIsWarrentyAvailable.is(":checked") && dptWarrantyDate.val()) {
+                    WarrantyDate = new Date(dptWarrantyDate.val());
+                }
+
+                var jobOrder = { CustomerId: customerId.val(), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: ddlDescriptions.val(), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), warrantyDate: WarrantyDate, ReferenceNumber: txtReferenceNumber.val() };
 
                 var aryAccessories = []; aryAccessories.length = 0;
                 var accessories = ddlAccessories.val();
@@ -266,6 +390,7 @@
                 }
 
                 var data = JSON.stringify({ jobOrder: jobOrder, jobOrderAccessories: aryAccessories, jobOrderProblems: aryProblems });
+                console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrder', data, getToken())).then(function (res, status) {
                     if (res === true && status === "success") {
@@ -292,6 +417,11 @@
             txtMobileNumber.val("");
             txtAddress.val("");
             customerId.val('0');
+            txtIMEI.val("");
+            ddlPhoneTypes.val("");
+            txtModelColor.val("");
+            txtRemarks.val("");
+            txtWarrantyDate.val("");
 
             ddlDescriptions.val("");
             ddlDescriptions.trigger("change");

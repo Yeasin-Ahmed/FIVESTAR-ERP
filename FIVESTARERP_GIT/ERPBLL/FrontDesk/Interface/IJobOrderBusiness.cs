@@ -26,5 +26,6 @@ namespace ERPBLL.FrontDesk.Interface
         bool SaveJobOrderPushing(long ts, long[] jobOrders,long userId, long orgId, long branchId);
 
         bool SaveJobOrderPulling(long jobOrderId, long userId, long orgId, long branchId);
+        JobOrder GetReferencesNumberByIMEI( string imei, long orgId, long branchId);
     }
 }

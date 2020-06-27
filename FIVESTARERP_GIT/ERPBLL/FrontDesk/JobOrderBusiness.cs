@@ -69,7 +69,7 @@ namespace ERPBLL.FrontDesk
 
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
-SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber
 From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
@@ -80,7 +80,7 @@ Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames'
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
 Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName'
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName',jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber
 
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
@@ -97,6 +97,12 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 CustomerName = jobOrderDto.CustomerName,
                 MobileNo = jobOrderDto.MobileNo,
                 Address = jobOrderDto.Address,
+                IMEI = jobOrderDto.IMEI,
+                Type= PhoneTypes.Smartphone,
+                ModelColor= ModelColors.Red,
+                WarrantyDate= jobOrderDto.WarrantyDate,
+                Remarks= jobOrderDto.Remarks,
+                ReferenceNumber= jobOrderDto.ReferenceNumber,
                 DescriptionId = jobOrderDto.DescriptionId,
                 IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable,
                 IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed,
@@ -107,6 +113,10 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 JobOrderCode = ("JOB-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
                 BranchId = branchId
             };
+            if (jobOrder.IsWarrantyAvailable)
+            {
+                jobOrder.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
+            }
             List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
             foreach (var item in jobOrderAccessoriesDto)
             {
@@ -352,6 +362,12 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 _jobOrderRepository.Update(jobOrderInDb);
             }
             return _jobOrderRepository.Save();
+        }
+
+        public JobOrder GetReferencesNumberByIMEI( string imei, long orgId, long branchId)
+        {
+            imei = imei.Trim();
+            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o=>o.JodOrderId).FirstOrDefault();
         }
     }
 }

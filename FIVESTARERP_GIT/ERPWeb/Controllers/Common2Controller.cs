@@ -1,7 +1,9 @@
 ﻿using ERPBLL.Configuration.Interface;
+using ERPBLL.FrontDesk.Interface;
 using ERPBO.Common;
 using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
+using ERPBO.FrontDesk.ViewModels;
 using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
@@ -27,8 +29,9 @@ namespace ERPWeb.Controllers
         private readonly ICustomerServiceBusiness _customerServiceBusiness;
         private readonly IBranchBusiness2 _branchBusiness;
         private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
+        private readonly IJobOrderBusiness _jobOrderBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -38,6 +41,7 @@ namespace ERPWeb.Controllers
             this._customerServiceBusiness = customerServiceBusiness;
             this._branchBusiness = branchBusiness;
             this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
+            this._jobOrderBusiness = jobOrderBusiness;
         }
 
         #region Configuration Module
@@ -53,6 +57,19 @@ namespace ERPWeb.Controllers
                 viewModel.CustomerPhone = customer.CustomerPhone;
                 viewModel.CustomerAddress = customer.CustomerAddress;
                 viewModel.CustomerId = customer.CustomerId;
+            }
+            return Json(viewModel);
+        }
+        [HttpPost]
+        public ActionResult GetReferencesByIMEI(string imei)
+        {
+            var Refe = _jobOrderBusiness.GetReferencesNumberByIMEI(imei, User.OrgId,User.BranchId);
+            JobOrderViewModel viewModel = new JobOrderViewModel();
+            if (Refe != null)
+            {
+                viewModel.JodOrderId = Refe.JodOrderId;
+                viewModel.IMEI = Refe.IMEI;
+                viewModel.ReferenceNumber = Refe.JobOrderCode;
             }
             return Json(viewModel);
         }

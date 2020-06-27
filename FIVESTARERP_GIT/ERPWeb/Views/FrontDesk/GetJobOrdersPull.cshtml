@@ -51,7 +51,7 @@
             e.preventDefault();
             var jobId = $(this).attr("data-item-val");
             var button = $(this);
-            alert(jobId);
+            //alert(jobId);
             bootbox.confirm("Are you sure you want to pull this Job Order", function (result) {
                 if (result) {
                     pullTheJobOrder(jobId, button);

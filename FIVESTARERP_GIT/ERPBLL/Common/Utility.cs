@@ -57,6 +57,26 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfModelColor()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=ModelColors.Red,value=ModelColors.Red},
+                new Dropdown(){text=ModelColors.Blue,value=ModelColors.Blue},
+                new Dropdown(){text=ModelColors.Black,value=ModelColors.Black}
+            };
+            return dropdowns;
+        }
+        public static IEnumerable<Dropdown> ListOfPhoneTypes()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=PhoneTypes.Smartphone,value=PhoneTypes.Smartphone},
+                new Dropdown(){text=PhoneTypes.Featurephone,value=PhoneTypes.Featurephone},
+                new Dropdown(){text=PhoneTypes.Accessories,value=PhoneTypes.Accessories}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfProductionType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
