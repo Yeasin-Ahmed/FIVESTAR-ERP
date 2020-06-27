@@ -210,41 +210,9 @@
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
-    <Compile Include="ProductionContextMigrations\202006230318361_Production_AllEntities_23-Jun-2020.cs" />
-    <Compile Include="ProductionContextMigrations\202006230318361_Production_AllEntities_23-Jun-2020.Designer.cs">
-      <DependentUpon>202006230318361_Production_AllEntities_23-Jun-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006230747471_Production_QCItemProductionFloorId.cs" />
-    <Compile Include="ProductionContextMigrations\202006230747471_Production_QCItemProductionFloorId.Designer.cs">
-      <DependentUpon>202006230747471_Production_QCItemProductionFloorId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006230957596_Production_QCItemQCId.cs" />
-    <Compile Include="ProductionContextMigrations\202006230957596_Production_QCItemQCId.Designer.cs">
-      <DependentUpon>202006230957596_Production_QCItemQCId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006231659485_Production_RepairItemStock.cs" />
-    <Compile Include="ProductionContextMigrations\202006231659485_Production_RepairItemStock.Designer.cs">
-      <DependentUpon>202006231659485_Production_RepairItemStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006250022045_Production_RepairTransferReason.cs" />
-    <Compile Include="ProductionContextMigrations\202006250022045_Production_RepairTransferReason.Designer.cs">
-      <DependentUpon>202006250022045_Production_RepairTransferReason.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006250833483_Production_PackagingItemStock.cs" />
-    <Compile Include="ProductionContextMigrations\202006250833483_Production_PackagingItemStock.Designer.cs">
-      <DependentUpon>202006250833483_Production_PackagingItemStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006270432260_Production_UpdateRequisitionInfo.cs" />
-    <Compile Include="ProductionContextMigrations\202006270432260_Production_UpdateRequisitionInfo.Designer.cs">
-      <DependentUpon>202006270432260_Production_UpdateRequisitionInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006270522193_Production_ReqUnitId.cs" />
-    <Compile Include="ProductionContextMigrations\202006270522193_Production_ReqUnitId.Designer.cs">
-      <DependentUpon>202006270522193_Production_ReqUnitId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProductionContextMigrations\202006271455568_Production_FaultyItemStock.cs" />
-    <Compile Include="ProductionContextMigrations\202006271455568_Production_FaultyItemStock.Designer.cs">
-      <DependentUpon>202006271455568_Production_FaultyItemStock.cs</DependentUpon>
+    <Compile Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.cs" />
+    <Compile Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.Designer.cs">
+      <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -368,32 +336,8 @@
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006230318361_Production_AllEntities_23-Jun-2020.resx">
-      <DependentUpon>202006230318361_Production_AllEntities_23-Jun-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006230747471_Production_QCItemProductionFloorId.resx">
-      <DependentUpon>202006230747471_Production_QCItemProductionFloorId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006230957596_Production_QCItemQCId.resx">
-      <DependentUpon>202006230957596_Production_QCItemQCId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006231659485_Production_RepairItemStock.resx">
-      <DependentUpon>202006231659485_Production_RepairItemStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006250022045_Production_RepairTransferReason.resx">
-      <DependentUpon>202006250022045_Production_RepairTransferReason.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006250833483_Production_PackagingItemStock.resx">
-      <DependentUpon>202006250833483_Production_PackagingItemStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006270432260_Production_UpdateRequisitionInfo.resx">
-      <DependentUpon>202006270432260_Production_UpdateRequisitionInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006270522193_Production_ReqUnitId.resx">
-      <DependentUpon>202006270522193_Production_ReqUnitId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProductionContextMigrations\202006271455568_Production_FaultyItemStock.resx">
-      <DependentUpon>202006271455568_Production_FaultyItemStock.cs</DependentUpon>
+    <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
+      <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

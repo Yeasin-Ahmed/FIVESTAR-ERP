@@ -3,7 +3,7 @@ namespace ERPDAL.ProductionContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Production_AllEntities_23Jun2020 : DbMigration
+    public partial class Production_AllEntities_27Jun2020 : DbMigration
     {
         public override void Up()
         {
@@ -147,6 +147,53 @@ namespace ERPDAL.ProductionContextMigrations
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.ALSInfo);
+            
+            CreateTable(
+                "dbo.tblFaultyItemStockDetail",
+                c => new
+                    {
+                        FaultyItemStockDetailId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        QCId = c.Long(),
+                        RepairLineId = c.Long(),
+                        DescriptionId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        StockStatus = c.String(),
+                        Remarks = c.String(maxLength: 150),
+                        ReferenceNumber = c.String(maxLength: 100),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.FaultyItemStockDetailId);
+            
+            CreateTable(
+                "dbo.tblFaultyItemStockInfo",
+                c => new
+                    {
+                        FaultyItemStockInfoId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        DescriptionId = c.Long(),
+                        QCId = c.Long(),
+                        RepairLineId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        StockInQty = c.Int(nullable: false),
+                        StockOutQty = c.Int(nullable: false),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.FaultyItemStockInfoId);
             
             CreateTable(
                 "dbo.tblFinishGoodsInfo",
@@ -330,6 +377,53 @@ namespace ERPDAL.ProductionContextMigrations
                 .PrimaryKey(t => t.IRInfoId);
             
             CreateTable(
+                "dbo.tblPackagingItemStockDetail",
+                c => new
+                    {
+                        PItemStockDetailId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        QCId = c.Long(),
+                        PackagingLineId = c.Long(),
+                        PackagingLineToId = c.Long(),
+                        DescriptionId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        StockStatus = c.String(),
+                        Remarks = c.String(maxLength: 150),
+                        ReferenceNumber = c.String(maxLength: 100),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.PItemStockDetailId);
+            
+            CreateTable(
+                "dbo.tblPackagignItemStockInfo",
+                c => new
+                    {
+                        PItemStockInfoId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        DescriptionId = c.Long(),
+                        PackagingLineId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        TransferQty = c.Int(nullable: false),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.PItemStockInfoId);
+            
+            CreateTable(
                 "dbo.tblPackagingLineStockDetail",
                 c => new
                     {
@@ -433,6 +527,8 @@ namespace ERPDAL.ProductionContextMigrations
                 c => new
                     {
                         QCItemStockDetailId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        QCId = c.Long(),
                         AssemblyLineId = c.Long(),
                         RepairLineId = c.Long(),
                         PackagingLineId = c.Long(),
@@ -458,7 +554,9 @@ namespace ERPDAL.ProductionContextMigrations
                 c => new
                     {
                         QCItemStockInfoId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
                         DescriptionId = c.Long(),
+                        QCId = c.Long(),
                         WarehouseId = c.Long(),
                         ItemTypeId = c.Long(),
                         ItemId = c.Long(),
@@ -474,6 +572,30 @@ namespace ERPDAL.ProductionContextMigrations
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.QCItemStockInfoId);
+            
+            CreateTable(
+                "dbo.tblQRCodeTrace",
+                c => new
+                    {
+                        CodeId = c.Long(nullable: false, identity: true),
+                        CodeNo = c.String(maxLength: 200),
+                        ProductionFloorId = c.Long(),
+                        DescriptionId = c.Long(),
+                        ColorId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        ColorName = c.String(maxLength: 150),
+                        ReferenceNumber = c.String(maxLength: 200),
+                        ReferenceId = c.String(),
+                        Remarks = c.String(maxLength: 200),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.CodeId);
             
             CreateTable(
                 "dbo.tblQualityControlLineStockDetail",
@@ -524,6 +646,53 @@ namespace ERPDAL.ProductionContextMigrations
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.QCStockInfoId);
+            
+            CreateTable(
+                "dbo.tblRepairItemStockDetail",
+                c => new
+                    {
+                        RPItemStockDetailId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        QCId = c.Long(),
+                        RepairLineId = c.Long(),
+                        DescriptionId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        StockStatus = c.String(),
+                        Remarks = c.String(maxLength: 150),
+                        ReferenceNumber = c.String(maxLength: 100),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.RPItemStockDetailId);
+            
+            CreateTable(
+                "dbo.tblRepairItemStockInfo",
+                c => new
+                    {
+                        RPItemStockInfoId = c.Long(nullable: false, identity: true),
+                        ProductionFloorId = c.Long(),
+                        DescriptionId = c.Long(),
+                        QCId = c.Long(),
+                        RepairLineId = c.Long(),
+                        WarehouseId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        QCQty = c.Int(nullable: false),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.RPItemStockInfoId);
             
             CreateTable(
                 "dbo.tblRepairLineStockDetail",
@@ -613,6 +782,11 @@ namespace ERPDAL.ProductionContextMigrations
                         WarehouseId = c.Long(nullable: false),
                         LineId = c.Long(nullable: false),
                         DescriptionId = c.Long(nullable: false),
+                        IsBundle = c.Boolean(nullable: false),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        UnitId = c.Long(),
+                        ForQty = c.Int(),
                     })
                 .PrimaryKey(t => t.ReqInfoId);
             
@@ -651,6 +825,7 @@ namespace ERPDAL.ProductionContextMigrations
                         RepairLineId = c.Long(),
                         PackagingLineId = c.Long(),
                         TransferFor = c.String(maxLength: 100),
+                        RepairTransferReason = c.String(maxLength: 100),
                         StateStatus = c.String(maxLength: 50),
                         Remarks = c.String(maxLength: 150),
                         OrganizationId = c.Long(nullable: false),
@@ -895,14 +1070,19 @@ namespace ERPDAL.ProductionContextMigrations
             DropTable("dbo.tblRequsitionDetails");
             DropTable("dbo.tblRepairLineStockInfo");
             DropTable("dbo.tblRepairLineStockDetail");
+            DropTable("dbo.tblRepairItemStockInfo");
+            DropTable("dbo.tblRepairItemStockDetail");
             DropTable("dbo.tblQualityControlLineStockInfo");
             DropTable("dbo.tblQualityControlLineStockDetail");
+            DropTable("dbo.tblQRCodeTrace");
             DropTable("dbo.tblQCItemStockInfo");
             DropTable("dbo.tblQCItemStockDetail");
             DropTable("dbo.tblProductionStockInfo");
             DropTable("dbo.tblProductionStockDetail");
             DropTable("dbo.tblPackagingLineStockInfo");
             DropTable("dbo.tblPackagingLineStockDetail");
+            DropTable("dbo.tblPackagignItemStockInfo");
+            DropTable("dbo.tblPackagingItemStockDetail");
             DropTable("dbo.tblItemReturnInfo");
             DropTable("dbo.tblItemReturnDetail");
             DropTable("dbo.tblFinishGoodsStockInfo");
@@ -911,6 +1091,8 @@ namespace ERPDAL.ProductionContextMigrations
             DropTable("dbo.tblFinishGoodsSendToWarehouseDetail");
             DropTable("dbo.tblFinishGoodsRowMaterial");
             DropTable("dbo.tblFinishGoodsInfo");
+            DropTable("dbo.tblFaultyItemStockInfo");
+            DropTable("dbo.tblFaultyItemStockDetail");
             DropTable("dbo.tblAssemblyLineStockInfo");
             DropTable("dbo.tblAssemblyLineStockDetail");
             DropTable("dbo.tblRepairLine");
