@@ -51,5 +51,9 @@ namespace ERPBO.Production.DTOModel
         [Required,StringLength(50)]
         public string RequisitionType { get; set; }
         public List<ReqDetailsDTO> ReqDetails { get; set; }
+        public long? ItemTypeId { get; set; }
+        public long? ItemId { get; set; }
+        public int? ForQty { get; set; }
+        public bool IsBundle { get; set; }
     }
 }

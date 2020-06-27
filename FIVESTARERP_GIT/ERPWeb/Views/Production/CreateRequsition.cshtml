@@ -431,14 +431,19 @@
                             })
                         })
 
-                    var requsitionInfo = {
-                    ReqInfoId: 0,
-                    LineId: TryParseInt(ddlLineNumber.val(), 0),
-                        WarehouseId: TryParseInt(ddlWarehouse.val(),0),
-                    DescriptionId: TryParseInt(ddlModelName.val(), 0),
-                    RequisitionType: $("#ddlRequisitionType").val(),
-                    ReqDetails: reqDetails
-                };
+                        var requsitionInfo =
+                        {
+                            ReqInfoId: 0,
+                            LineId: TryParseInt(ddlLineNumber.val(), 0),
+                            WarehouseId: TryParseInt(ddlWarehouse.val(),0),
+                            DescriptionId: TryParseInt(ddlModelName.val(), 0),
+                            RequisitionType: $("#ddlRequisitionType").val(),
+                            ItemTypeId: TryParseInt(ddlItemType.val(), 0),
+                            ItemId: TryParseInt(ddlItem.val(), 0),
+                            ForQty: TryParseInt(txtQuantity.val(), 0),
+                            IsBundle: chkIsBundle.is(":checked"),
+                            ReqDetails: reqDetails
+                        };
 
                 var data = JSON.stringify({ model: requsitionInfo });
                 console.log(data);

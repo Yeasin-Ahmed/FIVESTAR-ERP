@@ -190,4 +190,20 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+
+    public class FaultyItemStockInfoRepository : ProductionBaseRepository<FaultyItemStockInfo>
+    {
+        public FaultyItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class FaultyItemStockDetailRepository : ProductionBaseRepository<FaultyItemStockDetail>
+    {
+        public FaultyItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

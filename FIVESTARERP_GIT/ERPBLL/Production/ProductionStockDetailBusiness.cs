@@ -26,18 +26,20 @@ namespace ERPBLL.Production
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // BC
         private readonly IProductionStockInfoBusiness _productionStockInfoBusiness; // BC
         private readonly IItemBusiness _itemBusiness;  // BC
+        private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
 
-        public ProductionStockDetailBusiness(IProductionUnitOfWork productionDb , IInventoryUnitOfWork inventoryDb, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness , IItemBusiness itemBusiness)
+        public ProductionStockDetailBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemBusiness itemBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness)
         {
             this._productionDb = productionDb;
             this._inventoryDb = inventoryDb;
             _productionStockDetailRepository = new ProductionStockDetailRepository(this._productionDb);
-            _productionStockInfoRepository =  new ProductionStockInfoRepository(this._productionDb);
+            _productionStockInfoRepository = new ProductionStockInfoRepository(this._productionDb);
 
             _productionStockInfoBusiness = productionStockInfoBusiness;
             _requsitionInfoBusiness = requsitionInfoBusiness;
             _requsitionDetailBusiness = requsitionDetailBusiness;
             _itemBusiness = itemBusiness;
+            this._qRCodeTraceBusiness = qRCodeTraceBusiness;
         }
         public IEnumerable<ProductionStockDetail> GelAllProductionStockDetailByOrgId(long orgId)
         {
@@ -115,7 +117,7 @@ namespace ERPBLL.Production
                     stockDetail.EntryDate = item.EntryDate;
                     stockDetail.StockStatus = status;
                     productionStockDetails.Add(stockDetail);
-                    var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(orgId, item.ItemId.Value, item.LineId.Value,item.DescriptionId.Value);
+                    var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(orgId, item.ItemId.Value, item.LineId.Value, item.DescriptionId.Value);
                     stockInfo.StockOutQty += stockDetail.Quantity;
                     _productionStockInfoRepository.Update(stockInfo);
                 }
@@ -128,9 +130,10 @@ namespace ERPBLL.Production
         {
             var reqInfo = _requsitionInfoBusiness.GetRequisitionById(reqId, orgId);
             var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqId, orgId).ToList();
-            if(reqInfo!= null && reqInfo.StateStatus == RequisitionStatus.Approved && reqDetail.Count > 0)
+            if (reqInfo != null && reqInfo.StateStatus == RequisitionStatus.Approved && reqDetail.Count > 0)
             {
                 List<ProductionStockDetailDTO> productionStockDetailDTOs = new List<ProductionStockDetailDTO>();
+                List<QRCodeTraceDTO> qRCodes = GenerateQRCodeTraces(reqInfo.ReqInfoId, userId, orgId);
                 foreach (var item in reqDetail)
                 {
                     ProductionStockDetailDTO productionStockDetailDTO = new ProductionStockDetailDTO
@@ -150,18 +153,21 @@ namespace ERPBLL.Production
                     };
                     productionStockDetailDTOs.Add(productionStockDetailDTO);
                 }
-                if(SaveProductionStockIn(productionStockDetailDTOs, userId, orgId) == true)
+                if (SaveProductionStockIn(productionStockDetailDTOs, userId, orgId) == true)
                 {
-                   return _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, orgId, userId);
+                    if (_requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, orgId, userId))
+                    {
+                        return _qRCodeTraceBusiness.SaveQRCodeTrace(qRCodes, userId, orgId);
+                    }
                 }
             }
             return false;
         }
 
-        public IEnumerable<ProductionStockDetailInfoListDTO> GetProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId)
+        public IEnumerable<ProductionStockDetailInfoListDTO> GetProductionStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum, long orgId)
         {
             IEnumerable<ProductionStockDetailInfoListDTO> productionStockDetailInfoListDTOs = new List<ProductionStockDetailInfoListDTO>();
-            productionStockDetailInfoListDTOs = this._productionDb.Db.Database.SqlQuery<ProductionStockDetailInfoListDTO>(QueryForProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId)).ToList();
+            productionStockDetailInfoListDTOs = this._productionDb.Db.Database.SqlQuery<ProductionStockDetailInfoListDTO>(QueryForProductionStockDetailInfoList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, orgId)).ToList();
             return productionStockDetailInfoListDTOs;
         }
 
@@ -230,6 +236,44 @@ Left Join [ControlPanel].dbo.tblApplicationUsers au on psd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
+        }
+
+        private List<QRCodeTraceDTO> GenerateQRCodeTraces(long reqInfoId, long userId, long orgId)
+        {
+            List<QRCodeTraceDTO> qRCodeTraces = new List<QRCodeTraceDTO>();
+            RequsitionInfoDTO reqDto = new RequsitionInfoDTO();
+            reqDto= this._productionDb.Db.Database.SqlQuery<RequsitionInfoDTO>(string.Format(@"Select req.*,pl.LineNumber,de.DescriptionName 'ModelName',wa.WarehouseName,i.ItemName 'ItemTypeName',it.ItemName,u.UnitSymbol
+From tblRequsitionInfo req
+Inner Join tblProductionLines pl on req.LineId = pl.LineId
+Inner Join [Inventory].dbo.tblDescriptions de on  req.DescriptionId = de.DescriptionId
+Inner Join [Inventory].dbo.tblWarehouses wa on  req.WarehouseId = wa.Id
+Left Join [Inventory].dbo.tblItemTypes it on req.ItemTypeId = it.ItemId
+Left Join [Inventory].dbo.tblItems i on req.ItemId = i.ItemId
+Left Join [Inventory].dbo.[tblUnits] u on req.UnitId = u.UnitId
+Where req.OrganizationId={0} and req.ReqInfoId={1}", orgId, reqInfoId)).SingleOrDefault();
+
+            for (int i = 1; i <= reqDto.ForQty; i++)
+            {
+                QRCodeTraceDTO qRCode = new QRCodeTraceDTO
+                {
+                    ProductionFloorId = reqDto.LineId,
+                    DescriptionId = reqDto.DescriptionId,
+                    ItemTypeId = reqDto.ItemTypeId,
+                    ItemId = reqDto.ItemId,
+                    WarehouseId = reqDto.WarehouseId,
+                    CodeId = 0,
+                    ColorName = string.Empty,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    ReferenceId = reqDto.ReqInfoId.ToString(),
+                    ReferenceNumber = reqDto.ReqInfoCode,
+                    ColorId = 0,
+                    CodeNo = reqDto.ReqInfoCode + i.ToString()
+                };
+                qRCodeTraces.Add(qRCode);
+            }
+            return qRCodeTraces;
         }
     }
 }

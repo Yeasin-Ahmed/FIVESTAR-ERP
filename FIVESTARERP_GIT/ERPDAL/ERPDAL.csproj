@@ -226,6 +226,18 @@
     <Compile Include="ProductionContextMigrations\202006250833483_Production_PackagingItemStock.Designer.cs">
       <DependentUpon>202006250833483_Production_PackagingItemStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006270432260_Production_UpdateRequisitionInfo.cs" />
+    <Compile Include="ProductionContextMigrations\202006270432260_Production_UpdateRequisitionInfo.Designer.cs">
+      <DependentUpon>202006270432260_Production_UpdateRequisitionInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006270522193_Production_ReqUnitId.cs" />
+    <Compile Include="ProductionContextMigrations\202006270522193_Production_ReqUnitId.Designer.cs">
+      <DependentUpon>202006270522193_Production_ReqUnitId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006271455568_Production_FaultyItemStock.cs" />
+    <Compile Include="ProductionContextMigrations\202006271455568_Production_FaultyItemStock.Designer.cs">
+      <DependentUpon>202006271455568_Production_FaultyItemStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -359,6 +371,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006250833483_Production_PackagingItemStock.resx">
       <DependentUpon>202006250833483_Production_PackagingItemStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006270432260_Production_UpdateRequisitionInfo.resx">
+      <DependentUpon>202006270432260_Production_UpdateRequisitionInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006270522193_Production_ReqUnitId.resx">
+      <DependentUpon>202006270522193_Production_ReqUnitId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006271455568_Production_FaultyItemStock.resx">
+      <DependentUpon>202006271455568_Production_FaultyItemStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
