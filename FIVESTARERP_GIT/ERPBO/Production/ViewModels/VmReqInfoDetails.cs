@@ -50,5 +50,9 @@ namespace ERPBO.Production.ViewModels
         [Required,StringLength(50)]
         public string RequisitionType { get; set; }
         public List<VmReqDetails> ReqDetails { get; set; }
+        public long? ItemTypeId { get; set; }
+        public long? ItemId { get; set; }
+        public int? ForQty  { get; set; }
+        public bool IsBundle { get; set; }
     }
 }

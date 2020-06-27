@@ -26,19 +26,28 @@ namespace ERPBO.Production.DTOModel
         public long WarehouseId { get; set; }
         public long LineId { get; set; }
         public long DescriptionId { get; set; }
-
-        //Navi
+        public bool IsBundle { get; set; }
+        public long? ItemTypeId { get; set; }
+        public long? ItemId { get; set; }
+        public int? ForQty { get; set; }
+        public long? UnitId { get; set; }
 
         [StringLength(100)]
         public string WarehouseName { get; set; }
         [StringLength(100)]
         public string LineNumber { get; set; }
-        public int Qty { get; set; }
+        public int? Qty { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
-        public int TotalReqCount { get; set; }
+        public int? TotalReqCount { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        [StringLength(100)]
+        public string ItemTypeName { get; set; }
+        [StringLength(100)]
+        public string ItemName { get; set; }
+        [StringLength(100)]
+        public string UnitName { get; set; }
 
     }
 }

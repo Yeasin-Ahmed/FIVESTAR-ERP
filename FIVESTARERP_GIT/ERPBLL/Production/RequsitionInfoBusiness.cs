@@ -69,6 +69,15 @@ namespace ERPBLL.Production
                 requsitionInfo.EntryDate = DateTime.Now;
                 requsitionInfo.EUserId = userId;
                 requsitionInfo.RequisitionType = reqInfoDTO.RequisitionType;
+                requsitionInfo.IsBundle = reqInfoDTO.IsBundle;
+                requsitionInfo.ItemTypeId = reqInfoDTO.ItemTypeId;
+                requsitionInfo.ItemId = reqInfoDTO.ItemId;
+                requsitionInfo.ForQty = reqInfoDTO.ForQty;
+                if(reqInfoDTO.ItemId != null && reqInfoDTO.ItemId > 0)
+                {
+                    requsitionInfo.UnitId = _itemBusiness.GetItemById(reqInfoDTO.ItemId.Value, orgId).UnitId;
+                }
+
                 List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
 
                 foreach (var item in reqInfoDTO.ReqDetails)

@@ -27,5 +27,10 @@ namespace ERPBO.Production.DomainModels
         public long WarehouseId { get; set; }
         public long LineId { get; set; }
         public long DescriptionId { get; set; }
+        public bool IsBundle { get; set; }
+        public long? ItemTypeId { get; set; }
+        public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
+        public int? ForQty { get; set; }
     }
 }

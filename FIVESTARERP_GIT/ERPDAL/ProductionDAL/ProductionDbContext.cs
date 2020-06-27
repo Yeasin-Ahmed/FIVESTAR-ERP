@@ -52,5 +52,7 @@ namespace ERPDAL.ProductionDAL
         public DbSet<PackagingItemStockInfo> tblPackagingItemStockInfo { get; set; }
         public DbSet<PackagingItemStockDetail> tblPackagingItemStockDetail { get; set; }
         public DbSet<QRCodeTrace> tblQRCodeTrace { get; set; }
+        public DbSet<FaultyItemStockInfo> tblFaultyItemStockInfo { get; set; }
+        public DbSet<FaultyItemStockDetail> tblFaultyItemStockDetail { get; set; }
     }
 }

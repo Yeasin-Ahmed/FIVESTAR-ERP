@@ -153,9 +153,11 @@
     <Compile Include="FrontDesk\ViewModels\RequsitionInfoForJobOrderViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TechnicalServicesStockViewModel.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\PackagingLine.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\QRCodeTrace.cs" />
+    <Compile Include="Production\DomainModels\FaultyItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\RepairItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\QCItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockInfo.cs" />
@@ -231,6 +233,8 @@
     <Compile Include="Production\DomainModels\TransferStockToQCInfo.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\FaultyItemStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\FaultyItemStocknfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
@@ -295,6 +299,8 @@
     <Compile Include="Production\ViewModels\DashboardFacultyWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardLineWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardRequisitionSummeryViewModel.cs" />
+    <Compile Include="Production\ViewModels\FaultyStockDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\FaultyItemStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsRowMaterialViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsSendDetailListViewModel.cs" />

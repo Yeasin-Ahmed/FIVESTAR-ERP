@@ -19,20 +19,44 @@ namespace ERPBLL.Production
             this._productionDb = productionDb;
             this._qRCodeTraceRepository = new QRCodeTraceRepository(this._productionDb);
         }
-
         public QRCodeTrace GetQRCodeTraceByCode(string code, long orgId)
         {
             return _qRCodeTraceRepository.GetOneByOrg(q => q.CodeNo == code && q.OrganizationId == orgId);
         }
-
         public IEnumerable<QRCodeTrace> GetQRCodeTraceByOrg(long orgId)
         {
             return _qRCodeTraceRepository.GetAll(q => q.OrganizationId == orgId);
         }
-
         public bool SaveQRCodeTrace(List<QRCodeTraceDTO> dtos, long userId, long orgId)
         {
-            throw new NotImplementedException();
+            List<QRCodeTrace> list = new List<QRCodeTrace>();
+            foreach (var item in dtos)
+            {
+                QRCodeTrace qRCode = new QRCodeTrace()
+                {
+                    ProductionFloorId= item.ProductionFloorId,
+                    DescriptionId = item.DescriptionId,
+                    ColorId = item.ColorId,
+                    ColorName = item.ColorName,
+                    CodeNo = item.CodeNo,
+                    CodeImage = item.CodeImage,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    OrganizationId = orgId,
+                    EUserId =  userId,
+                    EntryDate = DateTime.Now,
+                    ReferenceId = item.ReferenceId,
+                    ReferenceNumber = item.ReferenceNumber,
+                    Remarks = item.Remarks
+                };
+                list.Add(qRCode);
+            }
+            if(list.Count > 0)
+            {
+                _qRCodeTraceRepository.InsertAll(list);
+            }
+            return _qRCodeTraceRepository.Save();
         }
     }
 }
