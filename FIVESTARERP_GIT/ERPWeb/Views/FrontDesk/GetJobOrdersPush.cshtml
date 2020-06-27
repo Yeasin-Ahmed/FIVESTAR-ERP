@@ -1,41 +1,145 @@
 ﻿
 @{
-    ViewBag.Title = "Push Job Order";
+    ViewBag.Title = "Pushing Job Order";
 }
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Push Job Orders</b></h4>
-            </div>
-            <div class="col-md-3 text-right">
-                <button class="btn btn-sm btn-outline-success" id="btnPushJob"><i class="fa fa-plus"></i> Push Job</button>
+    <div class="col-md-12 text-center">
+        <div class="card card-gray">
+            <div class="card-header">
+                <h4>Push Job Orders</h4>
             </div>
         </div>
-        <hr />
     </div>
+
+</div>
+<div class="row">
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-4">
-                <label class="col-form-label">Technical Services Name</label>
-                @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select T.S Name--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+        <div class="card">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select T.S Name--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <button type="submit" id="btnSubmit" class="btn float-right btn-outline-success"> Push <i class="fas fa-arrow-down"></i></button>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4"></div>
-           
         </div>
     </div>
-    <div class="col-md-12 mt-2" id="dataContainer" style="overflow-y:scroll">
-        @{Html.RenderAction("GetJobOrdersPush", new { @flag = "view" });}
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("GetJobOrdersPush", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @section scripts{
     <script type="text/javascript">
         var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+        var count = 0;
 
+        $(document).on('change', 'input[name="allJobOrder"]', function () {
+            var isChecked = $('input[name="allJobOrder"]').is(":checked");
+            $('input[name="jobOrderName"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblJobOrderList tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+
+        $(document).on('change', 'input[name="jobOrderName"]', function () {
+            count = 0;
+            $.each($(".tblJobOrderList tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="jobOrderName"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblJobOrderList tbody tr").length == count;
+            $('input[name="allJobOrder"]').prop("checked", allChecked);
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit()) {
+                bootbox.confirm("Are you sure you want to pushing these Job Orders", function (result) {
+                    if (result)
+                    {
+                        disable("#btnSubmit");
+                        var ts = TryParseInt(ddlTechnicalServicesName.val(), 0);
+                        var jobOrders = []; jobOrders.length = 0;
+                        $.each($(".tblJobOrderList tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
+                            if (checkBox.is(":checked")) {
+                                jobOrders.push(TryParseInt(checkBox.attr("data-item-val"),0));
+                            }
+                        });
+                        //console.log("JobOrders");
+                        //console.log(jobOrders);
+
+                        var data = JSON.stringify({ ts: ts, jobOrders: jobOrders });
+                        //console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderPushing', data, getToken())).then(function (res, status) {
+                            if (res === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                LoadDataTable();
+                                count = 0;
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmit");
+                        });
+                    }
+                })
+            }
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "view"};
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrdersPush', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        }
+
+        function ValidateSubmit() {
+            var isValid = true;
+            if (ddlTechnicalServicesName.val() === "") {
+                isValid = false;
+                bootbox.alert("Select a T.S");
+            }
+            if (count == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one row");
+            }
+            return isValid;
+        }
 
     </script>
-    }
+}

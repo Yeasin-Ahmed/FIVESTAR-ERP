@@ -6,11 +6,13 @@
     string isWarrantyPaperEnclosed = string.Empty;
     string badge = string.Empty;
 }
-<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblJobOrderList">
+<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblJobOrderList" id="tblJobOrderList">
     <thead class="btn-dark">
         <tr class="text-center">
             <th class="hide"></th>
-            <th></th>
+            <th style="vertical-align:middle">
+                <input type="checkbox" name="allJobOrder" id="allJobOrder"/>
+            </th>
             <th style="vertical-align:middle">#SL</th>
             <th style="vertical-align:middle">JobOrder Code</th>
             <th style="vertical-align:middle">Customer Name</th>
@@ -35,8 +37,8 @@
             isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
             <tr>
                 <td class="hide">@item.JodOrderId</td>
-                <td>
-                    <input type="checkbox" value="" id="checkbox">
+                <td style="vertical-align:middle">
+                    <input type="checkbox" name="jobOrderName" data-item-val="@item.JodOrderId" data-code-val="@item.JobOrderCode"/>
                 </td>
                 <td class="text-center text-bold">@sl</td>
                 <td class="text-center text-bold">@item.JobOrderCode</td>

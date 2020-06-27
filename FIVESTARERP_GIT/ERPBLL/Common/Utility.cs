@@ -1,4 +1,5 @@
 ﻿using ERPBO.Common;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Helpers;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ERPBLL.Common
 {
@@ -238,6 +241,15 @@ namespace ERPBLL.Common
             {
                 return @"C:/Z Files/ClientPhotos/FIVESTARERP/Report/";
             }
+        }
+        public static byte[] GenerateQRCode(string codeText)
+        {
+            QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+            QRCodeData data = qRCodeGenerator.CreateQrCode(codeText, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(data);
+            MemoryStream stream = new MemoryStream();
+            qrCode.GetGraphic(5).Save(stream,ImageFormat.Png);
+            return stream.ToArray();
         }
     }
 }

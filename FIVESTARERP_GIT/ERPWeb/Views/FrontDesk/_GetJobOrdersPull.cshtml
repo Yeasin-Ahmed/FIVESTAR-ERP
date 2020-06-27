@@ -1,12 +1,12 @@
 ﻿@model  IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderViewModel>
 @{
+    int sl = 0;
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
-    int sl = pagerData.Serial;
     string isWarrantyAvailable = string.Empty;
     string isWarrantyPaperEnclosed = string.Empty;
     string badge = string.Empty;
 }
-<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblJobOrderList">
+<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblJobOrderList" id="tblJobOrderList">
     <thead class="btn-dark">
         <tr class="text-center">
             <th class="hide"></th>
@@ -29,13 +29,13 @@
     <tbody>
         @foreach (var item in Model)
         {
-            badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Customer-Approved" ? "badge bg-success" : item.StateStatus == "Customer-Disapproved" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
+            badge = item.StateStatus == "Customer-Approved" ? "badge bg-success" : "badge bg-success";
             sl = sl + 1;
             isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
             isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
             <tr>
                 <td class="hide">@item.JodOrderId</td>
-                <td class="text-center text-bold">@sl</td>
+                <td style="vertical-align:middle" class="text-center text-bold">@sl</td>
                 <td class="text-center text-bold">@item.JobOrderCode</td>
                 <td>@item.CustomerName</td>
                 <td>@item.MobileNo</td>
@@ -50,16 +50,10 @@
                 </td>
                 <td class="text-center text-bold">@item.EntryUser</td>
                 <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                <td class="text-center">
-                    <a href="#" class="btn btn-sm btn-info data-item-details" data-item-details="@item.JodOrderId" title="View Job Order">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.CustomerApproved || item.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS)
-                    {
-                        <a href="#" class="btn btn-sm btn-danger data-item-assignTS hide" data-item-assignTS="@item.JodOrderId" title="Assign T.S.">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    }
+                <td style="vertical-align:middle">
+                    <button href="#" class="btn btn-sm btn-info data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
+                        <i class="fas fa-download"> Pull</i>
+                    </button>
                 </td>
             </tr>
         }
@@ -71,4 +65,4 @@
         }
     </tbody>
 </table>
-@Html.Partial("_Pagination", pagerData)
+

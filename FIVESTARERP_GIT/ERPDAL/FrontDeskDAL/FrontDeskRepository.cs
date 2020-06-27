@@ -31,4 +31,8 @@ namespace ERPDAL.FrontDeskDAL
     {
         public TechnicalServicesStockRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
     }
+    public class JobOrderTSRepository: FrontDeskBaseRepository<JobOrderTS>
+    {
+        public JobOrderTSRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
 }

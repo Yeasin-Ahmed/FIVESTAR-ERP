@@ -2941,6 +2941,15 @@ namespace ERPWeb.Controllers
 
         #endregion
 
+        public ActionResult GetQRCode()
+        {
+            byte[] qrCode =Utility.GenerateQRCode("Yeasin Ahmed");
+            var base64 = Convert.ToBase64String(qrCode);
+            var fs = String.Format("data:application/png;base64,{0}", base64);
+            ViewBag.Base64 = fs;
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

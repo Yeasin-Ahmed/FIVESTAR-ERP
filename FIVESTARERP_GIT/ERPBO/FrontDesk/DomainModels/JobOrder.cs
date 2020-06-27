@@ -38,5 +38,6 @@ namespace ERPBO.FrontDesk.DomainModels
         public ICollection<JobOrderAccessories> JobOrderAccessories { get; set; }
         public ICollection<JobOrderProblem> JobOrderProblems { get; set; }
         public long? BranchId { get; set; }
+        public ICollection<JobOrderTS> JobOrderTS { get; set; }
     }
 }

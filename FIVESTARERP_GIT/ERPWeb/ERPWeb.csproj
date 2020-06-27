@@ -511,6 +511,9 @@
     <Content Include="Views\Production\_GetPackagingItemStockList.cshtml" />
     <Content Include="Views\FrontDesk\GetJobOrdersPush.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrdersPush.cshtml" />
+    <Content Include="Views\Production\GetQRCode.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobOrdersPull.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrdersPull.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

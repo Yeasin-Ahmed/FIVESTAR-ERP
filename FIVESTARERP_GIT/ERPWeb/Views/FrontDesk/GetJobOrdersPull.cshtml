@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Pulling Job Order";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray">
+            <div class="card-header">
+                <h4>Pull Job Orders</h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("GetJobOrdersPull", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        function LoadDataTable() {
+            var data = { flag: "view" };
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrdersPull', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        }
+
+        $(document).on('click', '.data-item-pull', function (e) {
+            e.preventDefault();
+            var jobId = $(this).attr("data-item-val");
+            var button = $(this);
+            alert(jobId);
+            bootbox.confirm("Are you sure you want to pull this Job Order", function (result) {
+                if (result) {
+                    pullTheJobOrder(jobId, button);
+                }
+            });
+        })
+
+        function pullTheJobOrder(jobOrder, button) {
+            button.attr("disabled", true);
+            var data = JSON.stringify({ jobOrder: jobOrder });
+            console.log(data);
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderPulling', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    LoadDataTable();
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+                button.attr("disabled", false);
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+                button.attr("disabled", false);
+            });
+        }
+
+    </script>
+}

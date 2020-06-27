@@ -122,7 +122,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(jobOrderAccessories,listJobOrderAccessoriesDTO);
                 AutoMapper.Mapper.Map(jobOrderProblems, listJobOrderProblemDTO);
 
-                IsSuccess=_jobOrderBusiness.SaveJobOrder(jobOrderDTO, listJobOrderAccessoriesDTO, listJobOrderProblemDTO, User.UserId, User.OrgId);
+                IsSuccess=_jobOrderBusiness.SaveJobOrder(jobOrderDTO, listJobOrderAccessoriesDTO, listJobOrderProblemDTO, User.UserId, User.OrgId,User.BranchId);
             }
             return Json(IsSuccess);
         }
@@ -186,6 +186,46 @@ namespace ERPWeb.Controllers
                 return PartialView("_GetJobOrdersPush", viewModels);
             }
             return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveJobOrderPushing(long ts, long[] jobOrders)
+        {
+            bool IsSuccess = false;
+            if(ts > 0 && jobOrders.Count() > 0)
+            {
+                IsSuccess=_jobOrderBusiness.SaveJobOrderPushing(ts, jobOrders, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpGet]
+        public ActionResult GetJobOrdersPull(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search"))
+            {
+                var dto = _jobOrderBusiness.GetJobOrdersPush(0, User.OrgId);
+
+                IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetJobOrdersPull", viewModels);
+            }
+            return View();
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveJobOrderPulling(long jobOrder)
+        {
+            bool IsSuccess = false;
+            if (jobOrder > 0)
+            {
+                IsSuccess = _jobOrderBusiness.SaveJobOrderPulling(jobOrder, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
         }
 
         #region Parts Request
