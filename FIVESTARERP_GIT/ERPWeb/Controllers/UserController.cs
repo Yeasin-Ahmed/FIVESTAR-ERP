@@ -2,6 +2,8 @@
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
+using ERPBO.FrontDesk.DTOModels;
+using ERPBO.FrontDesk.ViewModels;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
 using ERPWeb.Filters;
@@ -23,8 +25,10 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsStockDetailBusiness _finishGoodsStockDetailBusiness;
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
         private readonly IJobOrderBusiness _jobOrderBusiness;
+        private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
+        private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
 
-        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness)
+        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
@@ -32,6 +36,8 @@ namespace ERPWeb.Controllers
             this._finishGoodsStockDetailBusiness = finishGoodsStockDetailBusiness;
             this._itemReturnInfoBusiness = itemReturnInfoBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
+            this._jobOrderTSBusiness = jobOrderTSBusiness;
+            this._requsitionInfoForJobOrderBusiness=requsitionInfoForJobOrderBusiness;
         }
         public ActionResult Index()
         {
@@ -107,6 +113,30 @@ namespace ERPWeb.Controllers
 
                 var jobOrdeAssignToTS = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.AssignToTS);
                 ViewBag.JobOrdeAssignToTS = (jobOrdeAssignToTS == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.AssignToTS, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrdeAssignToTS.StateStatus, TotalCount = jobOrdeAssignToTS.TotalCount };
+
+                // Daily Job Orders
+                IEnumerable<DashboardDailyReceiveJobOrderDTO> dashboardJobOrders = _jobOrderBusiness.DashboardDailyJobOrder(User.OrgId,User.BranchId);
+                IEnumerable<DashboardDailyReceiveJobOrderViewModel> dashboardJob = new List<DashboardDailyReceiveJobOrderViewModel>();
+                AutoMapper.Mapper.Map(dashboardJobOrders, dashboardJob);
+                ViewBag.DashboardDailyJobOrderViewModel = dashboardJob;
+
+                // Daily Warranty and Billing Job 
+                IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> andWarrantyJobDTO = _jobOrderBusiness.DashboardDailyBillingAndWarrantyJob(User.OrgId, User.BranchId);
+                IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel> andWarrantyJobViewModels = new List<DashboardDailyBillingAndWarrantyJobViewModel>();
+                AutoMapper.Mapper.Map(andWarrantyJobDTO, andWarrantyJobViewModels);
+                ViewBag.DashboardDailyWarrantyandBillingViewModel = andWarrantyJobViewModels;
+
+                // Daily singIn Out
+                IEnumerable<DashboardDailySingInAndOutDTO> singInAndOutDTO = _jobOrderTSBusiness.DashboardDailySingInAndOuts(User.OrgId, User.BranchId);
+                IEnumerable<DashboardDailySingInAndOutViewModel> inAndOutViewModels = new List<DashboardDailySingInAndOutViewModel>();
+                AutoMapper.Mapper.Map(singInAndOutDTO, inAndOutViewModels);
+                ViewBag.DashboardDailySingInOutViewModel = inAndOutViewModels;
+
+                // Daily Spare Parts Request
+                IEnumerable<DashboardRequestSparePartsDTO> sparePartsDTO = _requsitionInfoForJobOrderBusiness.DashboardRequestSpareParts(User.OrgId, User.BranchId);
+                IEnumerable<DashboardRequestSparePartsViewModel> sparePartsViewModels = new List<DashboardRequestSparePartsViewModel>();
+                AutoMapper.Mapper.Map(sparePartsDTO, sparePartsViewModels);
+                ViewBag.DashboardDailySparePartsViewModel = sparePartsViewModels;
 
                 return View("Index2");
             }

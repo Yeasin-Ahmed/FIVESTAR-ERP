@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "CreateMobilePartStock";
+    ViewBag.Title = "Stock-In";
 }
 
 <div class="row">
@@ -25,21 +25,26 @@
                 <div class="col-md-3">
                     <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
                     @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlMobilePart" class="control-label font-weight-bold">MobilePart Name</label>
                     @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select MobilePart--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-parts font-weight-bold">Parts is required !</span>
+                    <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtCostPrice" class="control-label font-weight-bold">CostPrice</label>
                         <input type="number" name="txtCostPrice" value="" id="txtCostPrice" class="form-control form-control-sm" />
+                        <span class="error hide require-costPrice font-weight-bold">CostPrice is required !</span>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtSellPrice" class="control-label font-weight-bold">SellPrice</label>
                         <input type="number" name="txtSellPrice" value="" id="txtSellPrice" class="form-control form-control-sm" />
+                        <span class="error hide require-sellPrice font-weight-bold">SellPrice is required !</span>
                     </div>
                 </div>
             </div>
@@ -52,7 +57,7 @@
                         </div>
                         <span id="unitName" class="font-weight-bold mt-3" style="color:darkblue"> </span>
                     </div>
-                    <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
+                    <span class="error hide required-qty font-weight-bold">Quantity is required !</span>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
@@ -103,9 +108,45 @@
         var txtCostPrice = $("#txtCostPrice");
         var txtSellPrice = $("#txtSellPrice");
 
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblServicesWarehouseStock tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblServicesWarehouseStock tbody tr"), function (index, item) {
+                    var partsId = $(this).children('td').eq(1).html();
+                    if (partsId == ddlMobilePart.val()) {
+                        isValid = false;
+                        $(".duplicate-parts").removeClass('hide');
+                    }
+                })
+            }
+            if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-parts").removeClass("hide");
+            }
+            if (TryParseInt(txtCostPrice.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-costPrice").removeClass("hide");
+            }
+            if (TryParseInt(txtSellPrice.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-sellPrice").removeClass("hide");
+            }
+            if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
+                isValid = false;
+                $(".required-qty").removeClass("hide");
+            }
+            return isValid;
+        }
+
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
-
+            if (validateInput() == true) {
                 disable("#ddlServicesWarehouse");
                 var sl = $("#tblServicesWarehouseStock tbody tr").length;
                 var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
@@ -117,14 +158,15 @@
                 var td7 = "<td>" + txtRemarks.val() + "</td>";
                 var td8 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-            var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8+ "</tr>";
-            if ($("#tblServicesWarehouseStock tbody tr").length == 0) {
-                $("#tblServicesWarehouseStock tbody").append(tr);
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + "</tr>";
+                if ($("#tblServicesWarehouseStock tbody tr").length == 0) {
+                    $("#tblServicesWarehouseStock tbody").append(tr);
                 }
-            else {
-                $("#tblServicesWarehouseStock tbody tr").eq(0).before(tr);
+                else {
+                    $("#tblServicesWarehouseStock tbody tr").eq(0).before(tr);
                 }
                 clearCtrl();
+            }
         });
 
         function clearCtrl() {
@@ -191,14 +233,16 @@
         })
 
         $("#btnReset").click(function (e) {
+            e.preventDefault();
             clearDropdown("ddlMobilePart");
             enable("#ddlServicesWarehouse");
+            ddlServicesWarehouse.val("");
             $("#tblServicesWarehouseStock tbody").empty();
-            e.preventDefault();
-            txtStockInQty.val('');
+            txtStockInQty.val('0');
+            txtCostPrice.val('0');
+            txtSellPrice.val('0');
             txtRemarks.val('');
         })
-
         function redirectPage(page) {
             window.location.replace(page);
         }

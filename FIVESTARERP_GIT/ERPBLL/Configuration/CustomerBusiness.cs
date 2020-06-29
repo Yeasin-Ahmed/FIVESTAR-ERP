@@ -19,34 +19,34 @@ namespace ERPBLL.Configuration
             this._configurationDb = configurationDb;
             customerRepository = new CustomerRepository(this._configurationDb);
         }
-        public bool DeleteCustomer(long id, long orgId)
+        public bool DeleteCustomer(long id, long orgId, long branchId)
         {
-            customerRepository.DeleteOneByOrg(cus => cus.CustomerId == id && cus.OrganizationId == orgId);
+            customerRepository.DeleteOneByOrg(cus => cus.CustomerId == id && cus.OrganizationId == orgId &&cus.BranchId==branchId);
             return customerRepository.Save();
         }
 
-        public IEnumerable<Customer> GetAllCustomerByOrgId(long orgId)
+        public IEnumerable<Customer> GetAllCustomerByOrgId(long orgId, long branchId)
         {
-            return customerRepository.GetAll(cus => cus.OrganizationId == orgId).ToList();
+            return customerRepository.GetAll(cus => cus.OrganizationId == orgId && cus.BranchId==branchId).ToList();
         }
 
-        public Customer GetCustomerByMobileNo(string mobileNo,long orgId)
+        public Customer GetCustomerByMobileNo(string mobileNo,long orgId, long branchId)
         {
             mobileNo = mobileNo.Trim();
-            return customerRepository.GetOneByOrg(cus => cus.CustomerPhone == mobileNo && cus.OrganizationId == orgId);
+            return customerRepository.GetOneByOrg(cus => cus.CustomerPhone == mobileNo && cus.OrganizationId == orgId && cus.BranchId==branchId);
         }
 
-        public Customer GetCustomerOneByOrgId(long id, long orgId)
+        public Customer GetCustomerOneByOrgId(long id, long orgId, long branchId)
         {
-            return customerRepository.GetOneByOrg(cus => cus.CustomerId == id && cus.OrganizationId == orgId);
+            return customerRepository.GetOneByOrg(cus => cus.CustomerId == id && cus.OrganizationId == orgId && cus.BranchId==branchId);
         }
 
-        public bool IsDuplicateCustomerPhone(string customerPhone, long id, long orgId)
+        public bool IsDuplicateCustomerPhone(string customerPhone, long id, long orgId, long branchId)
         {
-            return customerRepository.GetOneByOrg(cus => cus.CustomerPhone == customerPhone && cus.CustomerId != id && cus.OrganizationId == orgId) != null ? true : false;
+            return customerRepository.GetOneByOrg(cus => cus.CustomerPhone == customerPhone && cus.CustomerId != id && cus.OrganizationId == orgId && cus.BranchId==branchId) != null ? true : false;
         }
 
-        public bool SaveCustomer(CustomerDTO customerDTO, long userId, long orgId)
+        public bool SaveCustomer(CustomerDTO customerDTO, long userId, long orgId, long branchId)
         {
             Customer customer = new Customer();
             if (customerDTO.CustomerId == 0)
@@ -56,18 +56,20 @@ namespace ERPBLL.Configuration
                 customer.CustomerPhone = customerDTO.CustomerPhone;
                 customer.Remarks = customerDTO.Remarks;
                 customer.OrganizationId = orgId;
+                customer.BranchId = branchId;
                 customer.EUserId = userId;
                 customer.EntryDate = DateTime.Now;
                 customerRepository.Insert(customer);
             }
             else
             {
-                customer = GetCustomerOneByOrgId(customerDTO.CustomerId, orgId);
+                customer = GetCustomerOneByOrgId(customerDTO.CustomerId, orgId,branchId);
                 customer.CustomerName = customerDTO.CustomerName;
                 customer.CustomerAddress = customerDTO.CustomerAddress;
                 customer.CustomerPhone = customerDTO.CustomerPhone;
                 customer.Remarks = customerDTO.Remarks;
                 customer.OrganizationId = orgId;
+                customer.BranchId = branchId;
                 customer.UpUserId = userId;
                 customer.UpdateDate = DateTime.Now;
                 customerRepository.Update(customer);

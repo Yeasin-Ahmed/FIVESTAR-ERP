@@ -29,5 +29,6 @@ namespace ERPBO.Configuration.ViewModels
         [StringLength(100)]
         public string UserName { get; set; }
         public string Password { get; set; }
+        public long BranchId { get; set; }
     }
 }

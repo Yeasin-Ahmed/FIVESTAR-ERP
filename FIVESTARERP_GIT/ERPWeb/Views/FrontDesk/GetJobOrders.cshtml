@@ -21,20 +21,30 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
+                <label class="col-form-label">IMEI1 No</label>
+                <input type="text" id="txtIMEINo" class="form-control form-control-sm" placeholder="Search By IMEI1" />
+            </div>
+            <div class="col-md-3">
+                <label class="col-form-label">IMEI2 No</label>
+                <input type="text" id="txtIMEI2No" class="form-control form-control-sm" placeholder="Search By IMEI2" />
+            </div>
+            <div class="col-md-3">
                 <label class="col-form-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Search By Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">Mobile No</label>
                 <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label class="col-form-label">JobCode</label>
                 <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
             </div>
             <div class="col-md-3">
                 <label class="col-form-label">StateStatus</label>
-                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "Select Model", new { @class = "form-control form-control-sm ctrl-changed " })
+                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
             </div>
         </div>
     </div>
@@ -68,6 +78,8 @@
         var ddlStateStatus = $("#ddlStateStatus");
         var txtJobCode = $("#txtJobCode");
         var hdfJobOrderId = $("#hdfJobOrderId");
+        var txtIMEINo = $("#txtIMEINo");
+        var txtIMEI2No = $("#txtIMEI2No");
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -88,12 +100,19 @@
             LoadDataTable();
         })
 
+        txtIMEINo.keyup(function () {
+            LoadDataTable();
+        })
+        txtIMEI2No.keyup(function () {
+            LoadDataTable();
+        })
+
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(),  jobCode:txtJobCode.val(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {

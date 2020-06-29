@@ -2,6 +2,9 @@
 @{
     string isWarrantyAvailable = Model.IsWarrantyAvailable ? "Yes":"No";
     string isWarrantyPaperEnclosed = Model.IsWarrantyPaperEnclosed ? "Yes" : "No";
+    string strWarrentStartDate = Model.WarrantyDate.HasValue ? Model.WarrantyDate.Value.ToString("dd-MMM-yyy") : "";
+    string strWarrentEndDate = Model.WarrantyEndDate != null ? Model.WarrantyEndDate.Value.ToString("dd-MMM-yyy") : "";
+    string EntryDate = Model.EntryDate != null ? Model.EntryDate.Value.ToString("dd-MMM-yyy") : "";
 }
 
 <table class="table table-sm table-bordered table-responsive-lg text-sm text-bold" id="tblJobOrderDetail">
@@ -19,36 +22,48 @@
         <td>@Model.Address</td>
     </tr>
     <tr>
-        <td class="text-purple">IMEI</td>
+        <td class="text-purple">IMEI2</td>
         <td>@Model.IMEI</td>
+        <td class="text-purple">IMEI2</td>
+        <td>@Model.IMEI2</td>
         <td class="text-purple">Type</td>
         <td>@Model.Type</td>
-        <td class="text-purple">Model Name</td>
-        <td>@Model.ModelName</td>
     </tr>
     <tr>
+        <td class="text-purple">Model Name</td>
+        <td>@Model.ModelName</td>
         <td class="text-purple">Color</td>
         <td>@Model.ModelColor</td>
         <td class="text-purple">Accessories</td>
         <td>@Model.AccessoriesNames</td>
-        <td class="text-purple">Problems</td>
-        <td>@Model.Problems</td>
     </tr>
     <tr>
+        <td class="text-purple">Problems</td>
+        <td>@Model.Problems</td>
         <td class="text-purple">Warrenty Available</td>
         <td>@isWarrantyAvailable</td>
         <td class="text-purple">Warrenty Paper Enclosed</td>
         <td>@isWarrantyPaperEnclosed</td>
-        <td class="text-purple">StateStatus</td>
-        <td>@Model.StateStatus</td>
     </tr>
     <tr>
-        <td class="text-purple">WarrentyDate</td>
-        <td>@Model.WarrantyDate</td>
-        <td class="text-purple">Remarks</td>
-        <td>@Model.Remarks</td>
+        <td class="text-purple">StateStatus</td>
+        <td>@Model.StateStatus</td>
+        <td class="text-purple">WarrentyStartDate</td>
+        <td>@strWarrentStartDate</td>
+        <td class="text-purple">WarrentyEndDate</td>
+        <td>@strWarrentEndDate</td>
+    </tr>
+    <tr>
         <td class="text-purple">ReferenceNumber</td>
         <td>@Model.ReferenceNumber</td>
+        <td class="text-purple">JobCreateDate</td>
+        <td>@EntryDate</td>
+        <td class="text-purple">Issued by</td>
+        <td>@Model.EntryUser</td>
+    </tr>
+    <tr>
+        <td class="text-purple">Remarks</td>
+        <td>@Model.Remarks</td>
     </tr>
     @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.PendingJobOrder)
     {

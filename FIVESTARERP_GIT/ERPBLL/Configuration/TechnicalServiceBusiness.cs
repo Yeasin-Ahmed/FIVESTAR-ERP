@@ -19,28 +19,28 @@ namespace ERPBLL.Configuration
             this._configurationDb = configurationDb;
             technicalServiceRepository = new TechnicalServiceRepository(this._configurationDb);
         }
-        public bool DeleteTechnicalServiceEng(long id, long orgId)
+        public bool DeleteTechnicalServiceEng(long id, long orgId, long branchId)
         {
-            technicalServiceRepository.DeleteOneByOrg(ts => ts.EngId == id && ts.OrganizationId == orgId);
+            technicalServiceRepository.DeleteOneByOrg(ts => ts.EngId == id && ts.OrganizationId == orgId && ts.BranchId==branchId);
             return technicalServiceRepository.Save();
         }
 
-        public IEnumerable<TechnicalServiceEng> GetAllTechnicalServiceByOrgId(long orgId)
+        public IEnumerable<TechnicalServiceEng> GetAllTechnicalServiceByOrgId(long orgId, long branchId)
         {
-            return technicalServiceRepository.GetAll(ts => ts.OrganizationId == orgId).ToList();
+            return technicalServiceRepository.GetAll(ts => ts.OrganizationId == orgId && ts.BranchId==branchId).ToList();
         }
 
-        public TechnicalServiceEng GetTechnicalServiceOneByOrgId(long id, long orgId)
+        public TechnicalServiceEng GetTechnicalServiceOneByOrgId(long id, long orgId, long branchId)
         {
-            return technicalServiceRepository.GetOneByOrg(ts => ts.EngId == id && ts.OrganizationId == orgId);
+            return technicalServiceRepository.GetOneByOrg(ts => ts.EngId == id && ts.OrganizationId == orgId && ts.BranchId == branchId);
         }
 
-        public bool IsDuplicateTechnicalName(string name, long id, long orgId)
+        public bool IsDuplicateTechnicalName(string name, long id, long orgId, long branchId)
         {
-            return technicalServiceRepository.GetOneByOrg(ts => ts.Name == name && ts.EngId != id && ts.OrganizationId == orgId) != null ? true : false;
+            return technicalServiceRepository.GetOneByOrg(ts => ts.Name == name && ts.EngId != id && ts.OrganizationId == orgId && ts.BranchId == branchId) != null ? true : false;
         }
 
-        public bool SaveTechnicalService(TechnicalServiceEngDTO technicalServiceEngDTO, long userId, long orgId)
+        public bool SaveTechnicalService(TechnicalServiceEngDTO technicalServiceEngDTO, long userId, long orgId, long branchId)
         {
             TechnicalServiceEng technicalServiceEng = new TechnicalServiceEng();
             if (technicalServiceEngDTO.EngId == 0)
@@ -53,13 +53,14 @@ namespace ERPBLL.Configuration
                 technicalServiceEng.Password = technicalServiceEngDTO.Password;
                 technicalServiceEng.Remarks = technicalServiceEngDTO.Remarks;
                 technicalServiceEng.OrganizationId = orgId;
+                technicalServiceEng.BranchId = branchId;
                 technicalServiceEng.EUserId = userId;
                 technicalServiceEng.EntryDate = DateTime.Now;
                 technicalServiceRepository.Insert(technicalServiceEng);
             }
             else
             {
-                technicalServiceEng = GetTechnicalServiceOneByOrgId(technicalServiceEngDTO.EngId, orgId);
+                technicalServiceEng = GetTechnicalServiceOneByOrgId(technicalServiceEngDTO.EngId, orgId,branchId);
                 technicalServiceEng.Name = technicalServiceEngDTO.Name;
                 technicalServiceEng.TsCode = technicalServiceEngDTO.TsCode;
                 technicalServiceEng.Address = technicalServiceEngDTO.Address;
@@ -68,6 +69,7 @@ namespace ERPBLL.Configuration
                 technicalServiceEng.Password = technicalServiceEngDTO.Password;
                 technicalServiceEng.Remarks = technicalServiceEngDTO.Remarks;
                 technicalServiceEng.OrganizationId = orgId;
+                technicalServiceEng.BranchId = branchId;
                 technicalServiceEng.UpUserId = userId;
                 technicalServiceEng.UpdateDate = DateTime.Now;
                 technicalServiceRepository.Update(technicalServiceEng);

@@ -56,7 +56,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetJobOrders(string flag, long? modelId, long? jobOrderId, string mobileNo="", string status="",string jobCode="", int page = 1)
+        public ActionResult GetJobOrders(string flag, long? modelId, long? jobOrderId, string mobileNo="", string status="",string jobCode="", string iMEI = "", string iMEI2 = "", int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -68,7 +68,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag== "Assign"))
             {
-                var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, User.OrgId);
+                var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode,iMEI.Trim(), iMEI2.Trim(), User.OrgId,User.BranchId);
                 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -89,7 +89,7 @@ namespace ERPWeb.Controllers
                 else
                 {
                     // Flag= Assign
-                    ViewBag.ddlTSName = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId).Select(r => new SelectListItem { Text = r.Name, Value = r.EngId.ToString() }).ToList();
+                    ViewBag.ddlTSName = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId,User.BranchId).Select(r => new SelectListItem { Text = r.Name, Value = r.EngId.ToString() }).ToList();
                     return PartialView("_GetJobOrderAssing", viewModels.FirstOrDefault());
                 }
             }
@@ -179,7 +179,7 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlTechnicalServicesName = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.Name, Value = d.EngId.ToString() }).ToList();
+                ViewBag.ddlTechnicalServicesName = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId,User.BranchId).Select(d => new SelectListItem { Text = d.Name, Value = d.EngId.ToString() }).ToList();
 
                 return View();
             }

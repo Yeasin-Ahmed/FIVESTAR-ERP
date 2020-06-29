@@ -22,6 +22,14 @@ namespace ERPBLL.FrontDesk
             this.requsitionInfoForJobOrderRepository = new RequsitionInfoForJobOrderRepository(this._frontDeskUnitOfWork);
         }
 
+        public IEnumerable<DashboardRequestSparePartsDTO> DashboardRequestSpareParts(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardRequestSparePartsDTO>(
+                string.Format(@"select StateStatus,COUNT(StateStatus) as Total from tblRequsitionInfoForJobOrders
+                    Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1}
+				group by StateStatus", orgId, branchId)).ToList();
+        }
+
         public IEnumerable<RequsitionInfoForJobOrder> GetAllRequsitionInfoForJob(long orgId, long branchId)
         {
             return requsitionInfoForJobOrderRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId).ToList();

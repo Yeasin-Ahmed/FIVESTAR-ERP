@@ -1,4 +1,5 @@
 ﻿@using ERPBO.Production.ViewModels
+@using ERPBO.FrontDesk.ViewModels
 @{
     ViewBag.Title = "Index";
     int sl = 0;
@@ -78,4 +79,192 @@
             </div>
         </div>
     </div>
+</div>
+<div class="row">
+        <div class="col-sm-3 col-6">
+            <div class="card card-cyan">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Today Receive Job Orders</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="min-height:200px">
+                    @if (((IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel).Count() > 0)
+                    {
+                        <table class="table table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel)
+                                {
+                                    <tr>
+                                        <td class="text-center text-bold" style="font-size: xx-large">@job.Total</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:100%;height:100%">
+                            <div style="position:absolute;top:40%;left:26%">
+                                <i class="fas fa-box-open fa-5x"></i>
+                                <p class="text-dark text-bold">No Job Orders</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3 col-6">
+            <div class="card card-cyan">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Today Bill & Warranty Job</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="min-height:200px">
+                    @if (((IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel).Count() > 0)
+                    {
+                        <table class="table table-striped table-bordered table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>JobOrderType</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var Bill in (IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel)
+                                {
+                                    <tr>
+                                        <td>@Bill.JobOrderType</td>
+                                        <td class="text-center text-bold" style="font-size:x-large">@Bill.Total</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:100%;height:100%">
+                            <div style="position:absolute;top:40%;left:26%">
+                                <i class="fas fa-box-open fa-5x"></i>
+                                <p class="text-dark text-bold">No Billing Or Warranty</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3 col-6">
+            <div class="card card-blue">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Today SingIn & SingOut</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="min-height:200px">
+                    @if (((IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel).Count() > 0)
+                    {
+                        <table class="table table-striped table-bordered table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>StateStatus</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var inout in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
+                                {
+                                    <tr>
+                                        <td>@inout.StateStatus</td>
+                                        <td class="text-center text-bold" style="font-size:x-large">@inout.Total</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:100%;height:100%">
+                            <div style="position:absolute;top:40%;left:26%">
+                                <i class="fas fa-box-open fa-5x"></i>
+                                <p class="text-dark text-bold">No Status</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3 col-6">
+            <div class="card card-blue">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Spare Parts Request</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="min-height:200px">
+                    @if (((IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel).Count() > 0)
+                    {
+                        <table class="table table-striped table-bordered table-valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>StateStatus</th>
+                                    <th class="text-center">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var Req in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
+                                {
+                                    <tr>
+                                        <td>@Req.StateStatus</td>
+                                        <td class="text-center text-bold" style="font-size:x-large">@Req.Total</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:100%;height:100%">
+                            <div style="position:absolute;top:40%;left:26%">
+                                <i class="fas fa-box-open fa-5x"></i>
+                                <p class="text-dark text-bold">No Status</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
 </div>

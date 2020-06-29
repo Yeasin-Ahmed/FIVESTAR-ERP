@@ -53,14 +53,22 @@
                 <form id="frmWarehouse">
                     <input type="hidden" id="hdfRequstionDetailForJobOrderId" />
                     <input type="hidden" id="hdfJobCodeId" value="@jobOrder.JodOrderId" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="ddlServicesWarehouse" class="control-label font-weight-bold">S.Warehouse Name</label>
                             @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="ddlMobilePart" class="control-label font-weight-bold">Mobile Parts Name</label>
                             @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select ddlMobileParts--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide require-parts font-weight-bold">Parts is required !</span>
+                            <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="txtStockInQty" class="control-label font-weight-bold">Quantity</label>
@@ -122,6 +130,15 @@
         var hdfRequsitionDetailId = $("#hdfRequsitionDetailId");
         var hdfRowIndex = $("#hdfRowIndex");
 
+        $("#btnReset").click(function (e) {
+            e.preventDefault();
+            clearDropdown("ddlMobilePart");
+            enable("#ddlServicesWarehouse");
+            ddlServicesWarehouse.val("");
+            $("#tblRequsitionDetailForJobOrders tbody").empty();
+            txtStockInQty.val('0');
+            txtRemarks.val('');
+        })
         function OpenModal() {
             $("#modalRequstionDetailForJobOrder").modal("show");
             $(".error").addClass("hide");
@@ -132,26 +149,55 @@
             OpenModal();
         })
 
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblRequsitionDetailForJobOrders tbody tr"), function (index, item) {
+                    var partsId = $(this).children('td').eq(1).html();
+                    if (partsId == ddlMobilePart.val()) {
+                        isValid = false;
+                        $(".duplicate-parts").removeClass('hide');
+                    }
+                })
+            }
+            if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-parts").removeClass("hide");
+            }
+            if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
+                isValid = false;
+                $(".required-qty").removeClass("hide");
+            }
+            return isValid;
+        }
+
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
+            if (validateInput() == true) {
+                disable("#ddlServicesWarehouse");
+                var sl = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
+                var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
+                var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
+                var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+                var td5 = "<td>" + txtRemarks.val() + "</td>";
+                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-            disable("#ddlServicesWarehouse");
-            var sl = $("#tblRequsitionDetailForJobOrders tbody tr").length;
-            var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
-            var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
-            var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
-            var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
-            var td5 = "<td>" + txtRemarks.val() + "</td>";
-            var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
-
-            var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
-            if ($("#tblRequsitionDetailForJobOrders tbody tr").length == 0) {
-                $("#tblRequsitionDetailForJobOrders tbody").append(tr);
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
+                if ($("#tblRequsitionDetailForJobOrders tbody tr").length == 0) {
+                    $("#tblRequsitionDetailForJobOrders tbody").append(tr);
+                }
+                else {
+                    $("#tblRequsitionDetailForJobOrders tbody tr").eq(0).before(tr);
+                }
+                clearCtrl();
             }
-            else {
-                $("#tblRequsitionDetailForJobOrders tbody tr").eq(0).before(tr);
-            }
-            clearCtrl();
         });
 
         function clearCtrl() {

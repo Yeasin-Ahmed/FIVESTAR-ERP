@@ -221,7 +221,7 @@ namespace ERPWeb.Controllers
         #region tblCustomers
         public ActionResult CustomerList()
         {
-            IEnumerable<CustomerDTO> customerDTO = _customerBusiness.GetAllCustomerByOrgId(User.OrgId).Select(cus => new CustomerDTO
+            IEnumerable<CustomerDTO> customerDTO = _customerBusiness.GetAllCustomerByOrgId(User.OrgId,User.BranchId).Select(cus => new CustomerDTO
             {
                 CustomerId = cus.CustomerId,
                 CustomerName = cus.CustomerName,
@@ -249,7 +249,7 @@ namespace ERPWeb.Controllers
                 {
                     CustomerDTO dto = new CustomerDTO();
                     AutoMapper.Mapper.Map(customerViewModel, dto);
-                    isSuccess = _customerBusiness.SaveCustomer(dto, User.UserId, User.OrgId);
+                    isSuccess = _customerBusiness.SaveCustomer(dto, User.UserId, User.OrgId,User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -267,7 +267,7 @@ namespace ERPWeb.Controllers
             {
                 try
                 {
-                    isSuccess = _customerBusiness.DeleteCustomer(id, User.OrgId);
+                    isSuccess = _customerBusiness.DeleteCustomer(id, User.OrgId,User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -281,7 +281,7 @@ namespace ERPWeb.Controllers
         #region T.S.
         public ActionResult TechnicalServiceEngList()
         {
-            IEnumerable<TechnicalServiceEngDTO> engDTO = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId).Select(ts => new TechnicalServiceEngDTO
+            IEnumerable<TechnicalServiceEngDTO> engDTO = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId,User.BranchId).Select(ts => new TechnicalServiceEngDTO
             {
                 EngId = ts.EngId,
                 Name = ts.Name,
@@ -311,7 +311,7 @@ namespace ERPWeb.Controllers
                 {
                     TechnicalServiceEngDTO dto = new TechnicalServiceEngDTO();
                     AutoMapper.Mapper.Map(technicalServiceEngViewModel, dto);
-                    isSuccess = _technicalServiceBusiness.SaveTechnicalService(dto, User.UserId, User.OrgId);
+                    isSuccess = _technicalServiceBusiness.SaveTechnicalService(dto, User.UserId, User.OrgId,User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -328,7 +328,7 @@ namespace ERPWeb.Controllers
             {
                 try
                 {
-                    isSuccess = _technicalServiceBusiness.DeleteTechnicalServiceEng(id, User.OrgId);
+                    isSuccess = _technicalServiceBusiness.DeleteTechnicalServiceEng(id, User.OrgId,User.BranchId);
                 }
                 catch (Exception ex)
                 {

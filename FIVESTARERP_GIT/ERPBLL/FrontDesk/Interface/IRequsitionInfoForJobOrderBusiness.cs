@@ -15,5 +15,7 @@ namespace ERPBLL.FrontDesk.Interface
         RequsitionInfoForJobOrder GetAllRequsitionInfoForJobOrderId(long reqInfoId,long orgId);
         bool SaveRequisitionInfoForJobOrder(RequsitionInfoForJobOrderDTO requsitionInfoDTO, List<RequsitionDetailForJobOrderDTO> details, long userId, long orgId, long branchId);
         bool SaveRequisitionStatus(long reqId, string status, long userId, long orgId,long branchId);
+
+        IEnumerable<DashboardRequestSparePartsDTO> DashboardRequestSpareParts(long orgId, long branchId);
     }
 }

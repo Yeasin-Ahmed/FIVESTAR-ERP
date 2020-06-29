@@ -49,5 +49,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> WarrantyDate { get; set; }
         public string Remarks { get; set; }
         public string ReferenceNumber { get; set; }
+        public string IMEI2 { get; set; }
+        public Nullable<DateTime> WarrantyEndDate { get; set; }
     }
 }

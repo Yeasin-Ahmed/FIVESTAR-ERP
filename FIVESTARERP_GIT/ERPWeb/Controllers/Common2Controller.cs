@@ -49,7 +49,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult GetCustomerByMobileNo(string mobileNo)
         {
-            var customer =_customerBusiness.GetCustomerByMobileNo(mobileNo, User.OrgId);
+            var customer =_customerBusiness.GetCustomerByMobileNo(mobileNo, User.OrgId,User.BranchId);
             CustomerViewModel viewModel = new CustomerViewModel();
             if(customer != null)
             {
@@ -96,13 +96,13 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateCustomerPhone(string customerPhone, long id)
         {
-            bool isExist = _customerBusiness.IsDuplicateCustomerPhone(customerPhone, id, User.OrgId);
+            bool isExist = _customerBusiness.IsDuplicateCustomerPhone(customerPhone, id, User.OrgId,User.BranchId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateTSName(string name, long id)
         {
-            bool isExist = _technicalServiceBusiness.IsDuplicateTechnicalName(name, id, User.OrgId);
+            bool isExist = _technicalServiceBusiness.IsDuplicateTechnicalName(name, id, User.OrgId,User.BranchId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

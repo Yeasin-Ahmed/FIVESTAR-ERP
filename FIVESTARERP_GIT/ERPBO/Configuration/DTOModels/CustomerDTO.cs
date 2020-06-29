@@ -18,5 +18,6 @@ namespace ERPBO.Configuration.DTOModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long BranchId { get; set; }
     }
 }

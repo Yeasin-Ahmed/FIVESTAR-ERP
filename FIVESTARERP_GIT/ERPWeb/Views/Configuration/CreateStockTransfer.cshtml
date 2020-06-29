@@ -25,29 +25,31 @@
                 <div class="col-md-3">
                     <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
                     @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlBranchName" class="control-label font-weight-bold">Branch Name</label>
                     @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlMobileParts" class="control-label font-weight-bold">MobileParts Name</label>
                     @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select MobileParts--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-parts font-weight-bold">Parts is required !</span>
+                    <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                 </div>
                 <div class="col-md-3">
                     <label for="ddlCostPrice" class="control-label font-weight-bold">CostPrice</label>
                     @Html.DropDownList("ddlCostPrice", (IEnumerable<SelectListItem>)ViewBag.ddlCostPrice, "--Select CostPrice--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-costPrice font-weight-bold">CostPrice is required !</span>
                 </div>
             </div>
             <div class="row">
-                @*<div class="col-md-3">
-                    <label for="ddlSellPrice" class="control-label font-weight-bold">SellPrice</label>
-                    @Html.DropDownList("ddlSellPrice", (IEnumerable<SelectListItem>)ViewBag.ddlSellPrice, "--Select SellPrice--", new { @class = "form-control form-control-sm" })
-                </div>*@
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtSellPrice" class="control-label font-weight-bold">SellPrice</label>
                         <input type="text" name="txtSellPrice" value="" id="txtSellPrice" class="form-control form-control-sm" />
+                        <span class="error hide require-sellPrice font-weight-bold">SellPrice is required !</span>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -109,7 +111,23 @@
         var txtRemarks = $("#txtRemarks");
         var stockQty = $("#stockQty");
         var txtSellPrice = $("#txtSellPrice");
+        var txtRemarks = $("#txtRemarks");
         //var ddlSellPrice = $("#ddlSellPrice");
+
+        $("#btnReset").click(function (e) {
+            e.preventDefault();
+            clearDropdown("ddlMobileParts");
+            enable("#ddlServicesWarehouse");
+            ddlServicesWarehouse.val("");
+            enable("#ddlBranchName");
+            ddlBranchName.val("");
+            $("#tblStockTransfer tbody").empty();
+            txtStockInQty.val('0');
+            ddlCostPrice.val('0');
+            txtSellPrice.val('0');
+            stockQty.val('0');
+            txtRemarks.val('');
+        })
 
         //casced dropdown load for CostPrice
         ddlMobileParts.change(function () {
@@ -152,30 +170,71 @@
 
         })
 
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblStockTransfer tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblStockTransfer tbody tr"), function (index, item) {
+                    var partsId = $(this).children('td').eq(1).html();
+                    if (partsId == ddlMobileParts.val()) {
+                        isValid = false;
+                        $(".duplicate-parts").removeClass('hide');
+                    }
+                })
+            }
+            if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlBranchName.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-branch").removeClass("hide");
+            }
+            if (TryParseInt(ddlMobileParts.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-parts").removeClass("hide");
+            }
+            if (TryParseInt(ddlCostPrice.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-costPrice").removeClass("hide");
+            }
+            if (TryParseInt(txtSellPrice.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-sellPrice").removeClass("hide");
+            }
+            if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
+                isValid = false;
+                $(".required-qty").removeClass("hide");
+            }
+            return isValid;
+        }
+
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
+            if (validateInput() == true) {
+                disable("#ddlServicesWarehouse");
+                disable("#ddlBranchName");
+                var sl = $("#tblStockTransfer tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
+                var td2 = "<td class='hide'>" + ddlMobileParts.val() + "</td>";
+                var td3 = "<td>" + $("#ddlMobileParts option:selected").text() + "</td>";
+                var td4 = "<td class='text-center'>" + ddlCostPrice.val() + "</td>";
+                //var td5 = "<td class='text-center'>" + $("#ddlCostPrice option:selected").text() + "</td>";
+                var td6 = "<td class='text-center'>" + txtSellPrice.val() + "</td>";
+                var td7 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+                var td8 = "<td>" + txtRemarks.val() + "</td>";
+                var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-            disable("#ddlServicesWarehouse");
-            disable("#ddlBranchName");
-            var sl = $("#tblStockTransfer tbody tr").length;
-            var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
-            var td2 = "<td class='hide'>" + ddlMobileParts.val() + "</td>";
-            var td3 = "<td>" + $("#ddlMobileParts option:selected").text() + "</td>";
-            var td4 = "<td class='text-center'>" + ddlCostPrice.val() + "</td>";
-            //var td5 = "<td class='text-center'>" + $("#ddlCostPrice option:selected").text() + "</td>";
-            var td6 = "<td class='text-center'>" + txtSellPrice.val() + "</td>";
-            var td7 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
-            var td8 = "<td>" + txtRemarks.val() + "</td>";
-            var td9 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
-
-            var tr = "<tr>" + td1 + td2 + td3 + td4 + td6 + td7 + td8 + td9 + "</tr>";
-            if ($("#tblStockTransfer tbody tr").length == 0) {
-                $("#tblStockTransfer tbody").append(tr);
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td6 + td7 + td8 + td9 + "</tr>";
+                if ($("#tblStockTransfer tbody tr").length == 0) {
+                    $("#tblStockTransfer tbody").append(tr);
+                }
+                else {
+                    $("#tblStockTransfer tbody tr").eq(0).before(tr);
+                }
+                clearCtrl();
             }
-            else {
-                $("#tblStockTransfer tbody tr").eq(0).before(tr);
-            }
-            clearCtrl();
         })
         function clearCtrl() {
             ddlMobileParts.val('');

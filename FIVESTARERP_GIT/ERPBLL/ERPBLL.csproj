@@ -121,9 +121,11 @@
     <Compile Include="ControlPanel\UserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\SubMenuBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IJobOrderTSBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IRequsitionDetailForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IRequsitionInfoForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\Interface\ITechnicalServicesStockBusiness.cs" />
+    <Compile Include="FrontDesk\JobOrderTSBusiness.cs" />
     <Compile Include="FrontDesk\RequsitionDetailForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\RequsitionInfoForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderBusiness.cs" />

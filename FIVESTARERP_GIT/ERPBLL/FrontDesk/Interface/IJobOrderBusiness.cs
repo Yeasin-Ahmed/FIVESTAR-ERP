@@ -11,7 +11,7 @@ namespace ERPBLL.FrontDesk.Interface
 {
     public interface IJobOrderBusiness
     {
-        IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, long orgId);
+        IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode,string iMEI, string iMEI2, long orgId,long branchId);
         JobOrder GetJobOrderById(long jobOrderId, long orgId);
         bool SaveJobOrder(JobOrderDTO jobOrder, List<JobOrderAccessoriesDTO> jobOrderAccessories, List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId,long branchId);
         bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId);
@@ -27,5 +27,7 @@ namespace ERPBLL.FrontDesk.Interface
 
         bool SaveJobOrderPulling(long jobOrderId, long userId, long orgId, long branchId);
         JobOrder GetReferencesNumberByIMEI( string imei, long orgId, long branchId);
+        IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyJobOrder(long orgId,long branchId);
+        IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> DashboardDailyBillingAndWarrantyJob(long orgId, long branchId);
     }
 }
