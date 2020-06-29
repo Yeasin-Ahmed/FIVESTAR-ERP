@@ -175,7 +175,7 @@ namespace ERPDAL.ProductionDAL
         {
 
         }
-    } 
+    }
     public class PackagingItemStockDetailRepository : ProductionBaseRepository<PackagingItemStockDetail>
     {
         public PackagingItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -206,4 +206,37 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+
+    public class RepairItemRepository : ProductionBaseRepository<RepairItem>
+    {
+        public RepairItemRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class RepairItemPartsRepository : ProductionBaseRepository<RepairItemParts>
+    {
+        public RepairItemPartsRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class RepairItemProblemRepository : ProductionBaseRepository<RepairItemProblem>
+    {
+        public RepairItemProblemRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class FaultyCaseRepository : ProductionBaseRepository<FaultyCase>
+    {
+        public FaultyCaseRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
 }

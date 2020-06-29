@@ -63,6 +63,10 @@ namespace ERPWeb.Controllers
         private readonly IRepairItemStockDetailBusiness _repairItemStockDetailBusiness;
         private readonly IPackagingItemStockInfoBusiness _packagingItemStockInfoBusiness;
         private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
+        private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
+        private readonly IFaultyItemStockInfoBusiness _faultyItemStockInfoBusiness;
+        private readonly IFaultyCaseBusiness _faultyCaseBusiness;
+        private readonly IRepairItemBusiness _repairItemBusiness;
         #endregion
 
         #region Inventory Business Classes
@@ -75,7 +79,7 @@ namespace ERPWeb.Controllers
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         #endregion
 
-        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, ITransferFromQCInfoBusiness transferFromQCInfoBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferStockToPackagingLine2InfoBusiness transferStockToPackagingLine2InfoBusiness, ITransferStockToPackagingLine2DetailBusiness transferStockToPackagingLine2DetailBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, ITransferRepairItemToQcInfoBusiness transferRepairItemToQcInfoBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IPackagingItemStockInfoBusiness packagingItemStockInfoBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness)
+        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, ITransferFromQCInfoBusiness transferFromQCInfoBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferStockToPackagingLine2InfoBusiness transferStockToPackagingLine2InfoBusiness, ITransferStockToPackagingLine2DetailBusiness transferStockToPackagingLine2DetailBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, ITransferRepairItemToQcInfoBusiness transferRepairItemToQcInfoBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IPackagingItemStockInfoBusiness packagingItemStockInfoBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IRepairItemBusiness repairItemBusiness)
         {
             #region Production
             this._requsitionInfoBusiness = requsitionInfoBusiness;
@@ -119,6 +123,10 @@ namespace ERPWeb.Controllers
             this._repairItemStockDetailBusiness = repairItemStockDetailBusiness;
             this._packagingItemStockInfoBusiness = packagingItemStockInfoBusiness;
             this._packagingItemStockDetailBusiness = packagingItemStockDetailBusiness;
+            this._faultyItemStockInfoBusiness = faultyItemStockInfoBusiness;
+            this._faultyItemStockDetailBusiness = faultyItemStockDetailBusiness;
+            this._faultyCaseBusiness = faultyCaseBusiness;
+            this._repairItemBusiness = repairItemBusiness;
             #endregion
 
             #region Inventory
@@ -2939,6 +2947,122 @@ namespace ERPWeb.Controllers
             }
         }
 
+        #endregion
+
+        #region Faulty Stock By Repair
+
+        public ActionResult GetFaultyItemStockInfo(string flag, long? lineId, long? repairId, long? qcId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Production", "GetFaultyItemStockInfo");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+
+                return View();
+            }
+            else
+            {
+                IEnumerable<FaultyItemStockInfoDTO> dto = _faultyItemStockInfoBusiness.GetFaultyItemStockInfos(User.OrgId).Select(info => new FaultyItemStockInfoDTO
+                {
+                    FaultyItemStockInfoId = info.FaultyItemStockInfoId,
+                    ProductionFloorId = info.ProductionFloorId.Value,
+                    ProductionFloorName = _productionLineBusiness.GetProductionLineOneByOrgId(info.ProductionFloorId.Value, User.OrgId).LineNumber,
+                    QCId = info.QCId,
+                    QCName = _qualityControlBusiness.GetQualityControlById(info.QCId.Value, User.OrgId).QCName,
+                    RepairLineId = info.RepairLineId,
+                    RepairName = _repairLineBusiness.GetRepairLineById(info.RepairLineId.Value, User.OrgId).RepairLineName,
+                    DescriptionId = info.DescriptionId,
+                    ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, info.OrganizationId).DescriptionName),
+                    WarehouseId = info.WarehouseId,
+                    WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+                    ItemTypeId = info.ItemTypeId,
+                    ItemTypeName = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
+                    ItemId = info.ItemId,
+                    ItemName = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, User.OrgId).ItemName),
+                    UnitId = info.UnitId,
+                    UnitName = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, User.OrgId).UnitSymbol),
+                    StockInQty = info.StockInQty,
+                    StockOutQty = info.StockOutQty,
+                    Remarks = info.Remarks,
+                    OrganizationId = info.OrganizationId
+
+                }).AsEnumerable();
+
+                dto = dto.Where(ws =>
+                (lineId == null || lineId == 0 || ws.ProductionFloorId == lineId)
+                && (repairId == null || repairId == 0 || ws.RepairLineId == repairId)
+                && (qcId == null || qcId == 0 || ws.QCId == qcId)
+                && (modelId == null || modelId == 0 || ws.DescriptionId == modelId)
+                && (warehouseId == null || warehouseId == 0 || ws.WarehouseId == warehouseId)
+                && (itemTypeId == null || itemTypeId == 0 || ws.ItemTypeId == itemTypeId)
+                && (itemId == null || itemId == 0 || ws.ItemId == itemId)
+                && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
+                ).OrderByDescending(s => s.FaultyItemStockInfoId).ToList();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+                List<FaultyItemStockInfoViewModel> viewModels = new List<FaultyItemStockInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetRepairLineStockInfo", viewModels);
+            }
+        }
+
+        public ActionResult CreateRepairFaultyStock() {
+
+            ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+            ViewBag.ddlItem = _itemBusiness.GetItemDetails(User.OrgId).Select(i => new SelectListItem() {Text = i.ItemName, Value =i.ItemId.ToString() }).ToList();
+
+            return View();
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveFaultyItemStock(List<FaultyItemStockDetailViewModel> details)
+        {
+            bool IsSuccess = false;
+            if(ModelState.IsValid && details.Count > 0)
+            {
+                List<FaultyItemStockDetailDTO> dto = new List<FaultyItemStockDetailDTO>();
+                AutoMapper.Mapper.Map(details,dto);
+                IsSuccess = _repairLineStockDetailBusiness.StockOutByFaultyItem(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        public ActionResult CreateFaultyByQRCode()
+        {
+            ViewBag.ddlProductionFloor = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+
+            ViewBag.ddlProblems = _faultyCaseBusiness.GetFaultyCases(User.OrgId).Select(f => new SelectListItem
+            {
+                 Text = f.ProblemDescription,
+                 Value = f.CaseId.ToString()
+            }).ToList();
+            return View();
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveFaultyByQRCode(RepairItemViewModel repairItem)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                RepairItemDTO repairItemDTO = new RepairItemDTO();
+                AutoMapper.Mapper.Map(repairItem, repairItemDTO);
+                IsSuccess = _repairItemBusiness.SaveRepairItem(repairItemDTO, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         public ActionResult GetQRCode()

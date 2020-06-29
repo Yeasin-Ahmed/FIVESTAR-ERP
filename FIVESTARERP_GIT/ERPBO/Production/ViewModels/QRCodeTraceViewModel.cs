@@ -15,6 +15,7 @@ namespace ERPBO.Production.ViewModels
         public string CodeNo { get; set; }
         public byte?[] CodeImage { get; set; }
         public long? ProductionFloorId { get; set; }
+        public long? AssemblyId { get; set; }
         public long? DescriptionId { get; set; }
         public long? ColorId { get; set; }
         public long? WarehouseId { get; set; }
@@ -36,6 +37,8 @@ namespace ERPBO.Production.ViewModels
         // Custom Property
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
         [StringLength(100)]

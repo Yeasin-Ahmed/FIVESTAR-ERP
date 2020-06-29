@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Production.Interface;
 using ERPBO.Production.DomainModels;
+using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,9 @@ namespace ERPBLL.Production
         private readonly ITransferStockToAssemblyDetailBusiness _transferStockToAssemblyDetailBusiness;
         private readonly ITransferStockToAssemblyInfoBusiness _transferStockToAssemblyInfoBusiness;
         private readonly IAssemblyLineStockInfoBusiness _assemblyLineStockInfoBusiness;
+        private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
 
-        public AssemblyLineStockDetailBusiness(IProductionUnitOfWork productionDb, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness)
+        public AssemblyLineStockDetailBusiness(IProductionUnitOfWork productionDb, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness)
         {
             this._productionDb = productionDb;
             this._assemblyLineStockInfoRepository = new AssemblyLineStockInfoRepository(this._productionDb);
@@ -27,6 +29,7 @@ namespace ERPBLL.Production
             this._transferStockToAssemblyDetailBusiness = transferStockToAssemblyDetailBusiness;
             this._transferStockToAssemblyInfoBusiness = transferStockToAssemblyInfoBusiness;
             this._assemblyLineStockInfoBusiness = assemblyLineStockInfoBusiness;
+            this._qRCodeTraceBusiness = qRCodeTraceBusiness;
         }
 
         public IEnumerable<AssemblyLineStockDetail> GetAssemblyLineStockDetails(long orgId)
@@ -130,6 +133,7 @@ namespace ERPBLL.Production
                     if (details.Count() > 0)
                     {
                         List<AssemblyLineStockDetailDTO> stockDetails = new List<AssemblyLineStockDetailDTO>();
+                        List<QRCodeTraceDTO> qRCodes = GenerateQRCodeTraces(info.TSAInfoId, userId, orgId);
                         foreach (var item in details)
                         {
                             AssemblyLineStockDetailDTO detailItem = new AssemblyLineStockDetailDTO()
@@ -154,7 +158,9 @@ namespace ERPBLL.Production
 
                         if (_transferStockToAssemblyInfoBusiness.SaveTransferInfoStateStatus(transferId, status, userId, orgId))
                         {
-                            IsSuccess = SaveAssemblyLineStockIn(stockDetails, userId, orgId);
+                            if (SaveAssemblyLineStockIn(stockDetails, userId, orgId)) {
+                                IsSuccess = _qRCodeTraceBusiness.SaveQRCodeTrace(qRCodes, userId, orgId);
+                            };
                         }
                     }
                     // details
@@ -162,5 +168,52 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
+
+        private List<QRCodeTraceDTO> GenerateQRCodeTraces(long refNo, long userId, long orgId)
+        {
+            List<QRCodeTraceDTO> qRCodeTraces = new List<QRCodeTraceDTO>();
+            TransferStockToAssemblyInfoDTO reqDto = new TransferStockToAssemblyInfoDTO();
+            reqDto = this._productionDb.Db.Database.SqlQuery<TransferStockToAssemblyInfoDTO>(string.Format(@"Select ta.TSAInfoId, ta.TransferCode, ta.DescriptionId, ta.LineId, ta.WarehouseId, ta.AssemblyId, ta.StateStatus, ta.Remarks, ta.OrganizationId,pl.LineNumber, ta.ItemTypeId, ta.ItemId, ta.ForQty,de.DescriptionName 'ModelName',wa.WarehouseName,it.ItemName 'ItemTypeName', i.ItemName ,al.AssemblyLineName 'AssemblyName'
+from tblTransferStockToAssemblyInfo ta
+Inner Join tblProductionLines pl on ta.LineId = pl.LineId
+Inner Join tblAssemblyLines al on ta.AssemblyId = al.AssemblyLineId
+Inner Join [Inventory].dbo.tblDescriptions de on  ta.DescriptionId = de.DescriptionId
+Inner Join [Inventory].dbo.tblWarehouses wa on  ta.WarehouseId = wa.Id
+Inner Join [Inventory].dbo.tblItemTypes it on ta.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on ta.ItemId = i.ItemId
+Where ta.OrganizationId={0} and ta.TSAInfoId={1}", orgId, refNo)).SingleOrDefault();
+
+            string tCode = reqDto.TransferCode.Substring(4);
+            for (int i = 1; i <= reqDto.ForQty; i++)
+            {
+                QRCodeTraceDTO qRCode = new QRCodeTraceDTO
+                {
+                    ProductionFloorId = reqDto.LineId,
+                    DescriptionId = reqDto.DescriptionId,
+                    ItemTypeId = reqDto.ItemTypeId,
+                    ItemId = reqDto.ItemId,
+                    WarehouseId = reqDto.WarehouseId,
+                    CodeId = 0,
+                    ColorName = string.Empty,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    ReferenceId = reqDto.TSAInfoId.ToString(),
+                    ReferenceNumber = reqDto.TransferCode,
+                    ColorId = 0,
+                    ModelName = reqDto.ModelName,
+                    WarehouseName= reqDto.WarehouseName,
+                    ItemTypeName = reqDto.ItemTypeName,
+                    ItemName = reqDto.ItemName,
+                    ProductionFloorName = reqDto.LineNumber,
+                    CodeNo = reqDto.ModelName + "-" + tCode + "-" + i.ToString(),
+                    AssemblyId = reqDto.AssemblyId,
+                    AssemblyLineName = reqDto.AssemblyName
+                };
+                qRCodeTraces.Add(qRCode);
+            }
+            return qRCodeTraces;
+        }
+
     }
 }

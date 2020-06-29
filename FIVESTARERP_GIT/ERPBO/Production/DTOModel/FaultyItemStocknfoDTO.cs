@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Production.DTOModel
 {
-    public class FaultyItemStocknfoDTO
+    public class FaultyItemStockInfoDTO
     {
         public long FaultyItemStockInfoId { get; set; }
         public long? ProductionFloorId { get; set; }
@@ -18,6 +18,7 @@ namespace ERPBO.Production.DTOModel
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
         public int StockInQty { get; set; }
         public int StockOutQty { get; set; }
         [StringLength(150)]
@@ -43,5 +44,7 @@ namespace ERPBO.Production.DTOModel
         public string ItemTypeName { get; set; }
         [StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(100)]
+        public string UnitName { get; set; }
     }
 }

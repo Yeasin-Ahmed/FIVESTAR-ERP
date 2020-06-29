@@ -106,4 +106,12 @@ namespace ERPBLL.Common
         public static readonly string Service = "Service";
 
     }
+
+    public class RepairReason
+    {
+        public static readonly string SoftwareProblem = "Software Problem";
+        public static readonly string HardwareProblem = "Hardware Problem";
+        public static readonly string Both = "Both Software & Hardware Problem";
+    }
+
 }

@@ -72,6 +72,7 @@ namespace ERPBLL.Production
             };
             List<TransferStockToAssemblyDetail> details = new List<TransferStockToAssemblyDetail>();
             List<ProductionStockDetailDTO> floorStockOutItems = new List<ProductionStockDetailDTO>();
+            
 
             foreach (var item in detailDto)
             {
@@ -112,9 +113,10 @@ namespace ERPBLL.Production
 
             if(_transferStockToAssemblyInfoRepository.Save())
             {
-                IsSuccess=_productionStockDetailBusiness.SaveProductionStockOut(floorStockOutItems, userId, orgId, StockOutReason.StockOutByTransferToAssembly);
+                IsSuccess = _productionStockDetailBusiness.SaveProductionStockOut(floorStockOutItems, userId, orgId, StockOutReason.StockOutByTransferToAssembly);
             }
             return IsSuccess;
         }
+
     }
 }

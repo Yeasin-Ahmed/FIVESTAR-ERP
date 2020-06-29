@@ -54,5 +54,9 @@ namespace ERPDAL.ProductionDAL
         public DbSet<QRCodeTrace> tblQRCodeTrace { get; set; }
         public DbSet<FaultyItemStockInfo> tblFaultyItemStockInfo { get; set; }
         public DbSet<FaultyItemStockDetail> tblFaultyItemStockDetail { get; set; }
+        public DbSet<RepairItem> tblRepairItem { get; set; }
+        public DbSet<RepairItemParts> tblRepairItemParts { get; set; }
+        public DbSet<RepairItemProblem> tblRepairItemProblem { get; set; }
+        public DbSet<FaultyCase> tblFaultyCase { get; set; }
     }
 }

@@ -1,0 +1,527 @@
+﻿@model ERPBO.FrontDesk.ViewModels.JobOrderViewModel
+@{
+    ViewBag.Title = "Adding Faulty Item By QRCode";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-center">Adding Faulty Item By QRCode</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/FrontDesk/GetJobOrders" class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            <form id="frmJobOrder">
+                @Html.Hidden("hdfQRCodeId")
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdfItemId1" value="0" />
+                <input type="hidden" id="hdfItemTypeId1" value="0" />
+                <input type="hidden" id="hdfWarehouseId1" value="0" />
+                <input type="hidden" id="hdfDescriptionId" value="0" />
+                <input type="hidden" id="hdfItemId2" value="0" />
+                <input type="hidden" id="hdfItemTypeId2" value="0" />
+                <input type="hidden" id="hdfWarehouseId2" value="0" />
+                <div class="card-body">
+                    <div class="row" style="border-bottom:1px solid #cecece">
+                        <div class="col-md-5">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search By QRCode" id="txtSearchQRCode" />
+                                <div class="input-group-append" style="cursor:pointer">
+                                    <a id="searchQRCode" href="#" class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" id="btnSubmit" class="btn btn-sm btn-success float-right" title="Submit the form for save"><i class="fas fa-paper-plane"></i> Place Faulty </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="txtQRCode" class="control-label font-weight-bold">QR Code</label>
+                            <input type="text" class="form-control form-control-sm" id="txtQRCode" />
+                            <span class="error hide require-qrCode font-weight-bold">QRCode is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlRepairReason" class="control-label font-weight-bold">Repair Reason</label>
+                            <select class="form-control form-control-sm" id="ddlRepairReason">
+                                <option value="">Select Repair Reason</option>
+                                <option value="Software Problem">Software Problem</option>
+                                <option value="Hardware Problem">Hardware Problem</option>
+                                <option value="Both Software & Hardware Problem">Both Software & Hardware Problem</option>
+                            </select>
+                            <span class="error hide req-repairReason">Repair Reason is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="txtReferenceNumber" class="control-label font-weight-bold">References Number</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-2" id="qrCodeDetail">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="ddlProductionFloor" class="control-label font-weight-bold">Production Floor</label>
+                            @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlProductionFloor, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide require-floor font-weight-bold">Production Floor is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlRepairLine" class="control-label font-weight-bold">Repair Line</label>
+                            <select id="ddlRepairLine" class="form-control form-control-sm">
+                                <option value="0">--Select Repair Line--</option>
+                            </select>
+                            <span class="error hide req-repair">Repair line is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
+                            <select id="ddlQCLine" class="form-control form-control-sm">
+                                <option value="0">--Select QC Line--</option>
+                            </select>
+                            <span class="error hide require-qc">QC line is required</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="ddlProblems" class="control-label font-weight-bold">Problems</label>
+                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-problem font-weight-bold">Problem is required</span>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="ddlItems" class="control-label font-weight-bold">Item</label>
+                            <select id="ddlItems" class="form-control form-control-sm select2 select2-danger">
+                                <option value="">--Select Items--</option>
+                            </select>
+                            <span class="error hide require-item">Item is required</span>
+                            <span class="error hide duplicate-itemName">The Item is already added into the list!</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtQuantity" class="control-label font-weight-bold">
+                                Quantity
+                                <span id="stockQty"></span>
+                            </label>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <input type="number" id="txtQuantity" class="form-control form-control-sm" />
+                                </div>
+                                <div class="col-md-3">
+                                    <span id="unitName" class="float-left font-weight-bold mt-2" style="color:darkblue"></span>
+                                </div>
+                            </div>
+                            <span class="error hide require-quantity">Quantity is required</span>
+                            <span class="error hide req-limitCross">Item limit is cross</span>
+                            <span class="error hide req-stockOver">Stock is not available</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtRemarks" class="form-control form-control-sm"></textarea>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-sm btn-warning float-right" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 clearfix">
+                            <label for="tableData" class="control-label font-weight-bold" style="visibility:hidden">Table Data</label>
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <table class="table table-sm table-bordered table-striped table-responsive-lg" id="tblItemData">
+                                        <thead class="text-center">
+                                            <tr class="btn-dark">
+                                                <th style="width:10%">#SL</th>
+                                                <th>Item Name</th>
+                                                <th style="width:15%">Quantity</th>
+                                                <th style="width:10%">Action</th>
+                                                <th class="hide warehouse"></th>
+                                                <th class="hide itemType"></th>
+                                                <th class="hide item"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var txtSearchQRCode = $("#txtSearchQRCode");
+        var txtQRCode = $("#txtQRCode");
+        var hdfQRCodeId = $("#hdfQRCodeId");
+        var ddlRepairReason = $("#ddlRepairReason");
+        var txtReferenceNumber = $("#txtReferenceNumber");
+        var ddlProblems = $("#ddlProblems");
+        var txtRemarks = $("#txtRemarks");
+        var ddlItems = $("#ddlItems");
+        var ddlProductionFloor = $("#ddlProductionFloor");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var ddlQCLine = $("#ddlQCLine");
+        var tblItemData = $("#tblItemData");
+        var hdfItemId1 = $("#hdfItemId1");
+        var hdfItemTypeId1 = $("#hdfItemTypeId1");
+        var hdfWarehouseId1 = $("#hdfWarehouseId1");
+        var hdfItemId2 = $("#hdfItemId2");
+        var hdfItemTypeId2 = $("#hdfItemTypeId2");
+        var hdfWarehouseId2 = $("#hdfWarehouseId2");
+        var txtQuantity = $("#txtQuantity");
+        var hdfDescriptionId = $("#hdfDescriptionId");
+
+        $(document).ready(function () {
+            disable("#txtQRCode");
+            disable("#txtReferenceNumber");
+            disable("#ddlProductionFloor");
+            $("#ddlProblems").attr("data-placeholder", "Select Problems");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        txtSearchQRCode.change(function () {
+            $("#searchQRCode").trigger("click");
+        })
+
+        ddlProductionFloor.change(function () {
+            clearDropdown("ddlRepairLine");
+            clearDropdown("ddlQCLine");
+            if (ddlProductionFloor.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlProductionFloor.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlProductionFloor.val() }));
+            }
+        })
+
+        function clearAll() {
+            txtQRCode.val('');
+            hdfQRCodeId.val('0');
+            ddlProblems.val([]);
+            ddlProblems.trigger("change");;
+            ddlItems.val('');
+            ddlItems.trigger('change');
+            txtRemarks.val('');
+            ddlRepairReason.val('');
+            txtReferenceNumber.val('');
+            ddlProductionFloor.val("");
+            ddlProductionFloor.trigger("change");
+            hdfItemId1.val('0');
+            hdfItemTypeId1.val('0');
+            hdfWarehouseId1.val('0');
+            hdfItemId2.val('0');
+            hdfItemTypeId2.val('0');
+            hdfWarehouseId2.val('0');
+        }
+
+        $("#searchQRCode").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchQRCode.val()) != "") {
+                clearDropdown("ddlItems");
+                $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common/GetQrCodeDetail', JSON.stringify({ qrCode: $.trim(txtSearchQRCode.val()) }))).then(function (res, status) {
+                    if (status === "success") {
+                        clearAll();
+                        if (res.info === null) {
+                            bootbox.alert("No data found with this QR Code");
+                        }
+                        else {
+                            var info = res.info;
+                            txtQRCode.val(info.CodeNo);
+                            hdfQRCodeId.val(info.CodeId);
+                            LoadDropdownByData(res.items, ddlItems);
+                            ddlProductionFloor.val(info.ProductionFloorId);
+                            ddlProductionFloor.trigger("change");
+                            LoadQRCodeDetail(info);
+                            hdfItemId1.val(info.ItemId);
+                            hdfItemTypeId1.val(info.ItemTypeId);
+                            hdfWarehouseId1.val(info.WarehouseId);
+                            hdfDescriptionId.val(info.DescriptionId);
+                        }
+                        //console.log(res);
+                    }
+                })
+            }
+        })
+
+        function LoadDropdownByData(data, elementId) {
+            if (!$.isEmptyObject(data) && data.length > 0) {
+                clearDropdown(elementId.attr("id"));
+                $.each(data, function (index, item) {
+                    var option = "<option value='" + item.value + "'>" + item.text + "</option>";
+                    elementId.append(option);
+                })
+            }
+        }
+
+        function LoadQRCodeDetail(data) {
+            $("#qrCodeDetail").empty();
+            var tr1 = "<tr class='btn-dark'>" +
+                "<th colspan='4'>" + "QRCode Item Details" + "</th>"
+                + "</tr>";
+            var tr2 = "<tr>" +
+                "<td>" + "Assembly Name" + "</td>" +
+                "<td>" + data.AssemblyLineName + "</td>" +
+                "<td>" + "Assembly Reference" + "</td>" +
+                "<td>" + data.ReferenceNumber + "</td>"
+                + "</tr>";
+            var tr3 = "<tr>" +
+                "<td>" + "Model Name" + "</td>" +
+                "<td>" + data.ModelName + "</td>" +
+                "<td>" + "Item Name" + "</td>" +
+                "<td>" + data.ItemName + " [" + data.ItemTypeName + "-" + data.WarehouseName + "]" + "</td>"
+                + "</tr>";
+
+            var thead = "<thead>" + tr1 + "</thead>";
+            var tbody = "<tbody>" + tr2 + tr3 + "</tbody>";
+
+            var table = "<table class='table table-sm table-bordered table-striped table-responsive-lg text-sm text-bold'>" + thead + tbody + "</table>"
+            $("#qrCodeDetail").append(table);
+
+        }
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+        ddlItems.change(function () {
+            $("#stockQty").empty('');
+            if (ddlItems.val() !== "") {
+                var item = $("#ddlItems option:selected").text()
+                var qty = item.substring(item.lastIndexOf("-") + 1, item.length - 1);
+                //console.log(item);
+                //console.log(qty);
+                $("#stockQty").text('(' + qty + ')');
+            }
+        })
+
+        function gethdfValues() {
+            hdfItemId2.val('0');
+            hdfItemTypeId2.val('0');
+            hdfWarehouseId2.val('0');
+            var itemVal = ddlItems.val();
+            var val1 = itemVal.substring(0, itemVal.indexOf("#"));
+            hdfItemId2.val(val1);
+            var val2 = itemVal.substring(itemVal.indexOf("#") + 1, itemVal.lastIndexOf("#"));
+            hdfItemTypeId2.val(val2);
+            var val3 = itemVal.substring(itemVal.lastIndexOf("#") + 1, itemVal.length);
+            hdfWarehouseId2.val(val3);
+        }
+
+        function validateForm() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtQRCode.val()) === "") {
+                isValid = false;
+                $(".require-qrCode").removeClass("hide");
+            }
+            if ($("#qrCodeDetail").html() === "") {
+                bootbox.alert("QRCode Details not found");
+                isValid = false;
+            }
+            if (TryParseInt(ddlProductionFloor.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-floor").removeClass("hide");
+            }
+            if (TryParseInt(ddlRepairLine.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-repair").removeClass("hide");
+            }
+            if (ddlProblems.val().length === 0) {
+                isValid = false;
+                $(".require-problem").removeClass("hide");
+            }
+            if (ddlRepairReason.val() === "") {
+                isValid = false;
+                $(".req-repairReason").removeClass("hide");
+            }
+            return isValid;
+        }
+
+        function validateSubmit() {
+            var isValid = true;
+            if (!validateForm()) {
+                isValid = false;
+            }
+            if (ddlRepairReason.val() !== "" && ddlRepairReason.val() !== "Hardware Problem") {
+                
+                if ($("#tblItemData tbody tr").length === 0) {
+                    isValid = false;
+                    bootbox.alert("Please add faulty item");
+                }
+            }
+            return isValid;
+        }
+
+        function validateInput() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if (!validateForm()) {
+                isValid = false;
+            }
+            if (ddlRepairReason.val() === "") {
+                isValid = false;
+                $(".req-repairReason").removeClass("hide");
+            }
+            else {
+                if (ddlRepairReason.val() === "Hardware Problem" || ddlRepairReason.val() === "Both Software & Hardware Problem") {
+                    if (ddlItems.val() === "") {
+                        isValid = false;
+                        $(".require-item").removeClass("hide");
+                    }
+                    if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".require-quantity").removeClass("hide");
+                    }
+                    else {
+                        if ($("#stockQty").text() === '') {
+                            $('.req-stockOver').removeClass('hide');
+                            isValid = false;
+                        }
+                        else {
+                            var sq = $("#stockQty").text().trim();
+                            sq = sq.substring(1, sq.length - 1);
+                            //console.log("Stock Qty");
+                            //console.log(sq);
+                            if (TryParseInt(txtQuantity.val(), 0) > TryParseInt(sq, 0)) {
+                                isValid = false;
+                                $('.req-limitCross').removeClass('hide');
+                            }
+                            else {
+                                // Check Stock In Db
+                            }
+                        }
+                    }
+                }
+            }
+
+            var count = $("#tblItemData tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblItemData tbody tr"), function (index, item) {
+                    var itemId = $(this).children('td').eq(6).html();
+                    var itemVal = ddlItems.val();
+                    var val1 = itemVal.substring(0, itemVal.indexOf("#"));
+                    if (itemId == val1) {
+                        isValid = false;
+                        $(".duplicate-itemName").removeClass('hide');
+                    }
+                })
+            }
+            return isValid;
+        }
+
+        ddlRepairReason.change(function () {
+            $("#tblItemData tbody").empty();
+        })
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateInput() && ddlRepairReason.val() !== "Software Problem") {
+
+                gethdfValues();
+                disable("#ddlRepairLine");
+                disable("#ddlQCLine");
+                disable("#ddlRepairReason");
+                var td1 = "<td class='text-center text-bold'>" + ($("#tblItemData tbody tr").length + 1) + "</td>";
+                var td2 = "<td>" + $("#ddlItems option:selected").text() + "</td>";
+                var td3 = "<td class='text-center'>" + txtQuantity.val() + "</td>";
+                var td4 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i></a></td>";
+                var td5 = "<td class='hide'>" + hdfWarehouseId2.val() + "</td>";
+                var td6 = "<td class='hide'>" + hdfItemTypeId2.val() + "</td>";
+                var td7 = "<td class='hide'>" + hdfItemId2.val() + "</td>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + "</tr>";
+                $("#tblItemData tbody").append(tr);
+            }
+        })
+
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblItemData tbody", index);
+                    fnFixTheTbodyRowSerial("#tblItemData", index);
+                };
+            }));
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateSubmit()) {
+                bootbox.confirm("Are you sure you want to save", function (result) {
+                    if (result)
+                    {
+                        disable("#btnSubmit");
+                        var problems = []; problems.length = 0;
+                        var prob = ddlProblems.val();
+                        $.each(prob, function (index1, item1) {
+                            $.each($("#ddlProblems option"), function (index2, item2) {
+                                if ($(this).attr("value") == item1) {
+                                    problems.push({
+                                        ProblemId: TryParseInt(item1, 0),
+                                        Problem: $(this).text(),
+                                        QRCodeId: TryParseInt(hdfQRCodeId.val(), 0),
+                                        QRCode: txtQRCode.val()
+                                    });
+                                }
+                            })
+                        })
+
+                        var items = []; items.length = 0;
+                        $.each($("#tblItemData tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            items.push({
+                                QRCodeId: TryParseInt(hdfQRCodeId.val(), 0),
+                                QRCode: txtQRCode.val(),
+                                Qty: TryParseInt(tds.eq(2).html(), 0),
+                                WarehouseId: TryParseInt(tds.eq(4).html(), 0),
+                                ItemTypeId: TryParseInt(tds.eq(5).html(), 0),
+                                ItemId: TryParseInt(tds.eq(6).html(), 0)
+                            })
+                        })
+
+
+                        console.log("Problems");
+                        console.log(problems);
+
+                        console.log("Items");
+                        console.log(items);
+
+                        var data = JSON.stringify({ QRCodeId: hdfQRCodeId.val(), QRCode: txtQRCode.val(), ProductionFloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), WarehouseId: TryParseInt(hdfWarehouseId1.val(), 0), ItemTypeId: TryParseInt(hdfItemTypeId1.val(), 0), ItemId: TryParseInt(hdfItemId1.val(), 0), RepairReason: ddlRepairReason.val(), RepairItemProblems: problems, RepairItemParts: items });
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFaultyByQRCode', data, getToken())).then(function (res, status) {
+
+                        }).fail(function (error) {
+
+                        })
+                    }
+                });
+                
+            }
+        })
+
+    </script>
+}
+
+

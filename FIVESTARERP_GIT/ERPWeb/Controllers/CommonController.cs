@@ -23,6 +23,7 @@ namespace ERPWeb.Controllers
         private readonly IItemBusiness _itemBusiness;
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
+        private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
         private readonly ISupplierBusiness _supplierBusiness;
         #endregion
 
@@ -40,6 +41,7 @@ namespace ERPWeb.Controllers
         private readonly IQCLineStockInfoBusiness _qCLineStockInfoBusiness;
         private readonly IPackagingLineStockInfoBusiness _packagingLineStockInfoBusiness;
         private readonly IRepairLineStockInfoBusiness _repairLineStockInfoBusiness;
+        private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
         #endregion
 
         #region ControlPanel
@@ -47,10 +49,10 @@ namespace ERPWeb.Controllers
         private readonly IRoleBusiness _roleBusiness;
         private readonly IBranchBusiness _branchBusiness;
         private readonly IOrganizationBusiness _organizationBusiness;
-        private readonly IUserAuthorizationBusiness _userAuthorizationBusiness; 
+        private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness,IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness,IAccessoriesBusiness accessoriesBusiness,IClientProblemBusiness clientProblemBusiness,IMobilePartBusiness mobilePartBusiness,ICustomerBusiness customerBusiness,ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -60,6 +62,7 @@ namespace ERPWeb.Controllers
             this._warehouseStockInfoBusiness = warehouseStockInfoBusiness;
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._supplierBusiness = supplierBusiness;
+            this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             #endregion
 
             #region Production Module
@@ -76,6 +79,8 @@ namespace ERPWeb.Controllers
             this._qCLineStockInfoBusiness = qCLineStockInfoBusiness;
             this._packagingLineStockInfoBusiness = packagingLineStockInfoBusiness;
             this._repairLineStockInfoBusiness = repairLineStockInfoBusiness;
+            this._qRCodeTraceBusiness = qRCodeTraceBusiness;
+
             #endregion
 
             #region ControlPanel
@@ -83,7 +88,7 @@ namespace ERPWeb.Controllers
             this._roleBusiness = roleBusiness;
             this._branchBusiness = branchBusiness;
             this._organizationBusiness = organizationBusiness;
-            this._userAuthorizationBusiness = userAuthorizationBusiness; 
+            this._userAuthorizationBusiness = userAuthorizationBusiness;
             #endregion
         }
 
@@ -92,7 +97,7 @@ namespace ERPWeb.Controllers
         {
             // This is a three level menu //
             List<UserMainMenuViewModel> listOfUserMainMenuViewModel = new List<UserMainMenuViewModel>();
-            if (User.UserId > 0 && User.OrgId > 0 && User.IsUserActive ==true)
+            if (User.UserId > 0 && User.OrgId > 0 && User.IsUserActive == true)
             {
                 var userAllMenus = (List<UserAuthorizeMenusViewModels>)Session["UserAuthorizeMenus"];
                 var menus = (from mm in userAllMenus
@@ -110,8 +115,8 @@ namespace ERPWeb.Controllers
                                              select new { ParentSubMenuId = sub.ParentSubMenuId, ParentSubmenuName = sub.ParentSubmenuName }).Distinct().ToList();
 
                     var submenuWithoutParent = (from sub in userAllMenus
-                                             where sub.MainmenuId == mm.MainmenuId && sub.ParentSubMenuId == 0 && sub.IsViewable == true
-                                             select new { SubMenuId = sub.SubmenuId, SubmenuName = sub.SubMenuName,ControllerName=sub.ControllerName,ActionName=sub.ActionName }).Distinct().ToList();
+                                                where sub.MainmenuId == mm.MainmenuId && sub.ParentSubMenuId == 0 && sub.IsViewable == true
+                                                select new { SubMenuId = sub.SubmenuId, SubmenuName = sub.SubMenuName, ControllerName = sub.ControllerName, ActionName = sub.ActionName }).Distinct().ToList();
 
                     foreach (var submenu in submenuWithoutParent)
                     {
@@ -129,12 +134,12 @@ namespace ERPWeb.Controllers
                         UserSubmenuViewModel userSubmenu = new UserSubmenuViewModel();
                         userSubmenu.SubmenuId = submenu.ParentSubMenuId;
                         userSubmenu.SubmenuName = submenu.ParentSubmenuName;
-                        userSubmenu.ControllerName =string.Empty;
+                        userSubmenu.ControllerName = string.Empty;
                         userSubmenu.ActionName = string.Empty;
                         userSubmenu.IsParent = true;
 
                         // Subsubmenu
-                        List<UserSubSubmenuViewModel> listOfSubSubmenu= new List<UserSubSubmenuViewModel>();
+                        List<UserSubSubmenuViewModel> listOfSubSubmenu = new List<UserSubSubmenuViewModel>();
                         var subsubmenuItems = (from sub in userAllMenus
                                                where sub.ParentSubMenuId == submenu.ParentSubMenuId
                                                select new { SubmenuName = sub.SubMenuName, SubmenuId = sub.SubmenuId, ControllerName = sub.ControllerName, ActionName = sub.ActionName }).ToList();
@@ -155,7 +160,7 @@ namespace ERPWeb.Controllers
                     userMainMenuViewModel.UserSubmenus = listOfSubmenus;
                     listOfUserMainMenuViewModel.Add(userMainMenuViewModel);
                 }
-                
+
             }
             return PartialView("_sidebar", listOfUserMainMenuViewModel);
         }
@@ -211,17 +216,17 @@ namespace ERPWeb.Controllers
             bool isExist = _appUserBusiness.IsDuplicateEmployeeId(employeeId, id, User.OrgId);
             return Json(isExist);
         }
-        
+
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsUserExist(string userName,long id)
+        public ActionResult IsUserExist(string userName, long id)
         {
-           bool isUserExist = _appUserBusiness.GetAllAppUsers().Where(u => u.UserName.ToLower() == userName.ToLower() && u.UserId != id).FirstOrDefault() != null;
+            bool isUserExist = _appUserBusiness.GetAllAppUsers().Where(u => u.UserName.ToLower() == userName.ToLower() && u.UserId != id).FirstOrDefault() != null;
 
             return Json(isUserExist);
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsEmailExist(string email,long id)
+        public ActionResult IsEmailExist(string email, long id)
         {
             bool isEmailExist = _appUserBusiness.GetAllAppUsers().Where(u => u.Email.ToLower() == email.ToLower() && u.UserId != id).FirstOrDefault() != null;
 
@@ -273,7 +278,7 @@ namespace ERPWeb.Controllers
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
-            var assemblyStock = _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfoByAssemblyAndItemAndModelId(assemblyId,itemId,modelId,User.OrgId);
+            var assemblyStock = _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfoByAssemblyAndItemAndModelId(assemblyId, itemId, modelId, User.OrgId);
             var itemStock = 0;
             if (assemblyStock != null)
             {
@@ -316,7 +321,7 @@ namespace ERPWeb.Controllers
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
-            var packagingStock = _repairLineStockInfoBusiness.GetRepairLineStockInfoByRepairQCAndItemAndModelId(repairId, itemId,qcId, modelId, User.OrgId);
+            var packagingStock = _repairLineStockInfoBusiness.GetRepairLineStockInfoByRepairQCAndItemAndModelId(repairId, itemId, qcId, modelId, User.OrgId);
             var itemStock = 0;
             if (packagingStock != null)
             {
@@ -326,11 +331,11 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemUnitAndFGStockQty(long lineId,long warehouseId,long itemId, long modelId)
+        public ActionResult GetItemUnitAndFGStockQty(long lineId, long warehouseId, long itemId, long modelId)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
-            var finishGoodsStock = _finishGoodsStockInfoBusiness.GetFinishGoodsStockInfoByAll(User.OrgId, lineId,warehouseId,itemId,modelId);
+            var finishGoodsStock = _finishGoodsStockInfoBusiness.GetFinishGoodsStockInfoByAll(User.OrgId, lineId, warehouseId, itemId, modelId);
             var itemStock = 0;
             if (finishGoodsStock != null)
             {
@@ -375,7 +380,7 @@ namespace ERPWeb.Controllers
         {
             ExecutionStateWithText stateWithText = new ExecutionStateWithText();
             var descriptionId = _requsitionInfoBusiness.GetRequisitionById(reqInfoId.Value, User.OrgId).DescriptionId;
-             var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, User.OrgId).ToList();
+            var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId.Value, User.OrgId).ToList();
             var warehouseStock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId);
             var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
             stateWithText.isSuccess = true;
@@ -401,10 +406,10 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicationItemPreparation(long itemId,long modelId)
+        public ActionResult IsDuplicationItemPreparation(long itemId, long modelId)
         {
             bool IsDuplicate = false;
-            IsDuplicate=_itemPreparationInfoBusiness.IsDuplicationItemPreparation(itemId, modelId, User.OrgId) != null;
+            IsDuplicate = _itemPreparationInfoBusiness.IsDuplicationItemPreparation(itemId, modelId, User.OrgId) != null;
             return Json(IsDuplicate);
         }
 
@@ -412,7 +417,7 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateRoleName(long roleId, string roleName, long orgId)
         {
             bool IsDuplicate = false;
-            IsDuplicate =_roleBusiness.IsDuplicateRoleName(roleName, roleId, orgId);
+            IsDuplicate = _roleBusiness.IsDuplicateRoleName(roleName, roleId, orgId);
             return Json(IsDuplicate);
         }
 
@@ -434,9 +439,9 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicateAssemblyInLine(long lineId, long id,string assemblyName)
+        public ActionResult IsDuplicateAssemblyInLine(long lineId, long id, string assemblyName)
         {
-           var assembly =  _assemblyLineBusiness.GetAssemblyLines(User.OrgId).FirstOrDefault(a => a.ProductionLineId == lineId && a.AssemblyLineName == assemblyName && a.AssemblyLineId != id) != null;
+            var assembly = _assemblyLineBusiness.GetAssemblyLines(User.OrgId).FirstOrDefault(a => a.ProductionLineId == lineId && a.AssemblyLineName == assemblyName && a.AssemblyLineId != id) != null;
             return Json(assembly);
         }
 
@@ -444,7 +449,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult GetItemsByLine(long lineId)
         {
-           var data = _itemBusiness.GetAllItemsInProductionStockByLineId(lineId, User.OrgId).Select(i => new Dropdown
+            var data = _itemBusiness.GetAllItemsInProductionStockByLineId(lineId, User.OrgId).Select(i => new Dropdown
             {
                 value = i.ItemId.ToString(),
                 text = i.ItemName
@@ -473,9 +478,9 @@ namespace ERPWeb.Controllers
         public ActionResult GetRolesByOrgId(long orgId)
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>();
-            if(orgId > 0)
+            if (orgId > 0)
             {
-                dropdowns=_roleBusiness.GetAllRoleByOrgId(orgId).Select(r => new Dropdown {text= r.RoleName,value=r.RoleId.ToString() }).ToList();
+                dropdowns = _roleBusiness.GetAllRoleByOrgId(orgId).Select(r => new Dropdown { text = r.RoleName, value = r.RoleId.ToString() }).ToList();
             }
             return Json(dropdowns);
         }
@@ -493,7 +498,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult GetItemsByWarehouseId(long warehouseId)
         {
-            var data =_itemBusiness.GetItemsByWarehouseId(warehouseId, User.OrgId).ToList();
+            var data = _itemBusiness.GetItemsByWarehouseId(warehouseId, User.OrgId).ToList();
             return Json(data);
         }
 
@@ -501,12 +506,13 @@ namespace ERPWeb.Controllers
         public ActionResult GetUsersByOrg(long orgId)
         {
             List<Dropdown> list = new List<Dropdown>();
-            if(orgId > 0)
+            if (orgId > 0)
             {
-                if(_organizationBusiness.GetOrganizationById(orgId) != null)
+                if (_organizationBusiness.GetOrganizationById(orgId) != null)
                 {
-                    list = _appUserBusiness.GetAllAppUserByOrgId(orgId).Select(u => new Dropdown {
-                        text =  u.UserName,
+                    list = _appUserBusiness.GetAllAppUserByOrgId(orgId).Select(u => new Dropdown
+                    {
+                        text = u.UserName,
                         value = u.UserId.ToString()
                     }).ToList();
 
@@ -518,7 +524,8 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult GetWarehouseByProductionLineId(long lineId)
         {
-            var data = _warehouseBusiness.GetAllWarehouseByProductionLineId(User.OrgId, lineId).Select(w=> new Dropdown {
+            var data = _warehouseBusiness.GetAllWarehouseByProductionLineId(User.OrgId, lineId).Select(w => new Dropdown
+            {
                 text = w.WarehouseName,
                 value = w.Id.ToString()
             }).ToList();
@@ -547,7 +554,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult GetAssembliesByLine(long lineId)
         {
-            var data = _assemblyLineBusiness.GetAssemblyLines(User.OrgId).Where(a=> a.ProductionLineId == lineId).Select(i => new Dropdown
+            var data = _assemblyLineBusiness.GetAssemblyLines(User.OrgId).Where(a => a.ProductionLineId == lineId).Select(i => new Dropdown
             {
                 value = i.AssemblyLineId.ToString(),
                 text = i.AssemblyLineName
@@ -589,7 +596,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetPackagingLineToByLine(long lineId,long packagingId)
+        public ActionResult GetPackagingLineToByLine(long lineId, long packagingId)
         {
             var data = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).Where(a => a.ProductionLineId == lineId && a.PackagingLineId != packagingId).Select(i => new Dropdown
             {
@@ -599,6 +606,7 @@ namespace ERPWeb.Controllers
             return Json(data);
         }
 
+        [HttpPost]
         public ActionResult GetLastPackagingLineByProductionId(long lineId)
         {
             var packagingLine = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).LastOrDefault(a => a.ProductionLineId == lineId);
@@ -609,6 +617,22 @@ namespace ERPWeb.Controllers
 
             return Json(dropdown);
         }
+
+        [HttpPost]
+        public ActionResult GetQrCodeDetail(string qrCode)
+        {
+            var qrCodeInfo = _qRCodeTraceBusiness.GetQRCodeTraceByCode(qrCode, User.OrgId);
+            List<Dropdown> dropdowns = new List<Dropdown>();
+            if (qrCodeInfo != null)
+            {
+                dropdowns = _itemBusiness.GetItemPreparationItems(qrCodeInfo.DescriptionId.Value, qrCodeInfo.ItemId.Value, User.OrgId).Select(i => new Dropdown { text = i.ItemName, value = i.ItemId }).ToList();
+                qrCodeInfo.EUserId = 0;
+                qrCodeInfo.EntryDate = null;
+                qrCodeInfo.ReferenceId = string.Empty;
+                qrCodeInfo.OrganizationId = 0;
+            }
+            return Json(new { info = qrCodeInfo, items = dropdowns.ToArray() });
+        }
         #endregion
 
 
@@ -616,7 +640,7 @@ namespace ERPWeb.Controllers
 
         #region Validate Checker
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicateQCName(long lineId,long id,string qcName)
+        public ActionResult IsDuplicateQCName(long lineId, long id, string qcName)
         {
             var qualityControl = _qualityControlBusiness.GetQualityControls(User.OrgId).FirstOrDefault(qc => qc.ProductionLineId == lineId && qc.QCName == qcName && qc.QCId != id) != null;
             return Json(qualityControl);
@@ -624,7 +648,7 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateRepairName(long lineId, long id, string rlName)
         {
-            var repairLine = _repairLineBusiness.GetRepairLinesByOrgId(User.OrgId).FirstOrDefault(rl => rl.ProductionLineId == lineId && rl.RepairLineName== rlName && rl.RepairLineId != id) != null;
+            var repairLine = _repairLineBusiness.GetRepairLinesByOrgId(User.OrgId).FirstOrDefault(rl => rl.ProductionLineId == lineId && rl.RepairLineName == rlName && rl.RepairLineId != id) != null;
             return Json(repairLine);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -636,10 +660,10 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult GetItemDetail()
         {
-           var items = _itemBusiness.GetItemDetails(User.OrgId).Select(d => new Dropdown
+            var items = _itemBusiness.GetItemDetails(User.OrgId).Select(d => new Dropdown
             {
                 text = d.ItemName.ToString(),
-                value= d.ItemId.ToString()
+                value = d.ItemId.ToString()
             }).ToList();
             return Json(items);
         }
@@ -649,7 +673,7 @@ namespace ERPWeb.Controllers
 
         #region Inventory Module
         [HttpPost]
-        public ActionResult IsSupplierPhoneNumDuplicate(long supId,string phoneNum)
+        public ActionResult IsSupplierPhoneNumDuplicate(long supId, string phoneNum)
         {
             var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.PhoneNumber == phoneNum && s.SupplierId != supId) != null;
             return Json(supplierInDb);
@@ -661,7 +685,7 @@ namespace ERPWeb.Controllers
             return Json(supplierInDb);
         }
         [HttpPost]
-        public ActionResult IsSupplierEmailDuplicate(long supId,string email)
+        public ActionResult IsSupplierEmailDuplicate(long supId, string email)
         {
             var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.Email == email && s.SupplierId != supId) != null;
             return Json(supplierInDb);

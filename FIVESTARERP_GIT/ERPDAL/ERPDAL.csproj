@@ -222,6 +222,34 @@
     <Compile Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.Designer.cs">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006280621017_Production_AddUnitIdInFaulty.cs" />
+    <Compile Include="ProductionContextMigrations\202006280621017_Production_AddUnitIdInFaulty.Designer.cs">
+      <DependentUpon>202006280621017_Production_AddUnitIdInFaulty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006280819262_Production_QRCodeTableUpdate.cs" />
+    <Compile Include="ProductionContextMigrations\202006280819262_Production_QRCodeTableUpdate.Designer.cs">
+      <DependentUpon>202006280819262_Production_QRCodeTableUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006281205396_Production_RepairItem.cs" />
+    <Compile Include="ProductionContextMigrations\202006281205396_Production_RepairItem.Designer.cs">
+      <DependentUpon>202006281205396_Production_RepairItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006281217474_Production_FaultyCase.cs" />
+    <Compile Include="ProductionContextMigrations\202006281217474_Production_FaultyCase.Designer.cs">
+      <DependentUpon>202006281217474_Production_FaultyCase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006290123475_Production_RepairCodeInRepairItem.cs" />
+    <Compile Include="ProductionContextMigrations\202006290123475_Production_RepairCodeInRepairItem.Designer.cs">
+      <DependentUpon>202006290123475_Production_RepairCodeInRepairItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006290202402_Production_AssemblyLineInQRCode.cs" />
+    <Compile Include="ProductionContextMigrations\202006290202402_Production_AssemblyLineInQRCode.Designer.cs">
+      <DependentUpon>202006290202402_Production_AssemblyLineInQRCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006291350576_Production_RepairReasonInRepairItem.cs" />
+    <Compile Include="ProductionContextMigrations\202006291350576_Production_RepairReasonInRepairItem.Designer.cs">
+      <DependentUpon>202006291350576_Production_RepairReasonInRepairItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -352,6 +380,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006280621017_Production_AddUnitIdInFaulty.resx">
+      <DependentUpon>202006280621017_Production_AddUnitIdInFaulty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006280819262_Production_QRCodeTableUpdate.resx">
+      <DependentUpon>202006280819262_Production_QRCodeTableUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006281205396_Production_RepairItem.resx">
+      <DependentUpon>202006281205396_Production_RepairItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006281217474_Production_FaultyCase.resx">
+      <DependentUpon>202006281217474_Production_FaultyCase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006290123475_Production_RepairCodeInRepairItem.resx">
+      <DependentUpon>202006290123475_Production_RepairCodeInRepairItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006290202402_Production_AssemblyLineInQRCode.resx">
+      <DependentUpon>202006290202402_Production_AssemblyLineInQRCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006291350576_Production_RepairReasonInRepairItem.resx">
+      <DependentUpon>202006291350576_Production_RepairReasonInRepairItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Production.DomainModels
+namespace ERPBO.Production.DTOModel
 {
     public class FaultyItemStockDetailDTO
     {
@@ -18,6 +18,7 @@ namespace ERPBO.Production.DomainModels
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
         public int Quantity { get; set; }
         public string StockStatus { get; set; }
         [StringLength(150)]
@@ -44,5 +45,7 @@ namespace ERPBO.Production.DomainModels
         public string ItemTypeName { get; set; }
         [StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(100)]
+        public string UnitName { get; set; }
     }
 }

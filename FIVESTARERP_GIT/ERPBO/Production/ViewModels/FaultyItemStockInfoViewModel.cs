@@ -18,6 +18,7 @@ namespace ERPBO.Production.ViewModels
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
         public int StockInQty { get; set; }
         public int StockOutQty { get; set; }
         [StringLength(150)]
@@ -43,5 +44,7 @@ namespace ERPBO.Production.ViewModels
         public string ItemTypeName { get; set; }
         [StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(100)]
+        public string UnitName { get; set; }
     }
 }

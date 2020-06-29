@@ -27,7 +27,7 @@ namespace ERPBLL.Inventory
 
         public ItemPreparationDetail GetItemPreparationDetailsById(long id, long orgId)
         {
-            return _itemPreparationDetailRepository.GetOneByOrg(i =>i.OrganizationId == id && i.OrganizationId == orgId);
+            return _itemPreparationDetailRepository.GetOneByOrg(i =>i.PreparationDetailId == id && i.OrganizationId == orgId);
         }
 
         public IEnumerable<ItemPreparationDetail> GetItemPreparationDetailsByInfoId(long infoId, long orgId)
@@ -41,7 +41,7 @@ namespace ERPBLL.Inventory
             var info = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItem(modelId, itemId, orgId);
             if (info != null)
             {
-                details = GetItemPreparationDetailsByInfoId(1, orgId);
+                details = GetItemPreparationDetailsByInfoId(info.PreparationInfoId, orgId);
             }
             return details;
         }

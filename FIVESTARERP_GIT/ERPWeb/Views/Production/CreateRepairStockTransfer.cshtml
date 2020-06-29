@@ -293,8 +293,8 @@
             $("#unitName").text('');
             $("#stockQty").text('(0)');
             txtQuantity.val('0');
-            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlQCLine.val() !== "" && TryParseInt(ddlQCLine.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetQCLineStockInfoByQCAndItemAndModelId', JSON.stringify({ itemId: ddlItem.val(), qcId: ddlQCLine.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
+            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlRepairLine.val !="" && ddlQCLine.val() != "" && TryParseInt(ddlQCLine.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', JSON.stringify({ itemId: ddlItem.val(), repairId: ddlRepairLine.val(), qcId: ddlQCLine.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {

@@ -9,7 +9,7 @@ namespace ERPBO.Inventory.DTOModel
     public class ItemDetailDTO
     {
         // Purpose the items with item type & warehouse
-        public long ItemId { get; set; }
+        public string ItemId { get; set; }
         public string ItemName { get; set; }
     }
 }

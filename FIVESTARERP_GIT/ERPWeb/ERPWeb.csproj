@@ -514,6 +514,10 @@
     <Content Include="Views\Production\GetQRCode.cshtml" />
     <Content Include="Views\FrontDesk\GetJobOrdersPull.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrdersPull.cshtml" />
+    <Content Include="Views\Production\CreateRepairFaultyStock.cshtml" />
+    <Content Include="Views\Production\GetFaultyItemStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetFaultyItemStockInfo.cshtml" />
+    <Content Include="Views\Production\CreateFaultyByQRCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

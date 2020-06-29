@@ -147,11 +147,18 @@
     <Compile Include="Inventory\WarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseStockInfoBusiness.cs" />
     <Compile Include="Production\AssemblyLineBusiness.cs" />
+    <Compile Include="Production\FaultyCaseBusiness.cs" />
+    <Compile Include="Production\FaultyItemStockDetailBusiness.cs" />
+    <Compile Include="Production\FaultyItemStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IFaultyCaseBusiness.cs" />
+    <Compile Include="Production\Interface\IFaultyItemStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IFaultyItemStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingLineBusiness.cs" />
     <Compile Include="Production\Interface\IQCItemStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IQCItemStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingItemStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IQRCodeTraceBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairItemBusiness.cs" />
     <Compile Include="Production\Interface\IRepairItemStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingItemStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairItemStockInfoBusiness.cs" />
@@ -170,6 +177,7 @@
     <Compile Include="Production\QCItemStockDetailBusiness.cs" />
     <Compile Include="Production\QCItemStockInfoBusiness.cs" />
     <Compile Include="Production\QRCodeTraceBusiness.cs" />
+    <Compile Include="Production\RepairItemBusiness.cs" />
     <Compile Include="Production\RepairItemStockDetailBusiness.cs" />
     <Compile Include="Production\PackagingItemStockInfoBusiness.cs" />
     <Compile Include="Production\RepairItemStockInfoBusiness.cs" />

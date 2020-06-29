@@ -11,13 +11,22 @@ namespace ERPBO.Production.ViewModels
     public class FaultyItemStockDetailViewModel
     {
         public long FaultyItemStockDetailId { get; set; }
+        [Range(1,long.MaxValue)]
         public long? ProductionFloorId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? QCId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? RepairLineId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? DescriptionId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? WarehouseId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? ItemTypeId { get; set; }
+        [Range(1, long.MaxValue)]
         public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
         public string StockStatus { get; set; }
         [StringLength(150)]
@@ -44,5 +53,7 @@ namespace ERPBO.Production.ViewModels
         public string ItemTypeName { get; set; }
         [StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(100)]
+        public string UnitName { get; set; }
     }
 }
