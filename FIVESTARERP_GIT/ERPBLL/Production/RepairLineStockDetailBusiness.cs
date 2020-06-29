@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
@@ -17,13 +18,17 @@ namespace ERPBLL.Production
         private readonly RepairLineStockDetailRepository _repairLineStockDetailRepository;
         private readonly RepairLineStockInfoRepository _repairLineStockInfoRepository;
         private readonly IRepairLineStockInfoBusiness _repairLineStockInfoBusiness;
+        private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
+        private readonly IItemBusiness _itemBusiness;
 
-        public RepairLineStockDetailBusiness(IProductionUnitOfWork productionDb, IRepairLineStockInfoBusiness repairLineStockInfoBusiness)
+        public RepairLineStockDetailBusiness(IProductionUnitOfWork productionDb, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IItemBusiness itemBusiness)
         {
             this._productionDb = productionDb;
             this._repairLineStockInfoRepository = new RepairLineStockInfoRepository(this._productionDb);
             this._repairLineStockDetailRepository = new RepairLineStockDetailRepository(this._productionDb);
             this._repairLineStockInfoBusiness = repairLineStockInfoBusiness;
+            this._faultyItemStockDetailBusiness = faultyItemStockDetailBusiness;
+            this._itemBusiness = itemBusiness;
         }
         public IEnumerable<RepairLineStockDetail> GetRepairLineStockDetails(long orgId)
         {
@@ -120,6 +125,43 @@ namespace ERPBLL.Production
             }
             _repairLineStockDetailRepository.InsertAll(repairLineStockDetails);
             return _repairLineStockDetailRepository.Save();
+        }
+
+        public bool StockOutByFaultyItem(List<FaultyItemStockDetailDTO> details, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            List<RepairLineStockDetailDTO> repairStockDetail = new List<RepairLineStockDetailDTO>();
+            string refCode = DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss");
+            foreach (var item in details)
+            {
+                item.ReferenceNumber = refCode;
+                RepairLineStockDetailDTO stock = new RepairLineStockDetailDTO
+                {
+                    ProductionLineId = item.ProductionFloorId,
+                    DescriptionId = item.DescriptionId,
+                    RepairLineId = item.RepairLineId,
+                    QCLineId = item.QCId,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    UnitId = this._itemBusiness.GetItemById(item.ItemId.Value,orgId).UnitId,
+                    Quantity = item.Quantity,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    StockStatus = StockStatus.StockOut,
+                    RefferenceNumber = refCode,
+                    Remarks="Stock Out By Faulty Item"
+                };
+                item.UnitId = stock.UnitId;
+                repairStockDetail.Add(stock);
+            }
+
+            if (SaveRepairLineStockOut(repairStockDetail, userId, orgId,string.Empty))
+            {
+                IsSuccess= _faultyItemStockDetailBusiness.SaveFaultyItemStockIn(details, userId, orgId);
+            }
+            return IsSuccess;
         }
     }
 }

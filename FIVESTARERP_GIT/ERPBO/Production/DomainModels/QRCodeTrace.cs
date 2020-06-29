@@ -17,13 +17,20 @@ namespace ERPBO.Production.DomainModels
         public string CodeNo { get; set; }
         public byte?[] CodeImage { get; set; }
         public long? ProductionFloorId { get; set; }
+        public long? AssemblyId { get; set; }
+        public string ProductionFloorName { get; set; }
+        public string AssemblyLineName { get; set; }
         public long? DescriptionId { get; set; }
+        public string ModelName { get; set; }
         public long? ColorId { get; set; }
-        public long? WarehouseId { get; set; }
-        public long? ItemTypeId { get; set; }
-        public long? ItemId { get; set; }
         [StringLength(150)]
         public string ColorName { get; set; }
+        public long? WarehouseId { get; set; }
+        public string WarehouseName { get; set; }
+        public long? ItemTypeId { get; set; }
+        public string ItemTypeName { get; set; }
+        public long? ItemId { get; set; }
+        public string ItemName { get; set; }
         [StringLength(200)]
         public string ReferenceNumber { get; set; }
         public string ReferenceId { get; set; }

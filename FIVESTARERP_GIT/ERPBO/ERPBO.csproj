@@ -154,10 +154,14 @@
     <Compile Include="FrontDesk\ViewModels\TechnicalServicesStockViewModel.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
+    <Compile Include="Production\DomainModels\FaultyCase.cs" />
+    <Compile Include="Production\DomainModels\RepairItem.cs" />
     <Compile Include="Production\DomainModels\PackagingLine.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\QRCodeTrace.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockDetail.cs" />
+    <Compile Include="Production\DomainModels\RepairItemParts.cs" />
+    <Compile Include="Production\DomainModels\RepairItemProblem.cs" />
     <Compile Include="Production\DomainModels\RepairItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\QCItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockInfo.cs" />
@@ -233,6 +237,7 @@
     <Compile Include="Production\DomainModels\TransferStockToQCInfo.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyItemStocknfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockDetailDTO.cs" />
@@ -240,6 +245,9 @@
     <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairItemDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairItemPartsDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairItemProblemDTO.cs" />
     <Compile Include="Production\DTOModel\RepairItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RepairItemStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RepairLineStockDetailDTO.cs" />
@@ -299,7 +307,8 @@
     <Compile Include="Production\ViewModels\DashboardFacultyWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardLineWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardRequisitionSummeryViewModel.cs" />
-    <Compile Include="Production\ViewModels\FaultyStockDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\FaultyCaseViewModel.cs" />
+    <Compile Include="Production\ViewModels\FaultyItemStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\FaultyItemStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsRowMaterialViewModel.cs" />
@@ -325,6 +334,9 @@
     <Compile Include="Production\ViewModels\QualityControlLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairItemViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairItemPartsViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairItemProblemViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairItemStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairItemStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairLineStockDetailViewModel.cs" />

@@ -20,6 +20,7 @@ namespace ERPBO.Production.DomainModels
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
         public int StockInQty { get; set; }
         public int StockOutQty { get; set; }
         [StringLength(150)]

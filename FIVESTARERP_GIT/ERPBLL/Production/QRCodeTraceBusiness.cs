@@ -48,7 +48,14 @@ namespace ERPBLL.Production
                     EntryDate = DateTime.Now,
                     ReferenceId = item.ReferenceId,
                     ReferenceNumber = item.ReferenceNumber,
-                    Remarks = item.Remarks
+                    Remarks = item.Remarks,
+                    ProductionFloorName = item.ProductionFloorName,
+                    ModelName = item.ModelName,
+                    WarehouseName = item.WarehouseName,
+                    ItemTypeName = item.ItemTypeName,
+                    ItemName = item.ItemName,
+                    AssemblyId =item.AssemblyId,
+                    AssemblyLineName = item.AssemblyLineName
                 };
                 list.Add(qRCode);
             }

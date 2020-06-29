@@ -77,6 +77,19 @@ Order By w.WarehouseName,i.ItemName", orgId)).ToList();
             return itemRepository.GetOneByOrg(item => item.ItemId == id && item.OrganizationId == orgId);
         }
 
+        public IEnumerable<ItemDetailDTO> GetItemPreparationItems(long modelId, long itemId,long orgId)
+        {
+            IEnumerable<ItemDetailDTO> details = new List<ItemDetailDTO>();
+            details = this._inventoryDb.Db.Database.SqlQuery<ItemDetailDTO>(string.Format(@"Select (Cast(i.ItemId as nvarchar(100))+'#'+Cast(it.ItemId as nvarchar(100))+'#'+Cast(w.Id as nvarchar(100))) 'ItemId',(i.ItemName+' ['+it.ItemName+'-'+w.WarehouseName+']'+' (Qty-'+Cast(ip.Quantity as nvarchar(30))+')') as 'ItemName' From tblItemPreparationDetail ip
+Inner Join tblItemPreparationInfo ipi on ipi.PreparationInfoId = ip.PreparationInfoId
+Inner Join tblItems i on ip.ItemId = i.ItemId
+Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
+Inner Join tblWarehouses w on it.WarehouseId = w.Id
+Where 1=1 and i.OrganizationId={0} and ipi.DescriptionId={1} and ipi.ItemId={2}
+Order By w.WarehouseName,i.ItemName", orgId, modelId, itemId)).ToList();
+            return details;
+        }
+
         public IEnumerable<Dropdown> GetItemsByWarehouseId(long warehouseId, long orgId)
         {
            return this._inventoryDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (i.ItemName+' ['+it.ItemName+']') 'text', Cast(i.ItemId as nvarchar(50)) 'value' From tblItems i
