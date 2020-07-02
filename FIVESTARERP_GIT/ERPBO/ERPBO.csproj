@@ -233,6 +233,10 @@
     <Compile Include="Production\DomainModels\QualityControl.cs" />
     <Compile Include="Production\DomainModels\QualityControlLineStockDetail.cs" />
     <Compile Include="Production\DomainModels\QualityControlLineStockInfo.cs" />
+    <Compile Include="Production\DomainModels\RepairSectionFaultyItemTransferDetail.cs" />
+    <Compile Include="Production\DomainModels\RepairSectionFaultyItemTransferInfo.cs" />
+    <Compile Include="Production\DomainModels\RepairSectionRequisitionDetail.cs" />
+    <Compile Include="Production\DomainModels\RepairSectionRequisitionInfo.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcDetail.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyDetail.cs" />
@@ -284,6 +288,10 @@
     <Compile Include="Production\DTOModel\QualityControlLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QualityControlLineStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RepairLineDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairSectionFaultyItemTransferDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairSectionFaultyItemTransferInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairSectionRequisitionDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairSectionRequisitionInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionInfoDTO.cs" />
@@ -350,6 +358,10 @@
     <Compile Include="Production\ViewModels\RepairLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairLineViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairSectionFaultyItemTransferDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairSectionFaultyItemTransferInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairSectionRequisitionDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairSectionRequisitionInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\UnitViewModel.cs" />

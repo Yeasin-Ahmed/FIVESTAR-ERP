@@ -16,20 +16,23 @@ namespace ERPBLL.Production
     {
         private readonly IProductionUnitOfWork _productionDb;
         private readonly RepairItemRepository _repairItemRepository;
-        private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
+        private readonly IRepairLineStockDetailBusiness _repairLineStockDetailBusiness;
         private readonly IItemBusiness _itemBusiness;
+        private readonly IUnitBusiness _unitBusiness;
 
-        public RepairItemBusiness(IProductionUnitOfWork productionDb, IItemBusiness itemBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness)
+        public RepairItemBusiness(IProductionUnitOfWork productionDb, IItemBusiness itemBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IUnitBusiness unitBusiness)
         {
             this._productionDb = productionDb;
             this._itemBusiness = itemBusiness;
             this._repairItemRepository = new RepairItemRepository(this._productionDb);
-            this._faultyItemStockDetailBusiness = faultyItemStockDetailBusiness;
+            this._repairLineStockDetailBusiness = repairLineStockDetailBusiness;
+            this._unitBusiness = unitBusiness;
         }
 
         public bool SaveRepairItem(RepairItemDTO dto, long userId, long orgId)
         {
             bool IsSuccess = false;
+            var unit = _itemBusiness.GetItemById(dto.ItemId.Value, orgId);
             RepairItem repairItem = new RepairItem
             {
                 ProductionFloorId = dto.ProductionFloorId,
@@ -42,12 +45,20 @@ namespace ERPBLL.Production
                 ItemTypeId = dto.ItemTypeId,
                 ItemId = dto.ItemId,
                 DescriptionId = dto.DescriptionId,
-                UnitId = _itemBusiness.GetItemById(dto.ItemId.Value, orgId).UnitId,
+                UnitId = unit.UnitId,
+                UnitName = _unitBusiness.GetUnitOneByOrgId(unit.UnitId,orgId).UnitSymbol,
                 EUserId = userId,
                 EntryDate = DateTime.Now,
                 OrganizationId = orgId,
-                RepairCode = ("RPC-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
-                Remarks = dto.Remarks
+                Remarks = dto.Remarks,
+                ProductionFloorName=dto.ProductionFloorName,
+                WarehouseName = dto.WarehouseName,
+                ItemTypeName = dto.ItemTypeName,
+                ItemName = dto.ItemName,
+                ModelName= dto.ModelName,
+                QCLineName = dto.QCLineName,
+                RepairLineName = dto.RepairLineName,
+                RepairCode = ("RPC-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"))
             };
             List<RepairItemProblem> repairItemProblems = new List<RepairItemProblem>();
             List<FaultyItemStockDetailDTO> faultyItemStocks = new List<FaultyItemStockDetailDTO>();
@@ -114,14 +125,13 @@ namespace ERPBLL.Production
             }
             repairItem.RepairItemParts = repairItemParts;
 
-
             this._repairItemRepository.Insert(repairItem);
             if (this._repairItemRepository.Save())
             {
                 IsSuccess = true;
                 if (repairItem.RepairReason != RepairReason.SoftwareProblem)
                 {
-                    IsSuccess=this._faultyItemStockDetailBusiness.SaveFaultyItemStockIn(faultyItemStocks, userId, orgId);
+                    IsSuccess=this._repairLineStockDetailBusiness.StockOutByFaultyItem(faultyItemStocks, userId, orgId);
                 }
             }
             return IsSuccess;

@@ -250,6 +250,26 @@
     <Compile Include="ProductionContextMigrations\202006291350576_Production_RepairReasonInRepairItem.Designer.cs">
       <DependentUpon>202006291350576_Production_RepairReasonInRepairItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202006300138442_Production_AddFloorNameInRepairItem.cs" />
+    <Compile Include="ProductionContextMigrations\202006300138442_Production_AddFloorNameInRepairItem.Designer.cs">
+      <DependentUpon>202006300138442_Production_AddFloorNameInRepairItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202006300917115_Production_RepairSectionFaultyItemRequisition.cs" />
+    <Compile Include="ProductionContextMigrations\202006300917115_Production_RepairSectionFaultyItemRequisition.Designer.cs">
+      <DependentUpon>202006300917115_Production_RepairSectionFaultyItemRequisition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007010811235_Production_RepairSectionTransfer_TableEdit.cs" />
+    <Compile Include="ProductionContextMigrations\202007010811235_Production_RepairSectionTransfer_TableEdit.Designer.cs">
+      <DependentUpon>202007010811235_Production_RepairSectionTransfer_TableEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007020338344_Production_RepairSectionRequisition.cs" />
+    <Compile Include="ProductionContextMigrations\202007020338344_Production_RepairSectionRequisition.Designer.cs">
+      <DependentUpon>202007020338344_Production_RepairSectionRequisition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007020501459_Production_UpdateRepairSectionRequisition.cs" />
+    <Compile Include="ProductionContextMigrations\202007020501459_Production_UpdateRepairSectionRequisition.Designer.cs">
+      <DependentUpon>202007020501459_Production_UpdateRepairSectionRequisition.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -401,6 +421,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006291350576_Production_RepairReasonInRepairItem.resx">
       <DependentUpon>202006291350576_Production_RepairReasonInRepairItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006300138442_Production_AddFloorNameInRepairItem.resx">
+      <DependentUpon>202006300138442_Production_AddFloorNameInRepairItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202006300917115_Production_RepairSectionFaultyItemRequisition.resx">
+      <DependentUpon>202006300917115_Production_RepairSectionFaultyItemRequisition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007010811235_Production_RepairSectionTransfer_TableEdit.resx">
+      <DependentUpon>202007010811235_Production_RepairSectionTransfer_TableEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007020338344_Production_RepairSectionRequisition.resx">
+      <DependentUpon>202007020338344_Production_RepairSectionRequisition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007020501459_Production_UpdateRepairSectionRequisition.resx">
+      <DependentUpon>202007020501459_Production_UpdateRepairSectionRequisition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

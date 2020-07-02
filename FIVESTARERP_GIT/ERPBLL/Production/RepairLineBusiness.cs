@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -27,6 +28,14 @@ namespace ERPBLL.Production
         public IEnumerable<RepairLine> GetRepairLinesByOrgId(long orgId)
         {
             return _repairLineRepository.GetAll(r => r.OrganizationId == orgId);
+        }
+
+        public IEnumerable<Dropdown> GetRepairLineWithFloor(long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select Cast(rl.RepairLineId as Nvarchar(100))+'#'+Cast(pl.LineId as nvarchar(100)) 'value',
+rl.RepairLineName +' ['+ pl.LineNumber+']' 'text' From tblRepairLine rl
+Inner Join tblProductionLines pl on rl.ProductionLineId = pl.LineId
+Where 1= 1 and rl.OrganizationId={0}", orgId)).ToList();
         }
 
         public bool SaveRepairLine(RepairLineDTO dto, long userId, long orgId)

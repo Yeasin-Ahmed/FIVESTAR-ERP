@@ -21,6 +21,8 @@ namespace ERPBO.Production.DomainModels
         [StringLength(100)]
         public string QRCode { get; set; }
         public long? ProductionFloorId { get; set; }
+        [StringLength(100)]
+        public string ProductionFloorName { get; set; }
         public long? QCLineId { get; set; }
         [StringLength(100)]
         public string QCLineName { get; set; }        

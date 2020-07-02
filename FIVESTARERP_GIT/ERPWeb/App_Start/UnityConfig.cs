@@ -96,6 +96,9 @@ namespace ERPWeb
             container.RegisterType<IFaultyItemStockDetailBusiness, FaultyItemStockDetailBusiness>();
             container.RegisterType<IFaultyCaseBusiness, FaultyCaseBusiness>();
             container.RegisterType<IRepairItemBusiness, RepairItemBusiness>();
+            container.RegisterType<IRepairSectionFaultyItemTransferInfoBusiness, RepairSectionFaultyItemTransferInfoBusiness>();            
+            container.RegisterType<IRepairSectionRequisitionInfoBusiness, RepairSectionRequisitionInfoBusiness>();
+
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 

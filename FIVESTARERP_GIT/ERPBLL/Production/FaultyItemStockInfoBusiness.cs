@@ -26,9 +26,22 @@ namespace ERPBLL.Production
         {
             return this._faultyItemStockInfoRepository.GetOneByOrg(f => f.QCId== qcId && f.RepairLineId == repairLine && f.ItemId == itemId && f.OrganizationId == orgId);
         }
+
+        public FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndItem(long repairLine, long itemId, long orgId)
+        {
+            return this._faultyItemStockInfoRepository.GetOneByOrg(f => f.RepairLineId == repairLine && f.ItemId == itemId && f.OrganizationId == orgId);
+        }
+
+        public FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndModelAndItem(long repairLine, long modelId, long itemId, long orgId)
+        {
+            return this._faultyItemStockInfoRepository.GetOneByOrg(f => f.RepairLineId == repairLine && f.DescriptionId == modelId && f.ItemId == itemId && f.OrganizationId == orgId);
+        }
+
         public IEnumerable<FaultyItemStockInfo> GetFaultyItemStockInfos(long orgId)
         {
             return this._faultyItemStockInfoRepository.GetAll(f => f.OrganizationId == orgId);
         }
+
+
     }
 }

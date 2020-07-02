@@ -12,7 +12,6 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<RepairLineStockDetail> GetRepairLineStockDetails(long orgId);
         bool SaveRepairLineStockIn(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId);
-        bool SaveRepairLineStockInByQCLine(long transferId, string status, long orgId, long userId);
         bool SaveRepairLineStockOut(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId, string flag);
         bool StockOutByFaultyItem(List<FaultyItemStockDetailDTO> details, long userId, long orgId);
     }

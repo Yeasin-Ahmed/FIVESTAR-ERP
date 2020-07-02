@@ -12,5 +12,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<FaultyItemStockInfo> GetFaultyItemStockInfos(long orgId);
         IEnumerable<FaultyItemStockInfo> GetFaultyItemByQCandRepair(long qcId, long repairLine, long orgId);
         FaultyItemStockInfo GetFaultyItemStockInfoByQCandRepairandItem(long qcId, long repairLine, long itemId,long orgId);
+        FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndItem(long repairLine, long itemId, long orgId);
+        FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndModelAndItem(long repairLine,long modelId, long itemId, long orgId);
     }
 }

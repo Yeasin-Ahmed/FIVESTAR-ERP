@@ -189,6 +189,11 @@
         var txtQuantity = $("#txtQuantity");
         var hdfDescriptionId = $("#hdfDescriptionId");
 
+        var modelName = "";
+        var warehouseName = "";
+        var itemTypeName = "";
+        var itemName = "";
+
         $(document).ready(function () {
             disable("#txtQRCode");
             disable("#txtReferenceNumber");
@@ -217,6 +222,8 @@
         })
 
         function clearAll() {
+            txtSearchQRCode.val('');
+            $("#qrCodeDetail").empty();
             txtQRCode.val('');
             hdfQRCodeId.val('0');
             ddlProblems.val([]);
@@ -234,6 +241,13 @@
             hdfItemId2.val('0');
             hdfItemTypeId2.val('0');
             hdfWarehouseId2.val('0');
+            hdfDescriptionId.val('0');
+            modelName = "";
+            warehouseName = "";
+            itemTypeName = "";
+            itemName = "";
+
+            $("#tblItemData tbody").empty();
         }
 
         $("#searchQRCode").click(function (e) {
@@ -277,6 +291,11 @@
 
         function LoadQRCodeDetail(data) {
             $("#qrCodeDetail").empty();
+            modelName = data.ModelName;
+            warehouseName = data.WarehouseName;
+            itemTypeName = data.ItemTypeName;
+            itemName = data.ItemName;
+
             var tr1 = "<tr class='btn-dark'>" +
                 "<th colspan='4'>" + "QRCode Item Details" + "</th>"
                 + "</tr>";
@@ -299,6 +318,20 @@
             var table = "<table class='table table-sm table-bordered table-striped table-responsive-lg text-sm text-bold'>" + thead + tbody + "</table>"
             $("#qrCodeDetail").append(table);
 
+        }
+
+        function checkItemQty(repairId, itemId, qcId, modelId, qty, itemName) {
+            var text = "";
+            //console.log('Item Id....');
+            //console.log(itemId);
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, qcId: qcId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', getToken());
+
+            if (val.stockQty < qty) {
+                text += itemName + ',';
+            }
+            //console.log("ajaxValueReturnable");
+            //console.log(val);
+            return text;
         }
 
         function redirectPage(page) {
@@ -340,6 +373,10 @@
                 bootbox.alert("QRCode Details not found");
                 isValid = false;
             }
+            if (TryParseInt(hdfDescriptionId.val(), 0) <= 0) {
+                isValid = false;
+                bootbox.alert("QRCode Model not found");
+            }
             if (TryParseInt(ddlProductionFloor.val(), 0) <= 0) {
                 isValid = false;
                 $(".require-floor").removeClass("hide");
@@ -361,15 +398,40 @@
 
         function validateSubmit() {
             var isValid = true;
+            var errorTxt = "";
             if (!validateForm()) {
                 isValid = false;
             }
-            if (ddlRepairReason.val() !== "" && ddlRepairReason.val() !== "Hardware Problem") {
-                
+            if (ddlRepairReason.val() !== "" && ddlRepairReason.val() !== "Software Problem") {
                 if ($("#tblItemData tbody tr").length === 0) {
                     isValid = false;
                     bootbox.alert("Please add faulty item");
                 }
+                else {
+                    if (ddlRepairLine.val() != "" && ddlQCLine.val() != "" && $('#tblItemData tbody tr').length > 0 && TryParseInt(hdfDescriptionId.val(),0) >0) {
+                        $.each($('#tblItemData tbody tr'), function (index, item) {
+                            var tds = $(this).children("td");
+                            var itemId = TryParseInt(tds.eq('6').html(), 0);
+                            var itemName = tds.eq(1).html();
+                            var name = itemName.substring(0, itemName.indexOf("["));
+                            var qty = $(this).children('td').eq(2).html();
+                            errorTxt += checkItemQty(ddlRepairLine.val(), itemId, ddlQCLine.val(), hdfDescriptionId.val(), qty, name);
+                        })
+                    }
+                }
+            }
+            else {
+                if ($("#tblItemData tbody tr").length > 0) {
+                    isValid = false;
+                    bootbox.alert("Faulty item can only be entry when the faulty is not software problem");
+                }
+            }
+
+            if (errorTxt.length > 0) {
+                errorTxt = errorTxt.substr(0, errorTxt.length - 1);
+                errorTxt += " does not have enough stock."
+                bootbox.alert(errorTxt);
+                isValid = false;
             }
             return isValid;
         }
@@ -470,8 +532,7 @@
             e.preventDefault();
             if (validateSubmit()) {
                 bootbox.confirm("Are you sure you want to save", function (result) {
-                    if (result)
-                    {
+                    if (result) {
                         disable("#btnSubmit");
                         var problems = []; problems.length = 0;
                         var prob = ddlProblems.val();
@@ -508,16 +569,26 @@
                         console.log("Items");
                         console.log(items);
 
-                        var data = JSON.stringify({ QRCodeId: hdfQRCodeId.val(), QRCode: txtQRCode.val(), ProductionFloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), WarehouseId: TryParseInt(hdfWarehouseId1.val(), 0), ItemTypeId: TryParseInt(hdfItemTypeId1.val(), 0), ItemId: TryParseInt(hdfItemId1.val(), 0), RepairReason: ddlRepairReason.val(), RepairItemProblems: problems, RepairItemParts: items });
+                        var data = JSON.stringify({ QRCodeId: hdfQRCodeId.val(), QRCode: txtQRCode.val(), ProductionFloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), WarehouseId: TryParseInt(hdfWarehouseId1.val(), 0), ItemTypeId: TryParseInt(hdfItemTypeId1.val(), 0), ItemId: TryParseInt(hdfItemId1.val(), 0), RepairReason: ddlRepairReason.val(), RepairItemProblems: problems, RepairItemParts: items, ModelName: modelName, WarehouseName: warehouseName, ItemTypeName: itemTypeName, ItemName: itemName, ProductionFloorName: $("#ddlProductionFloor option:selected").text(), QCLineName: $("#ddlQCLine option:selected").text(), RepairLineName: $("#ddlRepairLine option:selected").text() });
+                        console.log("Final Data");
+                        console.log(data);
 
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFaultyByQRCode', data, getToken())).then(function (res, status) {
-
+                            if (status === "success" && res === true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                clearAll();
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
                         }).fail(function (error) {
-
+                            $('.toastrDefaultError').trigger('click');
+                            console.log(error);
+                            enable("#btnSubmit");
                         })
                     }
                 });
-                
             }
         })
 

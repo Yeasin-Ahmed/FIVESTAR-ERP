@@ -36,7 +36,7 @@
                 <label for="ddlLineNumber" class="control-label font-weight-bold">Line</label>
                 @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 hide">
                 <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
                 <select id="ddlQCLine" class="form-control form-control-sm">
                     <option value="0">--Select QC Line--</option>
@@ -52,12 +52,12 @@
                 <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-3">
                 <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm">
@@ -77,7 +77,7 @@
         </div>
         <hr />
     </div>
-    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
+    <div class="col-md-12" id="dataContainer">
         @{Html.RenderAction("GetRepairLineStockInfo", new {@flag="View" });}
     </div>
 </div>
@@ -107,7 +107,7 @@
         ddlLineNumber.change(function () {
             clearDropdown("ddlQCLine");
             if (ddlLineNumber.val() != "") {
-                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+                //LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
                 LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
             }
             LoadDataTable();
@@ -133,7 +133,7 @@
         })
 
         ddlQCLine.change(function () {
-            LoadDataTable();
+            //LoadDataTable();
         })
 
         ddlRepairLine.change(function () {
@@ -149,7 +149,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", lineId: ddlLineNumber.val(), repairId: TryParseInt(ddlRepairLine.val(),0), modelId: TryParseInt(ddlModelName.val(),0), qcId: TryParseInt(ddlQCLine.val(),0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val(), page: pageNo };
+            var data = { flag: "search", lineId: ddlLineNumber.val(), repairId: TryParseInt(ddlRepairLine.val(),0), modelId: TryParseInt(ddlModelName.val(),0), qcId: 0, warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairLineStockInfo', data)).then(function (res, status) {
                 console.log(status);

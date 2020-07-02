@@ -52,9 +52,9 @@ namespace ERPBLL.Production
                     StockStatus = StockStatus.StockIn,
                     EntryDate = DateTime.Now
                 };
-                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByQCandRepairandItem(item.QCId.Value, item.RepairLineId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItem(item.RepairLineId.Value,item.DescriptionId.Value, item.ItemId.Value, orgId);
 
-                if(stockInfoInDb != null)
+                if (stockInfoInDb != null)
                 {
                     stockInfoInDb.StockInQty += item.Quantity;
                     stockInfoInDb.UpdateDate = DateTime.Now;
@@ -115,8 +115,8 @@ namespace ERPBLL.Production
                     StockStatus = StockStatus.StockOut,
                     EntryDate = DateTime.Now
                 };
-                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByQCandRepairandItem(item.QCId.Value, item.RepairLineId.Value, item.ItemId.Value, orgId);
-                    stockInfoInDb.StockOutQty += item.Quantity;
+                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItem(item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                stockInfoInDb.StockOutQty += item.Quantity;
                     stockInfoInDb.UpdateDate = DateTime.Now;
                     stockInfoInDb.UpUserId = userId;
                     _faultyItemStockInfoRepository.Update(stockInfoInDb);

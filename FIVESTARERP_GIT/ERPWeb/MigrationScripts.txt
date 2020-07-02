@@ -11,11 +11,11 @@ Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ConfigurationDAL
 
 Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.FrontDeskDAL.FrontDeskDbContext –MigrationsDirectory FrontDeskContextMigrations
 
-Add-Migration 'ControlPanel_AllEntities_16-May-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
-Add-Migration 'Inventory_AllEntities_14-April-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
-Add-Migration 'Production_AllEntities_14-April-2020' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
-Add-Migration 'Configuration_DbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
-Add-Migration 'FrontDesk_DbInitialize' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
+Add-Migration 'ControlPanel_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
+Add-Migration 'Inventory_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
+Add-Migration 'Production_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
+Add-Migration 'Configuration_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
+Add-Migration 'FrontDesk_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
 
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
