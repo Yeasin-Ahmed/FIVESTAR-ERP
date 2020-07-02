@@ -15,12 +15,21 @@ namespace ERPBLL.FrontDesk
     public class JobOrderBusiness : IJobOrderBusiness
     {
         private readonly JobOrderRepository _jobOrderRepository;
-        private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
+        private readonly JobOrderAccessoriesRepository _jobOrderAccessoriesRepository;
+        private readonly JobOrderProblemRepository _jobOrderProblemRepository;
 
-        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork)
+        private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
+        private readonly IJobOrderAccessoriesBusiness _jobOrderAccessoriesBusiness;
+        private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
+
+        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._jobOrderRepository = new JobOrderRepository(this._frontDeskUnitOfWork);
+            this._jobOrderAccessoriesBusiness = jobOrderAccessoriesBusiness;
+            this._jobOrderAccessoriesRepository = new JobOrderAccessoriesRepository(this._frontDeskUnitOfWork);
+            this._jobOrderProblemBusiness = jobOrderProblemBusiness;
+            this._jobOrderProblemRepository = new JobOrderProblemRepository(this._frontDeskUnitOfWork);
         }
 
         public JobOrder GetJobOrderById(long jobOrderId, long orgId)
@@ -28,9 +37,9 @@ namespace ERPBLL.FrontDesk
             return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.OrganizationId == orgId);
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode,string iMEI, string iMEI2, long orgId, long branchId)
+        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId,branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId)).ToList();
         }
 
         private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId)
@@ -103,68 +112,200 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
 
         public bool SaveJobOrder(JobOrderDTO jobOrderDto, List<JobOrderAccessoriesDTO> jobOrderAccessoriesDto, List<JobOrderProblemDTO> jobOrderProblemsDto, long userId, long orgId, long branchId)
         {
-            JobOrder jobOrder = new JobOrder
+            if (jobOrderDto.JodOrderId == 0)
             {
-                CustomerId = jobOrderDto.CustomerId,
-                CustomerName = jobOrderDto.CustomerName,
-                MobileNo = jobOrderDto.MobileNo,
-                Address = jobOrderDto.Address,
-                IMEI = jobOrderDto.IMEI,
-                IMEI2= jobOrderDto.IMEI2,
-                Type = PhoneTypes.Smartphone,
-                ModelColor= ModelColors.Red,
-                WarrantyDate= jobOrderDto.WarrantyDate,
-                WarrantyEndDate= jobOrderDto.WarrantyEndDate,
-                Remarks = jobOrderDto.Remarks,
-                ReferenceNumber= jobOrderDto.ReferenceNumber,
-                DescriptionId = jobOrderDto.DescriptionId,
-                IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable,
-                IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed,
-                EntryDate = jobOrderDto.EntryDate,
-                EUserId = userId,
-                OrganizationId = orgId,
-                StateStatus = JobOrderStatus.PendingJobOrder,
-                JobOrderCode = ("JOB-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
-                BranchId = branchId
-            };
-            if (jobOrder.IsWarrantyAvailable)
-            {
-                jobOrder.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
-                jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
-            }
-            List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
-            foreach (var item in jobOrderAccessoriesDto)
-            {
-                JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                JobOrder jobOrder = new JobOrder
                 {
-                    AccessoriesId = item.AccessoriesId,
-                    EntryDate = DateTime.Now,
+                    CustomerId = jobOrderDto.CustomerId,
+                    CustomerName = jobOrderDto.CustomerName,
+                    MobileNo = jobOrderDto.MobileNo,
+                    Address = jobOrderDto.Address,
+                    IMEI = jobOrderDto.IMEI,
+                    IMEI2 = jobOrderDto.IMEI2,
+                    Type = jobOrderDto.Type,
+                    ModelColor = jobOrderDto.ModelColor,
+                    WarrantyDate = jobOrderDto.WarrantyDate,
+                    WarrantyEndDate = jobOrderDto.WarrantyEndDate,
+                    Remarks = jobOrderDto.Remarks,
+                    ReferenceNumber = jobOrderDto.ReferenceNumber,
+                    DescriptionId = jobOrderDto.DescriptionId,
+                    IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable,
+                    IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed,
+                    EntryDate = jobOrderDto.EntryDate,
                     EUserId = userId,
-                    OrganizationId = orgId
+                    OrganizationId = orgId,
+                    StateStatus = JobOrderStatus.PendingJobOrder,
+                    JobOrderCode = ("JOB-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
+                    BranchId = branchId
                 };
-                listJobOrderAccessories.Add(jobOrderAccessories);
-            }
-
-            if (jobOrderAccessoriesDto.Count > 0)
-            {
-                jobOrder.JobOrderAccessories = listJobOrderAccessories;
-            }
-
-            List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
-            foreach (var item in jobOrderProblemsDto)
-            {
-                JobOrderProblem jobOrderProblem = new JobOrderProblem
+                if (jobOrder.IsWarrantyAvailable)
                 {
-                    ProblemId = item.ProblemId,
-                    EntryDate = DateTime.Now,
-                    EUserId = userId,
-                    OrganizationId = orgId
-                };
-                listjobOrderProblems.Add(jobOrderProblem);
-            }
-            jobOrder.JobOrderProblems = listjobOrderProblems;
+                    jobOrder.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
+                    jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                }
+                List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                foreach (var item in jobOrderAccessoriesDto)
+                {
+                    JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                    {
+                        AccessoriesId = item.AccessoriesId,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        OrganizationId = orgId
+                    };
+                    listJobOrderAccessories.Add(jobOrderAccessories);
+                }
 
-            _jobOrderRepository.Insert(jobOrder);
+                if (jobOrderAccessoriesDto.Count > 0)
+                {
+                    jobOrder.JobOrderAccessories = listJobOrderAccessories;
+                }
+
+                List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
+                foreach (var item in jobOrderProblemsDto)
+                {
+                    JobOrderProblem jobOrderProblem = new JobOrderProblem
+                    {
+                        ProblemId = item.ProblemId,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        OrganizationId = orgId
+                    };
+                    listjobOrderProblems.Add(jobOrderProblem);
+                }
+                jobOrder.JobOrderProblems = listjobOrderProblems;
+
+                _jobOrderRepository.Insert(jobOrder);
+            }
+            else
+            {
+                // when edit first retreive the data from database then change the entity object with new data
+                var jobOrderDb = GetJobOrderById(jobOrderDto.JodOrderId, orgId);
+
+
+                jobOrderDb.JodOrderId = jobOrderDto.JodOrderId;
+                jobOrderDb.CustomerId = jobOrderDto.CustomerId;
+                jobOrderDb.CustomerName = jobOrderDto.CustomerName;
+                jobOrderDb.MobileNo = jobOrderDto.MobileNo;
+                jobOrderDb.Address = jobOrderDto.Address;
+                jobOrderDb.IMEI = jobOrderDto.IMEI;
+                jobOrderDb.IMEI2 = jobOrderDto.IMEI2;
+                jobOrderDb.Type = jobOrderDto.Type;
+                jobOrderDb.ModelColor = jobOrderDto.ModelColor;
+                jobOrderDb.WarrantyDate = jobOrderDto.WarrantyDate;
+                jobOrderDb.WarrantyEndDate = jobOrderDto.WarrantyEndDate;
+                jobOrderDb.Remarks = jobOrderDto.Remarks;
+                jobOrderDb.ReferenceNumber = jobOrderDto.ReferenceNumber;
+                jobOrderDb.DescriptionId = jobOrderDto.DescriptionId;
+                jobOrderDb.IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable;
+                jobOrderDb.IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed;
+                jobOrderDb.UpUserId = userId;
+                jobOrderDb.UpdateDate = DateTime.Now;
+
+                if (jobOrderDb.IsWarrantyAvailable)
+                {
+                    jobOrderDb.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
+                    jobOrderDb.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                }
+
+                var jobOrderAccessoriesInDb = _jobOrderAccessoriesBusiness.GetJobOrderAccessoriesByJobOrder(jobOrderDb.JodOrderId, orgId).ToList();
+                _jobOrderAccessoriesRepository.DeleteAll(jobOrderAccessoriesInDb);
+
+                List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                foreach (var item in jobOrderAccessoriesDto)
+                {
+                    JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                    {
+                        AccessoriesId = item.AccessoriesId,
+                        UpdateDate = DateTime.Now,
+                        UpUserId = userId,
+                        OrganizationId = orgId
+                    };
+                    listJobOrderAccessories.Add(jobOrderAccessories);
+                }
+                if (listJobOrderAccessories.Count > 0)
+                {
+                    jobOrderDb.JobOrderAccessories = listJobOrderAccessories;
+                }
+
+                // Now retreive the accessories data From Job Order Accessories Business;
+                #region Accessories_obsoulte
+
+
+                //if (jobOrderAccessoriesInDb.Count() > 0)  // the joborder has got one ore more accessories ib Db
+                //{
+                //    //new accessories
+                //    var allAccessories = jobOrderAccessoriesDto.Select(s => s.AccessoriesId).ToList();
+                //    if (allAccessories.Count > 0)
+                //    { // jobOrder has got one or more new accessories
+
+                //        // find the unmatchaing accessories with the new data..
+                //        var unMatchingAccessories = jobOrderAccessoriesInDb.Where(acc => !allAccessories.Contains(acc.AccessoriesId)).ToList();
+
+                //        if (unMatchingAccessories.Count > 0)
+                //        {
+                //            // _jobOrderAccessoriesRepository.Delete(ass=> ass.);
+                //            _jobOrderAccessoriesRepository.DeleteAll(unMatchingAccessories);
+                //        }
+
+                //        var matchingAccessories = jobOrderAccessoriesInDb.Where(acc => allAccessories.Contains(acc.AccessoriesId)).Select(s => s.AccessoriesId).ToList();
+                //        if (matchingAccessories.Count > 0)
+                //        {
+                //            var newAccessories = jobOrderAccessoriesDto.Where(acc => !matchingAccessories.Contains(acc.AccessoriesId)).ToList();
+                //        }
+                //        else
+                //        {
+
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    // If the joborder does not have any accessories in Db
+                //    // New Accessories
+                //    List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                //    foreach (var item in jobOrderAccessoriesDto)
+                //    {
+                //        JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                //        {
+                //            AccessoriesId = item.AccessoriesId,
+                //            UpdateDate = DateTime.Now,
+                //            UpUserId = userId,
+                //            OrganizationId = orgId
+                //        };
+                //        listJobOrderAccessories.Add(jobOrderAccessories);
+                //    }
+                //    if (listJobOrderAccessories.Count > 0)
+                //    {
+                //        jobOrderDb.JobOrderAccessories = listJobOrderAccessories;
+                //    }
+                //} 
+
+                #endregion
+
+                var jobOrderPrblmInDb = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(jobOrderDb.JodOrderId, orgId).ToList();
+                _jobOrderProblemRepository.DeleteAll(jobOrderPrblmInDb);
+
+                List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
+                foreach (var item in jobOrderProblemsDto)
+                {
+                    JobOrderProblem jobOrderProblem = new JobOrderProblem
+                    {
+                        ProblemId = item.ProblemId,
+                        UpdateDate = DateTime.Now,
+                        UpUserId = userId,
+                        OrganizationId = orgId
+                    };
+
+                    listjobOrderProblems.Add(jobOrderProblem);
+                }
+                if (listjobOrderProblems.Count > 0) {
+                    jobOrderDb.JobOrderProblems = listjobOrderProblems;
+                }
+
+                _jobOrderRepository.Update(jobOrderDb);
+            }
+
             return _jobOrderRepository.Save();
         }
 
@@ -379,10 +520,10 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             return _jobOrderRepository.Save();
         }
 
-        public JobOrder GetReferencesNumberByIMEI( string imei, long orgId, long branchId)
+        public JobOrder GetReferencesNumberByIMEI(string imei, long orgId, long branchId)
         {
             imei = imei.Trim();
-            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o=>o.JodOrderId).FirstOrDefault();
+            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
         }
 
         public IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyJobOrder(long orgId, long branchId)
@@ -398,6 +539,11 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 string.Format(@"select JobOrderType,COUNT(JobOrderType) as Total from tblJobOrders 
                 Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1}
 				group by JobOrderType", orgId, branchId)).ToList();
+        }
+
+        public bool GetJobOrderById(long jobOrderId, long orgId, long branchId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

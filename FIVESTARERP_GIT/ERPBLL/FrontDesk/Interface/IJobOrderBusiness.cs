@@ -29,5 +29,7 @@ namespace ERPBLL.FrontDesk.Interface
         JobOrder GetReferencesNumberByIMEI( string imei, long orgId, long branchId);
         IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyJobOrder(long orgId,long branchId);
         IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> DashboardDailyBillingAndWarrantyJob(long orgId, long branchId);
+
+        bool GetJobOrderById( long jobOrderId, long orgId, long branchId);
     }
 }

@@ -4,6 +4,7 @@ using ERPBLL.ControlPanel.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Inventory.Interface;
 using ERPBO.Common;
+using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPBO.FrontDesk.ViewModels;
 using ERPWeb.Filters;
@@ -36,8 +37,10 @@ namespace ERPWeb.Controllers
         private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
         private readonly IRequsitionDetailForJobOrderBusiness _requsitionDetailForJobOrderBusiness;
         private readonly ITechnicalServicesStockBusiness _technicalServicesStockBusiness;
+        private readonly IJobOrderAccessoriesBusiness _jobOrderAccessoriesBusiness;
+        private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -53,6 +56,8 @@ namespace ERPWeb.Controllers
             this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
             this._mobilePartStockDetailBusiness = mobilePartStockDetailBusiness;
             this._technicalServicesStockBusiness = technicalServicesStockBusiness;
+            this._jobOrderAccessoriesBusiness = jobOrderAccessoriesBusiness;
+            this._jobOrderProblemBusiness = jobOrderProblemBusiness;
         }
 
         [HttpGet]
@@ -98,7 +103,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateJobOrder()
+        public ActionResult CreateJobOrder(long? jobOrderId)
         {
             ViewBag.ddlDescriptions = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem {Text =d.DescriptionName, Value=d.DescriptionId.ToString() }).ToList();
 
@@ -110,7 +115,14 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlPhoneTypes = Utility.ListOfPhoneTypes().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
+            long jobOrder = 0;
+            if (jobOrderId != null && jobOrderId > 0)
+            {
+               var jobOrderInDb =  _jobOrderBusiness.GetJobOrderById(jobOrderId.Value, User.OrgId);
+                jobOrder = jobOrderInDb != null ? jobOrderInDb.JodOrderId:0;
+            }
 
+            ViewBag.JobOrderId = jobOrder;
             return View();
         }
 
@@ -131,6 +143,45 @@ namespace ERPWeb.Controllers
                 IsSuccess=_jobOrderBusiness.SaveJobOrder(jobOrderDTO, listJobOrderAccessoriesDTO, listJobOrderProblemDTO, User.UserId, User.OrgId,User.BranchId);
             }
             return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetJobOrderById(long jobOrderId)
+        {
+            JobOrder jobOrder = _jobOrderBusiness.GetJobOrderById(jobOrderId,User.OrgId);
+            JobOrderDTO jDto = new JobOrderDTO {
+                JodOrderId = jobOrder.JodOrderId,
+                JobOrderCode=jobOrder.JobOrderCode,
+                CustomerId=jobOrder.CustomerId,
+                CustomerName=jobOrder.CustomerName,
+                MobileNo=jobOrder.MobileNo,
+                Address=jobOrder.Address,
+                DescriptionId=jobOrder.DescriptionId,
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrder.DescriptionId, User.OrgId).DescriptionName),
+                IsWarrantyAvailable =jobOrder.IsWarrantyAvailable,
+                IsWarrantyPaperEnclosed=jobOrder.IsWarrantyPaperEnclosed,
+                StateStatus=jobOrder.StateStatus,
+                IMEI=jobOrder.IMEI,
+                IMEI2=jobOrder.IMEI2,
+                Type=jobOrder.Type,
+                ModelColor=jobOrder.ModelColor,
+                WarrantyDate=jobOrder.WarrantyDate,
+                WarrantyEndDate=jobOrder.WarrantyEndDate,
+                Remarks=jobOrder.Remarks,
+                ReferenceNumber=jobOrder.ReferenceNumber,
+                EntryDate=jobOrder.EntryDate,
+                OrganizationId=jobOrder.OrganizationId,
+                BranchId=jobOrder.BranchId
+                
+            };
+
+            var jorderAccessories = _jobOrderAccessoriesBusiness.GetJobOrderAccessoriesByJobOrder(jobOrderId, User.OrgId).Select(s => s.AccessoriesId).ToArray();
+
+            var jobOrderProblems = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(jobOrderId, User.OrgId).Select(p => p.ProblemId).ToArray();
+
+            JobOrderViewModel jobOrderViewModel = new JobOrderViewModel();
+            AutoMapper.Mapper.Map(jDto, jobOrderViewModel);
+            return Json(new {jobOrder= jDto, jorderAccessories= jorderAccessories,jobOrderProblems = jobOrderProblems });
         }
 
         [HttpPost,ValidateJsonAntiForgeryToken]

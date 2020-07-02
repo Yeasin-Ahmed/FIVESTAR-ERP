@@ -1,6 +1,7 @@
 ﻿@model ERPBO.FrontDesk.ViewModels.JobOrderViewModel
 @{
     ViewBag.Title = "Create Job Order";
+    long jobOrderId = (long)ViewBag.JobOrderId;
 }
 <div class="row">
     <div class="col-md-12">
@@ -45,15 +46,16 @@
                             </div>
                         </div>
                         @*<div class="col-md-3">
-                            <input type="date" class="form-control form-control-sm" id="dptJobEntryDate" />
-                        </div>*@
+                                <input type="date" class="form-control form-control-sm" id="dptJobEntryDate" />
+                            </div>*@
                         <div class="col-md-3">
                             <div class="input-group input-group-sm ">
-                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date"/>
+                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date" />
                                 <div class="input-group-prepend cursor-pointer remove-date dptJobEntryDate" style="cursor:pointer">
                                     <span class="input-group-text">&#10008;</span>
                                 </div>
                             </div>
+                            <span class="error hide require-JobentryDate font-weight-bold">Jobentrydate No is required</span>
                         </div>
                         <div class="col-md-1">
                             <button type="button" id="btnCustomer" class="btn btn-sm btn-primary" title="If the Customer is not exist with this Mobile No then please add here"><i class="fas fa-plus"> </i> </button>
@@ -149,9 +151,9 @@
                             <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
                         </div>
                         @*<div class="col-md-4" id="warrantydate">
-            <label for="dptWarrantyDate" class="control-label font-weight-bold">WarrantyStartDate</label>
-            <input type="date" class="form-control form-control-sm" id="dptWarrantyDate" />
-        </div>*@
+                                <label for="dptWarrantyDate" class="control-label font-weight-bold">WarrantyStartDate</label>
+                                <input type="date" class="form-control form-control-sm" id="dptWarrantyDate" />
+                            </div>*@
                         <div class="col-md-3" id="warrantydate">
                             <label class="col-form-label">WarrantyStartDate</label>
                             <div class="input-group input-group-sm ">
@@ -160,8 +162,10 @@
                                     <span class="input-group-text">&#10008;</span>
                                 </div>
                             </div>
+                            <span class="error hide require-warranty font-weight-bold">Warranty is required</span>
+                            <span class="error hide not-warranty font-weight-bold">Warranty is not available</span>
                         </div>
-                        <div class="col-md-3" id="warrantyEndDate">
+                        @*<div class="col-md-3" id="warrantyEndDate">
                             <label class="col-form-label">WarrantyEndDate</label>
                             <div class="input-group input-group-sm ">
                                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptWarrantyEndDate" placeholder="Select Warranty End Date" />
@@ -169,15 +173,15 @@
                                     <span class="input-group-text">&#10008;</span>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     <br />
                     @*<div class="row">
-                        <div class="col-md-4" id="warrantyEndDate">
-                            <label for="dptWarrantyEndDate" class="control-label font-weight-bold">WarrantyEndDate</label>
-                            <input type="date" class="form-control form-control-sm" id="dptWarrantyEndDate" />
-                        </div>
-                    </div>*@
+                            <div class="col-md-4" id="warrantyEndDate">
+                                <label for="dptWarrantyEndDate" class="control-label font-weight-bold">WarrantyEndDate</label>
+                                <input type="date" class="form-control form-control-sm" id="dptWarrantyEndDate" />
+                            </div>
+                        </div>*@
                 </div>
             </form>
         </div>
@@ -194,6 +198,7 @@
             <div class="modal-body">
                 <form id="frmCustomer">
                     <input type="hidden" name="Id" id="hdfCustomerId" />
+                    <input type="hidden" name="jobOrderId" id="hdfJobOrderId" value="@jobOrderId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="txtCustomerName" class="control-label font-weight-bold">Name</label>
@@ -255,6 +260,7 @@
         var rdnEnclosedYes = $("#enclosedYes");
         var rdnEnclosedNo = $("#enclosedNo");
         var customerId = $("#customerId");
+
         //
         var txtIMEI = $("#txtIMEI");
         var ddlPhoneTypes = $("#ddlPhoneTypes");
@@ -267,6 +273,7 @@
         var dptWarrantyEndDate = $("#dptWarrantyEndDate");
         var dptJobEntryDate = $("#dptJobEntryDate");
         var txtIMEI2 = $("#txtIMEI2");
+        var hdfJobOrderId = $("#hdfJobOrderId");
 
         $(document).ready(function () {
 
@@ -298,6 +305,91 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
+            loadData();
+        })
+
+        $('#dptWarrantyDate').change(function () {
+            if ($('#dptWarrantyDate').val() != "") {
+                var days = getDayDiff($('#dptWarrantyDate').val());
+                if (days >= 365) {
+                    bootbox.alert('Warrenty not available');
+                }
+            }
+        })
+
+        function getDayDiff(date) {
+            var start = new Date(date),
+                end = new Date(),
+                diff = new Date(end - start),
+                days = diff / 1000 / 60 / 60 / 24;
+            alert(Math.round(days));
+            return Math.round(days);
+        }
+
+        function getDateFromJson(jsonVal) {
+            var StartDateServer = jsonVal;
+            var parsedDate = new Date(parseInt(StartDateServer.substr(6)));
+            var day = ("0" + parsedDate.getDate()).slice(-2);
+            var month = ("0" + (parsedDate.getMonth() + 1)).slice(-2);
+            return parsedDate.getFullYear() + "-" + (month) + "-" + (day);
+        }
+
+        function loadData() {
+            if (TryParseInt(hdfJobOrderId.val(), 0) > 0) {
+                //alert('JobOrder Found');
+                var id = $(this).attr("data-edit-item");
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/GetJobOrderById', JSON.stringify({ jobOrderId: TryParseInt(hdfJobOrderId.val(), 0) }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res != null) {
+                        var jobOrder = res.jobOrder;
+                        console.log(jobOrder);
+
+                        hdfJobOrderId.val(jobOrder.JodOrderId);
+                        txtCustomer.val(jobOrder.CustomerName);
+                        txtMobileNumber.val(jobOrder.MobileNo);
+                        txtAddress.val(jobOrder.Address);
+                        txtIMEI.val(jobOrder.IMEI);
+                        txtIMEI2.val(jobOrder.IMEI2);
+                        ddlPhoneTypes.val(jobOrder.Type);
+                        ddlModelColor.val(jobOrder.ModelColor);
+                        ddlModelColor.trigger('change');
+                        chkIsWarrentyAvailable.prop("checked", jobOrder.IsWarrantyAvailable);
+                        if (jobOrder.IsWarrantyPaperEnclosed) {
+                            rdnEnclosedYes.prop("checked", true);
+                        }
+                        else {
+                            rdnEnclosedNo.prop("checked", true);
+                        }
+                        txtRemarks.val(jobOrder.Remarks);
+                        txtReferenceNumber.val(jobOrder.ReferenceNumber);
+                        dptWarrantyDate.val(getDateFromJson(jobOrder.WarrantyDate));
+                        dptWarrantyEndDate.val(getDateFromJson(jobOrder.WarrantyEndDate));
+                        dptJobEntryDate.val(getDateFromJson(jobOrder.EntryDate));
+
+                        ddlAccessories.val(res.jorderAccessories);
+                        ddlAccessories.trigger('change');
+                        ddlProblems.val(res.jobOrderProblems);
+                        ddlProblems.trigger('change');
+                        ddlDescriptions.val(jobOrder.DescriptionId);
+                        ddlDescriptions.trigger('change');
+                    }
+                    else {
+                       // alert("No data found..")
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+            else {
+               // alert('JobOrder not Found');
+            }
+        }
+
+        //data edit
+        $(document).on('click', "a.data-edit-item", function (e) {
+            e.preventDefault()
+
         })
 
         $(document).on('click', 'div.remove-date', function () {
@@ -330,7 +422,7 @@
 
             $.when(getReqWithData('html', 'GET', '/FrontDesk/CreateJobOrder', data)).then(function (res, status) {
                 if (status === "success") {
-                  
+
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -363,7 +455,7 @@
                 document.getElementById('warrantyEndDate').style.visibility = 'visible';
             }
             else {
-                
+
                 document.getElementById('warrantydate').style.visibility = 'hidden';
                 document.getElementById('warrantyEndDate').style.visibility = 'hidden';
             }
@@ -492,10 +584,25 @@
                 $(".require-ModelColor").removeClass("hide");
                 isValid = false;
             }
-            //if (ddlAccessories.val().length === 0) {
-            //    $(".require-accessories").removeClass("hide");
-            //    isValid = false;
-            //}
+            if (dptJobEntryDate.val() === "") {
+                $(".require-JobentryDate").removeClass("hide");
+                isValid = false;
+            }
+            if (chkIsWarrentyAvailable.is(":checked")) {
+
+                if ($('#dptWarrantyDate').val() === "") {
+                    isValid = false;
+                    $(".require-warranty").removeClass("hide");
+                }
+                else {
+                    var days = getDayDiff($('#dptWarrantyDate').val());
+                    if (days >= 365) {
+                        isValid = false;
+                        $(".not-warranty").removeClass("hide");
+                    }
+                }
+                isValid = false;
+            }
             if (ddlProblems.val().length === 0) {
                 $(".require-problem").removeClass("hide");
                 isValid = false;
@@ -515,7 +622,7 @@
                 //    WarrantyEndDate = new Date(dptWarrantyEndDate.val())
                 //}
 
-                var jobOrder = { CustomerId: customerId.val(), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: ddlDescriptions.val(), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: dptJobEntryDate.val(), Remarks: txtRemarks.val() };
+                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(),0), CustomerId: customerId.val(), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: ddlDescriptions.val(), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: dptJobEntryDate.val(), Remarks: txtRemarks.val() };
 
                 var aryAccessories = []; aryAccessories.length = 0;
                 var accessories = ddlAccessories.val();
@@ -666,7 +773,7 @@
             window.location.replace(page);
         }
 
-    </script>    
+    </script>
 }
 
 

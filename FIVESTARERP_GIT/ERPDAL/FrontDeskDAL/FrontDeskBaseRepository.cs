@@ -84,6 +84,14 @@ namespace ERPDAL.FrontDeskDAL
             }
         }
 
+        public void DeleteAll(IList<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                _frontDeskUnitOfWork.Db.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
+            }
+        }
+
         public void Delete(object Id)
         {
             T entity = this.GetById(Id);
