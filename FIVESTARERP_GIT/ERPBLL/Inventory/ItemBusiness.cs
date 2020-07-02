@@ -61,6 +61,18 @@ namespace ERPBLL.Inventory
             }).FirstOrDefault();
         }
 
+        public IEnumerable<ItemDetailDTO> GetItemDetailByRepairFaultySection(long floorId, long repairLineId,long modelId, long orgId)
+        {
+            IEnumerable<ItemDetailDTO> details = new List<ItemDetailDTO>();
+            details = this._inventoryDb.Db.Database.SqlQuery<ItemDetailDTO>(string.Format(@"Select (Cast(i.ItemId as nvarchar(100))+'#'+Cast(it.ItemId as nvarchar(100))+'#'+Cast(w.Id as nvarchar(100))) 'ItemId',(i.ItemName+' ['+it.ItemName+'-'+w.WarehouseName+']') as 'ItemName' From [Production].dbo.tblFaultyItemStockInfo  fis
+Inner Join [Inventory].dbo.tblItems i on fis.ItemId = i.ItemId
+Inner Join [Inventory].dbo.tblItemTypes it on fis.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblWarehouses w on fis.WarehouseId = w.Id
+Where 1= 1 and fis.OrganizationId={0} and fis.ProductionFloorId ={1} and fis.RepairLineId = {2} and fis.DescriptionId={3}
+Order By w.WarehouseName,i.ItemName", orgId,floorId,repairLineId, modelId)).ToList();
+            return details;
+        }
+
         public IEnumerable<ItemDetailDTO> GetItemDetails(long orgId)
         {
             IEnumerable<ItemDetailDTO> details = new List<ItemDetailDTO>();
@@ -92,7 +104,7 @@ Order By w.WarehouseName,i.ItemName", orgId, modelId, itemId)).ToList();
 
         public IEnumerable<Dropdown> GetItemsByWarehouseId(long warehouseId, long orgId)
         {
-           return this._inventoryDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (i.ItemName+' ['+it.ItemName+']') 'text', Cast(i.ItemId as nvarchar(50)) 'value' From tblItems i
+           return this._inventoryDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (i.ItemName+' ['+it.ItemName+']') 'text', (Cast(i.ItemId as nvarchar(50))+'#'+Cast(it.ItemId as nvarchar(50))) 'value' From tblItems i
 Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
 Inner Join tblWarehouses w on it.WarehouseId = w.Id
 Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();

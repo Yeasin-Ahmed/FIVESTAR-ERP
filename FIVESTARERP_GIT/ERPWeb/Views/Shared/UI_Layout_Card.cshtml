@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Repair Section Faulty Item Requisition";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-center"></h4>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            <form id="frm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdf" value="0" />
+                <div class="card-body">
+                    <div class="row">
+
+                    </div>
+                    <div class="row" style="border-bottom:1px solid #cecece">
+
+                    </div>
+                    <div class="row">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

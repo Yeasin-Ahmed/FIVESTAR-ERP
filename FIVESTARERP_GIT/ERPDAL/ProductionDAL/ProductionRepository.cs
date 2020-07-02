@@ -238,5 +238,34 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class RepairSectionFaultyItemTransferInfoRepository : ProductionBaseRepository<RepairSectionFaultyItemTransferInfo>
+    {
+        public RepairSectionFaultyItemTransferInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
 
+        }
+    }
+
+    public class RepairSectionFaultyItemTransferDetailRepository : ProductionBaseRepository<RepairSectionFaultyItemTransferDetail>
+    {
+        public RepairSectionFaultyItemTransferDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class RepairSectionRequisitionInfoRepository: ProductionBaseRepository<RepairSectionRequisitionInfo>
+    {
+        public RepairSectionRequisitionInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class RepairSectionRequisitionDetailRepository : ProductionBaseRepository<RepairSectionRequisitionDetail>
+    {
+        public RepairSectionRequisitionDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

@@ -58,7 +58,8 @@ namespace ERPBLL.Production
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
-                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.RepairLineId == item.RepairLineId && o.QCLineId ==item.QCLineId).FirstOrDefault();
+                // && o.QCLineId ==item.QCLineId // 30-Jun-2020
+                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.RepairLineId == item.RepairLineId).FirstOrDefault();
                 if (repairStockInfo != null)
                 {
                     repairStockInfo.StockInQty += item.Quantity;
@@ -90,11 +91,6 @@ namespace ERPBLL.Production
             return _repairLineStockDetailRepository.Save();
         }
 
-        public bool SaveRepairLineStockInByQCLine(long transferId, string status, long orgId, long userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool SaveRepairLineStockOut(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId, string flag)
         {
             List<RepairLineStockDetail> repairLineStockDetails = new List<RepairLineStockDetail>();
@@ -117,8 +113,8 @@ namespace ERPBLL.Production
                 stockDetail.EntryDate = DateTime.Now;
                 stockDetail.StockStatus = StockStatus.StockOut;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
-
-                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.RepairLineId == item.RepairLineId && o.QCLineId == item.QCLineId).FirstOrDefault();
+                //&& o.QCLineId == item.QCLineId // 30-Jun-2020
+                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.RepairLineId == item.RepairLineId).FirstOrDefault();
                 repairStockInfo.StockOutQty += item.Quantity;
                 _repairLineStockInfoRepository.Update(repairStockInfo);
                 repairLineStockDetails.Add(stockDetail);
@@ -131,7 +127,7 @@ namespace ERPBLL.Production
         {
             bool IsSuccess = false;
             List<RepairLineStockDetailDTO> repairStockDetail = new List<RepairLineStockDetailDTO>();
-            string refCode = DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss");
+            string refCode =(details.FirstOrDefault().ReferenceNumber == null || details.FirstOrDefault().ReferenceNumber =="") ? (DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")) : details.FirstOrDefault().ReferenceNumber;
             foreach (var item in details)
             {
                 item.ReferenceNumber = refCode;

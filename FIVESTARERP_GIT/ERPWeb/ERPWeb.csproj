@@ -518,6 +518,11 @@
     <Content Include="Views\Production\GetFaultyItemStockInfo.cshtml" />
     <Content Include="Views\Production\_GetFaultyItemStockInfo.cshtml" />
     <Content Include="Views\Production\CreateFaultyByQRCode.cshtml" />
+    <Content Include="Views\Production\CreateRepairSectionFaultyItemTransfer.cshtml" />
+    <Content Include="Views\Shared\UI_Layout_Card.cshtml" />
+    <Content Include="Views\Production\CreateRepairSectionRequisition.cshtml" />
+    <Content Include="Views\Production\GetRepairSectionRequisitionInfoList.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionRequisitionInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -20,6 +20,8 @@ namespace ERPBO.Production.ViewModels
         public string QRCode { get; set; }
         [Range(1, long.MaxValue)]
         public long? ProductionFloorId { get; set; }
+        [StringLength(100)]
+        public string ProductionFloorName { get; set; }
         [Range(1, long.MaxValue)]
         public long? QCLineId { get; set; }
         [StringLength(100)]

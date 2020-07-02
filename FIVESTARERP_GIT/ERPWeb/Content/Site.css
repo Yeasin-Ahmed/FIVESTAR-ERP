@@ -24,18 +24,40 @@ textarea {
 }*/
 
 .hide {
-    display:none;
+    display: none;
 }
-.error{
-    color:red;
-    font-size:10pt;
-    font-weight:bold;
+
+.error {
+    color: red;
+    font-size: 10pt;
+    font-weight: bold;
 }
-.field-validation-error{
-    text-align:left !important;
-    font-size:small;
+
+.field-validation-error {
+    text-align: left !important;
+    font-size: small;
 }
 
 .bg-secondary {
     background-color: #6c757d;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

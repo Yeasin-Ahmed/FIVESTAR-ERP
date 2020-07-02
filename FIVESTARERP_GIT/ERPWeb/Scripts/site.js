@@ -154,7 +154,7 @@ function LoadDropDown3(url, type, elementId, defaultvalue) {
 }
 
 function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
-    if (contextKey === undefined && $.trim(contextKey) == '') {
+    if (contextKey === undefined && $.trim(contextKey) === '') {
         $.ajax({
             dataType: 'json',
             type: type,
@@ -789,4 +789,8 @@ function postReqWithFile(dataType,type,url,data,token) {
             console.log(result);
         }
     });
+}
+
+function dropDownSelectedText(idName) {
+    return $("#" + idName + " option:selected").text();
 }

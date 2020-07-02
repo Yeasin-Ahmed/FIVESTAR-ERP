@@ -171,6 +171,8 @@
     <Compile Include="Production\Interface\IRepairLineStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingLineStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairLineBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionRequisitionInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITransferRepairItemToQcDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferRepairItemToQcInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITransferStockToPackagingLine2DetailBusiness.cs" />
@@ -236,6 +238,8 @@
     <Compile Include="Production\QualityControlBusiness.cs" />
     <Compile Include="Production\PackagingLineBusiness.cs" />
     <Compile Include="Production\RepairLineBusiness.cs" />
+    <Compile Include="Production\RepairSectionFaultyItemTransferInfoBusiness.cs" />
+    <Compile Include="Production\RepairSectionRequisitionInfoBusiness.cs" />
     <Compile Include="Production\RequsitionDetailBusiness.cs" />
     <Compile Include="Production\RequsitionInfoBusiness.cs" />
     <Compile Include="Inventory\UnitBusiness.cs" />

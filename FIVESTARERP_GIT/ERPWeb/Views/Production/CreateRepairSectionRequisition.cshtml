@@ -1,0 +1,394 @@
+﻿
+@{
+    ViewBag.Title = "Create Requisition";
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <h5><b>Repair Section Requisition</b></h5>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-outline-danger btn-sm float-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+            <form id="frmReqDetails">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdfReqDetailsId" value="0" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="ddlRepairLine" class="control-label">Repair Line</label>
+                            @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair Line--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide req-line">Repair line is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                            @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide req-model">Model is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                            @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide req-warehouse">Warehouse Name is required</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                            <select id="ddlItem" class="form-control form-control-sm select2 select2-danger">
+                                <option value="">--Select Item--</option>
+                            </select>
+                            <span class="error hide req-item">Item Name is required</span>
+                            <span class="error hide duplicate-itemName">The Item is already added into the list!</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtQuantity" class="control-label font-weight-bold">
+                                Quantity
+                            </label>
+                            <div class="input-group col-md-8">
+                                <input type="number" name="quantity" id="txtQuantity" class="form-control form-control-sm" />
+                                <span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
+                            </div>
+                            <span class="error hide req-quantity">Quantity is required</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtRemarks" class="form-control form-control-sm"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="" class="control-label font-weight-bold" style="visibility:hidden">Add To List</label>
+                            <div class="clearfix">
+                                <button type="submit" class="btn btn-sm btn-warning float-right" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i> Add To List </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-2">
+                            <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblData">
+                                <thead>
+                                    <tr class="badge-light">
+                                        <th colspan="9">
+                                            <button class="btn btn-sm btn-success btn-sm float-lg-left" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i></button>
+                                        </th>
+                                    </tr>
+                                    <tr class="text-center btn-dark">
+                                        <th style="width:10%">#SL</th>
+                                        <th style="width:50%">Item Name</th>
+                                        <th style="width:10%">Quantity</th>
+                                        <th style="width:10%">Type Of Unit</th>
+                                        <th style="width:10%">Remarks</th>
+                                        <th style="width:10%">Action</th>
+                                        <th class="hide itemTypeId"></th>
+                                        <th class="hide itemId"></th>
+                                        <th class="hide unitId"></th>
+                                        <th class="hide itemType"></th>
+                                        <th class="hide itemName"></th>
+                                        <th class="hide unitName"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var hdfReqDetailsId = $("#hdfReqDetailsId");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var ddlItem = $("#ddlItem");
+        var unitName = $("#unitName");
+        var txtRemarks = $("#txtRemarks");
+        var txtQuantity = $("#txtQuantity");
+        var ddlModelName = $("#ddlModelName");
+        var unitName = $("#unitName");
+        var unitId = "0";
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        ddlWarehouse.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemsByWarehouse', 'POST', ddlItem, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+        })
+
+        function clearAll() {
+            enable("#ddlWarehouse");
+            enable("#ddlRepairLine");
+            enable("#ddlModelName");
+            ddlWarehouse.val('');
+            ddlWarehouse.trigger('change');
+            ddlRepairLine.val('');
+            ddlModelName.val('');
+            ddlItem.val('');
+            txtQuantity.val('0');
+            txtRemarks.val('');
+            $("#tblData tbody").empty();
+            unitName.text('');
+            $(".error").addClass('hide');
+            unitId = "0";
+        }
+
+        $("#btnReset").click(function (e) {
+            e.preventDefault();
+            clearAll();
+        })
+
+        //unit text
+        ddlItem.change(function () {
+            $("#unitName").text('');
+            if (ddlItem.val() != "") {
+                var itemId = ddlItem.val().substring(0, ddlItem.val().indexOf("#"));
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetUnitByItemId', JSON.stringify({ itemId: itemId }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (status == "success") {
+                        $("#unitName").text(res.UnitSymbol);
+                        unitId = res.UnitId;
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+        })
+
+        //click addlist button and save data in list
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateInput() === true) {
+                disable("#ddlRepairLine");
+                disable("#ddlWarehouse");
+                disable("#ddlModelName");
+
+                var itemVal = ddlItem.val();
+
+                var itemId = itemVal.substring(0, itemVal.indexOf("#"));
+                var itemTypeId  = itemVal.substring(itemVal.indexOf("#") + 1);
+
+                var itemName = dropDownSelectedText("ddlItem");
+                var item  = itemName.substring(0, itemName.lastIndexOf("["));
+                var itemType = itemName.substring(itemName.lastIndexOf("[") + 1, itemName.lastIndexOf("]"));
+
+                var sl = $("#tblData tbody tr").length;
+                var td1 = "<td class='text-center'><b>" + (sl + 1) + "</b></td>"
+
+                var td2 = "<td>" + itemName + "</td>";
+
+                var td3 = "<td class='text-center'>" + txtQuantity.val() + "</td>";
+                var td4 = "<td class='text-center'>" + unitName.text() + "</td>";
+                var td5 = "<td>" + txtRemarks.val() + "</td>";
+                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                var td7 = "<td class='hide'>" + itemTypeId + "</td>";
+                var td8 = "<td class='hide'>" + itemId + "</td>";
+                var td9 = "<td class='hide'>" + unitId + "</td>";
+                var td10 = "<td class='hide'>" + itemType + "</td>";
+                var td11 = "<td class='hide'>" + item + "</td>";
+                var td12 = "<td class='hide'>" + $.trim(unitName.text()) + "</td>";
+
+                console.log("ItemtypeId=" + itemTypeId + ",ItemId=" + itemId + ",UnitId=" + unitId + ", ItemTypeName=" + itemType + ",ItemName =" + item + ", Unit=" + $.trim(unitName.text()));
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + td12 + "</tr>";
+
+                if ($("#tblData tbody tr").length == 0) {
+                    $("#tblData tbody").append(tr);
+                }
+                else {
+                    $("#tblData tbody tr").eq(0).before(tr);
+                }
+                clearCtrl();
+            }
+        });
+
+        function validateTable() {
+            var isValid = true;
+
+            if ($("#tblData tbody tr").length === 0) {
+                bootbox.alert("Please add data into the table");
+                isValid = false;
+            }
+            if (ddlRepairLine.val() =="") {
+                isValid = false;
+                $(".req-line").removeClass("hide");
+            }
+            if (TryParseInt(ddlWarehouse.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlModelName.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-model").removeClass("hide");
+            }
+            return isValid;
+        }
+
+        function clearCtrl() {
+            ddlItem.val('');
+            txtQuantity.val('');
+            unitName.text('');
+            txtRemarks.val('');
+            unitId = "0";
+        }
+
+        //data delete add list
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblData tbody", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblData", index);
+                    $("#tblData tbody tr").removeClass("btn-success");
+                };
+            }));
+        })
+
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblData tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblData tbody tr"), function (index, item) {
+                    var itemId = $(this).children('td').eq(3).html();
+                    if (itemId == ddlItem.val()) {
+                        isValid = false;
+                        $(".duplicate-itemName").removeClass('hide');
+                    }
+                })
+            }
+            if (ddlRepairLine.val() =="") {
+                $(".req-line").removeClass("hide");
+                isValid = false;
+            }
+            if (TryParseInt(ddlWarehouse.val(), 0) <= 0) {
+                $(".req-warehouse").removeClass("hide");
+                isValid = false;
+            }
+            if (TryParseInt(ddlModelName.val(), 0) <= 0) {
+                $(".req-model").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlItem.val() =="") {
+                isValid = false;
+                $(".req-item").removeClass("hide");
+            }
+            if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-quantity").removeClass("hide");
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateTable() === true) {
+                bootbox.confirm("Are you sure you want to save the data", function (result) {
+                    if (result) {
+
+                        disable("#btnSubmit");
+                        var repairVal = ddlRepairLine.val();
+                        var repairLineName = dropDownSelectedText("ddlRepairLine")
+                        var repairId = repairVal.substring(0, repairVal.indexOf("#"));
+                        var repairName = repairLineName.substring(0, repairLineName.lastIndexOf("["));
+                        var productionId = repairVal.substring(repairVal.indexOf("#")+1);
+                        var productionName = repairLineName.substring(repairLineName.lastIndexOf("[") + 1, repairLineName.lastIndexOf("]"));
+
+                        console.log("repairId=" + repairId + ",repairName=" + repairName + ",productionId=" + productionId + ",productionName=" + productionName);
+
+                        var info = {
+                            RepairLineId: repairId ,
+                            RepairLineName: repairName,
+                            ProductionFloorId: productionId,
+                            ProductionFloorName: productionName,
+                            DescriptionId: ddlModelName.val(),
+                            ModelName: dropDownSelectedText("ddlModelName"),
+                            WarehouseId: ddlWarehouse.val(),
+                            WarehouseName: dropDownSelectedText("ddlWarehouse")
+                        };
+
+                        console.log("Info");
+                        console.log(info); //return;
+
+                        var details = []; details.length = 0;
+
+                        $.each($("#tblData tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            details.push({
+                                ItemTypeId: tds.eq(6).html(),
+                                ItemId: tds.eq(7).html(),
+                                UnitId: tds.eq(8).html(),
+                                ItemTypeName: tds.eq(9).html(),
+                                ItemName: tds.eq(10).html(),
+                                UnitName: tds.eq(11).html(),
+                                RequestQty: tds.eq(2).html(),
+                                Remarks: tds.eq(4).html()
+                            });
+                        })
+
+                        info.RepairSectionRequisitionDetails = details;
+
+                        console.log("Details");
+                        console.log(details);
+
+                        var data = JSON.stringify({ model: info });
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairSectionRequisition', data, getToken())).then(function (res, status)
+                        {
+                            console.log('Response');
+                            console.log(res);
+                            console.log("Status");
+                            console.log(status);
+                            if (res === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                clearAll();
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmit");
+                        })
+                        
+                    } //result
+
+                })// bootbox end
+
+            }// validateTable() end
+        })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+
+
+    </script>
+}
