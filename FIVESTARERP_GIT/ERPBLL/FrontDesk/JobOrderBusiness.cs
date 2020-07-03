@@ -141,7 +141,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 if (jobOrder.IsWarrantyAvailable)
                 {
                     jobOrder.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
-                    jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                    //jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
                 }
                 List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
                 foreach (var item in jobOrderAccessoriesDto)
@@ -205,7 +205,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 if (jobOrderDb.IsWarrantyAvailable)
                 {
                     jobOrderDb.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
-                    jobOrderDb.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                    //jobOrderDb.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
                 }
 
                 var jobOrderAccessoriesInDb = _jobOrderAccessoriesBusiness.GetJobOrderAccessoriesByJobOrder(jobOrderDb.JodOrderId, orgId).ToList();

@@ -155,7 +155,7 @@
                                 <input type="date" class="form-control form-control-sm" id="dptWarrantyDate" />
                             </div>*@
                         <div class="col-md-3" id="warrantydate">
-                            <label class="col-form-label">WarrantyStartDate</label>
+                            <label class="control-label font-weight-bold">Warranty Start Date</label>
                             <div class="input-group input-group-sm ">
                                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptWarrantyDate" placeholder="Select Warranty Start Date" />
                                 <div class="input-group-prepend cursor-pointer remove-date dptWarrantyDate" style="cursor:pointer">
@@ -322,7 +322,7 @@
                 end = new Date(),
                 diff = new Date(end - start),
                 days = diff / 1000 / 60 / 60 / 24;
-            alert(Math.round(days));
+            //alert(Math.round(days));
             return Math.round(days);
         }
 
@@ -364,9 +364,11 @@
                         txtRemarks.val(jobOrder.Remarks);
                         txtReferenceNumber.val(jobOrder.ReferenceNumber);
                         dptWarrantyDate.val(getDateFromJson(jobOrder.WarrantyDate));
-                        dptWarrantyEndDate.val(getDateFromJson(jobOrder.WarrantyEndDate));
+                        //dptWarrantyEndDate.val(getDateFromJson(jobOrder.WarrantyEndDate));
                         dptJobEntryDate.val(getDateFromJson(jobOrder.EntryDate));
 
+                        console.log('res.jorderAccessories');
+                        console.log(res.jorderAccessories);
                         ddlAccessories.val(res.jorderAccessories);
                         ddlAccessories.trigger('change');
                         ddlProblems.val(res.jobOrderProblems);
@@ -396,39 +398,21 @@
             if ($(this).hasClass("dptWarrantyDate")) {
                 if (dptWarrantyDate.val() !== '') {
                     dptWarrantyDate.val('');
-                    LoadDataTable();
                 }
             }
             if ($(this).hasClass("dptWarrantyEndDate")) {
                 if (dptWarrantyEndDate.val() !== '') {
                     dptWarrantyEndDate.val('');
-                    LoadDataTable();
                 }
             }
             if ($(this).hasClass("dptJobEntryDate")) {
                 if (dptJobEntryDate.val() !== '') {
                     dptJobEntryDate.val('');
-                    LoadDataTable();
                 }
             }
         })
 
-        $(document).on('change', '.ctrl-changed', function () {
-            LoadDataTable();
-        })
-
-        function LoadDataTable() {
-            var data = { warrantyDate: dptWarrantyDate.val(), warrantyEndDate: dptWarrantyEndDate.val(), jobEntryDate: dptJobEntryDate.val()};
-
-            $.when(getReqWithData('html', 'GET', '/FrontDesk/CreateJobOrder', data)).then(function (res, status) {
-                if (status === "success") {
-
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
-        }
-
+        
         $("#btnReset").click(function (e) {
             e.preventDefault();
             clearDropdown("ddlPhoneTypes");
@@ -452,12 +436,10 @@
         function showHide() {
             if (document.getElementById('chkIsWarrentyAvailable').checked) {
                 document.getElementById('warrantydate').style.visibility = 'visible';
-                document.getElementById('warrantyEndDate').style.visibility = 'visible';
             }
             else {
 
                 document.getElementById('warrantydate').style.visibility = 'hidden';
-                document.getElementById('warrantyEndDate').style.visibility = 'hidden';
             }
         }
 
@@ -601,7 +583,6 @@
                         $(".not-warranty").removeClass("hide");
                     }
                 }
-                isValid = false;
             }
             if (ddlProblems.val().length === 0) {
                 $(".require-problem").removeClass("hide");
@@ -613,7 +594,7 @@
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
             if (validateForm()) {
-                LoadDataTable()
+               
                 //var EntryDate = new Date(dptJobEntryDate.val());
                 //var WarrantyDate = null;
                 //var WarrantyEndDate = null;
