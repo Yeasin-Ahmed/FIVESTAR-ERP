@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "";
+}
+
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">
+                            Repair Section Faulty Transfer Info List
+                        </h5>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/Production/CreateRepairSectionFaultyItemTransfer" class="btn btn-sm btn-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Transfer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <h6 class="card-title">
+                    Search By
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-3">
+                        <label for="txtTransferCode" class="control-label font-weight-bold">Transfer Code</label>
+                        <input type="text" name="search" id="txtTransferCode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlProductionFloor" class="control-label font-weight-bold">Warehouse Name</label>
+                        @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlProductionFloor, "--Select Floor--", new { @class = "form-control form-control-sm " })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlRepairLine" class="control-label">Repair Line</label>
+                        <select id="ddlRepairLine" class="form-control form-control-sm">
+                            <option value="0">--Select Repair Line--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                        @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12" id="dataContainer" style="min-height:50px">
+                    @{Html.RenderAction("GetRepairSectionFaultyItemTransferList", new { @flag = "View" });}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var ddlProductionFloor = $("#ddlProductionFloor");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var txtTransferCode = $("#txtTransferCode");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        ddlProductionFloor.change(function () {
+            clearDropdown("ddlRepairLine");
+            if (ddlProductionFloor.val() != "") {
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlProductionFloor.val() }));
+            }
+            LoadDataTable();
+        })
+
+        txtTransferCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        ddlRepairLine.change(function () {
+            LoadDataTable();
+        })    
+
+        ddlStateStatus.change(function () {
+            LoadDataTable();
+        })    
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable()
+        {
+            var data = { flag: "view", floorId: TryParseInt(ddlProductionFloor.val(), 0), repairLineId: TryParseInt(ddlRepairLine.val(), 0), transferCode: $.trim(txtTransferCode.val()), status: ddlStateStatus.val(),  fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionFaultyItemTransferList', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+    </script>
+}

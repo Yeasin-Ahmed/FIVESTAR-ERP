@@ -29,6 +29,75 @@ namespace ERPBLL.Production
             this._unitBusiness = unitBusiness;
         }
 
+        public IEnumerable<RepairItemDTO> GetRepairItemInfoList(string repairCode, long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string fromDate, string toDate, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<RepairItemDTO>(QueryRepairItemInfoList(repairCode, floorId, repairLineId, qcLineId, modelId, warehouseId, itemTypeId, itemId,fromDate,toDate,orgId)).ToList();
+        }
+
+        private string QueryRepairItemInfoList(string repairCode, long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string fromDate, string toDate, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            param += string.Format(@" and ri.OrganizationId={0}", orgId);
+            if (repairLineId != null && repairLineId > 0)
+            {
+                param += string.Format(@" and ri.RepairLineId={0}", repairLineId);
+            }
+            if (floorId != null && floorId > 0)
+            {
+                param += string.Format(@" and ri.ProductionFloorId={0}", floorId);
+            }
+            if (qcLineId != null && qcLineId > 0)
+            {
+                param += string.Format(@" and ri.QCLineId={0}", qcLineId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and ri.DescriptionId={0}", modelId);
+            }
+            if (warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and ri.WarehouseId={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and ri.ItemTypeId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and ri.ItemId={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(repairCode) && repairCode.Trim() != "")
+            {
+                param += string.Format(@" and ri.RepairCode Like'%{0}%'", repairCode);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ri.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ri.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ri.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select ri.RepairItemId,ri.RepairCode,ri.ProductionFloorName,ri.RepairLineName,ri.QCLineName,
+ri.RepairReason,ri.QRCode,ri.ModelName,ri.WarehouseName,ri.ItemTypeName,ri.ItemName,ri.UnitName,
+ri.EntryDate,app.UserName 'EntryUser'
+From tblRepairItem ri
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on ri.EUserId = app.UserId
+Where 1=1 {0}", Utility.ParamChecker(param));
+
+            return query;
+        }
+
         public bool SaveRepairItem(RepairItemDTO dto, long userId, long orgId)
         {
             bool IsSuccess = false;

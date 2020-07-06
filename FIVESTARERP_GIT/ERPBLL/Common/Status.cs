@@ -11,10 +11,12 @@ namespace ERPBLL.Common
         // Never change this fields values //
         public static readonly string Pending = "Pending";
         public static readonly string Rejected = "Rejected";
-        public static readonly string Recheck = "Recheck";
+        public static readonly string Rechecked = "Rechecked";
         public static readonly string Approved = "Approved";
         public static readonly string Accepted = "Accepted";
         public static readonly string Canceled = "Canceled";
+        public static readonly string Checked = "Checked";
+        public static readonly string HandOver = "HandOver";
     }
     public class StockStatus
     {

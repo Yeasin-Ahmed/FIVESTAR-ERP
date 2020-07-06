@@ -48,5 +48,10 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }        
         public long RSFIRInfoId { get; set; }
+
+        [StringLength(100)]
+        public string EntryUser { get; set; }
+        [StringLength(100)]
+        public string UpdateUser { get; set; }
     }
 }

@@ -62,5 +62,7 @@ namespace ERPDAL.ProductionDAL
         public DbSet<RepairSectionFaultyItemTransferDetail> tblRepairSectionFaultyItemTransferDetail { get; set; }
         public DbSet<RepairSectionRequisitionInfo> tblRepairSectionRequisitionInfo { get; set; }
         public DbSet<RepairSectionRequisitionDetail> tblRepairSectionRequisitionDetail { get; set; }
+        public DbSet<ProductionFaultyStockInfo> tblProductionFaultyStockInfo { get; set; }
+        public DbSet<ProductionFaultyStockDetail> tblProductionFaultyStockDetail { get; set; }
     }
 }

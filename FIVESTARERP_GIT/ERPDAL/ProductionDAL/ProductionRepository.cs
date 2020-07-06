@@ -195,18 +195,14 @@ namespace ERPDAL.ProductionDAL
     {
         public FaultyItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
         {
-
         }
     }
-
     public class FaultyItemStockDetailRepository : ProductionBaseRepository<FaultyItemStockDetail>
     {
         public FaultyItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
         {
-
         }
     }
-
     public class RepairItemRepository : ProductionBaseRepository<RepairItem>
     {
         public RepairItemRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -214,7 +210,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class RepairItemPartsRepository : ProductionBaseRepository<RepairItemParts>
     {
         public RepairItemPartsRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -222,7 +217,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class RepairItemProblemRepository : ProductionBaseRepository<RepairItemProblem>
     {
         public RepairItemProblemRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -230,7 +224,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class FaultyCaseRepository : ProductionBaseRepository<FaultyCase>
     {
         public FaultyCaseRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -245,7 +238,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class RepairSectionFaultyItemTransferDetailRepository : ProductionBaseRepository<RepairSectionFaultyItemTransferDetail>
     {
         public RepairSectionFaultyItemTransferDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -260,10 +252,23 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class RepairSectionRequisitionDetailRepository : ProductionBaseRepository<RepairSectionRequisitionDetail>
     {
         public RepairSectionRequisitionDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class ProductionFaultyStockInfoRepository : ProductionBaseRepository<ProductionFaultyStockInfo>
+    {
+        public ProductionFaultyStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class ProductionFaultyStockDetailRepository : ProductionBaseRepository<ProductionFaultyStockDetail>
+    {
+        public ProductionFaultyStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
         {
 
         }

@@ -104,59 +104,49 @@ namespace ERPBLL.Inventory
         {
             List<WarehouseStockDetail> warehouseStockDetails = new List<WarehouseStockDetail>();
             bool isValidate = true;
-            switch (flag)
+            var items = warehouseStockDetailDTOs.Select(s => s.ItemId).ToList();
+            var des = warehouseStockDetailDTOs.Select(s => s.DescriptionId).FirstOrDefault();
+            var stock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => items.Contains(s.ItemId.Value) && des == s.DescriptionId).Select(s => s.ItemId).ToList();
+
+            if (items.Count() == stock.Count())
             {
-                case
-                #region Production Requistion
-         "Production Requistion":
-                    var items = warehouseStockDetailDTOs.Select(s => s.ItemId).ToList();
-                    var des = warehouseStockDetailDTOs.Select(s => s.DescriptionId).FirstOrDefault();
-                    var stock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => items.Contains(s.ItemId.Value) && des == s.DescriptionId).Select(s => s.ItemId).ToList();
-
-                    if (items.Count() == stock.Count())
+                foreach (var item in warehouseStockDetailDTOs)
+                {
+                    var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => s.ItemId == item.ItemId && (s.StockInQty - s.StockOutQty) >= item.Quantity && s.DescriptionId == item.DescriptionId).FirstOrDefault();
+                    if (warehouseInfo != null)
                     {
-                        foreach (var item in warehouseStockDetailDTOs)
+                        warehouseInfo.StockOutQty += item.Quantity;
+                        warehouseInfo.UpUserId = userId;
+                        warehouseInfo.UpdateDate = DateTime.Now;
+
+                        WarehouseStockDetail warehouseStockDetail = new WarehouseStockDetail()
                         {
-                            var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => s.ItemId == item.ItemId && (s.StockInQty - s.StockOutQty) >= item.Quantity && s.DescriptionId== item.DescriptionId).FirstOrDefault();
-                            if (warehouseInfo != null)
-                            {
-                                warehouseInfo.StockOutQty += item.Quantity;
-                                warehouseInfo.UpUserId = userId;
-                                warehouseInfo.UpdateDate = DateTime.Now;
-
-                                WarehouseStockDetail warehouseStockDetail = new WarehouseStockDetail()
-                                {
-                                    WarehouseId = item.WarehouseId,
-                                    DescriptionId = item.DescriptionId,
-                                    ItemTypeId = item.ItemTypeId,
-                                    ItemId = item.ItemId,
-                                    Quantity = item.Quantity,
-                                    EUserId = userId,
-                                    EntryDate = DateTime.Now,
-                                    OrganizationId = orgId,
-                                    Remarks = item.Remarks,
-                                    StockStatus = StockStatus.StockOut,
-                                    RefferenceNumber = item.RefferenceNumber,
-                                    UnitId = item.UnitId
-                                };
-                                warehouseStockInfoRepository.Update(warehouseInfo);
-                                warehouseStockDetails.Add(warehouseStockDetail);
-                            }
-                            else
-                            {
-                                isValidate = false;
-                            }
-                        }
+                            WarehouseId = item.WarehouseId,
+                            DescriptionId = item.DescriptionId,
+                            ItemTypeId = item.ItemTypeId,
+                            ItemId = item.ItemId,
+                            Quantity = item.Quantity,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            OrganizationId = orgId,
+                            Remarks = item.Remarks,
+                            StockStatus = StockStatus.StockOut,
+                            RefferenceNumber = item.RefferenceNumber,
+                            UnitId = item.UnitId
+                        };
+                        warehouseStockInfoRepository.Update(warehouseInfo);
+                        warehouseStockDetails.Add(warehouseStockDetail);
                     }
-                    if (isValidate == true)
+                    else
                     {
-                        warehouseStockDetailRepository.InsertAll(warehouseStockDetails);
-                        return warehouseStockDetailRepository.Save();
+                        isValidate = false;
                     }
-                    break;
-                #endregion
-                default:
-                    break;
+                }
+            }
+            if (isValidate == true)
+            {
+                warehouseStockDetailRepository.InsertAll(warehouseStockDetails);
+                return warehouseStockDetailRepository.Save();
             }
             return false;
         }

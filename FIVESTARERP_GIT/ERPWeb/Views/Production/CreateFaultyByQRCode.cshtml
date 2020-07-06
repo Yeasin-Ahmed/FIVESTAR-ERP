@@ -8,7 +8,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-3">
-                        <a href="#" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                        <a href="/Production/GetFaultyItemByQRCodeList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
                     </div>
                     <div class="col-md-6">
                         <h4 class="text-center">Adding Faulty Item By QRCode</h4>
@@ -320,11 +320,11 @@
 
         }
 
-        function checkItemQty(repairId, itemId, qcId, modelId, qty, itemName) {
+        function checkItemQty(repairId, itemId, modelId, qty, itemName) {
             var text = "";
             //console.log('Item Id....');
             //console.log(itemId);
-            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, qcId: qcId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', getToken());
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairAndItemAndModelId', getToken());
 
             if (val.stockQty < qty) {
                 text += itemName + ',';
@@ -415,7 +415,7 @@
                             var itemName = tds.eq(1).html();
                             var name = itemName.substring(0, itemName.indexOf("["));
                             var qty = $(this).children('td').eq(2).html();
-                            errorTxt += checkItemQty(ddlRepairLine.val(), itemId, ddlQCLine.val(), hdfDescriptionId.val(), qty, name);
+                            errorTxt += checkItemQty(ddlRepairLine.val(), itemId, hdfDescriptionId.val(), qty, name);
                         })
                     }
                 }

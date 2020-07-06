@@ -1,7 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Create Requisition";
-    int sl = 0;
+                /**/
+
+                ViewBag.Title = "Create Requisition";
+                int sl = 0;
 }
 
 <div class="row">
@@ -37,7 +39,7 @@
                     <span class="error hide req-type">Requisition Type is required</span>
                 </div>
                 <div class="col-md-3">
-                    <label for="ddlLineNumber" class="control-label">Production Line</label>
+                    <label for="ddlLineNumber" class="control-label">Production Floor</label>
                     @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line Number--", new { @class = "form-control form-control-sm" })
                     <span class="error hide req-line">Line Number is required</span>
                 </div>
@@ -454,10 +456,10 @@
                     enable("#btnSubmit");
                     if (res == true) {
                         $('.toastrDefaultSuccess').trigger('click');
-
+                        hdfReqInfoId.val("0");
                         setTimeout(function () {
-                                redirectPage('@Url.Action("GetReqInfoList")');
-                            }, 1000);
+                            LoadDataTable();
+                        }, 1000);
                     }
                     else {
                         $('.toastrDefaultError').trigger('click');

@@ -38,6 +38,11 @@ namespace ERPBLL.Production
             return _repairSectionFaultyItemTransferInfoRepository.GetAll(f => f.ProductionFloorId == floorId && f.RepairLineId == RepairLine && f.OrganizationId == orgId);
         }
 
+        public IEnumerable<RepairSectionFaultyItemTransferInfoDTO> GetRepairSectionFaultyItemTransferInfoList(long? floorId, long? repairLineId,string transferCode, string status, string fromDate, string toDate, long orgId)
+        {
+            return this._production.Db.Database.SqlQuery<RepairSectionFaultyItemTransferInfoDTO>(QueryForRepairSectionFaultyItemTransferInfoList(floorId, repairLineId, transferCode, status, fromDate, toDate, orgId)).ToList();
+        }
+
         public bool SaveRepairSectionFaultyItemTransfer(RepairSectionFaultyItemTransferInfoDTO faultyItems, long orgId, long userId)
         {
             bool IsSuccess = false;
@@ -115,6 +120,54 @@ namespace ERPBLL.Production
                 IsSuccess= this._faultyItemStockDetailBusiness.SaveFaultyItemStockOut(faultyItemStocks,userId,orgId);
             }
             return IsSuccess;
+        }
+
+        // Private Methods //
+
+        private string QueryForRepairSectionFaultyItemTransferInfoList(long? floorId, long? repairLineId,string transferCode, string status, string fromDate, string toDate,long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            param += string.Format(@" and info.OrganizationId={0}", orgId);
+            if (repairLineId != null && repairLineId > 0)
+            {
+                param += string.Format(@" and info.RepairLineId={0}", repairLineId);
+            }
+            if (floorId != null && floorId > 0)
+            {
+                param += string.Format(@" and info.ProductionFloorId={0}", floorId);
+            }
+            if (!string.IsNullOrEmpty(status) && status.Trim() != "")
+            {
+                param += string.Format(@" and info.StateStatus='{0}'", status);
+            }
+            if (!string.IsNullOrEmpty(transferCode) && transferCode.Trim() != "")
+            {
+                param += string.Format(@" and info.TransferCode Like'%{0}%'", transferCode);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(info.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(info.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(info.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select TransferCode,ProductionFloorName,RepairLineName,StateStatus,TotalUnit,app.UserName 'EntryUser',info.EntryDate
+From tblRepairSectionFaultyItemTransferInfo info
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on info.EUserId=app.UserId Where 1=1 {0}",Utility.ParamChecker(param));
+
+            return query;
         }
     }
 }

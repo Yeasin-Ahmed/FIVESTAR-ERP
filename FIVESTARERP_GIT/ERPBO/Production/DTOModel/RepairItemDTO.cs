@@ -52,5 +52,11 @@ namespace ERPBO.Production.DTOModel
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<RepairItemProblemDTO> RepairItemProblems { get; set; }
         public ICollection<RepairItemPartsDTO> RepairItemParts { get; set; }
+
+        // Custom Property
+        [StringLength(100)]
+        public string EntryUser { get; set; }
+        [StringLength(100)]
+        public string UpdateUser { get; set; }
     }
 }

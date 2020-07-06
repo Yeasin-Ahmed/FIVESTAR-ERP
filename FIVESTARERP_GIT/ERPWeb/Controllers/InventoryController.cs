@@ -28,6 +28,7 @@ namespace ERPWeb.Controllers
     public class InventoryController : BaseController
     {
         // GET: Inventory
+        #region Inventory
         private readonly IWarehouseBusiness _warehouseBusiness;
         private readonly IItemTypeBusiness _itemTypeBusiness;
         private readonly IUnitBusiness _unitBusiness;
@@ -46,9 +47,17 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
-        private readonly ISupplierBusiness _supplierBusiness;
+        private readonly ISupplierBusiness _supplierBusiness; 
+        #endregion
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness)
+        #region Production
+        private readonly IRepairLineBusiness _repairLineBusiness;
+        private readonly IRepairSectionRequisitionInfoBusiness _repairSectionRequisitionInfoBusiness;
+        private readonly IRepairSectionRequisitionDetailBusiness _repairSectionRequisitionDetailBusiness;
+        #endregion
+
+
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -69,6 +78,13 @@ namespace ERPWeb.Controllers
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             this._supplierBusiness = supplierBusiness;
+
+            #region Production
+            this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
+            this._repairLineBusiness = repairLineBusiness;
+            this._repairSectionRequisitionDetailBusiness = repairSectionRequisitionDetailBusiness;
+            #endregion
+
         }
 
         // GET: Account
@@ -530,7 +546,7 @@ namespace ERPWeb.Controllers
             var permission = ((pre.Edit) || (pre.Add));
             if (reqId > 0 && !string.IsNullOrEmpty(status) && permission)
             {
-                if (RequisitionStatus.Rejected == status || RequisitionStatus.Recheck == status)
+                if (RequisitionStatus.Rejected == status || RequisitionStatus.Rechecked == status)
                 {
                     IsSuccess = _requsitionInfoBusiness.SaveRequisitionStatus(reqId, status, User.OrgId, User.UserId);
                 }
@@ -1134,6 +1150,83 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
+        #endregion
+
+        #region Repair Section Requisition
+        public ActionResult GetRepairSectionRequisitionInfoList(string flag, long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, int page = 1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.WarehouseName, Value = line.Id.ToString() }).ToList();
+
+                ViewBag.ddlRepairLine = _repairLineBusiness.GetRepairLineWithFloor(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+
+                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value.ToString() }).ToList();
+
+                ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Select(st => new SelectListItem
+                {
+                    Text = st.text,
+                    Value = st.value
+                }).ToList();
+
+                return View();
+            }
+            else
+            {
+                var dto = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionInfoList(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate,"Warehouse", User.OrgId);
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
+                List<RepairSectionRequisitionInfoViewModel> viewModels = new List<RepairSectionRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetRepairSectionRequisitionInfoList", viewModels);
+            }
+        }
+
+        public ActionResult IssueRepairSectionRequisition(long requisitionId) {
+            var req = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(requisitionId, User.OrgId);
+            if(req != null && req.StateStatus== RequisitionStatus.Checked)
+            {
+                var reqInfo = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionDataById(req.RSRInfoId, User.OrgId);
+                RepairSectionRequisitionInfoViewModel viewModel = new RepairSectionRequisitionInfoViewModel();
+                AutoMapper.Mapper.Map(reqInfo, viewModel);
+                return View(viewModel);
+            }
+            return RedirectToAction("GetRepairSectionRequisitionInfoList");
+        }
+        public ActionResult IssueRepairSectionRequisitionDetails(long requisitionId)
+        {
+            var requisition = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(requisitionId,User.OrgId);
+            if (requisitionId > 0 && requisition.StateStatus == RequisitionStatus.Checked)
+            {
+                var dto = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailPendingByReqId(requisitionId, User.OrgId);
+                IEnumerable<RepairSectionRequisitionDetailViewModel> viewModels = new List<RepairSectionRequisitionDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_IssueRepairSectionRequisitionDetails", viewModels);
+            }
+            return RedirectToAction("GetRepairSectionRequisitionInfoList");
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRepairSectionRequisitionState(RepairRequisitionInfoStateViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid && model.Details.Count > 0)
+            {
+                if(model.Status == RequisitionStatus.Approved)
+                {
+                    RepairRequisitionInfoStateDTO dto = new RepairRequisitionInfoStateDTO();
+                    AutoMapper.Mapper.Map(model,dto);
+                    IsSuccess=_repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionIssueByWarehouse(dto, User.OrgId, User.UserId);
+                }
+                else
+                {
+                    IsSuccess = _repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionStatus(model.RequistionId,model.Status, User.OrgId, User.UserId);
+                }
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

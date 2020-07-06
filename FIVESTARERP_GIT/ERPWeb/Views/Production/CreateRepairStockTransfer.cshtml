@@ -165,12 +165,11 @@
             });
         })
 
-        function checkItemQty(repairId,itemId, qcId, modelId, qty, itemName) {
+        function checkItemQty(repairId,itemId,modelId, qty, itemName) {
             var text = "";
             //console.log('Item Id....');
             //console.log(itemId);
-            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, qcId: qcId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', getToken());
-
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairAndItemAndModelId', getToken());
             if (val.stockQty < qty) {
                 text += itemName + ',';
             }
@@ -293,8 +292,8 @@
             $("#unitName").text('');
             $("#stockQty").text('(0)');
             txtQuantity.val('0');
-            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlRepairLine.val !="" && ddlQCLine.val() != "" && TryParseInt(ddlQCLine.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', JSON.stringify({ itemId: ddlItem.val(), repairId: ddlRepairLine.val(), qcId: ddlQCLine.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
+            if (ddlItem.val() != "" && TryParseInt(ddlItem.val(), 0) > 0 && ddlRepairLine.val !="" && TryParseInt(ddlModelName.val(), 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetRepairLineStockInfoByRepairAndItemAndModelId', JSON.stringify({ itemId: ddlItem.val(), repairId: ddlRepairLine.val(),modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {
@@ -475,6 +474,16 @@
                 isValid = false;
                 $(".require-quantity").removeClass("hide");
             }
+            else {
+                //long repairLineId, long qcLineId,long modelId, long itemId
+                var val = ajaxValueReturnable(JSON.stringify({ repairLineId: TryParseInt(ddlRepairLine.val(), 0), qcLineId: TryParseInt(ddlQCLine.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0)}), '/Common/GetRepairLineQCRemainQty', getToken());
+                var qty = TryParseInt($.trim(txtQuantity.val()), 0);
+                if (qty > val ) {
+                    bootbox.alert("QC Remain Transfer Qty is " + val);
+                    isValid = false;
+                }
+            }
+
             if (!validateItemStock()) {
                 isValid = false;
             }
@@ -484,12 +493,12 @@
         function validateItemStock() {
             var isValid = true;
             var errorTxt = "";
-            if (ddlModelName.val() != "" && ddlQCLine.val() != "" && $('#tblData tbody tr').length > 0 && ddlRepairLine.val !="") {
+            if (ddlModelName.val() != ""&& $('#tblData tbody tr').length > 0 && ddlRepairLine.val !="") {
                 $.each($('#tblData tbody tr'), function (index, item) {
                     var itemId = $(this).children('td').eq(3).html();
                     var itemName = $(this).children('td').eq(4).html();
                     var qty = $(this).children('td').eq(5).html();
-                    errorTxt += checkItemQty(ddlRepairLine.val(),itemId, ddlQCLine.val(), ddlModelName.val(), qty, itemName);
+                    errorTxt += checkItemQty(ddlRepairLine.val(),itemId, ddlModelName.val(), qty, itemName);
                 })
             }
             if (errorTxt.length > 0) {

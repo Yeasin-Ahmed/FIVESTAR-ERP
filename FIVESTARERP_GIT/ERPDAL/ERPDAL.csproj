@@ -270,6 +270,22 @@
     <Compile Include="ProductionContextMigrations\202007020501459_Production_UpdateRepairSectionRequisition.Designer.cs">
       <DependentUpon>202007020501459_Production_UpdateRepairSectionRequisition.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202007041254017_Production_AddOrgInRepairSectionRequisitionDetail.cs" />
+    <Compile Include="ProductionContextMigrations\202007041254017_Production_AddOrgInRepairSectionRequisitionDetail.Designer.cs">
+      <DependentUpon>202007041254017_Production_AddOrgInRepairSectionRequisitionDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007051424281_Production_AddCheckUserInRepairSectionReq.cs" />
+    <Compile Include="ProductionContextMigrations\202007051424281_Production_AddCheckUserInRepairSectionReq.Designer.cs">
+      <DependentUpon>202007051424281_Production_AddCheckUserInRepairSectionReq.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007051502080_Production_AddHandOverInRepairRequisition.cs" />
+    <Compile Include="ProductionContextMigrations\202007051502080_Production_AddHandOverInRepairRequisition.Designer.cs">
+      <DependentUpon>202007051502080_Production_AddHandOverInRepairRequisition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007060457133_Production_AddPDNFaultyStock.cs" />
+    <Compile Include="ProductionContextMigrations\202007060457133_Production_AddPDNFaultyStock.Designer.cs">
+      <DependentUpon>202007060457133_Production_AddPDNFaultyStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -436,6 +452,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007020501459_Production_UpdateRepairSectionRequisition.resx">
       <DependentUpon>202007020501459_Production_UpdateRepairSectionRequisition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007041254017_Production_AddOrgInRepairSectionRequisitionDetail.resx">
+      <DependentUpon>202007041254017_Production_AddOrgInRepairSectionRequisitionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007051424281_Production_AddCheckUserInRepairSectionReq.resx">
+      <DependentUpon>202007051424281_Production_AddCheckUserInRepairSectionReq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007051502080_Production_AddHandOverInRepairRequisition.resx">
+      <DependentUpon>202007051502080_Production_AddHandOverInRepairRequisition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007060457133_Production_AddPDNFaultyStock.resx">
+      <DependentUpon>202007060457133_Production_AddPDNFaultyStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

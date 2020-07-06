@@ -39,10 +39,14 @@ namespace ERPBO.Production.DTOModel
         public Nullable<DateTime> CanceledDate { get; set; }
         public long? ReceivedBy { get; set; }
         public Nullable<DateTime> ReceivedDate { get; set; }
+        public long? CheckedBy { get; set; }
+        public Nullable<DateTime> CheckedDate { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? HandOverId { get; set; }
+        public Nullable<DateTime> HandOverDate { get; set; }
         public ICollection<RepairSectionRequisitionDetailDTO> RepairSectionRequisitionDetails { get; set; }
 
         // Custom Properties
@@ -60,6 +64,9 @@ namespace ERPBO.Production.DTOModel
         public string CancelUser { get; set; }
         [StringLength(100)]
         public string ReceiveUser { get; set; }
-
+        [StringLength(100)]
+        public string CheckUser { get; set; }
+        [StringLength(100)]
+        public string HandOverUser { get; set; }
     }
 }

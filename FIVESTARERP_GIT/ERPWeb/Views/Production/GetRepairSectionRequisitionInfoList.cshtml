@@ -17,7 +17,7 @@
                         </h5>
                     </div>
                     <div class="col-md-3">
-                        <a href="#" class="btn btn-sm btn-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
+                        <a href="/Production/CreateRepairSectionRequisition" class="btn btn-sm btn-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
                     </div>
                 </div>
             </div>
@@ -59,12 +59,11 @@
                     <div class="col-md-3">
                         <label class="control-label font-weight-bold">From Date</label>
                         <div class="input-group input-group-sm ">
-                            <input type="text" class="form-control form-control-sm date-datePicker" id="dptFromDate" />
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
                             <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
                                 <span class="input-group-text">&#10008;</span>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-md-3">
                         <label class="control-label font-weight-bold">To Date</label>
@@ -90,6 +89,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdfReqInfoId" />
+                <h4 id="modalHeading" class="modal-title">Requisition Info & Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script type="text/javascript">
         var dptFromDate = $("#dptFromDate");
@@ -99,6 +113,7 @@
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlStateStatus = $("#ddlStateStatus");
         var txtReqCode = $("#txtReqCode");
+        var hdfReqInfoId = $("#hdfReqInfoId");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -109,10 +124,12 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
             dptToDate.css("background-color", "#fff");
+
             $('#dptFromDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
@@ -123,31 +140,26 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
+
         })
 
         $(document).on('click', 'div.remove-date', function () {
             if ($(this).hasClass("dptToDate")) {
                 if (dptToDate.val() !== '') {
                     dptToDate.val('');
-                    //LoadDataTable();
+                    LoadDataTable();
                 }
             }
             if ($(this).hasClass("dptFromDate")) {
                 if (dptFromDate.val() !== '') {
                     dptFromDate.val('');
-                    //LoadDataTable();
+                    LoadDataTable();
                 }
             }
         })
 
         txtReqCode.keyup(function () {
             LoadDataTable();
-        })
-
-        $("#dptFromDate").change(function () {
-            if (dptFromDate.val() !== "") {
-
-            }
         })
 
         // Pagination
@@ -158,7 +170,7 @@
                 pageNo = $(this).attr('data-page-no');
                 //console.log('Page No');
                 //console.log(!isNaN(pageNo));
-                //LoadDataTable();
+                LoadDataTable();
             }
         })
 
@@ -167,7 +179,8 @@
         })
 
         function LoadDataTable() {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType: ddlRequisitionType.val(), page: pageNo };
+            var repairId = ddlRepairLine.val() !== "" ? ddlRepairLine.val().substring(0, ddlRepairLine.val().indexOf("#")) : 0;
+            var data = { flag: "view", reqCode: txtReqCode.val().trim(), repairLineId: TryParseInt(repairId, 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), requisitionCode: txtReqCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionRequisitionInfoList', data)).then(function (res, status) {
                 if (status === "success") {
@@ -183,8 +196,58 @@
             console.log(data);
         }
 
+        // Model Detail
 
+        $(document).on('click', 'a.data-item-detail', function (e) {
+            e.preventDefault();
+            hdfReqInfoId.val("0");
+            var id = $(this).attr('data-item-detail');
+            hdfReqInfoId.val(id);
 
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetRepairSectionRequisitionInfoList', { flag: "detail", reqInfoId: hdfReqInfoId.val() })).then(function (res, status) {
+                if (status === "success") {
+                    $("#modelDataContainer").empty();
+                    $("#modelDataContainer").append(res);
+                    $("#modalDetails").modal('show');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        $(document).on('click', '.btnAccept', function (e) {
+            e.preventDefault();
+            var id = TryParseInt(hdfReqInfoId.val(), 0);
+            if (id > 0) {
+                bootbox.confirm("Are you sure you want to Accept this requisition", function (result) {
+                    if (result) {
+                        fnSaveRequisitionState(reqStatus.accepted, id)
+                    }
+                })
+            }
+        })
+
+        function fnSaveRequisitionState(status, id) {
+            var data = JSON.stringify({ status: status, requisitionId: id });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairSectionRequisitionState', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    $("#modalDetails").modal("toggle").fadeOut(500);
+                    setTimeout(function () {
+                        LoadDataTable();
+                    }, 1000);
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+            })
+        }
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
     </script>
 }
 

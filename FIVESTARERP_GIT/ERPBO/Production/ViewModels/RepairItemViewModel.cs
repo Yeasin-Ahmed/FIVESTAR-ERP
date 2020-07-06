@@ -59,5 +59,10 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<RepairItemProblemViewModel> RepairItemProblems { get; set; }
         public ICollection<RepairItemPartsViewModel> RepairItemParts { get; set; }
+        // Custom Property
+        [StringLength(100)]
+        public string EntryUser { get; set; }
+        [StringLength(100)]
+        public string UpdateUser { get; set; }
     }
 }

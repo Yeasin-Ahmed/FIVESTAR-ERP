@@ -17,10 +17,12 @@ var type = {
 var reqStatus = {
     pending: "Pending",
     reject: "Rejected",
-    recheck: "Recheck",
+    recheck: "Rechecked",
     approved: "Approved",
     accepted: "Accepted",
-    canceled: "Canceled"
+    canceled: "Canceled",
+    checked: "Checked",
+    handOver:"HandOver"
 };
 
 var flag = {
