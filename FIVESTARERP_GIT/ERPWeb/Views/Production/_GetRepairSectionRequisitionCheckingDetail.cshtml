@@ -1,0 +1,73 @@
+﻿@model  IEnumerable<ERPBO.Production.ViewModels.RepairSectionRequisitionDetailViewModel>
+@using ERPBO.Production.ViewModels;
+@using ERPBLL.Common;
+@{
+    Layout = null;
+    int sl = 0;
+    RepairSectionRequisitionInfoViewModel info = (RepairSectionRequisitionInfoViewModel)ViewBag.Info;
+}
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
+    <tbody>
+        <tr>
+            <td class="hide">@info.RSRInfoId</td>
+            <td style="width:15%">Requisition Code</td>
+            <td style="width:20%"><b>@info.RequisitionCode</b></td>
+            <td style="width:20%">Repair Line</td>
+            <td style="width:15%"><b>@info.RepairLineName</b></td>
+            <td style="width:15%">Model</td>
+            <td style="width:15%"><b>@info.ModelName</b></td>
+        </tr>
+        <tr>
+            <td style="width:15%">Warehouse</td>
+            <td style="width:20%"><b>@info.WarehouseName</b></td>
+            <td style="width:20%">StateStatus</td>
+            <td colspan="3"><b>@info.StateStatus</b></td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th>ItemType Name</th>
+            <th>Item Name</th>
+            <th>Request Qty</th>
+            <th>Issue Qty</th>
+            <th>Type Of Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center" width="10%"><b>@sl</b></td>
+                <td>@detail.ItemTypeName</td>
+                <td>@detail.ItemName</td>
+                <td class="text-center">
+                    @detail.RequestQty
+                </td>
+                <td class="text-center">
+                    @detail.IssueQty
+                </td>
+                <td class="text-center">@detail.UnitName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (info.StateStatus == RequisitionStatus.Pending)
+{
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-success btnChecked">Checked</button>
+    </div>
+}
+@if (info.StateStatus == RequisitionStatus.Approved)
+{
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-success btnHandOver">HandOver</button>
+    </div>
+}
+

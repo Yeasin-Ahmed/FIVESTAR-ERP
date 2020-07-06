@@ -1,5 +1,7 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
+using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -15,22 +17,43 @@ namespace ERPBLL.Production
     {
         private readonly IProductionUnitOfWork _productionDb;
         private readonly RepairSectionRequisitionInfoRepository _repairSectionRequisitionInfoRepository;
-       
-        public RepairSectionRequisitionInfoBusiness(IProductionUnitOfWork productionDb)
+        private readonly IRepairSectionRequisitionDetailBusiness _repairSectionRequisitionDetailBusiness;
+        private readonly IWarehouseStockDetailBusiness _warehouseStockDetailBusiness;
+        private readonly RepairSectionRequisitionDetailRepository _repairSectionRequisitionDetailRepository;
+
+        public RepairSectionRequisitionInfoBusiness(IProductionUnitOfWork productionDb, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, RepairSectionRequisitionDetailRepository repairSectionRequisitionDetailRepository)
         {
             this._productionDb = productionDb;
             this._repairSectionRequisitionInfoRepository = new RepairSectionRequisitionInfoRepository(this._productionDb);
+            this._warehouseStockDetailBusiness = warehouseStockDetailBusiness;
+            this._repairSectionRequisitionDetailBusiness = repairSectionRequisitionDetailBusiness;
+            this._repairSectionRequisitionDetailRepository = new RepairSectionRequisitionDetailRepository(this._productionDb);
         }
 
-        public IEnumerable<RepairSectionRequisitionInfoDTO> GetRepairSectionRequisitionInfoList(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, long orgId)
+        public IEnumerable<RepairSectionRequisitionInfoDTO> GetRepairSectionRequisitionInfoList(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, string queryFor, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(QueryForRepairSectionRequisitionInfo(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(QueryForRepairSectionRequisitionInfo(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, queryFor, orgId)).ToList();
         }
 
-        private string QueryForRepairSectionRequisitionInfo(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, long orgId)
+        private string QueryForRepairSectionRequisitionInfo(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate,string queryFor, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
+
+            param += string.Format(@" and req.OrganizationId={0}", orgId);
+
+            if (!string.IsNullOrEmpty(queryFor))
+            {
+                if (queryFor == "Production" || queryFor =="Repair") {
+                    param += string.Format(@" and req.StateStatus IN('Pending','Checked','Rechecked','Rejected','Approved','HandOver','Accepted')");
+                }
+                else
+                {
+                    param += string.Format(@" and req.StateStatus IN('Checked','Approved','HandOver','Accepted')");
+                }
+            }
+
+            
             if (repairLineId != null && repairLineId > 0)
             {
                 param += string.Format(@" and req.RepairLineId={0}", repairLineId);
@@ -43,13 +66,13 @@ namespace ERPBLL.Production
             {
                 param += string.Format(@" and req.WarehouseId={0}", warehouseId);
             }
-            if (!string.IsNullOrEmpty(status) && status.Trim() !="")
+            if (!string.IsNullOrEmpty(status) && status.Trim() != "")
             {
                 param += string.Format(@" and req.StateStatus='{0}'", status);
             }
             if (!string.IsNullOrEmpty(requisitionCode) && requisitionCode.Trim() != "")
             {
-                param += string.Format(@" and wsd.RequisitionCode Like'%{0}%'", requisitionCode);
+                param += string.Format(@" and req.RequisitionCode Like'%{0}%'", requisitionCode);
             }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
@@ -80,19 +103,23 @@ req.CanceledDate,
 (Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.ReceivedBy) 'ReceiveUser',
 req.ReceivedDate,
 (Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.UpUserId) 'UpdateUser',
-req.UpdateDate
+req.UpdateDate,
+(Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.CheckedBy) 'CheckUser',
+req.CheckedDate,
+(Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.HandOverId) 'HandOverUser',
+req.HandOverDate
 From tblRepairSectionRequisitionInfo req
 Inner Join tblRepairLine rl on req.RepairLineId = rl.RepairLineId
 Inner Join tblProductionLines pl on req.ProductionFloorId = pl.LineId
 Inner Join [Inventory].dbo.tblWarehouses w on req.WarehouseId = w.Id
-Inner Join [ControlPanel].dbo.tblApplicationUsers appUser on req.EUserId = appUser.UserId
-Where 1=1 {0}",Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers appUser on appUser.OrganizationId={1} and req.EUserId = appUser.UserId
+Where 1=1 {0}", Utility.ParamChecker(param),orgId);
             return query;
         }
 
         public IEnumerable<RepairSectionRequisitionInfo> GetRepairSectionRequisitionInfos(long orgId)
         {
-            return _repairSectionRequisitionInfoRepository.GetAll(r=> r.OrganizationId == orgId);
+            return _repairSectionRequisitionInfoRepository.GetAll(r => r.OrganizationId == orgId);
         }
         public bool SaveRepairSectionRequisition(RepairSectionRequisitionInfoDTO model, long userId, long orgId)
         {
@@ -112,7 +139,7 @@ Where 1=1 {0}",Utility.ParamChecker(param));
                 EUserId = userId,
                 EntryDate = DateTime.Now,
                 OrganizationId = orgId,
-                RequisitionCode= code
+                RequisitionCode = code
             };
             List<RepairSectionRequisitionDetail> details = new List<RepairSectionRequisitionDetail>();
 
@@ -128,13 +155,14 @@ Where 1=1 {0}",Utility.ParamChecker(param));
                     ItemName = item.ItemName,
                     UnitId = item.UnitId,
                     UnitName = item.UnitName,
-                    EUserId= userId,
+                    EUserId = userId,
                     EntryDate = DateTime.Now,
-                    RequestQty= item.RequestQty,
-                    Remarks= item.Remarks,
-                    WarehouseId=model.WarehouseId,
+                    RequestQty = item.RequestQty,
+                    Remarks = item.Remarks,
+                    WarehouseId = model.WarehouseId,
                     WarehouseName = model.WarehouseName,
-                    RequisitionCode = code
+                    RequisitionCode = code,
+                    OrganizationId = orgId
                 };
                 details.Add(detail);
             }
@@ -142,6 +170,117 @@ Where 1=1 {0}",Utility.ParamChecker(param));
             info.RepairSectionRequisitionDetails = details;
 
             _repairSectionRequisitionInfoRepository.Insert(info);
+            return _repairSectionRequisitionInfoRepository.Save();
+        }
+        public RepairSectionRequisitionInfo GetRepairSectionRequisitionById(long reqId, long orgId)
+        {
+            return _repairSectionRequisitionInfoRepository.GetOneByOrg(f => f.RSRInfoId == reqId && f.OrganizationId == orgId);
+        }
+        public RepairSectionRequisitionInfoDTO GetRepairSectionRequisitionDataById(long reqId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(string.Format(@"Select ri.RSRInfoId,ri.RequisitionCode,ri.RepairLineName+' ['+ri.ProductionFloorName+']' 'RepairLineName'
+,ri.StateStatus,ri.WarehouseName,ri.ModelName,app.UserName 'EntryUser',ri.EntryDate
+From tblRepairSectionRequisitionInfo ri
+Inner Join [ControlPanel].dbo.[tblApplicationUsers] app on ri.EUserId = app.UserId
+Where 1=1 and ri.OrganizationId={0} and ri.RSRInfoId={1}", orgId, reqId)).Single();
+
+        }
+
+        public bool SaveRepairSectionRequisitionIssueByWarehouse(RepairRequisitionInfoStateDTO model, long orgId, long userId)
+        {
+            if (model.Status == RequisitionStatus.Approved)
+            {
+                if (SaveRepairSectionRequisitionStatus(model.RequistionId, model.Status, orgId, userId))
+                {
+                    var reqInfo = GetRepairSectionRequisitionById(model.RequistionId, orgId);
+
+                    List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
+                    foreach (var item in model.Details)
+                    {
+                        WarehouseStockDetailDTO warehouse = new WarehouseStockDetailDTO
+                        {
+                            WarehouseId = reqInfo.WarehouseId,
+                            DescriptionId = reqInfo.DescriptionId,
+                            ItemTypeId = item.ItemTypeId,
+                            ItemId = item.ItemId,
+                            Quantity = item.IssueQty,
+                            OrganizationId = orgId,
+                            UnitId = item.UnitId,
+                            StockStatus = StockStatus.StockOut,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            RefferenceNumber = reqInfo.RequisitionCode,
+                            Remarks = "Repair Section Requisition has been issued"
+                        };
+                        warehouseStocks.Add(warehouse);
+
+                        // Requisition Detail Issue Qty Update
+                        var reqDetail = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailById(item.RSRDetailId, reqInfo.RSRInfoId, orgId);
+                        if (reqDetail != null)
+                        {
+                            reqDetail.IssueQty = item.IssueQty;
+                            reqDetail.UpdateDate = DateTime.Now;
+                            reqDetail.UpUserId = userId;
+                            _repairSectionRequisitionDetailRepository.Update(reqDetail);
+                        }
+                    }
+                    if (_repairSectionRequisitionDetailRepository.Save())
+                    {
+                        return _warehouseStockDetailBusiness.SaveWarehouseStockOut(warehouseStocks, userId, orgId, string.Empty);
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool SaveRepairSectionRequisitionStatus(long requisitionId, string status, long orgId, long userId)
+        {
+            var reqInfo = GetRepairSectionRequisitionById(requisitionId, orgId);
+            if (reqInfo.StateStatus == RequisitionStatus.Pending && status == RequisitionStatus.Checked )
+            {
+                reqInfo.CheckedDate = DateTime.Now;
+                reqInfo.CheckedBy = userId;
+                reqInfo.StateStatus = status;
+                _repairSectionRequisitionInfoRepository.Update(reqInfo);
+            }
+            if (reqInfo.StateStatus == RequisitionStatus.Checked && (status == RequisitionStatus.Approved || status == RequisitionStatus.Rejected))
+            {
+                if (status == RequisitionStatus.Approved)
+                {
+                    reqInfo.ApprovedDate = DateTime.Now;
+                    reqInfo.ApprovedBy = userId;
+                    reqInfo.StateStatus = status;
+                    _repairSectionRequisitionInfoRepository.Update(reqInfo);
+                }
+                else if (status == RequisitionStatus.Rejected)
+                {
+                    reqInfo.RejectedDate = DateTime.Now;
+                    reqInfo.RejectedBy = userId;
+                    reqInfo.StateStatus = status;
+                    _repairSectionRequisitionInfoRepository.Update(reqInfo);
+                }
+            }
+            else if (reqInfo.StateStatus == RequisitionStatus.Approved && status == RequisitionStatus.HandOver)
+            {
+                reqInfo.HandOverDate = DateTime.Now;
+                reqInfo.HandOverId = userId;
+                reqInfo.StateStatus = status;
+                _repairSectionRequisitionInfoRepository.Update(reqInfo);
+            }
+            else if (reqInfo.StateStatus == RequisitionStatus.HandOver && status == RequisitionStatus.Accepted)
+            {
+                reqInfo.ReceivedDate = DateTime.Now;
+                reqInfo.ReceivedBy = userId;
+                reqInfo.StateStatus = status;
+                _repairSectionRequisitionInfoRepository.Update(reqInfo);
+            }
+            else if (reqInfo.StateStatus == RequisitionStatus.Rechecked && status == RequisitionStatus.Pending)
+            {
+                reqInfo.UpdateDate = DateTime.Now;
+                reqInfo.UpUserId = userId;
+                reqInfo.StateStatus = status;
+                _repairSectionRequisitionInfoRepository.Update(reqInfo);
+            }
             return _repairSectionRequisitionInfoRepository.Save();
         }
     }

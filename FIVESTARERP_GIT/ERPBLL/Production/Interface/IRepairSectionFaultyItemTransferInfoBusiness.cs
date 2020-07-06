@@ -14,5 +14,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<RepairSectionFaultyItemTransferInfo> GetRepairSectionFaultyItemTransferInfoByFloor(long floorId, long orgId);
         IEnumerable<RepairSectionFaultyItemTransferInfo> GetRepairSectionFaultyItemTransferInfoByRepairLine(long floorId,long RepairLine, long orgId);
         bool SaveRepairSectionFaultyItemTransfer(RepairSectionFaultyItemTransferInfoDTO faultyItems, long orgId, long userId);
+        IEnumerable<RepairSectionFaultyItemTransferInfoDTO> GetRepairSectionFaultyItemTransferInfoList(long ?floorId, long? repairLineId,string transferCode,string status,string fromDate, string toDate, long orgId);
     }
 }

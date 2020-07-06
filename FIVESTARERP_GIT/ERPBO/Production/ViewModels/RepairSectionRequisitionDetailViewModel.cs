@@ -37,6 +37,7 @@ namespace ERPBO.Production.ViewModels
         public int IssueQty { get; set; }
         [StringLength(200)]
         public string Remarks { get; set; }
+        public long OrganizationId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
@@ -47,5 +48,6 @@ namespace ERPBO.Production.ViewModels
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
+        public int AvailableQty { get; set; }
     }
 }

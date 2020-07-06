@@ -21,7 +21,11 @@ namespace ERPBLL.Production
         private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
         private readonly IItemBusiness _itemBusiness;
 
-        public RepairLineStockDetailBusiness(IProductionUnitOfWork productionDb, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IItemBusiness itemBusiness)
+        private readonly IRepairSectionRequisitionInfoBusiness _repairSectionRequisitionInfoBusiness;
+        private readonly IRepairSectionRequisitionDetailBusiness _repairSectionRequisitionDetailBusiness;
+        private readonly RepairSectionRequisitionInfoRepository _repairSectionRequisitionInfoRepository;
+
+        public RepairLineStockDetailBusiness(IProductionUnitOfWork productionDb, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IItemBusiness itemBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, RepairSectionRequisitionInfoRepository repairSectionRequisitionInfoRepository)
         {
             this._productionDb = productionDb;
             this._repairLineStockInfoRepository = new RepairLineStockInfoRepository(this._productionDb);
@@ -29,6 +33,9 @@ namespace ERPBLL.Production
             this._repairLineStockInfoBusiness = repairLineStockInfoBusiness;
             this._faultyItemStockDetailBusiness = faultyItemStockDetailBusiness;
             this._itemBusiness = itemBusiness;
+            this._repairSectionRequisitionInfoRepository = repairSectionRequisitionInfoRepository;
+            this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
+            this._repairSectionRequisitionDetailBusiness = repairSectionRequisitionDetailBusiness;
         }
         public IEnumerable<RepairLineStockDetail> GetRepairLineStockDetails(long orgId)
         {
@@ -123,6 +130,42 @@ namespace ERPBLL.Production
             return _repairLineStockDetailRepository.Save();
         }
 
+        public bool StockInByRepairSectionRequisition(long reqId, string status,long userId, long orgId)
+        {
+            var reqInfo = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(reqId, orgId);
+            if(reqInfo != null && reqInfo.StateStatus == RequisitionStatus.HandOver)
+            {
+                if (_repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionStatus(reqId, RequisitionStatus.Accepted, orgId, userId))
+                {
+                    var reqDetail = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailByInfoId(reqId, orgId);
+                    List<RepairLineStockDetailDTO> repairStocks = new List<RepairLineStockDetailDTO>();
+                    foreach (var item in reqDetail)
+                    {
+                        RepairLineStockDetailDTO repairStock = new RepairLineStockDetailDTO()
+                        {
+                            RepairLineId = reqInfo.RepairLineId,
+                            ProductionLineId = reqInfo.ProductionFloorId,
+                            DescriptionId = reqInfo.DescriptionId,
+                            WarehouseId = reqInfo.WarehouseId,
+                            ItemTypeId = item.ItemTypeId,
+                            ItemId = item.ItemId,
+                            OrganizationId = orgId,
+                            UnitId = item.UnitId,
+                            Quantity = item.IssueQty,
+                            RefferenceNumber= reqInfo.RequisitionCode,
+                            EUserId= userId,
+                            StockStatus = StockStatus.StockIn,
+                            EntryDate = DateTime.Now,
+                            Remarks= "Stock In By Repair Section Requisition"
+                        };
+                        repairStocks.Add(repairStock);
+                    }
+                    return SaveRepairLineStockIn(repairStocks, userId, orgId);
+                }
+            }
+            return false;
+        }
+
         public bool StockOutByFaultyItem(List<FaultyItemStockDetailDTO> details, long userId, long orgId)
         {
             bool IsSuccess = false;
@@ -159,5 +202,6 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
+
     }
 }

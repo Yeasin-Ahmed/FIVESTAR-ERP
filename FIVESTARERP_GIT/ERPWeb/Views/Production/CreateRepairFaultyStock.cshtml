@@ -6,7 +6,7 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
-                <a href="#" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                <a href="/Production/GetFaultyItemStockInfo" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
             </div>
             <div class="col-md-6 text-center">
                 <h4 style="color:darkblue"><b>Add Faulty Item</b></h4>
@@ -175,11 +175,11 @@
             LoadItemStock();
         })
 
-        function checkItemQty(repairId, itemId, qcId, modelId, qty, itemName) {
+        function checkItemQty(repairId, itemId, modelId, itemName) {
             var text = "";
             //console.log('Item Id....');
             //console.log(itemId);
-            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, qcId: qcId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', getToken());
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, modelId: modelId, repairId: repairId }), '/Common/GetRepairLineStockInfoByRepairAndItemAndModelId', getToken());
 
             if (val.stockQty < qty) {
                 text += itemName + ',';
@@ -193,10 +193,10 @@
             $("#unitName").text('');
             $("#stockQty").text('(0)');
             txtQuantity.val('0');
-            if (ddlItem.val() != "" && ddlRepairLine.val != "" && ddlQCLine.val() != "" && TryParseInt(ddlQCLine.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
+            if (ddlItem.val() != "" && ddlRepairLine.val != "" && TryParseInt(ddlModelName.val(), 0) > 0) {
                 gethdfValues();
                 
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetRepairLineStockInfoByRepairQCAndItemAndModelId', JSON.stringify({ itemId: hdfItemId.val(), repairId: ddlRepairLine.val(), qcId: ddlQCLine.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetRepairLineStockInfoByRepairAndItemAndModelId', JSON.stringify({ itemId: hdfItemId.val(), repairId: ddlRepairLine.val(),modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {
@@ -374,7 +374,7 @@
                     var name = itemName.substring(0, itemName.indexOf("["));
                     //alert(name);
                     var qty = $(this).children('td').eq(3).html();
-                    errorTxt += checkItemQty(ddlRepairLine.val(), itemId, ddlQCLine.val(), model, qty, name);
+                    errorTxt += checkItemQty(ddlRepairLine.val(), itemId,model, qty, name);
                 })
             }
             if (errorTxt.length > 0) {
@@ -401,10 +401,12 @@
             txtRemarks.val('');
         })
 
-        $("#btnSubmit").click(function (e) {
+        $("#btnSubmit").click(function (e)
+        {
             e.preventDefault();
             $(".error").addClass("hide");
-            if (validateTable()) {
+            if (validateTable())
+            {
                 bootbox.confirm("Are you sure you want to add faulty Stock", function (result) {
                     if (result) {
                         disable("#btnSubmit");

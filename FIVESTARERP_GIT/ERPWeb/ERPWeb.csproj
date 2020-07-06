@@ -180,6 +180,7 @@
     <Content Include="Content\dist\img\userIcon.png" />
     <Content Include="Content\dist\js\adminlte.js" />
     <Content Include="Content\dist\js\adminlte.min.js" />
+    <Content Include="Content\Images\bgLoad.gif" />
     <Content Include="Content\Images\noImage.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.bundle.js" />
@@ -523,9 +524,20 @@
     <Content Include="Views\Production\CreateRepairSectionRequisition.cshtml" />
     <Content Include="Views\Production\GetRepairSectionRequisitionInfoList.cshtml" />
     <Content Include="Views\Production\_GetRepairSectionRequisitionInfoList.cshtml" />
-    <Content Include="Views\Configuration\GetFaultList.cshtml" />
-    <Content Include="Views\Configuration\GetServiceList.cshtml" />
-    <Content Include="Views\FrontDesk\ServicesDetails.cshtml" />
+    <Content Include="Views\Production\GetRepairSectionFaultyItemTransferList.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionFaultyItemTransferList.cshtml" />
+    <Content Include="Views\Production\GetFaultyItemByQRCodeList.cshtml" />
+    <Content Include="Views\Production\_GetFaultyItemByQRCodeList.cshtml" />
+    <Content Include="Views\Inventory\GetRepairSectionRequisitionInfoList.cshtml" />
+    <Content Include="Views\Inventory\IssueRepairSectionRequisition.cshtml" />
+    <Content Include="Views\Inventory\_IssueRepairSectionRequisitionDetails.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionRequisitionDetailList.cshtml" />
+    <Content Include="Views\Production\GetQRCodeList.cshtml" />
+    <Content Include="Views\Production\_GetQRCodeList.cshtml" />
+    <Content Include="Views\Production\GetRepairSectionRequisitionChecking.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionRequisitionCheckingDetail.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionRequisitionChecking.cshtml" />
+    <Content Include="Views\Inventory\_GetRepairSectionRequisitionInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -22,7 +22,7 @@
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-md-3">
-                <label for="ddlLineNumber" class="control-label">Line Number</label>
+                <label for="ddlLineNumber" class="control-label">Floor</label>
                 @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
                 <span class="error hide req-line">Line is require</span>
             </div>

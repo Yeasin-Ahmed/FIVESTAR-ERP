@@ -43,6 +43,7 @@ namespace ERPWeb.Controllers
         private readonly IRepairLineStockInfoBusiness _repairLineStockInfoBusiness;
         private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
         private readonly IFaultyItemStockInfoBusiness _faultyItemStockInfoBusiness;
+        private readonly IRepairItemStockInfoBusiness _repairItemStockInfoBusiness;
         #endregion
 
         #region ControlPanel
@@ -53,7 +54,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -82,7 +83,7 @@ namespace ERPWeb.Controllers
             this._repairLineStockInfoBusiness = repairLineStockInfoBusiness;
             this._qRCodeTraceBusiness = qRCodeTraceBusiness;
             this._faultyItemStockInfoBusiness = faultyItemStockInfoBusiness;
-
+            this._repairItemStockInfoBusiness = repairItemStockInfoBusiness;
             #endregion
 
             #region ControlPanel
@@ -330,6 +331,7 @@ namespace ERPWeb.Controllers
             }
             return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetRepairLineStockInfoByRepairAndItemAndModelId(long itemId, long repairId, long modelId)
         {
@@ -342,6 +344,14 @@ namespace ERPWeb.Controllers
                 itemStock = (repairStock.StockInQty - repairStock.StockOutQty).Value;
             }
             return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetRepairLineQCRemainQty(long repairLineId, long qcLineId,long modelId, long itemId)
+        {
+           var transferQty= _repairItemStockInfoBusiness.GetRepairItem(qcLineId, repairLineId, modelId, itemId, User.OrgId);
+            var remainQty = transferQty.Quantity - transferQty.QCQty;
+            return Json(remainQty);
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -697,7 +707,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetItemDetailByRepairFaultySection(long floorId, long repairLineId,long modelId)
+        public ActionResult GetItemDetailByRepairFaultySection(long floorId, long repairLineId, long modelId)
         {
             var items = _itemBusiness.GetItemDetailByRepairFaultySection(floorId, repairLineId, modelId, User.OrgId).Select(d => new Dropdown
             {

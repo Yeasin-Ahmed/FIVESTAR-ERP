@@ -1,0 +1,260 @@
+﻿
+@{
+    ViewBag.Title = "Repair Section Requisition Checking";
+}
+
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">
+                            Repair Section Requisition Checking
+                        </h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <h6 class="card-title">
+                    Search By
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-3">
+                        <label for="ddlRepairLine" class="control-label">Repair Line</label>
+                        @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair Line--", new { @class = "form-control form-control-sm ctrl-changed" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                        @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                        @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                        @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                        <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="row">
+                @Html.AntiForgeryToken()
+                <div class="col-md-12" id="dataContainer" style="min-height:50px">
+                    @{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View" });}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <input type="hidden" id="hdfReqInfoId" />
+                <h4 id="modalHeading" class="modal-title">Requisition Info & Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var ddlRepairLine = $("#ddlRepairLine");
+        var ddlModelName = $("#ddlModelName");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var txtReqCode = $("#txtReqCode");
+        var hdfReqInfoId = $("#hdfReqInfoId");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        txtReqCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                pageNo = $(this).attr('data-page-no');
+                //console.log('Page No');
+                //console.log(!isNaN(pageNo));
+                LoadDataTable();
+            }
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var repairId = ddlRepairLine.val() !== "" ? ddlRepairLine.val().substring(0, ddlRepairLine.val().indexOf("#")) : 0;
+            var data = { flag: "view", reqCode: txtReqCode.val().trim(), repairLineId: TryParseInt(repairId, 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), requisitionCode: txtReqCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionRequisitionChecking', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+            console.log(data);
+        }
+
+        // Model Detail
+
+        $(document).on('click', 'a.data-item-detail', function (e) {
+            e.preventDefault();
+            hdfReqInfoId.val("0");
+            var id = $(this).attr('data-item-detail');
+            hdfReqInfoId.val(id);
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetRepairSectionRequisitionChecking', { flag: "detail", reqInfoId: hdfReqInfoId.val() })).then(function (res, status) {
+                if (status === "success") {
+                    $("#modelDataContainer").empty();
+                    $("#modelDataContainer").append(res);
+                    $("#modalDetails").modal('show');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        $(document).on('click', '.btnChecked', function (e) {
+            e.preventDefault();
+            bootbox.confirm("Are you sure you want to check this requisition", function (result) {
+                if (result) {
+                    fnSaveRequisitionState(reqStatus.checked, hdfReqInfoId.val());
+                }
+            })
+            
+        })
+
+        $(document).on('click', '.btnHandOver', function (e) {
+            e.preventDefault();
+            bootbox.confirm("Are you sure you want to hand over this requisition", function (result) {
+                if (result) {
+                    fnSaveRequisitionState(reqStatus.handOver, hdfReqInfoId.val());
+                }
+            })
+        })
+
+        function fnSaveRequisitionState(status,id) {
+            var data = JSON.stringify({ status: status, reqInfoId: id });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairSectionRequisitionStateChecking', data, getToken())).then(function (res, status)
+            {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    $("#modalDetails").modal("toggle").fadeOut('500');
+                    setTimeout(function () {
+                        LoadDataTable();
+                    },500)
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+                
+            }).fail(function (error) {
+                $('.toastrDefaultError').trigger('click');
+            })
+        }
+
+    </script>
+}
+
+
+

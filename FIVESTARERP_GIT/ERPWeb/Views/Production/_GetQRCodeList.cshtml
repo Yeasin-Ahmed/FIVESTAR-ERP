@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.QRCodeTraceViewModel>
+@{
+    //ProductionFloorName = s.ProductionFloorName,
+    //                AssemblyLineName = s.AssemblyLineName,
+    //                ModelName = s.ModelName,
+    //                WarehouseName = s.WarehouseName,
+    //                ReferenceNumber = s.ReferenceNumber,
+    //                ItemTypeName = s.ItemTypeName,
+    //                ItemName = s.ItemName,
+    //                CodeNo = s.CodeNo
+    int sl = 0;
+}
+
+<table class="table table-bordered table-sm table-striped table-responsive-lg">
+    <thead class="btn-dark">
+        <tr class="text-bold text-sm text-center">
+            <th>#SL</th>
+            <th>Floor</th>
+            <th>Assembly</th>
+            <th>Warehouse</th>
+            <th>Ref Num.</th>
+            <th>ItemType Name</th>
+            <th>Item Name</th>
+            <th>Code</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sl = sl + 1;
+            <tr class="text-bold text-sm">
+                <td class="text-center">@sl</td>
+                <td>@item.ProductionFloorName</td>
+                <td>@item.AssemblyLineName</td>
+                <td>@item.WarehouseName</td>
+                <td>@item.ReferenceNumber</td>
+                <td>@item.ItemTypeName</td>
+                <td>@item.ItemName</td>
+                <td class="text-center">@item.CodeNo</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -183,6 +183,8 @@
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
+    <Compile Include="Production\DomainModels\ProductionFaultyStockDetail.cs" />
+    <Compile Include="Production\DomainModels\ProductionFaultyStockInfo.cs" />
     <Compile Include="Production\DomainModels\RepairItem.cs" />
     <Compile Include="Production\DomainModels\PackagingLine.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockDetail.cs" />
@@ -270,7 +272,9 @@
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
+    <Compile Include="Production\DTOModel\ProductionFaultyStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyItemStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\ProductionFaultyStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyItemStocknfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingItemStockInfoDTO.cs" />
@@ -308,6 +312,7 @@
     <Compile Include="Production\DTOModel\QualityControlLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QualityControlLineStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RepairLineDTO.cs" />
+    <Compile Include="Production\DTOModel\RepairRequisitionState.cs" />
     <Compile Include="Production\DTOModel\RepairSectionFaultyItemTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RepairSectionFaultyItemTransferInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RepairSectionRequisitionDetailDTO.cs" />
@@ -362,6 +367,8 @@
     <Compile Include="Production\ViewModels\PackagingLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineViewModel.cs" />
+    <Compile Include="Production\ViewModels\ProductionFaultyStockDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\ProductionFaultyStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />
@@ -378,6 +385,7 @@
     <Compile Include="Production\ViewModels\RepairLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairLineViewModel.cs" />
+    <Compile Include="Production\ViewModels\RepairRequisitionState.cs" />
     <Compile Include="Production\ViewModels\RepairSectionFaultyItemTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairSectionFaultyItemTransferInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairSectionRequisitionDetailViewModel.cs" />

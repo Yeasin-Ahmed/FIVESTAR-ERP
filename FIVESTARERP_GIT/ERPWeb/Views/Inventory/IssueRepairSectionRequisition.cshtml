@@ -1,0 +1,192 @@
+﻿@model ERPBO.Production.ViewModels.RepairSectionRequisitionInfoViewModel
+
+@{
+    ViewBag.Title = "Issue Pending Requisition";
+    string status = Model.StateStatus + " By PFM";
+}
+
+
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">
+                            Issue Pending Requisition
+                        </h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6 class="card-title">
+                            Requisition Information
+                        </h6>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <select class="form-control form-control-sm" id="ddlAction">
+                                <option value="">---Select Action---</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected hide">Rejected</option>
+                                <option value="Recheck hide">Recheck</option>
+                            </select>
+                            <div class="input-group-append" style="cursor:pointer">
+                                <a id="btnSubmit" href="#" title="Submit Requisition" style="background-color:#2386b9" class="input-group-text">
+                                    <i class="fas fa-paper-plane"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-12">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="hdfRequisitionId" value="@Model.RSRInfoId" />
+                        <input type="hidden" id="hdfRequisitionCode" value="@Model.RequisitionCode" />
+                        <table class="table table-bordered table-sm table-responsive-lg text-bold text-sm" id="tblInfo">
+                            <tbody>
+                                <tr>
+                                    <td class="alert-secondary" style="width:10%">Req Code</td>
+                                    <td style="width:15%; background-color:#e1dada">@Model.RequisitionCode</td>
+                                    <td class="alert-secondary" style="width:10%">Repair Line</td>
+                                    <td style="width:15%; background-color:#e1dada">@Model.RepairLineName</td>
+                                    <td class="alert-secondary" style="width:12%">Warehouse Name</td>
+                                    <td style="width:16%; background-color:#e1dada">@Model.WarehouseName</td>
+                                    <td class="alert-secondary" style="width:10%">Model Name</td>
+                                    <td style="width:12%; background-color:#e1dada">@Model.ModelName</td>
+                                </tr>
+                                <tr>
+                                    <td class="alert-secondary" style="width:10%">Status</td>
+                                    <td style="width:15%; background-color:#e1dada">
+                                        <span class="badge badge-warning">
+                                            @status
+                                        </span>
+                                    </td>
+                                    <td class="alert-secondary" style="width:10%">Requistion By</td>
+                                    <td style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
+                                    <td class="alert-secondary" style="width:12%">Entry Date</td>
+                                    <td style="width:16%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                                    <td class="alert-secondary" style="width:10%"></td>
+                                    <td style="width:12%; background-color:#e1dada"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        @{Html.RenderAction("IssueRepairSectionRequisitionDetails", new { @requisitionId = Model.RSRInfoId });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12">
+
+                </div>
+                <div class="col-md-12">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var hdfRequisitionId = $("#hdfRequisitionId");
+        var hdfRequisitionCode = $("#hdfRequisitionCode");
+        var ddlAction = $("#ddlAction");
+
+        function validateSubmit() {
+            var isValid = true;
+            if (ddlAction.val() === "") {
+                isValid = false;
+                bootbox.alert("Please select a Action before submit");
+            }
+            if ($(".tblDataDetail tbody tr").length == 0) {
+                isValid = false;
+                bootbox.alert("Requistion details not found");
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+
+            if (validateSubmit()) {
+                bootbox.confirm("Are you sure you want to save this requisition with " + ddlAction.val() + " status", function (result) {
+                    if (result) {
+                        disable("#btnSubmit")
+                        var info = { RequistionId: TryParseInt(hdfRequisitionId.val(), 0), RequisitionCode: hdfRequisitionCode.val(), Status: ddlAction.val() };
+                        var details = []; details.length = 0;
+
+                        $.each($(".tblDataDetail tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            details.push({
+                                RSRDetailId: tds.eq(1).html(),
+                                ItemTypeId: tds.eq(2).html(),
+                                ItemId: tds.eq(3).html(),
+                                UnitId: tds.eq(4).html(),
+                                ItemTypeName: tds.eq(5).html(),
+                                ItemName: tds.eq(6).html(),
+                                RequestQty: tds.eq(7).html(),
+                                UnitName: tds.eq(8).html(),
+                                IssueQty: tds.eq(9).children('input[type="number"]').val()
+                            })
+                        })
+
+                        info.Details = details;
+
+                        console.log("Requisition Information");
+                        console.log(info);
+                        var data = JSON.stringify({ model: info });
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveRepairSectionRequisitionState', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            if (res === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                 setTimeout(function () {
+                                    redirectPage('@Url.Action("GetRepairSectionRequisitionInfoList")');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            enable("#btnSubmit");
+                        })
+
+                    }// confirm
+                })// bootbox
+            }// submit
+        })
+
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+
+    </script>
+}

@@ -32,5 +32,10 @@ namespace ERPBO.Production.ViewModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public List<RepairSectionFaultyItemTransferDetailViewModel> RepairSectionFaultyItemRequisitionDetails { get; set; }
+        //Custom Property
+        [StringLength(100)]
+        public string EntryUser { get; set; }
+        [StringLength(100)]
+        public string UpdateUser { get; set; }
     }
 }

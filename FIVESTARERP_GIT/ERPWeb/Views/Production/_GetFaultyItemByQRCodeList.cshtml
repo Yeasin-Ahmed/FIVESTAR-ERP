@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairItemViewModel>
+@{
+    Layout = null;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+    string badge = string.Empty;
+    //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-12" style="overflow-y:scroll">
+            <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblData">
+                <thead class="btn-dark">
+                    <tr class="text-center">
+                        <th style="vertical-align:middle">#SL</th>
+                        <th style="vertical-align:middle">Repair Code</th>
+                        <th style="vertical-align:middle">Floor</th>
+                        <th style="vertical-align:middle">Repair Line</th>
+                        <th style="vertical-align:middle">QC Line</th>
+                        <th style="vertical-align:middle">Repair Reason</th>
+                        <th style="vertical-align:middle">QRCode</th>
+                        <th style="vertical-align:middle">Model</th>
+                        <th style="vertical-align:middle">Warehouse</th>
+                        <th style="vertical-align:middle">ItemType</th>
+                        <th style="vertical-align:middle">Item</th>
+                        <th style="vertical-align:middle">Unit</th>
+                        <th style="vertical-align:middle">Entry User</th>
+                        <th style="vertical-align:middle">Entry Date</th>
+                        <th style="vertical-align:middle">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var info in Model)
+                    {
+                        sl = sl + 1;
+                        <tr>
+                            <td class="text-center text-bold">@sl</td>
+                            <td>@info.RepairCode</td>
+                            <td>@info.ProductionFloorName</td>
+                            <td>@info.RepairLineName</td>
+                            <td>@info.QCLineName</td>
+                            <td>@info.RepairReason</td>
+                            <td>@info.QRCode</td>
+                            <td>@info.ModelName</td>
+                            <td>@info.WarehouseName</td>
+                            <td>@info.ItemTypeName</td>
+                            <td>@info.ItemName</td>
+                            <td>@info.UnitName</td>
+                            <td class="text-center text-sm">@info.EntryUser</td>
+                            <td class="text-center text-sm">
+                                @info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")
+                            </td>
+                            <td class="text-center">
+                                <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Details" data-item-detail="@info.RepairItemId"><i class="fas fa-eye"></i></a>
+
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Count() == 0)
+                    {
+                        <tr class="text-center empty-row">
+                            <td colspan="18">
+                                No data found in table
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-12 mt-1">
+            @Html.Partial("_Pagination", pagerData)
+        </div>
+    </div>
+</div>

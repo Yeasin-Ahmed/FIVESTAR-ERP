@@ -166,6 +166,13 @@
     <Compile Include="Production\FaultyCaseBusiness.cs" />
     <Compile Include="Production\FaultyItemStockDetailBusiness.cs" />
     <Compile Include="Production\FaultyItemStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IProductionFaultyStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IProductionFaultyStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferDetailBusiness.cs" />
+    <Compile Include="Production\ProductionFaultyStockDetailBusiness.cs" />
+    <Compile Include="Production\ProductionFaultyStockInfoBusiness.cs" />
+    <Compile Include="Production\RepairSectionFaultyItemTransferDetailBusiness.cs" />
+    <Compile Include="Production\RepairSectionRequisitionDetailBusiness.cs" />
     <Compile Include="Production\Interface\IFaultyCaseBusiness.cs" />
     <Compile Include="Production\Interface\IFaultyItemStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IFaultyItemStockInfoBusiness.cs" />
@@ -184,6 +191,7 @@
     <Compile Include="Production\Interface\IPackagingLineStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairLineBusiness.cs" />
     <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionRequisitionDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRepairSectionRequisitionInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITransferRepairItemToQcDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferRepairItemToQcInfoBusiness.cs" />

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionRequisitionDetailViewModel>
+@{
+    int sl = 0;
+
+}
+<table class="table table-bordered table-sm table-striped table-responsive-lg tblDataDetail" id="tblDataDetail">
+    <thead class="btn-dark">
+        <tr class="text-center text-sm">
+            <th>#SL</th>
+            <th class="hide id"></th>
+            <th class="hide itemType"></th>
+            <th class="hide item"></th>
+            <th class="hide unit"></th>
+            <th>ItemType Name</th>
+            <th>Item Name</th>
+            <th>Request Qty</th>
+            <th>Type of Unit</th>
+            <th>Issue Qty</th>
+            <th>Available Qty</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sl = sl + 1;
+        <tr class="text-sm text-bold">
+            <td class="text-center text-bold"  style="width:5%">@sl</td>
+            <td class="hide">@item.RSRDetailId</td>
+            <td class="hide">@item.ItemTypeId</td>
+            <td class="hide">@item.ItemId</td>
+            <td class="hide">@item.UnitId</td>
+            <td>@item.ItemTypeName</td>
+            <td>@item.ItemName</td>
+            <td class="text-center" style="width:10%">@item.RequestQty</td>
+            <td class="text-center" style="width:10%">@item.UnitName</td>
+            <td style="width:10%">
+                <input type="number" class="issueQty form-control form-control-sm" value="0" />
+            </td>
+            <td class="text-center"  style="width:10%">
+                @item.AvailableQty
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+

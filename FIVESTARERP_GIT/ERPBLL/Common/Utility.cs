@@ -19,7 +19,7 @@ namespace ERPBLL.Common
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>() {
                 new Dropdown{text=RequisitionStatus.Pending,value=RequisitionStatus.Pending },
-                new Dropdown{text=RequisitionStatus.Recheck,value=RequisitionStatus.Recheck },
+                new Dropdown{text=RequisitionStatus.Rechecked,value=RequisitionStatus.Rechecked },
                 new Dropdown{text=RequisitionStatus.Approved,value=RequisitionStatus.Approved },
                 new Dropdown{text=RequisitionStatus.Accepted,value=RequisitionStatus.Accepted },
                 new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Rejected },
