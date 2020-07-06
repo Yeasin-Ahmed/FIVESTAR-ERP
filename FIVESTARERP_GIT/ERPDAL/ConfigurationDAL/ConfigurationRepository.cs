@@ -55,4 +55,16 @@ namespace ERPDAL.ConfigurationDAL
     {
         public TransferDetailRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
+    public class FaultRepository : ConfigurationBaseRepository<Fault>
+    {
+        public FaultRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class ServiceRepository : ConfigurationBaseRepository<Service>
+    {
+        public ServiceRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class RepairRepository : ConfigurationBaseRepository<Repair>
+    {
+        public RepairRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
 }

@@ -19,6 +19,11 @@ namespace ERPBLL.Configuration
             mobilePartStockInfoRepository = new MobilePartStockInfoRepository(this._configurationDb);
         }
 
+        public MobilePartStockInfo GetAllMobilePartStockById(long orgId, long branchId)
+        {
+            return mobilePartStockInfoRepository.GetOneByOrg(info => info.OrganizationId == orgId && info.BranchId == branchId);
+        }
+
         public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoById(long orgId, long branchId)
         {
             return mobilePartStockInfoRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId).ToList();

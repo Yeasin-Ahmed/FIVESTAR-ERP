@@ -11,6 +11,7 @@ namespace ERPBLL.FrontDesk.Interface
     {
         JobOrderProblem GetJobOrderProblemById(long id, long orgId);
         IEnumerable<JobOrderProblem> GetJobOrderProblemByJobOrderId(long jobOrderId, long orgId);
+        JobOrderProblem GetJobOrderProblemByJobId(long id, long orgId);
 
     }
 }

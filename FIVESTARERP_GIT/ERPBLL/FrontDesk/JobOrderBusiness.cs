@@ -545,5 +545,23 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<SparePartsAvailableAndReqQtyDTO> SparePartsAvailableAndReqQty(long orgId, long branchId, long jobOrderId)
+        {
+
+            string query = string.Format(@"Select *,ISNULL((
+Select SUM(jobDetail.Quantity) 'RequisitionQty' From [FrontDesk].dbo.tblRequsitionDetailForJobOrders jobDetail 
+Inner Join [FrontDesk].dbo.tblRequsitionInfoForJobOrders jobinfo on jobDetail.JobOrderId = jobinfo.JobOrderId and jobinfo.StateStatus='Pending' and jobinfo.OrganizationId = {0} and jobinfo.BranchId={1} and jobInfo.RequsitionInfoForJobOrderId = jobDetail.RequsitionInfoForJobOrderId
+Where jobinfo.JobOrderId={2} and tbl.MobilePartId = jobDetail.PartsId
+Group By jobDetail.PartsId
+
+),0) 'RequistionQty' From (Select parts.MobilePartId,parts.MobilePartName,SUM(ISNULL(stock.StockInQty,0)-ISNULL(stock.StockOutQty,0)) 'AvailableQty' From [Configuration].dbo.tblMobilePartStockInfo stock
+Inner Join [Configuration].dbo.tblMobileParts parts on stock.MobilePartId = parts.MobilePartId and stock.OrganizationId = parts.OrganizationId
+Where stock.OrganizationId = {0} and stock.BranchId={1}
+Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrderId);
+
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<SparePartsAvailableAndReqQtyDTO>(
+                query).ToList();
+        }
     }
 }

@@ -29,8 +29,10 @@ namespace ERPWeb.Controllers
         private readonly ITransferInfoBusiness _transferInfoBusiness;
         private readonly ITransferDetailBusiness _transferDetailBusiness;
         private readonly IBranchBusiness _branchBusinesss;
+        private readonly IFaultBusiness _faultBusiness;
+        private readonly IServiceBusiness _serviceBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -45,6 +47,8 @@ namespace ERPWeb.Controllers
             this._transferInfoBusiness = transferInfoBusiness;
             this._transferDetailBusiness = transferDetailBusiness;
             this._branchBusinesss = branchBusinesss;
+            this._faultBusiness = faultBusiness;
+            this._serviceBusiness = serviceBusiness;
         }
         #region tblAccessories
         public ActionResult AccessoriesList()
@@ -785,6 +789,120 @@ namespace ERPWeb.Controllers
                 IsSucess = _transferInfoBusiness.SaveTransferInfoStateStatus(transferId, swarehouse, status, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSucess);
+        }
+        #endregion
+
+        #region tblFault
+        public ActionResult GetFaultList()
+        {
+            IEnumerable<FaultDTO> faultDTO = _faultBusiness.GetAllFaultByOrgId(User.OrgId).Select(fault => new FaultDTO
+            {
+                FaultId = fault.FaultId,
+                FaultName = fault.FaultName,
+                FaultCode = fault.FaultCode,
+                Remarks = fault.Remarks,
+                OrganizationId = fault.OrganizationId,
+                EUserId = fault.EUserId,
+                EntryDate = DateTime.Now,
+                UpUserId = fault.UpUserId,
+                UpdateDate = DateTime.Now,
+            }).ToList();
+            List<FaultViewModel> viewModel = new List<FaultViewModel>();
+            AutoMapper.Mapper.Map(faultDTO, viewModel);
+            return View(viewModel);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveFault(FaultViewModel faultViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    FaultDTO dto = new FaultDTO();
+                    AutoMapper.Mapper.Map(faultViewModel, dto);
+                    isSuccess = _faultBusiness.SaveFault(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteFault(long id)
+        {
+            bool isSuccess = false;
+            if (id > 0)
+            {
+                try
+                {
+                    isSuccess = _faultBusiness.DeleteFault(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region tblService
+        public ActionResult GetServiceList()
+        {
+            IEnumerable<ServiceDTO> serviceDTO = _serviceBusiness.GetAllServiceByOrgId(User.OrgId).Select(services => new ServiceDTO
+            {
+                ServiceId = services.ServiceId,
+                ServiceName = services.ServiceName,
+                ServiceCode = services.ServiceCode,
+                Remarks = services.Remarks,
+                OrganizationId = services.OrganizationId,
+                EUserId = services.EUserId,
+                EntryDate = DateTime.Now,
+                UpUserId = services.UpUserId,
+                UpdateDate = DateTime.Now,
+            }).ToList();
+            List<ServiceViewModel> viewModel = new List<ServiceViewModel>();
+            AutoMapper.Mapper.Map(serviceDTO, viewModel);
+            return View(viewModel);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveService(ServiceViewModel serviceViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ServiceDTO dto = new ServiceDTO();
+                    AutoMapper.Mapper.Map(serviceViewModel, dto);
+                    isSuccess = _serviceBusiness.SaveService(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteService(long id)
+        {
+            bool isSuccess = false;
+            if (id > 0)
+            {
+                try
+                {
+                    isSuccess = _serviceBusiness.DeleteService(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         #endregion
     }

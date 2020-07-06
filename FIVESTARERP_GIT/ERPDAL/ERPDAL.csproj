@@ -133,6 +133,14 @@
     <Compile Include="ConfigurationContextMigrations\202006281203574_Configuration_DbCustomer&amp;TSBranchAdd.Designer.cs">
       <DependentUpon>202006281203574_Configuration_DbCustomer&amp;TSBranchAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202007040639272_Configuration_tblFault&amp;ServiceAdd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202007040639272_Configuration_tblFault&amp;ServiceAdd.Designer.cs">
+      <DependentUpon>202007040639272_Configuration_tblFault&amp;ServiceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202007050554097_Configuration_Repair.cs" />
+    <Compile Include="ConfigurationContextMigrations\202007050554097_Configuration_Repair.Designer.cs">
+      <DependentUpon>202007050554097_Configuration_Repair.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -204,6 +212,14 @@
     <Compile Include="FrontDeskContextMigrations\202006290629225_FrontDesk_DbIMEI2AndEndDate.cs" />
     <Compile Include="FrontDeskContextMigrations\202006290629225_FrontDesk_DbIMEI2AndEndDate.Designer.cs">
       <DependentUpon>202006290629225_FrontDesk_DbIMEI2AndEndDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007041355321_FrontDesk_JobFault&amp;JobServiceAdd.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007041355321_FrontDesk_JobFault&amp;JobServiceAdd.Designer.cs">
+      <DependentUpon>202007041355321_FrontDesk_JobFault&amp;JobServiceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007050555160_FrontDesk_JobOrderRepair.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007050555160_FrontDesk_JobOrderRepair.Designer.cs">
+      <DependentUpon>202007050555160_FrontDesk_JobOrderRepair.cs</DependentUpon>
     </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
@@ -350,6 +366,12 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202006281203574_Configuration_DbCustomer&amp;TSBranchAdd.resx">
       <DependentUpon>202006281203574_Configuration_DbCustomer&amp;TSBranchAdd.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202007040639272_Configuration_tblFault&amp;ServiceAdd.resx">
+      <DependentUpon>202007040639272_Configuration_tblFault&amp;ServiceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202007050554097_Configuration_Repair.resx">
+      <DependentUpon>202007050554097_Configuration_Repair.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -394,6 +416,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202006290629225_FrontDesk_DbIMEI2AndEndDate.resx">
       <DependentUpon>202006290629225_FrontDesk_DbIMEI2AndEndDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007041355321_FrontDesk_JobFault&amp;JobServiceAdd.resx">
+      <DependentUpon>202007041355321_FrontDesk_JobFault&amp;JobServiceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007050555160_FrontDesk_JobOrderRepair.resx">
+      <DependentUpon>202007050555160_FrontDesk_JobOrderRepair.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

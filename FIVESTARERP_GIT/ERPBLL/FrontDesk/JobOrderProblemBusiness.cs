@@ -25,9 +25,14 @@ namespace ERPBLL.FrontDesk
             return _jobOrderProblemRepository.GetOneByOrg(a => a.JobOrderProblemId == id && a.OrganizationId == orgId);
         }
 
+        public JobOrderProblem GetJobOrderProblemByJobId(long id, long orgId)
+        {
+            return _jobOrderProblemRepository.GetOneByOrg(a => a.JobOrderId == id && a.OrganizationId == orgId);
+        }
+
         public IEnumerable<JobOrderProblem> GetJobOrderProblemByJobOrderId(long jobOrderId, long orgId)
         {
-            return _jobOrderProblemRepository.GetAll(a => a.JobOrderId == jobOrderId && a.OrganizationId == orgId);
+            return _jobOrderProblemRepository.GetAll(a => a.JobOrderId == jobOrderId && a.OrganizationId == orgId).ToList();
         }
     }
 }

@@ -26,5 +26,8 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<Branch> tblBranches { get; set; }
         public DbSet<TransferInfo> tblTransferInfo { get; set; }
         public DbSet<TransferDetail> tblTransferDetails { get; set; }
+        public DbSet<Fault> tblFault { get; set; }
+        public DbSet<Service> tblServices { get; set; }
+        public DbSet<Repair> tblRepair { get; set; }
     }
 }

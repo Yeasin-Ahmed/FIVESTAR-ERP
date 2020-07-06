@@ -1,0 +1,834 @@
+﻿@using ERPBO.Configuration.ViewModels;
+@{
+    ViewBag.Title = "T.S Services Details";
+    int sl = 0;
+    var jobOrder = (ERPBO.FrontDesk.ViewModels.JobOrderViewModel)ViewBag.JobOrder;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel> Problems = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel>)ViewBag.Problem;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel> Faulty = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel>)ViewBag.faulty;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel> services = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel>)ViewBag.services;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel> Repair = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel>)ViewBag.repair;
+    IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel> WareStock = (IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel>)ViewBag.warehouseStock;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel> availableQty = (IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel>)ViewBag.SparePartsAvailableAndReqQty;
+    string faulty = string.Empty;
+    string service = string.Empty;
+    string repair = string.Empty;
+    string problem = string.Empty;
+}
+<div class="row" style="overflow-y:scroll">
+    <div class="col-md-6">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="Id" id="hdfJobOrderId" value="@jobOrder.JodOrderId" />
+        <div class="row">
+            <div class="col-md-1">
+                <a href="/FrontDesk/GetJobOrdersTS" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h5>Job Order No: <b style="color:darkblue">@jobOrder.JobOrderCode</b></h5>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <h6>Create Date: <b>@jobOrder.EntryDate.Value.ToString("dd-MMM-yyyy")</b></h6>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <h5><b>Customer Details</b></h5>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody style="background-color:antiquewhite">
+                        <tr>
+                            <td>Name: <b>@jobOrder.CustomerName</b></td>
+                            <td>Address: <b>@jobOrder.Address</b></td>
+                            <td>MobileNo: <b>@jobOrder.MobileNo</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                <h5><b>Handset Details</b></h5>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody style="background-color: darkgrey">
+                        <tr>
+                            <td>IMEI1: <b>@jobOrder.IMEI</b></td>
+                            <td>IMEI2: <b>@jobOrder.IMEI2</b></td>
+                            <td>Type: <b>@jobOrder.Type</b></td>
+                            <td>ModelName: <b>@jobOrder.ModelName</b></td>
+                            <td>Color: <b>@jobOrder.ModelColor</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Symptom:</b>
+                                @foreach (var item in Problems)
+                                {
+                                    problem += item.ProblemName + ",";
+                                }
+                                @{
+                                    if (Problems.Count() > 0)
+                                    {
+                                        problem = problem.Substring(0, problem.Length - 1);
+                                    }
+
+                                }
+                                @problem
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Fault:</b>
+                                @foreach (var item in Faulty)
+                                {
+                                    faulty += item.FaultName + ",";
+                                }
+                                @{
+                                    if (Faulty.Count() > 0)
+                                    {
+                                        faulty = faulty.Substring(0, faulty.Length - 1);
+                                    }
+
+                                }
+                                @faulty
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-1">
+                <button type="button" id="btnFault" class="btn btn-sm btn-primary" title="Add New Fault"><i class="fas fa-plus"> </i> </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Servicve:</b>
+                                @foreach (var item in services)
+                                {
+                                    service += item.ServiceName + ",";
+                                }
+                                @{
+                                    if (services.Count() > 0)
+                                    {
+                                        service = service.Substring(0, service.Length - 1);
+                                    }
+
+                                }
+                                @service
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-1">
+                <button type="button" id="btnService" class="btn btn-sm btn-primary" title="Add New Service"><i class="fas fa-plus"> </i> </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Repair:</b> 
+                                @foreach (var item in Repair)
+                                {
+                                    repair += item.RepairName + ",";
+                                }
+                                @{
+                                    if (Repair.Count() > 0)
+                                    {
+                                        repair = repair.Substring(0, repair.Length - 1);
+                                    }
+
+                                }
+                                @repair
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-1">
+                <button type="button" id="btnRepair" class="btn btn-sm btn-primary" title="Add New Repair"><i class="fas fa-plus"> </i> </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="col-md-12" id="dataContainer">
+                @{Html.RenderAction("RequsitionInfoForJobOrderPartialListList", new { @jobOrderId = jobOrder.JodOrderId });}
+            </div>
+            <div class="modal fade" id="modalRequsitionJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header alert-primary">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="hdfRequsitionDetailId" />
+                            <input type="hidden" id="hdfRowIndex" />
+                            <h4 id="modalHeading" class="modal-title">
+                                Requsition For Job Order Details
+                            </h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body" id="dataContainer1" style="overflow-y:scroll">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h5><b>Spare Parts</b></h5>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <thead style="background-color: lightblue">
+                        <tr class="text-center">
+                            <th>#SL No.</th>
+                            <th>Parts Name</th>
+                            <th>Available Qty.</th>
+                            <th>Requsition Qty.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var stock in availableQty)
+                        {
+                            sl = sl + 1;
+                            <tr>
+                                <td class="text-center">@sl</td>
+                                <td>@stock.MobilePartName</td>
+                                <td class="text-center">@stock.AvailableQty</td>
+                                <td class="text-center">@stock.RequistionQty</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-1">
+        <a href="#" class="btn btn-outline-primary btn-sm float-lg-right" id="btnJobSave"><i ></i> Save</a>
+    </div>
+        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i> Job Sing Out</a>
+</div>
+
+<div class="modal fade" id="modalFault" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Fault</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCustomer">
+                    <input type="hidden" name="Id" id="hdfFaultId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlFaultName" class="control-label font-weight-bold">Fault Name</label>
+                            @Html.DropDownList("ddlFaultName", (IEnumerable<SelectListItem>)ViewBag.ddlFaultName, "--Select Fault--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide required-faultName font-weight-bold">Input Fault!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtFaultRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtFaultRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitFault"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalServices" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Service</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCustomer">
+                    <input type="hidden" name="Id" id="hdfServicesId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlServiceName" class="control-label font-weight-bold">Service Name</label>
+                            @Html.DropDownList("ddlServiceName", (IEnumerable<SelectListItem>)ViewBag.ddlServiceName, "--Select Service--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide required-ServiceName font-weight-bold">Input Service!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtServiceRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtServiceRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitService"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRepair" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Repair</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCustomer">
+                    <input type="hidden" name="Id" id="hdfRepairId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlRepairName" class="control-label font-weight-bold">Service Name</label>
+                            @Html.DropDownList("ddlRepairName", (IEnumerable<SelectListItem>)ViewBag.ddlRepairName, "--Select Repair--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide required-Repair font-weight-bold">Input Repair!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRepairRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRepairRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitRepair"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRequstionDetailForJobOrder" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Job Order Requsition</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmWarehouse">
+                    <input type="hidden" id="hdfRequstionDetailForJobOrderId" />
+                    <input type="hidden" id="hdfJobCodeId" value="@jobOrder.JodOrderId" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="ddlServicesWarehouse" class="control-label font-weight-bold">S.Warehouse Name</label>
+                            @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="ddlMobilePart" class="control-label font-weight-bold">Mobile Parts Name</label>
+                            @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select ddlMobileParts--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide require-parts font-weight-bold">Parts is required !</span>
+                            <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="txtStockInQty" class="control-label font-weight-bold">Quantity</label>
+                            <div class="input-group">
+                                <div class="col-sm-8">
+                                    <input type="number" placeholder="Qty" name="quantity" id="txtStockInQty" class="form-control form-control-sm" />
+                                </div>
+                                <span id="unitName" class="font-weight-bold mt-3" style="color:darkblue"> </span>
+                            </div>
+                            <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
+                            <div class="clearfix">
+                                <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblRequsitionDetailForJobOrders">
+                            <thead>
+                                <tr>
+                                    <th colspan="9">
+                                        <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                                    </th>
+                                </tr>
+                                <tr class="btn-dark text-center">
+                                    <th>#SL</th>
+                                    <th class="hide"></th>
+                                    <th>MobileParts Name</th>
+                                    <th>Qty.</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        //Fault
+        var hdfFaultId = $("#hdfFaultId");
+        var ddlFaultName = $("#ddlFaultName");
+        var txtFaultRemarks = $("#txtFaultRemarks");
+        var hdfJobOrderId = $("#hdfJobOrderId");
+
+        function OpenFaultModal() {
+            clearCtrlFault();
+            $("#modalFault").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnFault").click(function (e) {
+            e.preventDefault();
+            clearCtrlFault();
+            OpenFaultModal();
+        })
+        function clearCtrlFault() {
+            hdfFaultId.val('0');
+            ddlFaultName.val('');
+            txtFaultRemarks.val('');
+        }
+        function validateFaultForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (ddlFaultName.val() === "") {
+                $(".required-faultName").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitFault").click(function (e) {
+            e.preventDefault();
+            if (validateFaultForm()) {
+
+                var aryFault = []; aryFault.length = 0;
+                var Fault = ddlFaultName.val();
+                aryFault.push({
+                    FaultId: Fault,
+                    JobOrderId: hdfJobOrderId.val()
+                    });
+
+                var data = JSON.stringify({ jobOrderFaultViewModels: aryFault });
+                console.log("Faulty List");
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderFault', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        $('.toastrDefaultSuccess').trigger('click');
+                        setTimeout(function () {
+                            redirectPage('@Url.Action("ServicesDetails", "FrontDesk", new { @joborderId = jobOrder.JodOrderId })');
+                        }, 1000);
+                    }
+                    else {
+                        $('.toastrDefaultError').trigger('click');
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    $('.toastrDefaultError').trigger('click');
+                });
+            }
+        });
+        //Service
+        var hdfServicesId = $("#hdfServicesId");
+        var ddlServiceName = $("#ddlServiceName");
+        var txtServiceRemarks = $("#txtServiceRemarks");
+
+        function OpenServicesModal() {
+            clearCtrlService();
+            $("#modalServices").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnService").click(function (e) {
+            e.preventDefault();
+            clearCtrlService();
+            OpenServicesModal();
+        })
+        function clearCtrlService() {
+            hdfServicesId.val('0');
+            ddlServiceName.val('');
+            txtServiceRemarks.val('');
+        }
+        function validateServiceForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (ddlServiceName.val() === "") {
+                $(".required-ServiceName").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitService").click(function (e) {
+            e.preventDefault();
+            if (validateServiceForm()) {
+
+                var aryService = []; aryService.length = 0;
+                var Service = ddlServiceName.val();
+                aryService.push({
+                    ServiceId: Service,
+                    JobOrderId: hdfJobOrderId.val()
+                    });
+
+                var data = JSON.stringify({ jobOrderServiceViewModels: aryService });
+                console.log("Service List");
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderService', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        $('.toastrDefaultSuccess').trigger('click');
+                        setTimeout(function () {
+                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                        }, 1000);
+                    }
+                    else {
+                        $('.toastrDefaultError').trigger('click');
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    $('.toastrDefaultError').trigger('click');
+                });
+            }
+        });
+
+        //Repair
+        var hdfRepairId = $("#hdfRepairId");
+        var ddlRepairName = $("#ddlRepairName");
+        var txtRepairRemarks = $("#txtRepairRemarks");
+
+        function OpenRepairModal() {
+            clearCtrlRepair();
+            $("#modalRepair").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnRepair").click(function (e) {
+            e.preventDefault();
+            clearCtrlRepair();
+            OpenRepairModal();
+        })
+        function clearCtrlRepair() {
+            hdfRepairId.val('0');
+            ddlRepairName.val('');
+            txtRepairRemarks.val('');
+        }
+        function validateRepairForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (ddlRepairName.val() === "") {
+                $(".required-Repair").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitRepair").click(function (e) {
+            e.preventDefault();
+            if (validateRepairForm()) {
+
+                var aryRepair = []; aryRepair.length = 0;
+                var Repair = ddlRepairName.val();
+                aryRepair.push({
+                    RepairId: Repair,
+                    JobOrderId: hdfJobOrderId.val()
+                    });
+
+                var data = JSON.stringify({ jobOrderRepairViewModels: aryRepair });
+                console.log("Repair List");
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderRepair', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        $('.toastrDefaultSuccess').trigger('click');
+                        setTimeout(function () {
+                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                        }, 1000);
+                    }
+                    else {
+                        $('.toastrDefaultError').trigger('click');
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    $('.toastrDefaultError').trigger('click');
+                });
+            }
+        });
+
+        //Requsition Page
+        var hdfRequstionDetailForJobOrderId = $("#hdfRequstionDetailForJobOrderId");
+        var ddlServicesWarehouse = $("#ddlServicesWarehouse");
+        var ddlMobilePart = $("#ddlMobilePart");
+        var txtStockInQty = $("#txtStockInQty");
+        var txtRemarks = $("#txtRemarks");
+        var hdfJobCodeId = $("#hdfJobCodeId");
+        var hdfRequsitionDetailId = $("#hdfRequsitionDetailId");
+        var hdfRowIndex = $("#hdfRowIndex");
+
+        $("#btnReset").click(function (e) {
+            e.preventDefault();
+            clearDropdown("ddlMobilePart");
+            enable("#ddlServicesWarehouse");
+            ddlServicesWarehouse.val("");
+            $("#tblRequsitionDetailForJobOrders tbody").empty();
+            txtStockInQty.val('0');
+            txtRemarks.val('');
+        })
+        function OpenModal() {
+            $("#modalRequstionDetailForJobOrder").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNew").click(function (e) {
+            e.preventDefault();
+            OpenModal();
+        })
+
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblRequsitionDetailForJobOrders tbody tr"), function (index, item) {
+                    var partsId = $(this).children('td').eq(1).html();
+                    if (partsId == ddlMobilePart.val()) {
+                        isValid = false;
+                        $(".duplicate-parts").removeClass('hide');
+                    }
+                })
+            }
+            if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-parts").removeClass("hide");
+            }
+            if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
+                isValid = false;
+                $(".required-qty").removeClass("hide");
+            }
+            return isValid;
+        }
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateInput() == true) {
+                disable("#ddlServicesWarehouse");
+                var sl = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
+                var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
+                var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
+                var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+                var td5 = "<td>" + txtRemarks.val() + "</td>";
+                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
+                if ($("#tblRequsitionDetailForJobOrders tbody tr").length == 0) {
+                    $("#tblRequsitionDetailForJobOrders tbody").append(tr);
+                }
+                else {
+                    $("#tblRequsitionDetailForJobOrders tbody tr").eq(0).before(tr);
+                }
+                clearCtrl();
+            }
+        });
+
+        function clearCtrl() {
+            ddlMobilePart.val('');
+            txtStockInQty.val('');
+            txtRemarks.val('');
+        }
+
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblRequsitionDetailForJobOrders tbody", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblRequsitionDetailForJobOrders", index);
+                };
+            }));
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result) {
+                        disable("#btnSubmit");
+                        var info = {
+                            JobOrderId: TryParseInt(hdfJobCodeId.val(), 0),
+                            SWarehouseId: TryParseInt(ddlServicesWarehouse.val(),0),
+                        };
+
+                        var details = []; details.length = 0;
+                        $.each($("#tblRequsitionDetailForJobOrders tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            var partsId = tds.eq('1').html();
+                            var qty = tds.eq('3').html();
+                            var rmk = tds.eq('4').html();
+
+                            details.push({
+                                RequsitionDetailForJobOrderId: 0,
+                                PartsId: TryParseInt(partsId, 0),
+                                Quantity: TryParseInt(qty, 0),
+                                Remarks: rmk
+                            })
+                        });
+
+                        var data = JSON.stringify({ info: info, details: details });
+                        console.log("Requsition Job Order");
+                        console.log(data);
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveRequisitionInfoForJobOrder', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            enable("#btnSubmit");
+                            if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId=jobOrder.JodOrderId })');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            consoleLog(error)
+                        })
+                        enable("#btnSubmit");
+                    }
+                });
+        });
+
+        function OpenModalDetails() {
+            clearCtr()
+            $("#modalRequsitionJobOrderDetails").modal("show");
+            $("#dataContainer1").empty();
+            hdfRequsitionDetailId.val('0');
+            hdfRowIndex.val("");
+
+        }
+
+        $(document).on("click", "a.data-item-details", function (e) {
+            e.preventDefault();
+            OpenModalDetails()
+            var data = {
+                requsitionInfoId: TryParseInt($(this).attr("data-item-details"), 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/RequsitionForJobOrderDetails', data)).then(function (res, status) {
+                if (status == "success") {
+                    hdfRequsitionDetailId.val(data.requsitionInfoId);
+                    hdfRowIndex.val(idx)
+                    $("#dataContainer1").empty();
+                    $("#dataContainer1").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+                })
+            clearCtr()
+        })
+        function clearCtr() {
+            hdfRequsitionDetailId.val('0');
+            hdfRowIndex.val('0');
+        }
+        ////req end
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+    </script>
+}

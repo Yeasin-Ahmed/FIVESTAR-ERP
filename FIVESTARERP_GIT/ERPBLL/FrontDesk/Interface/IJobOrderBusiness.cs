@@ -31,5 +31,7 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> DashboardDailyBillingAndWarrantyJob(long orgId, long branchId);
 
         bool GetJobOrderById( long jobOrderId, long orgId, long branchId);
+
+        IEnumerable<SparePartsAvailableAndReqQtyDTO> SparePartsAvailableAndReqQty(long orgId, long branchId,long jobOrderId);
     }
 }

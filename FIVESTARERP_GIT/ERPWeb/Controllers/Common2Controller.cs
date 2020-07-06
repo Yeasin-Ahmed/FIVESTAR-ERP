@@ -30,8 +30,10 @@ namespace ERPWeb.Controllers
         private readonly IBranchBusiness2 _branchBusiness;
         private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
         private readonly IJobOrderBusiness _jobOrderBusiness;
+        private readonly IFaultBusiness _faultBusiness;
+        private readonly IServiceBusiness _serviceBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -42,6 +44,8 @@ namespace ERPWeb.Controllers
             this._branchBusiness = branchBusiness;
             this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
+            this._faultBusiness = faultBusiness;
+            this._serviceBusiness = serviceBusiness;
         }
 
         #region Configuration Module
@@ -111,9 +115,16 @@ namespace ERPWeb.Controllers
             bool isExist = _customerServiceBusiness.IsDuplicateCustomerServiceName(name, id, User.OrgId);
             return Json(isExist);
         }
+
         public ActionResult IsDuplicateBranchName(string branchName, long id)
         {
             bool isExist = _branchBusiness.IsDuplicateBranchName(branchName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateFaultName(string faultName, long id)
+        {
+            bool isExist = _faultBusiness.IsDuplicateFaultName(faultName, id, User.OrgId);
             return Json(isExist);
         }
 

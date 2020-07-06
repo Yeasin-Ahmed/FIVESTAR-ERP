@@ -523,6 +523,9 @@
     <Content Include="Views\Production\CreateRepairSectionRequisition.cshtml" />
     <Content Include="Views\Production\GetRepairSectionRequisitionInfoList.cshtml" />
     <Content Include="Views\Production\_GetRepairSectionRequisitionInfoList.cshtml" />
+    <Content Include="Views\Configuration\GetFaultList.cshtml" />
+    <Content Include="Views\Configuration\GetServiceList.cshtml" />
+    <Content Include="Views\FrontDesk\ServicesDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

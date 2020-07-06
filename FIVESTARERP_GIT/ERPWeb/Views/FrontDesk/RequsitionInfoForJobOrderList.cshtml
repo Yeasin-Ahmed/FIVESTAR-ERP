@@ -301,38 +301,6 @@
             hdfRequsitionDetailId.val('0');
             hdfRowIndex.val('0');
         }
-        ///////
-        @*$(document).on('click', ".btnAccept", function (e) {
-            e.preventDefault();
-            fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.accepted);
-        })
-
-        function fnRequisitionStateChange(id, index, status) {
-            if (id > 0) {
-                var data = JSON.stringify({ reqId: id, status: status });
-                console.log(data);
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/TSSaveRequisitionStatus', data, getToken())).then(function (res, status) {
-                    if (status == "success" && res === true) {
-                        $(".toastrDefaultSuccess").trigger('click');
-                        $("#modalRequsitionJobOrderDetails").modal("toggle").toggle("fast");
-                        hdfRequsitionDetailId.val('0');
-                        hdfRowIndex.val("");
-                        //removeTableRow("#tblRequsitionDetailForJob tbody", index);
-                        setTimeout(function () {
-                             $('.toastrDefaultSuccess').trigger('click');
-
-                                setTimeout(function () {
-                                    redirectPage('@Url.Action("RequsitionInfoForJobOrderList","FrontDesk",new { @joborderId=jobOrder.JodOrderId })');
-                                }, 1000);
-                        }, 1500);
-                    }
-                }).fail(function (error) {
-                    console.log(error);
-                    $(".toastrDefaultError").trigger('click');
-                })
-            }
-        }*@
-        ////////
 
         function redirectPage(page) {
             window.location.replace(page);

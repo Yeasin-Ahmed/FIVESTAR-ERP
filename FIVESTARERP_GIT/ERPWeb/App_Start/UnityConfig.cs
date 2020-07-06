@@ -120,6 +120,9 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IRepairBusiness, RepairBusiness>();
+            container.RegisterType<IServiceBusiness, ServiceBusiness>();
+            container.RegisterType<IFaultBusiness, FaultBusiness>();
             container.RegisterType<ITransferDetailBusiness, TransferDetailBusiness>();
             container.RegisterType<ITransferInfoBusiness, TransferInfoBusiness>();
             container.RegisterType<IBranchBusiness2, BranchBusiness2>();
@@ -137,6 +140,9 @@ namespace ERPWeb
 
             // FrontDesk Database
             #region FrontDesk
+            container.RegisterType<IJobOrderRepairBusiness, JobOrderRepairBusiness>();
+            container.RegisterType<IJobOrderServiceBusiness, JobOrderServiceBusiness>();
+            container.RegisterType<IJobOrderFaultBusiness, JobOrderFaultBusiness>();
             container.RegisterType<IJobOrderProblemBusiness, JobOrderProblemBusiness>();
             container.RegisterType<IJobOrderAccessoriesBusiness, JobOrderAccessoriesBusiness>();
             container.RegisterType<IJobOrderTSBusiness, JobOrderTSBusiness>();
