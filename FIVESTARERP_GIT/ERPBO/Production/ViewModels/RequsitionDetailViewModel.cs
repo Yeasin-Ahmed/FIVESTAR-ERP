@@ -18,6 +18,7 @@ namespace ERPBO.Production.ViewModels
         public long UnitId { get; set; }
         [Range(1, long.MaxValue)]
         public long Quantity { get; set; }
+        public int IssueQty { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }

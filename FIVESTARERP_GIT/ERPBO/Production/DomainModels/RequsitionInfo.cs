@@ -24,6 +24,8 @@ namespace ERPBO.Production.DomainModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<RequsitionDetail> RequsitionDetails { get; set; }
+        [StringLength(100)]
+        public string RequisitionFor { get; set; }
         public long WarehouseId { get; set; }
         public long LineId { get; set; }
         public long DescriptionId { get; set; }

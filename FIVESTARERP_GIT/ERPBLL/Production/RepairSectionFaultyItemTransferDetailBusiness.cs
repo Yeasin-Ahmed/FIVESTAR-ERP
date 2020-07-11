@@ -22,7 +22,7 @@ namespace ERPBLL.Production
 
         public IEnumerable<RepairSectionFaultyItemTransferDetail> GetRepairSectionFaultyItemTransferDetailByInfo(long transferInfoId, long orgId)
         {
-            throw new NotImplementedException();
+            return _repairSectionFaultyItemTransferDetailRepository.GetAll(s => s.RSFIRInfoId == transferInfoId && s.OrganizationId == orgId);
         }
 
         public IEnumerable<RepairSectionFaultyItemTransferDetail> GetRepairSectionFaultyItemTransferDetails(long orgId)

@@ -10,6 +10,8 @@ namespace ERPBO.Inventory.ViewModels
     public class ItemPreparationInfoViewModel
     {
         public long PreparationInfoId { get; set; }
+        [StringLength(100)]
+        public string PreparationType { get; set; }
         [Range(1, long.MaxValue)]
         public long WarehouseId { get; set; }
         [Range(1, long.MaxValue)]

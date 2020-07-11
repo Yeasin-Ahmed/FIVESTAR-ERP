@@ -39,6 +39,8 @@ namespace ERPBO.Production.ViewModels
 
         [StringLength(150)]
         public string StockStatus { get; set; }
+        [StringLength(100)]
+        public string StockFor { get; set; }
 
         //Custom Prop
         [StringLength(100)]

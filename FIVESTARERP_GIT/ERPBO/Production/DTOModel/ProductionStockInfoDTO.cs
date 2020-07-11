@@ -32,6 +32,8 @@ namespace ERPBO.Production.DTOModel
         [Range(1, long.MaxValue)]
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        [StringLength(100)]
+        public string StockFor { get; set; }
 
         //Custom Pop
         [StringLength(100)]

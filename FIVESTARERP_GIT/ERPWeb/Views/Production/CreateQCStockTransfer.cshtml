@@ -190,6 +190,8 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
+            disable("#ddlTransferFor");
         })
 
         function checkItemQty(itemId, qcId, modelId, qty, itemName) {
@@ -214,7 +216,7 @@
                 }
                 $("#btnAddToList").addClass('hide');
                 if (TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0) {
-                    var data = JSON.stringify({ modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
+                    var data = JSON.stringify({ type: preparationType.production, modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
 
                     $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
                         console.log(res);
@@ -612,7 +614,7 @@
                             repairReason = ddlRepairTransferReason.val();
                         }
 
-                        var info = { LineId: TryParseInt(ddlLineNumber.val(), 0), DescriptionId: TryParseInt(ddlModelName.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), TransferFor: ddlTransferFor.val(), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), PackagingLineId: TryParseInt(ddlPackagingLine.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: ddlItemType.val(), ItemId: ddlItem.val(), ForQty: txtQuantity.val(), Remarks: txtRemarks.val(), RepairTransferReason: repairReason };
+                        var info = { LineId: TryParseInt(ddlLineNumber.val(), 0), DescriptionId: TryParseInt(ddlModelName.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), TransferFor: ddlTransferFor.val(), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), PackagingLineId: TryParseInt(ddlPackagingLine.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: ddlItemType.val(), ItemId: ddlItem.val(), ForQty: txtQuantity.val(), Remarks: txtRemarks.val(), RepairTransferReason: repairReason};
 
                         var details = []; details.length = 0;
                         $.each($("#tblData tbody tr"), function (index, item) {

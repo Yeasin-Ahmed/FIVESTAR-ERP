@@ -50,6 +50,8 @@ namespace ERPBO.Production.DTOModel
         public string ModelName { get; set; }
         [Required,StringLength(50)]
         public string RequisitionType { get; set; }
+        [Required, StringLength(50)]
+        public string RequisitionFor { get; set; }
         public List<ReqDetailsDTO> ReqDetails { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }

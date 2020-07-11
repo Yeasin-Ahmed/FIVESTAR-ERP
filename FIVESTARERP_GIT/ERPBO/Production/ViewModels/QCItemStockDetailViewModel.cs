@@ -32,6 +32,8 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        [StringLength(50)]
+        public string Flag { get; set; }
 
         // Custom Property
         [StringLength(100)]

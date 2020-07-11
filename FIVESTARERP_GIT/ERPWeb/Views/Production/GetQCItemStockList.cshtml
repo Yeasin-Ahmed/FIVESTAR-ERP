@@ -2,74 +2,241 @@
     ViewBag.Title = "QC Item Stock Info";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
-
 <div class="row">
-    <div class="col-md-12 text-center">
-        <div class="row">
-            <div class="col-md-3">
-                @if (privilege != null && privilege.Detail)
-                {
-                    <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                        <i class="fas fa-eye"></i> Go To Details View
-                    </a>
-                }
-            </div>
-            <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">QC Item Stock Info</b></h4>
-            </div>
-            <div class="col-md-3">
-            </div>
+    <div class="card card-primary card-outline card-outline-tabs">
+        <div class="card-header p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-three-qcStock-tab" data-toggle="pill" href="#custom-tabs-three-qcStock" role="tab" aria-controls="custom-tabs-three-qcStock" aria-selected="true">QC Item Stock</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-profile-qcPass" data-toggle="pill" href="#custom-tabs-three-qcPass" role="tab" aria-controls="custom-tabs-three-qcPass" aria-selected="false">QC Pass List</a>
+                </li>
+            </ul>
         </div>
-        <hr />
-    </div>
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            <div class="tab-content" id="custom-tabs-three-tabContent">
+                <div class="tab-pane fade show active" id="custom-tabs-three-qcStock" role="tabpanel" aria-labelledby="custom-tabs-three-qcStock-tab">
+                    <div class="row" style="margin-top:-15px">
+                        <div class="col-md-12">
+                            <div class="card card-gray-dark">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            @if (privilege != null && privilege.Detail)
+                                            {
+                                                <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                    <i class="fas fa-eye"></i> Go To Details View
+                                                </a>
+                                            }
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="text-center text-bold">QC Item Stock</h5>
+                                        </div>
+                                        <div class="col-md-3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <div class="card card-navy text-sm">
+                                <div class="card-header">
+                                    <h6 class="card-title">Search By</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" style="margin-top:-15px">
+                                        <div class="col-md-3">
+                                            <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
+                                            @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                                            @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
+                                            <select id="ddlQCLine" class="form-control form-control-sm">
+                                                <option value="0">--Select QC Line--</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                                            @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                                            <select id="ddlItemType" class="form-control form-control-sm">
+                                                <option value="">--Select Item Type--</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                            <select id="ddlItem" class="form-control form-control-sm ctrl-change">
+                                                <option value="">--Select Item--</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
+                                            <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetQCItemStockList", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="modalQCPass" role="dialog" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header btn-secondary">
+                                        <input type="hidden" id="hdfProductionFloorQP" />
+                                        <input type="hidden" id="hdfQCLineQP" />
+                                        <input type="hidden" id="hdfModelQP" />
+                                        <input type="hidden" id="hdfWarehouseQP" />
+                                        <input type="hidden" id="hdfItemTypeQP" />
+                                        <input type="hidden" id="hdfItemQP" />
+                                        <h4 id="modalHeading" class="modal-title">QC Pass Qty</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id=" frmQCPass">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table table-sm table-bordered text-bold text-sm" id="tblQcPass">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="alert-secondary" style="width:20%">From</td>
+                                                                <td style="width:30%; background-color:#e1dada"></td>
+                                                                <td class="alert-secondary" style="width:20%">To</td>
+                                                                <td style="width:35%; background-color:#e1dada"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="alert-secondary" style="width:20%">Model</td>
+                                                                <td style="width:30%; background-color:#e1dada"></td>
+                                                                <td class="alert-secondary" style="width:20%">Qty</td>
+                                                                <td style="width:35%; background-color:#e1dada">
+                                                                    <input type="number" class="form-control form-control-sm" id="txtQcPassQty" />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">
+                                            Cancel <i>X</i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm btn-flat" id="btnSubmitQCPass">
+                                            Pass <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="custom-tabs-three-qcPass" role="tabpanel" aria-labelledby="custom-tabs-three-qcPass-tab">
+                    <div class="row" style="margin-top:-15px">
+                        <div class="col-md-12">
+                            <div class="card card-gray-dark">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="text-center text-bold">QC Pass List</h5>
+                                        </div>
+                                        <div class="col-md-3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <div class="card card-navy text-sm">
+                                <div class="card-header">
+                                    <h6 class="card-title">Search By</h6>
+                                </div>
+                                <div class="card-body">
 
-    <div class="col-md-12">
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
-                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
-                <select id="ddlQCLine" class="form-control form-control-sm">
-                    <option value="0">--Select QC Line--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
-                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                    <div class="row" style="margin-top:-15px">
+                                        <div class="col-md-3">
+                                            <label for="ddlLineNumber2" class="control-label font-weight-bold">Floor</label>
+                                            @Html.DropDownList("ddlLineNumber2", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlModelName2" class="control-label font-weight-bold">Model</label>
+                                            @Html.DropDownList("ddlModelName2", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlQCLine2" class="control-label font-weight-bold">QC Line</label>
+                                            <select id="ddlQCLine2" class="form-control form-control-sm">
+                                                <option value="0">--Select QC Line--</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlWarehouse2" class="control-label font-weight-bold">Warehouse Name</label>
+                                            @Html.DropDownList("ddlWarehouse2", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                    </div>
+                                    @*<div class="row">
+                                    <div class="col-md-3">
+                                        <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                                        <select id="ddlItemType" class="form-control form-control-sm">
+                                            <option value="">--Select Item Type--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                        <select id="ddlItem" class="form-control form-control-sm ctrl-change">
+                                            <option value="">--Select Item--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
+                                        <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                    </div>
+                                </div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @{Html.RenderAction("GetQCPassList", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
-                <select id="ddlItemType" class="form-control form-control-sm">
-                    <option value="">--Select Item Type--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
-                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
-                    <option value="">--Select Item--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
-                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
-        @{Html.RenderAction("GetQCItemStockList", new {@flag="View" });}
     </div>
 </div>
+
 
 @section scripts{
     <script type="text/javascript">
@@ -145,7 +312,6 @@
             });
             pageNo = 1;
         }
-
         // Pagination
         $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
@@ -154,5 +320,224 @@
                 LoadDataTable();
             }
         })
+
+        // QC Pass
+        var hdfProductionFloorQP = $("#hdfProductionFloorQP");
+        var hdfQCLineQP = $("#hdfQCLineQP");
+        var hdfModelQP = $("#hdfModelQP");
+        var hdfWarehouseQP = $("#hdfWarehouseQP");
+        var hdfItemTypeQP = $("#hdfItemTypeQP");
+        var hdfItemQP = $("#hdfItemQP");
+        var txtQcPassQty = $("#txtQcPassQty");
+
+        $(document).ready(function () {
+            $(".cell-action").addClass('hide');
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        function clearQCPass() {
+            enable("#btnSubmitQCPass");
+            hdfProductionFloorQP.val('0')
+            hdfQCLineQP.val('0')
+            hdfModelQP.val('0')
+            hdfWarehouseQP.val('0')
+            hdfItemTypeQP.val('0')
+            hdfItemQP.val('0')
+            var tblQcPass = $('#tblQcPass tbody');
+            var qcPassRows = tblQcPass.children('tr');
+
+            var qcPassRow1 = qcPassRows.eq('0');
+            var row1Cell2 = qcPassRow1.children('td').eq(1).html('');
+            var row1Cell4 = qcPassRow1.children('td').eq(3).html('');
+
+            var qcPassRow2 = qcPassRows.eq('1');
+            var row2Cell2 = qcPassRow2.children('td').eq(1).html('');
+        }
+
+        $(document).on('click', 'a.data-item-qcpass', function (e) {
+            e.preventDefault();
+            clearQCPass();
+            $("#modalQCPass").modal("show");
+            var row = $(this).parent().parents('tr');
+            var floor = row.children('td').eq(11).html();
+            var qc = row.children('td').eq(12).html();
+            var model = row.children('td').eq(13).html();
+            var warehouse = row.children('td').eq(14).html();
+            var itemType = row.children('td').eq(15).html();
+            var item = row.children('td').eq(16).html();
+
+            hdfProductionFloorQP.val(floor)
+            hdfQCLineQP.val(qc)
+            hdfModelQP.val(model)
+            hdfWarehouseQP.val(warehouse)
+            hdfItemTypeQP.val(itemType)
+            hdfItemQP.val(item)
+
+
+            var floorName = row.children('td').eq(2).html() + ' - ' + row.children('td').eq(1).html();
+
+            var tblQcPass = $('#tblQcPass tbody');
+            var qcPassRows = tblQcPass.children('tr');
+            console.log('qcPassRows');
+            console.log($('#tblQcPass tr').length);
+
+            var qcPassRow1 = qcPassRows.eq('0');
+            console.log(qcPassRow1);
+            var row1Cell2 = qcPassRow1.children('td').eq(1).html(row.children('td').eq(2).html());
+            var row1Cell4 = qcPassRow1.children('td').eq(3).html(row.children('td').eq(1).html());
+
+            var qcPassRow2 = qcPassRows.eq('1');
+            var row2Cell2 = qcPassRow2.children('td').eq(1).html(row.children('td').eq(3).html());
+        })
+
+        function validateQcPassQty() {
+            var isValid = true;
+            var errorText = "";
+            if (TryParseInt(hdfProductionFloorQP.val(), 0) <= 0)
+            {
+                errorText+="Floor not found </br>"
+                isValid = false;
+            }
+            if (TryParseInt(hdfQCLineQP.val(), 0) <= 0) {
+                errorText += "QC Line not found </br>"
+                isValid = false;
+            }
+            if (TryParseInt(hdfModelQP.val(), 0) <= 0) {
+                errorText += "Model not found </br>"
+                isValid = false;
+            }
+            if (TryParseInt(hdfWarehouseQP.val(), 0) <= 0) {
+                errorText += "Warehouse not found </br>"
+                isValid = false;
+            }
+            if (TryParseInt(hdfItemTypeQP.val(), 0) <= 0) {
+                errorText += "ItemType not found </br>"
+                isValid = false;
+            }
+            if (TryParseInt(hdfItemQP.val(), 0) <= 0) {
+                errorText += "Item not found </br>"
+                isValid = false;
+            }
+            if (TryParseInt(txtQcPassQty.val(), 0) <= 0) {
+                errorText += "Quantity cannot be 0 or less than 0 </br>"
+                isValid = false;
+            }
+            else {
+                
+                if (TryParseInt(hdfProductionFloorQP.val(), 0) > 0 && TryParseInt(hdfQCLineQP.val(), 0) > 0 && TryParseInt(hdfModelQP.val(), 0) > 0 && TryParseInt(hdfItemQP.val(), 0) > 0)
+                {
+                    var data = JSON.stringify({ floorId: hdfProductionFloorQP.val(), qcId: hdfQCLineQP.val(), modelId: hdfModelQP.val(), itemId: hdfItemQP.val() });
+
+                    var qty = ajaxValueReturnable(data, '/Common/GetQCItemStockQtyByFloorAndQcAndModelAndItem', getToken())
+                    console.log(qty);
+                    if (qty != null) {
+                        if (TryParseInt(txtQcPassQty.val(), 0) > qty) {
+                            errorText += "Qty is exceeded </br>";
+                            isValid = false;
+                        }
+                    }
+
+                    var bundleData = JSON.stringify({ floorId: hdfProductionFloorQP.val(), qcLineId: hdfQCLineQP.val(), modelId: hdfModelQP.val(), itemId: hdfItemQP.val(), qty: TryParseInt(txtQcPassQty.val(), 0), type: preparationType.production });
+                    var bundle = ajaxValueReturnable(bundleData, '/Common/GetItemBundleQtyChecking', getToken());
+                    console.log("Bundle");
+                    console.log(bundle);
+                    if (!bundle.isSuccess) {
+                        errorText+=bundle.text;
+                        isValid = false;
+                    }
+                }
+               
+            }
+            if (!isValid) {
+                bootbox.alert(errorText);
+            }
+
+            return isValid;
+        }
+
+        $("#btnSubmitQCPass").click(function (e) {
+            e.preventDefault();
+
+            if (validateQcPassQty()) {
+
+                bootbox.confirm("Are you sure you want to Pass these quantity", function (result) {
+                    if (result) {
+                        disable("#btnSubmitQCPass");
+
+                        var data = JSON.stringify({ ProductionFloorId: TryParseInt(hdfProductionFloorQP.val(), 0), QCLineId: TryParseInt(hdfQCLineQP.val(), 0), DescriptionId: TryParseInt(hdfModelQP.val(), 0), WarehouseId: TryParseInt(hdfWarehouseQP.val(), 0), ItemTypeId: TryParseInt(hdfItemTypeQP.val(), 0), ItemId: TryParseInt(hdfItemQP.val(), 0), Quantity: TryParseInt(txtQcPassQty.val(), 0) });
+
+                        console.log("QCPass Data");
+                        console.log(data);
+                        //return;
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQCPassQuantity', data, getToken())).then(function (res, status)
+                        {
+                            console.log(res);
+                            console.log(status);
+                            if (res === true && status === "success") {
+                                bootbox.alert("Success");
+                                LoadDataTable();
+                            }
+                            else {
+                                bootbox.alert("Fail");
+                            }
+                            enable("#btnSubmitQCPass");
+                        }).fail(function (error) {
+                            console.log(error);
+                            bootbox.alert("Fail");
+                            enable("#btnSubmitQCPass");
+                        })
+                    }
+                })
+            }
+        })
+
+        var ddlLineNumber2 = $("#ddlLineNumber2");
+        var ddlModelName2 = $("#ddlModelName2");
+        var ddlQCLine2 = $("#ddlQCLine2");
+        var ddlWarehouse2 = $("#ddlWarehouse2");
+
+        ddlLineNumber2.change(function () {
+            clearDropdown("ddlQCLine2");
+            if (ddlLineNumber2.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine2, JSON.stringify({ lineId: ddlLineNumber2.val() }));
+            }
+            LoadDataTable2();
+        })
+
+        ddlModelName2.change(function () {
+            LoadDataTable2();
+        })
+
+        ddlQCLine2.change(function () {
+            LoadDataTable2();
+        })
+
+        ddlWarehouse2.change(function () {
+            LoadDataTable2();
+        })
+
+        function LoadDataTable2() {
+
+            var data = { flag: "search", floorId: TryParseInt(ddlLineNumber2.val(), 0), qcId: TryParseInt(ddlQCLine2.val(), 0), modelId: TryParseInt(ddlModelName2.val(),0), warehouseId: TryParseInt(ddlWarehouse2.val(), 0)};
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetQCPassList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                        $(".cell-action").addClass('hide');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        }
+        
     </script>
 }

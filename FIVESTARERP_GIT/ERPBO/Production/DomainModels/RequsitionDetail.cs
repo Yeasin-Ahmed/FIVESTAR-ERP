@@ -17,6 +17,7 @@ namespace ERPBO.Production.DomainModels
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
         public long? Quantity { get; set; }
+        public int IssueQty { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }

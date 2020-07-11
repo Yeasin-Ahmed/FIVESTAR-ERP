@@ -58,6 +58,7 @@ namespace ERPBLL.Production
         {
             bool IsSuccess = false;
             RequsitionInfo requsitionInfo = new RequsitionInfo();
+            var items = _itemBusiness.GetAllItemByOrgId(orgId);
             if (reqInfoDTO.ReqInfoId == 0)
             {
                 requsitionInfo.WarehouseId = reqInfoDTO.WarehouseId.Value;
@@ -69,13 +70,14 @@ namespace ERPBLL.Production
                 requsitionInfo.EntryDate = DateTime.Now;
                 requsitionInfo.EUserId = userId;
                 requsitionInfo.RequisitionType = reqInfoDTO.RequisitionType;
+                requsitionInfo.RequisitionFor = reqInfoDTO.RequisitionFor;
                 requsitionInfo.IsBundle = reqInfoDTO.IsBundle;
                 requsitionInfo.ItemTypeId = reqInfoDTO.ItemTypeId;
                 requsitionInfo.ItemId = reqInfoDTO.ItemId;
                 requsitionInfo.ForQty = reqInfoDTO.ForQty;
                 if(reqInfoDTO.ItemId != null && reqInfoDTO.ItemId > 0)
                 {
-                    requsitionInfo.UnitId = _itemBusiness.GetItemById(reqInfoDTO.ItemId.Value, orgId).UnitId;
+                    requsitionInfo.UnitId = items.FirstOrDefault(i=> i.ItemId == reqInfoDTO.ItemId.Value).UnitId;
                 }
 
                 List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
@@ -86,7 +88,7 @@ namespace ERPBLL.Production
                     requsitionDetail.ItemTypeId = item.ItemTypeId;
                     requsitionDetail.ItemId = item.ItemId;
                     requsitionDetail.Quantity = item.Quantity;
-                    requsitionDetail.UnitId = _itemBusiness.GetItemOneByOrgId(item.ItemId.Value, orgId).UnitId;
+                    requsitionDetail.UnitId = items.FirstOrDefault(i => i.ItemId == item.ItemId.Value).UnitId;
                     requsitionDetail.Remarks = item.Remarks;
                     requsitionDetail.EUserId = userId;
                     requsitionDetail.EntryDate = DateTime.Now;

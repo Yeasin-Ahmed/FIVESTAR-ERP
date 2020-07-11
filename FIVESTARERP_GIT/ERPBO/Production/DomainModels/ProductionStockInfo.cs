@@ -28,6 +28,8 @@ namespace ERPBO.Production.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        [StringLength(100)]
+        public string StockFor { get; set; }
         public ICollection<ProductionStockDetail> ProductionStockDetails { get; set; }
     }
 }

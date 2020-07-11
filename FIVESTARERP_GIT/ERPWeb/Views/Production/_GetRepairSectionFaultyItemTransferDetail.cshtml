@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionFaultyItemTransferDetailViewModel>
+@using ERPBO.Production.ViewModels;
+@using ERPBLL.Common;
+@{
+    Layout = null;
+    int sl = 0;
+    RepairSectionFaultyItemTransferInfoViewModel info = (RepairSectionFaultyItemTransferInfoViewModel)ViewBag.Info;
+}
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblInfo">
+    <tbody>
+        <tr>
+            <td class="hide">@info.RSFIRInfoId</td>
+            <td style="width:12%">Transfer Code</td>
+            <td style="width:23%"><b>@info.TransferCode</b></td>
+            <td style="width:12%">Floor No</td>
+            <td style="width:15%"><b>@info.ProductionFloorName</b></td>
+            <td style="width:13%">Repair Line</td>
+            <td style="width:25%"><b>@info.RepairLineName</b></td>
+        </tr>
+        <tr>
+            <td style="width:12%">StateStatus</td>
+            <td style="width:23%"><b>@info.StateStatus</b></td>
+            <td style="width:12%">Entry User</td>
+            <td style="width:15%"><b>@info.EntryUser</b></td>
+            <td style="width:13%">Entry Date</td>
+            <td style="width:25%"><b>@info.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</b></td>
+        </tr>        
+    </tbody>
+</table>
+
+<table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblDetail">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th>Model Name</th>
+            <th>Warehouse Name</th>
+            <th>ItemType Name</th>
+            <th>Item Name</th>
+            <th>Qty.</th>
+            <th>Type Of Unit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td class="text-center" width="10%"><b>@sl</b></td>
+                <td>@detail.ModelName</td>
+                <td>@detail.WarehouseName</td>
+                <td>@detail.ItemTypeName</td>
+                <td>@detail.ItemName</td>
+                <td class="text-center">
+                    @detail.FaultyQty
+                </td>
+                <td class="text-center">@detail.UnitName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if(info.StateStatus == RequisitionStatus.Approved)
+{
+    <div class="modal-footer">
+        <button class="btn btn-info btn-sm btnAccepted">
+            Accept
+        </button>
+    </div>
+}

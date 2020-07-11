@@ -30,33 +30,32 @@
                             </h4>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Floor</label>
+                                    <label class="control-label">Floor</label>
                                     @Html.DropDownList("ddlProductionLine", (IEnumerable<SelectListItem>)ViewBag.ddlProductionLines, "--- Select Line ---", new { @class = "form-control form-control-sm" })
                                     <span class="error hide req-line">Line is require</span>
                                     <span></span>
                                 </div>
                                 <div class="col-md-6 hide">
-                                    <label class="col-form-label">Production Type</label>
+                                    <label class="control-label">Production Type</label>
                                     @Html.DropDownList("ddlProductionTypes", (IEnumerable<SelectListItem>)ViewBag.ddlProductionTypes, "--- Select Types ---", new { @class = "form-control form-control-sm" })
                                     <span class="error hide req-proType">Production Type is require</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="ddlPackagingLine" class="control-label font-weight-bold">Packaging Line</label>
+                                    <label for="ddlPackagingLine" class="control-label">Packaging Line</label>
                                     <select id="ddlPackagingLine" class="form-control form-control-sm">
                                         <option value="0">--From Packaging Line--</option>
                                     </select>
                                     <span class="error hide req-packaging">From Packaging line is required</span>
                                 </div>
-                                
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Model</label>
+                                    <label class="control-label">Model</label>
                                     @Html.DropDownList("ddlModel", (IEnumerable<SelectListItem>)ViewBag.ddlModel, "--- Select Model ---", new { @class = "form-control form-control-sm select2 select2-danger" })
                                     <span class="error hide req-model">Model is require</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Warehouse (To)</label>
+                                    <label class="control-label">Warehouse (To)</label>
                                     @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--- Select Warehouse ---", new { @class = "form-control form-control-sm" })
                                     <span class="error hide req-warehouseTo">Warehouse is require</span>
                                 </div>
@@ -64,7 +63,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-form-label">
+                                    <label class="control-label">
                                         Quantity
                                         <div class="icheck-primary d-inline text-primary">
                                             <input type="checkbox" id="chkUseBundle">
@@ -80,7 +79,7 @@
                                     <span class="error hide req-qty">Production Quantity is require</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label">Items</label>
+                                    <label class="control-label">Items</label>
                                     <select class="form-control form-control-sm" id="ddlFinishItems">
                                         <option value="">---Select Items---</option>
                                     </select>
@@ -182,6 +181,8 @@
         var txtStockOutQty = $("#txtStockOutQty");
         var chkUseBundle = $("#chkUseBundle");
         var ddlPackagingLine = $("#ddlPackagingLine");
+        var item = '0';
+        var itemType = '0';
 
         $(document).ready(function () {
             chkUseBundle.prop("checked", true);
@@ -195,6 +196,16 @@
                 theme: 'bootstrap4'
             });
         })
+
+        function getFinishItemAndItemType() {
+            item = '0';
+            itemType = '0';
+            if (ddlFinishItems.val() != '') {
+                item = ddlFinishItems.val().substring(0, ddlFinishItems.val().indexOf("#"));
+                itemType = ddlFinishItems.val().substring(ddlFinishItems.val().indexOf("#") + 1);
+                //warehouse = ddlFinishItems.val().substring(ddlFinishItems.val().lastIndexOf("#") + 1);
+            }
+        }
 
         function checkItemQty(itemId, packagingId, modelId, qty, itemName) {
             var text = "";
@@ -215,8 +226,9 @@
             $("#tblMaterials tbody").empty();
             if (chkUseBundle.is(":checked")) {
                 $("#btnAddToList").addClass('hide');
-                if (TryParseInt(ddlModel.val(), 0) > 0 && TryParseInt(ddlFinishItems.val(), 0) > 0) {
-                    var data = JSON.stringify({ modelId: TryParseInt(ddlModel.val(), 0), itemId: TryParseInt(ddlFinishItems.val(), 0) });
+                getFinishItemAndItemType();
+                if (TryParseInt(ddlModel.val(), 0) > 0 && TryParseInt(item, 0) > 0) {
+                    var data = JSON.stringify({ type: preparationType.packaging, modelId: TryParseInt(ddlModel.val(), 0), itemId: TryParseInt(item, 0) });
 
                     $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
                         console.log(res);
@@ -247,7 +259,8 @@
         })
 
         function loadDataTabelForBundle(obj) {
-            if (!$.isEmptyObject(obj) && obj !==null) {
+            if (!$.isEmptyObject(obj) && obj !== null) {
+                $("#tblMaterials tbody").empty();
                 $.each(obj, function (index, item) {
                     //console.log('Sever Quantity');
                     //console.log(item.Quantity);
@@ -309,7 +322,8 @@
             $("#finishUnit").text('');
             txtFinishQty.val('0');
             if (ddlFinishItems.val() != "") {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetUnitByItemId', JSON.stringify({ itemId: ddlFinishItems.val() }), getToken())).then(function (res, status) {
+                getFinishItemAndItemType();
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetUnitByItemId', JSON.stringify({ itemId: item }), getToken())).then(function (res, status) {
                     if (status === 'success') {
                         $("#finishUnit").html('<b>' + res.UnitSymbol + '</b>');
                     }
@@ -325,7 +339,7 @@
             clearDropdown("ddlPackagingLine");
             if (ddlProductionLine.val() !== '') {
                 LoadDropDown('/Common/GetWarehouseByProductionLineId', 'POST', ddlWarehouse2, JSON.stringify({ lineId: ddlProductionLine.val() }));
-                LoadDropDown('/Common/GetLastPackagingLineByProductionId', 'POST', ddlPackagingLine, JSON.stringify({ lineId: ddlProductionLine.val() }));
+                LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackagingLine, JSON.stringify({ lineId: ddlProductionLine.val() }));
             }
             $("#tblMaterials tbody").empty();
             LoadItemStock();
@@ -475,7 +489,8 @@
         $('#btnSubmit').click(function (e) {
             e.preventDefault();
             if (validateForm() === true) {
-                var info = { FinishGoodsInfoId: 0, ProductionLineId: TryParseInt(ddlProductionLine.val(), 0), DescriptionId: TryParseInt(ddlModel.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: 0, ItemId: TryParseInt(ddlFinishItems.val(), 0), Quanity: TryParseInt(txtFinishQty.val(), 0), ProductionType: '', PackagingLineId: TryParseInt(ddlPackagingLine.val(),0) };
+                getFinishItemAndItemType();
+                var info = { FinishGoodsInfoId: 0, ProductionLineId: TryParseInt(ddlProductionLine.val(), 0), DescriptionId: TryParseInt(ddlModel.val(), 0), WarehouseId: TryParseInt(ddlWarehouse.val(), 0), ItemTypeId: itemType, ItemId: item, Quanity: TryParseInt(txtFinishQty.val(), 0), ProductionType: '', PackagingLineId: TryParseInt(ddlPackagingLine.val(), 0) };
 
                 var details = [];
                 details.length = 0;

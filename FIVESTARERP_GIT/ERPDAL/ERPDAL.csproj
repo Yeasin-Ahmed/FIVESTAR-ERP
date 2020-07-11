@@ -231,6 +231,10 @@
     <Compile Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.Designer.cs">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.cs" />
+    <Compile Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.Designer.cs">
+      <DependentUpon>202007070424522_Inventory_AddPreparationType.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -301,6 +305,34 @@
     <Compile Include="ProductionContextMigrations\202007060457133_Production_AddPDNFaultyStock.cs" />
     <Compile Include="ProductionContextMigrations\202007060457133_Production_AddPDNFaultyStock.Designer.cs">
       <DependentUpon>202007060457133_Production_AddPDNFaultyStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007071226029_Production_ProductionAssembleStock.cs" />
+    <Compile Include="ProductionContextMigrations\202007071226029_Production_ProductionAssembleStock.Designer.cs">
+      <DependentUpon>202007071226029_Production_ProductionAssembleStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007080146141_Production_RenamePackagingQtyToMiniStockQty.cs" />
+    <Compile Include="ProductionContextMigrations\202007080146141_Production_RenamePackagingQtyToMiniStockQty.Designer.cs">
+      <DependentUpon>202007080146141_Production_RenamePackagingQtyToMiniStockQty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007080944502_Production_QCPassTransferInfoAddDetail.cs" />
+    <Compile Include="ProductionContextMigrations\202007080944502_Production_QCPassTransferInfoAddDetail.Designer.cs">
+      <DependentUpon>202007080944502_Production_QCPassTransferInfoAddDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007091346176_Production_AddRequistionFor.cs" />
+    <Compile Include="ProductionContextMigrations\202007091346176_Production_AddRequistionFor.Designer.cs">
+      <DependentUpon>202007091346176_Production_AddRequistionFor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007100101199_Production_StockFor.cs" />
+    <Compile Include="ProductionContextMigrations\202007100101199_Production_StockFor.Designer.cs">
+      <DependentUpon>202007100101199_Production_StockFor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007101206555_Production_ProductionToPackagingStockTransfer.cs" />
+    <Compile Include="ProductionContextMigrations\202007101206555_Production_ProductionToPackagingStockTransfer.Designer.cs">
+      <DependentUpon>202007101206555_Production_ProductionToPackagingStockTransfer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007101445352_Production_ProductionPackagingStockTransferStatus.cs" />
+    <Compile Include="ProductionContextMigrations\202007101445352_Production_ProductionPackagingStockTransferStatus.Designer.cs">
+      <DependentUpon>202007101445352_Production_ProductionPackagingStockTransferStatus.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
@@ -442,6 +474,9 @@
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.resx">
+      <DependentUpon>202007070424522_Inventory_AddPreparationType.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -492,6 +527,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007060457133_Production_AddPDNFaultyStock.resx">
       <DependentUpon>202007060457133_Production_AddPDNFaultyStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007071226029_Production_ProductionAssembleStock.resx">
+      <DependentUpon>202007071226029_Production_ProductionAssembleStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007080146141_Production_RenamePackagingQtyToMiniStockQty.resx">
+      <DependentUpon>202007080146141_Production_RenamePackagingQtyToMiniStockQty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007080944502_Production_QCPassTransferInfoAddDetail.resx">
+      <DependentUpon>202007080944502_Production_QCPassTransferInfoAddDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007091346176_Production_AddRequistionFor.resx">
+      <DependentUpon>202007091346176_Production_AddRequistionFor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007100101199_Production_StockFor.resx">
+      <DependentUpon>202007100101199_Production_StockFor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007101206555_Production_ProductionToPackagingStockTransfer.resx">
+      <DependentUpon>202007101206555_Production_ProductionToPackagingStockTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007101445352_Production_ProductionPackagingStockTransferStatus.resx">
+      <DependentUpon>202007101445352_Production_ProductionPackagingStockTransferStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

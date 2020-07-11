@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.Inventory
 {
-    public class ItemPreparationInfoBusiness: IItemPreparationInfoBusiness
+    public class ItemPreparationInfoBusiness : IItemPreparationInfoBusiness
     {
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly ItemPreparationInfoRepository _itemPreparationInfoRepository; // repo
@@ -37,19 +37,20 @@ namespace ERPBLL.Inventory
         public bool SaveItemPreparations(ItemPreparationInfoDTO info, List<ItemPreparationDetailDTO> details, long userId, long orgId)
         {
             bool IsSuccess = false;
-            if(info.PreparationInfoId == 0)
+            if (info.PreparationInfoId == 0)
             {
                 ItemPreparationInfo model = new ItemPreparationInfo
                 {
-                    WarehouseId= info.WarehouseId,
+                    WarehouseId = info.WarehouseId,
                     ItemTypeId = info.ItemTypeId,
                     ItemId = info.ItemId,
-                    UnitId = _itemBusiness.GetItemById(info.ItemId,orgId).UnitId,
-                    Remarks= info.Remarks,
-                    DescriptionId=info.DescriptionId,
-                    OrganizationId=orgId,
-                    EUserId=userId,
-                    EntryDate=DateTime.Now
+                    UnitId = _itemBusiness.GetItemById(info.ItemId, orgId).UnitId,
+                    Remarks = info.Remarks,
+                    DescriptionId = info.DescriptionId,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    PreparationType = info.PreparationType
                 };
                 List<ItemPreparationDetail> modelDetails = new List<ItemPreparationDetail>();
                 foreach (var item in details)
@@ -84,12 +85,22 @@ namespace ERPBLL.Inventory
         public bool DeleteItemPreparation(long id, long userId, long orgId)
         {
             _itemPreparationInfoRepository.DeleteAll(i => i.PreparationInfoId == id && i.OrganizationId == orgId);
-          return _itemPreparationInfoRepository.Save();
+            return _itemPreparationInfoRepository.Save();
         }
 
         public ItemPreparationInfo GetPreparationInfoByModelAndItem(long modelId, long itemId, long orgId)
         {
             return _itemPreparationInfoRepository.GetOneByOrg(i => i.DescriptionId == modelId && i.ItemId == itemId && i.OrganizationId == orgId);
+        }
+
+        public bool IsItemPreparationExistWithThistype(string type, long modelId, long itemId, long orgId)
+        {
+            return _itemPreparationInfoRepository.GetOneByOrg(s => s.PreparationType == type && s.DescriptionId == modelId && s.ItemId == itemId && s.OrganizationId == orgId) != null;
+        }
+
+        public ItemPreparationInfo GetPreparationInfoByModelAndItemAndType(string type, long modelId, long itemId, long orgId)
+        {
+            return _itemPreparationInfoRepository.GetOneByOrg(i => i.DescriptionId == modelId && i.ItemId == itemId && i.PreparationType == type && i.OrganizationId == orgId);
         }
     }
 }

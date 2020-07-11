@@ -14,6 +14,11 @@ var type = {
     delete: 'Delete'
 };
 
+var preparationType = {
+    production: "Production",
+    packaging: "Packaging"
+};
+
 var reqStatus = {
     pending: "Pending",
     reject: "Rejected",
@@ -197,7 +202,6 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
         });
     }
 }
-
 
 // Checking user existence
 // All the Parameters are required 

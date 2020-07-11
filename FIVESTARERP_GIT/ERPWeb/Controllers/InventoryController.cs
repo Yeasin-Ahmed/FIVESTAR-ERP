@@ -47,7 +47,7 @@ namespace ERPWeb.Controllers
         private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
-        private readonly ISupplierBusiness _supplierBusiness; 
+        private readonly ISupplierBusiness _supplierBusiness;
         #endregion
 
         #region Production
@@ -977,11 +977,17 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Item Preparation
-        public ActionResult GetItemPreparation(string flag, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? id, int page = 1)
+        public ActionResult GetItemPreparation(string flag, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? id,string type, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemPreparation");
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.ddlItemPreparationType = new List<SelectListItem>()
+                {
+                    new SelectListItem(){ Text = ItemPreparationType.Production, Value= ItemPreparationType.Production },
+                    new SelectListItem(){ Text = ItemPreparationType.Packaging, Value= ItemPreparationType.Packaging }
+                }.ToList();
+
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
 
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
@@ -1004,10 +1010,12 @@ namespace ERPWeb.Controllers
                     (modelId == null || modelId <= 0 || modelId == i.DescriptionId) &&
                     (warehouseId == null || warehouseId <= 0 || warehouseId == i.WarehouseId) &&
                     (itemTypeId == null || itemTypeId <= 0 || itemTypeId == i.ItemTypeId) &&
-                    (itemId == null || itemId <= 0 || itemId == i.ItemId)
+                    (itemId == null || itemId <= 0 || itemId == i.ItemId) &&
+                    (string.IsNullOrEmpty(type) || type.Trim() =="" || type == i.PreparationType)
                 ).Select(i => new ItemPreparationInfoDTO
                 {
                     PreparationInfoId = i.PreparationInfoId,
+                    PreparationType = i.PreparationType,
                     WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
                     ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == i.ItemTypeId).ItemName,
                     ItemName = items.FirstOrDefault(it => it.ItemId == i.ItemId).ItemName,
@@ -1043,6 +1051,8 @@ namespace ERPWeb.Controllers
                     ViewBag.Info = new ItemPreparationInfoViewModel
                     {
                         ModelName = mobileModels.FirstOrDefault(it => it.DescriptionId == info.DescriptionId).DescriptionName,
+                        PreparationType = info.PreparationType,
+
                         ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == info.ItemTypeId).ItemName,
                         ItemName = items.FirstOrDefault(it => it.ItemId == info.ItemId).ItemName
                     };
@@ -1092,6 +1102,12 @@ namespace ERPWeb.Controllers
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
             }).ToList();
+
+            ViewBag.ddlItemPreparationType = new List<SelectListItem>()
+            {
+                new SelectListItem(){ Text = ItemPreparationType.Production,Value= ItemPreparationType.Production },
+                new SelectListItem(){ Text = ItemPreparationType.Packaging,Value= ItemPreparationType.Packaging }
+            }.ToList();
 
             return View();
         }
@@ -1173,7 +1189,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionInfoList(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate,"Warehouse", User.OrgId);
+                var dto = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionInfoList(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, "Warehouse", User.OrgId);
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
                 dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -1184,9 +1200,10 @@ namespace ERPWeb.Controllers
             }
         }
 
-        public ActionResult IssueRepairSectionRequisition(long requisitionId) {
+        public ActionResult IssueRepairSectionRequisition(long requisitionId)
+        {
             var req = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(requisitionId, User.OrgId);
-            if(req != null && req.StateStatus== RequisitionStatus.Checked)
+            if (req != null && req.StateStatus == RequisitionStatus.Checked)
             {
                 var reqInfo = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionDataById(req.RSRInfoId, User.OrgId);
                 RepairSectionRequisitionInfoViewModel viewModel = new RepairSectionRequisitionInfoViewModel();
@@ -1197,7 +1214,7 @@ namespace ERPWeb.Controllers
         }
         public ActionResult IssueRepairSectionRequisitionDetails(long requisitionId)
         {
-            var requisition = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(requisitionId,User.OrgId);
+            var requisition = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(requisitionId, User.OrgId);
             if (requisitionId > 0 && requisition.StateStatus == RequisitionStatus.Checked)
             {
                 var dto = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailPendingByReqId(requisitionId, User.OrgId);
@@ -1208,21 +1225,21 @@ namespace ERPWeb.Controllers
             return RedirectToAction("GetRepairSectionRequisitionInfoList");
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveRepairSectionRequisitionState(RepairRequisitionInfoStateViewModel model)
         {
             bool IsSuccess = false;
             if (ModelState.IsValid && model.Details.Count > 0)
             {
-                if(model.Status == RequisitionStatus.Approved)
+                if (model.Status == RequisitionStatus.Approved)
                 {
                     RepairRequisitionInfoStateDTO dto = new RepairRequisitionInfoStateDTO();
-                    AutoMapper.Mapper.Map(model,dto);
-                    IsSuccess=_repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionIssueByWarehouse(dto, User.OrgId, User.UserId);
+                    AutoMapper.Mapper.Map(model, dto);
+                    IsSuccess = _repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionIssueByWarehouse(dto, User.OrgId, User.UserId);
                 }
                 else
                 {
-                    IsSuccess = _repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionStatus(model.RequistionId,model.Status, User.OrgId, User.UserId);
+                    IsSuccess = _repairSectionRequisitionInfoBusiness.SaveRepairSectionRequisitionStatus(model.RequistionId, model.Status, User.OrgId, User.UserId);
                 }
             }
             return Json(IsSuccess);
