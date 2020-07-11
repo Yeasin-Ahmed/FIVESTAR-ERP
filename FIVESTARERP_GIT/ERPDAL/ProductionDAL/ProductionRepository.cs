@@ -190,7 +190,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class FaultyItemStockInfoRepository : ProductionBaseRepository<FaultyItemStockInfo>
     {
         public FaultyItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -269,6 +268,50 @@ namespace ERPDAL.ProductionDAL
     public class ProductionFaultyStockDetailRepository : ProductionBaseRepository<ProductionFaultyStockDetail>
     {
         public ProductionFaultyStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class ProductionAssembleStockInfoRepository : ProductionBaseRepository<ProductionAssembleStockInfo>
+    {
+        public ProductionAssembleStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class ProductionAssembleStockDetailRepository : ProductionBaseRepository<ProductionAssembleStockDetail>
+    {
+        public ProductionAssembleStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class QCPassTransferInformationRepository : ProductionBaseRepository<QCPassTransferInformation>
+    {
+        public QCPassTransferInformationRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class QCPassTransferDetailRepository : ProductionBaseRepository<QCPassTransferDetail>
+    {
+        public QCPassTransferDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class ProductionToPackagingStockTransferInfoRepository : ProductionBaseRepository<ProductionToPackagingStockTransferInfo>
+    {
+        public ProductionToPackagingStockTransferInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class ProductionToPackagingStockTransferDetailRepository : ProductionBaseRepository<ProductionToPackagingStockTransferDetail>
+    {
+        public ProductionToPackagingStockTransferDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
         {
 
         }

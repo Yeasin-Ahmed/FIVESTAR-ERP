@@ -14,13 +14,16 @@ namespace ERPBLL.Production
     public class QCLineStockDetailBusiness : IQCLineStockDetailBusiness
     {
         private readonly IProductionUnitOfWork _productionDb;
+
         private readonly QualityControlLineStockDetailRepository _qualityControlLineStockDetailRepository;
         private readonly QualityControlLineStockInfoRepository _qualityControlLineStockInfoRepository;
+
         private readonly ITransferStockToQCDetailBusiness _transferStockToQCDetailBusiness;
         private readonly ITransferStockToQCInfoBusiness _transferStockToQCInfoBusiness;
-        private readonly IQCLineStockInfoBusiness _qCLineStockInfoBusiness;
 
+        private readonly IQCLineStockInfoBusiness _qCLineStockInfoBusiness;
         private readonly IQCItemStockDetailBusiness _qCItemStockDetailBusiness;
+        
 
         public QCLineStockDetailBusiness(IProductionUnitOfWork productionDb, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness)
         {

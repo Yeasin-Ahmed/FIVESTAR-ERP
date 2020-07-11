@@ -29,27 +29,33 @@
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
                 <span class="error hide req-modelName font-weight-bold">Model Name is required!</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="ddlWarehouseTarget" class="col-form-label">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouseTarget", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouseTarget, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
                 <span class="error hide req-tgt-warehouseName font-weight-bold">Warehouse Name is required !</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label" for="ddlItemTypeTgt">ItemType Name</label>
                 <select id="ddlItemTypeTgt" class="form-control form-control-sm ctrl-changed">
                     <option value="">--Select ItemType--</option>
                 </select>
                 <span class="error hide req-tgt-itemType text-bold">ItemType Name is require</span>
             </div>
-            <div class="col-md-3">
-                <label class="col-form-label" for="ddlItemTgt">Item Name</label>
+            <div class="col-md-2">
+                <label class="col-form-label" for="ddlItemTgt">Item/Item-Color</label>
                 <select id="ddlItemTgt" class="form-control form-control-sm ctrl-changed">
                     <option value="">--Select Item--</option>
                 </select>
                 <span class="error hide req-tgt-item text-bold">Item Name is require</span>
                 <span class="error hide duplicate-item text-bold">The Item of this model is already exist</span>
             </div>
+            <div class="col-md-3">
+                <label for="ddlItemPreparationType" class="col-form-label">Preparation Type</label>
+                @Html.DropDownList("ddlItemPreparationType", (IEnumerable<SelectListItem>)ViewBag.ddlItemPreparationType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                <span class="error hide req-preparation text-bold">Item PreparationType is required</span>
+            </div>
         </div>
+
         <h6 class="text-indigo text-bold mb-0" style="border-bottom:1px solid #9a6ec1">Source</h6>
         <div class="row">
             <div class="col-md-3">
@@ -117,7 +123,7 @@
                     <th class="hide"></th>
                     <th>ItemType Name</th>
                     <th class="hide"></th>
-                    <th>Item Name</th>
+                    <th>Item/Item-Color</th>
                     <th>Quantity</th>
                     <th>Type Of Unit</th>
                     <th>Remarks</th>
@@ -126,6 +132,34 @@
             </thead>
             <tbody></tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="itemPreparationModal" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Edit Item Preparation Qty</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table id="tblEdit" class="table table-sm table-bordered table-striped table-responsive-lg">
+                    <tbody>
+                        <tr>
+                            <td class="alert-secondary" style="width:15%">Item</td>
+                            <td style="width:35%; background-color:#e1dada"></td>
+                            <td class="alert-secondary" style="width:15%">Qty</td>
+                            <td style="width:35%; background-color:#e1dada"> <input type="number" class="form-control form-control-sm" id="txtUpdateQty" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal"  class="btn btn-sm btn-flat btn-danger">Cancel</button>
+                <button type="button" id="btnUpdateQty" class="btn btn-sm btn-flat btn-success">Update</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -141,6 +175,9 @@
         var txtQty = $("#txtQty");
         var txtRemarks = $("#txtRemarks");
         var unitName = $("#unitName");
+        var ddlItemPreparationType = $("#ddlItemPreparationType");
+        var hdfRowIndex = $("#hdfRowIndex");
+        var txtUpdateQty = $("#txtUpdateQty");
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -219,7 +256,7 @@
         function addToList() {
             disable("#ddlModelName");
             disable("#ddlItemTypeTgt");
-            disable("#ddlItemTgt");
+            //disable("#ddlItemTgt");
             disable("#ddlWarehouseTarget");
             disable("#ddlWarehouseSource");
             var sl = $("#tblList tbody tr").length;
@@ -235,7 +272,7 @@
             var td8 = "<td class='text-center'>" + txtQty.val() + "</td>";
             var td9 = "<td class='text-center'>" + unitName.text() + "</td>";
             var td10 = "<td>" + txtRemarks.val() + "</td>";
-            var td11 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+            var td11 = "<td class='text-center'><a href='#' class='btn btn-sm btn-warning btn-flat data-onfly-edit'><i class='fas fa-pen'></i></a> <a href='#' class='btn btn-sm btn-danger btn-flat data-onfly-del'><i class='far fa-trash-alt'></i></a></td>";
 
             var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9+td10+td11 + "</tr>";
             if ($("#tblList tbody tr").length == 0) {
@@ -268,51 +305,107 @@
                 $(".req-tgt-item").removeClass('hide');
                 isValid = false;
             }
-            if ($("#tblList tbody tr").length === 0) {
+            if ($("#tblList tbody tr").length === 0)
+            {
                 $(".no-items").removeClass('hide');
                 isValid = false;
+            }
+            if (ddlItemPreparationType.val() === "") {
+                $('.req-preparation').removeClass('hide');
+                isValid = false;
+            }
+            if (ddlModelName.val() !== "" && ddlItemTgt.val() !== "" && ddlItemPreparationType.val() !== "") {
+                //string type, long modelId, long itemId
+                var data = JSON.stringify({ type: ddlItemPreparationType.val(), modelId: ddlModelName.val(), itemId: ddlItemTgt.val() });
+                if (ajaxBooleanChecker(data, '/Common/IsItemPreparationExistWithThistype', getToken()) === true) {
+                    bootbox.alert("Already a Item Preparation is exist with this Type,Model and Item");
+                    isValid = false;
+                }
             }
             return isValid;
         }
 
+        // Edit ....
+        $(document).on('click', 'a.data-onfly-edit', function (e) {
+            e.preventDefault();
+            var row = $(this).parent().parents('tr');
+            $("#itemPreparationModal").modal("show");
+            hdfRowIndex.val('');
+            txtUpdateQty.val('0')
+            hdfRowIndex.val(row.index());
+            var item = row.children('td').eq(6).html();
+            var qty = row.children('td').eq(7).html();
+            alert(row.index());
+
+            var tblEdit = $('#tblEdit tbody');
+            var itemRows = tblEdit.children('tr');
+            var itemRows1 = itemRows.eq('0');
+            itemRows1.children('td').eq(1).html(item);
+            txtUpdateQty.val(qty);
+        })
+
+        $("#btnUpdateQty").click(function (e) {
+            e.preventDefault();
+            if (hdfRowIndex.val() !== "") {
+                if (TryParseInt(txtUpdateQty.val(), 0) > 0) {
+                    
+                    $("#tblList tbody tr").eq(hdfRowIndex.val()).children('td').eq(7).html(txtUpdateQty.val());
+                    $("#itemPreparationModal").modal("toggle");
+                    $('.toastrDefaultUpdateOnFlayData').trigger('click').fadeOut(1000);
+                }
+                else {
+                    bootbox.alert("Quantity cannot be zero");
+                }
+            }
+        })
+
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            if (validateSubmition() === true) {
-                var info = { PreparationInfoId: 0, WarehouseId: ddlWarehouseTarget.val(), ItemTypeId: ddlItemTypeTgt.val(), ItemId: ddlItemTgt.val(), DescriptionId: ddlModelName.val() };
+            if (validateSubmition() === true)
+            {
+                bootbox.confirm("Are you sure you want to Save this Preparation", function (result) {
+                    if (result)
+                    {
+                        disable("#btnSubmit");
+                        var info = { PreparationInfoId: 0, WarehouseId: ddlWarehouseTarget.val(), ItemTypeId: ddlItemTypeTgt.val(), ItemId: ddlItemTgt.val(), DescriptionId: ddlModelName.val(), PreparationType:ddlItemPreparationType.val() };
 
-                var details = [];
-                details.length = 0;
-                $.each($("#tblList tbody tr"), function (index, item) {
-                    var tds = $(this).children('td');
-                    details.push({
-                        PreparationDetailId:0,
-                        WarehouseId: tds.eq(1).html(),
-                        ItemTypeId: tds.eq(3).html(),
-                        ItemId: tds.eq(5).html(),
-                        Quantity: tds.eq(7).html(),
-                        Remarks: tds.eq(9).html()
-                    });
-                })
+                        var details = [];
+                        details.length = 0;
 
-                //details = JSON.stringify({ details });
-                console.log('Info');
-                console.log(info);
-                console.log('Detail');
-                console.log(details);
-                var data = JSON.stringify({ info: info, details: details });
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItemPreparation', data , getToken())).then(function (res, status)
-                {
-                    if (res === true) {
-                        setTimeout(function () {
-                            $('.toastrDefaultSuccess').trigger('click');
-                            redirectPage('@Url.Action("GetItemPreparation")');
-                        }, 1000);
+                        $.each($("#tblList tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            details.push({
+                                PreparationDetailId:0,
+                                WarehouseId: tds.eq(1).html(),
+                                ItemTypeId: tds.eq(3).html(),
+                                ItemId: tds.eq(5).html(),
+                                Quantity: tds.eq(7).html(),
+                                Remarks: tds.eq(9).html()
+                            });
+                        })
+
+                        console.log('Info');
+                        console.log(info);
+                        console.log('Detail');
+                        console.log(details);
+                        var data = JSON.stringify({ info: info, details: details });
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItemPreparation', data , getToken())).then(function (res, status)
+                        {
+                            if (res === true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                @*setTimeout(function () {
+                                    redirectPage('@Url.Action("GetItemPreparation")');
+                                }, 1000);*@
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            alert(execuStatus.fail);
+                            enable("#btnSubmit");
+                        })
                     }
-                    else {
-                        $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    alert(execuStatus.fail);
                 })
             }
         })

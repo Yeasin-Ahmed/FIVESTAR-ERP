@@ -115,10 +115,14 @@ namespace ERPBLL.Common
         public static readonly string HardwareProblem = "Hardware Problem";
         public static readonly string Both = "Both Software & Hardware Problem";
     }
-
     public class GeneratCode
     {
         public static readonly string EntityCode = DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss");
+    }
+    public class ItemPreparationType
+    {
+        public static readonly string Production = "Production";
+        public static readonly string Packaging = "Packaging";
     }
 
 }

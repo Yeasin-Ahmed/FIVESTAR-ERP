@@ -32,5 +32,7 @@ namespace ERPBO.Production.DomainModels
         public string StockStatus { get; set; }
         [StringLength(150)]
         public string RefferenceNumber { get; set; }
+        [StringLength(100)]
+        public string StockFor { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<QCItemStockInfo> GetQCItemStocks(long orgId);
         QCItemStockInfo GetQCItemStockInfById(long qcId, long modelId, long itemId, long orgId);
+        QCItemStockInfo GetQCItemStockInfoByFloorAndQcAndModelAndItem(long floorId,long qcId, long modelId, long itemId, long orgId);
     }
 }

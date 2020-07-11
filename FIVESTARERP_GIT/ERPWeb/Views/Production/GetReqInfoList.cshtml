@@ -309,7 +309,8 @@
             if (validateUpdateReq() === true)
             {
                 bootbox.confirm("Are you sure you want to save", function (result) {
-                    if (result === true) {
+                    if (result === true)
+                    {
                         var reqDetails = [];
                         reqDetails.length = 0;
                         $.each($("#tblReqDetailsData tbody tr"), function () {
@@ -330,6 +331,7 @@
                         var trinfo1 = $('#tblReqInfoForEdit tbody').children('tr').eq('0');
                         var reqid = trinfo1.children('td').eq('0').html();
                         var lineid = trinfo1.children('td').eq('3').html();
+                        var reqFor = trinfo1.children('td').eq('6').html();
 
                         var trinfo2 = $('#tblReqInfoForEdit tbody').children('tr').eq('1');
                         var warid = trinfo2.children('td').eq('0').html();
@@ -342,6 +344,7 @@
                             WarehouseId:TryParseInt(warid, 0),
                             DescriptionId: TryParseInt(desid, 0),
                             RequisitionType: rtype,
+                            RequisitionFor: reqFor,
                             ReqDetails: reqDetails
                         };
                         console.log(requsitionInfo);

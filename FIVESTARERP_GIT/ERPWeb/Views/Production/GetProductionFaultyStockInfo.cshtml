@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "GetProductionFaultyStockInfo";
+}
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">
+                            Production Faulty Item Stock
+                        </h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <h6 class="card-title">Search By</h6>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-3">
+                        <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
+                        @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                        @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                        @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                        <select id="ddlItemType" class="form-control form-control-sm">
+                            <option value="0">--Select Item Type--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                        <select id="ddlItem" class="form-control form-control-sm ctrl-change">
+                            <option value="0">--Select Item--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
+                        <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12" id="dataContainer">
+                    @{Html.RenderAction("GetProductionFaultyStockInfo", new { @flag = "View" });}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlModelName = $("#ddlModelName");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtLessOrEq = $("#txtLessOrEq");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        ddlLineNumber.change(function () {
+            LoadDataTable();
+        })
+
+        ddlWarehouse.change(function () {
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            LoadDataTable();
+        })
+        ddlItemType.change(function () {
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-change', function () {
+            LoadDataTable();
+        })
+
+        txtLessOrEq.keyup(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", floorId: ddlLineNumber.val(), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(), page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetProductionFaultyStockInfo', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+    </script>
+}

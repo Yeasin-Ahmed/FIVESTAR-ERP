@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionToPackagingStockTransferDetailViewModel>
+@{
+    int sl = 0;
+    string status = (string)ViewBag.Status;
+}
+
+<table class="table table-bordered table-sm table-responsive-lg text-sm">
+    <thead class="btn-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th>ItemType Name</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sl = sl + 1;
+            <tr>
+                <td>@sl</td>
+                <td>@item.ItemTypeName</td>
+                <td>@item.ItemName</td>
+                <td>@item.Quantity</td>
+            </tr>
+        }
+        @if(Model.Count() == 0)
+        {
+            <tr class="text-center text-bold">
+                <td>
+                    No data found in the table
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="modal-footer">
+    @if (status == ERPBLL.Common.RequisitionStatus.Approved)
+    {
+        <button type="button" class="btn btn-sm btn-primary btnReceive">Receive</button>
+    }
+</div>

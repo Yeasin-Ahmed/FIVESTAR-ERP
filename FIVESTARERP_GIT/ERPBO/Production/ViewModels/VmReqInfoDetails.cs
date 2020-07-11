@@ -20,6 +20,7 @@ namespace ERPBO.Production.ViewModels
         public string Item { get; set; }
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
+        public int IssueQty { get; set; }
         //[Range(1, long.MaxValue)]
         public long? UnitId { get; set; }
         [StringLength(100)]
@@ -54,5 +55,7 @@ namespace ERPBO.Production.ViewModels
         public long? ItemId { get; set; }
         public int? ForQty  { get; set; }
         public bool IsBundle { get; set; }
+        [Required, StringLength(100)]
+        public string RequisitionFor { get; set; }
     }
 }

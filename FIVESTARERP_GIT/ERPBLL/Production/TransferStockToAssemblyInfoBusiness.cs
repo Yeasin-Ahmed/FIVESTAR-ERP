@@ -103,7 +103,8 @@ namespace ERPBLL.Production
                     OrganizationId = orgId,
                     EntryDate = DateTime.Now,
                     EUserId = userId,
-                    RefferenceNumber = info.TransferCode
+                    RefferenceNumber = info.TransferCode,
+                    StockFor = ItemPreparationType.Production
                 };
                 floorStockOutItems.Add(stockOutItem);
             }

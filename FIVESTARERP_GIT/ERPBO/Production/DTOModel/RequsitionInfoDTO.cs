@@ -31,6 +31,8 @@ namespace ERPBO.Production.DTOModel
         public long? ItemId { get; set; }
         public int? ForQty { get; set; }
         public long? UnitId { get; set; }
+        [StringLength(100)]
+        public string RequisitionFor { get; set; }
 
         [StringLength(100)]
         public string WarehouseName { get; set; }

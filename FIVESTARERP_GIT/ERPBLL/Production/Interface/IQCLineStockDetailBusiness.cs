@@ -13,7 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<QualityControlLineStockDetail> GetQCLineStockDetails(long orgId);
         bool SaveQCLineStockIn(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId);
         bool SaveQCStockInByAssemblyLine(long transferId, string status, long orgId, long userId);
-
         bool SaveQCLineStockOut(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId,string flag);
     }
 }

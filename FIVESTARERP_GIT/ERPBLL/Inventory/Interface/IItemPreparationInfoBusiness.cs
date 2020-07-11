@@ -18,5 +18,8 @@ namespace ERPBLL.Inventory.Interface
         ItemPreparationInfo IsDuplicationItemPreparation(long itemId, long modelId, long orgId);
         bool DeleteItemPreparation(long id, long userId, long orgId);
         ItemPreparationInfo GetPreparationInfoByModelAndItem(long modelId, long itemId, long orgId);
+
+        ItemPreparationInfo GetPreparationInfoByModelAndItemAndType(string type,long modelId, long itemId, long orgId);
+        bool IsItemPreparationExistWithThistype(string type,long modelId, long itemId, long orgId);
     }
 }

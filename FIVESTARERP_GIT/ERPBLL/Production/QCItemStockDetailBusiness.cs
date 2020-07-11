@@ -62,11 +62,11 @@ namespace ERPBLL.Production
                 if (stockInfoInDb != null)
                 {
                     stockInfoInDb.Quantity += item.Quantity;
-                    if(item.RepairLineId != null && item.RepairLineId > 0)
+                    if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair" && item.RepairLineId != null && item.RepairLineId > 0)
                     {
                         stockInfoInDb.RepairQty -= item.Quantity;
                     }
-                    else if(item.LabId != null && item.LabId > 0)
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId !=null && item.LabId > 0)
                     {
                         stockInfoInDb.LabQty -= item.Quantity;
                     }
@@ -86,7 +86,7 @@ namespace ERPBLL.Production
                         Quantity = item.Quantity,
                         RepairQty = 0,
                         LabQty = 0,
-                        PackagingQty = 0,
+                        MiniStockQty = 0,
                         OrganizationId = orgId,
                         EUserId = userId,
                         EntryDate = DateTime.Now,
@@ -120,7 +120,6 @@ namespace ERPBLL.Production
                     AssemblyLineId = item.AssemblyLineId,
                     RepairLineId = item.RepairLineId,
                     LabId = item.LabId,
-                    PackagingLineId = item.PackagingLineId,
                     WarehouseId = item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
@@ -130,23 +129,24 @@ namespace ERPBLL.Production
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     Remarks = item.Remarks,
-                    StockStatus = StockStatus.StockOut
+                    StockStatus = StockStatus.StockOut,
+                    Flag=item.Flag
                 };
 
                 var stockInfoInDb = _qCItemStockInfoBusiness.GetQCItemStockInfById(item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
 
                 stockInfoInDb.Quantity -= item.Quantity;
-                if (item.RepairLineId != null && item.RepairLineId > 0)
+                if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag =="Repair" && item.RepairLineId != null && item.RepairLineId > 0)
                 {
                     stockInfoInDb.RepairQty += item.Quantity;
                 }
-                else if (item.LabId != null && item.LabId > 0)
+                else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
                 {
                     stockInfoInDb.LabQty += item.Quantity;
                 }
-                else if (item.PackagingLineId != null && item.PackagingLineId > 0)
+                else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "MiniStock")
                 {
-                    stockInfoInDb.PackagingQty += item.Quantity;
+                    stockInfoInDb.MiniStockQty += item.Quantity;
                 }
                 stockInfoInDb.UpUserId = userId;
                 _qCItemStockInfoRepository.Update(stockInfoInDb);

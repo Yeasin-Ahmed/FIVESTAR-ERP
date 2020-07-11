@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "Production Assemble Stock Transfer List";
+}
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">Production Assemble Stock Transfer List</h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <h6 class="card-title">Search By</h6>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-3">
+                        <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
+                        @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlPackaging" class="control-label font-weight-bold">Packaging Line</label>
+                        <select id="ddlPackaging" class="form-control form-control-sm">
+                            <option value="0">--Select Packaging--</option>
+                        </select>
+                        <span class="error hide req-packaging">Packaging Line is required</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                        @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                        @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm " })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="ddlStateStatus" class="control-label font-weight-bold">State Status</label>
+                        @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="row">
+                <div class="card-body">
+                    <div class="col-md-12" id="dataContainer">
+                        @{Html.RenderAction("GetProductionAssembleStockTransferList", new { @flag = "View" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdTransferInfoId" />
+                <h4 id="modalHeading" class="modal-title">Raw Materials Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlPackaging = $("#ddlPackaging");
+        var ddlModelName = $("#ddlModelName");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlStateStatus = $("#ddlStateStatus");
+
+        $(document).ready(function () {
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            //$(".cell-action").addClass('hide');
+        })
+
+        ddlLineNumber.change(function () {
+            clearDropdown("ddlPackaging");
+            if (ddlLineNumber.val() != "") {
+                LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackaging, JSON.stringify({ lineId: ddlLineNumber.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlPackaging.change(function () {
+            LoadDataTable();
+        })
+        ddlModelName.change(function () {
+            LoadDataTable();
+        })
+
+        ddlWarehouse.change(function () {
+            LoadDataTable();
+        })
+
+        ddlStateStatus.change(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable()
+        {
+            var data = { flag: "view", floorId: TryParseInt(ddlLineNumber.val(), 0), packagingLineId: TryParseInt(ddlPackaging.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: 0, itemId: 0, status: ddlStateStatus.val(), transferInfoId: 0 };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetProductionAssembleStockTransferList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                        //$(".cell-action").addClass('hide');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        $(document).on('click', 'a.data-item-receive', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            if (TryParseInt(id, 0) > 0) {
+                LoadDetails(id);
+            }
+        })
+
+        function LoadDetails(id) {
+
+            var data = { flag: "detail", floorId: 0, packagingLineId: 0, modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatus.val(), transferInfoId: id };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetProductionAssembleStockTransferList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#modelDataContainer").empty();
+                    $("#modelDataContainer").append(res);
+                    $("#modalDetails").modal("show");
+                    $(".btnReceive").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+
+    </script>
+}

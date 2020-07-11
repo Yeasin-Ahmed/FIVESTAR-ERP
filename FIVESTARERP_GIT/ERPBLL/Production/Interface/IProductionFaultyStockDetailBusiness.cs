@@ -13,6 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<ProductionFaultyStockDetail> GetProductionFaultyInfoStocks(long orgId);
         bool SaveProductionFaultyStockIn(List<ProductionFaultyStockDetailDTO> stockDetailsDTO, long userId,long orgId);
         bool SaveProductionFaultyStockOut(List<ProductionFaultyStockDetailDTO> stockDetailsDTO, long userId, long orgId);
-        bool StockInByRepairSection(long transferId, string status);
+        bool StockInByRepairSection(long transferId, string status,long orgId, long userId);
     }
 }
