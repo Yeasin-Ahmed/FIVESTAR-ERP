@@ -142,6 +142,8 @@ namespace ERPWeb
 
             // FrontDesk Database
             #region FrontDesk
+            container.RegisterType<ITsStockReturnDetailsBusiness, TsStockReturnDetailsBusiness>();
+            container.RegisterType<ITsStockReturnInfoBusiness, TsStockReturnInfoBusiness>();
             container.RegisterType<IJobOrderRepairBusiness, JobOrderRepairBusiness>();
             container.RegisterType<IJobOrderServiceBusiness, JobOrderServiceBusiness>();
             container.RegisterType<IJobOrderFaultBusiness, JobOrderFaultBusiness>();

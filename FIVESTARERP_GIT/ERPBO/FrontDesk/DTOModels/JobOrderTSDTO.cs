@@ -32,5 +32,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public string TSName { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public string JobOrderStateStatus { get; set; }
     }
 }

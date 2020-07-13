@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
@@ -27,8 +28,11 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderBusiness _jobOrderBusiness;
         private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
         private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
+        private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
+        private readonly ITsStockReturnDetailsBusiness _tsStockReturnDetailsBusiness;
+        private readonly IMobilePartBusiness _mobilePartBusiness;
 
-        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness)
+        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IMobilePartBusiness mobilePartBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
@@ -38,6 +42,10 @@ namespace ERPWeb.Controllers
             this._jobOrderBusiness = jobOrderBusiness;
             this._jobOrderTSBusiness = jobOrderTSBusiness;
             this._requsitionInfoForJobOrderBusiness=requsitionInfoForJobOrderBusiness;
+            this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
+            this._tsStockReturnDetailsBusiness = tsStockReturnDetailsBusiness;
+            this._mobilePartBusiness = mobilePartBusiness;
+
         }
         public ActionResult Index()
         {
@@ -138,6 +146,24 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(sparePartsDTO, sparePartsViewModels);
                 ViewBag.DashboardDailySparePartsViewModel = sparePartsViewModels;
 
+                // Requsition Approved
+                IEnumerable<DashboardApprovedRequsitionDTO> approvedRequsitionDTO = _jobOrderBusiness.DashboardApprovedRequsition(User.OrgId, User.BranchId);
+                IEnumerable<DashboardApprovedRequsitionViewModel> approvedRequsitionViewModels = new List<DashboardApprovedRequsitionViewModel>();
+                AutoMapper.Mapper.Map(approvedRequsitionDTO, approvedRequsitionViewModels);
+                ViewBag.DashboardApprovedViewModel = approvedRequsitionViewModels;
+
+                // Requsition Approved
+                IEnumerable<DashboardApprovedRequsitionDTO> pendingRequsitionDTO = _jobOrderBusiness.DashboardPendingRequsition(User.OrgId, User.BranchId);
+                IEnumerable<DashboardApprovedRequsitionViewModel> pendingRequsitionViewModels = new List<DashboardApprovedRequsitionViewModel>();
+                AutoMapper.Mapper.Map(pendingRequsitionDTO, pendingRequsitionViewModels);
+                ViewBag.DashboardPendingViewModel = pendingRequsitionViewModels;
+
+                // Requsition Approved
+                IEnumerable<DashbordTsPartsReturnDTO> returnDTO = _tsStockReturnInfoBusiness.DashboardReturnParts(User.OrgId, User.BranchId);
+                IEnumerable<DashbordTsPartsReturnViewModel> returnViewModels = new List<DashbordTsPartsReturnViewModel>();
+                AutoMapper.Mapper.Map(returnDTO, returnViewModels);
+                ViewBag.ReturnPartsViewModel = returnViewModels;
+
                 return View("Index2");
             }
         }
@@ -177,6 +203,20 @@ namespace ERPWeb.Controllers
             return Json(new {lines= lineNumber, months= months, charts= charts, models= modelNames, charts2=charts2,months2= months2 });
 
             
+        }
+        public ActionResult ReturnStockDetails(long id)
+        {
+            IEnumerable<TsStockReturnDetailDTO> tsStock = _tsStockReturnDetailsBusiness.GetAllTsStockReturn(User.OrgId, User.BranchId).Where(s=> s.ReturnInfoId == id).Select(detail => new TsStockReturnDetailDTO
+            {
+                ReqInfoId = detail.ReturnInfoId,
+                ReturnDetailId = detail.ReturnDetailId,
+                PartsId = detail.PartsId,
+                PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.PartsId, User.OrgId).MobilePartName),
+                Quantity = detail.Quantity,
+            }).ToList();
+            List<TsStockReturnDetailViewModel> detailViewModels = new List<TsStockReturnDetailViewModel>();
+            AutoMapper.Mapper.Map(tsStock, detailViewModels);
+            return PartialView("ReturnStockDetails", detailViewModels);
         }
 
         protected override void Dispose(bool disposing)

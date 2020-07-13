@@ -18,7 +18,7 @@ namespace ERPBLL.FrontDesk.Interface
         bool AssignTSForJobOrder(long jobOrderId, long tsId, long userId, long orgId);
         IEnumerable<DashboardRequisitionSummeryDTO> DashboardJobOrderSummery(long orgId,long branchId);
         IEnumerable<JobOrder> GetAllJobOrdersByOrgId(long orgId);
-        IEnumerable<JobOrderDTO> GetJobOrdersTS(string mobileNo, long? modelId, long? jobOrderId, string jobCode, long orgId);
+        IEnumerable<JobOrderDTO> GetJobOrdersTS(string roleName,string mobileNo, long? modelId, long? jobOrderId, string jobCode,long userId, long orgId);
         IEnumerable<JobOrderDTO> GetJobOrdersPush(long? jobOrderId, long orgId);
 
         IEnumerable<JobOrder> GetJobOrdersByBranch(long branchId, long orgId);
@@ -33,5 +33,9 @@ namespace ERPBLL.FrontDesk.Interface
         bool GetJobOrderById( long jobOrderId, long orgId, long branchId);
 
         IEnumerable<SparePartsAvailableAndReqQtyDTO> SparePartsAvailableAndReqQty(long orgId, long branchId,long jobOrderId);
+        bool UpdateJobOrderTsRemarks(long jobOrderId, string remarks, long userId, long orgId,long branchId);
+
+        IEnumerable<DashboardApprovedRequsitionDTO> DashboardApprovedRequsition(long orgId, long branchId);
+        IEnumerable<DashboardApprovedRequsitionDTO> DashboardPendingRequsition(long orgId, long branchId);
     }
 }

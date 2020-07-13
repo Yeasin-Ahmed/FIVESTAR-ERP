@@ -26,6 +26,10 @@ namespace ERPBO.FrontDesk.DTOModels
         //
         public double CostPrice { get; set; }
         public double SellPrice { get; set; }
+        public long RequsitionInfoForJobOrderId { get; set; }
+        public string RequsitionCode { get; set; }
+        public long TSId { get; set; }
+        public string StateStatus { get; set; }
         //
         //custom p
         public string SWarehouseName { get; set; }

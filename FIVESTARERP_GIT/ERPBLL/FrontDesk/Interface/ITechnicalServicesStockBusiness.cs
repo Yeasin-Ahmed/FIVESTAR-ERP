@@ -14,5 +14,7 @@ namespace ERPBLL.FrontDesk.Interface
         bool SaveTechnicalServicesStockIn(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId,long branchId);
         bool SaveTechnicalStockInRequistion(long id, string status, long orgId, long userId,long branchId);
         IEnumerable<TechnicalServicesStock> GetRequsitionStockByStockId(long id, long orgId, long branchId);
+        IEnumerable<TSStockByRequsitionDTO> GetStockByJobOrder(long jobOrderId,long tsId, long orgId, long branchId);
+        bool SaveTechnicalServicesStockOut(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId, long branchId);
     }
 }

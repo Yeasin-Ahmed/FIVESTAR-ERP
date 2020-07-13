@@ -47,4 +47,12 @@ namespace ERPDAL.FrontDeskDAL
     {
         public JobOrderRepairRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
     }
+    public class TsStockReturnInfoRepository : FrontDeskBaseRepository<TsStockReturnInfo>
+    {
+        public TsStockReturnInfoRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
+    public class TsStockReturnDetailRepository : FrontDeskBaseRepository<TsStockReturnDetail>
+    {
+        public TsStockReturnDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
 }

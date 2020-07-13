@@ -221,6 +221,30 @@
     <Compile Include="FrontDeskContextMigrations\202007050555160_FrontDesk_JobOrderRepair.Designer.cs">
       <DependentUpon>202007050555160_FrontDesk_JobOrderRepair.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007071332271_FrontDesk_TSRemarksJobOrder_tbl.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007071332271_FrontDesk_TSRemarksJobOrder_tbl.Designer.cs">
+      <DependentUpon>202007071332271_FrontDesk_TSRemarksJobOrder_tbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007100417348_FrontDesk_ServicesStockReqIdAdd.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007100417348_FrontDesk_ServicesStockReqIdAdd.Designer.cs">
+      <DependentUpon>202007100417348_FrontDesk_ServicesStockReqIdAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007110708148_FrontDesk_JobOrderTsStateStatus.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007110708148_FrontDesk_JobOrderTsStateStatus.Designer.cs">
+      <DependentUpon>202007110708148_FrontDesk_JobOrderTsStateStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007111043364_FrontDesk_TSStockTSId&amp;StatusAdd.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007111043364_FrontDesk_TSStockTSId&amp;StatusAdd.Designer.cs">
+      <DependentUpon>202007111043364_FrontDesk_TSStockTSId&amp;StatusAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007120932152_FrontDesk_TsStockInfo&amp;Details.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007120932152_FrontDesk_TsStockInfo&amp;Details.Designer.cs">
+      <DependentUpon>202007120932152_FrontDesk_TsStockInfo&amp;Details.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.Designer.cs">
+      <DependentUpon>202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -438,6 +462,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202007050555160_FrontDesk_JobOrderRepair.resx">
       <DependentUpon>202007050555160_FrontDesk_JobOrderRepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007071332271_FrontDesk_TSRemarksJobOrder_tbl.resx">
+      <DependentUpon>202007071332271_FrontDesk_TSRemarksJobOrder_tbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007100417348_FrontDesk_ServicesStockReqIdAdd.resx">
+      <DependentUpon>202007100417348_FrontDesk_ServicesStockReqIdAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007110708148_FrontDesk_JobOrderTsStateStatus.resx">
+      <DependentUpon>202007110708148_FrontDesk_JobOrderTsStateStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007111043364_FrontDesk_TSStockTSId&amp;StatusAdd.resx">
+      <DependentUpon>202007111043364_FrontDesk_TSStockTSId&amp;StatusAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007120932152_FrontDesk_TsStockInfo&amp;Details.resx">
+      <DependentUpon>202007120932152_FrontDesk_TsStockInfo&amp;Details.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.resx">
+      <DependentUpon>202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

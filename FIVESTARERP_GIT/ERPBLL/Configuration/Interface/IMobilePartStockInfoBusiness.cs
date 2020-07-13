@@ -14,5 +14,6 @@ namespace ERPBLL.Configuration.Interface
         MobilePartStockInfo GetAllMobilePartStockInfoByInfoId(long warehouseId, long partsId, double cprice, long orgId, long branchId);
         MobilePartStockInfo GetAllMobilePartStockInfoBySellPrice(long warehouseId, long partsId, double sprice, long orgId, long branchId);
         MobilePartStockInfo GetAllMobilePartStockById(long orgId, long branchId);
+       IEnumerable<MobilePartStockInfo> GetAllMobilePartStockByParts(long warehouseId, long partsId,long orgId, long branchId);
     }
 }

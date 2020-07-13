@@ -25,8 +25,12 @@ namespace ERPBO.FrontDesk.ViewModels
 
         //custom p
         //
+        public long RequsitionInfoForJobOrderId { get; set; }
+        public string RequsitionCode { get; set; }
         public double CostPrice { get; set; }
         public double SellPrice { get; set; }
+        public long TSId { get; set; }
+        public string StateStatus { get; set; }
         //
         public string SWarehouseName { get; set; }
         public string PartsName { get; set; }

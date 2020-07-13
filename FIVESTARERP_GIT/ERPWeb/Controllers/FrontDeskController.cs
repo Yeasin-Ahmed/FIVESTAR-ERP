@@ -36,6 +36,8 @@ namespace ERPWeb.Controllers
         private readonly IRepairBusiness _repairBusiness;
         // Warehouse
         private readonly IDescriptionBusiness _descriptionBusiness;
+        //ControlPanel
+        private readonly IRoleBusiness _roleBusiness;
 
         // Front-Desk
         private readonly IJobOrderBusiness _jobOrderBusiness;
@@ -47,8 +49,10 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderFaultBusiness _jobOrderFaultBusiness;
         private readonly IJobOrderServiceBusiness _jobOrderServiceBusiness;
         private readonly IJobOrderRepairBusiness _jobOrderRepairBusiness;
+        private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
+        private readonly ITsStockReturnDetailsBusiness _tsStockReturnDetailsBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -72,6 +76,9 @@ namespace ERPWeb.Controllers
             this._jobOrderServiceBusiness = jobOrderServiceBusiness;
             this._jobOrderRepairBusiness = jobOrderRepairBusiness;
             this._repairBusiness = repairBusiness;
+            this._roleBusiness = roleBusiness;
+            this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
+            this._tsStockReturnDetailsBusiness = tsStockReturnDetailsBusiness;
         }
 
         [HttpGet]
@@ -129,6 +136,8 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlPhoneTypes = Utility.ListOfPhoneTypes().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
+            ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
             long jobOrder = 0;
             if (jobOrderId != null && jobOrderId > 0)
             {
@@ -179,8 +188,8 @@ namespace ERPWeb.Controllers
                 IMEI2=jobOrder.IMEI2,
                 Type=jobOrder.Type,
                 ModelColor=jobOrder.ModelColor,
+                JobOrderType=jobOrder.JobOrderType,
                 WarrantyDate=jobOrder.WarrantyDate,
-                WarrantyEndDate=jobOrder.WarrantyEndDate,
                 Remarks=jobOrder.Remarks,
                 ReferenceNumber=jobOrder.ReferenceNumber,
                 EntryDate=jobOrder.EntryDate,
@@ -208,6 +217,16 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult UpdateJobOrderTsRemarks(long jobOrderId, string remarks)
+        {
+            bool IsSuccess = false;
+            if (jobOrderId > 0 && !string.IsNullOrEmpty(remarks))
+            {
+                IsSuccess = _jobOrderBusiness.UpdateJobOrderTsRemarks(jobOrderId, remarks, User.UserId, User.OrgId,User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult AssignTSForJobOrder(long jobOrderId, long tsId)
@@ -230,7 +249,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign"))
             {
-                var dto = _jobOrderBusiness.GetJobOrdersTS(mobileNo.Trim(), modelId, jobOrderId, jobCode, User.OrgId);
+                var dto = _jobOrderBusiness.GetJobOrdersTS(User.RoleName,mobileNo.Trim(), modelId, jobOrderId, jobCode,User.UserId, User.OrgId);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -244,7 +263,7 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlTechnicalServicesName = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId,User.BranchId).Select(d => new SelectListItem { Text = d.Name, Value = d.EngId.ToString() }).ToList();
+                ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty,User.OrgId,User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
 
                 return View();
             }
@@ -524,6 +543,8 @@ namespace ERPWeb.Controllers
             {
                 TsStockId = stock.TsStockId,
                 JobOrderId=stock.JobOrderId,
+                RequsitionInfoForJobOrderId=stock.RequsitionInfoForJobOrderId,
+                RequsitionCode= (_requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoOneByOrgId(stock.RequsitionInfoForJobOrderId, User.OrgId,User.BranchId).RequsitionCode),
                 SWarehouseId = stock.SWarehouseId,
                 SWarehouseName= (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(stock.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                 PartsId = stock.PartsId,
@@ -561,6 +582,8 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
+            ViewBag.ddlSymptomName = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.ProblemName, Value = mobile.ProblemId.ToString() }).ToList();
+
             var jobOrder = _jobOrderBusiness.GetJobOrderById(joborderId.Value, User.OrgId);
             ViewBag.JobOrder = new JobOrderViewModel
             {
@@ -575,7 +598,9 @@ namespace ERPWeb.Controllers
                 Type=jobOrder.Type,
                 DescriptionId=jobOrder.DescriptionId,
                 ModelName= (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrder.DescriptionId, User.OrgId).DescriptionName),
-                ModelColor=jobOrder.ModelColor
+                ModelColor=jobOrder.ModelColor,
+                Remarks=jobOrder.Remarks,
+                TSRemarks=jobOrder.TSRemarks
             };
             IEnumerable<JobOrderProblemDTO> prblm = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(joborderId.Value, User.OrgId).Select(p => new JobOrderProblemDTO
             {
@@ -606,15 +631,28 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(services, serviceViewModels);
             ViewBag.services = serviceViewModels;
 
-            IEnumerable<JobOrderRepairDTO> repair = _jobOrderRepairBusiness.GetJobOrderRepairByJobOrderId(joborderId.Value, User.OrgId).Select(r => new JobOrderRepairDTO
+            var repair = _jobOrderRepairBusiness.GetJobOrderRepairByJobId(joborderId.Value, User.OrgId);
+            var  jobrepair = new JobOrderRepairViewModel();
+            if(repair != null)
             {
-                JobOrderRepairId = r.JobOrderRepairId,
-                RepairId = r.RepairId,
-                RepairName = (_repairBusiness.GetRepairOneByOrgId(r.RepairId, User.OrgId).RepairName),
-            }).ToList();
-            List<JobOrderRepairViewModel> repairViewModels = new List<JobOrderRepairViewModel>();
-            AutoMapper.Mapper.Map(repair, repairViewModels);
-            ViewBag.repair = repairViewModels;
+                jobrepair = new JobOrderRepairViewModel
+                {
+                    JobOrderRepairId = repair.JobOrderRepairId,
+                    RepairId = repair.RepairId,
+                    RepairName = (_repairBusiness.GetRepairOneByOrgId(repair.RepairId, User.OrgId).RepairName),
+                };
+            }
+            ViewBag.jobrepair = jobrepair;
+
+            //IEnumerable<JobOrderRepairDTO> repair = _jobOrderRepairBusiness.GetJobOrderRepairByJobOrderId(joborderId.Value, User.OrgId).Select(r => new JobOrderRepairDTO
+            //{
+            //    JobOrderRepairId = r.JobOrderRepairId,
+            //    RepairId = r.RepairId,
+            //    RepairName = (_repairBusiness.GetRepairOneByOrgId(r.RepairId, User.OrgId).RepairName),
+            //}).ToList();
+            //List<JobOrderRepairViewModel> repairViewModels = new List<JobOrderRepairViewModel>();
+            //AutoMapper.Mapper.Map(repair, repairViewModels);
+            //ViewBag.repair = repairViewModels;
 
             IEnumerable<MobilePartStockInfoDTO> wareStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoById(User.OrgId, User.BranchId).Select(stock => new MobilePartStockInfoDTO
             {
@@ -684,6 +722,39 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+        public ActionResult SaveJobOrderProblem(List<JobOrderProblemViewModel> jobOrderProblemViewModels)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid && jobOrderProblemViewModels.Count > 0)
+            {
+                List<JobOrderProblemDTO> listjobOrderProblemDTO = new List<JobOrderProblemDTO>();
+
+                AutoMapper.Mapper.Map(jobOrderProblemViewModels, listjobOrderProblemDTO);
+
+                IsSuccess = _jobOrderProblemBusiness.SaveJobOrderProblem(listjobOrderProblemDTO, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
+
+        public ActionResult GetTSStockByRequsition(long? jobOrderId)
+        {
+            var dto = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrderId.Value, User.UserId, User.OrgId, User.BranchId).ToList();
+            IEnumerable<TSStockByRequsitionViewModel> viewModels = new List<TSStockByRequsitionViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return PartialView("GetTSStockByRequsition", viewModels);
+        }
+
+        public ActionResult SaveReturnStockandTsStockOut(List<TechnicalServicesStockViewModel> servicesStockViewModel)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid && servicesStockViewModel.Count() > 0)
+            {
+                List<TechnicalServicesStockDTO> servicesStockDTOs = new List<TechnicalServicesStockDTO>();
+                AutoMapper.Mapper.Map(servicesStockViewModel, servicesStockDTOs);
+                IsSuccess = _technicalServicesStockBusiness.SaveTechnicalServicesStockOut(servicesStockDTOs, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
     }
 }

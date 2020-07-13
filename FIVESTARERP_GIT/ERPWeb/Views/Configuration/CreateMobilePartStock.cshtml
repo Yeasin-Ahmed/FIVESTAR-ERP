@@ -22,9 +22,9 @@
         <form id="frmStockDetails">
             @Html.AntiForgeryToken()
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 hide">
                     <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
-                    @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                    @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm" })
                     <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                 </div>
                 <div class="col-md-3">
@@ -47,8 +47,6 @@
                         <span class="error hide require-sellPrice font-weight-bold">SellPrice is required !</span>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-3">
                     <label for="txtStockInQty" class="control-label font-weight-bold">Stock-In Qty.</label>
                     <div class="input-group">
@@ -59,6 +57,8 @@
                     </div>
                     <span class="error hide required-qty font-weight-bold">Quantity is required !</span>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     <div class="form-group col-md-12">
                         <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -235,8 +235,6 @@
         $("#btnReset").click(function (e) {
             e.preventDefault();
             clearDropdown("ddlMobilePart");
-            enable("#ddlServicesWarehouse");
-            ddlServicesWarehouse.val("");
             $("#tblServicesWarehouseStock tbody").empty();
             txtStockInQty.val('0');
             txtCostPrice.val('0');

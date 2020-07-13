@@ -159,7 +159,16 @@ namespace ERPWeb.Controllers
         }
 
         #region Front-Desk Module
-
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetPartsStockByParts(long warehouseId, long partsId)
+        {
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouseId, partsId, User.OrgId, User.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            if (stock == null)
+            {
+                stock = 0;
+            }
+            return Json(stock);
+        }
         #endregion
     }
 }

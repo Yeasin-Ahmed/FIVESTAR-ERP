@@ -20,21 +20,19 @@
     <div class="col-md-12">
         <h5 class="text-cyan"><b>Search By</b></h5>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 hide">
                 <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
                 @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select S.Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="ddlMobileParts" class="control-label font-weight-bold">MobileParts Name</label>
                 @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select MobileParts--", new { @class = "form-control form-control-sm" })
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="ddlStockStatus" class="control-label font-weight-bold">Stock Status</label>
                 @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="col-form-label">From Date</label>
                 <div class="input-group input-group-sm ">
                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -44,7 +42,7 @@
                 </div>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="col-form-label">To Date</label>
                 <div class="input-group input-group-sm ">
                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
@@ -53,6 +51,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            
             <div class="col-md-3"></div>
         </div>
         <hr />
