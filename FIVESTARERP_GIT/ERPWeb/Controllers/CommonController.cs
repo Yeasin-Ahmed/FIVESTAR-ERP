@@ -44,6 +44,8 @@ namespace ERPWeb.Controllers
         private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
         private readonly IFaultyItemStockInfoBusiness _faultyItemStockInfoBusiness;
         private readonly IRepairItemStockInfoBusiness _repairItemStockInfoBusiness;
+        private readonly IQCItemStockInfoBusiness _qCItemStockInfoBusiness;
+        private readonly IProductionAssembleStockInfoBusiness _productionAssembleStockInfoBusiness;
         #endregion
 
         #region ControlPanel
@@ -54,7 +56,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -84,6 +86,8 @@ namespace ERPWeb.Controllers
             this._qRCodeTraceBusiness = qRCodeTraceBusiness;
             this._faultyItemStockInfoBusiness = faultyItemStockInfoBusiness;
             this._repairItemStockInfoBusiness = repairItemStockInfoBusiness;
+            this._qCItemStockInfoBusiness = qCItemStockInfoBusiness;
+            this._productionAssembleStockInfoBusiness = productionAssembleStockInfoBusiness;
             #endregion
 
             #region ControlPanel
@@ -263,11 +267,11 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId, long modelId)
+        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId, long modelId,string stockFor)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
-            var productionStock = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(User.OrgId, itemId, lineId, modelId);
+            var productionStock = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelAndItemId(User.OrgId, itemId, lineId, modelId, stockFor);
             var itemStock = 0;
             if (productionStock != null)
             {
@@ -347,9 +351,23 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetRepairLineQCRemainQty(long repairLineId, long qcLineId,long modelId, long itemId)
+        public ActionResult GetProductionAssembleStockInfoByLineAndItemAndModelId(long lineId, long itemId,  long modelId)
         {
-           var transferQty= _repairItemStockInfoBusiness.GetRepairItem(qcLineId, repairLineId, modelId, itemId, User.OrgId);
+            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
+            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
+            var packagingStock = _productionAssembleStockInfoBusiness.productionAssembleStockInfoByFloorAndModelAndItem(lineId,modelId,itemId, User.OrgId);
+            var itemStock = 0;
+            if (packagingStock != null)
+            {
+                itemStock = (packagingStock.StockInQty - packagingStock.StockOutQty);
+            }
+            return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetRepairLineQCRemainQty(long repairLineId, long qcLineId, long modelId, long itemId)
+        {
+            var transferQty = _repairItemStockInfoBusiness.GetRepairItem(qcLineId, repairLineId, modelId, itemId, User.OrgId);
             var remainQty = transferQty.Quantity - transferQty.QCQty;
             return Json(remainQty);
         }
@@ -724,6 +742,55 @@ namespace ERPWeb.Controllers
         {
             var items = _itemBusiness.GetItemsByWarehouseId(warehouseId, User.OrgId).ToList();
             return Json(items);
+        }
+
+        [HttpPost]
+        public ActionResult IsItemPreparationExistWithThistype(string type, long modelId, long itemId)
+        {
+            var preparation =_itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(type, modelId, itemId, User.OrgId);
+            return Json(preparation);
+        }
+        
+        public ActionResult GetQCItemStockQtyByFloorAndQcAndModelAndItem(long floorId, long qcId, long modelId, long itemId)
+        {
+            var stock =_qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItem(floorId, qcId, modelId, itemId, User.OrgId);
+            return Json(stock.Quantity);
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GetItemBundleQtyChecking(long floorId, long qcLineId, long modelId, long itemId, int qty, string type)
+        {
+            ExecutionStateWithText execution = new ExecutionStateWithText();
+            var info = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndType(type, modelId, itemId, User.OrgId);
+            execution.text = string.Empty;
+            execution.isSuccess = true;
+
+            var preparationDetails = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(info.PreparationInfoId, User.OrgId);
+
+            foreach (var item in preparationDetails)
+            {
+                string itemName = _itemBusiness.GetItemOneByOrgId(item.ItemId, User.OrgId).ItemName;
+                int prepareQty = (item.Quantity * qty);
+                // Checking 
+                if (qcLineId > 0)
+                {
+                    // Go TO QC Stcok;
+                    var QcStock = _qCLineStockInfoBusiness.GetQCLineStockInfoByQCAndItemAndModelId(qcLineId, item.ItemId, modelId, User.OrgId);
+                    int stockInQty = QcStock.StockInQty.HasValue ? QcStock.StockInQty.Value : 0;
+                    int stockOutQty = QcStock.StockOutQty.HasValue ? QcStock.StockOutQty.Value : 0;
+
+                    if (prepareQty > (stockInQty - stockOutQty))
+                    {
+                        execution.text += itemName + " does not have qty <br/>";
+                        execution.isSuccess = false;
+                    }
+                }
+            }
+            if (!execution.isSuccess)
+            {
+                execution.text = execution.text.Substring(0, execution.text.Length - 1);
+            }
+            return Json(execution);
         }
         #endregion
 

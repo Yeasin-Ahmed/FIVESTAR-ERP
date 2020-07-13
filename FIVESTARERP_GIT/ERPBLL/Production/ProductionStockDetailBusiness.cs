@@ -62,8 +62,9 @@ namespace ERPBLL.Production
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.LineId = item.LineId;
                 stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.StockFor = item.StockFor;
 
-                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByOrgId(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
+                var productionInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelAndItemId(orgId, item.ItemId.Value, item.LineId.Value, item.DescriptionId.Value, item.StockFor);
                 if (productionInfo != null)
                 {
                     productionInfo.StockInQty += item.Quantity;
@@ -83,6 +84,7 @@ namespace ERPBLL.Production
                     productionStockInfo.EUserId = userId;
                     productionStockInfo.EntryDate = DateTime.Now;
                     productionStockInfo.DescriptionId = item.DescriptionId;
+                    productionStockInfo.StockFor = item.StockFor;
                     _productionStockInfoRepository.Insert(productionStockInfo);
                 }
                 productionStockDetails.Add(stockDetail);
@@ -95,33 +97,35 @@ namespace ERPBLL.Production
         {
             var executionStatus = false;
             List<ProductionStockDetail> productionStockDetails = new List<ProductionStockDetail>();
-            if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn || flag == StockOutReason.StockOutByProductionForProduceGoods || flag == StockOutReason.StockOutByTransferToAssembly)
+            //if (flag == ReturnType.ProductionGoodsReturn || flag == ReturnType.RepairGoodsReturn || flag == ReturnType.ProductionFaultyReturn || flag == ReturnType.RepairFaultyReturn || flag == StockOutReason.StockOutByProductionForProduceGoods || flag == StockOutReason.StockOutByTransferToAssembly)
+            //{
+            //    string status = (flag == StockOutReason.StockOutByProductionForProduceGoods || flag == StockOutReason.StockOutByTransferToAssembly) ? StockStatus.StockOut : StockStatus.StockReturn;
+
+            //}
+            foreach (var item in productionStockDetailDTOs)
             {
-                string status = (flag == StockOutReason.StockOutByProductionForProduceGoods || flag == StockOutReason.StockOutByTransferToAssembly) ? StockStatus.StockOut : StockStatus.StockReturn;
-                foreach (var item in productionStockDetailDTOs)
-                {
-                    ProductionStockDetail stockDetail = new ProductionStockDetail();
-                    stockDetail.WarehouseId = item.WarehouseId;
-                    stockDetail.ItemTypeId = item.ItemTypeId;
-                    stockDetail.ItemId = item.ItemId;
-                    stockDetail.Quantity = item.Quantity;
-                    stockDetail.OrganizationId = orgId;
-                    stockDetail.EUserId = userId;
-                    stockDetail.Remarks = item.Remarks;
-                    stockDetail.UnitId = item.UnitId;
-                    stockDetail.RefferenceNumber = item.RefferenceNumber;
-                    stockDetail.LineId = item.LineId;
-                    stockDetail.DescriptionId = item.DescriptionId;
-                    stockDetail.EntryDate = item.EntryDate;
-                    stockDetail.StockStatus = status;
-                    productionStockDetails.Add(stockDetail);
-                    var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelId(orgId, item.ItemId.Value, item.LineId.Value, item.DescriptionId.Value);
-                    stockInfo.StockOutQty += stockDetail.Quantity;
-                    _productionStockInfoRepository.Update(stockInfo);
-                }
-                _productionStockDetailRepository.InsertAll(productionStockDetails);
-                executionStatus = _productionStockDetailRepository.Save();
+                ProductionStockDetail stockDetail = new ProductionStockDetail();
+                stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = flag;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+                stockDetail.LineId = item.LineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.EntryDate = item.EntryDate;
+                stockDetail.StockStatus = StockStatus.StockOut;
+                stockDetail.StockFor = item.StockFor;
+                productionStockDetails.Add(stockDetail);
+                var stockInfo = _productionStockInfoBusiness.GetAllProductionStockInfoByLineAndModelAndItemId(orgId, item.ItemId.Value, item.LineId.Value, item.DescriptionId.Value, item.StockFor);
+                stockInfo.StockOutQty += stockDetail.Quantity;
+                _productionStockInfoRepository.Update(stockInfo);
             }
+            _productionStockDetailRepository.InsertAll(productionStockDetails);
+            executionStatus = _productionStockDetailRepository.Save();
             return executionStatus;
         }
         public bool SaveProductionStockInByProductionRequistion(long reqId, string status, long orgId, long userId)
@@ -146,7 +150,8 @@ namespace ERPBLL.Production
                         Quantity = (int)item.Quantity.Value,
                         RefferenceNumber = reqInfo.ReqInfoCode,
                         LineId = reqInfo.LineId,
-                        DescriptionId = reqInfo.DescriptionId
+                        DescriptionId = reqInfo.DescriptionId,
+                        StockFor = reqInfo.RequisitionFor
                     };
                     productionStockDetailDTOs.Add(productionStockDetailDTO);
                 }

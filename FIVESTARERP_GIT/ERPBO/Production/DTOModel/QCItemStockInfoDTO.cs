@@ -19,7 +19,7 @@ namespace ERPBO.Production.DTOModel
         public long? ItemId { get; set; }
         public int Quantity { get; set; }
         public int RepairQty { get; set; }
-        public int PackagingQty { get; set; }
+        public int MiniStockQty { get; set; }
         public int LabQty { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }

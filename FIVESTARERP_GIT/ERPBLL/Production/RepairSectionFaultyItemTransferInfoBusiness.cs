@@ -43,6 +43,11 @@ namespace ERPBLL.Production
             return this._production.Db.Database.SqlQuery<RepairSectionFaultyItemTransferInfoDTO>(QueryForRepairSectionFaultyItemTransferInfoList(floorId, repairLineId, transferCode, status, fromDate, toDate, orgId)).ToList();
         }
 
+        public RepairSectionFaultyItemTransferInfo GetRepairSectionFaultyTransferInfoById(long transferId, long orgId)
+        {
+            return _repairSectionFaultyItemTransferInfoRepository.GetOneByOrg(s => s.RSFIRInfoId == transferId && s.OrganizationId == orgId);
+        }
+
         public bool SaveRepairSectionFaultyItemTransfer(RepairSectionFaultyItemTransferInfoDTO faultyItems, long orgId, long userId)
         {
             bool IsSuccess = false;
@@ -86,7 +91,7 @@ namespace ERPBLL.Production
                     OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now,
-                    ReferenceNumber = faultyItems.TransferCode
+                    ReferenceNumber = code
                 };
                 details.Add(detail);
 
@@ -99,7 +104,7 @@ namespace ERPBLL.Production
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
                     UnitId = item.UnitId,
-                    ReferenceNumber = info.TransferCode,
+                    ReferenceNumber = code,
                     Quantity = item.FaultyQty,
                     OrganizationId= orgId,
                     EUserId = userId,
@@ -163,9 +168,9 @@ namespace ERPBLL.Production
                 param += string.Format(@" and Cast(info.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select TransferCode,ProductionFloorName,RepairLineName,StateStatus,TotalUnit,app.UserName 'EntryUser',info.EntryDate
+            query = string.Format(@"Select RSFIRInfoId,TransferCode,ProductionFloorName,RepairLineName,StateStatus,TotalUnit,app.UserName 'EntryUser',info.EntryDate
 From tblRepairSectionFaultyItemTransferInfo info
-Inner Join [ControlPanel].dbo.tblApplicationUsers app on info.EUserId=app.UserId Where 1=1 {0}",Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on info.EUserId=app.UserId Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
         }

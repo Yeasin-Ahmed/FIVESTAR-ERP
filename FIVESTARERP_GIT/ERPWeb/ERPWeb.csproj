@@ -541,8 +541,18 @@
     <Content Include="Views\FrontDesk\ServicesDetails.cshtml" />
     <Content Include="Views\Configuration\GetFaultList.cshtml" />
     <Content Include="Views\Configuration\GetServiceList.cshtml" />
-    <Content Include="Views\FrontDesk\GetTSStockByRequsition.cshtml" />
-    <Content Include="Views\User\ReturnStockDetails.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionFaultyItemTransferDetail.cshtml" />
+    <Content Include="Views\Production\GetRepairSectionFaultyItemTransferReceive.cshtml" />
+    <Content Include="Views\Production\GetProductionFaultyStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetProductionFaultyStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetQCPassList.cshtml" />
+    <Content Include="Views\Production\GetProductionAssembleItemStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetProductionAssembleItemStockInfo.cshtml" />
+    <Content Include="Views\Production\CreateProductinAssembleStockTransfer.cshtml" />
+    <Content Include="Views\Production\GetProductionAssembleStockTransferList.cshtml" />
+    <Content Include="Views\Production\_GetProductionAssembleStockTransferList.cshtml" />
+    <Content Include="Views\Production\GetProductionAssembleStockTransferReceiveList.cshtml" />
+    <Content Include="Views\Production\_GetProductionAssembleStockTransferListDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

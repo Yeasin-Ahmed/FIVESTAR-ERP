@@ -25,22 +25,26 @@
                 <label for="ddlModelName" class="col-form-label">Model Name</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="ddlWarehouseName" class="col-form-label">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
                 <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label" for="ddlItemType">ItemType Name</label>
                 <select id="ddlItemType" class="form-control form-control-sm ctrl-changed">
                     <option value="">--Select ItemType--</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label" for="ddlItem">Item Name</label>
                 <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
                     <option value="">--Select Item--</option>
                 </select>
+            </div>
+            <div class="col-md-3">
+                <label for="ddlItemPreparationType" class="col-form-label">Preparation Type</label>
+                @Html.DropDownList("ddlItemPreparationType", (IEnumerable<SelectListItem>)ViewBag.ddlItemPreparationType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
         </div>
         <br />
@@ -70,6 +74,7 @@
         var ddlItemType = $("#ddlItemType");
         var ddlItem = $("#ddlItem");
         var ddlModelName = $("#ddlModelName");
+        var ddlItemPreparationType = $("#ddlItemPreparationType");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -107,8 +112,12 @@
             LoadDataTable();
         })
 
+        ddlItemPreparationType.change(function () {
+            LoadDataTable();
+        })
+
         function LoadDataTable() {
-            var data = { flag: "View", modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), id: 0, page: pageNo };
+            var data = { flag: "View", modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), id: 0, page: pageNo, type:ddlItemPreparationType.val() };
             $.when(getReqWithData('html', 'GET', '/Inventory/GetItemPreparation', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {

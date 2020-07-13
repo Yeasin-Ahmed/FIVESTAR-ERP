@@ -13,6 +13,8 @@ namespace ERPBO.Inventory.DomainModels
     {
         [Key]
         public long PreparationInfoId { get; set; }
+        [StringLength(100)]
+        public string PreparationType { get; set; }
         public long WarehouseId { get; set; }
         public long ItemTypeId { get; set; }
         public long ItemId { get; set; }

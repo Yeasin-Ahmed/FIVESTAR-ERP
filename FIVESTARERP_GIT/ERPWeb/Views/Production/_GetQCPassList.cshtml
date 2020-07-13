@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.QCPassTransferInformationViewModel>
+
+@{
+    Layout = null;
+    int sl = 0;
+    string badge = string.Empty;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped text-sm">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Floor</th>
+                    <th>QC Line</th>
+                    <th>Model</th>
+                    <th>Warehouse</th>
+                    <th>ItemType</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>StateStatus</th>
+                    <th class="cell-action">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.StateStatus == "Send By QC" ? "badge bg-success" : "badge bg-primary";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.ProductionFloorId</td>
+                        <td>@item.ProductionFloorName</td>
+                        <td>@item.QCLineName</td>
+                        <td>@item.ModelName</td>
+                        <td>@item.WarehouseName</td>
+                        <td>@item.ItemTypeName</td>
+                        <td>@item.ItemName</td>
+                        <td class="text-center text-bold">@item.Quantity</td>
+                        
+                        <td class="text-center " data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td class="text-center cell-action">
+                            @if (item.StateStatus == "Send By QC")
+                            {
+                                <a href="#" class="btn btn-sm btn-success btn-flat data-item-receive" title="Receive QC Pass Item" data-item-val="@item.QPassId"><i class="fas fa-check"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="empty-row text-sm text-bold text-center">
+                        <td colspan="11">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

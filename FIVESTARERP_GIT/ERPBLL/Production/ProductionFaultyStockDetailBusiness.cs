@@ -18,13 +18,19 @@ namespace ERPBLL.Production
         private readonly ProductionFaultyStockInfoRepository _productionFaultyStockInfoRepository;
         private readonly IProductionFaultyStockInfoBusiness _productionFaultyStockInfoBusiness;
         private readonly IRepairSectionFaultyItemTransferInfoBusiness _repairSectionFaultyItemTransferInfoBusiness;
+        private readonly IRepairSectionFaultyItemTransferDetailBusiness _repairSectionFaultyItemTransferDetailBusiness;
+        private readonly RepairSectionFaultyItemTransferInfoRepository _repairSectionFaultyItemTransferInfoRepository;
 
-        public ProductionFaultyStockDetailBusiness(IProductionUnitOfWork productionDb, IProductionFaultyStockInfoBusiness productionFaultyStockInfoBusiness)
+        public ProductionFaultyStockDetailBusiness(IProductionUnitOfWork productionDb, IProductionFaultyStockInfoBusiness productionFaultyStockInfoBusiness, IRepairSectionFaultyItemTransferInfoBusiness repairSectionFaultyItemTransferInfoBusiness, IRepairSectionFaultyItemTransferDetailBusiness repairSectionFaultyItemTransferDetailBusiness)
         {
             this._productionDb = productionDb;
             this._productionFaultyStockDetailRepository = new ProductionFaultyStockDetailRepository(this._productionDb);
             this._productionFaultyStockInfoRepository = new ProductionFaultyStockInfoRepository(this._productionDb);
+            this._repairSectionFaultyItemTransferInfoRepository = new RepairSectionFaultyItemTransferInfoRepository(this._productionDb);
+
             this._productionFaultyStockInfoBusiness = productionFaultyStockInfoBusiness;
+            this._repairSectionFaultyItemTransferInfoBusiness = repairSectionFaultyItemTransferInfoBusiness;
+            this._repairSectionFaultyItemTransferDetailBusiness = repairSectionFaultyItemTransferDetailBusiness;
         }
 
         public IEnumerable<ProductionFaultyStockDetail> GetProductionFaultyInfoStocks(long orgId)
@@ -82,7 +88,7 @@ namespace ERPBLL.Production
                         StockInQty = item.Quantity,
                         Remarks = "Faulty Stock In By Repair Section"
                     };
-                    this._productionFaultyStockInfoRepository.Insert(info);
+                    this._productionFaultyStockInfoRepository.Insert(newInfo);
                 }
             }
             this._productionFaultyStockDetailRepository.InsertAll(stockDetails);
@@ -125,9 +131,46 @@ namespace ERPBLL.Production
             return this._productionFaultyStockDetailRepository.Save();
         }
 
-        public bool StockInByRepairSection(long transferId, string status)
+        public bool StockInByRepairSection(long transferId, string status, long orgId, long userId)
         {
-            throw new NotImplementedException();
+            var transferInfo = _repairSectionFaultyItemTransferInfoBusiness.GetRepairSectionFaultyTransferInfoById(transferId,orgId);
+            if(transferInfo.StateStatus == RequisitionStatus.Approved)
+            {
+                transferInfo.StateStatus = status;
+                transferInfo.UpdateDate = DateTime.Now;
+                transferInfo.UpUserId = userId;
+                var transferDetail = _repairSectionFaultyItemTransferDetailBusiness.GetRepairSectionFaultyItemTransferDetailByInfo(transferId, orgId);
+                List<ProductionFaultyStockDetailDTO> stockDetailDTOs = new List<ProductionFaultyStockDetailDTO>();
+                foreach (var item in transferDetail)
+                {
+                    ProductionFaultyStockDetailDTO stockDetailDTO = new ProductionFaultyStockDetailDTO
+                    {
+                        ProductionFloorId = item.ProductionFloorId,
+                        RepairLineId = item.RepairLineId,
+                        DescriptionId = item.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.FaultyQty,
+                        UnitId = item.UnitId,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        ReferenceNumber = transferInfo.TransferCode,
+                        StockStatus = StockStatus.StockIn,
+                        Remarks ="Faulty Stock In By Repair Line"
+                    };
+                    stockDetailDTOs.Add(stockDetailDTO);
+                }
+                _repairSectionFaultyItemTransferInfoRepository.Update(transferInfo);
+
+                if (_repairSectionFaultyItemTransferInfoRepository.Save()) {
+
+                    return this.SaveProductionFaultyStockIn(stockDetailDTOs, userId, orgId);
+                }
+            }
+            return false;
         }
     }
 }
+

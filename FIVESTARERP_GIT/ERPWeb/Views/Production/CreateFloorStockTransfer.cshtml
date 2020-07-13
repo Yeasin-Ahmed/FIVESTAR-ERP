@@ -158,7 +158,7 @@
             var text = "";
             //console.log('Item Id....');
             //console.log(itemId);
-            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, lineId: lineId, modelId: modelId }), '/Common/GetItemUnitAndPDNStockQtyByLineAndModelId', getToken());
+            var val = ajaxValueReturnable(JSON.stringify({ itemId: itemId, lineId: lineId, modelId: modelId, stockFor: preparationType.production }), '/Common/GetItemUnitAndPDNStockQtyByLineAndModelId', getToken());
 
             if (val.stockQty < qty) {
                 text += itemName + ',';
@@ -176,7 +176,7 @@
                 }
                 $("#btnAddToList").addClass('hide');
                 if (TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0) {
-                    var data = JSON.stringify({ modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
+                    var data = JSON.stringify({ type: preparationType.production, modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
 
                     $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
                         console.log(res);

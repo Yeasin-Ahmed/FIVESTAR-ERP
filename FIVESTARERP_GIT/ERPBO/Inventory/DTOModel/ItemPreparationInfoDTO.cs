@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace ERPBO.Inventory.DomainModel
     public class ItemPreparationInfoDTO
     {
         public long PreparationInfoId { get; set; }
+        [StringLength(100)]
+        public string PreparationType { get; set; }
         public long WarehouseId { get; set; }
         public long ItemTypeId { get; set; }
         public long ItemId { get; set; }

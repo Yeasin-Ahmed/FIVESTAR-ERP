@@ -3,9 +3,9 @@
 @{
                 /**/
 
-                var sl = 0;
-                Layout = null;
-                RequsitionInfoViewModel info = ((RequsitionInfoViewModel)ViewBag.RequsitionInfoViewModel);
+    var sl = 0;
+    Layout = null;
+    RequsitionInfoViewModel info = ((RequsitionInfoViewModel)ViewBag.RequsitionInfoViewModel);
 
 }
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblReqInfoForEdit">
@@ -17,7 +17,7 @@
             <td class="hide">@info.LineId</td>
             <td style="width:15%">Floor</td>
             <td style="width:35%"><b>@info.LineNumber</b></td>
-            <td class="hide"></td>
+            <td class="hide">@info.RequisitionFor</td>
         </tr>
         <tr>
             <td class="hide">@info.WarehouseId</td>

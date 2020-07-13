@@ -173,7 +173,7 @@
                 }
                 $("#btnAddToList").addClass('hide');
                 if (TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(ddlItem.val(), 0) > 0) {
-                    var data = JSON.stringify({ modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
+                    var data = JSON.stringify({ type: preparationType.production, modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(ddlItem.val(), 0) });
 
                     $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
                         console.log(res);

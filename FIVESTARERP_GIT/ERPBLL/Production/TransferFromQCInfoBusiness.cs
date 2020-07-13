@@ -193,6 +193,9 @@ namespace ERPBLL.Production
                 ItemId = infoDto.ItemId,
                 ForQty = infoDto.ForQty
             };
+            string qcItemflag = string.Empty;
+
+            qcItemflag = (info.RepairLineId != null && info.RepairLineId > 0) ? "Repair" : "";
             List<QCItemStockDetailDTO> qcItemStocks = new List<QCItemStockDetailDTO>()
             {
                 new QCItemStockDetailDTO(){
@@ -210,6 +213,7 @@ namespace ERPBLL.Production
                     StockStatus= StockStatus.StockOut,
                     EntryDate = DateTime.Now,
                     ReferenceNumber= info.TransferCode,
+                    Flag = qcItemflag
                 }
             };
             List<TransferFromQCDetail> listOfDetail = new List<TransferFromQCDetail>();

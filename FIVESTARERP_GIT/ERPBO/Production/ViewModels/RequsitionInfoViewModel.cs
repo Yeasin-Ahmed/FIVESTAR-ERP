@@ -32,6 +32,8 @@ namespace ERPBO.Production.ViewModels
         public long? ItemId { get; set; }
         public int? ForQty { get; set; }
         public long? UnitId { get; set; }
+        [StringLength(100)]
+        public string RequisitionFor { get; set; }
 
         //Custom
         [StringLength(100)]

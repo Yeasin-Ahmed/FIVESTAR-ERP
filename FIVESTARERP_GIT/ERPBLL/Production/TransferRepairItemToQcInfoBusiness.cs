@@ -54,6 +54,7 @@ namespace ERPBLL.Production
                 transferInDb.UpUserId = userId;
                 transferInDb.UpdateDate = DateTime.Now;
                 _transferRepairItemToQcInfoRepository.Update(transferInDb);
+                string flag = (transferInDb.RepairLineId.HasValue && transferInDb.RepairLineId.Value > 0) ? "Repair" : "";
                 var details = _transferRepairItemToQcDetailBusiness.GetTransferRepairItemToQcDetailByInfo(transferId, orgId);
                 List<QualityControlLineStockDetailDTO> stockDetails = new List<QualityControlLineStockDetailDTO>();
                 List<QCItemStockDetailDTO> qcItemStocks = new List<QCItemStockDetailDTO>()
@@ -72,7 +73,8 @@ namespace ERPBLL.Production
                         Quantity = transferInDb.ForQty.Value,
                         StockStatus = StockStatus.StockOut,
                         ReferenceNumber=transferInDb.TransferCode,
-                        Remarks = "Transfer Item To QC"
+                        Remarks = "Transfer Item To QC",
+                        Flag = flag
                     }
                 };
                 foreach (var item in details)
