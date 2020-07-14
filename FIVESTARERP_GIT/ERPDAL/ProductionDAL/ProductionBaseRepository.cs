@@ -41,6 +41,11 @@ namespace ERPDAL.ProductionDAL
         {
             return dbSet.Where(whereCondition).AsEnumerable();
         }
+        // Async
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await dbSet.Where(whereCondition).ToListAsync();
+        }
 
         public T GetById(object Id)
         {
@@ -50,6 +55,11 @@ namespace ERPDAL.ProductionDAL
         public T GetOneByOrg(Expression<Func<T, bool>> whereCondition)
         {
             return dbSet.FirstOrDefault(whereCondition);
+        }
+        // Async
+        public async Task<T> GetOneByOrgAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await dbSet.FirstOrDefaultAsync(whereCondition);
         }
 
         public bool Save()

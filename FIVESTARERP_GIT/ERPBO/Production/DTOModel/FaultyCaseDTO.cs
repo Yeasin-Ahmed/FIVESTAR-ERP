@@ -14,6 +14,8 @@ namespace ERPBO.Production.DTOModel
         public long? DescriptionId { get; set; }
         [StringLength(200)]
         public string ProblemDescription { get; set; }
+        [StringLength(100)]
+        public string QRCode { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }

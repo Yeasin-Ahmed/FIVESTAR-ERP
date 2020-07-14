@@ -334,6 +334,10 @@
     <Compile Include="ProductionContextMigrations\202007101445352_Production_ProductionPackagingStockTransferStatus.Designer.cs">
       <DependentUpon>202007101445352_Production_ProductionPackagingStockTransferStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202007130946140_Production_QRCodeInFaultyCase.cs" />
+    <Compile Include="ProductionContextMigrations\202007130946140_Production_QRCodeInFaultyCase.Designer.cs">
+      <DependentUpon>202007130946140_Production_QRCodeInFaultyCase.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -548,6 +552,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007101445352_Production_ProductionPackagingStockTransferStatus.resx">
       <DependentUpon>202007101445352_Production_ProductionPackagingStockTransferStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007130946140_Production_QRCodeInFaultyCase.resx">
+      <DependentUpon>202007130946140_Production_QRCodeInFaultyCase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

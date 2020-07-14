@@ -1086,10 +1086,35 @@ namespace ERPWeb.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public ActionResult CreateItemPreparation2(long? id)
+        {
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlItemTgt = _itemBusiness.GetItemDetails(User.OrgId).Select(d => new SelectListItem { Text = d.ItemName, Value = d.ItemId.ToString() }).ToList();
+
+            ViewBag.ddlWarehouseSource = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            {
+                Text = ware.WarehouseName,
+                Value = ware.Id.ToString()
+            }).ToList();
+
+            ViewBag.ddlItemPreparationType = new List<SelectListItem>()
+            {
+                new SelectListItem(){ Text = ItemPreparationType.Production,Value= ItemPreparationType.Production },
+                new SelectListItem(){ Text = ItemPreparationType.Packaging,Value= ItemPreparationType.Packaging }
+            }.ToList();
+
+            return View();
+        }
+
         [HttpGet]
         public ActionResult CreateItemPreparation(long? id)
         {
             ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+            //_itemBusiness.GetItemDetails
 
             ViewBag.ddlWarehouseTarget = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
             {

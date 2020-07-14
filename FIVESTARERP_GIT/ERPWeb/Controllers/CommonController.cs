@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using ERPBO.ControlPanel.ViewModels;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.Common;
+using ERPBO.Inventory.ViewModels;
+using System.Threading.Tasks;
+using ERPBO.Production.DTOModel;
+using ERPBO.Production.ViewModels;
 
 namespace ERPWeb.Controllers
 {
@@ -46,6 +50,8 @@ namespace ERPWeb.Controllers
         private readonly IRepairItemStockInfoBusiness _repairItemStockInfoBusiness;
         private readonly IQCItemStockInfoBusiness _qCItemStockInfoBusiness;
         private readonly IProductionAssembleStockInfoBusiness _productionAssembleStockInfoBusiness;
+        private readonly IFaultyCaseBusiness _faultyCaseBusiness;
+        
         #endregion
 
         #region ControlPanel
@@ -56,7 +62,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -88,6 +94,7 @@ namespace ERPWeb.Controllers
             this._repairItemStockInfoBusiness = repairItemStockInfoBusiness;
             this._qCItemStockInfoBusiness = qCItemStockInfoBusiness;
             this._productionAssembleStockInfoBusiness = productionAssembleStockInfoBusiness;
+            this._faultyCaseBusiness = faultyCaseBusiness;
             #endregion
 
             #region ControlPanel
@@ -792,6 +799,20 @@ namespace ERPWeb.Controllers
             }
             return Json(execution);
         }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GetItemPreparationBundleByTypeModelItem(string type, long model,long item)
+        {
+            var preparationInfo = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndType(type, model, item, User.OrgId);
+            long infoId = preparationInfo == null ? 0 : preparationInfo.PreparationInfoId;
+
+            var preparationDetail = _itemPreparationDetailBusiness.GetItemPreparationDetailWithInfo(infoId, User.OrgId);
+
+            List<ItemPreparationDetailWithInfoViewModel> viewModels = new List<ItemPreparationDetailWithInfoViewModel>();
+            AutoMapper.Mapper.Map(preparationDetail, viewModels);
+
+            return Json(viewModels);
+        }
         #endregion
 
         #endregion
@@ -814,6 +835,25 @@ namespace ERPWeb.Controllers
         {
             var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.Email == email && s.SupplierId != supId) != null;
             return Json(supplierInDb);
+        }
+        #endregion
+
+        #region  Async Action Methods
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public async Task<ActionResult> GetFaultyCasesListAsync()
+        {
+            var data = await _faultyCaseBusiness.GetFaultyCasesAsync(User.OrgId);
+            var faultyCases = data.Select(s => new { CaseId = s.CaseId, ProblemDescription = s.ProblemDescription }).ToList();
+            return Json(faultyCases);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public async Task<ActionResult> GetQRCodeTraceByCodeAsync(string qrCode)
+        {
+            var data = await _qRCodeTraceBusiness.GetQRCodeTraceByCodeAsync(qrCode, User.OrgId);
+            var qrCodeData = new {Floor=(data !=null ? data.ProductionFloorId: 0),Assembly=(data !=null?data.AssemblyId : 0),Model=(data !=null ?data.DescriptionId : 0),Item= (data !=null ?  data.ItemId :0 ) };
+            var passedData = qrCodeData.Floor == 0 ? null : qrCodeData;
+            return Json(qrCodeData);
         }
         #endregion
 

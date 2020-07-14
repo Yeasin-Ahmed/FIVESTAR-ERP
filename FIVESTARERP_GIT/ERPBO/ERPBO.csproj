@@ -191,6 +191,8 @@
     <Compile Include="Production\DomainModels\ProductionToPackagingStockTransferInfo.cs" />
     <Compile Include="Production\DomainModels\QCPassTransferDetail.cs" />
     <Compile Include="Production\DomainModels\QCPassTransferInformation.cs" />
+    <Compile Include="Production\DomainModels\QRCodeProblem.cs" />
+    <Compile Include="Production\DomainModels\QRCodeTransferToRepairInfo.cs" />
     <Compile Include="Production\DomainModels\RepairItem.cs" />
     <Compile Include="Production\DomainModels\PackagingLine.cs" />
     <Compile Include="Production\DomainModels\PackagingItemStockDetail.cs" />
@@ -278,6 +280,7 @@
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
+    <Compile Include="Inventory\DTOModel\ItemPreparationDetailWithInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionAssembleStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionAssembleStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionFaultyStockDetailDTO.cs" />
@@ -290,9 +293,11 @@
     <Compile Include="Production\DTOModel\ProductionToPackagingStockTransferInfoDTO.cs" />
     <Compile Include="Production\DTOModel\QCPassTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCPassTransferInformationDTO.cs" />
+    <Compile Include="Production\DTOModel\QRCodeProblemDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\QRCodeTransferToRepairInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RepairItemDTO.cs" />
     <Compile Include="Production\DTOModel\RepairItemPartsDTO.cs" />
     <Compile Include="Production\DTOModel\RepairItemProblemDTO.cs" />
@@ -371,6 +376,7 @@
     <Compile Include="Production\ViewModels\FinishGoodsStockDetailInfoListViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsStockInfoViewModel.cs" />
+    <Compile Include="Inventory\ViewModels\ItemPreparationDetailWithInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnDetailListViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />

@@ -418,7 +418,7 @@
     <Content Include="Views\ControlPanel\GetClientUsers.cshtml" />
     <Content Include="Views\Inventory\GetItemPreparation.cshtml" />
     <Content Include="Views\Inventory\_GetItemPreparation.cshtml" />
-    <Content Include="Views\Inventory\CreateItemPreparation.cshtml" />
+    <Content Include="Views\Inventory\CreateItemPreparation2.cshtml" />
     <Content Include="Views\Inventory\_GetItemPreparationDetail.cshtml" />
     <Content Include="Views\ControlPanel\SetUserCustomPermission.cshtml" />
     <Content Include="Views\ControlPanel\SetUserRolePermission.cshtml" />
@@ -553,6 +553,8 @@
     <Content Include="Views\Production\_GetProductionAssembleStockTransferList.cshtml" />
     <Content Include="Views\Production\GetProductionAssembleStockTransferReceiveList.cshtml" />
     <Content Include="Views\Production\_GetProductionAssembleStockTransferListDetail.cshtml" />
+    <Content Include="Views\Inventory\CreateItemPreparation.cshtml" />
+    <Content Include="Views\Production\CreateQRCodeWiseQcItemTransfer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

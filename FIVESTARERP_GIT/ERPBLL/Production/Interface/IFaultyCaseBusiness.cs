@@ -13,5 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<FaultyCase> GetFaultyCases(long orgId);
         FaultyCase GetFaultyById(long faultyId, long orgId);
         bool SaveFaultyCase(FaultyCaseDTO faulty, long userId,long orgId);
+        Task<IEnumerable<FaultyCase>> GetFaultyCasesAsync(long orgId);
     }
 }

@@ -18,6 +18,8 @@ namespace ERPBO.Production.DomainModels
         public string ProblemDescription { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
+        [StringLength(100)]
+        public string QRCode { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }

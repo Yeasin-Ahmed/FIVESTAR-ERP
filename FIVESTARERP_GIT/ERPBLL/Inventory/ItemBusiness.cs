@@ -80,7 +80,7 @@ Order By w.WarehouseName,i.ItemName", orgId,floorId,repairLineId, modelId)).ToLi
 Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
 Inner Join tblWarehouses w on it.WarehouseId = w.Id
 Where 1=1 and i.OrganizationId={0}
-Order By w.WarehouseName,i.ItemName", orgId)).ToList();
+Order By w.WarehouseName,it.ItemName,i.ItemName", orgId)).ToList();
             return details;
         }
 
@@ -107,7 +107,7 @@ Order By w.WarehouseName,i.ItemName", orgId, modelId, itemId)).ToList();
            return this._inventoryDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (i.ItemName+' ['+it.ItemName+']') 'text', (Cast(i.ItemId as nvarchar(50))+'#'+Cast(it.ItemId as nvarchar(50))) 'value' From tblItems i
 Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
 Inner Join tblWarehouses w on it.WarehouseId = w.Id
-Where 1=1 and w.Id={0} and w.OrganizationId={1}", warehouseId, orgId)).ToList();
+Where 1=1 and w.Id={0} and w.OrganizationId={1} Order By it.ItemName,i.ItemName", warehouseId, orgId)).ToList();
         }
 
         public bool IsDuplicateItemName(string itemName, long id, long orgId)

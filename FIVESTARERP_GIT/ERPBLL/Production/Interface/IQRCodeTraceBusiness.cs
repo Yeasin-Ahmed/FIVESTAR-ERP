@@ -12,6 +12,7 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<QRCodeTrace> GetQRCodeTraceByOrg(long orgId);
         QRCodeTrace GetQRCodeTraceByCode(string code,long orgId);
+        Task<QRCodeTrace> GetQRCodeTraceByCodeAsync(string code, long orgId);
         bool SaveQRCodeTrace(List<QRCodeTraceDTO> dtos, long userId, long orgId);
     }
 }

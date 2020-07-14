@@ -23,6 +23,12 @@ namespace ERPBLL.Production
         {
             return _qRCodeTraceRepository.GetOneByOrg(q => q.CodeNo == code && q.OrganizationId == orgId);
         }
+
+        public async Task<QRCodeTrace> GetQRCodeTraceByCodeAsync(string code, long orgId)
+        {
+            return await _qRCodeTraceRepository.GetOneByOrgAsync(s => s.CodeNo == code && s.OrganizationId == orgId);
+        }
+
         public IEnumerable<QRCodeTrace> GetQRCodeTraceByOrg(long orgId)
         {
             return _qRCodeTraceRepository.GetAll(q => q.OrganizationId == orgId);

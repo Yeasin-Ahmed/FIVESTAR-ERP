@@ -31,6 +31,11 @@ namespace ERPBLL.Production
             return _faultyCaseRepository.GetAll(f => f.OrganizationId == orgId);
         }
 
+        public async Task<IEnumerable<FaultyCase>> GetFaultyCasesAsync(long orgId)
+        {
+            return await _faultyCaseRepository.GetAllAsync(s => s.OrganizationId == orgId);
+        }
+
         public bool SaveFaultyCase(FaultyCaseDTO faulty, long userId, long orgId)
         {
             if(faulty.CaseId == 0)

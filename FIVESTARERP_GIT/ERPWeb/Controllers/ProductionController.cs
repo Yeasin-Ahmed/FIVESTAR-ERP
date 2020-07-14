@@ -440,11 +440,20 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
 
+            ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem {Text= s.ItemName,Value= s.ItemId }).ToList();
+
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
             {
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
             }).ToList();
+
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.value == RequisitionStatus.Approved || s.value == RequisitionStatus.Accepted).Select(st => new SelectListItem
+            {
+                Text = st.text,
+                Value = st.value
+            }).ToList();
+
             return View();
         }
 
@@ -527,7 +536,7 @@ namespace ERPWeb.Controllers
         // Transfer stock to Assembly
         public ActionResult GetFloorStockTransferList(string flag, long? lineId, long? assemblyId, long? modelId, long? warehouseId, string status, string transferCode, string fromDate, string toDate, long? transferInfoId, int page = 1)
         {
-            ViewBag.UserPrivilege = UserPrivilege("Production", "GetFloorStockTransferList");
+            //ViewBag.UserPrivilege = UserPrivilege("Production", "GetFloorStockTransferList");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.value == RequisitionStatus.Approved || s.value == RequisitionStatus.Accepted).Select(st => new SelectListItem
@@ -3740,6 +3749,16 @@ namespace ERPWeb.Controllers
         #endregion
 
         #endregion //Region End
+
+        #region QRCode Wise QC Item Passing
+
+        public ActionResult CreateQRCodeWiseQcItemTransfer()
+        {
+            ViewBag.ddlProductionFloor = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+            return View();
+        }
+
+        #endregion
 
         public ActionResult GetQRCode()
         {
