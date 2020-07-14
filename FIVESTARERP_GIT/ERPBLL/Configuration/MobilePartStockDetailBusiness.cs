@@ -24,7 +24,8 @@ namespace ERPBLL.Configuration
         private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
         private readonly IRequsitionDetailForJobOrderBusiness _requsitionDetailForJobOrderBusiness;
         private readonly ITechnicalServicesStockBusiness _technicalServicesStockBusiness;
-        public MobilePartStockDetailBusiness(IConfigurationUnitOfWork configurationDb, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness)
+        private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
+        public MobilePartStockDetailBusiness(IConfigurationUnitOfWork configurationDb, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness)
         {
             this._configurationDb = configurationDb;
             mobilePartStockDetailRepository = new MobilePartStockDetailRepository(this._configurationDb);
@@ -35,6 +36,7 @@ namespace ERPBLL.Configuration
             this._requsitionInfoForJobOrderBusiness = requsitionInfoForJobOrderBusiness;
             this._requsitionDetailForJobOrderBusiness = requsitionDetailForJobOrderBusiness;
             this._technicalServicesStockBusiness = technicalServicesStockBusiness;
+            this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
 
         }
 
@@ -245,6 +247,40 @@ namespace ERPBLL.Configuration
                 }
             }
             return IsSuccess;
+        }
+
+        public bool SaveReturnPartsStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO,long returnInfoId,string status, long userId, long orgId, long branchId)
+        {
+            List<MobilePartStockDetail> mobilePartStockDetails = new List<MobilePartStockDetail>();
+            foreach (var item in mobilePartStockDetailDTO)
+            {
+                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(o => o.MobilePartId == item.MobilePartId).LastOrDefault();
+                warehouseInfo.StockInQty += item.Quantity;
+                warehouseInfo.UpUserId = userId;
+                warehouseInfo.UpdateDate = DateTime.Now;
+                mobilePartStockInfoRepository.Update(warehouseInfo);
+
+                MobilePartStockDetail StockDetail = new MobilePartStockDetail();
+                StockDetail.MobilePartId = item.MobilePartId;
+                StockDetail.SWarehouseId = warehouseInfo.SWarehouseId;
+                StockDetail.CostPrice = warehouseInfo.CostPrice;
+                StockDetail.SellPrice = warehouseInfo.SellPrice;
+                StockDetail.Quantity = item.Quantity;
+                StockDetail.Remarks = item.Remarks;
+                StockDetail.OrganizationId = orgId;
+                StockDetail.BranchId = branchId;
+                StockDetail.EUserId = userId;
+                StockDetail.EntryDate = DateTime.Now;
+                StockDetail.StockStatus = StockStatus.StockIn;
+                StockDetail.ReferrenceNumber = item.ReferrenceNumber;
+                mobilePartStockDetails.Add(StockDetail);
+            }
+            mobilePartStockDetailRepository.InsertAll(mobilePartStockDetails);
+            if (mobilePartStockDetailRepository.Save() == true)
+            {
+                return _tsStockReturnInfoBusiness.UpdateReturnInfoStatus(returnInfoId, status, userId,orgId,branchId);
+            }
+            return false;
         }
 
         public bool StockInByBranchTransferApproval(long transferId, string status, long userId, long branchId, long orgId)

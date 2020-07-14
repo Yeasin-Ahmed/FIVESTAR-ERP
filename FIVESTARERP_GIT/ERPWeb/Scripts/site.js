@@ -49,6 +49,10 @@ var jobOrderStatus = {
     customerApproved: "Customer-Approved",
     customerDisapproved: "Customer-Disapproved"
 };
+var returnStatus = {
+    stockReturn: "Stock-Return",
+    stockClosed: "Stock-Closed"
+};
 
 // Execuation Status ...
 var execuStatus = {

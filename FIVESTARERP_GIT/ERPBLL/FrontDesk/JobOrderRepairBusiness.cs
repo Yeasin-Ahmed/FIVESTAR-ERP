@@ -1,4 +1,5 @@
-﻿using ERPBLL.FrontDesk.Interface;
+﻿using ERPBLL.Configuration.Interface;
+using ERPBLL.FrontDesk.Interface;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPDAL.FrontDeskDAL;
@@ -14,11 +15,22 @@ namespace ERPBLL.FrontDesk
     {
         private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
         private readonly JobOrderRepairRepository jobOrderRepairRepository;
+        private readonly IJobOrderBusiness _jobOrderBusiness;
+        private readonly JobOrderRepository _jobOrderRepository;
+        private readonly IRepairBusiness _repairBusiness;
 
-        public JobOrderRepairBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork)
+        public JobOrderRepairBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderBusiness jobOrderBusiness, IRepairBusiness repairBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this.jobOrderRepairRepository = new JobOrderRepairRepository(this._frontDeskUnitOfWork);
+            this._jobOrderRepository = new JobOrderRepository(this._frontDeskUnitOfWork);
+            this._jobOrderBusiness = jobOrderBusiness;
+            this._repairBusiness = repairBusiness;
+        }
+
+        public JobOrderRepair GetAllJobOrderRepair(long repairId, long orgId)
+        {
+            return jobOrderRepairRepository.GetOneByOrg(a => a.JobOrderRepairId == repairId && a.OrganizationId == orgId);
         }
 
         public JobOrderRepair GetJobOrderRepairByJobId(long joborderId, long orgId)
@@ -31,11 +43,14 @@ namespace ERPBLL.FrontDesk
             return jobOrderRepairRepository.GetAll(a => a.JobOrderId == joborderId && a.OrganizationId == orgId).ToList();
         }
 
-        public bool SaveJobOrderRepair(List<JobOrderRepairDTO> jobOrderRepairs, long userId, long orgId)
+        public bool SaveJobOrderRepair(List<JobOrderRepairDTO> jobOrderRepairs, long jobOrderId, long userId, long orgId)
         {
             var repairCodeNew = jobOrderRepairs.FirstOrDefault();
             var jobOrderR = GetJobOrderRepairByJobOrderId(repairCodeNew.JobOrderId, orgId).ToList();
-            jobOrderRepairRepository.DeleteAll(jobOrderR);
+            jobOrderRepairRepository.DeleteAll(jobOrderR);//Delete
+
+
+            // JobOrder.RepairStatus ="Status" // Repair table text
 
             JobOrderRepair jobOrderRepair = new JobOrderRepair
             {
@@ -44,23 +59,22 @@ namespace ERPBLL.FrontDesk
                 EUserId = userId,
                 OrganizationId = orgId,
                 JobOrderId = repairCodeNew.JobOrderId
-            };
+            }; // New 
 
-            //List<JobOrderRepair> listjobOrderRepair = new List<JobOrderRepair>();
-            //foreach (var item in jobOrderRepairs)
-            //{
-            //    if (item.JobOrderRepairId == 0)
-            //    {
-                    
-            //        listjobOrderRepair.Add(jobOrderRepair);
-            //    }
-            //    else
-            //    {
-
-            //    }
-            //}
             jobOrderRepairRepository.Insert(jobOrderRepair);
-            return jobOrderRepairRepository.Save();
+
+            var jobOrder = _jobOrderBusiness.GetJobOrderById(jobOrderId, orgId);
+            var jobOrderRepairStatus = _repairBusiness.GetRepairOneByOrgId(repairCodeNew.RepairId, orgId).RepairName;
+            if (jobOrder != null)
+            {
+                jobOrder.TsRepairStatus = jobOrderRepairStatus; // Repair Code text //
+                jobOrder.UpUserId = userId;
+                jobOrder.UpdateDate = DateTime.Now;
+                _jobOrderRepository.Update(jobOrder);
+            }
+            
+           return jobOrderRepairRepository.Save();
         }
+
     }
 }

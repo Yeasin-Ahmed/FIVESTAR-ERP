@@ -29,6 +29,11 @@ namespace ERPBLL.FrontDesk
                 Where  tr.StateStatus='Stock-Return' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
         }
 
+        public TsStockReturnInfo GetAllReturnId(long returnInfoId, long orgId, long branchId)
+        {
+            return _tsStockReturnInfoRepository.GetOneByOrg(info => info.ReturnInfoId == returnInfoId && info.OrganizationId == orgId && info.BranchId == branchId);
+        }
+
         public bool SaveTsReturnStock(List<TsStockReturnInfoDTO> returnInfoList, long userId, long orgId, long branchId)
         {
             //bool IsSuccess = false;
@@ -65,6 +70,19 @@ namespace ERPBLL.FrontDesk
             _tsStockReturnInfoRepository.InsertAll(returnInfoLists);
             
             return _tsStockReturnInfoRepository.Save();
+        }
+
+        public bool UpdateReturnInfoStatus(long returnInfoId, string status, long userId, long orgId, long branchId)
+        {
+                var returnInfo = GetAllReturnId(returnInfoId, orgId,branchId);
+                if (returnInfo != null && returnInfo.StateStatus == "Stock-Return")
+                {
+                returnInfo.StateStatus = "Stock-Closed";
+                returnInfo.UpUserId = userId;
+                returnInfo.UpdateDate = DateTime.Now;
+                _tsStockReturnInfoRepository.Update(returnInfo);
+                }
+                return _tsStockReturnInfoRepository.Save();
         }
     }
 }

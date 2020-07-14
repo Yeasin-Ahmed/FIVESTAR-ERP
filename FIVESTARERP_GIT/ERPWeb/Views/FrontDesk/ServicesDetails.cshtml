@@ -274,7 +274,7 @@
     <div class="col-md-1">
         <a href="#" class="btn btn-outline-primary btn-sm float-lg-right" id="btnJobSave"><i ></i> Save</a>
     </div>
-        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i> Job Sing Out</a>
+        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
 </div>
 
 <div class="modal fade" id="modalSymptom" role="dialog" tabindex="-1" aria-hidden="true">
@@ -822,7 +822,7 @@
                     JobOrderId: hdfJobOrderId.val()
                     });
 
-                var data = JSON.stringify({ jobOrderRepairViewModels: aryRepair });
+                var data = JSON.stringify({ jobOrderRepairViewModels: aryRepair, jobOrderId: hdfJobOrderId.val() });
                 console.log("Repair List");
                 console.log(data);
 
@@ -1080,6 +1080,7 @@
                 })
             clearCtr()
         })
+
         function clearCtr() {
             hdfRequsitionDetailId.val('0');
             hdfRowIndex.val('0');
@@ -1092,7 +1093,7 @@
             $(".error").addClass("hide");
         }
 
-        $("#btnJobSave").click(function (e) {
+        $("#btnJobSingOut").click(function (e) {
             e.preventDefault();
             OpenTSStockModal();
             var data = {
@@ -1102,11 +1103,24 @@
                 if (status == "success") {
                     $("#dataContainer2").empty();
                     $("#dataContainer2").append(res);
+                    fnDisableRowsInputElementByRepairStatus();
                 }
             }).fail(function (error) {
                 console.log(error);
             })
         });
+
+        function fnDisableRowsInputElementByRepairStatus()
+        {
+            if ($(".tblStockByRequsition tbody tr").length > 0)
+            {
+                var repairtext = $(".tblStockByRequsition tbody").children("tr").eq(0).children('td').eq('7').html();
+                //salert("repairtext=" + repairtext)
+                if (repairtext !== "REPAIR AND RETURN") {
+                    $("input[name='usedQty']").prop("disabled", true);
+                }
+            }
+        }
 
 
         $("#btnReturnStock").click(function (e) {

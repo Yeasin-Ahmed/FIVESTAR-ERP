@@ -709,7 +709,7 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SaveJobOrderRepair(List<JobOrderRepairViewModel> jobOrderRepairViewModels)
+        public ActionResult SaveJobOrderRepair(List<JobOrderRepairViewModel> jobOrderRepairViewModels,long jobOrderId)
         {
             bool IsSuccess = false;
             if (ModelState.IsValid && jobOrderRepairViewModels.Count > 0)
@@ -718,7 +718,7 @@ namespace ERPWeb.Controllers
 
                 AutoMapper.Mapper.Map(jobOrderRepairViewModels, listjobOrderRepairDTO);
 
-                IsSuccess = _jobOrderRepairBusiness.SaveJobOrderRepair(listjobOrderRepairDTO, User.UserId, User.OrgId);
+                IsSuccess = _jobOrderRepairBusiness.SaveJobOrderRepair(listjobOrderRepairDTO, jobOrderId, User.UserId, User.OrgId);
             }
             return Json(IsSuccess);
         }
@@ -739,6 +739,19 @@ namespace ERPWeb.Controllers
 
         public ActionResult GetTSStockByRequsition(long? jobOrderId)
         {
+            var repair = _jobOrderRepairBusiness.GetJobOrderRepairByJobId(jobOrderId.Value, User.OrgId);
+            var jobrepair = new JobOrderRepairViewModel();
+            if (repair != null)
+            {
+                jobrepair = new JobOrderRepairViewModel
+                {
+                    JobOrderId=repair.JobOrderId,
+                    JobOrderRepairId = repair.JobOrderRepairId,
+                    RepairId = repair.RepairId,
+                    RepairName = (_repairBusiness.GetRepairOneByOrgId(repair.RepairId, User.OrgId).RepairName)
+                };
+            }
+            ViewBag.jobrepair = jobrepair;
             var dto = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrderId.Value, User.UserId, User.OrgId, User.BranchId).ToList();
             IEnumerable<TSStockByRequsitionViewModel> viewModels = new List<TSStockByRequsitionViewModel>();
             AutoMapper.Mapper.Map(dto, viewModels);
@@ -753,6 +766,17 @@ namespace ERPWeb.Controllers
                 List<TechnicalServicesStockDTO> servicesStockDTOs = new List<TechnicalServicesStockDTO>();
                 AutoMapper.Mapper.Map(servicesStockViewModel, servicesStockDTOs);
                 IsSuccess = _technicalServicesStockBusiness.SaveTechnicalServicesStockOut(servicesStockDTOs, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult UpdateReturnStatus(long returnInfoId, string status)
+        {
+            bool IsSuccess = false;
+            if (returnInfoId > 0 && !string.IsNullOrEmpty(status))
+            {
+                IsSuccess = _tsStockReturnInfoBusiness.UpdateReturnInfoStatus(returnInfoId, status,User.UserId, User.OrgId,User.BranchId);
             }
             return Json(IsSuccess);
         }

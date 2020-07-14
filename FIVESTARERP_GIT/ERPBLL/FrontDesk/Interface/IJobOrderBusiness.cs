@@ -37,5 +37,6 @@ namespace ERPBLL.FrontDesk.Interface
 
         IEnumerable<DashboardApprovedRequsitionDTO> DashboardApprovedRequsition(long orgId, long branchId);
         IEnumerable<DashboardApprovedRequsitionDTO> DashboardPendingRequsition(long orgId, long branchId);
+        
     }
 }

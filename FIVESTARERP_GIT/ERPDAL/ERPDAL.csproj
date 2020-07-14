@@ -245,6 +245,10 @@
     <Compile Include="FrontDeskContextMigrations\202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.Designer.cs">
       <DependentUpon>202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007140852355_FrontDesk_jobOrderTsRepairStatus.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007140852355_FrontDesk_jobOrderTsRepairStatus.Designer.cs">
+      <DependentUpon>202007140852355_FrontDesk_jobOrderTsRepairStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -524,6 +528,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.resx">
       <DependentUpon>202007130354481_FrontDesk_TsStockInfo&amp;DetailsRename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007140852355_FrontDesk_jobOrderTsRepairStatus.resx">
+      <DependentUpon>202007140852355_FrontDesk_jobOrderTsRepairStatus.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

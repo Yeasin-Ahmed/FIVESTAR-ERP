@@ -52,5 +52,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public string IMEI2 { get; set; }
         public Nullable<DateTime> WarrantyEndDate { get; set; }
         public string TSRemarks { get; set; }
+        public string TsRepairStatus { get; set; }
     }
 }

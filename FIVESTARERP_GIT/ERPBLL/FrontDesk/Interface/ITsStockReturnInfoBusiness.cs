@@ -1,4 +1,5 @@
-﻿using ERPBO.FrontDesk.DTOModels;
+﻿using ERPBO.FrontDesk.DomainModels;
+using ERPBO.FrontDesk.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace ERPBLL.FrontDesk.Interface
     {
         bool SaveTsReturnStock(List<TsStockReturnInfoDTO> returnInfoList, long userId, long orgId, long branchId);
         IEnumerable<DashbordTsPartsReturnDTO> DashboardReturnParts(long orgId, long branchId);
+
+        bool UpdateReturnInfoStatus(long returnInfoId, string status, long userId, long orgId,long branchId);
+        TsStockReturnInfo GetAllReturnId(long returnInfoId, long orgId, long branchId);
     }
 }
