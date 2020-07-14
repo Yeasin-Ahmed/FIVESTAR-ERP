@@ -13,6 +13,9 @@ namespace ERPBLL.Production.Interface
         IEnumerable<QCItemStockDetail> GetQCItemStockDetails(long orgId);
         bool SaveQCItemStockOut(List<QCItemStockDetailDTO> items,long userId, long orgId);
         bool SaveQCItemStockIn(List<QCItemStockDetailDTO> items, long userId, long orgId);
+        // Async
+        Task<bool> SaveQCItemStockOutAsync(List<QCItemStockDetailDTO> items, long userId, long orgId);
+        Task<bool> SaveQCItemStockInAsync(List<QCItemStockDetailDTO> items, long userId, long orgId);
 
         //bool SaveStock
     }

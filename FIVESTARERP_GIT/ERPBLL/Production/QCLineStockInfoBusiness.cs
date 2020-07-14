@@ -20,9 +20,14 @@ namespace ERPBLL.Production
             this._qualityControlLineStockInfoRepository = new QualityControlLineStockInfoRepository(this._productionDb);
         }
 
-        public QualityControlLineStockInfo GetQCLineStockInfoByQCAndItemAndModelId(long qcId, long itemId, long modelId, long orgId)
+        public QualityControlLineStockInfo GetQCLineStockInfoByQCAndItemAndModelId(long QcId, long itemId, long modelId, long orgId)
         {
-            return _qualityControlLineStockInfoRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.QCLineId == qcId && s.ItemId == itemId && s.DescriptionId == modelId);
+            return _qualityControlLineStockInfoRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.QCLineId == QcId && s.ItemId == itemId && s.DescriptionId == modelId);
+        }
+
+        public async Task<QualityControlLineStockInfo> GetQCLineStockInfoByQCAndItemAndModelIdAsync(long QcId, long itemId, long modelId, long orgId)
+        {
+            return await _qualityControlLineStockInfoRepository.GetOneByOrgAsync(s => s.OrganizationId == orgId && s.QCLineId == QcId && s.ItemId == itemId && s.DescriptionId == modelId);
         }
 
         public IEnumerable<QualityControlLineStockInfo> GetQCLineStockInfoByQCAndItemId(long qcId, long itemId, long orgId)

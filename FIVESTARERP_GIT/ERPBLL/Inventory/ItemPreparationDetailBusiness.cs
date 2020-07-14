@@ -36,6 +36,11 @@ namespace ERPBLL.Inventory
             return _itemPreparationDetailRepository.GetAll(i => i.OrganizationId == orgId && i.PreparationInfoId == infoId).ToList();
         }
 
+        public async Task<IEnumerable<ItemPreparationDetail>> GetItemPreparationDetailsByInfoIdAsync(long infoId, long orgId)
+        {
+            return await _itemPreparationDetailRepository.GetAllAsync(i => i.OrganizationId == orgId && i.PreparationInfoId == infoId);
+        }
+
         public IEnumerable<ItemPreparationDetail> GetItemPreparationDetailsByModelAndItem(long modelId, long itemId, long orgId)
         {
             IEnumerable<ItemPreparationDetail> details = new List<ItemPreparationDetail>();

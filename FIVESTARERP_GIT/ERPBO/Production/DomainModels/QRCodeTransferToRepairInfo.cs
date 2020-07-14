@@ -11,7 +11,11 @@ namespace ERPBO.Production.DomainModels
     [Table("tblQRCodeTransferToRepairInfo")]
     public class QRCodeTransferToRepairInfo
     {
+        [Key]
         public long QRTRInfoId { get; set; }
+        public long TransferId { get; set; }
+        [StringLength(100)]
+        public string TransferCode { get; set; }
         public long FloorId { get; set; }
         public long QCLineId { get; set; }
         public long RepairLineId { get; set; }

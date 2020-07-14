@@ -10,6 +10,9 @@ namespace ERPBO.Production.DTOModel
     public class QRCodeTransferToRepairInfoDTO
     {
         public long QRTRInfoId { get; set; }
+        public long TransferId { get; set; }
+        [StringLength(100)]
+        public string TransferCode { get; set; }
         public long FloorId { get; set; }
         public long QCLineId { get; set; }
         public long RepairLineId { get; set; }
@@ -27,6 +30,28 @@ namespace ERPBO.Production.DTOModel
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public ICollection<QRCodeProblemDTO> QRCodeProblems { get; set; }
+        public List<QRCodeProblemDTO> QRCodeProblems { get; set; }
+
+        // Custom Properties
+        [StringLength(100)]
+        public string FloorName { get; set; }
+        [StringLength(100)]
+        public string QCLineName { get; set; }
+        [StringLength(100)]
+        public string RepairLineName { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
+        [StringLength(100)]
+        public string ModelName { get; set; }
+        [StringLength(100)]
+        public string WarehouseName { get; set; }
+        [StringLength(100)]
+        public string ItemTypeName { get; set; }
+        [StringLength(100)]
+        public string ItemName { get; set; }
+        [StringLength(50)]
+        public string EntryUser { get; set; }
+        [StringLength(50)]
+        public string UpdateUser { get; set; }
     }
 }

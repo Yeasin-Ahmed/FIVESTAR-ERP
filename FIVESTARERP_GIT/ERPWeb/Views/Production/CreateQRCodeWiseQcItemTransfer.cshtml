@@ -243,8 +243,10 @@
             //console.log(problemsObj);
             //alert('submit')
             //var qrCodeData = new { Floor=(data != null ? data.ProductionFloorId : 0), Assembly=(data != null ? data.AssemblyId : 0), Model=(data != null ? data.DescriptionId : 0), Item= (data != null ? data.ItemId : 0) };
+
             if (validationForm()) {
-                var info = { FloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), QRCode: txtItemQRCode.val(), AssemblyLineId: qrCodeDataObj.Assembly, DescriptionId: qrCodeDataObj.Model };
+
+                var info = { FloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), QRCode: txtItemQRCode.val(), AssemblyLineId: qrCodeDataObj.Assembly, DescriptionId: qrCodeDataObj.Model, ItemId: qrCodeDataObj.Item, ItemTypeId: qrCodeDataObj.ItemType, WarehouseId: qrCodeDataObj.Warehouse};
 
                 var problems = []; problems.length = 0;
                 $.each($("#tblProb tbody tr"), function (index,item) {
@@ -254,10 +256,26 @@
                         ProblemName: tds.eq(1).html()
                     })
                 })
-                info.Problems = problems;
-                info = JSON.stringify({model:info})
+                info.QRCodeProblems = problems;
+                var data = JSON.stringify({model:info})
                 console.log("Info Data");
-                console.log(info);
+                console.log(data);
+                //return;
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQRCodeWiseQcItemTransfer', data, getToken())).then(function (res,status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res === true) {
+                        bootbox.alert("Successful");
+                        $("#tblProb tbody").empty();
+                        txtItemQRCode.val('');
+                    }
+                    else {
+                        bootbox.alert("Fail");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    bootbox.alert("Fail");
+                })
             }
         })
     </script>

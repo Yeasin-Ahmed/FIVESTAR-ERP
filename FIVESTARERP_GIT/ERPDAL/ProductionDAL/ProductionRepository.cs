@@ -316,4 +316,20 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+
+    public class QRCodeTransferToRepairInfoRepository : ProductionBaseRepository<QRCodeTransferToRepairInfo>
+    {
+        public QRCodeTransferToRepairInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class QRCodeProblemRepository:ProductionBaseRepository<QRCodeProblem>
+    {
+        public QRCodeProblemRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

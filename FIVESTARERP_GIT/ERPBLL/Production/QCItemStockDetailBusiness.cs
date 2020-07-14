@@ -106,6 +106,80 @@ namespace ERPBLL.Production
             return IsSuccess;
         }
 
+        public async Task<bool> SaveQCItemStockInAsync(List<QCItemStockDetailDTO> items, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            List<QCItemStockDetail> stockDetails = new List<QCItemStockDetail>();
+            foreach (var item in items)
+            {
+                QCItemStockDetail stock = new QCItemStockDetail
+                {
+                    ProductionFloorId = item.ProductionFloorId,
+                    QCId = item.QCId,
+                    DescriptionId = item.DescriptionId,
+                    AssemblyLineId = item.AssemblyLineId,
+                    RepairLineId = item.RepairLineId,
+                    LabId = item.LabId,
+                    PackagingLineId = item.PackagingLineId,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    Quantity = item.Quantity,
+                    ReferenceNumber = item.ReferenceNumber,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    Remarks = item.Remarks,
+                    StockStatus = StockStatus.StockIn
+                };
+
+                var stockInfoInDb = await _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(item.ProductionFloorId.Value,item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+
+                if (stockInfoInDb != null)
+                {
+                    stockInfoInDb.Quantity += item.Quantity;
+                    if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair" && item.RepairLineId != null && item.RepairLineId > 0)
+                    {
+                        stockInfoInDb.RepairQty -= item.Quantity;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
+                    {
+                        stockInfoInDb.LabQty -= item.Quantity;
+                    }
+                    stockInfoInDb.UpUserId = userId;
+                    this._qCItemStockInfoRepository.Update(stockInfoInDb);
+                }
+                else
+                {
+                    QCItemStockInfo info = new QCItemStockInfo()
+                    {
+                        ProductionFloorId = item.ProductionFloorId,
+                        DescriptionId = item.DescriptionId,
+                        QCId = item.QCId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        RepairQty = 0,
+                        LabQty = 0,
+                        MiniStockQty = 0,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        Remarks = ""
+                    };
+                    this._qCItemStockInfoRepository.Insert(info);
+                }
+                stockDetails.Add(stock);
+            }
+            if (stockDetails.Count > 0)
+            {
+                this._qCItemStockDetailRepository.InsertAll(stockDetails);
+                IsSuccess = await this._qCItemStockDetailRepository.SaveAsync();
+            }
+            return IsSuccess;
+        }
+
         public bool SaveQCItemStockOut(List<QCItemStockDetailDTO> items, long userId, long orgId)
         {
             bool IsSuccess = false;
@@ -156,6 +230,61 @@ namespace ERPBLL.Production
             {
                 _qCItemStockDetailRepository.InsertAll(stockDetails);
                 IsSuccess = _qCItemStockDetailRepository.Save();
+            }
+
+            return IsSuccess;
+        }
+
+        public async Task<bool> SaveQCItemStockOutAsync(List<QCItemStockDetailDTO> items, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            List<QCItemStockDetail> stockDetails = new List<QCItemStockDetail>();
+            foreach (var item in items)
+            {
+                QCItemStockDetail stock = new QCItemStockDetail
+                {
+                    ProductionFloorId = item.ProductionFloorId,
+                    QCId = item.QCId,
+                    DescriptionId = item.DescriptionId,
+                    AssemblyLineId = item.AssemblyLineId,
+                    RepairLineId = item.RepairLineId,
+                    LabId = item.LabId,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    Quantity = item.Quantity,
+                    ReferenceNumber = item.ReferenceNumber,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    Remarks = item.Remarks,
+                    StockStatus = StockStatus.StockOut,
+                    Flag = item.Flag
+                };
+
+                var stockInfoInDb = await _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(item.ProductionFloorId.Value,item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+
+                stockInfoInDb.Quantity -= item.Quantity;
+                if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair" && item.RepairLineId != null && item.RepairLineId > 0)
+                {
+                    stockInfoInDb.RepairQty += item.Quantity;
+                }
+                else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
+                {
+                    stockInfoInDb.LabQty += item.Quantity;
+                }
+                else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "MiniStock")
+                {
+                    stockInfoInDb.MiniStockQty += item.Quantity;
+                }
+                stockInfoInDb.UpUserId = userId;
+                _qCItemStockInfoRepository.Update(stockInfoInDb);
+                stockDetails.Add(stock);
+            }
+            if (stockDetails.Count > 0)
+            {
+                _qCItemStockDetailRepository.InsertAll(stockDetails);
+                IsSuccess = await _qCItemStockDetailRepository.SaveAsync();
             }
 
             return IsSuccess;

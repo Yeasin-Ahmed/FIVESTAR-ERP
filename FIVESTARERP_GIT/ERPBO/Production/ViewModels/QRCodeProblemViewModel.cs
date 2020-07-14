@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Production.DTOModel
+namespace ERPBO.Production.ViewModels
 {
-    public class QRCodeProblemDTO
+    public class QRCodeProblemViewModel
     {
         public long QRProbId { get; set; }
         public long TransferId { get; set; }
@@ -21,6 +21,7 @@ namespace ERPBO.Production.DTOModel
         public string QRCode { get; set; }
         public long AssemblyLineId { get; set; }
         public long DescriptionId { get; set; }
+        [Range(1, long.MaxValue)]
         public long ProblemId { get; set; }
         [StringLength(250)]
         public string ProblemName { get; set; }

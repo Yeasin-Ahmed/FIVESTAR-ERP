@@ -14,5 +14,7 @@ namespace ERPBLL.Production.Interface
         bool SaveQCLineStockIn(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId);
         bool SaveQCStockInByAssemblyLine(long transferId, string status, long orgId, long userId);
         bool SaveQCLineStockOut(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId,string flag);
+        Task<bool> SaveQCLineStockInAsync(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId);
+        Task<bool> SaveQCLineStockOutAsync(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId, string flag);
     }
 }

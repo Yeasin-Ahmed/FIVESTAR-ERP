@@ -271,5 +271,10 @@ namespace ERPBLL.Production
         {
             return _transferFromQCInfoRepository.GetAll(t => t.TransferFor == transferFor && t.OrganizationId == orgId);
         }
+
+        public async Task<TransferFromQCInfo> GetNonReceivedTransferFromQCInfoByQRCodeKeyAsync(long qcLineId, long repairLineId, long modelId , long warehouseId,long itemTypeId, long itemId, long orgId)
+        {
+            return await _transferFromQCInfoRepository.GetOneByOrgAsync(t => t.QCLineId == qcLineId && t.RepairLineId == repairLineId && t.DescriptionId == modelId && t.WarehouseId == warehouseId && t.ItemTypeId == itemTypeId && t.ItemId == itemId && t.OrganizationId == orgId && t.StateStatus ==RequisitionStatus.Approved);
+        }
     }
 }

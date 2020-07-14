@@ -16,5 +16,6 @@ namespace ERPBLL.Inventory.Interface
         IEnumerable<ItemPreparationDetail> GetItemPreparationDetailsByInfoId(long infoId, long orgId);
         IEnumerable<ItemPreparationDetail> GetItemPreparationDetailsByModelAndItem(long modelId, long itemId, long orgId);
         IEnumerable<ItemPreparationDetailWithInfoDTO> GetItemPreparationDetailWithInfo(long infoId, long orgId);
+        Task<IEnumerable<ItemPreparationDetail>> GetItemPreparationDetailsByInfoIdAsync(long infoId, long orgId);
     }
 }

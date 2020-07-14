@@ -28,6 +28,12 @@ namespace ERPBLL.Production
             return _qCItemStockInfoRepository.GetOneByOrg(d =>d.ProductionFloorId == floorId && d.QCId == qcId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
         }
 
+        // Async Method
+        public async Task<QCItemStockInfo> GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(long floorId, long qcId, long modelId, long itemId, long orgId)
+        {
+            return await _qCItemStockInfoRepository.GetOneByOrgAsync(d => d.ProductionFloorId == floorId && d.QCId == qcId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
+        }
+
         public IEnumerable<QCItemStockInfo> GetQCItemStocks(long orgId)
         {
             return _qCItemStockInfoRepository.GetAll(d => d.OrganizationId == orgId);

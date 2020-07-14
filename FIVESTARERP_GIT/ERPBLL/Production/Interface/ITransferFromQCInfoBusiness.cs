@@ -12,8 +12,8 @@ namespace ERPBLL.Production.Interface
     {
         TransferFromQCInfo GetTransferFromQCInfoById(long transferId, long orgId);
         IEnumerable<TransferFromQCInfo> GetTransferFromQCInfos(long orgId);
-
-        IEnumerable<TransferFromQCInfo> GetTransferFromQCInfoByTransferFor(string transferFor,long orgId);
+        Task<TransferFromQCInfo> GetNonReceivedTransferFromQCInfoByQRCodeKeyAsync(long qcLineId, long repairLineId,long modelId,long warehouseId, long itemTypeId, long itemId, long orgId);
+        IEnumerable<TransferFromQCInfo> GetTransferFromQCInfoByTransferFor(string transferFor, long orgId);
         bool SaveTransferInfoStateStatus(long transferId, string status, long userId, long orgId);
         bool SaveTransfer(TransferFromQCInfoDTO infoDto, List<TransferFromQCDetailDTO> detailDto, long userId, long orgId);
     }

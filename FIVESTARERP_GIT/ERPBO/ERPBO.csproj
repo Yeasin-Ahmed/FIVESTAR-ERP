@@ -407,11 +407,13 @@
     <Compile Include="Production\ViewModels\ProductionToPackagingStockTransferInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QCPassTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QCPassTransferInformationViewModel.cs" />
+    <Compile Include="Production\ViewModels\QRCodeProblemViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />
     <Compile Include="Production\ViewModels\QCItemStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QCItemStockInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\QRCodeTransferToRepairInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\QualityControlViewModel.cs" />

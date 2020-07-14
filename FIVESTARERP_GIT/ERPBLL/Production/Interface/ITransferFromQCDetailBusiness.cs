@@ -11,5 +11,6 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<TransferFromQCDetail> GetTransferFromQCDetails(long orgId);
         IEnumerable<TransferFromQCDetail> GetTransferFromQCDetailByInfo(long infoId,long orgId);
+        Task<IEnumerable<TransferFromQCDetail>> GetTransferFromQCDetailByInfoAsync(long infoId, long orgId);
     }
 }

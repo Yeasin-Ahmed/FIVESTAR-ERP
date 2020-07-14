@@ -12,5 +12,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<QualityControlLineStockInfo> GetQCLineStockInfos(long orgId);
         IEnumerable<QualityControlLineStockInfo> GetQCLineStockInfoByQCAndItemId(long qcId,long itemId,long orgId);
         QualityControlLineStockInfo GetQCLineStockInfoByQCAndItemAndModelId(long QcId, long itemId,long modelId ,long orgId);
+        // Async
+        Task<QualityControlLineStockInfo> GetQCLineStockInfoByQCAndItemAndModelIdAsync(long QcId, long itemId, long modelId, long orgId);
     }
 }

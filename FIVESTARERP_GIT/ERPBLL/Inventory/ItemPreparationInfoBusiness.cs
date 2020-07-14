@@ -102,5 +102,10 @@ namespace ERPBLL.Inventory
         {
             return _itemPreparationInfoRepository.GetOneByOrg(i => i.DescriptionId == modelId && i.ItemId == itemId && i.PreparationType == type && i.OrganizationId == orgId);
         }
+
+        public async Task<ItemPreparationInfo> GetPreparationInfoByModelAndItemAndTypeAsync(string type, long modelId, long itemId, long orgId)
+        {
+            return await _itemPreparationInfoRepository.GetOneByOrgAsync(i => i.DescriptionId == modelId && i.ItemId == itemId && i.PreparationType == type && i.OrganizationId == orgId);
+        }
     }
 }

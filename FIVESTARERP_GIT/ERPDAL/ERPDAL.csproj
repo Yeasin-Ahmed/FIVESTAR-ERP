@@ -362,6 +362,14 @@
     <Compile Include="ProductionContextMigrations\202007130946140_Production_QRCodeInFaultyCase.Designer.cs">
       <DependentUpon>202007130946140_Production_QRCodeInFaultyCase.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202007140357254_Production_QRCodeProblemAndQRCodeTransferToRepair.cs" />
+    <Compile Include="ProductionContextMigrations\202007140357254_Production_QRCodeProblemAndQRCodeTransferToRepair.Designer.cs">
+      <DependentUpon>202007140357254_Production_QRCodeProblemAndQRCodeTransferToRepair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007140441404_Production_TransferIdInQRCodeTransferAndProblems.cs" />
+    <Compile Include="ProductionContextMigrations\202007140441404_Production_TransferIdInQRCodeTransferAndProblems.Designer.cs">
+      <DependentUpon>202007140441404_Production_TransferIdInQRCodeTransferAndProblems.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -597,6 +605,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007130946140_Production_QRCodeInFaultyCase.resx">
       <DependentUpon>202007130946140_Production_QRCodeInFaultyCase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007140357254_Production_QRCodeProblemAndQRCodeTransferToRepair.resx">
+      <DependentUpon>202007140357254_Production_QRCodeProblemAndQRCodeTransferToRepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007140441404_Production_TransferIdInQRCodeTransferAndProblems.resx">
+      <DependentUpon>202007140441404_Production_TransferIdInQRCodeTransferAndProblems.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

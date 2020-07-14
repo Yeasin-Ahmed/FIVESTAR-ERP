@@ -25,6 +25,11 @@ namespace ERPBLL.Production
             return _transferFromQCDetailRepository.GetAll(t => t.TSQInfoId == infoId && t.OrganizationId == orgId).ToList();
         }
 
+        public async Task<IEnumerable<TransferFromQCDetail>> GetTransferFromQCDetailByInfoAsync(long infoId, long orgId)
+        {
+            return await _transferFromQCDetailRepository.GetAllAsync(t => t.TSQInfoId == infoId && t.OrganizationId == orgId);
+        }
+
         public IEnumerable<TransferFromQCDetail> GetTransferFromQCDetails(long orgId)
         {
             return _transferFromQCDetailRepository.GetAll(t => t.OrganizationId == orgId).ToList();

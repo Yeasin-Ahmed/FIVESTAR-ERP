@@ -95,6 +95,62 @@ namespace ERPBLL.Production
             _qualityControlLineStockDetailRepository.InsertAll(qcLineStockDetail);
             return _qualityControlLineStockDetailRepository.Save();
         }
+        // Async Method
+        public async Task<bool> SaveQCLineStockInAsync(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId)
+        {
+            List<QualityControlLineStockDetail> qcLineStockDetail = new List<QualityControlLineStockDetail>();
+            foreach (var item in qualityControlStockDetailDto)
+            {
+                QualityControlLineStockDetail stockDetail = new QualityControlLineStockDetail();
+                stockDetail.AssemblyLineId = item.AssemblyLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.QCLineId = item.QCLineId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var qcStockInfo = await _qCLineStockInfoBusiness.GetQCLineStockInfoByQCAndItemAndModelIdAsync(item.QCLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+                //_qCLineStockInfoBusiness.GetQCLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.QCLineId == item.QCLineId).FirstOrDefault();
+                if (qcStockInfo != null)
+                {
+                    qcStockInfo.StockInQty += item.Quantity;
+                    _qualityControlLineStockInfoRepository.Update(qcStockInfo);
+                }
+                else
+                {
+                    QualityControlLineStockInfo info = new QualityControlLineStockInfo();
+                    info.AssemblyLineId = item.AssemblyLineId;
+                    info.ProductionLineId = item.ProductionLineId;
+                    info.WarehouseId = item.WarehouseId;
+                    info.DescriptionId = item.DescriptionId;
+                    info.QCLineId = item.QCLineId;
+
+                    info.ItemTypeId = item.ItemTypeId;
+                    info.ItemId = item.ItemId;
+                    info.UnitId = stockDetail.UnitId;
+                    info.StockInQty = item.Quantity;
+                    info.StockOutQty = 0;
+                    info.OrganizationId = orgId;
+                    info.EUserId = userId;
+                    info.EntryDate = DateTime.Now;
+
+                    _qualityControlLineStockInfoRepository.Insert(info);
+                }
+                qcLineStockDetail.Add(stockDetail);
+            }
+            _qualityControlLineStockDetailRepository.InsertAll(qcLineStockDetail);
+            return await _qualityControlLineStockDetailRepository.SaveAsync();
+        }
 
         public bool SaveQCLineStockOut(List<QualityControlLineStockDetailDTO> qcLineStockDetailDTO, long userId, long orgId, string flag)
         {
@@ -127,6 +183,42 @@ namespace ERPBLL.Production
             }
             _qualityControlLineStockDetailRepository.InsertAll(qcLineStockDetail);
             return _qualityControlLineStockDetailRepository.Save();
+        }
+
+        // Async Method
+        public async Task<bool> SaveQCLineStockOutAsync(List<QualityControlLineStockDetailDTO> qualityControlStockDetailDto, long userId, long orgId, string flag)
+        {
+            List<QualityControlLineStockDetail> qcLineStockDetail = new List<QualityControlLineStockDetail>();
+            foreach (var item in qualityControlStockDetailDto)
+            {
+                QualityControlLineStockDetail stockDetail = new QualityControlLineStockDetail();
+                stockDetail.AssemblyLineId = item.AssemblyLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.QCLineId = item.QCLineId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockOut;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var qcStockInfo = await _qCLineStockInfoBusiness.GetQCLineStockInfoByQCAndItemAndModelIdAsync(item.QCLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
+                //_qCLineStockInfoBusiness.GetQCLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.QCLineId == item.QCLineId).FirstOrDefault();
+
+                qcStockInfo.StockOutQty += item.Quantity;
+                _qualityControlLineStockInfoRepository.Update(qcStockInfo);
+                qcLineStockDetail.Add(stockDetail);
+            }
+            _qualityControlLineStockDetailRepository.InsertAll(qcLineStockDetail);
+            return await _qualityControlLineStockDetailRepository.SaveAsync();
         }
 
         public bool SaveQCStockInByAssemblyLine(long transferId, string status, long orgId, long userId)

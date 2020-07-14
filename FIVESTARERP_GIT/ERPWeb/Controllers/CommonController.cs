@@ -851,7 +851,7 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> GetQRCodeTraceByCodeAsync(string qrCode)
         {
             var data = await _qRCodeTraceBusiness.GetQRCodeTraceByCodeAsync(qrCode, User.OrgId);
-            var qrCodeData = new {Floor=(data !=null ? data.ProductionFloorId: 0),Assembly=(data !=null?data.AssemblyId : 0),Model=(data !=null ?data.DescriptionId : 0),Item= (data !=null ?  data.ItemId :0 ) };
+            var qrCodeData = new {Floor=(data !=null ? data.ProductionFloorId: 0),Assembly=(data !=null?data.AssemblyId : 0),Model=(data !=null ?data.DescriptionId : 0),Item= (data !=null ?  data.ItemId :0 ),ItemType= (data != null ? data.ItemTypeId : 0),Warehouse= (data != null ? data.WarehouseId : 0) };
             var passedData = qrCodeData.Floor == 0 ? null : qrCodeData;
             return Json(qrCodeData);
         }
