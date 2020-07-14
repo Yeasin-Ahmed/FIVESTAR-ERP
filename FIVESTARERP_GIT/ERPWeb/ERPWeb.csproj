@@ -555,6 +555,7 @@
     <Content Include="Views\Production\_GetProductionAssembleStockTransferListDetail.cshtml" />
     <Content Include="Views\Inventory\CreateItemPreparation.cshtml" />
     <Content Include="Views\Production\CreateQRCodeWiseQcItemTransfer.cshtml" />
+    <Content Include="Views\FrontDesk\GetTSStockByRequsition.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
