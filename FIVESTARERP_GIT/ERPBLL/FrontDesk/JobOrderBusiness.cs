@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
@@ -30,6 +31,7 @@ namespace ERPBLL.FrontDesk
             this._jobOrderAccessoriesRepository = new JobOrderAccessoriesRepository(this._frontDeskUnitOfWork);
             this._jobOrderProblemBusiness = jobOrderProblemBusiness;
             this._jobOrderProblemRepository = new JobOrderProblemRepository(this._frontDeskUnitOfWork);
+
         }
 
         public JobOrder GetJobOrderById(long jobOrderId, long orgId)
@@ -88,7 +90,7 @@ namespace ERPBLL.FrontDesk
                 param += string.Format(@"and jo.BranchId={0}", branchId);
             }
 
-            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2
 From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
@@ -101,7 +103,7 @@ Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames'
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
 Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName',jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName',jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus
 
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
@@ -601,5 +603,7 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
                 Inner join tblRequsitionInfoForJobOrders rq on jo.JodOrderId=rq.JobOrderId
                 Where  rq.StateStatus='Pending' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
         }
+
+        
     }
 }

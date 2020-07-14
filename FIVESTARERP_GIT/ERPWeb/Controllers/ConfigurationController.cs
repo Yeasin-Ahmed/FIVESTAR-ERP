@@ -521,6 +521,7 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
+
         public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate)
         {
             if (string.IsNullOrEmpty(flag))
@@ -578,6 +579,26 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(partStockDetailDTO, mobilePartStockDetailViewModels);
                 return PartialView("_MobilePartStockDetailList", mobilePartStockDetailViewModels);
             }
+        }
+
+        [HttpPost]
+        public ActionResult SaveReturnPartsStockIn(List<MobilePartStockDetailViewModel> models,long returnInfoId,string status)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                try
+                {
+                    List<MobilePartStockDetailDTO> dtos = new List<MobilePartStockDetailDTO>();
+                    AutoMapper.Mapper.Map(models, dtos);
+                    isSuccess = _mobilePartStockDetailBusiness.SaveReturnPartsStockIn(dtos, returnInfoId, status, User.UserId, User.OrgId,User.BranchId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         #endregion
 

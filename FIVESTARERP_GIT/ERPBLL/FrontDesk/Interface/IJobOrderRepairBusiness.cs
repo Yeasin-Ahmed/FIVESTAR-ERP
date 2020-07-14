@@ -10,8 +10,9 @@ namespace ERPBLL.FrontDesk.Interface
 {
    public interface IJobOrderRepairBusiness
     {
-        bool SaveJobOrderRepair(List<JobOrderRepairDTO> jobOrderRepairs, long userId, long orgId);
+        bool SaveJobOrderRepair(List<JobOrderRepairDTO> jobOrderRepairs,long jobOrderId, long userId, long orgId);
         JobOrderRepair GetJobOrderRepairByJobId(long joborderId, long orgId);
        IEnumerable< JobOrderRepair> GetJobOrderRepairByJobOrderId(long joborderId, long orgId);
+        JobOrderRepair GetAllJobOrderRepair(long repairId, long orgId);
     }
 }

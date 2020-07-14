@@ -347,14 +347,14 @@
                             {
                                 <tr>
                                     <td class="text-center">@app.JobOrderCode</td>
-                                    <td class="text-center"><a href="#" id="">@app.RequsitionCode</a></td>
+                                    <td class="text-center">@app.RequsitionCode</td>
                                     <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 }
-                else
+                @*else
                 {
                     <div class="text-center text-indigo" style="width:100%;height:100%">
                         <div style="position:absolute;top:40%;left:26%">
@@ -362,7 +362,7 @@
                             <p class="text-dark text-bold">No Current Requsition</p>
                         </div>
                     </div>
-                }
+                }*@
             </div>
         </div>
     </div>
@@ -407,7 +407,7 @@
                         </tbody>
                     </table>
                 }
-                else
+                @*else
                 {
                     <div class="text-center text-indigo" style="width:100%;height:100%">
                         <div style="position:absolute;top:40%;left:26%">
@@ -415,7 +415,7 @@
                             <p class="text-dark text-bold">No Parts Return</p>
                         </div>
                     </div>
-                }
+                }*@
             </div>
         </div>
     </div>
@@ -442,7 +442,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnReturnStock"> <span id="spanSaveText">StockIn </span> </button>
+                <button type="submit" class="btn btn-success float-right" id="btnStockIn"> <span id="spanSaveText">StockIn </span> </button>
             </div>
         </div>
     </div>
@@ -474,5 +474,51 @@
                 console.log(error);
             })
         })
+
+        $("#btnStockIn").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result) {
+
+                        var details = []; details.length = 0;
+                        $.each($("#tblWarehouseStockInfo tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            var partsId = tds.eq('3').html();
+                            var partsName = tds.eq('4').html();
+                            var qty = tds.eq('5').html();
+
+                            details.push({
+                                MobilePartId: TryParseInt(partsId,0),
+                                MobilePartName: partsName,
+                                Quantity: TryParseInt(qty, 0),
+                            })
+                        });
+                        var data = JSON.stringify({ models: details, returnInfoId: hdfReturnInfoId.val(), status: status });
+                        console.log("stock-In Quantity");
+                        console.log(data);
+                        //return;
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveReturnPartsStockIn', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("Index","User",new {})');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            consoleLog(error)
+                        })
+                    }
+                });
+        });
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
     </script>
     }
