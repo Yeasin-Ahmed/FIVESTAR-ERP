@@ -33,20 +33,33 @@ namespace ERPBLL.FrontDesk
 
         public bool SaveJobOrderRepair(List<JobOrderRepairDTO> jobOrderRepairs, long userId, long orgId)
         {
-            List<JobOrderRepair> listjobOrderRepair = new List<JobOrderRepair>();
-            foreach (var item in jobOrderRepairs)
+            var repairCodeNew = jobOrderRepairs.FirstOrDefault();
+            var jobOrderR = GetJobOrderRepairByJobOrderId(repairCodeNew.JobOrderId, orgId).ToList();
+            jobOrderRepairRepository.DeleteAll(jobOrderR);
+
+            JobOrderRepair jobOrderRepair = new JobOrderRepair
             {
-                JobOrderRepair jobOrderRepair = new JobOrderRepair
-                {
-                    RepairId = item.RepairId,
-                    EntryDate = DateTime.Now,
-                    EUserId = userId,
-                    OrganizationId = orgId,
-                    JobOrderId = item.JobOrderId
-                };
-                listjobOrderRepair.Add(jobOrderRepair);
-            }
-            jobOrderRepairRepository.InsertAll(listjobOrderRepair);
+                RepairId = repairCodeNew.RepairId,
+                EntryDate = DateTime.Now,
+                EUserId = userId,
+                OrganizationId = orgId,
+                JobOrderId = repairCodeNew.JobOrderId
+            };
+
+            //List<JobOrderRepair> listjobOrderRepair = new List<JobOrderRepair>();
+            //foreach (var item in jobOrderRepairs)
+            //{
+            //    if (item.JobOrderRepairId == 0)
+            //    {
+                    
+            //        listjobOrderRepair.Add(jobOrderRepair);
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //}
+            jobOrderRepairRepository.Insert(jobOrderRepair);
             return jobOrderRepairRepository.Save();
         }
     }

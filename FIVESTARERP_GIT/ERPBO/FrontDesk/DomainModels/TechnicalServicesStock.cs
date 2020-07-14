@@ -29,6 +29,9 @@ namespace ERPBO.FrontDesk.DomainModels
         //
         public double CostPrice { get; set; }
         public double SellPrice { get; set; }
+        public long RequsitionInfoForJobOrderId { get; set; }
+        public long TSId { get; set; }
+        public string StateStatus { get; set; }
         //
     }
 }

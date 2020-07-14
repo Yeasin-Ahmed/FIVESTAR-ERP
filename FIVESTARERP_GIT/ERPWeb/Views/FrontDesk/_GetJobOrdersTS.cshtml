@@ -55,7 +55,8 @@
             <td>
                 @*<a href="@Url.Action("RequsitionInfoForJobOrderList","FrontDesk",new {@joborderId=item.JodOrderId })" class="btn btn-sm btn-outline-warning" title="Parts Request">Parts Request</a>*@
                 <a href="@Url.Action("TechnicalSetvicesStockList","FrontDesk",new {@id=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Requsition Stock">Stock TS</a>
-                <a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Service Details">Services</a>
+                <a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Service Details" target="_blank">Services</a>
+
             </td>
 
         </tr>

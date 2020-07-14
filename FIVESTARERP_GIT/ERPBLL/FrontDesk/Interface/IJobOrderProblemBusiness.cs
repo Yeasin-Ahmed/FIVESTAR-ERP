@@ -1,4 +1,5 @@
 ﻿using ERPBO.FrontDesk.DomainModels;
+using ERPBO.FrontDesk.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace ERPBLL.FrontDesk.Interface
         JobOrderProblem GetJobOrderProblemById(long id, long orgId);
         IEnumerable<JobOrderProblem> GetJobOrderProblemByJobOrderId(long jobOrderId, long orgId);
         JobOrderProblem GetJobOrderProblemByJobId(long id, long orgId);
+
+        bool SaveJobOrderProblem(List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId);
 
     }
 }

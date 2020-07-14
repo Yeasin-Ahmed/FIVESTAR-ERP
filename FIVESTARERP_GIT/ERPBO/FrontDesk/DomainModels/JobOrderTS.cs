@@ -32,5 +32,6 @@ namespace ERPBO.FrontDesk.DomainModels
         [ForeignKey("JobOrder")]
         public long JodOrderId { get; set; }
         public JobOrder JobOrder { get; set; }
+        public string JobOrderStateStatus { get; set; }
     }
 }

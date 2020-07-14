@@ -1,5 +1,6 @@
 ﻿using ERPBLL.FrontDesk.Interface;
 using ERPBO.FrontDesk.DomainModels;
+using ERPBO.FrontDesk.DTOModels;
 using ERPDAL.FrontDeskDAL;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,25 @@ namespace ERPBLL.FrontDesk
         public IEnumerable<JobOrderProblem> GetJobOrderProblemByJobOrderId(long jobOrderId, long orgId)
         {
             return _jobOrderProblemRepository.GetAll(a => a.JobOrderId == jobOrderId && a.OrganizationId == orgId).ToList();
+        }
+
+        public bool SaveJobOrderProblem(List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId)
+        {
+            List<JobOrderProblem> listjobOrderProblem = new List<JobOrderProblem>();
+            foreach (var item in jobOrderProblems)
+            {
+                JobOrderProblem jobOrderProblem = new JobOrderProblem
+                {
+                    ProblemId = item.ProblemId,
+                    EntryDate = DateTime.Now,
+                    EUserId = userId,
+                    OrganizationId = orgId,
+                    JobOrderId = item.JobOrderId
+                };
+                listjobOrderProblem.Add(jobOrderProblem);
+            }
+            _jobOrderProblemRepository.InsertAll(listjobOrderProblem);
+            return _jobOrderProblemRepository.Save();
         }
     }
 }

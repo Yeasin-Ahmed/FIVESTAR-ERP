@@ -14,5 +14,6 @@ namespace ERPBLL.ControlPanel.Interface
         bool SaveRole(RoleDTO roleDTO, long userId, long orgId);
         bool IsDuplicateRoleName(string roleName, long id, long orgId);
         Role GetRoleOneById(long id, long orgId);
+        IEnumerable<TechnicalServiceByRoleDTO> GetRoleByTechnicalServicesId(string roleName,long orgId,long BranchId);
     }
 }

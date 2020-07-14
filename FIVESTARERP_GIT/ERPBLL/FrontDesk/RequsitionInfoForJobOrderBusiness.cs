@@ -45,13 +45,18 @@ namespace ERPBLL.FrontDesk
             return requsitionInfoForJobOrderRepository.GetOneByOrg(info => info.RequsitionInfoForJobOrderId == reqInfoId && info.OrganizationId == orgId);
         }
 
+        public RequsitionInfoForJobOrder GetAllRequsitionInfoOneByOrgId(long ReqId,long orgId, long branchId)
+        {
+            return requsitionInfoForJobOrderRepository.GetOneByOrg(info =>info.RequsitionInfoForJobOrderId==ReqId && info.OrganizationId == orgId && info.BranchId == branchId);
+        }
+
         public bool SaveRequisitionInfoForJobOrder(RequsitionInfoForJobOrderDTO requsitionInfoDTO, List<RequsitionDetailForJobOrderDTO> details, long userId, long orgId, long branchId)
         {
             bool IsSuccess = false;
             RequsitionInfoForJobOrder requsitionInfo = new RequsitionInfoForJobOrder();
             if (requsitionInfoDTO.RequsitionInfoForJobOrderId == 0)
             {
-                requsitionInfo.RequsitionCode = ("REQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+                requsitionInfo.RequsitionCode = ("SR-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
                 requsitionInfo.SWarehouseId = requsitionInfoDTO.SWarehouseId;
                 requsitionInfo.JobOrderId = requsitionInfoDTO.JobOrderId;
 

@@ -26,11 +26,11 @@
                     <th>SL No.</th>
                     <th class="hide"></th>
                     <th class="hide"></th>
-                    <th>SWarehouseName</th>
+                    <th class="hide">SWarehouseName</th>
+                    <th class="hide"></th>
+                    <th>Req. Code</th>
                     <th class="hide"></th>
                     <th>PartsName</th>
-                    <th>CostPrice</th>
-                    <th>SellPrice</th>
                     <th>StockInQty</th>
                     <th>UsedQty</th>
                     <th>TotalQty</th>
@@ -46,11 +46,11 @@
                     <td class="text-center" width="10%">@sl</td>
                     <td class="hide">@stock.TsStockId</td>
                     <td class="hide">@stock.SWarehouseId</td>
-                    <td>@stock.SWarehouseName</td>
+                    <td class="hide">@stock.SWarehouseName</td>
+                    <td class="hide">@stock.RequsitionInfoForJobOrderId</td>
+                    <td>@stock.RequsitionCode</td>
                     <td class="hide">@stock.PartsId</td>
                     <td>@stock.PartsName</td>
-                    <td class="text-center">@stock.CostPrice.ToString("0.00 Tk")</td>
-                    <td class="text-center">@stock.SellPrice.ToString("0.00 Tk")</td>
                     <td class="text-center">@stock.Quantity</td>
                     <td class="text-center">@stock.UsedQty</td>
                     <td class="text-center">@stock.TotalQty</td>
@@ -61,7 +61,7 @@
                 @if (Model.Count() == 0)
                 {
                     <tr class="text-center empty-row">
-                        <td colspan="8">
+                        <td colspan="11">
                             No Rows Found
                         </td>
                     </tr>

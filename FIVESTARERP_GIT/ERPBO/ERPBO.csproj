@@ -121,6 +121,7 @@
     <Compile Include="ControlPanel\DTOModels\RoleDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\SubMenuDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\RoleAuthorizationDTO.cs" />
+    <Compile Include="ControlPanel\DTOModels\TechnicalServiceByRoleDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\UserAuthorizationDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\UserAuthorizeMenusDTO.cs" />
     <Compile Include="ControlPanel\DTOModels\UserCustomMenusDTO.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="ControlPanel\ViewModels\RoleAuthorizationViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\RoleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\SubMenuViewModel.cs" />
+    <Compile Include="ControlPanel\ViewModels\TechnicalServiceByRoleViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserAuthorizationViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserAuthorizeMenusViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserCustomMenusViewModels.cs" />
@@ -156,10 +158,14 @@
     <Compile Include="FrontDesk\DomainModels\RequsitionDetailForJobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\RequsitionInfoForJobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\TechnicalServicesStock.cs" />
+    <Compile Include="FrontDesk\DomainModels\TsStockReturnDetail.cs" />
+    <Compile Include="FrontDesk\DomainModels\TsStockReturnInfo.cs" />
+    <Compile Include="FrontDesk\DTOModels\DashboardApprovedRequsitionDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardDailyBillingAndWarrantyJobDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardDailyReceiveJobOrderDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardDailySingInAndOutDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardRequestSparePartsDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderFaultDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderRepairDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderServiceDTO.cs" />
@@ -168,10 +174,15 @@
     <Compile Include="FrontDesk\DTOModels\RequsitionInfoForJobOrderDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\SparePartsAvailableAndReqQtyDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TechnicalServicesStockDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\TSStockByRequsitionDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\TsStockReturnDetailDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\TsStockReturnInfoDTO.cs" />
+    <Compile Include="FrontDesk\ViewModels\DashboardApprovedRequsitionViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailyBillingAndWarrantyJobViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailyReceiveJobOrderViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailySingInAndOutViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardRequestSparePartsViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderFaultViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderRepairViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderServiceViewModel.cs" />
@@ -180,6 +191,9 @@
     <Compile Include="FrontDesk\ViewModels\RequsitionInfoForJobOrderViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\SparePartsAvailableAndReqQtyViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TechnicalServicesStockViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\TSStockByRequsitionViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\TsStockReturnDetailViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\TsStockReturnInfoViewModel.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />

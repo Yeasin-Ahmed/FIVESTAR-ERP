@@ -7,7 +7,7 @@
     <thead class="btn-dark">
         <tr class="text-center">
             <th>#SL</th>
-            <th>ServicesWerehouse</th>
+            <th class="hide">ServicesWerehouse</th>
             <th>MobileParts</th>
             <th>CostPrice</th>
             <th>SellPrice</th>
@@ -23,7 +23,7 @@
             badge = item.StockStatus.ToLower() == "stock-in" ? "badge bg-success" : (item.StockStatus.ToLower() == "stock-out" ? "badge bg-primary" : "badge bg-danger");
         <tr>
             <td class="text-center"><b>@sl</b></td>
-            <td>@item.ServicesWarehouseName</td>
+            <td class="hide">@item.ServicesWarehouseName</td>
             <td>@item.MobilePartName</td>
             <td class="text-center">@item.CostPrice.ToString("0.00 Tk")</td>
             <td class="text-center">@item.SellPrice.ToString("0.00 Tk")</td>

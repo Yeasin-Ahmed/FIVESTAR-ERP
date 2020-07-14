@@ -24,5 +24,7 @@ namespace ERPDAL.FrontDeskDAL
         public DbSet<JobOrderFault> tblJobOrderFault { get; set; }
         public DbSet<JobOrderService> tblJobOrderServices { get; set; }
         public DbSet<JobOrderRepair> tblJobOrderRepair { get; set; }
+        public DbSet<TsStockReturnInfo> tblTsStockReturnInfo { get; set; }
+        public DbSet<TsStockReturnDetail> tblTsStockReturnDetails { get; set; }
     }
 }

@@ -136,6 +136,8 @@
     <Compile Include="FrontDesk\Interface\IRequsitionDetailForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IRequsitionInfoForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\Interface\ITechnicalServicesStockBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\ITsStockReturnDetailsBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\ITsStockReturnInfoBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderAccessoriesBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderFaultBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderProblemBusiness.cs" />
@@ -146,6 +148,8 @@
     <Compile Include="FrontDesk\RequsitionInfoForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderBusiness.cs" />
     <Compile Include="FrontDesk\TechnicalServicesStockBusiness.cs" />
+    <Compile Include="FrontDesk\TsStockReturnDetailsBusiness.cs" />
+    <Compile Include="FrontDesk\TsStockReturnInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockDetailBusiness.cs" />
