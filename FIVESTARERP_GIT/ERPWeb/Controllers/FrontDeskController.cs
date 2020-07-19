@@ -213,17 +213,7 @@ namespace ERPWeb.Controllers
             bool IsSuccess = false;
             if(jobOrderId > 0 && !string.IsNullOrEmpty(status) && !string.IsNullOrEmpty(type))
             {
-                IsSuccess= _jobOrderBusiness.UpdateJobOrderStatus(jobOrderId, status, type, User.UserId, User.OrgId);
-            }
-            return Json(IsSuccess);
-        }
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult UpdateJobOrderTsRemarks(long jobOrderId, string remarks)
-        {
-            bool IsSuccess = false;
-            if (jobOrderId > 0 && !string.IsNullOrEmpty(remarks))
-            {
-                IsSuccess = _jobOrderBusiness.UpdateJobOrderTsRemarks(jobOrderId, remarks, User.UserId, User.OrgId,User.BranchId);
+                IsSuccess= _jobOrderBusiness.UpdateJobOrderStatus(jobOrderId, status, type, User.UserId, User.OrgId,User.BranchId);
             }
             return Json(IsSuccess);
         }
@@ -234,7 +224,7 @@ namespace ERPWeb.Controllers
             bool IsSuccess = false;
             if (jobOrderId > 0 && tsId> 0)
             {
-                IsSuccess = _jobOrderBusiness.AssignTSForJobOrder(jobOrderId, tsId, User.UserId, User.OrgId);
+                IsSuccess = _jobOrderBusiness.AssignTSForJobOrder(jobOrderId, tsId, User.UserId, User.OrgId,User.BranchId);
             }
             return Json(IsSuccess);
         }
@@ -249,7 +239,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign"))
             {
-                var dto = _jobOrderBusiness.GetJobOrdersTS(User.RoleName,mobileNo.Trim(), modelId, jobOrderId, jobCode,User.UserId, User.OrgId);
+                var dto = _jobOrderBusiness.GetJobOrdersTS(User.RoleName,mobileNo.Trim(), modelId, jobOrderId, jobCode,User.UserId, User.OrgId,User.BranchId);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -269,7 +259,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign"))
             {
-                var dto = _jobOrderBusiness.GetJobOrdersPush(jobOrderId, User.OrgId);
+                var dto = _jobOrderBusiness.GetJobOrdersPush(jobOrderId, User.OrgId,User.BranchId);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -298,7 +288,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search"))
             {
-                var dto = _jobOrderBusiness.GetJobOrdersPush(0, User.OrgId);
+                var dto = _jobOrderBusiness.GetJobOrdersPush(0, User.OrgId,User.BranchId);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -314,6 +304,17 @@ namespace ERPWeb.Controllers
             if (jobOrder > 0)
             {
                 IsSuccess = _jobOrderBusiness.SaveJobOrderPulling(jobOrder, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult UpdateJobOrderDeliveryStatus(long jobOrderId)
+        {
+            bool IsSuccess = false;
+            if (jobOrderId > 0)
+            {
+                IsSuccess = _jobOrderBusiness.UpdateJobOrderDeliveryStatus(jobOrderId, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
         }
@@ -384,10 +385,15 @@ namespace ERPWeb.Controllers
             }).ToList();
 
             var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
+            var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
             ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
             {
                 RequsitionCode = info.RequsitionCode,
-                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId,User.BranchId).ServicesWarehouseName),
+                JobOrderCode = (jobOrderInfo.JobOrderCode),
+                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId).Type),
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                EntryDate = info.EntryDate,
+                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
             };
             IEnumerable<RequsitionDetailForJobOrderViewModel> itemReturnDetailViews = new List<RequsitionDetailForJobOrderViewModel>();
             ViewBag.RequisitionStatus = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId).StateStatus;
@@ -403,7 +409,7 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlWarehouseName = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId,User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
 
-            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Accepted || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Approved).Select(st => new SelectListItem
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status =>status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected).Select(st => new SelectListItem
             {
                 Text = st.text,
                 Value = st.value
@@ -467,9 +473,16 @@ namespace ERPWeb.Controllers
             }).ToList();
 
             var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
+            var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
             ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
             {
                 RequsitionCode = info.RequsitionCode,
+                JobOrderCode = (jobOrderInfo.JobOrderCode),
+                Type= (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId).Type),
+                ModelName=(_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId,User.OrgId).DescriptionName),
+                
+                Requestby= UserForEachRecord(info.EUserId.Value).UserName,
+                EntryDate =info.EntryDate,
                 SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId,User.BranchId).ServicesWarehouseName),
             };
 
@@ -488,6 +501,10 @@ namespace ERPWeb.Controllers
             if (reqId > 0 && !string.IsNullOrEmpty(status))
             {
                 if (RequisitionStatus.Rejected == status)
+                {
+                    IsSuccess = _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(reqId, status, User.UserId, User.OrgId, User.BranchId);
+                }
+                if (RequisitionStatus.Pending == status)
                 {
                     IsSuccess = _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(reqId, status, User.UserId, User.OrgId, User.BranchId);
                 }
@@ -676,6 +693,33 @@ namespace ERPWeb.Controllers
             IEnumerable<SparePartsAvailableAndReqQtyViewModel> qtyViewModels = new List<SparePartsAvailableAndReqQtyViewModel>();
             AutoMapper.Mapper.Map(spareDTO, qtyViewModels);
             ViewBag.SparePartsAvailableAndReqQty = qtyViewModels;
+            //stock
+            IEnumerable<TechnicalServicesStockDTO> stockDTO = _technicalServicesStockBusiness.GetAllTechnicalServicesStock(joborderId.Value, User.OrgId, User.BranchId).Select(stock => new TechnicalServicesStockDTO
+            {
+                TsStockId = stock.TsStockId,
+                JobOrderId = stock.JobOrderId,
+                RequsitionInfoForJobOrderId = stock.RequsitionInfoForJobOrderId,
+                RequsitionCode = (_requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoOneByOrgId(stock.RequsitionInfoForJobOrderId, User.OrgId, User.BranchId).RequsitionCode),
+                SWarehouseId = stock.SWarehouseId,
+                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(stock.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+                PartsId = stock.PartsId,
+                PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(stock.PartsId.Value, User.OrgId).MobilePartName),
+                CostPrice = stock.CostPrice,
+                SellPrice = stock.SellPrice,
+                Quantity = stock.Quantity,
+                UsedQty = stock.UsedQty,
+                ReturnQty = stock.ReturnQty,
+                Remarks = stock.Remarks,
+                BranchId = stock.BranchId,
+                OrganizationId = stock.OrganizationId,
+                EUserId = stock.EUserId,
+                EntryDate = DateTime.Now,
+                UpUserId = stock.UpUserId,
+                UpdateDate = DateTime.Now
+            }).ToList();
+            IEnumerable<TechnicalServicesStockViewModel> viewModel = new List<TechnicalServicesStockViewModel>();
+            AutoMapper.Mapper.Map(stockDTO, viewModel);
+            ViewBag.TechnicalServicesStock = viewModel;
 
             return View();
         }
@@ -735,6 +779,17 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult UpdateJobOrderTsRemarks(long jobOrderId, string remarks)
+        {
+            bool IsSuccess = false;
+            if (jobOrderId > 0 && !string.IsNullOrEmpty(remarks))
+            {
+                IsSuccess = _jobOrderBusiness.UpdateJobOrderTsRemarks(jobOrderId, remarks, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         public ActionResult GetTSStockByRequsition(long? jobOrderId)
@@ -745,31 +800,70 @@ namespace ERPWeb.Controllers
             {
                 jobrepair = new JobOrderRepairViewModel
                 {
-                    JobOrderId=repair.JobOrderId,
                     JobOrderRepairId = repair.JobOrderRepairId,
                     RepairId = repair.RepairId,
                     RepairName = (_repairBusiness.GetRepairOneByOrgId(repair.RepairId, User.OrgId).RepairName)
                 };
             }
             ViewBag.jobrepair = jobrepair;
-            var dto = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrderId.Value, User.UserId, User.OrgId, User.BranchId).ToList();
+            var dto = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrderId.Value, User.UserId, User.OrgId, User.BranchId,User.RoleName).ToList();
             IEnumerable<TSStockByRequsitionViewModel> viewModels = new List<TSStockByRequsitionViewModel>();
             AutoMapper.Mapper.Map(dto, viewModels);
             return PartialView("GetTSStockByRequsition", viewModels);
         }
 
-        public ActionResult SaveReturnStockandTsStockOut(List<TechnicalServicesStockViewModel> servicesStockViewModel)
+        public ActionResult SaveReturnStockandTsStockOut(TSStockInfoViewModel servicesStockViewModel)
         {
             bool IsSuccess = false;
-            if (ModelState.IsValid && servicesStockViewModel.Count() > 0)
+            // JobOrder : , JobOrderSTokdetail
+            if (ModelState.IsValid )
             {
-                List<TechnicalServicesStockDTO> servicesStockDTOs = new List<TechnicalServicesStockDTO>();
+                TSStockInfoDTO servicesStockDTOs = new TSStockInfoDTO();
                 AutoMapper.Mapper.Map(servicesStockViewModel, servicesStockDTOs);
-                IsSuccess = _technicalServicesStockBusiness.SaveTechnicalServicesStockOut(servicesStockDTOs, User.UserId, User.OrgId, User.BranchId);
+                IsSuccess = _technicalServicesStockBusiness.SaveJobSignOutWithStock(servicesStockDTOs, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
         }
 
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult JobOrderTsStock(long jobOrderId)
+        {
+            var jobOrder = _jobOrderBusiness.GetJobOrdersByIdWithBranch(jobOrderId, User.BranchId, User.OrgId);
+            if (jobOrder !=null)
+            {
+               
+                JobOrderViewModel jobOrderViewModel = new JobOrderViewModel() {
+                    JodOrderId = jobOrder.JodOrderId,
+                    JobOrderCode = jobOrder.JobOrderCode,
+                    TsRepairStatus = jobOrder.TsRepairStatus,
+                    TSId =jobOrder.TSId
+                };
+                
+                //var JobOrderTsStock = _tsStockReturnDetailsBusiness.GetAllTsStockReturn(User.OrgId, User.BranchId).Select(s=> new TechnicalServicesStockViewModel {
+                //    PartsId = s.PartsId,
+                //    PartsName = _mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId,User.OrgId).MobilePartName,
+                //    RequsitionCode = s.RequsitionCode,
+                //    RequsitionInfoForJobOrderId = s.ReqInfoId,
+                //    Quantity = s.Quantity
+                //});
+
+                var JobOrderTsStock = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrder.JodOrderId, User.UserId, User.OrgId, User.BranchId, User.RoleName).Select(s => new TechnicalServicesStockViewModel
+                {
+                    PartsId = s.PartsId,
+                    PartsName = _mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId, User.OrgId).MobilePartName,
+                    RequsitionCode = s.RequsitionCode,
+                    RequsitionInfoForJobOrderId = s.RequsitionInfoForJobOrderId,
+                    Quantity = s.Quantity,
+                    UsedQty =0
+                });
+
+                //IEnumerable<TechnicalServicesStockViewModel> servicesStockViewModel = new List<TechnicalServicesStockViewModel>();
+                //AutoMapper.Mapper.Map(JobOrderTsStock, servicesStockViewModel);
+
+                return Json(new { jobOrder = jobOrderViewModel, tsStock = JobOrderTsStock });
+            }
+            return Json(null);
+        }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult UpdateReturnStatus(long returnInfoId, string status)
         {

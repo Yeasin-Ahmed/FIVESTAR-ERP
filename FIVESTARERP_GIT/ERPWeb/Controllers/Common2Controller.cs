@@ -32,8 +32,11 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderBusiness _jobOrderBusiness;
         private readonly IFaultBusiness _faultBusiness;
         private readonly IServiceBusiness _serviceBusiness;
+        private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
+        private readonly IJobOrderFaultBusiness _jobOrderFaultBusiness;
+        private readonly IJobOrderServiceBusiness _jobOrderServiceBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -46,6 +49,9 @@ namespace ERPWeb.Controllers
             this._jobOrderBusiness = jobOrderBusiness;
             this._faultBusiness = faultBusiness;
             this._serviceBusiness = serviceBusiness;
+            this._jobOrderProblemBusiness = jobOrderProblemBusiness;
+            this._jobOrderFaultBusiness = jobOrderFaultBusiness;
+            this._jobOrderServiceBusiness = jobOrderServiceBusiness;
         }
 
         #region Configuration Module
@@ -125,6 +131,24 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateFaultName(string faultName, long id)
         {
             bool isExist = _faultBusiness.IsDuplicateFaultName(faultName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateSymptomId(long id,long prblmId)
+        {
+            bool isExist = _jobOrderProblemBusiness.IsDuplicateSymptomName(id, prblmId, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateFaultId(long id, long faultId)
+        {
+            bool isExist = _jobOrderFaultBusiness.IsDuplicateFaultName(id, faultId, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateServicesId(long id, long servicesId)
+        {
+            bool isExist = _jobOrderServiceBusiness.IsDuplicateServicesName(id, servicesId, User.OrgId);
             return Json(isExist);
         }
 

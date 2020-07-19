@@ -187,11 +187,15 @@
             hdfRowIndex.val('0');
         }
         //////////Warehouse Stock Out
+        $(document).on('click', ".btnPending", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.pending);
+        })
         $(document).on('click', ".btnReject", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.reject);
         })
-        $(document).on('click', ".btnApproved", function (e) {
+        $(document).on('click', ".btnIssue", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.approved);
         })

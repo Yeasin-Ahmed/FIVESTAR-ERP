@@ -25,5 +25,10 @@ namespace ERPBO.FrontDesk.DTOModels
         //Custom p
         public string SWarehouseName { get; set; }
         public string Branch { get; set; }
+        public string ModelName { get; set; }
+        public string Type { get; set; }
+        public string Requestby { get; set; }
+
+        public Nullable<DateTime> Date { get; set; }
     }
 }

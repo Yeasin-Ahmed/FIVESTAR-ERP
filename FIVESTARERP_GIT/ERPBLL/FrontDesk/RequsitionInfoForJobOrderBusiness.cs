@@ -60,7 +60,7 @@ namespace ERPBLL.FrontDesk
                 requsitionInfo.SWarehouseId = requsitionInfoDTO.SWarehouseId;
                 requsitionInfo.JobOrderId = requsitionInfoDTO.JobOrderId;
 
-                requsitionInfo.StateStatus = RequisitionStatus.Pending;
+                requsitionInfo.StateStatus = RequisitionStatus.Current;
                 requsitionInfo.Remarks = requsitionInfoDTO.Remarks;
                 requsitionInfo.EntryDate = DateTime.Now;
                 requsitionInfo.EUserId = userId;

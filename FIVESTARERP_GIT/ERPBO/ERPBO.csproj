@@ -174,7 +174,9 @@
     <Compile Include="FrontDesk\DTOModels\RequsitionInfoForJobOrderDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\SparePartsAvailableAndReqQtyDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TechnicalServicesStockDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\TSSockDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TSStockByRequsitionDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\TSStockInfoDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TsStockReturnDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TsStockReturnInfoDTO.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardApprovedRequsitionViewModel.cs" />
@@ -191,7 +193,9 @@
     <Compile Include="FrontDesk\ViewModels\RequsitionInfoForJobOrderViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\SparePartsAvailableAndReqQtyViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TechnicalServicesStockViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\TSSockViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TSStockByRequsitionViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\TSStockInfoViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TsStockReturnDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TsStockReturnInfoViewModel.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />

@@ -8,10 +8,22 @@
 }
 <table class="table table-bordered table-striped table-sm table-responsive-lg">
     <tr>
+        <td style="width:13%">JobOrder</td>
+        <td style="width:20%"><b>@info.JobOrderCode</b></td>
         <td style="width:13%">RequsitionCode</td>
         <td style="width:20%"><b>@info.RequsitionCode</b></td>
+        <td style="width:13%">Type</td>
+        <td style="width:20%"><b>@info.Type</b></td>
         <td style="width:10%" class="hide">ServicesWarehouse</td>
         <td style="width:23%" class="hide"><b>@info.SWarehouseName</b></td>
+    </tr>
+    <tr>
+        <td style="width:13%">RequestBy</td>
+        <td style="width:20%"><b>@info.Requestby</b></td>
+        <td style="width:13%">RequestDate</td>
+        <td style="width:20%"><b>@info.EntryDate</b></td>
+        <td style="width:13%">ModelName</td>
+        <td style="width:20%"><b>@info.ModelName</b></td>
     </tr>
 </table>
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblRequsitionDetailForJob">
@@ -41,10 +53,18 @@
     </tbody>
 </table>
 
-@if ((string)ViewBag.RequisitionStatus == "Pending")
+@if ((string)ViewBag.RequisitionStatus == "Current")
 {
 <div class="modal-footer">
     <button class="btn btn-sm btn-danger btnReject">Reject</button>
-    <button class="btn btn-sm btn-success btnApproved">Approved</button>
+    <button class="btn btn-sm btn-warning btnPending">Pending</button>
+    <button class="btn btn-sm btn-success btnIssue">Issue</button>
 </div>
+}
+@if ((string)ViewBag.RequisitionStatus == "Pending")
+{
+    <div class="modal-footer">
+        <button class="btn btn-sm btn-danger btnReject">Reject</button>
+        <button class="btn btn-sm btn-success btnIssue">Issue</button>
+    </div>
 }

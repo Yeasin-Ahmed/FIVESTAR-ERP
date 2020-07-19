@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Create Job Order";
     long jobOrderId = (long)ViewBag.JobOrderId;
+    string toDay = DateTime.Now.ToString("dd MMM yyyy");
 }
 <div class="row">
     <div class="col-md-12">
@@ -283,7 +284,6 @@
         var ddlJobOrderType = $("#ddlJobOrderType");
 
         $(document).ready(function () {
-
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -307,12 +307,16 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
+            var currentDate = new Date();
             $('#dptJobEntryDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
-                todayHighlight: true
+                todayHighlight: true,
+                "setDate": currentDate
             });
+
             loadData();
+
         })
 
         $(document).ready(function () {
@@ -400,6 +404,7 @@
             }
             else {
                // alert('JobOrder not Found');
+               
             }
         }
 
@@ -700,7 +705,7 @@
         var txtCustomerName = $("#txtCustomerName");
         var txtCustomerAddress = $("#txtCustomerAddress");
         var txtCustomerPhone = $("#txtCustomerPhone");
-        var txtRemarks = $("#txtRemarks");
+        var txtCustomerRemarks = $("#txtCustomerRemarks");
 
         function OpenModal() {
             clearCtrl();
@@ -775,7 +780,7 @@
             txtCustomerName.val('');
             txtCustomerAddress.val('');
             txtCustomerPhone.val('');
-            txtRemarks.val('');
+            txtCustomerRemarks.val('');
         }
 
         function redirectPage(page) {

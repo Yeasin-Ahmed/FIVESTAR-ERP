@@ -21,7 +21,7 @@
     <tbody>
         @foreach (var info in Model)
         {
-            badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-secondary" : "badge bg-danger"));
+            badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Current" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-secondary" : "badge bg-danger"));
             sl = sl + 1;
         <tr>
             <td class="text-center text-bold">@sl</td>

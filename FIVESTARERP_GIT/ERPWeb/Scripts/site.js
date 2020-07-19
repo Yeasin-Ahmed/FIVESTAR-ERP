@@ -27,7 +27,7 @@ var reqStatus = {
     accepted: "Accepted",
     canceled: "Canceled",
     checked: "Checked",
-    handOver:"HandOver"
+    handOver: "HandOver"
 };
 
 var flag = {
@@ -47,7 +47,8 @@ var stockStatus = {
 var jobOrderStatus = {
     pendingJobOrder: "Pending-JobOrder",
     customerApproved: "Customer-Approved",
-    customerDisapproved: "Customer-Disapproved"
+    customerDisapproved: "Customer-Disapproved",
+    deliveryDone:"Delivery-Done"
 };
 var returnStatus = {
     stockReturn: "Stock-Return",

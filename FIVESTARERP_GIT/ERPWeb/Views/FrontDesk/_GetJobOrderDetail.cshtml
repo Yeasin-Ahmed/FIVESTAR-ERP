@@ -90,10 +90,10 @@
     }
 </table>
 
-@if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.PendingJobOrder)
+@if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone)
 {
     <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-warning btnDisapproved">Disapproved</button>
-        <button type="button" class="btn btn-sm btn-success btnApproved">Approved</button>
+        @*<button type="button" class="btn btn-sm btn-warning btnDisapproved">Disapproved</button>*@
+        <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
     </div>
 }

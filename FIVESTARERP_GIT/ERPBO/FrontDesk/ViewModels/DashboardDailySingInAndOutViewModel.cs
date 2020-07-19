@@ -8,7 +8,7 @@ namespace ERPBO.FrontDesk.ViewModels
 {
   public class DashboardDailySingInAndOutViewModel
     {
-        public string StateStatus { get; set; }
-        public int Total { get; set; }
+        public int TotalSignInToday { get; set; }
+        public int TotalSignOutToday { get; set; }
     }
 }

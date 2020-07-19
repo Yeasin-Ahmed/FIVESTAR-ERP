@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ERPBO.FrontDesk.DTOModels
 {
-   public class DashboardApprovedRequsitionDTO
+   public class TSSockDTO
     {
         public long RequsitionInfoForJobOrderId { get; set; }
-        public string StateStatus { get; set; }
-        public long JodOrderId { get; set; }
-        public string JobOrderCode { get; set; }
         public string RequsitionCode { get; set; }
-        public Nullable<DateTime> EntryDate { get; set; }
+        public long PartsId { get; set; }
+        public string PartsName { get; set; }
+        public int Quantity { get; set; }
+        public int UsedQty { get; set; }
     }
 }

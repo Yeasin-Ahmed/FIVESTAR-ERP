@@ -23,7 +23,9 @@ namespace ERPBLL.Common
                 new Dropdown{text=RequisitionStatus.Approved,value=RequisitionStatus.Approved },
                 new Dropdown{text=RequisitionStatus.Accepted,value=RequisitionStatus.Accepted },
                 new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Rejected },
-                new Dropdown{text=RequisitionStatus.Canceled,value=RequisitionStatus.Canceled }
+                new Dropdown{text=RequisitionStatus.Canceled,value=RequisitionStatus.Canceled },
+                new Dropdown{text=RequisitionStatus.Waiting,value=RequisitionStatus.Waiting },
+                new Dropdown{text=RequisitionStatus.Current,value=RequisitionStatus.Current }
             };
             return dropdowns;
         }
@@ -63,7 +65,8 @@ namespace ERPBLL.Common
             {
                 new Dropdown(){text=ModelColors.Red,value=ModelColors.Red},
                 new Dropdown(){text=ModelColors.Blue,value=ModelColors.Blue},
-                new Dropdown(){text=ModelColors.Black,value=ModelColors.Black}
+                new Dropdown(){text=ModelColors.Black,value=ModelColors.Black},
+                new Dropdown(){text=ModelColors.White,value=ModelColors.White},
             };
             return dropdowns;
         }
@@ -109,10 +112,12 @@ namespace ERPBLL.Common
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
             {
-                new Dropdown(){text=JobOrderStatus.PendingJobOrder,value=JobOrderStatus.PendingJobOrder},
+                //new Dropdown(){text=JobOrderStatus.PendingJobOrder,value=JobOrderStatus.PendingJobOrder},
                 new Dropdown(){text=JobOrderStatus.CustomerApproved,value=JobOrderStatus.CustomerApproved},
-                new Dropdown(){text=JobOrderStatus.CustomerDisapproved,value=JobOrderStatus.CustomerDisapproved},
-                 new Dropdown(){text=JobOrderStatus.AssignToTS,value=JobOrderStatus.AssignToTS}
+                //new Dropdown(){text=JobOrderStatus.CustomerDisapproved,value=JobOrderStatus.CustomerDisapproved},
+                 new Dropdown(){text=JobOrderStatus.AssignToTS,value=JobOrderStatus.AssignToTS},
+                 new Dropdown(){text=JobOrderStatus.RepairDone,value=JobOrderStatus.RepairDone},
+                 new Dropdown(){text=JobOrderStatus.DeliveryDone,value=JobOrderStatus.DeliveryDone},
             };
             return dropdowns;
         }

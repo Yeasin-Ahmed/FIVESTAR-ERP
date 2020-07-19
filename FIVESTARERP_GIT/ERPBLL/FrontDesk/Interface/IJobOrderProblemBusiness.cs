@@ -15,6 +15,7 @@ namespace ERPBLL.FrontDesk.Interface
         JobOrderProblem GetJobOrderProblemByJobId(long id, long orgId);
 
         bool SaveJobOrderProblem(List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId);
+        bool IsDuplicateSymptomName(long id, long prblmId, long orgId);
 
     }
 }

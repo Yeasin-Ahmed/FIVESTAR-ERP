@@ -36,6 +36,11 @@ namespace ERPBLL.FrontDesk
             return _jobOrderProblemRepository.GetAll(a => a.JobOrderId == jobOrderId && a.OrganizationId == orgId).ToList();
         }
 
+        public bool IsDuplicateSymptomName(long id, long prblmId, long orgId)
+        {
+            return _jobOrderProblemRepository.GetOneByOrg(sym =>sym.JobOrderId == id && sym.ProblemId == prblmId && sym.OrganizationId == orgId) != null ? true : false;
+        }
+
         public bool SaveJobOrderProblem(List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId)
         {
             List<JobOrderProblem> listjobOrderProblem = new List<JobOrderProblem>();

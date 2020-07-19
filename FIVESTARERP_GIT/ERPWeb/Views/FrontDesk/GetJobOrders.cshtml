@@ -196,20 +196,18 @@
             }
         })
 
-        $(document).on('click', '.btnApproved', function (e) {
-            e.preventDefault();
-            if (validateStatus()) {
-                bootbox.confirm("Are you sure you want to change the status to <b>Approved<b>?", function (result) {
-                    if (result) {
-                        changeJobOrderStatus(jobOrderStatus.customerApproved);
-                    }
-                })
-            }
-        })
+        //$(document).on('click', '.btnDeliveryDone', function (e) {
+        //    e.preventDefault();
+        //        bootbox.confirm("Are you sure you want to change the status to <b>Delivery<b>?", function (result) {
+        //            if (result) {
+        //                changeJobOrderStatus(jobOrderStatus.deliveryDone);
+        //            }
+        //        })
+        //})
 
         function changeJobOrderStatus(status) {
-            disable(".btnDisapproved");
-            disable(".btnApproved");
+           // disable(".btnDisapproved");
+           // disable(".btnApproved");
             var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val(), status: status, type: $(".ddlJobOrderType").val() });
 
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderStatus', data, getToken())).then(function (res, status) {
@@ -221,17 +219,17 @@
                 else {
                     $('.toastrJobOrderError').trigger('click');
                 }
-                enable(".btnDisapproved");
-                enable(".btnApproved");
+               // enable(".btnDisapproved");
+              //  enable(".btnApproved");
             }).fail(function (error) {
-                enable(".btnDisapproved");
-                enable(".btnApproved");
+                //enable(".btnDisapproved");
+                //enable(".btnApproved");
                 console.log(error);
             })
 
             console.log(data);
-            enable(".btnDisapproved");
-            enable(".btnApproved");
+           // enable(".btnDisapproved");
+           // enable(".btnApproved");
         }
 
         //btnAssignTS
@@ -279,6 +277,37 @@
                 console.log(error);
             })
             enable(".btnAssignTS");
+        }
+
+        $(document).on('click', '.btnDeliveryDone', function (e) {
+            e.preventDefault();
+            if (validateStatus()) {
+                bootbox.confirm("Are you sure you want to change the status to <b>Delivery<b>?", function (result) {
+                    if (result) {
+                        changeJobOrderStatus(jobOrderStatus.deliveryDone);
+                    }
+                })
+            }
+        })
+        function changeJobOrderStatus(status) {
+            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val()});
+
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderDeliveryStatus', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $("#modalJobOrderDetails").modal("toggle");
+                    $('.toastrJobOrderSuccess').trigger('click');
+                }
+                else {
+                    $('.toastrJobOrderError').trigger('click');
+                }
+                setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobOrders","FrontDesk",new {})');
+                        }, 1500);
+            }).fail(function (error) {
+                console.log(error);
+            })
+
+            console.log(data);
         }
 
     </script>

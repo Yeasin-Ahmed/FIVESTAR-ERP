@@ -31,6 +31,11 @@ namespace ERPBLL.FrontDesk
             return jobOrderServiceRepository.GetAll(a => a.JobOrderId == joborderId && a.OrganizationId == orgId).ToList();
         }
 
+        public bool IsDuplicateServicesName(long jobOrderId, long serviceId, long orgId)
+        {
+            return jobOrderServiceRepository.GetOneByOrg(ser => ser.JobOrderId == jobOrderId && ser.ServiceId == serviceId && ser.OrganizationId == orgId) != null ? true : false;
+        }
+
         public bool SaveJobOrderServicve(List<JobOrderServiceDTO> jobOrderServices, long userId, long orgId)
         {
             List<JobOrderService> listjobOrderService = new List<JobOrderService>();

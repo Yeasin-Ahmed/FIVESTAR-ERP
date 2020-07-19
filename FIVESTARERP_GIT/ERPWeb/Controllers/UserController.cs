@@ -110,14 +110,14 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModel);
                 ViewBag.JobOrderSummery = viewModel;
 
-                var jobOrderPending = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.PendingJobOrder);
-                ViewBag.JobOrderPending = (jobOrderPending == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.PendingJobOrder, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderPending.StateStatus, TotalCount = jobOrderPending.TotalCount };
+                var repairDone = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.RepairDone);
+                ViewBag.RepairDone = (repairDone == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.RepairDone, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = repairDone.StateStatus, TotalCount = repairDone.TotalCount };
 
                 var jobOrderApproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.CustomerApproved);
                 ViewBag.JobOrderApproved = (jobOrderApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.CustomerApproved, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderApproved.StateStatus, TotalCount = jobOrderApproved.TotalCount };
 
-                var jobOrderDisapproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.CustomerDisapproved);
-                ViewBag.JobOrderDisapproved = (jobOrderDisapproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.CustomerDisapproved, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderDisapproved.StateStatus, TotalCount = jobOrderDisapproved.TotalCount };
+                var deliveryDone = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.DeliveryDone);
+                ViewBag.DeliveryDone = (deliveryDone == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.DeliveryDone, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = deliveryDone.StateStatus, TotalCount = deliveryDone.TotalCount };
 
                 var jobOrdeAssignToTS = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.AssignToTS);
                 ViewBag.JobOrdeAssignToTS = (jobOrdeAssignToTS == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.AssignToTS, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrdeAssignToTS.StateStatus, TotalCount = jobOrdeAssignToTS.TotalCount };
@@ -146,19 +146,19 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(sparePartsDTO, sparePartsViewModels);
                 ViewBag.DashboardDailySparePartsViewModel = sparePartsViewModels;
 
-                // Requsition Approved
-                IEnumerable<DashboardApprovedRequsitionDTO> approvedRequsitionDTO = _jobOrderBusiness.DashboardApprovedRequsition(User.OrgId, User.BranchId);
-                IEnumerable<DashboardApprovedRequsitionViewModel> approvedRequsitionViewModels = new List<DashboardApprovedRequsitionViewModel>();
-                AutoMapper.Mapper.Map(approvedRequsitionDTO, approvedRequsitionViewModels);
-                ViewBag.DashboardApprovedViewModel = approvedRequsitionViewModels;
-
-                // Requsition Approved
+                // Requsition Pending
                 IEnumerable<DashboardApprovedRequsitionDTO> pendingRequsitionDTO = _jobOrderBusiness.DashboardPendingRequsition(User.OrgId, User.BranchId);
                 IEnumerable<DashboardApprovedRequsitionViewModel> pendingRequsitionViewModels = new List<DashboardApprovedRequsitionViewModel>();
                 AutoMapper.Mapper.Map(pendingRequsitionDTO, pendingRequsitionViewModels);
                 ViewBag.DashboardPendingViewModel = pendingRequsitionViewModels;
 
-                // Requsition Approved
+                // Requsition Current
+                IEnumerable<DashboardApprovedRequsitionDTO> currentRequsitionDTO = _jobOrderBusiness.DashboardCurrentRequsition(User.OrgId, User.BranchId);
+                IEnumerable<DashboardApprovedRequsitionViewModel> currentRequsitionViewModels = new List<DashboardApprovedRequsitionViewModel>();
+                AutoMapper.Mapper.Map(currentRequsitionDTO, currentRequsitionViewModels);
+                ViewBag.DashboardCurrentViewModel = currentRequsitionViewModels;
+
+                // Return Spareparts
                 IEnumerable<DashbordTsPartsReturnDTO> returnDTO = _tsStockReturnInfoBusiness.DashboardReturnParts(User.OrgId, User.BranchId);
                 IEnumerable<DashbordTsPartsReturnViewModel> returnViewModels = new List<DashbordTsPartsReturnViewModel>();
                 AutoMapper.Mapper.Map(returnDTO, returnViewModels);

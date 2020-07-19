@@ -18,14 +18,18 @@ namespace ERPBLL.FrontDesk
         private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
         private readonly IRequsitionDetailForJobOrderBusiness _requsitionDetailForJobOrderBusiness;
         private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
+        private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
+        private readonly IJobOrderBusiness _jobOrderBusiness;
 
-        public TechnicalServicesStockBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness)
+        public TechnicalServicesStockBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IJobOrderBusiness jobOrderBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this.technicalServicesStockRepository = new TechnicalServicesStockRepository(this._frontDeskUnitOfWork);
             this._requsitionInfoForJobOrderBusiness = requsitionInfoForJobOrderBusiness;
             this._requsitionDetailForJobOrderBusiness = requsitionDetailForJobOrderBusiness;
             this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
+            this._jobOrderTSBusiness = jobOrderTSBusiness;
+            this._jobOrderBusiness = jobOrderBusiness;
         }
 
         public IEnumerable<TechnicalServicesStock> GetAllTechnicalServicesStock(long id, long orgId, long branchId)
@@ -38,17 +42,95 @@ namespace ERPBLL.FrontDesk
             return technicalServicesStockRepository.GetAll(stock => stock.TsStockId == id && stock.OrganizationId == orgId && stock.BranchId == branchId).ToList();
         }
 
-        public IEnumerable<TSStockByRequsitionDTO> GetStockByJobOrder(long jobOrderId, long tsId, long orgId, long branchId)
+        public IEnumerable<TSStockByRequsitionDTO> GetStockByJobOrder(long? jobOrderId, long tsId, long orgId, long branchId,string roleName)
         {
-            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<TSStockByRequsitionDTO>(
-                string.Format(@"Select jo.JodOrderId,rq.RequsitionInfoForJobOrderId,jo.JobOrderCode,rq.RequsitionCode,parts.MobilePartName,rq.EUserId,rq.EntryDate,jo.DescriptionId,
-stock.PartsId,stock.Quantity,stock.StateStatus 
-from [FrontDesk].dbo.tblTechnicalServicesStock stock 
-inner join [FrontDesk].dbo.tblJobOrders jo on stock.JobOrderId=jo.JodOrderId
-inner join [FrontDesk].dbo.tblRequsitionInfoForJobOrders rq on stock.RequsitionInfoForJobOrderId=rq.RequsitionInfoForJobOrderId
-inner join [Configuration].dbo.tblMobileParts parts on stock.PartsId=parts.MobilePartId
-where jo.JodOrderId={0} and rq.StateStatus='Approved' and stock.EUserId={1} and jo.OrganizationId={2}
-and jo.BranchId={3} and stock.StateStatus='Stock-Open'", jobOrderId, tsId, orgId, branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<TSStockByRequsitionDTO>(QueryForStock(jobOrderId,tsId,orgId,branchId,roleName)).ToList();
+        }
+
+        public bool SaveJobSignOutWithStock(TSStockInfoDTO dto, long userId, long orgId, long branchId)
+        {
+            bool IsSuccess = true;
+            var jobOrderInDb = _jobOrderBusiness.GetJobOrderById(dto.JobOrderId, orgId);
+            if(jobOrderInDb != null)
+            {
+                //jobOrderInDb.StateStatus = dto.TsRepairStatus == "REPAIR AND RETURN" ? "Repair-Done" : JobOrderStatus.CustomerApproved;
+
+                if(dto.StockDetails.Count > 0) // Stock-Start
+                {
+                    List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
+                    List<TsStockReturnDetailDTO> returnStocks = new List<TsStockReturnDetailDTO>();
+
+                    foreach (var item in dto.StockDetails)
+                    {
+                        var servicesInfo = GetAllTechnicalServicesStock(dto.JobOrderId, orgId, branchId).Where(o => o.PartsId == item.PartsId && o.JobOrderId == dto.JobOrderId && o.RequsitionInfoForJobOrderId == item.RequsitionInfoForJobOrderId).FirstOrDefault();
+                        servicesInfo.UsedQty = item.UsedQty;
+                        servicesInfo.ReturnQty = item.Quantity - item.UsedQty;
+                        servicesInfo.StateStatus = "Stock-Closed";
+
+                        technicalServicesStockRepository.Update(servicesInfo);
+                        if (servicesInfo.ReturnQty > 0)
+                        {
+                            TsStockReturnDetailDTO returnStock = new TsStockReturnDetailDTO()
+                            {
+                                ReqInfoId = item.RequsitionInfoForJobOrderId,
+                                RequsitionCode = item.RequsitionCode,
+                                PartsId = item.PartsId,
+                                PartsName = item.PartsName,
+                                Quantity = servicesInfo.ReturnQty,
+                                JobOrderId = dto.JobOrderId,
+                                BranchId = branchId,
+                                OrganizationId = orgId,
+                                EUserId = userId,
+                            };
+                            returnStocks.Add(returnStock); // 
+                        }
+
+                    }
+                    if(returnStocks.Count > 0)
+                    {
+                        var distinctReturnInfo = returnStocks.Select(s => new { RequsitionCode = s.RequsitionCode, JobOrderId = s.JobOrderId, ReqInfoId = s.ReqInfoId }).Distinct().ToList();
+
+                        List<TsStockReturnInfoDTO> returnInfoList = new List<TsStockReturnInfoDTO>();
+                        foreach (var info in distinctReturnInfo)
+                        {
+                            TsStockReturnInfoDTO tsReturnInfo = new TsStockReturnInfoDTO()
+                            {
+                                RequsitionCode = info.RequsitionCode,
+                                JobOrderId = info.JobOrderId,
+                                ReqInfoId = info.ReqInfoId,
+
+                            };
+                            var detailsList = returnStocks.Where(s => s.RequsitionCode == info.RequsitionCode && s.JobOrderId == info.JobOrderId && s.ReqInfoId == info.ReqInfoId).ToList();
+                            tsReturnInfo.TsStockReturnDetails = detailsList;
+                            returnInfoList.Add(tsReturnInfo);
+                        }
+
+                        technicalServicesStockRepository.InsertAll(servicesStocks);
+                        IsSuccess = technicalServicesStockRepository.Save();
+                        if (IsSuccess)
+                        {
+                            // Done - JobOrder - Repair-Done // Not Done -- JobOrder - Customer-Approved
+                            IsSuccess = _tsStockReturnInfoBusiness.SaveTsReturnStock(returnInfoList, userId, orgId, branchId);
+                        }
+                        else
+                        {
+                            IsSuccess = false;
+                        }
+                    }
+                    else
+                    {
+                        IsSuccess= technicalServicesStockRepository.Save(); // update used qty
+                    }
+                    
+
+                }// Stock-End
+
+                if (IsSuccess== true && _jobOrderTSBusiness.UpdateJobOrderTsStatus(dto.JobOrderId, userId, orgId, branchId) == true)
+                {
+                    IsSuccess = _jobOrderBusiness.UpdateJobSingOutStatus(dto.JobOrderId, userId, orgId, branchId);
+                }
+            }
+            return IsSuccess;
         }
 
         public bool SaveTechnicalServicesStockIn(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId, long branchId)
@@ -87,9 +169,9 @@ and jo.BranchId={3} and stock.StateStatus='Stock-Open'", jobOrderId, tsId, orgId
             return technicalServicesStockRepository.Save();
         }
 
-        public bool SaveTechnicalServicesStockOut(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId, long branchId)
+        public bool SaveTechnicalServicesStockOut(List<TechnicalServicesStockDTO> servicesStockDTOs, long jobOrderId, long userId, long orgId, long branchId)
         {
-            //bool IsSuccess = false;
+            bool IsSuccess = false;
             List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
             List<TsStockReturnDetailDTO> returnStocks = new List<TsStockReturnDetailDTO>();
             foreach (var item in servicesStockDTOs)
@@ -100,7 +182,7 @@ and jo.BranchId={3} and stock.StateStatus='Stock-Open'", jobOrderId, tsId, orgId
                 servicesInfo.StateStatus = "Stock-Closed";
 
                 technicalServicesStockRepository.Update(servicesInfo);
-                if(servicesInfo.ReturnQty > 0)
+                if (servicesInfo.ReturnQty > 0)
                 {
                     TsStockReturnDetailDTO returnStock = new TsStockReturnDetailDTO()
                     {
@@ -116,10 +198,10 @@ and jo.BranchId={3} and stock.StateStatus='Stock-Open'", jobOrderId, tsId, orgId
                     };
                     returnStocks.Add(returnStock); // 
                 }
-                
+
             }
 
-            var distinctReturnInfo = returnStocks.Select(s => new { RequsitionCode = s.RequsitionCode, JobOrderId = s.JobOrderId,ReqInfoId=s.ReqInfoId }).Distinct().ToList();
+            var distinctReturnInfo = returnStocks.Select(s => new { RequsitionCode = s.RequsitionCode, JobOrderId = s.JobOrderId, ReqInfoId = s.ReqInfoId }).Distinct().ToList();
 
             List<TsStockReturnInfoDTO> returnInfoList = new List<TsStockReturnInfoDTO>();
             foreach (var info in distinctReturnInfo)
@@ -128,20 +210,29 @@ and jo.BranchId={3} and stock.StateStatus='Stock-Open'", jobOrderId, tsId, orgId
                 {
                     RequsitionCode = info.RequsitionCode,
                     JobOrderId = info.JobOrderId,
-                    ReqInfoId=info.ReqInfoId,
-                    
+                    ReqInfoId = info.ReqInfoId,
+
                 };
-                var detailsList =returnStocks.Where(s => s.RequsitionCode == info.RequsitionCode && s.JobOrderId == info.JobOrderId && s.ReqInfoId==info.ReqInfoId).ToList();
+                var detailsList = returnStocks.Where(s => s.RequsitionCode == info.RequsitionCode && s.JobOrderId == info.JobOrderId && s.ReqInfoId == info.ReqInfoId).ToList();
                 tsReturnInfo.TsStockReturnDetails = detailsList;
                 returnInfoList.Add(tsReturnInfo);
             }
 
             technicalServicesStockRepository.InsertAll(servicesStocks);
-            if (technicalServicesStockRepository.Save()==true)
+            if (technicalServicesStockRepository.Save() == true)
             {
-                return _tsStockReturnInfoBusiness.SaveTsReturnStock(returnInfoList, userId, orgId, branchId);
+                // Done - JobOrder - Repair-Done // Not Done -- JobOrder - Customer-Approved
+                IsSuccess = _tsStockReturnInfoBusiness.SaveTsReturnStock(returnInfoList, userId, orgId, branchId);
+                if (IsSuccess == true)
+                {
+                    if (_jobOrderTSBusiness.UpdateJobOrderTsStatus(jobOrderId, userId, orgId, branchId) == true)
+                    {
+                        return _jobOrderBusiness.UpdateJobSingOutStatus(jobOrderId, userId, orgId, branchId);
+                    }
+
+                }
             }
-            return false ;
+            return IsSuccess;
         }
         public bool SaveTechnicalStockInRequistion(long id, string status, long orgId, long userId, long branchId)
         {
@@ -176,5 +267,38 @@ and jo.BranchId={3} and stock.StateStatus='Stock-Open'", jobOrderId, tsId, orgId
             }
             return false;
         }
+
+        private string QueryForStock(long? jobOrderId, long tsId, long orgId, long branchId, string roleName)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            if (jobOrderId != null && jobOrderId > 0) // Single Job Order Searching
+            {
+                param += string.Format(@" and jo.JodOrderId ={0}", jobOrderId);
+            }
+            if (orgId > 0)
+            {
+                param += string.Format(@" and jo.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@" and jo.BranchId={0}", branchId);
+            }
+            if (roleName == "Technical Services")
+            {
+                param += string.Format(@" and rq.EUserId ={0}", tsId);
+            }
+
+
+            query = string.Format(@"Select jo.JodOrderId,rq.RequsitionInfoForJobOrderId,jo.JobOrderCode,rq.RequsitionCode,parts.MobilePartName,rq.EUserId,rq.EntryDate,jo.DescriptionId,
+        stock.PartsId,stock.Quantity,stock.StateStatus 
+            from [FrontDesk].dbo.tblTechnicalServicesStock stock 
+        inner join [FrontDesk].dbo.tblJobOrders jo on stock.JobOrderId=jo.JodOrderId
+        inner join [FrontDesk].dbo.tblRequsitionInfoForJobOrders rq on stock.RequsitionInfoForJobOrderId=rq.RequsitionInfoForJobOrderId
+        inner join [Configuration].dbo.tblMobileParts parts on stock.PartsId=parts.MobilePartId
+        where  rq.StateStatus='Approved'{0} and stock.StateStatus='Stock-Open'{0}", Utility.ParamChecker(param));
+            return query;
+        }
     }
+    
 }

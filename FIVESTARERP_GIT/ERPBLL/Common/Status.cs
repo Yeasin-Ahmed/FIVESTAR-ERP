@@ -17,6 +17,8 @@ namespace ERPBLL.Common
         public static readonly string Canceled = "Canceled";
         public static readonly string Checked = "Checked";
         public static readonly string HandOver = "HandOver";
+        public static readonly string Waiting = "Waiting";
+        public static readonly string Current = "Current";
     }
     public class StockStatus
     {
@@ -83,6 +85,8 @@ namespace ERPBLL.Common
         public static readonly string CustomerApproved = "Customer-Approved";
         public static readonly string CustomerDisapproved = "Customer-Disapproved";
         public static readonly string AssignToTS = "TS-Assigned";
+        public static readonly string RepairDone = "Repair-Done";
+        public static readonly string DeliveryDone = "Delivery-Done";
     }
     public class JobOrderTypes
     {
@@ -100,6 +104,7 @@ namespace ERPBLL.Common
         public static readonly string Red = "Red";
         public static readonly string Blue = "Blue";
         public static readonly string Black = "Black";
+        public static readonly string White = "White";
     }
 
     public class ApplicationType

@@ -13,5 +13,6 @@ namespace ERPBLL.FrontDesk.Interface
         bool SaveJobOrderFault(List<JobOrderFaultDTO> jobOrderFaults, long userId, long orgId);
         JobOrderFault GetJobOrderFaultByJobId(long joborderId, long orgId);
         IEnumerable<JobOrderFault> GetJobOrderFaultByJobOrderId(long joborderId, long orgId);
+        bool IsDuplicateFaultName(long jobOrderId, long faultId, long orgId);
     }
 }

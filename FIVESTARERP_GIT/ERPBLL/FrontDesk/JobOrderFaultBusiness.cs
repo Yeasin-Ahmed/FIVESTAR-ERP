@@ -31,6 +31,11 @@ namespace ERPBLL.FrontDesk
             return jobOrderFaultRepository.GetAll(a => a.JobOrderId == joborderId && a.OrganizationId == orgId).ToList();
         }
 
+        public bool IsDuplicateFaultName(long jobOrderId, long faultId, long orgId)
+        {
+            return jobOrderFaultRepository.GetOneByOrg(fault => fault.JobOrderId == jobOrderId && fault.FaultId == faultId && fault.OrganizationId == orgId) != null ? true : false;
+        }
+
         public bool SaveJobOrderFault(List<JobOrderFaultDTO> jobOrderFaults, long userId, long orgId)
         {
             List<JobOrderFault> listjobOrderFault = new List<JobOrderFault>();

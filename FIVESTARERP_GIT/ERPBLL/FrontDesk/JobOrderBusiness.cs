@@ -313,10 +313,10 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             return _jobOrderRepository.Save();
         }
 
-        public bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId)
+        public bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
-            if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.PendingJobOrder)
+            if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.RepairDone)
             {
                 jobOrder.StateStatus = status.Trim();
                 jobOrder.JobOrderType = type.Trim();
@@ -327,7 +327,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             return _jobOrderRepository.Save();
         }
 
-        public bool AssignTSForJobOrder(long jobOrderId, long tsId, long userId, long orgId)
+        public bool AssignTSForJobOrder(long jobOrderId, long tsId, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
             if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.CustomerApproved)
@@ -335,6 +335,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 jobOrder.TSId = tsId;
                 jobOrder.StateStatus = JobOrderStatus.AssignToTS;
                 jobOrder.UpUserId = userId;
+                jobOrder.BranchId = branchId;
                 jobOrder.UpdateDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrder);
             }
@@ -350,7 +351,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
         {
             return _jobOrderRepository.GetAll(access => access.OrganizationId == orgId).ToList();
         }
-        private string QueryForJobOrderTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, long userId, long orgId)
+        private string QueryForJobOrderTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, long userId, long orgId,long branchId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -377,6 +378,10 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             if (orgId > 0)
             {
                 param += string.Format(@" and jo.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@" and jo.BranchId={0}", branchId);
             }
             if (roleName== "Technical Services")
             {
@@ -406,17 +411,17 @@ Where 1 = 1  and jo.StateStatus='TS-Assigned' {0}) tbl Order By EntryDate desc",
             return query;
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrdersTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, long userId, long orgId)
+        public IEnumerable<JobOrderDTO> GetJobOrdersTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, long userId, long orgId, long branchId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderTS(roleName,mobileNo, modelId, jobOrderId, jobCode, userId, orgId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderTS(roleName,mobileNo, modelId, jobOrderId, jobCode, userId, orgId, branchId)).ToList();
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrdersPush(long? jobOrderId, long orgId)
+        public IEnumerable<JobOrderDTO> GetJobOrdersPush(long? jobOrderId, long orgId, long branchId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderPush(jobOrderId, orgId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderPush(jobOrderId, orgId,branchId)).ToList();
         }
 
-        private string QueryForJobOrderPush(long? jobOrderId, long orgId)
+        private string QueryForJobOrderPush(long? jobOrderId, long orgId, long branchId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -428,6 +433,10 @@ Where 1 = 1  and jo.StateStatus='TS-Assigned' {0}) tbl Order By EntryDate desc",
             if (orgId > 0)
             {
                 param += string.Format(@"and jo.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and jo.BranchId={0}", branchId);
             }
 
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
@@ -575,6 +584,9 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public bool UpdateJobOrderTsRemarks(long jobOrderId, string remarks, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
+           // var jobOrderStatus = jobOrder.TSRemarks;
+           // _jobOrderRepository.Delete(jobOrderStatus);//Delete
+
             if (jobOrder != null)
             {
                 jobOrder.JodOrderId = jobOrderId;
@@ -588,14 +600,6 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
             return _jobOrderRepository.Save();
         }
 
-        public IEnumerable<DashboardApprovedRequsitionDTO> DashboardApprovedRequsition(long orgId, long branchId)
-        {
-            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardApprovedRequsitionDTO>(
-                string.Format(@"select JodOrderId,jo.JobOrderCode,RequsitionCode,rq.StateStatus,rq.EntryDate from tblJobOrders jo
-                Inner join tblRequsitionInfoForJobOrders rq on jo.JodOrderId=rq.JobOrderId
-                Where  rq.StateStatus='Approved' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
-        }
-
         public IEnumerable<DashboardApprovedRequsitionDTO> DashboardPendingRequsition(long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardApprovedRequsitionDTO>(
@@ -604,6 +608,40 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
                 Where  rq.StateStatus='Pending' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
         }
 
-        
+        public IEnumerable<DashboardApprovedRequsitionDTO> DashboardCurrentRequsition(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardApprovedRequsitionDTO>(
+                string.Format(@"select JodOrderId,rq.RequsitionInfoForJobOrderId,jo.JobOrderCode,RequsitionCode,rq.StateStatus,rq.EntryDate from tblJobOrders jo
+                Inner join tblRequsitionInfoForJobOrders rq on jo.JodOrderId=rq.JobOrderId
+                Where Cast(GETDATE() as date) = Cast(rq.EntryDate as date) and  rq.StateStatus='Current' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
+        }
+
+        public bool UpdateJobSingOutStatus(long jobOrderId, long userId, long orgId, long branchId)
+        {
+            var jobOrder = GetJobOrderById(jobOrderId, orgId);
+            var jobStatus = jobOrder.TsRepairStatus == "REPAIR AND RETURN" ? JobOrderStatus.RepairDone : JobOrderStatus.CustomerApproved;
+            if (jobOrder != null)
+            {
+                jobOrder.JodOrderId = jobOrderId;
+                jobOrder.StateStatus = jobStatus;
+                jobOrder.UpUserId = userId;
+                jobOrder.UpdateDate = DateTime.Now;
+                _jobOrderRepository.Update(jobOrder);
+            }
+            return _jobOrderRepository.Save();
+        }
+
+        public bool UpdateJobOrderDeliveryStatus(long jobOrderId, long userId, long orgId, long branchId)
+        {
+            var jobOrder = GetJobOrderById(jobOrderId, orgId);
+            if (jobOrder != null)
+            {
+                jobOrder.StateStatus = JobOrderStatus.DeliveryDone;
+                jobOrder.UpUserId = userId;
+                jobOrder.UpdateDate = DateTime.Now;
+                _jobOrderRepository.Update(jobOrder);
+            }
+            return _jobOrderRepository.Save();
+        }
     }
 }
