@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.TransferRepairItemToQcDetailViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped table-sm table-bordered table-responsive-lg text-sm">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>QRCode</th>
+                    <th>Incoming Transfer Code</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    <tr  class="text-center">
+                        <td class="text-bold">@sl</td>
+                        <td>@item.QRCode</td>
+                        <td>@item.IncomingTransferCode</td>
+                        <td>@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-sm btn-flat btn-primary btnAcceptRepairTransfer">Accept</button>
+</div>

@@ -51,7 +51,9 @@ namespace ERPWeb.Controllers
         private readonly IQCItemStockInfoBusiness _qCItemStockInfoBusiness;
         private readonly IProductionAssembleStockInfoBusiness _productionAssembleStockInfoBusiness;
         private readonly IFaultyCaseBusiness _faultyCaseBusiness;
-        
+        private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
+        private readonly IQRCodeTransferToRepairInfoBusiness _qRCodeTransferToRepairInfoBusiness;
+
         #endregion
 
         #region ControlPanel
@@ -62,7 +64,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -95,6 +97,8 @@ namespace ERPWeb.Controllers
             this._qCItemStockInfoBusiness = qCItemStockInfoBusiness;
             this._productionAssembleStockInfoBusiness = productionAssembleStockInfoBusiness;
             this._faultyCaseBusiness = faultyCaseBusiness;
+            this._faultyItemStockDetailBusiness = faultyItemStockDetailBusiness;
+            this._qRCodeTransferToRepairInfoBusiness = qRCodeTransferToRepairInfoBusiness;
             #endregion
 
             #region ControlPanel
@@ -688,13 +692,20 @@ namespace ERPWeb.Controllers
             List<Dropdown> dropdowns = new List<Dropdown>();
             if (qrCodeInfo != null)
             {
-                dropdowns = _itemBusiness.GetItemPreparationItems(qrCodeInfo.DescriptionId.Value, qrCodeInfo.ItemId.Value, User.OrgId).Select(i => new Dropdown { text = i.ItemName, value = i.ItemId }).ToList();
+                dropdowns = _itemBusiness.GetItemPreparationItems(qrCodeInfo.DescriptionId.Value, qrCodeInfo.ItemId.Value, ItemPreparationType.Production, User.OrgId).Select(i => new Dropdown { text = i.ItemName, value = i.ItemId }).ToList();
                 qrCodeInfo.EUserId = 0;
                 qrCodeInfo.EntryDate = null;
                 qrCodeInfo.ReferenceId = string.Empty;
                 qrCodeInfo.OrganizationId = 0;
             }
             return Json(new { info = qrCodeInfo, items = dropdowns.ToArray() });
+        }
+
+        [HttpPost]
+        public ActionResult IsQRCodeExistInRepair(string qrCode)
+        {
+            var IsExist = _qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(qrCode, string.Format(@"'Receiced','Send'"), User.OrgId);
+            return Json(IsExist);
         }
         #endregion
 
@@ -857,6 +868,24 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
+
+        #region Repair Section
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GetFaultyItemsByQRCode(string qrCode,long transferId)
+        {
+            IEnumerable<FaultyItemStockDetailViewModel> faultyItemsViewModel = new List<FaultyItemStockDetailViewModel>();
+            var faultyItemsDto = _faultyItemStockDetailBusiness.GetFaultyItemStockDetailsByQrCode(qrCode,transferId, User.OrgId);
+            AutoMapper.Mapper.Map(faultyItemsDto, faultyItemsViewModel);
+            return Json(new { faultyItems = faultyItemsViewModel });
+        }
+        
+        public ActionResult CheckingAvailabilityOfSparepartsWithRepairLineStock(long modelId, long itemId,long repairLineId)
+        {
+            ExecutionStateWithText execution = _qRCodeTransferToRepairInfoBusiness.CheckingAvailabilityOfSparepartsWithRepairLineStock(modelId,itemId,repairLineId,User.OrgId);
+            return Json(execution);
+        }
+
+        #endregion
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -38,6 +38,9 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? TransferId { get; set; }
+        [StringLength(150)]
+        public string TransferCode { get; set; }
         // Custom Property
         [StringLength(100)]
         public string ProductionFloorName { get; set; }

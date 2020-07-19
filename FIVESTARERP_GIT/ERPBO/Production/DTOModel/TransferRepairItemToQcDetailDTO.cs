@@ -16,6 +16,11 @@ namespace ERPBO.Production.DTOModel
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
         public int Quantity { get; set; }
+        [StringLength(100)]
+        public string QRCode { get; set; }
+        public long IncomingTransferId { get; set; }
+        [StringLength(100)]
+        public string IncomingTransferCode { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }

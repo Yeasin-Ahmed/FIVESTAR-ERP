@@ -1,4 +1,5 @@
 ﻿using ERPBO.Production.DomainModels;
+using ERPBO.Production.DTOModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<RepairItemStockInfo> GetRepairItemStockInfById(long repairLineId, long modelId, long itemId, long orgId);
         IEnumerable<RepairItemStockInfo> GetRepairItemStockInfoByQC(long qcId, long modelId, long itemId, long orgId);
         RepairItemStockInfo GetRepairItem(long qcId, long repairLineId, long modelId, long itemId, long orgId);
+        Task<RepairItemStockInfo> GetRepairItemAsync(long qcId, long repairLineId, long modelId, long itemId, long orgId);
+        IEnumerable<RepairItemStockInfoDTO> GetRepairItemStockInfosByQuery(long repirLineId, long modelId, long itemId, long orgId);
     }
 }

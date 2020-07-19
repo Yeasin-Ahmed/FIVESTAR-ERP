@@ -32,5 +32,10 @@ namespace ERPBO.Production.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+
+        // 17-July-2020
+        public long? TransferId { get; set; }
+        [StringLength(150)]
+        public string TransferCode { get; set; }
     }
 }

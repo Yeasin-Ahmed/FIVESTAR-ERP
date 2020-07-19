@@ -374,6 +374,14 @@
     <Compile Include="ProductionContextMigrations\202007140441404_Production_TransferIdInQRCodeTransferAndProblems.Designer.cs">
       <DependentUpon>202007140441404_Production_TransferIdInQRCodeTransferAndProblems.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202007170245337_Production_AddTransferIdAndTransferCodeInFaultyItemStock.cs" />
+    <Compile Include="ProductionContextMigrations\202007170245337_Production_AddTransferIdAndTransferCodeInFaultyItemStock.Designer.cs">
+      <DependentUpon>202007170245337_Production_AddTransferIdAndTransferCodeInFaultyItemStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.cs" />
+    <Compile Include="ProductionContextMigrations\202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.Designer.cs">
+      <DependentUpon>202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -618,6 +626,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007140441404_Production_TransferIdInQRCodeTransferAndProblems.resx">
       <DependentUpon>202007140441404_Production_TransferIdInQRCodeTransferAndProblems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007170245337_Production_AddTransferIdAndTransferCodeInFaultyItemStock.resx">
+      <DependentUpon>202007170245337_Production_AddTransferIdAndTransferCodeInFaultyItemStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.resx">
+      <DependentUpon>202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

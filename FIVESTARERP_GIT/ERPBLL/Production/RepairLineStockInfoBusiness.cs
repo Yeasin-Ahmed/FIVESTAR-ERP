@@ -24,6 +24,11 @@ namespace ERPBLL.Production
             return _repairLineStockInfoRepository.GetOneByOrg(s=> s.RepairLineId == repairId && s.ItemId == itemId && s.DescriptionId == modelId && s.OrganizationId == orgId);
         }
 
+        public async Task<RepairLineStockInfo> GetRepairLineStockInfoByRepairAndItemAndModelIdAsync(long repairId, long itemId, long modelId, long orgId)
+        {
+            return await _repairLineStockInfoRepository.GetOneByOrgAsync(s => s.RepairLineId == repairId && s.ItemId == itemId && s.DescriptionId == modelId && s.OrganizationId == orgId);
+        }
+
         public IEnumerable<RepairLineStockInfo> GetRepairLineStockInfoByRepairAndItemId(long repairId, long itemId, long orgId)
         {
             return _repairLineStockInfoRepository.GetAll(s => s.RepairLineId == repairId && s.ItemId == itemId && s.OrganizationId == orgId);
