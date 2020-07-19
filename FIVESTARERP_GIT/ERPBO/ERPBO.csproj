@@ -468,6 +468,7 @@
     <Folder Include="ControlPanel\ReportModels\" />
     <Folder Include="FrontDesk\ReportModels\" />
     <Folder Include="Inventory\ReportModels\" />
+    <Folder Include="ReportModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
