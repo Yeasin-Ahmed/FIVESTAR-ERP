@@ -64,6 +64,12 @@ var execuStatus = {
     reqStatusFail: "Requisition status has been failed to change"
 };
 
+function toggleAlert(msg) {
+    var al = bootbox.alert(msg);
+    al.show();
+    setTimeout(function () { al.modal('hide'); }, 1000);
+}
+
 
 // Loading dropdown using ajax..
 // All the Parameters are required accept contextKey

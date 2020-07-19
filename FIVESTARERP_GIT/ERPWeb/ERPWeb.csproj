@@ -561,6 +561,8 @@
     <Content Include="Views\Production\CreateRepairAnItemByQRCodeScaning.cshtml" />
     <Content Include="Views\Production\GetQRCodeScanningInQC.cshtml" />
     <Content Include="Views\Production\_GetFaultyCases.cshtml" />
+    <Content Include="Views\Production\_GetRepairItemTransferInfoByQRCode.cshtml" />
+    <Content Include="Views\Production\_GetRepairItemTransferDetailByQRCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

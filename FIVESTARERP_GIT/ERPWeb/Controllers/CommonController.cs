@@ -700,6 +700,13 @@ namespace ERPWeb.Controllers
             }
             return Json(new { info = qrCodeInfo, items = dropdowns.ToArray() });
         }
+
+        [HttpPost]
+        public ActionResult IsQRCodeExistInRepair(string qrCode)
+        {
+            var IsExist = _qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(qrCode, string.Format(@"'Receiced','Send'"), User.OrgId);
+            return Json(IsExist);
+        }
         #endregion
 
 

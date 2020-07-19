@@ -15,10 +15,13 @@ namespace ERPBLL.Production
 {
     public class TransferRepairItemToQcInfoBusiness : ITransferRepairItemToQcInfoBusiness
     {
+        // Repository
         private readonly IProductionUnitOfWork _productionDb;
         private readonly TransferRepairItemToQcInfoRepository _transferRepairItemToQcInfoRepository;
         private readonly TransferRepairItemToQcDetailRepository _transferRepairItemToQcDetailRepository;
+        private readonly QRCodeTransferToRepairInfoRepository _qRCodeTransferToRepairInfoRepository;
 
+        // Business
         private readonly ITransferRepairItemToQcDetailBusiness _transferRepairItemToQcDetailBusiness;
         private readonly IQCLineStockDetailBusiness _qCLineStockDetailBusiness;
         private readonly IItemBusiness _itemBusiness;
@@ -30,10 +33,17 @@ namespace ERPBLL.Production
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
 
-       public TransferRepairItemToQcInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IQCItemStockDetailBusiness qcItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, TransferRepairItemToQcDetailRepository transferRepairItemToQcDetailRepository)
+        public TransferRepairItemToQcInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IQCItemStockDetailBusiness qcItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, TransferRepairItemToQcDetailRepository transferRepairItemToQcDetailRepository, QRCodeTransferToRepairInfoRepository qRCodeTransferToRepairInfoRepository)
         {
+            // Database
             this._productionDb = productionDb;
+
+            // Repository
             this._transferRepairItemToQcInfoRepository = new TransferRepairItemToQcInfoRepository(this._productionDb);
+            this._transferRepairItemToQcDetailRepository = new TransferRepairItemToQcDetailRepository(this._productionDb);
+            this._qRCodeTransferToRepairInfoRepository = new QRCodeTransferToRepairInfoRepository(this._productionDb);
+
+            // Business class
             this._qCLineStockDetailBusiness = qCLineStockDetailBusiness;
             this._itemBusiness = itemBusiness;
             this._transferRepairItemToQcDetailBusiness = transferRepairItemToQcDetailBusiness;
@@ -44,7 +54,6 @@ namespace ERPBLL.Production
             this._repairItemStockInfoBusiness = repairItemStockInfoBusiness;
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
-            this._transferRepairItemToQcDetailRepository = new TransferRepairItemToQcDetailRepository(this._productionDb);
         }
 
         public TransferRepairItemToQcInfo GetTransferRepairItemToQcInfoById(long transferId, long orgId)
@@ -112,8 +121,9 @@ namespace ERPBLL.Production
                 }
                 if (_transferRepairItemToQcInfoRepository.Save())
                 {
-                    if (_qCLineStockDetailBusiness.SaveQCLineStockIn(stockDetails, userId, orgId)) {
-                        IsSuccess= _qcItemStockDetailBusiness.SaveQCItemStockIn(qcItemStocks, userId, orgId);
+                    if (_qCLineStockDetailBusiness.SaveQCLineStockIn(stockDetails, userId, orgId))
+                    {
+                        IsSuccess = _qcItemStockDetailBusiness.SaveQCItemStockIn(qcItemStocks, userId, orgId);
                     }
                 }
             }
@@ -213,10 +223,9 @@ namespace ERPBLL.Production
 
             string code = string.Empty;
             long transferId = 0;
-
             // Checking the QRCode is exist with the Receive Status
-            var QrCodeInfo = _qRCodeTransferToRepairInfoBusiness.GetQRCodeWiseItemInfo(dto.QRCode, FinishGoodsSendStatus.Received, orgId);
-            if(QrCodeInfo != null)
+            var QrCodeInfoDto = _qRCodeTransferToRepairInfoBusiness.GetQRCodeWiseItemInfo(dto.QRCode, string.Format(@"'Received'"), orgId);
+            if (QrCodeInfoDto != null)
             {
                 // Preivous Transfer Information
                 var transferInfo = await GetTransferRepairItemToQcInfoByIdAsync(dto.RepairLineId, dto.QCLineId, dto.ModelId, dto.ItemId, RequisitionStatus.Approved, orgId);
@@ -232,19 +241,22 @@ namespace ERPBLL.Production
 
                 List<TransferRepairItemToQcDetail> transferRepairItemDetails = new List<TransferRepairItemToQcDetail>() {
                     new  TransferRepairItemToQcDetail () {
-                    QRCode = QrCodeInfo.QRCode,
-                    IncomingTransferId = QrCodeInfo.TransferId,
-                    IncomingTransferCode = QrCodeInfo.TransferCode
-                }
-            };
+                    OrganizationId= orgId,
+                    EUserId = user,
+                    Quantity=1,
+                    EntryDate = DateTime.Now,
+                    QRCode = QrCodeInfoDto.QRCode,
+                    IncomingTransferId = QrCodeInfoDto.TransferId,
+                    IncomingTransferCode = QrCodeInfoDto.TransferCode}};
 
                 // If there is Pending Transfer 
-                if (transferInfo != null && transferInfo.TRQInfoId > 0 )
+                if (transferInfo != null && transferInfo.TRQInfoId > 0)
                 {
                     transferInfo.ForQty += 1;
                     transferInfo.UpUserId = user;
                     transferInfo.UpdateDate = DateTime.Now;
                     code = transferInfo.TransferCode;
+                    transferId = transferInfo.TRQInfoId;
                 }
                 else
                 {
@@ -252,22 +264,21 @@ namespace ERPBLL.Production
                     code = "TRQ-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss");
                     transferInfo = new TransferRepairItemToQcInfo()
                     {
-                        LineId = QrCodeInfo.FloorId,
-                        QCLineId = QrCodeInfo.QCLineId,
-                        RepairLineId= QrCodeInfo.RepairLineId,
+                        LineId = QrCodeInfoDto.FloorId,
+                        QCLineId = QrCodeInfoDto.QCLineId,
+                        RepairLineId = QrCodeInfoDto.RepairLineId,
                         ForQty = 1,
                         StateStatus = RequisitionStatus.Approved,
                         DescriptionId = dto.ModelId,
                         ItemId = dto.ItemId,
-                        ItemTypeId = QrCodeInfo.ItemTypeId,
-                        WarehouseId = QrCodeInfo.WarehouseId,
+                        ItemTypeId = QrCodeInfoDto.ItemTypeId,
+                        WarehouseId = QrCodeInfoDto.WarehouseId,
                         EUserId = user,
                         OrganizationId = orgId,
                         EntryDate = DateTime.Now,
                         TransferCode = code
                     };
                     transferInfo.TransferRepairItemToQcDetails = transferRepairItemDetails;
-
                 }
 
                 // Repair Speare Parts Stock
@@ -277,9 +288,9 @@ namespace ERPBLL.Production
                     var itemInfo = allItemsInDb.FirstOrDefault(s => s.ItemId == item.ItemId);
                     RepairLineStockDetailDTO repairLineStock = new RepairLineStockDetailDTO()
                     {
-                        ProductionLineId = QrCodeInfo.FloorId,
-                        RepairLineId = QrCodeInfo.RepairLineId,
-                        QCLineId = QrCodeInfo.QCLineId,
+                        ProductionLineId = QrCodeInfoDto.FloorId,
+                        RepairLineId = QrCodeInfoDto.RepairLineId,
+                        QCLineId = QrCodeInfoDto.QCLineId,
                         DescriptionId = itemPreparationInfo.DescriptionId,
                         ItemTypeId = item.ItemTypeId,
                         ItemId = item.ItemId,
@@ -290,40 +301,39 @@ namespace ERPBLL.Production
                         EUserId = user,
                         OrganizationId = orgId,
                         RefferenceNumber = code,
-                        Remarks = "Stock Out By Repair Done-" + QrCodeInfo.QRCode,
+                        Remarks = "Stock Out By Repair Done-" + QrCodeInfoDto.QRCode,
                         UnitId = itemInfo.UnitId
                     };
                     repairLineStocks.Add(repairLineStock);
                 }
 
-
                 // Repair Item Stocks
                 List<RepairItemStockDetailDTO> repairItemStocks = new List<RepairItemStockDetailDTO>() {
                     new RepairItemStockDetailDTO()
                     {
-                        ProductionFloorId = QrCodeInfo.FloorId,
-                        RepairLineId = QrCodeInfo.RepairLineId,
-                        QCId = QrCodeInfo.QCLineId,
-                        DescriptionId = QrCodeInfo.DescriptionId,
-                        ItemId = QrCodeInfo.ItemId,
-                        ItemTypeId = QrCodeInfo.ItemTypeId,
-                        WarehouseId = QrCodeInfo.WarehouseId,
+                        ProductionFloorId = QrCodeInfoDto.FloorId,
+                        RepairLineId = QrCodeInfoDto.RepairLineId,
+                        QCId = QrCodeInfoDto.QCLineId,
+                        DescriptionId = QrCodeInfoDto.DescriptionId,
+                        ItemId = QrCodeInfoDto.ItemId,
+                        ItemTypeId = QrCodeInfoDto.ItemTypeId,
+                        WarehouseId = QrCodeInfoDto.WarehouseId,
                         Quantity = 1,
                         OrganizationId = orgId,
                         EUserId = user,
                         EntryDate = DateTime.Now,
                         StockStatus = StockStatus.StockOut,
                         ReferenceNumber = code,
-                        Remarks ="Stock Out By Repair Done-"+QrCodeInfo.QRCode
+                        Remarks ="Stock Out By Repair Done-"+QrCodeInfoDto.QRCode
                     }
                 };
 
+                if (await _repairItemStockDetailBusiness.SaveRepairItemStockOutAsync(repairItemStocks, user, orgId))
+                {
 
-                if (await _repairItemStockDetailBusiness.SaveRepairItemStockOutAsync(repairItemStocks, user, orgId)) {
-
-                    if(await _repairLineStockDetailBusiness.SaveRepairLineStockOutAsync(repairLineStocks, user, orgId,string.Empty))
+                    if (await _repairLineStockDetailBusiness.SaveRepairLineStockOutAsync(repairLineStocks, user, orgId, string.Empty))
                     {
-                        if(transferInfo.TRQInfoId > 0)
+                        if (transferInfo.TRQInfoId > 0)
                         {
                             _transferRepairItemToQcInfoRepository.Update(transferInfo);
                             _transferRepairItemToQcDetailRepository.InsertAll(transferRepairItemDetails);
@@ -332,19 +342,16 @@ namespace ERPBLL.Production
                         {
                             _transferRepairItemToQcInfoRepository.Insert(transferInfo);
                         }
+
+                        var qrCodeInfoInDb = await _qRCodeTransferToRepairInfoBusiness.GetQRCodeTransferToRepairInfoByIdAsync(QrCodeInfoDto.QRTRInfoId, orgId);
+                        qrCodeInfoInDb.StateStatus = "Repair-Done";
+                        qrCodeInfoInDb.UpdateDate = DateTime.Now;
+                        qrCodeInfoInDb.UpUserId = user;
+                        _qRCodeTransferToRepairInfoRepository.Update(qrCodeInfoInDb);
+
+                        return await _transferRepairItemToQcInfoRepository.SaveAsync();
                     }
                 }
-
-                
-                //code = transferInfo.TransferCode;
-                //QrCodeInfo.StateStatus = "Repair-Done";
-                //QrCodeInfo.UpdateDate = DateTime.Now;
-                //QrCodeInfo.UpUserId = user;
-                //transferId = transferInfo.TRQInfoId;
-
-                // Repair Item Stock
-                //_repairItemStockDetailBusiness
-
             }
             return false;
         }
@@ -352,6 +359,89 @@ namespace ERPBLL.Production
         public async Task<TransferRepairItemToQcInfo> GetTransferRepairItemToQcInfoByIdAsync(long repairLineId, long qcLineId, long modelId, long itemId, string status, long orgId)
         {
             return await _transferRepairItemToQcInfoRepository.GetOneByOrgAsync(s => s.RepairLineId == repairLineId && s.QCLineId == qcLineId && s.DescriptionId == modelId && s.ItemId == itemId && s.StateStatus == status && s.OrganizationId == orgId);
+        }
+
+        public IEnumerable<TransferRepairItemToQcInfoDTO> GetTransferRepairItemToQcInfosByQuery(long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<TransferRepairItemToQcInfoDTO>(QueryForTransferRepairItemToQcInfos(floorId, repairLineId, qcLineId, modelId, warehouseId, itemTypeId, itemId, status, transferCode, fromDate, toDate, orgId)).ToList();
+        }
+
+        private string QueryForTransferRepairItemToQcInfos(long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            param = string.Format(@" and ti.OrganizationId={0}", orgId);
+            if (floorId != null && floorId > 0)
+            {
+                param += string.Format(@" and ti.LineId={0}", floorId);
+            }
+            if (repairLineId != null && repairLineId > 0)
+            {
+                param += string.Format(@" and ti.RepairLineId={0}", repairLineId);
+            }
+            if (qcLineId != null && qcLineId > 0)
+            {
+                param += string.Format(@" and ti.QCLineId={0}", qcLineId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and ti.DescriptionId={0}", modelId);
+            }
+            if (warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and ti.WarehouseId={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and ti.ItemTypeId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and ti.ItemId={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(status) && status != "")
+            {
+                param += string.Format(@" and ti.StateStatus='{0}'", status);
+            }
+            if (!string.IsNullOrEmpty(transferCode) && transferCode != "")
+            {
+                param += string.Format(@" and ti.TransferCode Like '%{0}%'", transferCode);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ti.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ti.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ti.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select ti.TRQInfoId,ti.TransferCode,ti.LineId,pl.LineNumber 'LineName',ti.QCLineId, qc.QCName 'QCLineName',ti.RepairLineId,rl.RepairLineName,ti.DescriptionId,de.DescriptionName 'ModelName',
+ ti.WarehouseId ,w.WarehouseName,ti.ItemTypeId, it.ItemName 'ItemTypeName',ti.ItemId,i.ItemName,
+ ti.StateStatus,ti.ForQty,app.UserName 'EntryUser',ti.EntryDate,
+(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId=ti.UpUserId) 'UpdateUser',
+ti.UpdateDate
+From [Production].dbo.tblTransferRepairItemToQcInfo ti
+Inner Join [Inventory].dbo.tblDescriptions de on ti.DescriptionId = de.DescriptionId
+Inner Join [Production].dbo.tblProductionLines pl on ti.LineId= pl.LineId
+Inner Join [Production].dbo.tblQualityControl qc on ti.QCLineId = qc.QCId
+Inner Join [Production].dbo.tblRepairLine rl on ti.RepairLineId = rl.RepairLineId
+Inner Join [Inventory].dbo.tblWarehouses w on ti.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on ti.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on ti.ItemId = i.ItemId
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on ti.EUserId = app.UserId
+Where 1= 1 {0}", param);
+
+            return query;
         }
     }
 }

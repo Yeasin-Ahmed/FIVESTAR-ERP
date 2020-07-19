@@ -14,10 +14,7 @@
                         <a class="nav-link" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive QC Item</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true"> QC Transfer List</a>
                     </li>
                 </ul>
             </div>
@@ -192,13 +189,97 @@
                         </div>
                     </div>
                     <div class="tab-pane fade show" id="custom-tabs-two-transferList" role="tabpanel" aria-labelledby="custom-tabs-two-transferList-tab">
-                        
-                    </div>
-                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
                         <div class="row" style="margin-top:-15px">
-
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    QC Transfer List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlFloorTransferQCItem" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlFloorTransferQCItem", (IEnumerable<SelectListItem>)ViewBag.ddlFloor, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlQCLineTransferQCItem" class="control-label font-weight-bold">QC</label>
+                                                <select id="ddlQCLineTransferQCItem" class="form-control form-control-sm">
+                                                    <option value="0">--Select QC--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlRepairLineTransferQCItem" class="control-label font-weight-bold">Repair</label>
+                                                <select id="ddlRepairLineTransferQCItem" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameTransferQCItem" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameTransferQCItem", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtTRQCode" class="control-label font-weight-bold">Transfer Code</label>
+                                                <input type="text" id="txtTRQCode" class="form-control form-control-sm" placeholder="Search By Code" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatusTransferQCItem" class="control-label font-weight-bold">StateStatus</label>
+                                                @Html.DropDownList("ddlStateStatusTransferQCItem", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-receive" id="dptFromDateTransferQCItem" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date-TransferQC dptFromDateTransferQCItem" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-receive" id="dptToDateTransferQCItem" />
+                                                    <div class="input-group-prepend remove-date-TransferQC dptToDateTransferQCItem" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @{Html.RenderAction("GetRepairItemTransferInfoAndDetailByQRCode", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -209,8 +290,8 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary">
-                <input type="hidden" id="hdfTFQInfoId" />
-                <h4 id="modalHeading" class="modal-title">Receive QC Transfer Items</h4>
+                <input type="hidden" id="hdfInfoId" />
+                <h4 id="modalHeading" class="modal-title">Transfer/Receive Items</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="modalContainer1">
@@ -224,6 +305,7 @@
     <script type="text/javascript">
 
         var pageNo = 1;
+        var hdfInfoId = $("#hdfInfoId");
         // Repair Item Stock
         var ddlFloorItemStock = $("#ddlFloorItemStock");
         var ddlQCLineItemStock = $("#ddlQCLineItemStock");
@@ -244,7 +326,17 @@
         var dptToDateReceiveQCItem = $("#dptToDateReceiveQCItem");
         var txtTSQCode = $("#txtTSQCode");
         var ddlStateStatusReceiveQCItem = $("#ddlStateStatusReceiveQCItem");
-        var hdfTFQInfoId = $("#hdfTFQInfoId");
+        
+
+        // Transfer QC Items //
+        var ddlFloorTransferQCItem = $("#ddlFloorTransferQCItem");
+        var ddlQCLineTransferQCItem = $("#ddlQCLineTransferQCItem");
+        var ddlRepairLineTransferQCItem = $("#ddlRepairLineTransferQCItem");
+        var ddlModelNameTransferQCItem = $("#ddlModelNameTransferQCItem");
+        var txtTRQCode = $("#txtTRQCode");
+        var ddlStateStatusTransferQCItem = $("#ddlStateStatusTransferQCItem");
+        var dptFromDateTransferQCItem = $("#dptFromDateTransferQCItem");
+        var dptToDateTransferQCItem = $("#dptToDateTransferQCItem");
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -271,7 +363,20 @@
                 todayHighlight: true
             });
 
-
+            dptFromDateTransferQCItem.prop('readonly', true);
+            dptToDateTransferQCItem.prop('readonly', true);
+            dptFromDateTransferQCItem.css("background-color", "#fff");
+            dptToDateTransferQCItem.css("background-color", "#fff");
+            $('#dptFromDateTransferQCItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDateTransferQCItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
         })
 
         // Repair Item Stock
@@ -416,9 +521,9 @@
 
         $(document).on('click', 'a.data-item-detail', function (e) {
             e.preventDefault();
-            hdfTFQInfoId.val("0")
+            hdfInfoId.val("0")
             var id = $(this).attr("data-item-detail");
-            hdfTFQInfoId.val(id);
+            hdfInfoId.val(id);
             $.when(getReqWithData('html', type.get, '/Production/GetReceiveStockForRepairFromQC', { flag: "detail", transferInfoId: id })).then(function (res, status) {
                 if (status === "success") {
                     $("#modalContainer1").empty();
@@ -433,7 +538,7 @@
         
         $(document).on("click", ".btnAccepted", function (e) {
             e.preventDefault();
-            fnTransferStateChange(hdfTFQInfoId.val(), reqStatus.accepted);
+            fnTransferStateChange(hdfInfoId.val(), reqStatus.accepted);
         })
 
         function fnTransferStateChange(id, status) {
@@ -441,7 +546,7 @@
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQCTransferStatus', data, getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $("#modalTransferDetails").modal("toggle").toggle("fast");
-                    hdfTFQInfoId.val('0');
+                    hdfInfoId.val('0');
                     $('.toastrReqSuccess').trigger('click');
                     $("#modalContainer1").empty();
                     setTimeout(function () {
@@ -453,5 +558,105 @@
             })
         }
 
+        // Transfer List //
+
+        dptFromDateTransferQCItem.change(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        dptToDateTransferQCItem.change(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        $(document).on('click', 'div.remove-date-TransferQC', function () {
+            if ($(this).hasClass("dptFromDateTransferQCItem")) {
+                if (dptFromDateTransferQCItem.val() !== '') {
+                    dptFromDateTransferQCItem.val('');
+                    LoadDataTableTransferQCItem();
+                }
+            }
+            if ($(this).hasClass("dptToDateTransferQCItem")) {
+                if (dptToDateTransferQCItem.val() !== '') {
+                    dptToDateTransferQCItem.val('');
+                    LoadDataTableTransferQCItem();
+                }
+            }
+        })
+
+        ddlFloorTransferQCItem.change(function () {
+            clearDropdown("ddlQCLineTransferQCItem");
+            clearDropdown("ddlRepairLineTransferQCItem");
+            if (ddlFloorTransferQCItem.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLineTransferQCItem, JSON.stringify({ lineId: ddlFloorTransferQCItem.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineTransferQCItem, JSON.stringify({ lineId: ddlFloorTransferQCItem.val() }));
+            }
+            LoadDataTableTransferQCItem();
+        })
+
+        ddlRepairLineTransferQCItem.change(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        ddlQCLineTransferQCItem.change(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        ddlModelNameTransferQCItem.change(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        txtTRQCode.keyup(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        ddlStateStatusTransferQCItem.change(function () {
+            LoadDataTableTransferQCItem();
+        })
+
+        function LoadDataTableTransferQCItem() {
+           
+            var data = { flag: "View", floorId: TryParseInt(ddlFloorTransferQCItem.val(), 0), repairLineId: TryParseInt(ddlRepairLineTransferQCItem.val(), 0), qcLineId: TryParseInt(ddlQCLineTransferQCItem.val(), 0), modelId: TryParseInt(ddlModelNameTransferQCItem.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusTransferQCItem.val(), transferCode: $.trim(txtTRQCode.val()), fromDate: dptFromDateTransferQCItem.val(), toDate: dptToDateTransferQCItem.val(), transferInfoId:0 };
+
+            console.log("Transfer List");
+            console.log(data);
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairItemTransferInfoAndDetailByQRCode', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        $(document).on('click', 'a.data-transfer-item-details', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-transfer-item-details");
+            hdfInfoId.val('0');
+            if (TryParseInt(id, 0) > 0) {
+                hdfInfoId.val(id);
+                LoadDataTableTransferQCItemDetail();
+            }
+        })
+
+        function LoadDataTableTransferQCItemDetail() {
+            var data = { flag: "Detail", floorId: 0, repairLineId: 0, qcLineId: 0, modelId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, status: '', transferCode: '', fromDate: '', toDate: '', transferInfoId: TryParseInt(hdfInfoId.val(), 0) };
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairItemTransferInfoAndDetailByQRCode', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#modalContainer1").empty();
+                    $("#modalContainer1").append(res);
+                    $("#modalTransferDetails").modal("toggle");
+                    $(".btnAcceptRepairTransfer").addClass("hide");
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        }
     </script>
 }

@@ -57,6 +57,7 @@ namespace ERPBLL.Production
             this._transferFromQCDetailRepository = new TransferFromQCDetailRepository(this._productionDb);
         }
 
+
         public IEnumerable<QRCodeTransferToRepairInfo> GetQRCodeTransferToRepairInfoByTransferId(long transferId, long orgId)
         {
             return _qRCodeTransferToRepairInfoRepository.GetAll(s => s.TransferId == transferId && s.OrganizationId == orgId);
@@ -125,37 +126,6 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                 code = transferInfo.TransferCode;
                 transferId = transferInfo.TFQInfoId;
                 transferDetails = (List<TransferFromQCDetail>)(await _transferFromQCDetailBusiness.GetTransferFromQCDetailByInfoAsync(transferInfo.TFQInfoId, orgId));
-
-                //for (int i = 0; i < transferDetails.Count; i++)
-                //{
-                //    // Update Transfer Info//
-                //    for (int j = 0; j < itemPreparationDetail.Count; j++)
-                //    {
-                //        if(transferDetails[i].ItemId == itemPreparationDetail[j].ItemId)
-                //        {
-                //            transferDetails[i].Quantity += itemPreparationDetail[j].Quantity;
-                //            QualityControlLineStockDetailDTO qualityControlLineStock = new QualityControlLineStockDetailDTO
-                //            {
-                //                ProductionLineId = dto.FloorId,
-                //                QCLineId = dto.QCLineId,
-                //                DescriptionId = dto.DescriptionId,
-                //                WarehouseId = transferDetails[i].WarehouseId,
-                //                ItemTypeId = transferDetails[i].ItemTypeId,
-                //                ItemId = transferDetails[i].ItemId,
-                //                OrganizationId = orgId,
-                //                EUserId = orgId,
-                //                Quantity = transferDetails[i].Quantity,
-                //                EntryDate = DateTime.Now,
-                //                UnitId = transferDetails[i].UnitId,
-                //                RefferenceNumber = code,
-                //                StockStatus = StockStatus.StockIn
-                //            };
-                //            stockDetailDTOs.Add(qualityControlLineStock);
-                //            break;
-                //        }
-                //    }
-                //}
-                //transferInfo.TransferFromQCDetails = transferDetails;
             }
             else
             {
@@ -242,11 +212,6 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
             // QC Item Stock //
             if (await _qCItemStockDetailBusiness.SaveQCItemStockOutAsync(qCItemStockDetails, userId, orgId))
             {
-                // QC Line Stock //
-                //if (await _qCLineStockDetailBusiness.SaveQCLineStockOutAsync(stockDetailDTOs, userId, orgId, string.Empty))
-                //{
-
-                //}
 
                 if (transferInfo.TFQInfoId == 0)
                 {
@@ -255,7 +220,7 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                 else
                 {
                     _transferFromQCInfoRepository.Update(transferInfo);
-                    //_transferFromQCDetailRepository.UpdateAll(transferDetails);
+                    _transferFromQCDetailRepository.InsertAll(transferDetails);
                 }
                 if (await _transferFromQCInfoRepository.SaveAsync())
                 {
@@ -306,18 +271,6 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                     IsSuccess = await _qRCodeTransferToRepairInfoRepository.SaveAsync();
                 }
             }
-
-            //----------------------------//
-            // QC Item Stock Info -- Update
-            // QC Item Stock Detail -- Insert
-            // QC Raw Stock Info -- Update
-            // QC Raw Stock Detail -- Insert
-            // Transfer Info -- Insert/ Update
-            // Transfer Detail -- Insert / Update
-            // QRCode Info -- Insert
-            // QRCode Problem -- Insert
-            // Item Preparation
-            // Item PreparationDetails
             return IsSuccess;
         }
 
@@ -350,10 +303,10 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
             }
             if (!string.IsNullOrEmpty(status))
             {
-                param += string.Format(@" and qr.StateStatus='{0}'", status);
+                param += string.Format(@" and qr.StateStatus IN({0})", status);
             }
 
-            query = string.Format(@"Select qr.TransferId,qr.QRCode,qr.TransferCode,qr.FloorId,qr.QCLineId,qr.RepairLineId,qr.AssemblyLineId,qr.DescriptionId,qr.WarehouseId,qr.ItemTypeId,qr.ItemId,qr.StateStatus,qr.OrganizationId,pl.LineNumber 'FloorName',qc.QCName 'QCLineName',rl.RepairLineName,al.AssemblyLineName,de.DescriptionName 'ModelName',w.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName From [Production].dbo.tblQRCodeTransferToRepairInfo qr
+            query = string.Format(@"Select qr.QRTRInfoId,qr.TransferId,qr.QRCode,qr.TransferCode,qr.FloorId,qr.QCLineId,qr.RepairLineId,qr.AssemblyLineId,qr.DescriptionId,qr.WarehouseId,qr.ItemTypeId,qr.ItemId,qr.StateStatus,qr.OrganizationId,pl.LineNumber 'FloorName',qc.QCName 'QCLineName',rl.RepairLineName,al.AssemblyLineName,de.DescriptionName 'ModelName',w.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName From [Production].dbo.tblQRCodeTransferToRepairInfo qr
                 Inner Join [Production].dbo.tblProductionLines pl on qr.FloorId = pl.LineId
                 Inner Join [Production].dbo.tblQualityControl qc on qr.QCLineId = qc.QCId
                 Inner Join [Production].dbo.tblRepairLine rl on qr.RepairLineId = rl.RepairLineId
@@ -373,7 +326,7 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
         public bool StockOutByAddingFaultyWithQRCode(FaultyInfoByQRCodeDTO model, long userId, long orgId)
         {
             //Check if the QRCode is exist with the status Received
-           var qrCodeInfo = GetQRCodeWiseItemInfo(model.QRCode, FinishGoodsSendStatus.Received, orgId);
+           var qrCodeInfo = GetQRCodeWiseItemInfo(model.QRCode, string.Format(@"'Received'"), orgId);
             if (qrCodeInfo != null && qrCodeInfo.TransferId == model.TransferId && qrCodeInfo.DescriptionId == model.ModelId)
             {
                 var allItemsInDb = _itemBusiness.GetAllItemByOrgId(orgId).ToList();
@@ -461,6 +414,16 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
             }
 
             return execution;
+        }
+
+        public async Task<QRCodeTransferToRepairInfo> GetQRCodeTransferToRepairInfoByIdAsync(long id, long orgId)
+        {
+            return await _qRCodeTransferToRepairInfoRepository.GetOneByOrgAsync(s => s.QRTRInfoId == id && s.OrganizationId == orgId);
+        }
+
+        public bool IsQRCodeExistInTransferWithStatus(string qrCode, string status, long orgId)
+        {
+            return this.GetQRCodeWiseItemInfo(qrCode, status, orgId) != null;
         }
     }
 }

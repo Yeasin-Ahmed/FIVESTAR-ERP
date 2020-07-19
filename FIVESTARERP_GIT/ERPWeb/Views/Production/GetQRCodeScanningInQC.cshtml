@@ -86,7 +86,8 @@
                                                             <li class="error hide qrCode">QRCode is required</li>
                                                             <li class="error hide invalid-qrCode">Invalid QRCode</li>
                                                             <li class="error hide prob-notFound">Add Problems</li>
-                                                            <li class="error hide qc-not-for-pdn">This Item is not belongs to this Floor</li>
+                                                            <li class="error hide qc-not-for-pdn">This QRCode is not belongs to this Floor</li>
+                                                            <li class="error hide duplicate-QrCode">This QRCode already has been transfered</li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-md-12">
@@ -276,13 +277,28 @@
                 $(".invalid-qrCode").removeClass("hide");
                 isValid = false;
             }
-            if ($.trim(txtItemQRCode.val()) === "") {
-                $(".qrCode").removeClass("hide");
-                isValid = false;
+            else {
+                if (TryParseInt(ddlProductionFloor.val(), 0) > 0 && qrCodeDataObj.Floor != (TryParseInt(ddlProductionFloor.val(), 0))){
+                    $(".qc-not-for-pdn").removeClass("hide");
+                    isValid = false;
+                }
             }
             if ($("#tblProb tbody tr").length === 0) {
                 $(".prob-notFound").removeClass("hide");
                 isValid = false;
+            }
+            if ($.trim(txtItemQRCode.val()) === "") {
+                $(".qrCode").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                if (ajaxBooleanChecker(JSON.stringify({ qrCode: txtItemQRCode.val() }),'/Common/IsQRCodeExistInRepair',getToken()) === true) {
+                    $(".duplicate-QrCode").removeClass("hide");
+                    isValid = false;
+                    $("#tblProb tbody").empty();
+                    txtItemQRCode.val('');
+                    txtItemQRCode.focus();
+                }
             }
             return isValid;
         }
@@ -316,13 +332,15 @@
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQRCodeWiseQcItemTransfer', data, getToken())).then(function (res,status) {
                     console.log(res);
                     console.log(status);
-                    if (res === true) {
+                    console.log("res.IsSuccess");
+                    console.log(res.IsSuccess);
+                    if (res.IsSuccess === true) {
                         bootbox.alert("Successful");
                         $("#tblProb tbody").empty();
                         txtItemQRCode.val('');
                     }
                     else {
-                        bootbox.alert("Fail");
+                        bootbox.alert(res.Msg);
                     }
                 }).fail(function (error) {
                     console.log(error);

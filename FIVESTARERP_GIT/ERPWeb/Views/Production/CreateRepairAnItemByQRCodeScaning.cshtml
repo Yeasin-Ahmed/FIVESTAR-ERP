@@ -493,13 +493,19 @@
         function fnRepairDone() {
             if (validateRepairDone())
             {
-                ////QRCode,RepairLineId,QCLineId,ModelId,ItemId
                 var data = JSON.stringify({ QRCode: hdfQRCode.val(), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
                 console.log("Repair Done");
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairItemByQRCodeScaning', data, getToken())).then(function (res, status) {
-                    console.log(res);
+                    console.log(res.IsSuccess);
+                    console.log(res.Msg);
                     console.log(status);
+                    if (res.IsSuccess === true) {
+                        toggleAlert("Save Successful");
+                    }
+                    else {
+                        toggleAlert("Save Failed");
+                    }
                 }).fail(function (error) {
                     console.log(error);
                 })

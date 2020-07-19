@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Production.Interface;
 using ERPBO.Production.DomainModels;
+using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,10 @@ namespace ERPBLL.Production
             return _repairItemStockInfoRepository.GetAll(d => d.QCId == qcId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
         }
 
+        public IEnumerable<RepairItemStockInfoDTO> GetRepairItemStockInfosByQuery(long repirLineId, long modelId, long itemId, long orgId)
+        {
+            throw new NotImplementedException();
+        }
         public IEnumerable<RepairItemStockInfo> GetRepairItemStocks(long orgId)
         {
             return _repairItemStockInfoRepository.GetAll(d => d.OrganizationId == orgId);

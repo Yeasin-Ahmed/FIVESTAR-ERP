@@ -19,5 +19,7 @@ namespace ERPBLL.Production.Interface
         bool SaveQRCodeStatusByTrasnferInfoId(long transferId,string status,long userId, long orgId);
         bool StockOutByAddingFaultyWithQRCode(FaultyInfoByQRCodeDTO model, long userId, long orgId);
         ExecutionStateWithText CheckingAvailabilityOfSparepartsWithRepairLineStock(long modelId, long itemId, long repairLineId,long orgId);
+        Task<QRCodeTransferToRepairInfo> GetQRCodeTransferToRepairInfoByIdAsync(long id, long orgId);
+        bool IsQRCodeExistInTransferWithStatus(string qrCode, string status, long orgId);
     }
 }

@@ -25,12 +25,10 @@ namespace ERPBLL.Production
             this._repairItemStockDetailRepository = new RepairItemStockDetailRepository(this._productionDb);
             this._repairItemStockInfoRepository = new RepairItemStockInfoRepository(this._productionDb);
         }
-
         public IEnumerable<RepairItemStockDetail> GetQCItemStockDetails(long orgId)
         {
             return _repairItemStockDetailRepository.GetAll(d => d.OrganizationId == orgId);
         }
-
         public bool SaveRepairItemStockIn(List<RepairItemStockDetailDTO> items, long userId, long orgId)
         {
             bool IsSuccess = false;
@@ -90,7 +88,6 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
-
         public bool SaveRepairItemStockOut(List<RepairItemStockDetailDTO> items, long userId, long orgId)
         {
             bool IsSuccess = false;
@@ -128,7 +125,6 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
-
         public async Task<bool> SaveRepairItemStockOutAsync(List<RepairItemStockDetailDTO> items, long userId, long orgId)
         {
             bool IsSuccess = false;

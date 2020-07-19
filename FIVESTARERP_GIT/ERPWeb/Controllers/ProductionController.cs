@@ -3178,7 +3178,7 @@ namespace ERPWeb.Controllers
             }
         }
 
-        // Receive QC Transfer Item.
+        // Receive QC Transfer List. // Child Action
         public ActionResult GetReceiveStockForRepairFromQC(string flag, long? lineId, long? qcId, long? modelId, long? warehouseId, string status, string transferCode, string fromDate, string toDate, long? transferInfoId, long? repairLineId, string transferReason, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetReceiveStockForRepairFromQC");
@@ -3243,6 +3243,7 @@ namespace ERPWeb.Controllers
             }
         }
 
+        // Receive QC Item
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveQCTransferStatus(long transferId, string status)
         {
@@ -3255,9 +3256,25 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
+        // Transfer List // Child Action
+        public ActionResult GetRepairItemTransferInfoAndDetailByQRCode(string flag, long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate,long ?transferInfoId)
+        {
+            if(!string.IsNullOrEmpty(flag) && flag == Flag.View)
+            {
+                var dto =_transferRepairItemToQcInfoBusiness.GetTransferRepairItemToQcInfosByQuery(floorId, repairLineId, qcLineId, modelId, warehouseId, itemTypeId, itemId, status, transferCode, fromDate, toDate, User.OrgId);
+                IEnumerable<TransferRepairItemToQcInfoViewModel> viewModels = new List<TransferRepairItemToQcInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetRepairItemTransferInfoByQRCode",viewModels);
+            }
+            else
+            {
+                var dto =_transferRepairItemToQcDetailBusiness.GetTransferRepairItemToQcDetailByQuery(transferInfoId.Value, User.OrgId);
+                IEnumerable<TransferRepairItemToQcDetailViewModel> viewModels = new List<TransferRepairItemToQcDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetRepairItemTransferDetailByQRCode", viewModels);
+            }
+        }
         #endregion
-
-
 
         public ActionResult GetRepairLineStockInfo(string flag, long? lineId, long? repairId, long? qcId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
         {
@@ -3339,6 +3356,7 @@ namespace ERPWeb.Controllers
             return View();
         }
 
+        // Obsolete
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveTransferStockRepairItemToQC(TransferRepairItemToQcInfoViewModel info, List<TransferRepairItemToQcDetailViewModel> details)
         {
@@ -3476,7 +3494,6 @@ namespace ERPWeb.Controllers
                 return PartialView("_GetTransferItemForQCDetail", list);
             }
         }
-
 
 
         #endregion
@@ -3847,13 +3864,15 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> SaveQRCodeWiseQcItemTransfer(QRCodeTransferToRepairInfoViewModel model)
         {
             bool IsSuccess = false;
-            if (ModelState.IsValid && model.QRCodeProblems.Count > 0)
+            var IsExist = _qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(model.QRCode, string.Format(@"'Receiced','Send'"),User.OrgId);
+            var msg = (IsExist ? "This QRCode already has been transfered" : "");
+            if (!IsExist && ModelState.IsValid && model.QRCodeProblems.Count > 0)
             {
                 QRCodeTransferToRepairInfoDTO dto = new QRCodeTransferToRepairInfoDTO();
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = await _qRCodeTransferToRepairInfoBusiness.SaveQRCodeTransferToRepairAsync(dto, User.UserId, User.OrgId);
             }
-            return Json(IsSuccess);
+            return Json(new { IsSuccess= IsSuccess, Msg= msg });
         }
 
         #endregion
@@ -3879,15 +3898,19 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> SaveRepairItemByQRCodeScaning(TransferRepairItemByQRCodeScanningViewModel model)
         {
             bool IsSuccess = false;
-            TransferRepairItemByQRCodeScanningDTO dto = new TransferRepairItemByQRCodeScanningDTO();
-            AutoMapper.Mapper.Map(model, dto);
-            IsSuccess = await _transferRepairItemToQcInfoBusiness.SaveTransferByQRCodeScanningAsync(dto, User.UserId, User.OrgId);
-            return Json(IsSuccess);
+            var stockAvailable = _qRCodeTransferToRepairInfoBusiness.CheckingAvailabilityOfSparepartsWithRepairLineStock(model.ModelId, model.ItemId, model.RepairLineId, User.OrgId);
+            if (ModelState.IsValid && stockAvailable.isSuccess)
+            {
+                TransferRepairItemByQRCodeScanningDTO dto = new TransferRepairItemByQRCodeScanningDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = await _transferRepairItemToQcInfoBusiness.SaveTransferByQRCodeScanningAsync(dto, User.UserId, User.OrgId);
+            }
+            return Json(new {IsSuccess = IsSuccess,Msg = stockAvailable.text});
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetRepairItemDetailsByQRCode(string qrCode)
         {
-            var QrCodeItemInfo = _qRCodeTransferToRepairInfoBusiness.GetQRCodeWiseItemInfo(qrCode, FinishGoodsSendStatus.Received, User.OrgId);
+            var QrCodeItemInfo = _qRCodeTransferToRepairInfoBusiness.GetQRCodeWiseItemInfo(qrCode, string.Format(@"'Received'"), User.OrgId);
 
             if (QrCodeItemInfo != null && QrCodeItemInfo.StateStatus == "Received")
             {
