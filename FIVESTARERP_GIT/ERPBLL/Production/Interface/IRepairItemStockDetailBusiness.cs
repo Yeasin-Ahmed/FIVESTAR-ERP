@@ -13,5 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<RepairItemStockDetail> GetQCItemStockDetails(long orgId);
         bool SaveRepairItemStockOut(List<RepairItemStockDetailDTO> items, long userId, long orgId);
         bool SaveRepairItemStockIn(List<RepairItemStockDetailDTO> items, long userId, long orgId);
+        Task<bool> SaveRepairItemStockOutAsync(List<RepairItemStockDetailDTO> items, long userId, long orgId);
     }
 }

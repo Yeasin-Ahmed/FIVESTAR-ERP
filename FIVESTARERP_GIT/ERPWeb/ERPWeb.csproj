@@ -557,6 +557,10 @@
     <Content Include="Views\Production\CreateQRCodeWiseQcItemTransfer.cshtml" />
     <Content Include="Views\FrontDesk\GetTSStockByRequsition.cshtml" />
     <Content Include="Views\User\ReturnStockDetails.cshtml" />
+    <Content Include="Views\Shared\UI_Card_Tab_Panel.cshtml" />
+    <Content Include="Views\Production\CreateRepairAnItemByQRCodeScaning.cshtml" />
+    <Content Include="Views\Production\GetQRCodeScanningInQC.cshtml" />
+    <Content Include="Views\Production\_GetFaultyCases.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

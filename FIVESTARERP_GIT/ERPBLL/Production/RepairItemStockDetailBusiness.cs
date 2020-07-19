@@ -128,5 +128,45 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
+
+        public async Task<bool> SaveRepairItemStockOutAsync(List<RepairItemStockDetailDTO> items, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            List<RepairItemStockDetail> stockDetails = new List<RepairItemStockDetail>();
+            foreach (var item in items)
+            {
+                RepairItemStockDetail stock = new RepairItemStockDetail()
+                {
+                    ProductionFloorId = item.ProductionFloorId,
+                    QCId = item.QCId,
+                    DescriptionId = item.DescriptionId,
+                    RepairLineId = item.RepairLineId,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    Quantity = item.Quantity,
+                    ReferenceNumber = item.ReferenceNumber,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    Remarks = item.Remarks,
+                    StockStatus = StockStatus.StockOut
+                };
+
+                var stockInfoInDb = await _repairItemStockInfoBusiness.GetRepairItemAsync(item.QCId.Value, item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                stockInfoInDb.Quantity -= item.Quantity;
+                stockInfoInDb.QCQty += item.Quantity;
+                stockInfoInDb.UpUserId = userId;
+                _repairItemStockInfoRepository.Update(stockInfoInDb);
+                stockDetails.Add(stock);
+            }
+            if (stockDetails.Count > 0)
+            {
+                this._repairItemStockDetailRepository.InsertAll(stockDetails);
+                IsSuccess = await this._repairItemStockDetailRepository.SaveAsync();
+            }
+            return IsSuccess;
+            
+        }
     }
 }

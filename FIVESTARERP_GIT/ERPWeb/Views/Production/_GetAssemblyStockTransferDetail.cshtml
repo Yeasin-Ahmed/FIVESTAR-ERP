@@ -8,7 +8,7 @@
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
+<table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblInfo">
     <tbody>
         <tr>
             <td class="hide">@info.TSQInfoId</td>
@@ -42,7 +42,7 @@
     </tbody>
 </table>
 
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
+<table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblDetail">
     <thead class="thead-dark">
         <tr class="text-center">
             <th>#SL</th>
@@ -76,7 +76,7 @@
     </tbody>
 </table>
 
-@if (info.StateStatus == RequisitionStatus.Approved && privilege.Approval)
+@if (info.StateStatus == RequisitionStatus.Approved)
 {
     <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-success btnAccepted">Accept</button>

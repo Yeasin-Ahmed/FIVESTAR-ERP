@@ -448,7 +448,8 @@
             }
             else {
                 if (ddlRepairReason.val() === "Hardware Problem" || ddlRepairReason.val() === "Both Software & Hardware Problem") {
-                    if (ddlItems.val() === "") {
+                    if (ddlItems.val() === "")
+                    {
                         isValid = false;
                         $(".require-item").removeClass("hide");
                     }

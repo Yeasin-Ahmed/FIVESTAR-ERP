@@ -4,79 +4,102 @@
 @{
     Layout = null;
     int sl = 0;
+    int count = 0;
     TransferFromQCInfoViewModel info = (TransferFromQCInfoViewModel)ViewBag.Info;
+    IEnumerable<QRCodeTransferToRepairInfoViewModel> QrCodeDetails = (IEnumerable<QRCodeTransferToRepairInfoViewModel>)ViewBag.QrCodeDetail;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    string belt = "(" + info.LineName + ")-(" + info.QCLineName + ")-(" + info.RepairLineName + ")";
+    string itemName = info.ItemName + " [" + info.ItemTypeName + "-" + info.WarehouseName + "]";
 }
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblInfo">
+            <tbody>
+                <tr>
+                    <td class="hide">@info.TFQInfoId</td>
+                    <td style="width:15%">Transfer Code</td>
+                    <td style="width:20%"><b>@info.TransferCode</b></td>
+                    <td style="width:20%">Belt</td>
+                    <td colspan="3"><b>@belt</b></td>
+                </tr>
+                <tr>
+                    <td style="width:15%">Model Name</td>
+                    <td style="width:20%"><b>@info.ModelName</b></td>
+                    <td style="width:20%">Item Name</td>
+                    <td colspan="3"><b>@itemName</b></td>
+                </tr>
+                <tr>
+                    <td style="width:15%">Qty</td>
+                    <td style="width:20%"><b>@info.ForQty</b></td>
+                    <td style="width:20%">State Status</td>
+                    <td colspan="3"><b>@info.StateStatus</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-5" style="max-height:150px;overflow-y:scroll">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm tblQrCodes">
+                    <thead class="btn-dark">
+                        <tr>
+                            <th colspan="2">
+                                Total Items : @QrCodeDetails.Count()
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:15%">#SL</th>
+                            <th style="width:85%">QRCode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in QrCodeDetails)
+                        {
+                            count++;
+                            <tr>
+                                <td style="width:15%"class="text-center text-bold">@count</td>
+                                <td style="width:85%">@item.QRCode</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7" style="max-height:150px;overflow-y:scroll">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblDetail">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th>#SL</th>
+                            <th class="hide"></th>
+                            <th>Item Name</th>
+                            <th>Qty.</th>
+                            <th>Type Of Unit</th>
 
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
-    <tbody>
-        <tr>
-            <td class="hide">@info.TFQInfoId</td>
-            <td style="width:15%">Transfer Code</td>
-            <td style="width:20%"><b>@info.TransferCode</b></td>
-            <td style="width:20%">Floor No</td>
-            <td style="width:15%"><b>@info.LineName</b></td>
-            <td style="width:15%">QC Line Name</td>
-            <td style="width:15%"><b>@info.QCLineName</b></td>
-        </tr>
-        <tr>
-            <td style="width:15%">Repair Line</td>
-            <td style="width:20%"><b>@info.RepairLineName</b></td>
-            <td style="width:20%">Model Name</td>
-            <td style="width:15%"><b>@info.ModelName</b></td>
-            <td style="width:15%">StateStatus</td>
-            <td style="width:20%"><b>@info.StateStatus</b></td>
-        </tr>
-        <tr>
-            <td style="width:15%">Warehouse</td>
-            <td style="width:20%"><b>@info.WarehouseName</b></td>
-            <td style="width:20%">ItemType Name</td>
-            <td style="width:15%"><b>@info.ItemTypeName</b></td>
-            <td style="width:15%">Item Name</td>
-            <td style="width:15%"><b>@info.ItemName</b></td>
-        </tr>
-        <tr>
-            <td style="width:15%">QC Qty</td>
-            <td style="width:20%"><b>@info.ForQty</b></td>
-            <td style="width:20%">Transfer Reason</td>
-            <td colspan="3"><b>@info.RepairTransferReason</b></td>
-        </tr>
-    </tbody>
-</table>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in Model)
+                        {
+                            sl = sl + 1;
+                            string itemNameDetatil = detail.ItemName + " [" + detail.ItemTypeName + "-" + detail.WarehouseName + "]";
+                            <tr>
+                                <td class="text-center" width="10%"><b>@sl</b></td>
+                                <td class="hide">@detail.TFQDetailId</td>
+                                <td>@itemNameDetatil</td>
+                                <td class="text-center">
+                                    @detail.Quantity
+                                </td>
+                                <td class="text-center">@detail.UnitName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
-    <thead class="thead-dark">
-        <tr class="text-center">
-            <th>#SL</th>
-            <th class="hide"></th>
-            <th class="hide"></th>
-            <th>ItemType Name</th>
-            <th class="hide"></th>
-            <th>Item Name</th>
-            <th>Qty.</th>
-            <th>Type Of Unit</th>
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var detail in Model)
-        {
-            sl = sl + 1;
-            <tr>
-                <td class="text-center" width="10%"><b>@sl</b></td>
-                <td class="hide">@detail.TFQDetailId</td>
-                <td class="hide">@detail.ItemTypeId</td>
-                <td>@detail.ItemTypeName</td>
-                <td class="hide">@detail.ItemId</td>
-                <td>@detail.ItemName</td>
-                <td class="text-center">
-                    @detail.Quantity
-                </td>
-                <td class="text-center">@detail.UnitName</td>
-            </tr>
-        }
-    </tbody>
-</table>
+
 
 @if (info.StateStatus == RequisitionStatus.Approved && privilege.Approval)
 {

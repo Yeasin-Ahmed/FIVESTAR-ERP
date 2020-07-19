@@ -13,5 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<RepairItemStockInfo> GetRepairItemStockInfById(long repairLineId, long modelId, long itemId, long orgId);
         IEnumerable<RepairItemStockInfo> GetRepairItemStockInfoByQC(long qcId, long modelId, long itemId, long orgId);
         RepairItemStockInfo GetRepairItem(long qcId, long repairLineId, long modelId, long itemId, long orgId);
+        Task<RepairItemStockInfo> GetRepairItemAsync(long qcId, long repairLineId, long modelId, long itemId, long orgId);
     }
 }

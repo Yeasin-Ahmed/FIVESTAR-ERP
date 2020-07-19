@@ -24,6 +24,34 @@ namespace ERPBLL.Production
             this._faultyItemStockDetailRepository = new FaultyItemStockDetailRepository(this._productionDb);
             this._faultyItemStockInfoBusiness = faultyItemStockInfoBusiness;
         }
+
+        public IEnumerable<FaultyItemStockDetailDTO> GetFaultyItemStockDetailsByQrCode(string QRCode, long transferId, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            param += string.Format(@" and fsd.OrganizationId={0}", orgId);
+            if(transferId > 0)
+            {
+                param += string.Format(@" and fsd.TransferId={0}", transferId);
+            }
+            if (!string.IsNullOrEmpty(QRCode) && QRCode.Trim() !="")
+            {
+                param += string.Format(@" and fsd.ReferenceNumber='{0}'", QRCode);
+            }
+
+            query = string.Format(@"Select fsd.FaultyItemStockDetailId,fsd.ReferenceNumber,fsd.TransferId,fsd.TransferCode,w.Id 'WarehouseId',w.WarehouseName,it.ItemId 'ItemTypeId',
+it.ItemName 'ItemTypeName',i.ItemId,i.ItemName,fsd.Quantity
+ From [Production].dbo.tblFaultyItemStockDetail fsd
+Inner Join [Inventory].dbo.tblWarehouses w on fsd.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on fsd.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on fsd.ItemId = i.ItemId
+Where 1= 1 {0}", Utility.ParamChecker(param));
+
+            var data = this._productionDb.Db.Database.SqlQuery<FaultyItemStockDetailDTO>(query).ToList();
+            return data;
+        }
+
         public IEnumerable<FaultyItemStockDetail> GetFaultyItemStocks(long orgId)
         {
             return _faultyItemStockDetailRepository.GetAll(f => f.OrganizationId == orgId);
@@ -50,7 +78,9 @@ namespace ERPBLL.Production
                     ReferenceNumber = item.ReferenceNumber,
                     Remarks = "Stock In By Repair Item Stock",
                     StockStatus = StockStatus.StockIn,
-                    EntryDate = DateTime.Now
+                    EntryDate = DateTime.Now,
+                    TransferCode= item.TransferCode,
+                    TransferId = item.TransferId
                 };
                 var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItem(item.RepairLineId.Value,item.DescriptionId.Value, item.ItemId.Value, orgId);
 
@@ -129,5 +159,6 @@ namespace ERPBLL.Production
             }
             return IsSuccess; 
         }
+       
     }
 }

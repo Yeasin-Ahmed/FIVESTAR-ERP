@@ -1,0 +1,515 @@
+﻿
+@{
+    ViewBag.Title = "Repairing Item By QRCode";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-center">Repairing Item By QRCode Scanning</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="border-bottom:1px solid #cecece">
+                    <div class="col-md-5">
+                        <div class="input-group mb-3">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="hdfTransferId" />
+                            <input type="hidden" id="hdfModelId" />
+                            <input type="hidden" id="hdfItem" />
+                            <input type="hidden" id="hdfQRCode" />
+                            <input type="hidden" id="hdfRepairLineId" />
+                            <input type="hidden" id="hdfQCLineId" />
+                            <input type="text" class="form-control" placeholder="Search Repair Item By QRCode" id="txtSearchQRCode" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm table-responsive-lg text-sm" id="tblQRCodeDetails">
+                            <thead class="btn-dark">
+                                <tr>
+                                    <th colspan="4">QRCode Details</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="card card-navy">
+                            <div class="card-header">
+                                <h5>QRCode Problems</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblQRCodeProblems">
+                                        <thead class="btn-dark">
+                                            <tr class="text-center">
+                                                <th style="width:10%">#SL</th>
+                                                <th style="width:90%">Problem</th>
+                                                <th class="hide"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card card-navy">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label for="ddlItems" class="control-label font-weight-bold ">Faulty Items</label>
+                                        <select id="ddlItems" class="form-control form-control-sm select2 select2-danger">
+                                            <option value="">--Select Item--</option>
+                                        </select>
+                                        <span class="error hide require-item font-weight-bold">Item is required</span>
+                                        <span class="error hide duplicate-itemName font-weight-bold">Duplicate Item</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="txtQuantity" class="control-label font-weight-bold">
+                                            Quantity<span id="limitqty"></span>
+                                        </label>
+                                        <input type="number" id="txtQuantity" value="" class="form-control form-control-sm" />
+                                        <span class="error hide require-quantity">Input Qty</span>
+                                        <span class="error hide req-limitCross">Limit cross</span>
+                                        <span class="error hide req-stockOver">Stock Out</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="" class="control-label font-weight-bold" style="visibility:hidden">
+                                            Add
+                                        </label>
+                                        <div class="clearfix">
+                                            <button type="button" class="btn btn-sm btn-sm btn-flat btn-warning" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblFaultItems">
+                                            <thead class="btn-dark">
+                                                <tr class="text-center">
+                                                    <th style="width:15%">#SL</th>
+                                                    <th class="hide"></th>
+                                                    <th style="width:65%">Item/Item-Color</th>
+                                                    <th style="width:10%">Qty</th>
+                                                    <th style="width:10%">Action</th>
+                                                    <th class="hide warehouse"></th>
+                                                    <th class="hide itemType"></th>
+                                                    <th class="hide item"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-flat btn-danger btn-Action" id="btnFaulty">
+                                    Faulty
+                                </button>
+                                <button type="button" class="btn btn-flat btn-success btn-Action" id="btnRepairDone">
+                                    Repair Done
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var txtSearchQRCode = $("#txtSearchQRCode");
+        var ddlItems = $("#ddlItems");
+        var txtQuantity = $("#txtQuantity");
+        var limitqty = $("#limitqty");
+        var hdfTransferId = $("#hdfTransferId");
+        var hdfModelId = $("#hdfModelId");
+        var hdfItem = $("#hdfItem");
+        var hdfQRCode = $("#hdfQRCode");
+        var ddlItems = $("#ddlItems");
+        var hdfRepairLineId = $("#hdfRepairLineId");
+        var hdfQCLineId = $("#hdfQCLineId");
+        var warehouse = '';
+        var itemType = '';
+        var item = '';
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        function clearHdf() {
+            $(".error").addClass('hide');
+            hdfTransferId.val('');
+            hdfModelId.val("");
+            hdfItem.val('');
+            hdfQRCode.val('');
+            hdfRepairLineId.val('');
+            hdfQCLineId.val('');
+            clearDropdown("ddlItems");
+            $("#tblQRCodeDetails tbody").empty();
+            $("#tblQRCodeProblems tbody").empty();
+            $("#tblFaultItems tbody").empty();
+        }
+
+        txtSearchQRCode.change(function () {
+            clearHdf();
+            if ($.trim(txtSearchQRCode.val()) !== "") {
+                var data = JSON.stringify({ qrCode: $.trim(txtSearchQRCode.val()) });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetRepairItemDetailsByQRCode', data, getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res != null) {
+                        //alert("foo")
+                        bindQrCodeDetails(res.info);
+                        bindQrCodeProblems(res.problems);
+                        bindQRCodeFaultyItems(res.faultyItems);
+                        hdfTransferId.val(res.info.TransferId);
+                        hdfModelId.val(res.info.DescriptionId);
+                        hdfItem.val(res.info.ItemId);
+                        hdfQRCode.val(res.info.QRCode);
+                        LoadDropdownByData(res.items, ddlItems);
+                        hdfRepairLineId.val(res.info.RepairLineId);
+                        hdfQCLineId.val(res.info.QCLineId);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    var al = bootbox.alert("QRCode not found");
+                    al.show();
+                    setTimeout(function () { al.modal('hide'); txtSearchQRCode.focus();}, 700);
+                    txtSearchQRCode.val('');
+                })
+            }
+            txtSearchQRCode.focus();
+        })
+
+        function LoadDropdownByData(data, elementId) {
+            if (!$.isEmptyObject(data) && data.length > 0) {
+                clearDropdown(elementId.attr("id"));
+                $.each(data, function (index, item) {
+                    var option = "<option value='" + item.value + "'>" + item.text + "</option>";
+                    elementId.append(option);
+                })
+            }
+        }
+
+        function bindQrCodeDetails(obj) {
+            $("#tblQRCodeDetails tbody").empty();
+            if (!$.isEmptyObject(obj)) {
+                // tr 1
+                var td1 = "<td class='text-bold alert-secondary' style='width:10%'>Transfer Code</td>";
+                var td2 = "<td class='text-bold' style='width:20%; background-color:#e1dada'>" + obj.TransferCode + "</td>";
+                var td3 = "<td class='text-bold alert-secondary' style='width:15%'>Belt</td>";
+                var td4 = "<td class='text-bold' style='width:55%; background-color:#e1dada'>(" + obj.FloorName + ")-" + "(" + obj.AssemblyLineName + ")-" + "(" + obj.QCLineName + ")-" + "(" + obj.RepairLineName + ")" + "</td>";
+
+                // tr2
+
+                var td5 = "<td class='text-bold alert-secondary' style='width:10%'>Model Name</td>";
+                var td6 = "<td class='text-bold' style='width:20%; background-color:#e1dada'>" + obj.ModelName + "</td>";
+                var td7 = "<td class='text-bold alert-secondary' style='width:15%'>Item/Item-Color</td>";
+                var td8 = "<td class='text-bold' style='width:55%; background-color:#e1dada'>" + obj.ItemName + " [" + obj.ItemTypeName + "-" + obj.WarehouseName + "]" + "</td>";
+
+                // tr3
+                var td9 = "<td class='text-bold alert-secondary' style='width:10%'>QR Code</td>";
+                var td10 = "<td class='text-bold' style='width:20%; background-color:#e1dada'>" + obj.QRCode + "</td>";
+                var td11 = "<td class='text-bold alert-secondary' style='width:10%'>State Status</td>";
+                var td12 = "<td class='text-bold' style='width:55%; background-color:#e1dada'>" + obj.StateStatus + "</td>";
+
+                var tr1 = "<tr>" + td1 + td2 + td3 + td4 + "</tr>";
+                var tr2 = "<tr>" + td5 + td6 + td7 + td8 + "</tr>";
+
+                var tr3 = "<tr>" + td9 + td10 + td11 + td12 + "</tr>";
+
+                $("#tblQRCodeDetails tbody").append(tr3);
+                $("#tblQRCodeDetails tbody").append(tr1);
+                $("#tblQRCodeDetails tbody").append(tr2);
+
+            }
+        }
+
+        function bindQrCodeProblems(obj) {
+            $("#tblQRCodeProblems tbody").empty();
+            if (!$.isEmptyObject(obj)) {
+                $.each(obj, function (index, item) {
+                    var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
+                    var td2 = "<td>" + item.ProblemName + "</td>";
+                    var td3 = "<td class='hide'>" + item.ProblemId + "</td>";
+                    var tr = "<tr>" + td1 + td2 + td3 + "</tr>";
+                    $("#tblQRCodeProblems tbody").append(tr);
+                })
+            }
+        }
+
+        function bindQRCodeFaultyItems(obj) {
+            $("#tblFaultItems tbody").empty();
+            if (!$.isEmptyObject(obj)) {
+                $.each(obj, function (index, item) {
+                    var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
+                    var td2 = "<td>" + item.ItemName + "[" + item.ItemTypeName + "-" + item.WarehouseName + "]" + "</td>";
+                    var td3 = "<td class='text-center text-bold'>" + item.Quantity + "</td>";
+                    var td4 = "<td></td>";
+                    var td5 = "<td class='hide warehouse'>" + item.WarehouseId + "</td>";
+                    var td6 = "<td class='hide itemType'>" + item.ItemTypeId + "</td>";
+                    var td7 = "<td class='hide item'>" + item.ItemId + "</td>";
+                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + "</tr>";
+                    $("#tblFaultItems tbody").append(tr);
+                })
+            }
+        }
+
+        ddlItems.change(function () {
+            $(".error").addClass('hide');
+            $("#limitqty").empty('');
+            txtQuantity.val('0');
+            if (ddlItems.val() !== "") {
+                txtQuantity.val('1');
+                var item = dropDownSelectedText("ddlItems");
+                var qty = item.substring(item.lastIndexOf("-") + 1, item.length - 1);
+                $("#limitqty").text('(' + qty + ')');
+            }
+        })
+
+        function getItemValues() {
+            warehouse = '';
+            itemType = '';
+            item = '';
+            if (ddlItems.val() !== "") {
+                var itemVal = ddlItems.val();
+                item = itemVal.substring(0, itemVal.indexOf("#"));
+                itemType = itemVal.substring(itemVal.indexOf("#") + 1, itemVal.lastIndexOf("#"));
+                warehouse = itemVal.substring(itemVal.lastIndexOf("#") + 1, itemVal.length);
+            }
+        }
+
+        function validationFaultyInput() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            var count = $("#tblFaultItems tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblFaultItems tbody tr"), function (index, item) {
+                    var itemId = $(this).children('td').eq(6).html();
+                    var itemVal = ddlItems.val();
+                    var val1 = itemVal.substring(0, itemVal.indexOf("#"));
+                    if (itemId == val1) {
+                        isValid = false;
+                        $(".duplicate-itemName").removeClass('hide');
+                    }
+                })
+            }
+            getItemValues();
+            if (TryParseInt(item, 0) <= 0 || TryParseInt(itemType, 0) <= 0 || TryParseInt(warehouse, 0) <= 0) {
+                $(".require-item").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                $('.require-quantity').removeClass('hide');
+                isValid = false;
+            }
+            else {
+                if ($("#limitqty").text() === '') {
+                    $('.req-stockOver').removeClass('hide');
+                    isValid = false;
+                }
+                else {
+                    var sq = $("#limitqty").text().trim();
+                    sq = sq.substring(1, sq.length - 1);
+                    if (TryParseInt(txtQuantity.val(), 0) > TryParseInt(sq, 0)) {
+                        isValid = false;
+                        $('.req-limitCross').removeClass('hide');
+                    }
+                    else {
+                        // Check Stock In Db
+                    }
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validationFaultyInput()) {
+                var rows = $("#tblFaultItems tbody tr").length;
+                getItemValues();
+                var itemText = dropDownSelectedText("ddlItems");
+                itemText = itemText.substring(0, itemText.lastIndexOf("("));
+                var td1 = "<td class='text-center text-bold'>" + (rows + 1) + "</td>";
+                var td2 = "<td>" + itemText + "</td>";
+                var td3 = "<td class='text-center text-bold'>" + txtQuantity.val() + "</td>";
+                var td4 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i></a></td>";
+                var td5 = "<td class='hide warehouse'>" + warehouse + "</td>";
+                var td6 = "<td class='hide itemType'>" + itemType + "</td>";
+                var td7 = "<td class='hide item'>" + item + "</td>";
+
+                var tr = "<tr class='new-item'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + "</tr>";
+                $("#tblFaultItems tbody").append(tr);
+                txtQuantity.val('0');
+            }
+        })
+
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            removeTableRow("#tblFaultItems tbody", index);
+            fnFixTheTbodyRowSerial("#tblFaultItems", index);
+        })
+
+        $(document).on('click', '.btn-Action', function (e) {
+            e.preventDefault();
+            disable('.btn-Action');
+            var id = $(this).attr("id");
+            //alert(id);
+            //btnFaulty,btnRepairDone
+            if (id == "btnFaulty") {
+                // Insert Faulty Item // Must have a faulty items
+                fnSaveFaultyItems();
+            }
+            else {
+                fnRepairDone()
+            }
+        })
+
+        function fnSaveFaultyItems() {
+            var newFaultyRows = $("#tblFaultItems tbody").find("tr.new-item");
+            console.log(newFaultyRows);
+            if (newFaultyRows.length > 0) {
+                var faultyItems = []; faultyItems.length = 0;
+                $.each(newFaultyRows, function (index, item) {
+                    var tds = $(this).children('td');
+                    faultyItems.push({
+                        ItemId: TryParseInt(tds.eq(6).html(), 0),
+                        ItemTypeId: TryParseInt(tds.eq(5).html(), 0),
+                        WarehouseId: TryParseInt(tds.eq(4).html(), 0),
+                        Quantity: TryParseInt(tds.eq(2).html(), 0)
+                    })
+                })
+
+                var FaultyInfo = { QRCode: hdfQRCode.val(), TransferId: TryParseInt(hdfTransferId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0) };
+                FaultyInfo.FaultyItems = faultyItems;
+                var data = JSON.stringify({ model: FaultyInfo });
+                console.log('FaultyItems');
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFaultyItemByQRCodeScaning', data, getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+
+                    if (res === true || status === "success") {
+                        fnGetFaultyItemsAfterSubmit(FaultyInfo.QRCode, FaultyInfo.TransferId);
+                    }
+                    enable('.btn-Action');
+
+                }).fail(function (error) {
+                    console.log(error);
+                    enable('.btn-Action');
+                })
+            }
+            else {
+                enable('.btn-Action');
+            }
+        }
+
+        function validateRepairDone() {
+            var isValid = true;
+            var errorText = "";
+            if (hdfQRCode.val() =="") {
+                errorText += "QRCode not found</br>";
+                isValid = false;
+            }
+            if (TryParseInt(hdfModelId.val(), 0) <= 0) {
+                errorText += "Model not found</br>";
+                isValid = false;
+            }
+            if (TryParseInt(hdfItem.val(), 0) <= 0) {
+                errorText += "Item not found</br>";
+                isValid = false;
+            }
+            if (TryParseInt(hdfQCLineId.val(), 0) <= 0) {
+                errorText += "QC Line not found</br>";
+                isValid = false;
+            }
+            if (TryParseInt(hdfRepairLineId.val(), 0) <= 0) {
+                errorText += "Repair Line not found</br>";
+                isValid = false;
+            }
+            
+            if (hdfQRCode.val() !== "" && TryParseInt(hdfModelId.val(), 0) > 0 && TryParseInt(hdfItem.val(), 0) > 0 && TryParseInt(hdfRepairLineId.val(), 0) > 0 && TryParseInt(hdfQCLineId.val(), 0) > 0) {
+                var data = JSON.stringify({ modelId: TryParseInt(hdfModelId.val(), 0), itemId: TryParseInt(hdfItem.val(), 0), repairLineId: TryParseInt(hdfRepairLineId.val(), 0) });
+                var value = ajaxValueReturnable(data, '/Common/CheckingAvailabilityOfSparepartsWithRepairLineStock', getToken());
+                console.log("ajaxValueReturnable");
+                console.log(value);
+                if (value.isSuccess === false) {
+                    errorText +=value.text;
+                    isValid = false;
+                }
+            }
+            if ($.trim(errorText) !== "") {
+                bootbox.alert(errorText);
+            }
+            return isValid;
+        }
+
+        function fnGetFaultyItemsAfterSubmit(qrCode, transferId) {
+            var data = JSON.stringify({ qrCode: qrCode, transferId: transferId })
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetFaultyItemsByQRCode', data, getToken())).then(function (res,status) {
+                console.log(res);
+                console.log(status);
+                if (res.faultyItems !== null && status === "success") {
+                    bindQRCodeFaultyItems(res.faultyItems);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        function fnRepairDone() {
+            if (validateRepairDone())
+            {
+                ////QRCode,RepairLineId,QCLineId,ModelId,ItemId
+                var data = JSON.stringify({ QRCode: hdfQRCode.val(), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
+                console.log("Repair Done");
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairItemByQRCodeScaning', data, getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+            else {
+                enable('.btn-Action');
+            }
+        }
+    </script>
+}
+
+
+

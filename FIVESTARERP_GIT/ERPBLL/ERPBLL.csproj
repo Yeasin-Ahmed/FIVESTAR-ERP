@@ -176,6 +176,7 @@
     <Compile Include="Production\Interface\IProductionToPackagingStockTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IProductionToPackagingStockTransferInfoBusiness.cs" />
     <Compile Include="Production\Interface\IQCPassTransferInformationBusiness.cs" />
+    <Compile Include="Production\Interface\IQRCodeProblemBusiness.cs" />
     <Compile Include="Production\Interface\IQRCodeTransferToRepairInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IProductionAssembleStockDetailBusiness.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Production\ProductionToPackagingStockTransferDetailBusiness.cs" />
     <Compile Include="Production\ProductionToPackagingStockTransferInfoBusiness.cs" />
     <Compile Include="Production\QCPassTransferInformationBusiness.cs" />
+    <Compile Include="Production\QRCodeProblemBusiness.cs" />
     <Compile Include="Production\QRCodeTransferToRepairInfoBusiness.cs" />
     <Compile Include="Production\RepairSectionFaultyItemTransferDetailBusiness.cs" />
     <Compile Include="Production\RepairSectionRequisitionDetailBusiness.cs" />

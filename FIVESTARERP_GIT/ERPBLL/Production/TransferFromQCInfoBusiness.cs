@@ -24,6 +24,7 @@ namespace ERPBLL.Production
         private readonly IQCItemStockDetailBusiness _qCItemStockDetailBusiness;
         private readonly IRepairItemStockDetailBusiness _repairItemStockDetailBusiness;
         private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
+        //private readonly IQRCodeTransferToRepairInfoBusiness _qRCodeTransferToRepairInfoBusiness;
 
         public TransferFromQCInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness)
         {
@@ -37,6 +38,7 @@ namespace ERPBLL.Production
             this._qCItemStockDetailBusiness = qCItemStockDetailBusiness;
             this._repairItemStockDetailBusiness = repairItemStockDetailBusiness;
             this._packagingItemStockDetailBusiness = packagingItemStockDetailBusiness;
+           
         }
 
         public TransferFromQCInfo GetTransferFromQCInfoById(long transferId, long orgId)
@@ -148,7 +150,7 @@ namespace ERPBLL.Production
                                 ItemId = item.ItemId.Value,
                                 UnitId = item.UnitId,
                                 ProductionLineId = transferInDb.LineId.Value,
-                                Quantity = item.Quantity,
+                                Quantity = (item.Quantity *  transferInDb.ForQty).Value,
                                 Remarks = transferInDb.RepairTransferReason,
                                 OrganizationId = orgId,
                                 EUserId = userId,
@@ -163,6 +165,7 @@ namespace ERPBLL.Production
                             if (_repairLineStockDetailBusiness.SaveRepairLineStockIn(stockDetails, userId, orgId))
                             {
                                 IsSuccess = _repairItemStockDetailBusiness.SaveRepairItemStockIn(repairStocks, userId, orgId);
+                               
                             }
                         }
                     }
@@ -272,9 +275,96 @@ namespace ERPBLL.Production
             return _transferFromQCInfoRepository.GetAll(t => t.TransferFor == transferFor && t.OrganizationId == orgId);
         }
 
-        public async Task<TransferFromQCInfo> GetNonReceivedTransferFromQCInfoByQRCodeKeyAsync(long qcLineId, long repairLineId, long modelId , long warehouseId,long itemTypeId, long itemId, long orgId)
+        public async Task<TransferFromQCInfo> GetNonReceivedTransferFromQCInfoByQRCodeKeyAsync(long qcLineId, long repairLineId, long modelId, long warehouseId, long itemTypeId, long itemId, long orgId)
         {
-            return await _transferFromQCInfoRepository.GetOneByOrgAsync(t => t.QCLineId == qcLineId && t.RepairLineId == repairLineId && t.DescriptionId == modelId && t.WarehouseId == warehouseId && t.ItemTypeId == itemTypeId && t.ItemId == itemId && t.OrganizationId == orgId && t.StateStatus ==RequisitionStatus.Approved);
+            return await _transferFromQCInfoRepository.GetOneByOrgAsync(t => t.QCLineId == qcLineId && t.RepairLineId == repairLineId && t.DescriptionId == modelId && t.WarehouseId == warehouseId && t.ItemTypeId == itemTypeId && t.ItemId == itemId && t.OrganizationId == orgId && t.StateStatus == RequisitionStatus.Approved);
+        }
+
+        public IEnumerable<TransferFromQCInfoDTO> GetTransferFromQCInfos(long? floorId, long? qcLineId, long? repairLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate, string transferCode,long? transferInfoId ,long orgId)
+        {
+            return  this._productionDb.Db.Database.SqlQuery<TransferFromQCInfoDTO>(QueryForTransferFromQCInfo(floorId, qcLineId, repairLineId, modelId, warehouseId, itemTypeId, itemId, status, fromDate, toDate, transferCode, transferInfoId, orgId)).ToList();
+        }
+
+        private string QueryForTransferFromQCInfo(long? floorId, long? qcLineId, long? repairLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate,string transferCode, long? transferInfoId, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            param += string.Format(@" and info.OrganizationId={0}", orgId);
+            if (transferInfoId != null && transferInfoId > 0)
+            {
+                param += string.Format(@" and info.TFQInfoId={0}", transferInfoId);
+            }
+            if (floorId != null && floorId > 0)
+            {
+                param += string.Format(@" and info.LineId={0}", floorId);
+            }
+            if (qcLineId != null && qcLineId > 0)
+            {
+                param += string.Format(@" and info.QCLineId={0}", qcLineId);
+            }
+            if (repairLineId != null && repairLineId > 0)
+            {
+                param += string.Format(@" and info.RepairLineId={0}", repairLineId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and info.DescriptionId={0}", repairLineId);
+            }
+            if (warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and info.WarehouseId={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and info.ItemTypeId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and info.ItemId={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(status) && status.Trim() != "")
+            {
+                param += string.Format(@" and info.StateStatus={0}", status);
+            }
+            if (!string.IsNullOrEmpty(transferCode) && transferCode.Trim() != "")
+            {
+                param += string.Format(@" and info.TransferCode Like'%{0}%'", transferCode);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(info.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(info.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(info.EntryDate as date)='{0}'", tDate);
+            }
+            
+
+            query = string.Format(@"Select info.TFQInfoId,info.TransferCode,info.DescriptionId,de.DescriptionName 'ModelName',info.LineId, pl.LineNumber 'LineName',
+info.QCLineId,qc.QCName 'QCLineName',info.RepairLineId,rl.RepairLineName,info.WarehouseId,wa.WarehouseName,info.ItemTypeId,it.ItemName 'ItemTypeName',info.ItemId,i.ItemName,info.ForQty,info.EntryDate,app.UserName 'EntryUser',info.StateStatus,
+info.UpdateDate,(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId= info.UpUserId) 'UpdateUser',info.TransferFor,
+(Select Count(*) From [Production].dbo.tblQRCodeTransferToRepairInfo Where TransferId = info.TFQInfoId) 'ItemCount'
+From [Production].dbo.tblTransferFromQCInfo info
+Inner Join [Production].dbo.tblProductionLines pl on info.LineId = pl.LineId
+Inner Join [Production].dbo.tblQualityControl qc on info.QCLineId = qc.QCId
+Inner Join [Production].dbo.tblRepairLine rl on info.RepairLineId = rl.RepairLineId
+Inner Join [Inventory].dbo.tblDescriptions de on info.DescriptionId = de.DescriptionId
+Inner Join [Inventory].dbo.tblWarehouses wa on info.WarehouseId = wa.Id
+Inner Join [Inventory].dbo.tblItemTypes it on info.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on info.ItemId = i.ItemId
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on info.EUserId = app.UserId
+Where 1=1 {0}", param);
+
+            return query;
         }
     }
 }

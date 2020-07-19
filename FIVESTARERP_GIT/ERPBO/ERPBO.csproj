@@ -291,6 +291,7 @@
     <Compile Include="Production\DomainModels\TransferFromQCInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToPackagingLine2Info.cs" />
     <Compile Include="Production\DomainModels\TransferStockToQCInfo.cs" />
+    <Compile Include="Production\DTOModel\AddingFaultyByQRCodeDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
@@ -362,6 +363,7 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferRepairItemByQRCodeScanningDTO.cs" />
     <Compile Include="Production\DTOModel\TransferRepairItemToQcDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferFromQCDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferRepairItemToQcInfoDTO.cs" />
@@ -373,6 +375,7 @@
     <Compile Include="Production\DTOModel\TransferStockToQCDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToQCInfoDTO.cs" />
     <Compile Include="Production\ReportModels\ProductionRequisitionReport.cs" />
+    <Compile Include="Production\ViewModels\AddingFaultyByQRCodeViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineViewModel.cs" />
@@ -436,6 +439,7 @@
     <Compile Include="Inventory\ViewModels\WarehouseViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferFromQCDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferFromQCInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferRepairItemByQRCodeScanningViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferRepairItemToQcDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferRepairItemToQcInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferStockToAssemblyDetailViewModel.cs" />
