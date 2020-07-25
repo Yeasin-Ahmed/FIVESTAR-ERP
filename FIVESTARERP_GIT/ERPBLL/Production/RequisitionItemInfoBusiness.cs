@@ -28,7 +28,7 @@ namespace ERPBLL.Production
 
         public IEnumerable<RequisitionItemInfoDTO> GetRequisitionItemInfosByQuery(long? reqItemIfoId, long? floorId, long? assembly, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? reqInfoId, string status, string reqCode, string fromDate, string toDate, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<RequisitionItemInfoDTO>(QueryFortRequisitionItemInfos(reqItemIfoId, floorId, assembly, modelId, warehouseId, itemTypeId, itemId, reqInfoId, reqCode, fromDate, toDate, orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<RequisitionItemInfoDTO>(QueryFortRequisitionItemInfos(reqItemIfoId, floorId, assembly, modelId, warehouseId, itemTypeId, itemId, reqInfoId, status, reqCode, fromDate, toDate, orgId)).ToList();
         }
 
         private string QueryFortRequisitionItemInfos(long? reqItemIfoId, long? floorId, long? assembly, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? reqInfoId, string status, string reqCode, string fromDate, string toDate, long orgId)
