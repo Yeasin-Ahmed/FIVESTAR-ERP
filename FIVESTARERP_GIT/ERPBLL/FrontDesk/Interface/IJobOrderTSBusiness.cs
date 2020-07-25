@@ -11,7 +11,7 @@ namespace ERPBLL.FrontDesk.Interface
    public interface IJobOrderTSBusiness
     {
         IEnumerable<DashboardDailySingInAndOutDTO> DashboardDailySingInAndOuts(long orgId, long branchId);
-        JobOrderTS GetAllTJobOrderTs(long joborderId, long orgId, long branchId);
+        JobOrderTS GetJobOrderActiveTsByJobOrderId(long joborderId, long orgId, long branchId);
         bool UpdateJobOrderTsStatus(long joborderId, long userId, long orgId, long branchId);
     }
 }

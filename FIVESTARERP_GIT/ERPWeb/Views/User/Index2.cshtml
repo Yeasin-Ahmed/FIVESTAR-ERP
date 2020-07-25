@@ -63,7 +63,6 @@
                                     <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RepairDone).StateStatus)</span>
                                     <span class="info-box-number">
                                         <a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RepairDone).TotalCount)</a>
-
                                     </span>
                                 </div>
                             </div>
@@ -550,7 +549,7 @@
 
 
 <div class="modal fade" id="modalTsStockReturn" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Return Stock</span></h4>
@@ -700,6 +699,9 @@
             var reqId = TryParseInt($(this).attr("data-item-pending"));
             hdfRequsitionDetailId.val(reqId);
             var data = { requsitionInfoId: reqId };
+            //alert(reqId);
+            //console.log(data);
+           // return;
             $.when(getReqWithData('html', 'GET', '/FrontDesk/TSRequsitionForJobOrderDetails', data)).then(function (res, status) {
                 if (status == "success") {
                     $("#dataContainer2").empty();

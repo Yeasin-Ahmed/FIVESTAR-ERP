@@ -27,5 +27,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public string SWarehouseName { get; set; }
         public double CostPrice { get; set; }
         public double SellPrice { get; set; }
+        public int AvailableQty { get; set; }
     }
 }

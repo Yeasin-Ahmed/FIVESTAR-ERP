@@ -11,7 +11,9 @@
     <tr>
         <td class="hide">@Model.JodOrderId</td>
         <td class="text-purple">JobOrder Code</td>
-        <td colspan="5">@Model.JobOrderCode</td>
+        <td colspan="3">@Model.JobOrderCode</td>
+        <td class="text-purple">JobCreateDate</td>
+        <td colspan="2">@EntryDate</td>
     </tr>
     <tr>
         <td class="text-purple">Customer Name</td>
@@ -40,24 +42,26 @@
     <tr>
         <td class="text-purple">Problems</td>
         <td>@Model.Problems</td>
-        <td class="text-purple">Warrenty Available</td>
-        <td>@isWarrantyAvailable</td>
+        @*<td class="text-purple">Warrenty Available</td>
+        <td>@isWarrantyAvailable</td>*@
         <td class="text-purple">Warrenty Paper Enclosed</td>
         <td>@isWarrantyPaperEnclosed</td>
-    </tr>
-    <tr>
         <td class="text-purple">StateStatus</td>
         <td>@Model.StateStatus</td>
-        <td class="text-purple">WarrentyStartDate</td>
-        <td>@strWarrentStartDate</td>
-        <td class="text-purple">WarrentyEndDate</td>
-        <td>@strWarrentEndDate</td>
     </tr>
     <tr>
+        <td class="text-purple">WorkStatus</td>
+        <td>@Model.TsRepairStatus</td>
         <td class="text-purple">ReferenceNumber</td>
         <td>@Model.ReferenceNumber</td>
-        <td class="text-purple">JobCreateDate</td>
-        <td>@EntryDate</td>
+        <td class="text-purple">WarrentyStartDate</td>
+        <td>@strWarrentStartDate</td>
+        @*<td class="text-purple">WarrentyEndDate</td>
+        <td>@strWarrentEndDate</td>*@
+    </tr>
+    <tr>
+         <td class="text-purple">TSName</td>
+        <td>@Model.TSName</td>
         <td class="text-purple">Issued by</td>
         <td>@Model.EntryUser</td>
     </tr>

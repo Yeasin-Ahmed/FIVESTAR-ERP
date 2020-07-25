@@ -18,8 +18,8 @@
             <th style="vertical-align:middle">Model Name</th>
             <th style="vertical-align:middle">Accessories</th>
             <th style="vertical-align:middle">Problems</th>
-            <th style="vertical-align:middle">Warrenty Available</th>
-            <th style="vertical-align:middle">Warrenty Paper Enclosed</th>
+            @*<th style="vertical-align:middle">Warrenty Available</th>*@
+            <th style="vertical-align:middle">Warrenty Paper</th>
             <th style="vertical-align:middle">StateStatus</th>
             <th style="vertical-align:middle">Entry User</th>
             <th style="vertical-align:middle">Entry Date</th>
@@ -43,7 +43,7 @@
                 <td>@item.ModelName</td>
                 <td>@item.AccessoriesNames</td>
                 <td>@item.Problems</td>
-                <td class="text-center">@isWarrantyAvailable</td>
+                @*<td class="text-center">@isWarrantyAvailable</td>*@
                 <td class="text-center">@isWarrantyPaperEnclosed</td>
                 <td class="text-center" data-val="@item.StateStatus">
                     <span class="@badge">@item.StateStatus</span>

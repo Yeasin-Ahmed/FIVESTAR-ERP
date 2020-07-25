@@ -18,5 +18,6 @@ namespace ERPBLL.FrontDesk.Interface
         bool SaveRequisitionStatus(long reqId, string status, long userId, long orgId,long branchId);
 
         IEnumerable<DashboardRequestSparePartsDTO> DashboardRequestSpareParts(long orgId, long branchId);
+        bool UpdatePendingCurrentRequisitionStatus(long jobOrderId,string tsRepairStatus,long userId, long orgId, long branchId);
     }
 }

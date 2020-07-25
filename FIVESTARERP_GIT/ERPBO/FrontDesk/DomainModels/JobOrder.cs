@@ -52,6 +52,8 @@ namespace ERPBO.FrontDesk.DomainModels
         public Nullable<DateTime> WarrantyEndDate { get; set; }
         public string TSRemarks { get; set; }
         public string TsRepairStatus { get; set; }
+        public Nullable<DateTime> CloseDate { get; set; }
+        public long? CUserId { get; set; }
 
     }
 }

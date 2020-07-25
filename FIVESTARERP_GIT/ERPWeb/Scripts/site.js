@@ -720,7 +720,8 @@ function getDateFromJson(jsonVal) {
     var parsedDate = new Date(parseInt(StartDateServer.substr(6)));
     var day = ("0" + parsedDate.getDate()).slice(-2);
     var month = ("0" + (parsedDate.getMonth() + 1)).slice(-2);
-    return parsedDate.getFullYear() + "-" + month+ "-" + day;
+   // return parsedDate.getFullYear() + "-" + month + "-" + day;
+    return day + "-" + month + "-" + parsedDate.getFullYear();
 }
 
 function clearDropdown(eletementId)

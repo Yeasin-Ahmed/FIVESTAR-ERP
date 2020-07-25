@@ -32,17 +32,16 @@ namespace ERPBLL.FrontDesk
                 string.Format(@"Select (select COUNT(*) From tblJobOrderTS Where Cast(AssignDate as date)=Cast(GETDATE()  as date)) 'TotalSignInToday' ,(select COUNT(*) From tblJobOrderTS Where Cast(SignOutDate as date)=Cast(GETDATE()  as date) and OrganizationId={0} and BranchId={1}) 'TotalSignOutToday'", orgId, branchId)).ToList();
         }
 
-        public JobOrderTS GetAllTJobOrderTs(long joborderId, long orgId, long branchId)
+        public JobOrderTS GetJobOrderActiveTsByJobOrderId(long joborderId, long orgId, long branchId)
         {
-            return _jobOrderTSRepository.GetOneByOrg(ts => ts.JodOrderId == joborderId && ts.OrganizationId == orgId && ts.BranchId == branchId);
+            return _jobOrderTSRepository.GetOneByOrg(ts => ts.JodOrderId == joborderId && ts.OrganizationId == orgId && ts.BranchId == branchId && ts.IsActive == true);
         }
 
         public bool UpdateJobOrderTsStatus(long joborderId, long userId, long orgId, long branchId)
         {
-            var jobOrderTsStatus = GetAllTJobOrderTs(joborderId, orgId,branchId);
+            var jobOrderTsStatus = GetJobOrderActiveTsByJobOrderId(joborderId, orgId,branchId);
             if (jobOrderTsStatus != null)
             {
-                jobOrderTsStatus.JodOrderId = joborderId;
                 jobOrderTsStatus.StateStatus = "Sing-Out";
                 jobOrderTsStatus.IsActive = false;
                 jobOrderTsStatus.UpUserId = userId;

@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
+using ERPBLL.Inventory.Interface;
 using ERPBO.Common;
 using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
@@ -35,8 +36,9 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
         private readonly IJobOrderFaultBusiness _jobOrderFaultBusiness;
         private readonly IJobOrderServiceBusiness _jobOrderServiceBusiness;
+        private readonly IDescriptionBusiness _descriptionBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -52,6 +54,7 @@ namespace ERPWeb.Controllers
             this._jobOrderProblemBusiness = jobOrderProblemBusiness;
             this._jobOrderFaultBusiness = jobOrderFaultBusiness;
             this._jobOrderServiceBusiness = jobOrderServiceBusiness;
+            this._descriptionBusiness = descriptionBusiness;
         }
 
         #region Configuration Module
@@ -80,6 +83,65 @@ namespace ERPWeb.Controllers
                 viewModel.JodOrderId = Refe.JodOrderId;
                 viewModel.IMEI = Refe.IMEI;
                 viewModel.ReferenceNumber = Refe.JobOrderCode;
+                viewModel.IMEI2 = Refe.IMEI2;
+                viewModel.Type = Refe.Type;
+                viewModel.ModelColor = Refe.ModelColor;
+                viewModel.JobOrderType = Refe.JobOrderType;
+                viewModel.Remarks = Refe.Remarks;
+                viewModel.WarrantyDate = Refe.WarrantyDate;
+                viewModel.DescriptionId = Refe.DescriptionId;
+                viewModel.ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(Refe.DescriptionId,User.OrgId).DescriptionName);
+                viewModel.CustomerName = Refe.CustomerName;
+                viewModel.Address = Refe.Address;
+                viewModel.MobileNo = Refe.MobileNo;
+            }
+            return Json(viewModel);
+        }
+        [HttpPost]
+        public ActionResult GetReferencesByIMEI2(string imei2)
+        {
+            var Refe = _jobOrderBusiness.GetReferencesNumberByIMEI2(imei2, User.OrgId, User.BranchId);
+            JobOrderViewModel viewModel = new JobOrderViewModel();
+            if (Refe != null)
+            {
+                viewModel.JodOrderId = Refe.JodOrderId;
+                viewModel.IMEI = Refe.IMEI;
+                viewModel.ReferenceNumber = Refe.JobOrderCode;
+                viewModel.IMEI2 = Refe.IMEI2;
+                viewModel.Type = Refe.Type;
+                viewModel.ModelColor = Refe.ModelColor;
+                viewModel.JobOrderType = Refe.JobOrderType;
+                viewModel.Remarks = Refe.Remarks;
+                viewModel.WarrantyDate = Refe.WarrantyDate;
+                viewModel.DescriptionId = Refe.DescriptionId;
+                viewModel.ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(Refe.DescriptionId, User.OrgId).DescriptionName);
+                viewModel.CustomerName = Refe.CustomerName;
+                viewModel.Address = Refe.Address;
+                viewModel.MobileNo = Refe.MobileNo;
+            }
+            return Json(viewModel);
+        }
+        [HttpPost]
+        public ActionResult GetReferencesByMobileNumber(string mobileNumber)
+        {
+            var Refe = _jobOrderBusiness.GetReferencesNumberByMobileNumber(mobileNumber, User.OrgId, User.BranchId);
+            JobOrderViewModel viewModel = new JobOrderViewModel();
+            if (Refe != null)
+            {
+                viewModel.JodOrderId = Refe.JodOrderId;
+                viewModel.IMEI = Refe.IMEI;
+                viewModel.ReferenceNumber = Refe.JobOrderCode;
+                viewModel.IMEI2 = Refe.IMEI2;
+                viewModel.Type = Refe.Type;
+                viewModel.ModelColor = Refe.ModelColor;
+                viewModel.JobOrderType = Refe.JobOrderType;
+                viewModel.Remarks = Refe.Remarks;
+                viewModel.WarrantyDate = Refe.WarrantyDate;
+                viewModel.DescriptionId = Refe.DescriptionId;
+                viewModel.ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(Refe.DescriptionId, User.OrgId).DescriptionName);
+                viewModel.CustomerName = Refe.CustomerName;
+                viewModel.Address = Refe.Address;
+                viewModel.MobileNo = Refe.MobileNo;
             }
             return Json(viewModel);
         }

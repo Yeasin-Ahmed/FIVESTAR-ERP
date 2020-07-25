@@ -25,7 +25,8 @@ namespace ERPBLL.Common
                 new Dropdown{text=RequisitionStatus.Rejected,value=RequisitionStatus.Rejected },
                 new Dropdown{text=RequisitionStatus.Canceled,value=RequisitionStatus.Canceled },
                 new Dropdown{text=RequisitionStatus.Waiting,value=RequisitionStatus.Waiting },
-                new Dropdown{text=RequisitionStatus.Current,value=RequisitionStatus.Current }
+                new Dropdown{text=RequisitionStatus.Current,value=RequisitionStatus.Current },
+                new Dropdown{text=RequisitionStatus.Void,value=RequisitionStatus.Void }
             };
             return dropdowns;
         }

@@ -249,6 +249,10 @@
     <Compile Include="FrontDeskContextMigrations\202007140852355_FrontDesk_jobOrderTsRepairStatus.Designer.cs">
       <DependentUpon>202007140852355_FrontDesk_jobOrderTsRepairStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007210307586_FrontDesk_JobCloseDate&amp;CUserId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007210307586_FrontDesk_JobCloseDate&amp;CUserId.Designer.cs">
+      <DependentUpon>202007210307586_FrontDesk_JobCloseDate&amp;CUserId.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -539,6 +543,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202007140852355_FrontDesk_jobOrderTsRepairStatus.resx">
       <DependentUpon>202007140852355_FrontDesk_jobOrderTsRepairStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007210307586_FrontDesk_JobCloseDate&amp;CUserId.resx">
+      <DependentUpon>202007210307586_FrontDesk_JobCloseDate&amp;CUserId.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

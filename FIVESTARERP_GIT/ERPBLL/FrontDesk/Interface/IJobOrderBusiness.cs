@@ -40,5 +40,8 @@ namespace ERPBLL.FrontDesk.Interface
         bool UpdateJobSingOutStatus(long jobOrderId, long userId, long orgId, long branchId);
         bool UpdateJobOrderDeliveryStatus(long jobOrderId, long userId, long orgId, long branchId);
 
+        JobOrder GetReferencesNumberByMobileNumber(string mobileNumber, long orgId, long branchId);
+        JobOrder GetReferencesNumberByIMEI2(string imei2, long orgId, long branchId);
+
     }
 }

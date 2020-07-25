@@ -11,13 +11,15 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.FrontDesk
 {
-   public class RequsitionInfoForJobOrderBusiness: IRequsitionInfoForJobOrderBusiness
+    public class RequsitionInfoForJobOrderBusiness : IRequsitionInfoForJobOrderBusiness
     {
         private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;//db
         private readonly RequsitionInfoForJobOrderRepository requsitionInfoForJobOrderRepository;
+        private readonly IJobOrderBusiness _jobOrderBusiness;
 
-        public RequsitionInfoForJobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork)
+        public RequsitionInfoForJobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderBusiness jobOrderBusiness)
         {
+            this._jobOrderBusiness = jobOrderBusiness;
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this.requsitionInfoForJobOrderRepository = new RequsitionInfoForJobOrderRepository(this._frontDeskUnitOfWork);
         }
@@ -35,9 +37,9 @@ namespace ERPBLL.FrontDesk
             return requsitionInfoForJobOrderRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId).ToList();
         }
 
-        public IEnumerable<RequsitionInfoForJobOrder> GetAllRequsitionInfoForJobOrder(long joborderId,long orgId, long branchId)
+        public IEnumerable<RequsitionInfoForJobOrder> GetAllRequsitionInfoForJobOrder(long joborderId, long orgId, long branchId)
         {
-            return requsitionInfoForJobOrderRepository.GetAll(info =>info.JobOrderId== joborderId && info.OrganizationId == orgId && info.BranchId == branchId).ToList();
+            return requsitionInfoForJobOrderRepository.GetAll(info => info.JobOrderId == joborderId && info.OrganizationId == orgId && info.BranchId == branchId).ToList();
         }
 
         public RequsitionInfoForJobOrder GetAllRequsitionInfoForJobOrderId(long reqInfoId, long orgId)
@@ -45,9 +47,9 @@ namespace ERPBLL.FrontDesk
             return requsitionInfoForJobOrderRepository.GetOneByOrg(info => info.RequsitionInfoForJobOrderId == reqInfoId && info.OrganizationId == orgId);
         }
 
-        public RequsitionInfoForJobOrder GetAllRequsitionInfoOneByOrgId(long ReqId,long orgId, long branchId)
+        public RequsitionInfoForJobOrder GetAllRequsitionInfoOneByOrgId(long ReqId, long orgId, long branchId)
         {
-            return requsitionInfoForJobOrderRepository.GetOneByOrg(info =>info.RequsitionInfoForJobOrderId==ReqId && info.OrganizationId == orgId && info.BranchId == branchId);
+            return requsitionInfoForJobOrderRepository.GetOneByOrg(info => info.RequsitionInfoForJobOrderId == ReqId && info.OrganizationId == orgId && info.BranchId == branchId);
         }
 
         public bool SaveRequisitionInfoForJobOrder(RequsitionInfoForJobOrderDTO requsitionInfoDTO, List<RequsitionDetailForJobOrderDTO> details, long userId, long orgId, long branchId)
@@ -95,7 +97,7 @@ namespace ERPBLL.FrontDesk
 
         public bool SaveRequisitionStatus(long reqId, string status, long userId, long orgId, long branchId)
         {
-            var reqInfo = requsitionInfoForJobOrderRepository.GetOneByOrg(req => req.RequsitionInfoForJobOrderId == reqId && req.OrganizationId == orgId && req.BranchId==branchId);
+            var reqInfo = requsitionInfoForJobOrderRepository.GetOneByOrg(req => req.RequsitionInfoForJobOrderId == reqId && req.OrganizationId == orgId && req.BranchId == branchId);
             if (reqInfo != null)
             {
                 reqInfo.StateStatus = status;
@@ -103,6 +105,29 @@ namespace ERPBLL.FrontDesk
                 requsitionInfoForJobOrderRepository.Update(reqInfo);
             }
             return requsitionInfoForJobOrderRepository.Save();
+        }
+
+        public bool UpdatePendingCurrentRequisitionStatus(long jobOrderId, string tsRepairStatus, long userId, long orgId, long branchId)
+        {
+            bool IsSuccess = false;
+            var reqInfos = requsitionInfoForJobOrderRepository.GetAll(req => req.JobOrderId == jobOrderId && req.OrganizationId == orgId && req.BranchId == branchId);
+            var Status = tsRepairStatus == "RETURN WITHOUT REPAIR" ? RequisitionStatus.Void : RequisitionStatus.Void;
+            if(reqInfos.Count() > 0)
+            {
+                foreach (var item in reqInfos)
+                {
+                    item.StateStatus = Status;
+                    item.UpUserId = userId;
+                    item.UpdateDate = DateTime.Now;
+                    requsitionInfoForJobOrderRepository.Update(item);
+                }
+                IsSuccess = requsitionInfoForJobOrderRepository.Save();
+            }
+            else
+            {
+                IsSuccess = true;
+            }
+            return IsSuccess;
         }
     }
 }

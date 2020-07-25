@@ -19,6 +19,7 @@ namespace ERPBLL.Common
         public static readonly string HandOver = "HandOver";
         public static readonly string Waiting = "Waiting";
         public static readonly string Current = "Current";
+        public static readonly string Void = "Void";
     }
     public class StockStatus
     {

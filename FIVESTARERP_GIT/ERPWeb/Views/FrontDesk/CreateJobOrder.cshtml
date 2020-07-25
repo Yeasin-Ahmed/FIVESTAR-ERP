@@ -28,16 +28,6 @@
                     <div class="row" style="border-bottom:1px solid #cecece">
                         <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer By Mobile No" id="txtSearchCustomer" />
-                                <div class="input-group-append" style="cursor:pointer">
-                                    <a id="searchCustomer" href="#" class="input-group-text">
-                                        <i class="fas fa-search"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group mb-3">
                                 <input type="text" class="form-control form-control-sm" placeholder="Search Phone IMEI No" id="txtSearchIMEI" />
                                 <div class="input-group-append" style="cursor:pointer">
                                     <a id="SearchIMEI" href="#" class="input-group-text">
@@ -46,9 +36,16 @@
                                 </div>
                             </div>
                         </div>
-                        @*<div class="col-md-3">
-                                <input type="date" class="form-control form-control-sm" id="dptJobEntryDate" />
-                            </div>*@
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer By Mobile No" id="txtSearchCustomer" />
+                                <div class="input-group-append" style="cursor:pointer">
+                                    <a id="searchCustomer" href="#" class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="input-group input-group-sm ">
                                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date" />
@@ -66,93 +63,76 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="txtCustomer" class="control-label font-weight-bold">Customer Name</label>
                             <input type="text" class="form-control form-control-sm" id="txtCustomer" />
                             <span class="error hide require-customer font-weight-bold">Customer name is required !</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="txtMobileNumber" class="control-label font-weight-bold">Mobile Number</label>
-                            <input type="text" class="form-control form-control-sm disabled" id="txtMobileNumber" />
+                            <input type="text" class="form-control form-control-sm" id="txtMobileNumber" />
                             <span class="error hide require-mobile font-weight-bold">Mobile No is required !</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="txtAddress" class="control-label font-weight-bold">Address</label>
-                            <textarea id="txtAddress" class="form-control form-control-sm disabled" cols="10" rows="1"></textarea>
+                            <textarea id="txtAddress" class="form-control form-control-sm" cols="10" rows="1"></textarea>
                             <span class="error hide require-address font-weight-bold">Mobile No is required !</span>
                         </div>
+                        <div class="col-md-3">
+                            <label for="txtReferenceNumber" class="control-label font-weight-bold">ReferencesNumber</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
+                        </div>
                     </div>
-                    <br />
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                             <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type</label>
                             @Html.DropDownList("ddlPhoneTypes", (IEnumerable<SelectListItem>)ViewBag.ddlPhoneTypes, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-Type font-weight-bold">Mobile Type is required !</span>
                         </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="ddlDescriptions" class="control-label font-weight-bold">Model Name</label>
                             @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-modelName font-weight-bold">Model is required !</span>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
                             <label for="ddlModelColor" class="control-label font-weight-bold">ModelColor</label>
                             @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required !</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="ddlAccessories" class="control-label font-weight-bold">Accessories</label>
                             @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide require-accessories font-weight-bold">Accessories is required !</span>
                         </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="ddlProblems" class="control-label font-weight-bold">Symptom</label>
                             @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Symptom--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide require-problem font-weight-bold">Problem is required !</span>
                         </div>
-                        @*<div class="col-md-4">
-            <label for="chkIsWarrentyAvailable" style="visibility:hidden;">Available</label>
-            <div class="form-control form-control-sm clearfix">
-                <input type="checkbox" onclick="showHide();" id="chkIsWarrentyAvailable" />
-                <b>&nbsp; Is Warrenty Available?</b>
-            </div>
-        </div>*@
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="ddlJobOrderType" class="control-label font-weight-bold">JobOrder Type</label>
                             @Html.DropDownList("ddlJobOrderType", (IEnumerable<SelectListItem>)ViewBag.ddlJobOrderType, "Select JobOrder Type", new { @class = "form-control form-control-sm ddlJobOrderType" })
                             <span class="error hide require-type font-weight-bold">JobOrderType is required !</span>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" class="form-control form-control-sm" id="txtRemarks" />
                         </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="txtReferenceNumber" class="control-label font-weight-bold">ReferencesNumber</label>
-                            <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
-                        </div>
-                        @*<div class="col-md-4" id="warrantydate">
-            <label for="dptWarrantyDate" class="control-label font-weight-bold">WarrantyStartDate</label>
-            <input type="date" class="form-control form-control-sm" id="dptWarrantyDate" />
-        </div>*@
-                        <div class="col-md-4" id="warrantydate">
+                        <div class="col-md-3" id="warrantydate">
                             <label class="control-label font-weight-bold">Warranty Start Date</label>
                             <div class="input-group input-group-sm ">
                                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptWarrantyDate" placeholder="Select Warranty Start Date" />
@@ -163,31 +143,15 @@
                             <span class="error hide require-warranty font-weight-bold">Warranty is required !</span>
                             <span class="error hide not-warranty font-weight-bold">Warranty is not available !</span>
                         </div>
-                        <div class="col-md-4" id="chkWarrantyPaper">
+                        <div class="col-md-3" id="chkWarrantyPaper">
                             <label for="" style="visibility:hidden;">Enclosed</label>
                             <div class="form-control form-control-sm clearfix">
-                                <b>Warrenty Paper Enclosed?</b>
+                                <b>Warrenty Paper?</b>
                                 <input type="radio" name="Enclosed" id="enclosedYes" /><b> Yes</b>
                                 <input type="radio" name="Enclosed" id="enclosedNo" checked /><b> No</b>
                             </div>
                         </div>
-                        @*<div class="col-md-3" id="warrantyEndDate">
-            <label class="col-form-label">WarrantyEndDate</label>
-            <div class="input-group input-group-sm ">
-                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptWarrantyEndDate" placeholder="Select Warranty End Date" />
-                <div class="input-group-prepend cursor-pointer remove-date dptWarrantyEndDate" style="cursor:pointer">
-                    <span class="input-group-text">&#10008;</span>
-                </div>
-            </div>
-        </div>*@
                     </div>
-                    <br />
-                    @*<div class="row">
-                            <div class="col-md-4" id="warrantyEndDate">
-                                <label for="dptWarrantyEndDate" class="control-label font-weight-bold">WarrantyEndDate</label>
-                                <input type="date" class="form-control form-control-sm" id="dptWarrantyEndDate" />
-                            </div>
-                        </div>*@
                 </div>
             </form>
         </div>
@@ -284,6 +248,12 @@
         var ddlJobOrderType = $("#ddlJobOrderType");
 
         $(document).ready(function () {
+            var date = new Date();
+            //var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            //$('#dptJobEntryDate').datepicker('setDate', today);
+            ////$('#dptJobEntryDate').()
+            ////alert(date.getDate());
+           
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -307,13 +277,16 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
-            var currentDate = new Date();
+           
             $('#dptJobEntryDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
-                todayHighlight: true,
-                "setDate": currentDate
+                todayHighlight: true
             });
+
+            var thisDate = date.getDate() + ' ' + getMonthName(date.getMonth() + 1, "MM") + " " + date.getFullYear();
+            $('#dptJobEntryDate').val(thisDate)
+            $('#dptJobEntryDate').trigger('change');
 
             loadData();
 
@@ -484,18 +457,18 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
-            disable("#txtCustomer");
-            disable("#txtMobileNumber");
-            disable("#txtAddress");
+            //disable("#txtCustomer");
+           // disable("#txtMobileNumber");
+           // disable("#txtAddress");
             disable("#txtReferenceNumber");
         })
 
-        $("#searchCustomer").click(function (e) {
-            e.preventDefault();
-            if ($.trim(txtSearchCustomer.val()) !== "") {
-                getCustomer($.trim(txtSearchCustomer.val()));
-            }
-        })
+        //$("#searchCustomer").click(function (e) {
+        //    e.preventDefault();
+        //    if ($.trim(txtSearchCustomer.val()) !== "") {
+        //        getCustomer($.trim(txtSearchCustomer.val()));
+        //    }
+        //})
         ////
         //$(document).ready(function () {
         //    dptWarrantyDate.prop('readonly', true);
@@ -534,21 +507,125 @@
                 console.log(error);
             })
         }
-
+        //Get Serch By IMEI1
         $("#SearchIMEI").click(function (e) {
             e.preventDefault();
             if ($.trim(txtSearchIMEI.val()) !== "") {
                 getIMEI($.trim(txtSearchIMEI.val()));
             }
         })
-
         function getIMEI(imei) {
-            var data = JSON.stringify({ imei: imei});
+            var data = JSON.stringify({ imei: imei });
             $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByIMEI', data)).then(function (res, status) {
                 if (status === "success") {
                     if (res.JodOrderId > 0) {
                         txtIMEI.val(res.IMEI);
                         txtReferenceNumber.val(res.ReferenceNumber);
+                        txtIMEI2.val(res.IMEI2);
+                        ddlPhoneTypes.val(res.Type);
+                        ddlPhoneTypes.trigger('change');
+                        ddlModelColor.val(res.ModelColor);
+                        ddlModelColor.trigger('change');
+                        ddlJobOrderType.val(res.JobOrderType);
+                        ddlJobOrderType.trigger('change');
+                        txtRemarks.val(res.Remarks);
+                        if (ddlJobOrderType.val() == "Warrenty") {
+                            dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
+                        }
+                        ddlDescriptions.val(res.DescriptionId);
+                        ddlDescriptions.trigger('change');
+                        txtCustomer.val(res.CustomerName);
+                        txtAddress.val(res.Address);
+                        txtMobileNumber.val(res.MobileNo);
+
+                    }
+                    else {
+                       // bootbox.alert('References is not found');
+                    }
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //end
+
+
+        //Get Serch By IMEI2
+        $("#SearchIMEI").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchIMEI.val()) !== "") {
+                getIMEI2($.trim(txtSearchIMEI.val()));
+            }
+        })
+        function getIMEI2(imei2) {
+            var data = JSON.stringify({ imei2: imei2 });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByIMEI2', data)).then(function (res, status) {
+                if (status === "success") {
+                    if (res.JodOrderId > 0) {
+                        txtIMEI.val(res.IMEI);
+                        txtReferenceNumber.val(res.ReferenceNumber);
+                        txtIMEI2.val(res.IMEI2);
+                        ddlPhoneTypes.val(res.Type);
+                        ddlPhoneTypes.trigger('change');
+                        ddlModelColor.val(res.ModelColor);
+                        ddlModelColor.trigger('change');
+                        ddlJobOrderType.val(res.JobOrderType);
+                        ddlJobOrderType.trigger('change');
+                        txtRemarks.val(res.Remarks);
+                        if (ddlJobOrderType.val() == "Warrenty") {
+                            dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
+                        }
+                        ddlDescriptions.val(res.DescriptionId);
+                        ddlDescriptions.trigger('change');
+                        txtCustomer.val(res.CustomerName);
+                        txtAddress.val(res.Address);
+                        txtMobileNumber.val(res.MobileNo);
+
+                    }
+                    else {
+                        //bootbox.alert('References is not found');
+                    }
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //end
+
+
+
+        //serch By MobileNumber GetAll Information Job
+        $("#searchCustomer").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchCustomer.val()) !== "") {
+                getMobileNumber($.trim(txtSearchCustomer.val()));
+            }
+        })
+
+        function getMobileNumber(mobileNumber) {
+            var data = JSON.stringify({ mobileNumber: mobileNumber });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByMobileNumber', data)).then(function (res, status) {
+                if (status === "success") {
+                    if (res.JodOrderId > 0) {
+                        txtIMEI.val(res.IMEI);
+                        txtReferenceNumber.val(res.ReferenceNumber);
+                        txtIMEI2.val(res.IMEI2);
+                        ddlPhoneTypes.val(res.Type);
+                        ddlPhoneTypes.trigger('change');
+                        ddlModelColor.val(res.ModelColor);
+                        ddlModelColor.trigger('change');
+                        ddlJobOrderType.val(res.JobOrderType);
+                        ddlJobOrderType.trigger('change');
+                        txtRemarks.val(res.Remarks);
+                        if (ddlJobOrderType.val() == "Warrenty") {
+                            dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
+                        }
+                        ddlDescriptions.val(res.DescriptionId);
+                        ddlDescriptions.trigger('change');
+                        txtCustomer.val(res.CustomerName);
+                        txtAddress.val(res.Address);
+                        txtMobileNumber.val(res.MobileNo);
+
                     }
                     else {
                         bootbox.alert('References is not found');
@@ -558,7 +635,8 @@
                 console.log(error);
             })
         }
-
+        //end
+        
         function validateForm() {
             var isValid = true;
             $(".error").addClass('hide');

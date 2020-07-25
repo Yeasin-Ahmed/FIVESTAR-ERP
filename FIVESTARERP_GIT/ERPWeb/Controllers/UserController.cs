@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
+using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
 using ERPBO.FrontDesk.DTOModels;
@@ -31,8 +32,9 @@ namespace ERPWeb.Controllers
         private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
         private readonly ITsStockReturnDetailsBusiness _tsStockReturnDetailsBusiness;
         private readonly IMobilePartBusiness _mobilePartBusiness;
+        private readonly IDescriptionBusiness _descriptionBusiness;
 
-        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IMobilePartBusiness mobilePartBusiness)
+        public UserController (IRequsitionInfoBusiness requsitionInfoBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IProductionLineBusiness productionLineBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness,IItemReturnInfoBusiness itemReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IMobilePartBusiness mobilePartBusiness, IDescriptionBusiness descriptionBusiness)
         {
             this._requsitionInfoBusiness = requsitionInfoBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
@@ -45,7 +47,7 @@ namespace ERPWeb.Controllers
             this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
             this._tsStockReturnDetailsBusiness = tsStockReturnDetailsBusiness;
             this._mobilePartBusiness = mobilePartBusiness;
-
+            this._descriptionBusiness = descriptionBusiness;
         }
         public ActionResult Index()
         {
@@ -206,6 +208,24 @@ namespace ERPWeb.Controllers
         }
         public ActionResult ReturnStockDetails(long id)
         {
+            
+            var info = _tsStockReturnInfoBusiness.GetAllReturnId(id, User.OrgId,User.BranchId);
+            var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId, User.BranchId, User.OrgId);
+            var jobOrder = new RequsitionInfoForJobOrderViewModel();
+            if(jobOrderInfo != null)
+            {
+                jobOrder = new RequsitionInfoForJobOrderViewModel
+                {
+                    RequsitionCode = info.RequsitionCode,
+                    JobOrderCode = (jobOrderInfo.JobOrderCode),
+                    Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId, User.BranchId, User.OrgId).Type),
+                    ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                    Requestby = UserForEachRecord(info.EUserId.Value).UserName,
+                    EntryDate = info.EntryDate,
+                };
+            }
+            ViewBag.ReqInfoJobOrder = jobOrder;
+
             IEnumerable<TsStockReturnDetailDTO> tsStock = _tsStockReturnDetailsBusiness.GetAllTsStockReturn(User.OrgId, User.BranchId).Where(s=> s.ReturnInfoId == id).Select(detail => new TsStockReturnDetailDTO
             {
                 ReqInfoId = detail.ReturnInfoId,

@@ -28,17 +28,17 @@
         </div>
         <div class="row">
             <div class="col-md-6 text-center">
-                <h5>Job Order No: <b style="color:darkblue">@jobOrder.JobOrderCode</b></h5>
+                <b style="color:darkblue">JobOrder : @jobOrder.JobOrderCode</b>
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-4">
-                <h6>Create Date: <b>@jobOrder.EntryDate.Value.ToString("dd-MMM-yyyy")</b></h6>
+                <b>@jobOrder.EntryDate.Value.ToString("dd-MMM-yyyy")</b>
             </div>
         </div>
         <hr />
         <div class="row">
             <div class="col-md-4">
-                <h5><b>Customer Details</b></h5>
+                <h6><b>Customer Details</b></h6>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
@@ -52,10 +52,9 @@
                 </table>
             </div>
         </div>
-        <br />
         <div class="row">
             <div class="col-md-4">
-                <h5><b>Handset Details</b></h5>
+                <h6><b>Handset Details</b></h6>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
@@ -64,7 +63,7 @@
                             <td>IMEI1: <b>@jobOrder.IMEI</b></td>
                             <td>IMEI2: <b>@jobOrder.IMEI2</b></td>
                             <td>Type: <b>@jobOrder.Type</b></td>
-                            <td>ModelName: <b>@jobOrder.ModelName</b></td>
+                            <td>Model: <b>@jobOrder.ModelName</b></td>
                             <td>Color: <b>@jobOrder.ModelColor</b></td>
                         </tr>
                     </tbody>
@@ -184,7 +183,7 @@
                 <button type="button" id="btnRepair" class="btn btn-sm btn-primary" title="Add New Repair"><i class="fas fa-plus"> </i> </button>
             </div>
         </div>
-        <div class="row">
+        @*<div class="row">
             <div class="col-md-11">
                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
                     <tbody>
@@ -199,13 +198,22 @@
             <div class="col-md-1">
                 <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
             </div>
+        </div>*@
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <input type="text" name="remarks" value="@jobOrder.TSRemarks" placeholder="TSRemarks" id="txtTSRemarks" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-12">
-                <h5 class="text-center" style="visibility:hidden">Parts Requsition</h5>
+                <h6 class="text-center" style="visibility:hidden">Parts Requsition</h6>
             </div>
         </div>
 
@@ -213,7 +221,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-9">
-                        <h5><b style="color:darkblue">Parts Requsition </b></h5>
+                        <h6><b style="color:darkblue">Parts Requsition </b></h6>
                     </div>
                     <div class="col-md-3">
                         <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
@@ -324,7 +332,7 @@
     </div>
 
     <div class="col-md-1">
-        <input class="btn btn-outline-primary btn-sm float-lg-right" value="Save" type="button" id="close" onclick="window.close()" />
+        <input class="btn btn-outline-primary btn-sm float-lg-right" value="Save" type="button" id="btnSave" onclick="window.close()" />
         @*<a href="#" class="btn btn-outline-primary btn-sm float-lg-right" id="btnJobSave"><i></i> Save</a>*@
     </div>
     <a href="#" class="btn btn-outline-danger btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
@@ -343,7 +351,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="ddlSymptomName" class="control-label font-weight-bold">Symptom Name</label>
-                            @Html.DropDownList("ddlSymptomName", (IEnumerable<SelectListItem>)ViewBag.ddlSymptomName, "--Select Symptom--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            @Html.DropDownList("ddlSymptomName", (IEnumerable<SelectListItem>)ViewBag.ddlSymptomName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-Symptom font-weight-bold">Input Symptom!</span>
                             <span class="error hide duplicate-Symptom font-weight-bold">Alrady Symptom Exist!</span>
                         </div>
@@ -386,7 +394,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="ddlFaultName" class="control-label font-weight-bold">Fault Name</label>
-                            @Html.DropDownList("ddlFaultName", (IEnumerable<SelectListItem>)ViewBag.ddlFaultName, "--Select Fault--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            @Html.DropDownList("ddlFaultName", (IEnumerable<SelectListItem>)ViewBag.ddlFaultName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-faultName font-weight-bold">Input Fault!</span>
                             <span class="error hide duplicate-faultName font-weight-bold">Alrady Fault Exist!</span>
                         </div>
@@ -429,7 +437,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="ddlServiceName" class="control-label font-weight-bold">Service Name</label>
-                            @Html.DropDownList("ddlServiceName", (IEnumerable<SelectListItem>)ViewBag.ddlServiceName, "--Select Service--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            @Html.DropDownList("ddlServiceName", (IEnumerable<SelectListItem>)ViewBag.ddlServiceName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-ServiceName font-weight-bold">Input Service!</span>
                             <span class="error hide duplicate-servicesName font-weight-bold">Alrady Services Exist!</span>
                         </div>
@@ -510,13 +518,6 @@
             </div>
             <div class="modal-body">
                 <form id="frmCustomer">
-                    @*<div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="ddlRepairName" class="control-label font-weight-bold">Service Name</label>
-                                @Html.DropDownList("ddlRepairName", (IEnumerable<SelectListItem>)ViewBag.ddlRepairName, "--Select Repair--", new { @class = "form-control form-control-sm ctrl-changed" })
-                                <span class="error hide required-Repair font-weight-bold">Input Repair!</span>
-                            </div>
-                        </div>*@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="txtTSRemarks" class="control-label font-weight-bold">TSRemarks</label>
@@ -667,7 +668,25 @@
         var txtFaultRemarks = $("#txtFaultRemarks");
         var hdfJobOrderId = $("#hdfJobOrderId");
         //Stock text
+        $(document).ready(function () {
+            $('.select2').select2();
 
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            $("#ddlSymptomName").attr("data-placeholder", "Select Symptom");
+            $("#ddlFaultName").attr("data-placeholder", "Select Fault");
+            $("#ddlServiceName").attr("data-placeholder", "Select Services");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
 
         function OpenFaultModal() {
             clearCtrlFault();
@@ -707,12 +726,20 @@
             e.preventDefault();
             if (validateFaultForm()) {
 
+                //var aryFault = []; aryFault.length = 0;
+                //var Fault = ddlFaultName.val();
+                //aryFault.push({
+                //    FaultId: Fault,
+                //    JobOrderId: hdfJobOrderId.val()
+                //});
                 var aryFault = []; aryFault.length = 0;
                 var Fault = ddlFaultName.val();
-                aryFault.push({
-                    FaultId: Fault,
-                    JobOrderId: hdfJobOrderId.val()
+                for (var i = 0; i < Fault.length; i++) {
+                    aryFault.push({
+                        FaultId: Fault[i],
+                        JobOrderId: hdfJobOrderId.val()
                     });
+                }
 
                 var data = JSON.stringify({ jobOrderFaultViewModels: aryFault });
                 console.log("Faulty List");
@@ -776,12 +803,20 @@
             e.preventDefault();
             if (validateServiceForm()) {
 
+                //var aryService = []; aryService.length = 0;
+                //var Service = ddlServiceName.val();
+                //aryService.push({
+                //    ServiceId: Service,
+                //    JobOrderId: hdfJobOrderId.val()
+                //});
                 var aryService = []; aryService.length = 0;
                 var Service = ddlServiceName.val();
-                aryService.push({
-                    ServiceId: Service,
-                    JobOrderId: hdfJobOrderId.val()
+                for (var i = 0; i < Service.length; i++) {
+                    aryService.push({
+                        ServiceId: Service[i],
+                        JobOrderId: hdfJobOrderId.val()
                     });
+                }
 
                 var data = JSON.stringify({ jobOrderServiceViewModels: aryService });
                 console.log("Service List");
@@ -843,12 +878,20 @@
             e.preventDefault();
             if (validateSymptomForm()) {
 
+                //var arySymptom = []; arySymptom.length = 0;
+                //var symptom = ddlSymptomName.val();
+                //arySymptom.push({
+                //    ProblemId: symptom,
+                //    JobOrderId: hdfJobOrderId.val()
+                //});
                 var arySymptom = []; arySymptom.length = 0;
                 var symptom = ddlSymptomName.val();
-                arySymptom.push({
-                    ProblemId: symptom,
-                    JobOrderId: hdfJobOrderId.val()
+                for (var i = 0; i < symptom.length; i++) {
+                    arySymptom.push({
+                        ProblemId: symptom[i],
+                        JobOrderId: hdfJobOrderId.val()
                     });
+                }
 
                 var data = JSON.stringify({ jobOrderProblemViewModels: arySymptom });
                 console.log("Problem List");
@@ -951,8 +994,7 @@
 
             txtTSRemarks.val('');
         }
-
-        $("#btnSubmitTSRemarks").click(function (e) {
+        $("#btnSave").click(function (e) {
             e.preventDefault();
             var data = JSON.stringify({ jobOrderId: TryParseInt( hdfJobOrderId.val(),0), remarks: txtTSRemarks.val() });
                 console.log(data);

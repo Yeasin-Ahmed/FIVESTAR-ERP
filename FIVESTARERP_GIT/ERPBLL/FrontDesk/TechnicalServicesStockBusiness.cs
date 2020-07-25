@@ -127,7 +127,9 @@ namespace ERPBLL.FrontDesk
 
                 if (IsSuccess== true && _jobOrderTSBusiness.UpdateJobOrderTsStatus(dto.JobOrderId, userId, orgId, branchId) == true)
                 {
-                    IsSuccess = _jobOrderBusiness.UpdateJobSingOutStatus(dto.JobOrderId, userId, orgId, branchId);
+                    if (_jobOrderBusiness.UpdateJobSingOutStatus(dto.JobOrderId, userId, orgId, branchId)) {
+                        IsSuccess=_requsitionInfoForJobOrderBusiness.UpdatePendingCurrentRequisitionStatus(jobOrderInDb.JodOrderId, jobOrderInDb.TsRepairStatus, userId, orgId, branchId);
+                    }
                 }
             }
             return IsSuccess;

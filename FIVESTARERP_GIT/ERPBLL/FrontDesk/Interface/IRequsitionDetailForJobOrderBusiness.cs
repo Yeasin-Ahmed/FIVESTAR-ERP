@@ -1,4 +1,5 @@
 ﻿using ERPBO.FrontDesk.DomainModels;
+using ERPBO.FrontDesk.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace ERPBLL.FrontDesk.Interface
     {
         IEnumerable<RequsitionDetailForJobOrder> GetAllRequsitionDetailForJobOrder(long orgId, long branchId);
         IEnumerable<RequsitionDetailForJobOrder> GetAllRequsitionDetailForJobOrderId(long reqInfoId,long orgId, long branchId);
+        IEnumerable<RequsitionDetailForJobOrderDTO> GetAvailableQtyByRequsition(long reqInfoId, long orgId, long branchId);
     }
 }

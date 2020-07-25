@@ -10,7 +10,7 @@
     <tr>
         <td style="width:13%">JobOrder</td>
         <td style="width:20%"><b>@info.JobOrderCode</b></td>
-        
+
         <td style="width:10%" class="hide">ServicesWarehouse</td>
         <td style="width:23%" class="hide"><b>@info.SWarehouseName</b></td>
         <td style="width:13%">Type</td>
@@ -51,7 +51,15 @@
 </table>
 @if ((string)ViewBag.RequisitionStatus == "Approved")
 {
-<div class="modal-footer">
-    @*<button type="button" class="btn btn-sm btn-success btnAccept">Accepted</button>*@
-</div>
+    <div class="modal-footer">
+        @*<button type="button" class="btn btn-sm btn-success btnAccept">Accepted</button>*@
+    </div>
+}
+@if ((string)ViewBag.RequisitionStatus == "Void")
+{
+    <div class="modal-footer">
+        <div class="text-center" style="color:red">
+            <h5><b>Rejected Requsition</b></h5>
+        </div>
+    </div>
 }

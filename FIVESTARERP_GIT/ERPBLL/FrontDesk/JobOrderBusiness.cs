@@ -91,9 +91,11 @@ namespace ERPBLL.FrontDesk
             }
 
             query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+CloseDate,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
-SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -103,12 +105,27 @@ Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames'
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
 Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName',jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,
+--ts.Name ,
+jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus,
+(Select UserName  from tblJobOrders job
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on job.CUserId = app.UserId where job.JodOrderId=jo.JodOrderId) 'CloseUser',
+
+(Select Top 1 UserName 'TSName' from tblJobOrderTS jts
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on jts.TSId = app.UserId
+Where jts.JodOrderId = jo.JodOrderId 
+Order By JTSId desc) 'TSName',
+
+(Select top 1 SignOutDate from tblJobOrderTS jt
+Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
+Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
 
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
-Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
-Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
+
+Where 1 = 1 {0}) tbl Order By EntryDate desc
+", Utility.ParamChecker(param));
             return query;
         }
 
@@ -540,7 +557,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
         public JobOrder GetReferencesNumberByIMEI(string imei, long orgId, long branchId)
         {
             imei = imei.Trim();
-            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
+            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).LastOrDefault();
         }
 
         public IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyJobOrder(long orgId, long branchId)
@@ -592,8 +609,6 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
                 jobOrder.JodOrderId = jobOrderId;
                 jobOrder.TSRemarks = remarks.Trim();
                 jobOrder.UpUserId = userId;
-                jobOrder.OrganizationId = orgId;
-                jobOrder.BranchId = branchId;
                 jobOrder.UpdateDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrder);
             }
@@ -603,7 +618,7 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public IEnumerable<DashboardApprovedRequsitionDTO> DashboardPendingRequsition(long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardApprovedRequsitionDTO>(
-                string.Format(@"select JodOrderId,jo.JobOrderCode,RequsitionCode,rq.StateStatus,rq.EntryDate from tblJobOrders jo
+                string.Format(@"select JodOrderId,rq.RequsitionInfoForJobOrderId,jo.JobOrderCode,RequsitionCode,rq.StateStatus,rq.EntryDate from tblJobOrders jo
                 Inner join tblRequsitionInfoForJobOrders rq on jo.JodOrderId=rq.JobOrderId
                 Where  rq.StateStatus='Pending' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
         }
@@ -637,11 +652,23 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
             if (jobOrder != null)
             {
                 jobOrder.StateStatus = JobOrderStatus.DeliveryDone;
-                jobOrder.UpUserId = userId;
-                jobOrder.UpdateDate = DateTime.Now;
+                jobOrder.CUserId = userId;
+                jobOrder.CloseDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrder);
             }
             return _jobOrderRepository.Save();
+        }
+
+        public JobOrder GetReferencesNumberByMobileNumber(string mobileNumber, long orgId, long branchId)
+        {
+            mobileNumber = mobileNumber.Trim();
+            return _jobOrderRepository.GetAll(job => job.MobileNo == mobileNumber.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).LastOrDefault();
+        }
+
+        public JobOrder GetReferencesNumberByIMEI2(string imei2, long orgId, long branchId)
+        {
+            imei2 = imei2.Trim();
+            return _jobOrderRepository.GetAll(job => job.IMEI2 == imei2.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).LastOrDefault();
         }
     }
 }
