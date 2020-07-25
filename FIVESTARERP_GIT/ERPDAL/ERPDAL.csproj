@@ -382,6 +382,22 @@
     <Compile Include="ProductionContextMigrations\202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.Designer.cs">
       <DependentUpon>202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202007200409329_Production_ProductionStock_TransferFor.cs" />
+    <Compile Include="ProductionContextMigrations\202007200409329_Production_ProductionStock_TransferFor.Designer.cs">
+      <DependentUpon>202007200409329_Production_ProductionStock_TransferFor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007210618388_Production_RequisitionItemInfos.cs" />
+    <Compile Include="ProductionContextMigrations\202007210618388_Production_RequisitionItemInfos.Designer.cs">
+      <DependentUpon>202007210618388_Production_RequisitionItemInfos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007210632533_Production_AddAssemblyLineAndFlagInReqInfo.cs" />
+    <Compile Include="ProductionContextMigrations\202007210632533_Production_AddAssemblyLineAndFlagInReqInfo.Designer.cs">
+      <DependentUpon>202007210632533_Production_AddAssemblyLineAndFlagInReqInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007220621049_Production_AddRequisitionItemDetail.cs" />
+    <Compile Include="ProductionContextMigrations\202007220621049_Production_AddRequisitionItemDetail.Designer.cs">
+      <DependentUpon>202007220621049_Production_AddRequisitionItemDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -632,6 +648,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.resx">
       <DependentUpon>202007171534594_Production_AddQRCode_AddIncomingTransferId_InTransferFromRepair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007200409329_Production_ProductionStock_TransferFor.resx">
+      <DependentUpon>202007200409329_Production_ProductionStock_TransferFor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007210618388_Production_RequisitionItemInfos.resx">
+      <DependentUpon>202007210618388_Production_RequisitionItemInfos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007210632533_Production_AddAssemblyLineAndFlagInReqInfo.resx">
+      <DependentUpon>202007210632533_Production_AddAssemblyLineAndFlagInReqInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007220621049_Production_AddRequisitionItemDetail.resx">
+      <DependentUpon>202007220621049_Production_AddRequisitionItemDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

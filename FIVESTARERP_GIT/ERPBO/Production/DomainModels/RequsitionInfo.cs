@@ -34,5 +34,9 @@ namespace ERPBO.Production.DomainModels
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
         public int? ForQty { get; set; }
+        public ICollection<RequisitionItemInfo> RequisitionItemInfos { get; set; }
+        public long? AssemblyLineId { get; set; }
+        [StringLength(50)]
+        public string Flag { get; set; }
     }
 }

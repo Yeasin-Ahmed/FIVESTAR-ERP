@@ -264,7 +264,7 @@ namespace ERPBLL.Common
         {
             get
             {
-                return @"C:/Z Files/ClientPhotos/FIVESTARERP/Report/";
+                return @"C:/Z Files/ClientPhotos/FIVESTARERP/Report/";//System.Web.HttpServerUtilityBase. //
             }
         }
         public static byte[] GenerateQRCode(string codeText)

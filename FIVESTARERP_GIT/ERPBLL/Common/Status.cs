@@ -73,6 +73,8 @@ namespace ERPBLL.Common
         public static readonly string Detail = "Detail";
         public static readonly string Report = "Report";
         public static readonly string Delete = "Delete";
+        public static readonly string Direct = "Direct";
+        public static readonly string Indirect = "Indirect";
     }
     public class RequisitionExecuationType
     {

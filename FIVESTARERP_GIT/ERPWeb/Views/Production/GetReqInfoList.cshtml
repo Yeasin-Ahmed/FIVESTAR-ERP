@@ -1,103 +1,264 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RequsitionInfoViewModel>
 @{
-    ViewBag.Title = "List of Requisition Information";
+    ViewBag.Title = "Production Requisition";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Production Requisition Info</b></h4>
+        <div class="card card-primary card-outline card-tabs">
+            @Html.AntiForgeryToken()
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-requisitionList-tab" data-toggle="pill" href="#custom-tabs-two-requisitionList" role="tab" aria-controls="custom-tabs-two-requisitionList" aria-selected="true">Production Requisition List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-addRequisition-tab" data-toggle="pill" href="#custom-tabs-two-addRequisition" role="tab" aria-controls="custom-tabs-two-addRequisition" aria-selected="true">Add Requisition</a>
+                    </li>
             </div>
-            <div class="col-md-3">
-                @if (privilege != null && privilege.Add)
-                {
-                    <a href="/Production/CreateRequsition" class="btn btn-primary btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create New Requisition</a>
-                }
-            </div>
-        </div>
-        
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-3">
-                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
-                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
-            </div>
-            <div class="col-md-3">
-                <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
-                @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
-                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
-                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
-                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select LineNumber--", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlModelName" class="col-form-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">Requisition Type</label>
-                @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionTypes, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">From Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-requisitionList" role="tabpanel" aria-labelledby="custom-tabs-two-requisitionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Requisition List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                                                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlWarehouseNameList" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseNameList", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlStateStatusList" class="control-label font-weight-bold">StateStatus</label>
+                                                @Html.DropDownList("ddlStateStatusList", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlLineNumberList" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlLineNumberList", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="ddlModelNameList" class="col-form-label">Model</label>
+                                                @Html.DropDownList("ddlModelNameList", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlRequisitionTypeList" class="col-form-label">Requisition Type</label>
+                                                @Html.DropDownList("ddlRequisitionTypeList", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Type--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="col-form-label">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @{Html.RenderAction("GetReqInfoParitalList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-addRequisition" role="tabpanel" aria-labelledby="custom-tabs-two-addRequisition-tab">
+                        <div class="row text-sm" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">Add Requisition</h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label class="control-label">
+                                                    REQ Type
+                                                    <div class="icheck-primary d-inline text-primary">
+                                                        <input type="checkbox" id="chkIsBundle">
+                                                        <label for="chkIsBundle">
+                                                            (Is Bundle?)
+                                                        </label>
+                                                    </div>
+                                                </label>
+                                                @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Requisition Type--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-type">Requisition Type is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlReqFor" class="control-label font-weight-bold">REQ For</label>
+                                                <select id="ddlReqFor" class="form-control form-control-sm">
+                                                    <option value="Production">Production</option>
+                                                    <option value="Packaging">Packaging</option>
+                                                </select>
+                                                <span class="error hide req-reqFor">REQ For is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlLineNumber" class="control-label">Floor</label>
+                                                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line Number--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-line">Floor is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <span class="error hide require-model">Model is required</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-warehouse">Warehouse Name is required</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                                <select id="ddlItem" class="form-control form-control-sm select2 select2-danger">
+                                                    <option value="">--Select Item--</option>
+                                                </select>
+                                                <span class="error hide req-item">Item Name is required</span>
+                                                <span class="error hide duplicate-itemName">The Item is already exist!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtQuantity" class="control-label font-weight-bold">Quantity</label>
+                                                <div class="input-group col-md-8">
+                                                    <input type="number" name="quantity" id="txtQuantity" class="form-control form-control-sm" />
+                                                    <span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
+                                                </div>
+                                                <span class="error hide require-quantity">Quantity is required</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtRemarks" class="form-control form-control-sm"></textarea>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="submit" class="btn btn-sm btn-warning float-right" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
+                                                    </div>
+                                                </div>
 
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">To Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblRequsitionDetailsData">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="9">
+                                                                <button class="btn btn-outline-success btn-sm float-lg-left" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i></button>
+                                                            </th>
+                                                        </tr>
+                                                        <tr class="text-center btn-dark">
+                                                            <th style="width:5%">#SL</th>
+                                                            <th style="width:45%">Item Name</th>
+                                                            <th style="width:10%">Quantity</th>
+                                                            <th style="width:10%">Type Of Unit</th>
+                                                            <th style="width:20%">Remarks</th>
+                                                            <th style="width:10%">Action</th>
+                                                            <th class="hide"></th>
+                                                            <th class="hide"></th>
+                                                            <th class="hide itemType"></th>
+                                                            <th class="hide item"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12" id="dataContainer1">
-        @{Html.RenderAction("GetReqInfoParitalList");}
-    </div>
-
-    <div class="modal fade" id="modalReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header alert-primary">
-                    <input type="hidden" id="hdfReqInfoId" />
-                    <input type="hidden" id="hdfRowIndex" />
-                    <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body" id="dataContainer">
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="modalReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfReqInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modalReqEdit" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <input type="hidden" id="hdfReqInfoId" />
                 <input type="hidden" id="hdfRowIndex" />
                 <h4 id="modalHeading" class="modal-title">Requisition Item Edit</h4>
@@ -116,21 +277,33 @@
 </div>
 
 
-
-
 @section scripts{
     <script type="text/javascript">
         var txtReqCode = $("#txtReqCode");
-        var ddlWarehouseName = $("#ddlWarehouseName");
-        var ddlModelName = $("#ddlModelName");
-        var ddlStateStatus = $("#ddlStateStatus");
-        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlWarehouseNameList = $("#ddlWarehouseNameList");
+        var ddlModelNameList = $("#ddlModelNameList");
+        var ddlStateStatusList = $("#ddlStateStatusList");
+        var ddlLineNumberList = $("#ddlLineNumberList");
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var hdfReqInfoId = $("#hdfReqInfoId");
         var hdfRowIndex = $("#hdfRowIndex");
-        var ddlRequisitionType = $("#ddlRequisitionType")
+        var ddlRequisitionTypeList = $("#ddlRequisitionTypeList")
         var pageNo = 1;
+
+        var hdfReqDetailsId = $("#hdfReqDetailsId");
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlLineNumber = $("#ddlLineNumber");
+        var ddlItem = $("#ddlItem");
+        var unitName = $("#unitName");
+        var txtRemarks = $("#txtRemarks");
+        var txtQuantity = $("#txtQuantity");
+        var ddlModelName = $("#ddlModelName");
+        var ddlRequisitionType = $("ddlRequisitionType");
+        var ddlReqFor = $("#ddlReqFor");
+        var chkIsBundle = $("#chkIsBundle");
+        var item = '0';
+        var itemType = '0';
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -156,6 +329,7 @@
             });
         })
 
+        // Requisition List
         $(document).on('click', 'div.remove-date', function () {
             if ($(this).hasClass("dptToDate")) {
                 if (dptToDate.val() !== '') {
@@ -175,12 +349,32 @@
             LoadDataTable();
         })
 
+        ddlWarehouseNameList.change(function () {
+            LoadDataTable();
+        })
+
+        ddlModelNameList.change(function () {
+            LoadDataTable();
+        })
+
+        ddlStateStatusList.change(function () {
+            LoadDataTable();
+        })
+
+        ddlLineNumberList.change(function () {
+            LoadDataTable();
+        })
+
+        ddlRequisitionTypeList.change(function () {
+            LoadDataTable();
+        })
+
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType: ddlRequisitionType.val(), page: pageNo };
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseNameList.val(), 0), modelId: TryParseInt(ddlModelNameList.val(), 0), status: ddlStateStatusList.val(), line: TryParseInt(ddlLineNumberList.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType: ddlRequisitionTypeList.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetReqInfoParitalList', data)).then(function (res, status) {
                 if (status === "success") {
@@ -397,6 +591,344 @@
                     console.log(error);
                 })
             }   
+        })
+
+
+        // Add Requisition //
+
+        function getItemAndItemType() {
+            item = '0';
+            itemType = '0';
+            if (ddlItem.val() != '') {
+                item = ddlItem.val().substring(0, ddlItem.val().indexOf("#"));
+                itemType = ddlItem.val().substring(ddlItem.val().indexOf("#") + 1);
+            }
+        }
+
+        ddlModelName.change(function () {
+            if (chkIsBundle.is(":checked")) {
+                chkIsBundle.trigger('change')
+            }
+        })
+
+        ddlReqFor.change(function () {
+            if (chkIsBundle.is(":checked")) {
+                chkIsBundle.trigger('change')
+            }
+        })
+
+        chkIsBundle.change(function () {
+            $("#tblRequsitionDetailsData tbody").empty();
+            if (chkIsBundle.is(":checked")) {
+                if (TryParseInt(ddlWarehouse.val()) > 0) {
+                    disable("#ddlWarehouse");
+                }
+                $("#btnAddToList").addClass('hide');
+                getItemAndItemType();
+                if (TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(item, 0) > 0) {
+
+                    var data = JSON.stringify({ type: ddlReqFor.val(), modelId: TryParseInt(ddlModelName.val(), 0), itemId: TryParseInt(item, 0) });
+                    console.log('chkIsBundle');
+                    console.log(data);
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
+                        console.log(res);
+                        loadDataTabelForBundle(res.details);
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+            } else {
+                enable("#ddlWarehouse");
+                $("#btnAddToList").removeClass('hide');
+            }
+        })
+
+        function loadDataTabelForBundle(obj) {
+            if (!$.isEmptyObject(obj)) {
+                $.each(obj, function (index, item) {
+                    var re = (item.Remarks === null) ? "" : item.Remarks;
+                    var td1 = "<td class='text-center'><b>" + (index + 1) + "</b></td>"
+
+                    var td2 = "<td>" + item.ItemName + " [" + item.ItemTypeName + "]" + "</td>";
+
+                    var td3 = "<td class='text-center text-bold'>" + TryParseInt(txtQuantity.val(), 0) * item.Quantity + "</td>";
+                    var td4 = "<td class='text-center'>" + item.UnitName + "</td>";
+                    var td5 = "<td>" + re + "</td>";
+                    var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del hide'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                    var td7 = "<td class='hide'>" + item.ItemTypeId + "</td>";
+                    var td8 = "<td class='hide'>" + item.ItemId + "</td>";
+                    var td9 = "<td class='hide'>" + item.WarehouseId + "</td>";
+                    var td10 = "<td class='hide'>" + item.Quantity + "</td>";
+
+                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + "</tr>";
+
+                    $("#tblRequsitionDetailsData tbody").append(tr);
+
+                    //$("#tblRequsitionDetailsData tbody").append(tr);
+                    //clearCtrl();
+                })
+            }
+            else {
+                bootbox.alert('Bundle not found');
+            }
+        }
+
+        ddlLineNumber.change(function () {
+            disable("#ddlLineNumber")
+        })
+
+        ddlWarehouse.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemsByWarehouse', 'POST', ddlItem, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+        })
+
+        //unit text
+        ddlItem.change(function () {
+            $("#unitName").text('');
+            getItemAndItemType();
+            if (TryParseInt(item, 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetUnitByItemId', JSON.stringify({ itemId: TryParseInt(item, 0) }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res != null && status == "success") {
+                        $("#unitName").text(res.UnitSymbol);
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+
+            chkIsBundle.trigger('change');
+        })
+
+        //click addlist button and save data in list
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateInput() == true) {
+                disable("#ddlWarehouse");
+                var sl = $("#tblRequsitionDetailsData tbody tr").length;
+
+                var td1 = "<td class='text-center'><b>" + (sl + 1) + "</b></td>"
+                var td2 = "<td>" + dropDownSelectedText("ddlItem") + "</td>";
+                var td3 = "<td class='text-center text-bold'>" + txtQuantity.val() + "</td>";
+                var td4 = "<td class='text-center'>" + unitName.text() + "</td>";
+                var td5 = "<td>" + txtRemarks.val() + "</td>";
+                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del hide'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                getItemAndItemType();
+
+                var td7 = "<td class='hide'>" + itemType + "</td>";
+                var td8 = "<td class='hide'>" + item + "</td>";
+                var td9 = "<td class='hide'>" + dropDownSelectedText("ddlWarehouse") + "</td>";
+                var td10 = "<td class='hide'>0</td>";
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + "</tr>";
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + "</tr>";
+
+                if ($("#tblRequsitionDetailsData tbody tr").length == 0) {
+                    $("#tblRequsitionDetailsData tbody").append(tr);
+                }
+                else {
+                    $("#tblRequsitionDetailsData tbody tr").eq(0).before(tr);
+                }
+                //$("#tblRequsitionDetailsData tbody").append(tr);
+                clearCtrl();
+            }
+        });
+
+        function validateTable() {
+            var isValid = true;
+
+            if ($("#tblRequsitionDetailsData tbody tr").length === 0) {
+                isValid = false;
+            }
+            if (TryParseInt(ddlLineNumber.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-line").removeClass("hide");
+            }
+            if (TryParseInt(ddlWarehouse.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-warehouse").removeClass("hide");
+            }
+            if (TryParseInt(ddlModelName.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-model").removeClass("hide");
+            }
+            console.log($("#ddlRequisitionType").val());
+            if ($("#ddlRequisitionType").val() === "") {
+                isValid = false;
+                $(".req-type").removeClass("hide");
+            }
+            if (ddlReqFor.val() == '') {
+                isValid = false;
+                $(".req-reqFor").removeClass("hide");
+            }
+
+            if (chkIsBundle.is(":checked")) {
+                if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                    isValid = false;
+                    $(".require-quantity").removeClass("hide");
+                }
+            }
+            return isValid;
+        }
+
+        txtQuantity.keyup(function () {
+            getItemAndItemType();
+            if (chkIsBundle.is(":checked") && TryParseInt(ddlModelName.val(), 0) > 0 && TryParseInt(item, 0) > 0 && $("#tblRequsitionDetailsData tbody tr").length > 0 && TryParseInt(txtQuantity.val(), 0) > 0) {
+
+                $.each($("#tblRequsitionDetailsData tbody tr"), function (index, item) {
+                    var qty = TryParseInt($(this).children('td').eq(9).html(), 0);
+                    console.log('Qty ' + qty);
+
+                    var t = qty * TryParseInt(txtQuantity.val(), 0)
+                    console.log('Total ' + t);
+                    $("#tblRequsitionDetailsData tbody").children('tr').eq(index).children('td').eq(2).html(t);
+                })
+            }
+        })
+
+        $("#btnReset").click(function (e) {
+            clearDropdown("ddlItem");
+            enable("#ddlWarehouse");
+            enable("#ddlLineNumber");
+            ddlWarehouse.val("");
+            $("#tblRequsitionDetailsData tbody").empty();
+            e.preventDefault();
+            txtQuantity.val('');
+            unitName.text('');
+            txtRemarks.val('');
+            $(".error").addClass('hide');
+        })
+
+        function clearCtrl() {
+            ddlItem.val('');
+            txtQuantity.val('');
+            unitName.text('');
+            txtRemarks.val('');
+        }
+
+        //data delete add list
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblRequsitionDetailsData tbody", index);
+                    //fnFixTheTbodyRowSerial("#tblRequsitionDetailsData", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblRequsitionDetailsData", index);
+                    $("#tblRequsitionDetailsData tbody tr").removeClass("btn-success");
+                };
+            }));
+        })
+
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblRequsitionDetailsData tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblRequsitionDetailsData tbody tr"), function (index, item) {
+                    var itemId = $(this).children('td').eq(3).html();
+                    if (itemId == ddlItem.val()) {
+                        isValid = false;
+                        $(".duplicate-itemName").removeClass('hide');
+                    }
+                })
+            }
+            if (ddlItem.val() == "") {
+                isValid = false;
+                $(".req-item").removeClass("hide");
+            }
+            if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-quantity").removeClass("hide");
+            }
+
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+
+            if (validateTable() === true) {
+                bootbox.confirm("Are you sure you want to save", function (result) {
+                    if (result === true) {
+                        disable("#btnSubmit")
+                        var reqDetails = [];
+                        reqDetails.length = 0;
+
+                        var wi = 0;
+                        if (chkIsBundle.is(":checked")) {
+                            wi = $("#tblRequsitionDetailsData tbody").children('tr').eq(0).children('td').eq(8).html();
+                        }
+                        else {
+                            wi = TryParseInt(ddlWarehouse.val(), 0);
+                        }
+
+                        $.each($("#tblRequsitionDetailsData tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            var iTypeId = tds.eq('6').html();
+                            var iId = tds.eq('7').html();
+                            var qty = tds.eq('2').html();
+                            var rmk = tds.eq('4').html();
+
+                            reqDetails.push({
+                                ReqDetailId: 0,
+                                WarehouseId: wi,
+                                ItemTypeId: TryParseInt(iTypeId, 0),
+                                ItemId: TryParseInt(iId, 0),
+                                Quantity: TryParseInt(qty, 0),
+                                Remarks: rmk
+                            })
+                        })
+                        getItemAndItemType();
+
+                        var requsitionInfo =
+                        {
+                            ReqInfoId: 0,
+                            LineId: TryParseInt(ddlLineNumber.val(), 0),
+                            WarehouseId: wi,
+                            DescriptionId: TryParseInt(ddlModelName.val(), 0),
+                            RequisitionType: $("#ddlRequisitionType").val(),
+                            RequisitionFor: ddlReqFor.val(),
+                            ItemTypeId: TryParseInt(itemType, 0),
+                            ItemId: TryParseInt(item, 0),
+                            ForQty: TryParseInt(txtQuantity.val(), 0),
+                            IsBundle: chkIsBundle.is(":checked"),
+                            ReqDetails: reqDetails
+                        };
+                        console.log("Final Data");
+                        var data = JSON.stringify({ model: requsitionInfo });
+                        console.log(data);
+
+                        //return;
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveRequsition', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            enable("#btnSubmit");
+                            if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                hdfReqInfoId.val("0");
+                                setTimeout(function () {
+                                    LoadDataTable();
+                                }, 1000);
+                                $("#btnReset").trigger("click");
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit")
+                        }).fail(function (error) {
+                            consoleLog(error);
+                            enable("#btnSubmit")
+                        })
+                    }
+                })
+            }
         })
     </script>
 }

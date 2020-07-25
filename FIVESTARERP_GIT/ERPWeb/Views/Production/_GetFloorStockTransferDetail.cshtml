@@ -1,11 +1,12 @@
-﻿@model IEnumerable<ERPBO.Production.ViewModels.TransferStockToAssemblyDetailViewModel>
-@using ERPBO.Production.ViewModels;
+﻿@model ERPBO.Production.ViewModels.TransferStockToAssemblyInfoViewModel
 @using ERPBLL.Common;
 @{
     Layout = null;
     int sl = 0;
-    TransferStockToAssemblyInfoViewModel info = (TransferStockToAssemblyInfoViewModel)ViewBag.Info;
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    var info = Model;
+    var details = Model.TransferStockToAssemblyDetails;
+    string keyCellTxt = info.TransferFor == "Assembly" ? "Assembly Line" : "Repair Line";
+    string keyCellVal = info.TransferFor == "Assembly" ? info.AssemblyName : info.RepairLineName;
 }
 
 <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblInfo">
@@ -16,8 +17,8 @@
             <td style="width:20%"><b>@info.TransferCode</b></td>
             <td style="width:10%">Floor No</td>
             <td style="width:15%"><b>@info.LineNumber</b></td>
-            <td style="width:15%">Assembly Line</td>
-            <td style="width:25%"><b>@info.AssemblyName</b></td>
+            <td style="width:15%">@keyCellTxt</td>
+            <td style="width:25%"><b>@keyCellVal</b></td>
         </tr>
         <tr>
             <td style="width:20%">Model Name</td>
@@ -53,7 +54,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var detail in Model)
+        @foreach (var detail in details)
         {
             sl = sl + 1;
             <tr>

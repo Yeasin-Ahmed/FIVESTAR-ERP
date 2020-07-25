@@ -332,4 +332,19 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class RequisitionItemInfoRepository : ProductionBaseRepository<RequisitionItemInfo>
+    {
+        public RequisitionItemInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class RequisitionItemDetailRepository : ProductionBaseRepository<RequisitionItemDetail>
+    {
+        public RequisitionItemDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

@@ -563,6 +563,10 @@
     <Content Include="Views\Production\_GetFaultyCases.cshtml" />
     <Content Include="Views\Production\_GetRepairItemTransferInfoByQRCode.cshtml" />
     <Content Include="Views\Production\_GetRepairItemTransferDetailByQRCode.cshtml" />
+    <Content Include="Views\Production\GetRequisitionByItemInfoAndDetail.cshtml" />
+    <Content Include="Views\Production\_GetRequisitionByItemInfo.cshtml" />
+    <Content Include="Views\Production\GetAssemblyLineStockInfoFS.cshtml" />
+    <Content Include="Views\Production\_GetAssemblyLineStockInfoFS.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

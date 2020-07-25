@@ -1,6 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Assembly Line Stock Info";
-    //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    ViewBag.Title = "Assembly Line Spare Parts Stock";
 }
 
 <div class="row">
@@ -9,16 +8,16 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Assemble Stock Info</a>
+                        <a class="nav-link active" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Spare Parts Stock</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive Speare Parts</a>
+                        <a class="nav-link" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive Spare Parts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer List</a>
+                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Item Transfer List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Transfer Item</a>
                     </li>
                 </ul>
             </div>
@@ -121,7 +120,7 @@
                                     <div class="card-header">
                                         <h6 class="card-title">Search By</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-3">
                                                 <label for="ddlFloorNoTransferList" class="control-label font-weight-bold">Floor</label>
@@ -174,7 +173,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View" });}
+                                                @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View", @transferFor="Assembly" });}
                                             </div>
                                         </div>
                                     </div>
@@ -192,7 +191,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    Receive Stocks
+                                                    Transfer List
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -385,8 +384,8 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary">
-                <input type="hidden" id="hdfTSQInfoId" />
-                <h4 id="modalHeading" class="modal-title">Transfer Details</h4>
+                <input type="hidden" id="hdfInfoId" />
+                <h4 id="modalHeading" class="modal-title"></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="modelContaine1">
@@ -419,7 +418,7 @@
         var dptFromDateTransferList = $('#dptFromDateTransferList');
         var dptToDateTransferList = $("#dptToDateTransferList");
         var ddlStateStatusTransferList = $("#ddlStateStatusTransferList");
-        var hdfTSQInfoId = $("#hdfTSQInfoId");
+        var hdfInfoId = $("#hdfInfoId");
 
         // Item Transfer //
         var chkIsBundle = $("#chkIsBundle");
@@ -467,9 +466,27 @@
                 todayHighlight: true
             });
 
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
             chkIsBundle.prop("checked", true);
             chkIsBundle.trigger("change");
             disable("#chkIsBundle");
+
+            $(".transferFor").addClass('hide');
+            $(".repairLine").addClass('hide');
         })
 
         function getItemDetailsByStock() {
@@ -552,6 +569,10 @@
             LoadDataTableTransferList();
         })
 
+        ddlStateStatusTransferList.change(function () {
+            LoadDataTableTransferList();
+        })
+
         ddlModelNameTransferList.change(function () {
             LoadDataTableTransferList();
         })
@@ -560,7 +581,7 @@
             LoadDataTableTransferList();
         })
 
-        // Transfer List
+        
         $(document).on('click', 'div.remove-date-Transfer', function () {
             if ($(this).hasClass("dptToDateTransferList")) {
                 if (dptToDateTransferList.val() !== '') {
@@ -596,13 +617,15 @@
 
         $(document).on('click', 'a.data-item-detail', function (e) {
             e.preventDefault();
-            hdfTSQInfoId.val("0")
+            hdfInfoId.val("0")
             var id = $(this).attr("data-item-detail");
-            hdfTSQInfoId.val(id);
+            hdfInfoId.val(id);
             $.when(getReqWithData('html', type.get, '/Production/GetAssemblyStockTransferList', { flag: "detail", transferInfoId: id })).then(function (res, status) {
                 if (status === "success") {
                     $("#modelContaine1").empty();
                     $("#modelContaine1").append(res);
+                    $("#modalHeading").empty();
+                    $("#modalHeading").text("Transfer Details");
                     $("#modalTransferDetails").modal("toggle");
                     $(".btnAccepted").addClass('hide');
                 }
@@ -866,13 +889,13 @@
             if ($(this).hasClass("dptToDate")) {
                 if (dptToDate.val() !== '') {
                     dptToDate.val('');
-                    //LoadDataTableTransferList();
+                    LoadDataTableReceiveList();
                 }
             }
             if ($(this).hasClass("dptFromDate")) {
                 if (dptFromDate.val() !== '') {
                     dptFromDate.val('');
-                    //LoadDataTableTransferList();
+                    LoadDataTableReceiveList();
                 }
             }
         })
@@ -880,9 +903,9 @@
         ddlFloorNoReceiveList.change(function () {
             clearDropdown("ddlAssemblyReceiveList");
             if (ddlFloorNoReceiveList.val() != "") {
-                LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssemblyTransferList, JSON.stringify({ lineId: ddlFloorNoReceiveList.val() }));
+                LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssemblyReceiveList, JSON.stringify({ lineId: ddlFloorNoReceiveList.val() }));
             }
-            LoadDataTableTransferList();
+            LoadDataTableReceiveList();
         })
 
         ddlAssemblyReceiveList.change(function myfunction() {
@@ -893,23 +916,44 @@
             LoadDataTableReceiveList();
         })
 
-        ddlStateStatusTransferList.change(function myfunction() {
+        ddlStateStatusReceiveList.change(function myfunction() {
             LoadDataTableReceiveList();
         })
 
         txtTSACode.keyup(function () {
-            LoadDataTableReceiveStockList();
+            LoadDataTableReceiveList();
         })
+
+        function LoadDataTableReceiveList() {
+            var data = { flag: "search", floorId: TryParseInt(ddlFloorNoReceiveList.val(), 0), transferFor: "Assembly", repairLineId: 0, assemblyId: TryParseInt(ddlAssemblyReceiveList.val(), 0), modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetFloorStockTransferList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                        $(".transferFor").addClass('hide');
+                        $(".repairLine").addClass('hide');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            //pageNo = 1;
+        }
 
         $(document).on('click', 'a.data-floor-item-detail', function (e) {
             e.preventDefault();
             var id = $(this).attr("data-floor-item-detail");
-            hdfTSQInfoId.val('0')
-            hdfTSQInfoId.val(id)
+            hdfInfoId.val('0')
+            hdfInfoId.val(id)
             $.when(getReqWithData('html', type.get, '/Production/GetFloorStockTransferList', { flag: "detail", transferInfoId: id })).then(function (res, status) {
                 if (status === "success") {
                     $("#modelContaine1").empty();
                     $("#modelContaine1").append(res);
+                    $("#modalHeading").empty();
+                    $("#modalHeading").text("Receive Details");
                     $("#modalTransferDetails").modal("toggle");
                     //$(".btnAccepted").addClass("hide")
                 }
@@ -921,15 +965,15 @@
         // accept the transfer stock
         $(document).on("click", ".btnAccepted", function (e) {
             e.preventDefault();
-            fnTransferStateChange(hdfTSQInfoId.val(), reqStatus.accepted);
+            fnTransferStateChange(hdfInfoId.val(), reqStatus.accepted);
         })
 
         function fnTransferStateChange(id, status) {
             var data = JSON.stringify({ transferId: id, status: status });
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveProductionTransferStockStatus', data, getToken())).then(function (res, status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveProductionStockReceiveInByAssemblyOrRepair', data, getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $("#modalTransferDetails").modal("toggle").toggle("fast");
-                    hdfTSQInfoId.val('0');
+                    hdfInfoId.val('0');
                     $('.toastrDefaultSuccess').trigger('click');
                     LoadDataTableReceiveStockList();
                 }
@@ -938,22 +982,6 @@
             })
         }
 
-        function LoadDataTableReceiveStockList() {
-
-            var data = { flag: "search", lineId: TryParseInt(ddlFloorNoReceiveList.val(), 0), assemblyId: TryParseInt(ddlAssemblyReceiveList.val(), 0), modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo };
-
-            $.when(getReqWithData('html', 'GET', '/Production/GetFloorStockTransferList', data)).then(function (res, status) {
-                console.log(status);
-                if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
-                    });
-                }
-            }).fail(function (error) {
-                console.log(error);
-            });
-            //pageNo = 1;
-        }
+       
     </script>
 }

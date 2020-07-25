@@ -1,4 +1,5 @@
-﻿using ERPBO.Production.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<AssemblyLine> GetAssemblyLines(long orgId);
         AssemblyLine GetAssemblyLineById(long id,long orgId);
         bool SaveAssembly(AssemblyLineDTO line, long userId, long orgId);
+        IEnumerable<Dropdown> GetAssemblyLinesWithProduction(long orgId);
     }
 }

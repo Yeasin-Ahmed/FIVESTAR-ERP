@@ -69,9 +69,9 @@ namespace ERPDAL.ProductionDAL
         public DbSet<QCPassTransferInformation> tblQCPassTransferInformation { get; set; }
         public DbSet<ProductionToPackagingStockTransferInfo> tblProductionToPackagingStockTransferInfo { get; set; }
         public DbSet<ProductionToPackagingStockTransferDetail> tblProductionToPackagingStockTransferDetail { get; set; }
-
         public DbSet<QRCodeProblem> tblQRCodeProblem { get; set; }
         public DbSet<QRCodeTransferToRepairInfo> tblQRCodeTransferToRepairInfo { get; set; }
-
+        public DbSet<RequisitionItemInfo> tblRequisitionItemInfo { get; set; }
+        public DbSet<RequisitionItemDetail> tblRequisitionItemDetail { get; set; }
     }
 }

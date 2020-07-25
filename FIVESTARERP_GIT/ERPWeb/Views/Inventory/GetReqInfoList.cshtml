@@ -4,81 +4,137 @@
 }
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Production Requisition List</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-3">
-                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
-                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-requisitionList-tab" data-toggle="pill" href="#custom-tabs-two-requisitionList" role="tab" aria-controls="custom-tabs-two-requisitionList" aria-selected="true">Requisition List</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer List</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-3">
-                <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
-                @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
-                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
-                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlLineNumber" class="control-label font-weight-bold">Line Number</label>
-                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select LineNumber--", new { @class = "form-control form-control-sm ctrl-changed" })
-                <span class="error hide required-lineNumber font-weight-bold">Required Line Number!</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlModelName" class="col-form-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">Requisition Type</label>
-                @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionTypes, "--Select Requisition Type--", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">From Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-requisitionList" role="tabpanel" aria-labelledby="custom-tabs-two-requisitionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                   Production-Requisition List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                                                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Code" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Requisition Type</label>
+                                                @Html.DropDownList("ddlRequisitionType", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionTypes, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                                                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @{Html.RenderAction("GetReqInfoParitalList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-transferList" role="tabpanel" aria-labelledby="custom-tabs-two-transferList-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="col-md-3">
-                <label class="col-form-label">To Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="col-md-12" id="dataContainer1">
-        @{Html.RenderAction("GetReqInfoParitalList");}
-    </div>
-
-    <div class="modal fade" id="modalReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header alert-primary">
-                    <input type="hidden" id="hdfReqInfoId" />
-                    <input type="hidden" id="hdfRowIndex" />
-                    <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body" id="dataContainer">
-
-                   
-                </div>
+<div class="modal fade" id="modalReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfReqInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body text-sm" id="dataContainer">
             </div>
         </div>
     </div>
@@ -149,7 +205,7 @@
 
         function LoadDataTable()
         {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType: ddlRequisitionType.val(), page: pageNo };
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), status: ddlStateStatus.val(), line: TryParseInt(ddlLineNumber.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), requisitionType: ddlRequisitionType.val(), reqInfoId:0, page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Inventory/GetReqInfoParitalList', data)).then(function (res, status)
             {

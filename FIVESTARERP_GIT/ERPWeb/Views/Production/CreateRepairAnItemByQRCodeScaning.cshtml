@@ -502,12 +502,16 @@
                     console.log(status);
                     if (res.IsSuccess === true) {
                         toggleAlert("Save Successful");
+                        clearHdf();
+                        
                     }
                     else {
                         toggleAlert("Save Failed");
                     }
+                    enable('.btn-Action');
                 }).fail(function (error) {
                     console.log(error);
+                    enable('.btn-Action');
                 })
             }
             else {

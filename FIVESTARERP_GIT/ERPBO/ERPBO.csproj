@@ -285,6 +285,8 @@
     <Compile Include="Production\DomainModels\RepairSectionFaultyItemTransferInfo.cs" />
     <Compile Include="Production\DomainModels\RepairSectionRequisitionDetail.cs" />
     <Compile Include="Production\DomainModels\RepairSectionRequisitionInfo.cs" />
+    <Compile Include="Production\DomainModels\RequisitionItemDetail.cs" />
+    <Compile Include="Production\DomainModels\RequisitionItemInfo.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcDetail.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyDetail.cs" />
@@ -354,6 +356,8 @@
     <Compile Include="Production\DTOModel\RepairSectionRequisitionDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RepairSectionRequisitionInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ReqInfoDetailsDTO.cs" />
+    <Compile Include="Production\DTOModel\RequisitionItemDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\RequisitionItemInfoDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionDetailDTO.cs" />
     <Compile Include="Production\DTOModel\RequsitionInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\UnitDomainModel.cs" />
@@ -437,6 +441,8 @@
     <Compile Include="Production\ViewModels\RepairSectionFaultyItemTransferInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairSectionRequisitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RepairSectionRequisitionInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\RequisitionItemDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\RequisitionItemInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\RequsitionInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\UnitViewModel.cs" />

@@ -16,6 +16,9 @@ namespace ERPBO.Production.DTOModel
         public long? LineId { get; set; }
         public long? WarehouseId { get; set; }
         public long? AssemblyId { get; set; }
+        public long? RepairLineId { get; set; }
+        [StringLength(80)]
+        public string TransferFor { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(150)]
@@ -32,6 +35,7 @@ namespace ERPBO.Production.DTOModel
         // Custom Property
         public string ModelName { get; set; }
         public string LineNumber { get; set; }
+        public string RepairLineName { get; set; }
         public string WarehouseName { get; set; }
         public string AssemblyName { get; set; }
         public int ItemCount { get; set; }
@@ -39,5 +43,6 @@ namespace ERPBO.Production.DTOModel
         public string UpdateUser { get; set; }
         public string ItemTypeName { get; set; }
         public string ItemName { get; set; }
+        public List<TransferStockToAssemblyDetailDTO> TransferStockToAssemblyDetails { get; set; }
     }
 }

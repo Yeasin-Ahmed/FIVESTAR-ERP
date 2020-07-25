@@ -111,6 +111,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = _organizationBusiness.SaveOrganization(dto, User.UserId);
             }
+            
             return Json(IsSuccess);
         }
         #endregion

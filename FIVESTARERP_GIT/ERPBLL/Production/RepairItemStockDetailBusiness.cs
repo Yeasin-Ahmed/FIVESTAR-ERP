@@ -150,7 +150,7 @@ namespace ERPBLL.Production
                 };
 
                 var stockInfoInDb = await _repairItemStockInfoBusiness.GetRepairItemAsync(item.QCId.Value, item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
-                stockInfoInDb.Quantity -= item.Quantity;
+                //stockInfoInDb.Quantity -= item.Quantity;
                 stockInfoInDb.QCQty += item.Quantity;
                 stockInfoInDb.UpUserId = userId;
                 _repairItemStockInfoRepository.Update(stockInfoInDb);

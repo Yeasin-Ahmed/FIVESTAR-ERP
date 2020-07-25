@@ -57,12 +57,12 @@
                         <span class="error hide req-reqFor">REQ For is required</span>
                     </div>
                     <div class="col-md-3">
-                        <label for="ddlLineNumber" class="control-label">Production Floor</label>
+                        <label for="ddlLineNumber" class="control-label">Floor</label>
                         @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line Number--", new { @class = "form-control form-control-sm" })
-                        <span class="error hide req-line">Line Number is required</span>
+                        <span class="error hide req-line">Floor is required</span>
                     </div>
                     <div class="col-md-3">
-                        <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                        <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                         @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
                         <span class="error hide require-model">Model is required</span>
                     </div>
