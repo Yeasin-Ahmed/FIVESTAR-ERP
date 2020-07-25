@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Inventory.DTOModel
+namespace ERPBO.Production.DTOModel
 {
    public class RequsitionDetailDTO
     {
@@ -23,7 +23,7 @@ namespace ERPBO.Inventory.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
 
-        //navi
+        //navigation
         public long ReqInfoId { get; set; }
 
         //custom

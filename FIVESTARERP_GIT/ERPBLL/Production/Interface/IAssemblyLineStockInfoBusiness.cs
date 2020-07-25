@@ -1,4 +1,5 @@
 ﻿using ERPBO.Production.DomainModels;
+using ERPBO.Production.DTOModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<AssemblyLineStockInfo> GetAssemblyLineStockInfos(long orgId);
         IEnumerable<AssemblyLineStockInfo> GetAssemblyLineStockInfoByAssemblyAndItemId(long assemblyId,long itemId,long orgId);
         AssemblyLineStockInfo GetAssemblyLineStockInfoByAssemblyAndItemAndModelId(long assemblyId, long itemId,long modelId ,long orgId);
+        IEnumerable<AssemblyLineStockInfoDTO> GetAssemblyLineStockInfosByQuery(long? floorId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId);
     }
 }

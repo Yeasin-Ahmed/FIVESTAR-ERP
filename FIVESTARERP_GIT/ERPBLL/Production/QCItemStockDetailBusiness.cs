@@ -210,7 +210,7 @@ namespace ERPBLL.Production
                 var stockInfoInDb = _qCItemStockInfoBusiness.GetQCItemStockInfById(item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
 
                 stockInfoInDb.Quantity -= item.Quantity;
-                if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag =="Repair" && item.RepairLineId != null && item.RepairLineId > 0)
+                if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag =="Repair Line" && item.RepairLineId != null && item.RepairLineId > 0)
                 {
                     stockInfoInDb.RepairQty += item.Quantity;
                 }

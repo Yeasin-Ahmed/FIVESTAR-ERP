@@ -460,52 +460,54 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType, int page = 1)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType,long? reqInfoId, int page = 1)
         {
-            var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
-            IEnumerable<RequsitionInfoDTO> dto = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
-                (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode))
-                &&
-                (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId)
-                &&
-                (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
-                &&
-                (requisitionType == null || requisitionType.Trim() == "" || req.RequisitionType == requisitionType.Trim()) &&
-                (line == null || line <= 0 || req.LineId == line)
-                &&
-                (modelId == null || modelId <= 0 || req.DescriptionId == modelId) &&
-                (
-                    (fromDate == null && toDate == null)
-                    ||
-                     (fromDate == "" && toDate == "")
-                    ||
-                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+            var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(line, 0, warehouseId, modelId, reqCode, requisitionType, string.Empty, fromDate, toDate, status, string.Empty, reqInfoId, User.OrgId);
 
-                        req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
-                        req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
-                    ||
-                    (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
-                    ||
-                    (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
-                )
-            ).Select(info => new RequsitionInfoDTO
-            {
-                ReqInfoId = info.ReqInfoId,
-                ReqInfoCode = info.ReqInfoCode,
-                LineId = info.LineId,
-                LineNumber = (_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, User.OrgId).LineNumber),
-                StateStatus = info.StateStatus,
-                Remarks = info.Remarks,
-                OrganizationId = info.OrganizationId,
-                EntryDate = info.EntryDate,
-                WarehouseId = info.WarehouseId,
-                WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, User.OrgId).WarehouseName),
-                ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
-                Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, User.OrgId).Select(s => s.ItemId).Distinct().Count(),
-                RequisitionType = info.RequisitionType,
-                EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
-                UpdateUser = (info.UpUserId == null || info.UpUserId == 0) ? "" : UserForEachRecord(info.UpUserId.Value).UserName
-            }).OrderByDescending(s => s.ReqInfoId).ToList();
+            //var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
+            //IEnumerable<RequsitionInfoDTO> dto = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
+            //    (reqCode == null || reqCode.Trim() == "" || req.ReqInfoCode.Contains(reqCode))
+            //    &&
+            //    (warehouseId == null || warehouseId <= 0 || req.WarehouseId == warehouseId)
+            //    &&
+            //    (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
+            //    &&
+            //    (requisitionType == null || requisitionType.Trim() == "" || req.RequisitionType == requisitionType.Trim()) &&
+            //    (line == null || line <= 0 || req.LineId == line)
+            //    &&
+            //    (modelId == null || modelId <= 0 || req.DescriptionId == modelId) &&
+            //    (
+            //        (fromDate == null && toDate == null)
+            //        ||
+            //         (fromDate == "" && toDate == "")
+            //        ||
+            //        (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+            //            req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+            //            req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+            //        ||
+            //        (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+            //        ||
+            //        (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+            //    )
+            //).Select(info => new RequsitionInfoDTO
+            //{
+            //    ReqInfoId = info.ReqInfoId,
+            //    ReqInfoCode = info.ReqInfoCode,
+            //    LineId = info.LineId,
+            //    LineNumber = (_productionLineBusiness.GetProductionLineOneByOrgId(info.LineId, User.OrgId).LineNumber),
+            //    StateStatus = info.StateStatus,
+            //    Remarks = info.Remarks,
+            //    OrganizationId = info.OrganizationId,
+            //    EntryDate = info.EntryDate,
+            //    WarehouseId = info.WarehouseId,
+            //    WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, User.OrgId).WarehouseName),
+            //    ModelName = descriptionData.FirstOrDefault(d => d.DescriptionId == info.DescriptionId).DescriptionName,
+            //    Qty = _requsitionDetailBusiness.GetRequsitionDetailByReqId(info.ReqInfoId, User.OrgId).Select(s => s.ItemId).Distinct().Count(),
+            //    RequisitionType = info.RequisitionType,
+            //    EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
+            //    UpdateUser = (info.UpUserId == null || info.UpUserId == 0) ? "" : UserForEachRecord(info.UpUserId.Value).UserName
+            //}).OrderByDescending(s => s.ReqInfoId).ToList();
 
             // Pagination //
             ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);

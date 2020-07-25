@@ -1,0 +1,682 @@
+﻿
+@{
+    ViewBag.Title = "Production Item Requisition";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-requisitionList-tab" data-toggle="pill" href="#custom-tabs-two-requisitionList" role="tab" aria-controls="custom-tabs-two-requisitionList" aria-selected="true">Requisition List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-addRequisition-tab" data-toggle="pill" href="#custom-tabs-two-addRequisition" role="tab" aria-controls="custom-tabs-two-addRequisition" aria-selected="true">Add Requisition</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-requisitionList" role="tabpanel" aria-labelledby="custom-tabs-two-requisitionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Production Requisition List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlRequisitionTypeList" class="control-label font-weight-bold">Req Type</label>
+                                                @Html.DropDownList("ddlRequisitionTypeList", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlReqForList" class="control-label font-weight-bold">REQ For</label>
+                                                <select id="ddlReqForList" class="form-control form-control-sm">
+                                                    <option value="Production">Production</option>
+                                                    <option value="Assembly" selected>Assembly</option>
+                                                    <option value="Repair">Repair</option>
+                                                    <option value="Packaging">Packaging</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtReqCodeList" class="control-label font-weight-bold">Req Code</label>
+                                                <input type="text" id="txtReqCodeList" class="form-control form-control-sm" placeholder="Enter Code Here"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseList" class="control-label font-weight-bold">Warehouse</label>
+                                                @Html.DropDownList("ddlWarehouseList", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameList" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameList", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatusList" class="control-label font-weight-bold">Status</label>
+                                                @Html.DropDownList("ddlStateStatusList", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="ddlProductionFloorList" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlProductionFloorList", (IEnumerable<SelectListItem>)ViewBag.ddlProductionFloor, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2 reqFor-ddl assembly">
+                                                <label for="ddlAssemblyList" class="control-label font-weight-bold">Assembly</label>
+                                                <select class="form-control form-control-sm" id="ddlAssemblyList">
+                                                    <option value="">--Select Assembly--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 reqFor-ddl repair hide">
+                                                <label for="ddlRepairList" class="control-label font-weight-bold">Repair</label>
+                                                <select class="form-control form-control-sm" id="ddlRepairList">
+                                                    <option value="">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 reqFor-ddl packaging hide">
+                                                <label for="ddlPackagingList" class="control-label font-weight-bold">Packaging</label>
+                                                <select class="form-control form-control-sm" id="ddlPackagingList">
+                                                    <option value="">--Select Packaging--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @{Html.RenderAction("GetRequisitionByItemInfoAndDetail", new { @flag = "View", @reqFlag= "Direct" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-addRequisition" role="tabpanel" aria-labelledby="custom-tabs-two-addRequisition-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Add Requisition
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="ddlReqTypeRequisition" class="control-label">
+                                                    REQ Type
+                                                </label>
+                                                @Html.DropDownList("ddlReqTypeRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                <span class="error hide req-type">Requisition Type is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlReqForRequisition" class="control-label font-weight-bold">REQ For</label>
+                                                <select id="ddlReqForRequisition" class="form-control form-control-sm">
+                                                    <option value="Production">Production</option>
+                                                    <option value="Assembly" selected>Assembly</option>
+                                                    <option value="Repair">Repair</option>
+                                                    <option value="Packaging">Packaging</option>
+                                                </select>
+                                                <span class="error hide req-reqFor">REQ For is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlAssemblyLineWithProductionRequisition" class="control-label">Assembly</label>
+                                                @Html.DropDownList("ddlAssemblyLineWithProductionRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlAssemblyLineWithProduction, "--Select Assembly--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-line">Assembly is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlModelNameRequisition" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                                                <span class="error hide req-model">Model is required</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="ddlItemsRequisition" class="control-label font-weight-bold">Item/Item-Color</label>
+                                                @Html.DropDownList("ddlItemsRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item-Color--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <span class="error hide req-item">Item-Color is required</span>
+                                                <span class="error hide dup-item">Duplicate item color</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtQuantity" class="control-label font-weight-bold">Quantity</label>
+                                                <input type="text" class="form-control form-control-sm" id="txtQuantity" />
+                                                <span class="error hide req-qty">Quantity is required</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="btnAddtoList" class="control-label font-weight-bold" style="visibility:hidden">Add</label>
+                                                <div class="clearfix">
+                                                    <button type="button" class="btn btn-sm btn-warning btn-flat" id="btnAddtoList">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                <div id="accordion">
+                                                    <div class="card">
+                                                        <div class="card-header" id="headingOne">
+                                                            <h5 class="mb-0">
+                                                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                    Item/Item-Color
+                                                                </button>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                                            <div class="card-body">
+                                                                <table class="table table-bordered table-striped table-sm text-sm table-responsive-lg" id="tblItems"></table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-striped table-sm text-sm table-responsive-lg" id="tblMergeItems">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="9">
+                                                                <button class="btn btn-outline-success btn-sm float-lg-left" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i></button>
+                                                            </th>
+                                                        </tr>
+                                                        <tr class="text-center btn-dark">
+                                                            <th style="width:5%">#SL</th>
+                                                            <th style="width:45%">Item Name</th>
+                                                            <th style="width:10%">Quantity</th>
+                                                            <th style="width:10%">Type Of Unit</th>
+                                                            <th style="width:20%" class="hide">Remarks</th>
+                                                            <th style="width:10%" class="hide">Action</th>
+                                                            <th class="hide itemType"></th>
+                                                            <th class="hide item"></th>
+                                                            <th class="hide "></th>
+                                                            <th class="hide"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        // Requisition List //
+        var ddlRequisitionTypeList = $("#ddlRequisitionTypeList");
+        var ddlReqForList = $("#ddlReqForList");
+        var txtReqCodeList = $("#txtReqCodeList");
+        var ddlWarehouseList = $("#ddlWarehouseList")
+        var ddlModelNameList = $("#ddlModelNameList");
+        var ddlStateStatusList = $("#ddlStateStatusList");
+        var ddlProductionFloorList = $("#ddlProductionFloorList")
+        var ddlAssemblyList = $("#ddlAssemblyList");
+        var ddlRepairList = $("#ddlRepairList");
+        var ddlPackagingList = $("#ddlPackagingList");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+
+        // Add Requisition //
+        var ddlReqTypeRequisition = $("#ddlReqTypeRequisition");
+        var ddlReqForRequisition = $("#ddlReqForRequisition");
+        var ddlAssemblyLineWithProductionRequisition = $("#ddlAssemblyLineWithProductionRequisition");
+        var ddlModelNameRequisition = $("#ddlModelNameRequisition");
+        var ddlItemsRequisition = $("#ddlItemsRequisition");
+        var txtQuantity = $("#txtQuantity");
+        var warehouseReq = '';
+        var itemTypeReq = '';
+        var itemReq = '';
+        var productionReq = '';
+        var assemblyReq = '';
+
+        $(document).ready(function () {
+            disable("#ddlReqForRequisition");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        function getItemDetailsByReq() {
+            warehouseReq = '';
+            itemTypeReq = '';
+            itemReq = '';
+            if (ddlItemsRequisition.val() != '') {
+                itemReq = ddlItemsRequisition.val().substring(0, ddlItemsRequisition.val().indexOf("#"));
+                itemTypeReq = ddlItemsRequisition.val().substring(ddlItemsRequisition.val().indexOf("#") + 1, ddlItemsRequisition.val().lastIndexOf("#"));
+                warehouseReq = ddlItemsRequisition.val().substring(ddlItemsRequisition.val().lastIndexOf("#") + 1);
+            }
+        }
+
+        $("#btnAddtoList").click(function (e) {
+            e.preventDefault();
+            disable("#ddlModelNameRequisition");
+            getItemDetailsByReq();
+            if (ValidateModelItems()) {
+                getItemDetailsByReq();
+                var qty = TryParseInt(txtQuantity.val(), 0);
+                var data = JSON.stringify({ type: preparationType.production, modelId: TryParseInt(ddlModelNameRequisition.val(), 0), itemId: TryParseInt(itemReq, 0) });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
+                    if (status === "success") {
+                        console.log(res);
+                        var itemName = dropDownSelectedText("ddlItemsRequisition");
+                        if (matchWarehouse(res.details)) {
+                            fnItemBundleTable(res.details, itemName, itemReq, itemTypeReq, warehouseReq, qty);
+                            fnBindMergeItemsInTable(res.details, qty);
+                            txtQuantity.val('0');
+                            $('.toastrAdded').trigger("click");
+                        }
+                        else {
+                            bootbox.alert("Previous <b>Item Warehouse</b> does <b>not</b> match with current <b>Item Warehouse</b>")
+                        }
+                    }
+                    console.log(res);
+                    console.log(status);
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+        })
+
+        function matchWarehouse(objDetail) {
+            var isValid = true;
+            var currenRowCount = $("#tblMergeItems tbody tr").length;
+            if (currenRowCount > 0) {
+                var wi = $("#tblMergeItems tbody").children('tr').eq(length - 1).children('td').eq('8').html();
+                var dbWi = objDetail[0].WarehouseId;
+                isValid = (TryParseInt(wi, 0) === dbWi);
+                //console.log('dbWi');
+                //console.log(dbWi);
+                //console.log("wi");
+                //console.log(wi);
+                //if (TryParseInt(wi,0) === dbWi) {
+                //    alert("I'm True")
+                //}
+            }
+            return isValid;
+        }
+
+        function fnItemBundleTable(obj, itemName, itemId, itemTypeId, warehouseId, qty) {
+            if (!$.isEmptyObject(obj)) {
+
+                var alltHead = $("#tblItems").find('tr[data-row="head"]');
+                var headId = alltHead.length > 0 ? alltHead.length + 1 : 1;
+                var tdh1 = '<td colspan="10">' + itemName + ' (Qty-' + qty + ')' + '</td>'
+                var tdh2 = '<td class="hide">' + itemId + '</td>';
+                var tdh3 = '<td class="hide">' + itemTypeId + '</td>';
+                var tdh4 = '<td class="hide">' + warehouseId + '</td>';
+                var tdh5 = '<td class="hide">' + qty + '</td>';
+                var trhead = '<tr class="btn-dark" data-row="head" data-head-itemid="' + itemId + '" data-head-id="' + headId + '">' + tdh1 + tdh2 + tdh3 + tdh4 + tdh5 + '</tr>';
+                $("#tblItems").append(trhead);
+
+                $.each(obj, function (index, item) {
+                    var re = (item.Remarks === null) ? "" : item.Remarks;
+                    var td1 = "<td class='text-center'><b>" + (index + 1) + "</b></td>"
+                    //var td2 = "<td>" + item.ItemName + " [" + item.ItemTypeName + "]" + "</td>";
+                    var td2 = "<td>" + item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]" + "</td>";
+                    var td3 = "<td class='text-center text-bold'>" + TryParseInt(txtQuantity.val(), 0) * item.Quantity + "</td>";
+                    var td4 = "<td class='text-center'>" + item.UnitName + "</td>";
+                    var td5 = "<td class='hide'>" + re + "</td>";
+                    var td6 = "<td class='text-center hide'><a href='#' class='btn btn-sm btn-danger data-onfly-del hide'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                    var td7 = "<td class='hide'>" + item.ItemTypeId + "</td>";
+                    var td8 = "<td class='hide'>" + item.ItemId + "</td>";
+                    var td9 = "<td class='hide'>" + item.WarehouseId + "</td>";
+                    var td10 = "<td class='hide'>" + item.Quantity + "</td>";
+                    var tr = "<tr class='tr-data-row' data-row='item' data-row-headId='" + headId + "' data-item-id='" + item.ItemId + "'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + "</tr>";
+                    $("#tblItems").append(tr);
+                    //clearCtrl();
+                })
+            }
+            else {
+                bootbox.alert('Bundle not found');
+            }
+        }
+
+        function fnBindMergeItemsInTable(obj, qty) {
+            if (!$.isEmptyObject(obj) && qty > 0) {
+                $.each(obj, function (index, item) {
+                    var trExist = $("#tblMergeItems tbody").find("tr[data-item-id='" + item.ItemId + "']");
+                    if (trExist.length > 0) {
+
+                        var oldQty = trExist.children('td').eq(2).html();
+                        var newQty = TryParseInt(txtQuantity.val(), 0) * item.Quantity;
+                        var total = TryParseInt(oldQty) + newQty;
+                        trExist.children('td').eq(2).html(total);
+                    }
+                    else {
+                        var sl = $("#tblMergeItems tbody tr").length;
+                        var re = (item.Remarks === null) ? "" : item.Remarks;
+                        var td1 = "<td class='text-center'><b>" + (sl + 1) + "</b></td>"
+                        var td2 = "<td>" + item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]" + "</td>";
+                        var td3 = "<td class='text-center text-bold'>" + TryParseInt(txtQuantity.val(), 0) * item.Quantity + "</td>";
+                        var td4 = "<td class='text-center text-bold'>" + item.UnitName + "</td>";
+                        var td5 = "<td class='hide'>" + re + "</td>";
+                        var td6 = "<td class='text-center hide'><a href='#' class='btn btn-sm btn-danger data-onfly-del hide'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                        var td7 = "<td class='hide'>" + item.ItemTypeId + "</td>";
+                        var td8 = "<td class='hide'>" + item.ItemId + "</td>";
+                        var td9 = "<td class='hide'>" + item.WarehouseId + "</td>";
+                        var td10 = "<td class='hide'>" + item.Quantity + "</td>";
+                        var tr = "<tr class='tr-data-row' data-item-id='" + item.ItemId + "'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + "</tr>";
+                        $("#tblMergeItems tbody").append(tr);
+                    }
+                })
+            }
+        }
+
+        function ValidateModelItems() {
+            var isValid = true;
+            $('.error').addClass("hide");
+            getItemDetailsByReq();
+            var itemInfos = $("#tblItems").find("tr[data-head-itemid='" + itemReq + "']");
+
+            if (itemInfos.length > 0) {
+                $('.dup-item').removeClass("hide");
+                isValid = false;
+            }
+            if (TryParseInt(ddlModelNameRequisition.val(), 0) <= 0) {
+                $('.req-model').removeClass("hide");
+                isValid = false;
+            }
+
+            if (TryParseInt(itemReq, 0) <= 0 || TryParseInt(itemTypeReq, 0) <= 0 || TryParseInt(warehouseReq, 0) <= 0) {
+                $('.req-item').removeClass("hide");
+                isValid = false;
+            }
+            if (TryParseInt(txtQuantity.val(), 0) <= 0) {
+                $(".req-qty").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        function getProductionFloorAndAssembly() {
+            productionReq = '';
+            assemblyReq = '';
+            if (ddlAssemblyLineWithProductionRequisition.val() != '') {
+                var val = ddlAssemblyLineWithProductionRequisition.val();
+                assemblyReq = val.substring(0, val.lastIndexOf("#"));
+                productionReq = val.substring(val.lastIndexOf("#") + 1);
+            }
+        }
+
+        $('#btnSubmit').click(function (e) {
+            e.preventDefault();
+            if (1 === 1) {
+                getProductionFloorAndAssembly();
+
+                var wi = $("#tblMergeItems tbody").children('tr').eq(length - 1).children('td').eq('8').html();
+                var RequisitionInfo = {
+                    RequisitionType: ddlReqTypeRequisition.val(),
+                    RequisitionFor: ddlReqForRequisition.val(),
+                    LineId: productionReq,
+                    AssemblyLineId: assemblyReq,
+                    DescriptionId: TryParseInt(ddlModelNameRequisition.val(), 0),
+                    WarehouseId: TryParseInt(wi, 0),
+                    ItemTypeId: 0,
+                    ItemId: 0,
+                    ForQty: txtQuantity.val(),
+                    UnitId: 0
+                };
+                RequisitionInfo.RequisitionItemInfos = fnGetItemObj();
+
+                var reqDetails = []; reqDetails.length = 0;
+                $.each($("#tblMergeItems tbody tr"), function (index, item) {
+                    var tds = $(this).children('td');
+                    var iTypeId = tds.eq('6').html();
+                    var iId = tds.eq('7').html();
+                    var wId = tds.eq('8').html();
+                    var qty = tds.eq('2').html();
+                    reqDetails.push({
+                        ItemTypeId: iTypeId,
+                        ItemId: iId,
+                        WarehouseId: wId,
+                        Quantity: qty,
+                        ReqInfoId: 0,
+                    });
+                })
+                RequisitionInfo.RequisitionDetails = reqDetails;
+
+                console.log("Requisition Object");
+                console.log(RequisitionInfo);
+                var data = JSON.stringify({ model: RequisitionInfo })
+                return;
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRequisitionWithItemInfoAndDetail', data, getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                }).fail(function (error) {
+
+                })
+            }
+        })
+
+        function fnGetItemObj() {
+            var itemObj = [];
+            var allItemHead = $("#tblItems").find('tr[data-row="head"]');
+            $.each(allItemHead, function (index, item) {
+                var trInfotds = $(this).children('td');
+                var itemInfoId = trInfotds.eq('1').html();
+                var itemTypeInfoId = trInfotds.eq('2').html();
+                var warehouseInfoId = trInfotds.eq('3').html();
+                var qtyInfo = trInfotds.eq('4').html();
+                getProductionFloorAndAssembly();
+
+                var details = []; details.length = 0;
+                var trDetails = $("#tblItems").find('tr[data-row-headId="' + $(this).attr('data-head-id') + '"]');
+                $.each(trDetails, function (idx, itm) {
+                    var trDetailtds = $(this).children('td');
+                    var totalQuantity = trDetailtds.eq('2').html();
+                    var itemTypeDetailId = trDetailtds.eq('6').html();
+                    var itemDetailId = trDetailtds.eq('7').html();
+                    var warehouseDetailID = trDetailtds.eq('8').html();
+                    var consumptionQty = trDetailtds.eq('9').html();
+
+                    details.push({
+                        ItemName: trDetailtds.eq('1').html(),
+                        ItemId: itemDetailId,
+                        ItemTypeId: itemTypeDetailId,
+                        WarehouseId: warehouseDetailID,
+                        ConsumptionQty: consumptionQty,
+                        TotalQuantity: totalQuantity
+                    })
+                })
+
+                itemObj.push({
+                    FloorId: productionReq,
+                    AssemblyLineId: assemblyReq,
+                    DescriptionId: ddlModelNameRequisition.val(),
+                    ItemName: trInfotds.eq('0').html(),
+                    ItemId: itemInfoId,
+                    ItemTypeId: itemTypeInfoId,
+                    WarehouseId: warehouseInfoId,
+                    Quantity: qtyInfo,
+                    ReqInfoId: 0,
+                    RequisitionItemDetails: details
+                });
+            })
+            return itemObj;
+        }
+
+        // Requisition List //
+
+        ddlReqForList.change(function () {
+            ddlAssemblyList.val('');
+            ddlRepairList.val('');
+            ddlPackagingList.val('');
+            $(".reqFor-ddl").addClass("hide")
+            if (ddlReqForList.val() =="Assembly") {
+                $(".assembly").removeClass("hide");
+            }
+            if (ddlReqForList.val() == "Repair") {
+                $(".repair").removeClass("hide");
+            }
+            if (ddlReqForList.val() == "Packaging") {
+                $(".packaging").removeClass("hide");
+            }
+            LoadDataTableForReqList();
+        })
+
+        ddlRequisitionTypeList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        txtReqCodeList.keyup(function () {
+            LoadDataTableForReqList();
+        })
+
+        ddlWarehouseList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        ddlModelNameList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        ddlStateStatusList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        ddlProductionFloorList.change(function () {
+            clearDropdown('ddlAssemblyList');
+            clearDropdown('ddlRepairList'); 
+            clearDropdown('ddlPackagingList');
+            if (ddlProductionFloorList.val() != "") {
+                LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssemblyList, JSON.stringify({ lineId: ddlProductionFloorList.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairList, JSON.stringify({ lineId: ddlProductionFloorList.val() }));
+                LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackagingList, JSON.stringify({ lineId: ddlProductionFloorList.val() }));
+            }
+            LoadDataTableForReqList();
+        })
+
+        ddlAssemblyList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        ddlRepairList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        dptFromDate.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        dptToDate.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        ddlPackagingList.change(function () {
+            LoadDataTableForReqList();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTableForReqList();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTableForReqList();
+                }
+            }
+        })
+
+        function LoadDataTableForReqList() {
+            var data = { flag: "search", floorId: TryParseInt(ddlProductionFloorList.val(), 0), assemblyId: TryParseInt(ddlAssemblyList.val(), 0), warehouseId: TryParseInt(ddlWarehouseList.val(), 0), modelId: TryParseInt(ddlModelNameList.val(), 0), reqCode: txtReqCodeList.val(), reqType: ddlRequisitionTypeList.val(), reqFor: ddlReqForList.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), status: ddlStateStatusList.val(), reqInfoId:0, reqFlag: "Direct" };
+
+            $.when(getReqWithData(dataType.html, type.post, '/Production/GetRequisitionByItemInfoAndDetail', data)).then(function (res, status)
+            {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on('click', '.data-details', function (e) {
+            e.preventDefault();
+        })
+    </script>
+}

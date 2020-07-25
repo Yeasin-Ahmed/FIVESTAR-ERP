@@ -6,74 +6,83 @@
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
     //Layout = null;
 }
-<table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblReqInfoData">
-    <thead class="btn-dark">
-        <tr class="text-center">
-            <th>#SL</th>
-            <th class="hide"></th>
-            <th>Requisition Code</th>
-            <th class="hide"></th>
-            <th>Line Number</th>
-            <th class="hide"></th>
-            <th>Warehouse Name</th>
-            <th>Model</th>
-            <th>Total Item</th>
-            <th>State Status</th>
-            <th>REQ. Type</th>
-            <th>Remarks</th>
-            <th>EntryDate</th>
-            <th>Entry User</th>
-            <th>Update User</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var info in Model)
-        {
-            sl = sl + 1;
-            badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
-            <tr>
-                <td class="text-center"><b>@sl</b></td>
-                <td class="hide">@info.ReqInfoId</td>
-                <td>@info.ReqInfoCode</td>
-                <td>@info.LineNumber</td>
-                <td>@info.WarehouseName</td>
-                <td>@info.ModelName</td>
-                <td class="text-center">@info.Qty</td>
-                <td class="text-center" data-val="@info.StateStatus">
-                    <span class="@badge">@info.StateStatus</span>
-                </td>
-                <td class="text-center">@info.RequisitionType</td>
-                <td>@info.Remarks</td>
-                <td>@info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")</td>
 
-                <td class="text-center">@info.EntryUser</td>
-                <td class="text-center">@info.UpdateUser</td>
-                <td class="text-center">
-                    @if (privilege != null && privilege.Detail)
-                    {
-                        <a href="#" class="btn btn-sm btn-outline-secondary data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i></a>
-                    }
-                    @if (info.StateStatus == "Rechecked" && privilege != null && privilege.Edit)
-                    {
-                        <a href="#" class="btn btn-sm btn-outline-warning data-edit-item" data-edit-item="@info.ReqInfoId"><i class="fa fa-pen"></i></a>
-                    }
-                    @if (privilege != null && privilege.Report)
-                    {
-                        <a href="#" class="btn btn-sm btn-outline-danger data-report-item" title="Pdf Report" data-report-item="@info.ReqInfoId"><i class="fas fa-file-pdf"></i></a>
-                    }
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblReqInfoData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="vertical-align:middle">#SL</th>
+                    <th class="hide"></th>
+                    <th style="vertical-align:middle">Requisition Code</th>
+                    <th class="hide"></th>
+                    <th style="vertical-align:middle">REQ. Type</th>
+                    <th style="vertical-align:middle;white-space:nowrap">Floor</th>
+                    <th class="hide"></th>
+                    <th style="vertical-align:middle">Warehouse Name</th>
+                    <th style="vertical-align:middle">Model</th>
+                    <th style="vertical-align:middle">Total Item</th>
+                    <th style="vertical-align:middle">State Status</th>
+                    <th style="vertical-align:middle">Remarks</th>
+                    <th style="vertical-align:middle">EntryDate</th>
+                    <th style="vertical-align:middle">Entry User</th>
+                    <th style="vertical-align:middle">Update User</th>
+                    <th style="vertical-align:middle;white-space:nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var info in Model)
+                {
+                    sl = sl + 1;
+                    badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
+                    <tr>
+                        <td class="text-center"><b>@sl</b></td>
+                        <td class="hide">@info.ReqInfoId</td>
+                        <td>@info.ReqInfoCode</td>
+                        <td class="text-center text-bold">@info.RequisitionType</td>
+                        <td style="white-space:nowrap">@info.LineNumber</td>
+                        <td style="white-space:nowrap">@info.WarehouseName</td>
+                        <td class="text-center text-bold">@info.ModelName</td>
+                        <td class="text-center text-bold">@info.Qty</td>
+                        <td class="text-center" data-val="@info.StateStatus">
+                            <span class="@badge">@info.StateStatus</span>
+                        </td>
 
-                </td>
-            </tr>
-        }
-        @if (Model.Count() == 0)
-        {
-            <tr class="text-center empty-row">
-                <td colspan="13">
-                    No Rows Found
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-@Html.Partial("_Pagination", pagerData)
+                        <td>@info.Remarks</td>
+                        <td>@info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")</td>
+
+                        <td class="text-center">@info.EntryUser</td>
+                        <td class="text-center">@info.UpdateUser</td>
+                        <td class="text-center" style="white-space:nowrap">
+                            @if (privilege != null && privilege.Detail)
+                            {
+                                <a href="#" class="btn btn-sm btn-outline-secondary data-details" title="View Details" data-details="@info.ReqInfoId"><i class="fas fa-eye"></i></a>
+                            }
+                            @if (info.StateStatus == "Rechecked" && privilege != null && privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-sm btn-outline-warning data-edit-item" data-edit-item="@info.ReqInfoId"><i class="fa fa-pen"></i></a>
+                            }
+                            @if (privilege != null && privilege.Report)
+                            {
+                                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" title="Pdf Report" data-report-item="@info.ReqInfoId"><i class="fas fa-file-pdf"></i></a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="13">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        @Html.Partial("_Pagination", pagerData)
+    </div>
+</div>
+

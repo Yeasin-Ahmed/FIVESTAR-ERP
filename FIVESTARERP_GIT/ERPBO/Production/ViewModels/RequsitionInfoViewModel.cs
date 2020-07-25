@@ -34,6 +34,8 @@ namespace ERPBO.Production.ViewModels
         public long? UnitId { get; set; }
         [StringLength(100)]
         public string RequisitionFor { get; set; }
+        [Range(1,long.MaxValue)]
+        public long? AssemblyLineId { get; set; }
 
         //Custom
         [StringLength(100)]
@@ -54,5 +56,9 @@ namespace ERPBO.Production.ViewModels
         public string ItemName { get; set; }
         [StringLength(100)]
         public string UnitName { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
+        public List<RequisitionItemInfoViewModel> RequisitionItemInfos { get; set; }
+        public List<RequsitionDetailViewModel> RequisitionDetails { get; set; }
     }
 }

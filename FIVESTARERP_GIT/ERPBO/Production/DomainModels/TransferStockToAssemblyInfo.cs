@@ -19,6 +19,9 @@ namespace ERPBO.Production.DomainModels
         public long? LineId { get; set; }
         public long? WarehouseId { get; set; }
         public long? AssemblyId { get; set; }
+        public long? RepairLineId { get; set; }
+        [StringLength(80)]
+        public string TransferFor { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(150)]

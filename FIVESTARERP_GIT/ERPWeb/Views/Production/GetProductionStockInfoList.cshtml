@@ -55,7 +55,7 @@
                                     <div class="card-header">
                                         <h6 class="card-title">Search By</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-3">
                                                 <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
@@ -112,38 +112,51 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
+                            <div class="col-md-12 text-sm" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
                                         <h6 class="card-title">Search By</h6>
                                     </div>
                                     <div class="card-body">
                                         <div class="row" style="margin-top:-15px">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label for="ddlFloorNoTransferList" class="control-label font-weight-bold">Floor</label>
                                                 @Html.DropDownList("ddlFloorNoTransferList", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label for="ddlModelNameFloorList" class="control-label font-weight-bold">Model</label>
                                                 @Html.DropDownList("ddlModelNameFloorList", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
                                             </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlAssemblyTransferList" class="control-label font-weight-bold">Assembly</label>
-                                                <select id="ddlAssemblyTransferList" class="form-control form-control-sm">
-                                                    <option value="0">--Select Assembly Line--</option>
+                                            <div class="col-md-2">
+                                                <label for="ddlTransferForList" class="control-label font-weight-bold">Transfer For</label>
+                                                <select id="ddlTransferForList" class="form-control form-control-sm">
+                                                    <option value="Assembly">Assembly</option>
+                                                    <option value="Repair">Repair</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2 assembly-list">
+                                                <label for="ddlAssemblyTransferList" class="control-label font-weight-bold">Assembly</label>
+                                                <select id="ddlAssemblyTransferList" class="form-control form-control-sm">
+                                                    <option value="0">--Select Assembly--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 repairLine-list hide">
+                                                <label for="ddlRepairStockTransferList" class="control-label font-weight-bold">Repair</label>
+                                                <select id="ddlRepairStockTransferList" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label for="ddlStateStatusTransferList" class="control-label font-weight-bold">Status</label>
                                                 @Html.DropDownList("ddlStateStatusTransferList", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
                                             </div>
+                                            <div class="col-md-2">
+                                                <label for="txtTSACode" class="control-label font-weight-bold">Transfer Code</label>
+                                                <input type="text" id="txtTSACode" class="form-control form-control-sm" placeholder="Search By Code" />
+                                            </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3">
-                                                <label for="txtTSACode" class="control-label font-weight-bold">Transfer Code</label>
-                                                <input type="text" id="txtTSACode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
-                                            </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -152,7 +165,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">To Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
@@ -170,7 +183,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View" });}
+                                                @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View", transferFor= "Assembly" });}
                                             </div>
                                         </div>
                                     </div>
@@ -195,7 +208,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body text-sm">
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <label for="ddlFloorStockTransfer" class="control-label font-weight-bold">
@@ -211,24 +224,39 @@
                                                 <span class="error hide req-line">Floor is required</span>
                                             </div>
                                             <div class="col-md-2">
+                                                <label for="ddlTransferFor" class="control-label font-weight-bold">Transfer For</label>
+                                                <select id="ddlTransferFor" class="form-control form-control-sm">
+                                                    <option value="Assembly">Assembly</option>
+                                                    <option value="Repair">Repair</option>
+                                                </select>
+                                                <span class="error hide req-transferFor">Transfer-For is required</span>
+                                            </div>
+                                            <div class="col-md-2 assembly">
                                                 <label for="ddlAssemblyStockTransfer" class="control-label font-weight-bold">Assembly</label>
                                                 <select id="ddlAssemblyStockTransfer" class="form-control form-control-sm">
                                                     <option value="0">--Select Assembly--</option>
                                                 </select>
                                                 <span class="error hide req-assembly">Assembly is required</span>
                                             </div>
+                                            <div class="col-md-2 repairLine hide">
+                                                <label for="ddlRepairStockTransfer" class="control-label font-weight-bold">Repair</label>
+                                                <select id="ddlRepairStockTransfer" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                                <span class="error hide req-repair">Repair is required</span>
+                                            </div>
                                             <div class="col-md-2">
                                                 <label for="ddlModelNameStockTransfer" class="control-label font-weight-bold">Model</label>
                                                 @Html.DropDownList("ddlModelNameStockTransfer", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                                                 <span class="error hide require-model">Model is required</span>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="ddlItemsStockTransfer" class="control-label font-weight-bold">Item</label>
                                                 @Html.DropDownList("ddlItemsStockTransfer", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
                                                 <span class="error hide req-item">Item is required</span>
                                                 <span class="error hide req-item-itemType-warehouse">Item/ItemType/Warehouse is not found</span>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <label for="txtQuantity" class="control-label font-weight-bold">
                                                     Qty
                                                 </label>
@@ -312,6 +340,9 @@
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var txtTSACode = $("#txtTSACode");
+        var ddlTransferForList = $("#ddlTransferForList");
+        var ddlRepairStockTransferList = $("#ddlRepairStockTransferList")
+
 
         // Stock Transfer
         var ddlFloorStockTransfer = $("#ddlFloorStockTransfer");
@@ -320,6 +351,8 @@
         var ddlItemsStockTransfer = $("#ddlItemsStockTransfer");
         var txtQuantity = $("#txtQuantity")
         var chkIsBundle = $("#chkIsBundle");
+        var ddlTransferFor = $("#ddlTransferFor");
+        var ddlRepairStockTransfer = $("#ddlRepairStockTransfer");
         var warehouseStockTransfer = '';
         var itemTypeStockTransfer = '';
         var itemStockTransfer = '';
@@ -410,8 +443,10 @@
 
         ddlFloorNoTransferList.change(function () {
             clearDropdown("ddlAssemblyTransferList");
+            clearDropdown("ddlRepairStockTransferList");
             if (ddlFloorNoTransferList.val() != "") {
                 LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssemblyTransferList, JSON.stringify({ lineId: ddlFloorNoTransferList.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairStockTransferList, JSON.stringify({ lineId: ddlFloorNoTransferList.val() }));
             }
             LoadDataTableTransferList();
         })
@@ -436,9 +471,26 @@
             LoadDataTableTransferList();
         })
 
-        function LoadDataTableTransferList() {
+        ddlRepairStockTransferList.change(function myfunction() {
+            LoadDataTableTransferList();
+        })
 
-            var data = { flag: "search", lineId: TryParseInt(ddlFloorNoTransferList.val(), 0), assemblyId: TryParseInt(ddlAssemblyTransferList.val(), 0), modelId: TryParseInt(ddlModelNameFloorList.val(), 0), warehouseId: 0, status: ddlStateStatusTransferList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo };
+        ddlTransferForList.change(function () {
+            if (ddlTransferForList.val() === "Assembly") {
+                ddlRepairStockTransferList.val("0");
+                $(".repairLine-list").addClass("hide");
+                $(".assembly-list").removeClass("hide");
+            }
+            if (ddlTransferForList.val() === "Repair") {
+                ddlAssemblyTransferList.val("0");
+                $(".assembly-list").addClass("hide");
+                $(".repairLine-list").removeClass("hide");
+            }
+            LoadDataTableTransferList();
+        })
+
+        function LoadDataTableTransferList() {
+            var data = { flag: "search", floorId: TryParseInt(ddlFloorNoTransferList.val(), 0), transferFor: ddlTransferForList.val(), assemblyId: TryParseInt(ddlAssemblyTransferList.val(), 0), repairLineId: TryParseInt(ddlRepairStockTransferList.val(), 0), modelId: TryParseInt(ddlModelNameFloorList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusTransferList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetFloorStockTransferList', data)).then(function (res, status) {
                 console.log(status);
@@ -472,6 +524,19 @@
         })
 
         //Stock Transfer
+
+        ddlTransferFor.change(function () {
+            if (ddlTransferFor.val() === "Assembly") {
+                ddlRepairStockTransfer.val("0");
+                $(".repairLine").addClass("hide");
+                $(".assembly").removeClass("hide");
+            }
+            if (ddlTransferFor.val() === "Repair") {
+                ddlAssemblyStockTransfer.val("0");
+                $(".assembly").addClass("hide");
+                $(".repairLine").removeClass("hide");
+            }
+        })
 
         function getItemDetailsByStockTransfer() {
             warehouseStockTransfer = '';
@@ -573,8 +638,10 @@
 
         ddlFloorStockTransfer.change(function () {
             clearDropdown("ddlAssemblyStockTransfer");
+            clearDropdown("ddlRepairStockTransfer");
             if (ddlFloorStockTransfer.val() != "") {
                 LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssemblyStockTransfer, JSON.stringify({ lineId: ddlFloorStockTransfer.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairStockTransfer, JSON.stringify({ lineId: ddlFloorStockTransfer.val() }));
             }
         })
 
@@ -604,10 +671,25 @@
                 isValid = false;
                 $(".req-line").removeClass("hide");
             }
-            if (TryParseInt(ddlAssemblyStockTransfer.val(), 0) <= 0) {
+            if (ddlTransferFor.val() == "") {
                 isValid = false;
-                $(".req-assembly").removeClass("hide");
+                $(".req-transferFor").removeClass("hide");
             }
+            else {
+                if (ddlTransferFor.val() == "Assembly") {
+                    if (TryParseInt(ddlAssemblyStockTransfer.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".req-assembly").removeClass("hide");
+                    }
+                }
+                if (ddlTransferFor.val() == "Repair") {
+                    if (TryParseInt(ddlRepairStockTransfer.val(), 0) <= 0) {
+                        isValid = false;
+                        $(".req-repair").removeClass("hide");
+                    }
+                }
+            }
+
             if (TryParseInt(ddlModelNameStockTransfer.val(), 0) <= 0) {
                 isValid = false;
                 $(".require-model").removeClass("hide");
@@ -655,7 +737,9 @@
                     getItemDetailsByStockTransfer();
                     var wi = $("#tblData tbody").children('tr').eq(0).children('td').eq(8).html();
 
-                    var info = { DescriptionId: ddlModelNameStockTransfer.val(), LineId: ddlFloorStockTransfer.val(), AssemblyId: ddlAssemblyStockTransfer.val(), WarehouseId: warehouseStockTransfer, ItemTypeId: itemTypeStockTransfer, ItemId: itemStockTransfer, ForQty: txtQuantity.val() };
+                    var transferToId = ddlTransferFor.val() === "Assembly" ? TryParseInt(ddlAssemblyStockTransfer.val(), 0) : TryParseInt(ddlRepairStockTransfer.val(), 0)
+
+                    var info = { DescriptionId: ddlModelNameStockTransfer.val(), LineId: ddlFloorStockTransfer.val(), TransferFor: ddlTransferFor.val(), AssemblyId: transferToId, RepairLineId: transferToId, WarehouseId: warehouseStockTransfer, ItemTypeId: itemTypeStockTransfer, ItemId: itemStockTransfer, ForQty: txtQuantity.val() };
 
                     var details = []; details.length = 0;
                     $.each($("#tblData tbody tr"), function (index, item) {

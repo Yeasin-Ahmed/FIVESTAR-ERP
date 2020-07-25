@@ -20,6 +20,10 @@ namespace ERPBO.Production.ViewModels
         public long? WarehouseId { get; set; }
         [Range(1, long.MaxValue)]
         public long? AssemblyId { get; set; }
+        [Range(1, long.MaxValue)]
+        public long? RepairLineId { get; set; }
+        [Required,StringLength(80)]
+        public string TransferFor { get; set; }
         [StringLength(50)]
         public string StateStatus { get; set; }
         [StringLength(150)]
@@ -41,10 +45,12 @@ namespace ERPBO.Production.ViewModels
         public string LineNumber { get; set; }
         public string WarehouseName { get; set; }
         public string AssemblyName { get; set; }
+        public string RepairLineName { get; set; }
         public int ItemCount { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
         public string ItemTypeName { get; set; }
         public string ItemName { get; set; }
+        public List<TransferStockToAssemblyDetailViewModel> TransferStockToAssemblyDetails { get; set; }
     }
 }

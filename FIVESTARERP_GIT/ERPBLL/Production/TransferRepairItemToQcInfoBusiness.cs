@@ -257,6 +257,11 @@ namespace ERPBLL.Production
                     transferInfo.UpdateDate = DateTime.Now;
                     code = transferInfo.TransferCode;
                     transferId = transferInfo.TRQInfoId;
+
+                    foreach (var item in transferRepairItemDetails)
+                    {
+                        item.TRQInfoId = transferInfo.TRQInfoId;
+                    }
                 }
                 else
                 {

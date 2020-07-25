@@ -14,7 +14,7 @@ namespace ERPBO.Production.ViewModels
         public long ItemTypeId { get; set; }
         [Range(1, long.MaxValue)]
         public long ItemId { get; set; }
-        [Range(1, long.MaxValue)]
+        //[Range(1, long.MaxValue)]
         public long UnitId { get; set; }
         [Range(1, long.MaxValue)]
         public long Quantity { get; set; }
@@ -28,7 +28,7 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
 
         //navi
-        [Range(1, long.MaxValue)]
+        //[Range(1, long.MaxValue)]
         public long ReqInfoId { get; set; }
 
         //custom

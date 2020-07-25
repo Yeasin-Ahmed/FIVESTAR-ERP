@@ -1,98 +1,229 @@
 ﻿@{
-    ViewBag.Title = "Repair Line Stock Info";
+    ViewBag.Title = "Repair Line Spare Parts Stock";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-}   
+}
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <div class="row">
-            <div class="col-md-3">
-                @if (privilege != null && privilege.Detail)
-                {
-                    <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                        <i class="fas fa-eye"></i> Go To Details View
-                    </a>
-                }
-            </div>
-            <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Repair Line Stock Info</b></h4>
-            </div>
-            <div class="col-md-3">
-                @if (privilege.Edit)
-                {
-                    <a href="/Production/GetReceiveStockForRepairFromQC" class="float-right btn btn-sm btn-outline-success" title="Receive Stock From QC">
-                        <i class="fas fa-plus"></i> Stock In
-                    </a>
-                }
-            </div>
-        </div>
-        <hr />
-    </div>
     <div class="col-md-12">
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
-                @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Spare Parts Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive Parts From Floor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-3 hide">
-                <label for="ddlQCLine" class="control-label font-weight-bold">QC Line</label>
-                <select id="ddlQCLine" class="form-control form-control-sm">
-                    <option value="0">--Select QC Line--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlRepairLine" class="control-label font-weight-bold">Repair Line</label>
-                <select id="ddlRepairLine" class="form-control form-control-sm ctrl-change">
-                    <option value="0">--Select Repair Line--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
-                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-stockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-stockInfo-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Repair Spare Parts Stock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlProductionFloorStock" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlProductionFloorStock", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlRepairLineStock" class="control-label font-weight-bold">Repair Line</label>
+                                                <select id="ddlRepairLineStock" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameStockStock" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlItemsStock" class="control-label font-weight-bold">Item Name</label>
+                                                @Html.DropDownList("ddlItemsStock", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Qty (Less/ Eq)</label>
+                                                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12 text-sm" id="dataContainer1">
+                                            @{Html.RenderAction("GetRepairLineStockInfo", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-receiveStock" role="tabpanel" aria-labelledby="custom-tabs-two-receiveStock-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Transfer List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="ddlFloorNoTransferList" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlFloorNoReceiveList", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlModelNameReceiveList" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameReceiveList", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlRepairLineReceiveList" class="control-label font-weight-bold">Repair Line</label>
+                                                <select id="ddlRepairLineReceiveList" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlStateStatusReceiveList" class="control-label font-weight-bold">Status</label>
+                                                @Html.DropDownList("ddlStateStatusReceiveList", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="txtTSACode" class="control-label font-weight-bold">Transfer Code</label>
+                                                <input type="text" id="txtTSACode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer2">
+                                                @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View", @transferFor = "Repair" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
-                <select id="ddlItemType" class="form-control form-control-sm">
-                    <option value="0">--Select Item Type--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
-                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
-                    <option value="0">--Select Item--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
-                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("GetRepairLineStockInfo", new {@flag="View" });}
     </div>
 </div>
 
+<div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfInfoId" />
+                <h4 id="modalHeading" class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelContaine1">
+
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script type="text/javascript">
-        var ddlLineNumber = $("#ddlLineNumber");
-        var ddlRepairLine = $("#ddlRepairLine");
-        var ddlModelName = $("#ddlModelName");
-        var ddlWarehouse = $("#ddlWarehouse");
-        var ddlItemType = $("#ddlItemType");
-        var ddlItem = $("#ddlItem");
+
+        var hdfInfoId = $("#hdfInfoId");
+        // Stock //
+        var ddlProductionFloorStock = $("#ddlProductionFloorStock");
+        var ddlRepairLineStock = $("#ddlRepairLineStock");
+        var ddlModelNameStock = $("#ddlModelNameStock");
+        var ddlItemsStock = $("#ddlItemsStock");
         var txtLessOrEq = $("#txtLessOrEq");
-        var ddlQCLine = $("#ddlQCLine");
         var pageNo = 1;
+        var warehouseStock = '';
+        var itemTypeStock = '';
+        var itemStock = '';
+
+        ///Receive list //
+        var ddlFloorNoReceiveList = $("#ddlFloorNoReceiveList");
+        var ddlModelNameReceiveList = $("#ddlModelNameReceiveList");
+        var ddlRepairLineReceiveList = $("#ddlRepairLineReceiveList");
+        var ddlStateStatusReceiveList = $("#ddlStateStatusReceiveList");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var txtTSACode = $("#txtTSACode");
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -102,61 +233,58 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
+            $(".transferFor").addClass('hide');
+            $(".assemblyLine").addClass('hide');
         })
 
-        ddlLineNumber.change(function () {
-            clearDropdown("ddlQCLine");
-            if (ddlLineNumber.val() != "") {
-                //LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
-                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlLineNumber.val() }));
+        // Repair Line Spare Parts Stock //
+
+        function getItemDetailsByStock() {
+            warehouseStock = '';
+            itemTypeStock = '';
+            itemStock = '';
+            if (ddlItemsStock.val() != '') {
+                itemStock = ddlItemsStock.val().substring(0, ddlItemsStock.val().indexOf("#"));
+                itemTypeStock = ddlItemsStock.val().substring(ddlItemsStock.val().indexOf("#") + 1, ddlItemsStock.val().lastIndexOf("#"));
+                warehouseStock = ddlItemsStock.val().substring(ddlItemsStock.val().lastIndexOf("#") + 1);
             }
-            LoadDataTable();
-        })
+        }
 
-        ddlWarehouse.change(function () {
-            $("#unitName").text('');
-            clearDropdown("ddlItemType");
-            clearDropdown("ddlItem");
-            if (ddlWarehouse.val() != "") {
-                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+        ddlProductionFloorStock.change(function () {
+            clearDropdown("ddlRepairLineStock");
+            if (ddlProductionFloorStock.val() != "") {
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineStock, JSON.stringify({ lineId: ddlProductionFloorStock.val() }));
             }
-            LoadDataTable();
+            LoadDataTableStock();
         })
 
-        ddlItemType.change(function () {
-            $("#unitName").text('');
-            clearDropdown("ddlItem");
-            if (ddlItemType.val() != "") {
-                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
-            }
-            LoadDataTable();
+        ddlRepairLineStock.change(function () {
+            LoadDataTableStock();
         })
 
-        ddlQCLine.change(function () {
-            //LoadDataTable();
+        ddlModelNameStock.change(function () {
+            LoadDataTableStock();
         })
 
-        ddlRepairLine.change(function () {
-            LoadDataTable();
-        })
-
-        $(document).on('change', '.ctrl-change', function () {
-            LoadDataTable();
+        ddlItemsStock.change(function () {
+            LoadDataTableStock();
         })
 
         txtLessOrEq.keyup(function () {
-            LoadDataTable();
+            LoadDataTableStock();
         })
 
-        function LoadDataTable() {
-            var data = { flag: "search", lineId: ddlLineNumber.val(), repairId: TryParseInt(ddlRepairLine.val(),0), modelId: TryParseInt(ddlModelName.val(),0), qcId: 0, warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val(), page: pageNo };
+        function LoadDataTableStock() {
+            getItemDetailsByStock();
+            var data = { flag: "search", lineId: ddlProductionFloorStock.val(), repairId: TryParseInt(ddlRepairLineStock.val(), 0), modelId: TryParseInt(ddlModelNameStock.val(), 0), qcId: 0, warehouseId: warehouseStock, itemTypeId: itemTypeStock, itemId: itemStock, lessOrEq: txtLessOrEq.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairLineStockInfo', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer").fadeOut('500', function () {
-                        $("#dataContainer").empty();
-                        $("#dataContainer").append(res).fadeIn('500');
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -164,13 +292,112 @@
             });
             pageNo = 1;
         }
-        // Pagination
+
         $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
             if (!$(this).hasClass('current-page')) {
                 pageNo = $(this).attr('data-page-no');
-                LoadDataTable();
+                LoadDataTableStock();
             }
         })
+
+        // Receive Stocks //
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTableReceiveList();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTableReceiveList();
+                }
+            }
+        })
+
+        ddlFloorNoReceiveList.change(function () {
+            clearDropdown("ddlRepairLineReceiveList");
+            if (ddlFloorNoReceiveList.val() != "") {
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineReceiveList, JSON.stringify({ lineId: ddlFloorNoReceiveList.val() }));
+            }
+            LoadDataTableReceiveList();
+        })
+
+        ddlRepairLineReceiveList.change(function myfunction() {
+            LoadDataTableReceiveList();
+        })
+
+        ddlModelNameReceiveList.change(function myfunction() {
+            LoadDataTableReceiveList();
+        })
+
+        ddlStateStatusReceiveList.change(function myfunction() {
+            LoadDataTableReceiveList();
+        })
+
+        txtTSACode.keyup(function () {
+            LoadDataTableReceiveList();
+        })
+
+        function LoadDataTableReceiveList() {
+            var data = { flag: "search", floorId: TryParseInt(ddlFloorNoReceiveList.val(), 0), transferFor: "Repair", repairLineId: TryParseInt(ddlRepairLineReceiveList.val(), 0), assemblyId: 0, modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetFloorStockTransferList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                        $(".transferFor").addClass('hide');
+                        $(".assemblyLine").addClass('hide');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            //pageNo = 1;
+        }
+
+        $(document).on('click', 'a.data-floor-item-detail', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-floor-item-detail");
+            hdfInfoId.val('0')
+            hdfInfoId.val(id)
+            $.when(getReqWithData('html', type.get, '/Production/GetFloorStockTransferList', { flag: "detail", transferInfoId: id })).then(function (res, status) {
+                if (status === "success") {
+                    $("#modelContaine1").empty();
+                    $("#modelContaine1").append(res);
+                    $("#modalHeading").empty();
+                    $("#modalHeading").text("Receive Details");
+                    $("#modalTransferDetails").modal("toggle");
+                    //$(".btnAccepted").addClass("hide")
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        // accept the transfer stock
+        $(document).on("click", ".btnAccepted", function (e) {
+            e.preventDefault();
+            fnTransferStateChange(hdfInfoId.val(), reqStatus.accepted);
+        })
+
+        function fnTransferStateChange(id, status) {
+            var data = JSON.stringify({ transferId: id, status: status });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveProductionStockReceiveInByAssemblyOrRepair', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $("#modalTransferDetails").modal("toggle").toggle("fast");
+                    hdfInfoId.val('0');
+                    $('.toastrDefaultSuccess').trigger('click');
+                    LoadDataTableReceiveList();
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
     </script>
 }
