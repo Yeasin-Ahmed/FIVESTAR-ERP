@@ -13,6 +13,8 @@ namespace ERPBO.Production.ViewModels
         public long FaultyItemStockDetailId { get; set; }
         [Range(1,long.MaxValue)]
         public long? ProductionFloorId { get; set; }
+        //[Range(1, long.MaxValue)]
+        public long? AsseemblyLineId { get; set; }
         [Range(1, long.MaxValue)]
         public long? QCId { get; set; }
         [Range(1, long.MaxValue)]
@@ -44,6 +46,8 @@ namespace ERPBO.Production.ViewModels
         // Custom Property
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
         [StringLength(100)]

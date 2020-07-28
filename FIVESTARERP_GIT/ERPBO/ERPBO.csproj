@@ -287,6 +287,7 @@
     <Compile Include="Production\DomainModels\RepairSectionRequisitionInfo.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemDetail.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemInfo.cs" />
+    <Compile Include="Production\DomainModels\TempQRCodeTrace.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcDetail.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyDetail.cs" />
@@ -315,6 +316,7 @@
     <Compile Include="Production\DTOModel\QCPassTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCPassTransferInformationDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeProblemDTO.cs" />
+    <Compile Include="Production\DTOModel\TempQRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockInfoDTO.cs" />
@@ -419,6 +421,7 @@
     <Compile Include="Production\ViewModels\QCPassTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QCPassTransferInformationViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeProblemViewModel.cs" />
+    <Compile Include="Production\ViewModels\TempQRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionStockDetailInfoListViewModel.cs" />

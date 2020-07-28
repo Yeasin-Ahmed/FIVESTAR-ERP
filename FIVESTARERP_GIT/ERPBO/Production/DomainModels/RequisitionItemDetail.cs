@@ -16,6 +16,7 @@ namespace ERPBO.Production.DomainModels
         public long? WarehouseId { get; set; }
         public long? ItemId { get; set; }
         public long? ItemTypeId { get; set; }
+        public int? UnitId { get; set; }
         public int? ConsumptionQty { get; set; }
         public int? TotalQuantity { get; set; }
         public string Remarks { get; set; }

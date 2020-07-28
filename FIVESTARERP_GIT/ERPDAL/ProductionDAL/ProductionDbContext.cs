@@ -73,5 +73,6 @@ namespace ERPDAL.ProductionDAL
         public DbSet<QRCodeTransferToRepairInfo> tblQRCodeTransferToRepairInfo { get; set; }
         public DbSet<RequisitionItemInfo> tblRequisitionItemInfo { get; set; }
         public DbSet<RequisitionItemDetail> tblRequisitionItemDetail { get; set; }
+        public DbSet<TempQRCodeTrace> tblTempQRCodeTrace { get; set; }
     }
 }

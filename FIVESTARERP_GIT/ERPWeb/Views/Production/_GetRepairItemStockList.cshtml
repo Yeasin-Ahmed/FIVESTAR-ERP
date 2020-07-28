@@ -15,9 +15,7 @@
             <thead class="btn-dark">
                 <tr class="text-center text-sm text-bold">
                     <td>#SL</td>
-                    <td>Floor</td>
-                    <td>QC</td>
-                    <td>Repair</td>
+                    <td>Belt</td>
                     <td>Model</td>
                     <td>Warehouse</td>
                     <td>ItemType</td>
@@ -32,11 +30,10 @@
                 {
                     sl = sl + 1;
                     stock = (item.Quantity - item.QCQty);
+                    string belt = "(" + item.ProductionFloorName + ")-(" + item.AssemblyLineName + ")-(" + item.QCName + ")-(" + item.RepairLineName + ")";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
-                        <td>@item.ProductionFloorName</td>
-                        <td>@item.QCName</td>
-                        <td>@item.RepairLineName</td>
+                        <td>@belt</td>
                         <td class="text-center text-bold">@item.ModelName</td>
                         <td>@item.WarehouseName</td>
                         <td>@item.ItemTypeName</td>

@@ -12,6 +12,7 @@ namespace ERPBO.Production.DTOModel
     {
         public long RPItemStockDetailId { get; set; }
         public long? ProductionFloorId { get; set; }
+        public long? AssemblyLineId { get; set; }
         public long? QCId { get; set; }
         public long? RepairLineId { get; set; }
         public long? DescriptionId { get; set; }
@@ -32,6 +33,8 @@ namespace ERPBO.Production.DTOModel
         // Custom Property
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
         [StringLength(100)]

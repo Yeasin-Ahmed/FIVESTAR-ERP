@@ -402,6 +402,42 @@
     <Compile Include="ProductionContextMigrations\202007220621049_Production_AddRequisitionItemDetail.Designer.cs">
       <DependentUpon>202007220621049_Production_AddRequisitionItemDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202007250458467_Production_AddUnitInReqItemDetail.cs" />
+    <Compile Include="ProductionContextMigrations\202007250458467_Production_AddUnitInReqItemDetail.Designer.cs">
+      <DependentUpon>202007250458467_Production_AddUnitInReqItemDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007260410366_Production_QRCodeTrace_update.cs" />
+    <Compile Include="ProductionContextMigrations\202007260410366_Production_QRCodeTrace_update.Designer.cs">
+      <DependentUpon>202007260410366_Production_QRCodeTrace_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007260431198_Production_TempQRCodeTrace_Add.cs" />
+    <Compile Include="ProductionContextMigrations\202007260431198_Production_TempQRCodeTrace_Add.Designer.cs">
+      <DependentUpon>202007260431198_Production_TempQRCodeTrace_Add.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007261131086_Production_AddAssemblyIdInQCAndTransferFromQC.cs" />
+    <Compile Include="ProductionContextMigrations\202007261131086_Production_AddAssemblyIdInQCAndTransferFromQC.Designer.cs">
+      <DependentUpon>202007261131086_Production_AddAssemblyIdInQCAndTransferFromQC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007270213402_Production_AddAssemblyLineInTransferFromQCInfo.cs" />
+    <Compile Include="ProductionContextMigrations\202007270213402_Production_AddAssemblyLineInTransferFromQCInfo.Designer.cs">
+      <DependentUpon>202007270213402_Production_AddAssemblyLineInTransferFromQCInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007270423173_Production_AddAssemblyLineInFaultyStock.cs" />
+    <Compile Include="ProductionContextMigrations\202007270423173_Production_AddAssemblyLineInFaultyStock.Designer.cs">
+      <DependentUpon>202007270423173_Production_AddAssemblyLineInFaultyStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007270450361_Production_AddAssemblyLineIdInRepairItemStock.cs" />
+    <Compile Include="ProductionContextMigrations\202007270450361_Production_AddAssemblyLineIdInRepairItemStock.Designer.cs">
+      <DependentUpon>202007270450361_Production_AddAssemblyLineIdInRepairItemStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007271153190_Production_AddAssemblyLineAndQRCodeInQCPass.cs" />
+    <Compile Include="ProductionContextMigrations\202007271153190_Production_AddAssemblyLineAndQRCodeInQCPass.Designer.cs">
+      <DependentUpon>202007271153190_Production_AddAssemblyLineAndQRCodeInQCPass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202007271250542_Production_QCPassCodeInQCPassInfoTable.cs" />
+    <Compile Include="ProductionContextMigrations\202007271250542_Production_QCPassCodeInQCPassInfoTable.Designer.cs">
+      <DependentUpon>202007271250542_Production_QCPassCodeInQCPassInfoTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -667,6 +703,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007220621049_Production_AddRequisitionItemDetail.resx">
       <DependentUpon>202007220621049_Production_AddRequisitionItemDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007250458467_Production_AddUnitInReqItemDetail.resx">
+      <DependentUpon>202007250458467_Production_AddUnitInReqItemDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007260410366_Production_QRCodeTrace_update.resx">
+      <DependentUpon>202007260410366_Production_QRCodeTrace_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007260431198_Production_TempQRCodeTrace_Add.resx">
+      <DependentUpon>202007260431198_Production_TempQRCodeTrace_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007261131086_Production_AddAssemblyIdInQCAndTransferFromQC.resx">
+      <DependentUpon>202007261131086_Production_AddAssemblyIdInQCAndTransferFromQC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007270213402_Production_AddAssemblyLineInTransferFromQCInfo.resx">
+      <DependentUpon>202007270213402_Production_AddAssemblyLineInTransferFromQCInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007270423173_Production_AddAssemblyLineInFaultyStock.resx">
+      <DependentUpon>202007270423173_Production_AddAssemblyLineInFaultyStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007270450361_Production_AddAssemblyLineIdInRepairItemStock.resx">
+      <DependentUpon>202007270450361_Production_AddAssemblyLineIdInRepairItemStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007271153190_Production_AddAssemblyLineAndQRCodeInQCPass.resx">
+      <DependentUpon>202007271153190_Production_AddAssemblyLineAndQRCodeInQCPass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202007271250542_Production_QCPassCodeInQCPassInfoTable.resx">
+      <DependentUpon>202007271250542_Production_QCPassCodeInQCPassInfoTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

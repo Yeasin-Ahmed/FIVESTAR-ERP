@@ -13,5 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<TransferRepairItemToQcDetail> GetTransferRepairItemToQcDetails(long orgId);
         IEnumerable<TransferRepairItemToQcDetail> GetTransferRepairItemToQcDetailByInfo(long infoId,long orgId);
         IEnumerable<TransferRepairItemToQcDetailDTO> GetTransferRepairItemToQcDetailByQuery(long transferId, long orgId);
+        Task<IEnumerable<TransferRepairItemToQcDetail>> GetTransferRepairItemToQcDetailByInfoAsync(long infoId, long orgId);
     }
 }

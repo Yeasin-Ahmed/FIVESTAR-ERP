@@ -109,6 +109,9 @@ namespace ERPWeb
             container.RegisterType<IProductionToPackagingStockTransferDetailBusiness, ProductionToPackagingStockTransferDetailBusiness>();
             container.RegisterType<IQRCodeTransferToRepairInfoBusiness, QRCodeTransferToRepairInfoBusiness>();
             container.RegisterType<IQRCodeProblemBusiness, QRCodeProblemBusiness>();
+            container.RegisterType<IRequisitionItemInfoBusiness, RequisitionItemInfoBusiness>();            
+            container.RegisterType<IRequisitionItemDetailBusiness, RequisitionItemDetailBusiness>();
+            container.RegisterType<ITempQRCodeTraceBusiness, TempQRCodeTraceBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 

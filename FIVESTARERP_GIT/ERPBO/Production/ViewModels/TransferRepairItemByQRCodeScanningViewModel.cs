@@ -11,6 +11,8 @@ namespace ERPBO.Production.ViewModels
     {
         [Required,StringLength(150)]
         public string QRCode { get; set; }
+        [Range(1, long.MaxValue)]
+        public long AssemblyLineId { get; set; }
         [Range(1,long.MaxValue)]
         public long RepairLineId { get; set; }
         [Range(1, long.MaxValue)]

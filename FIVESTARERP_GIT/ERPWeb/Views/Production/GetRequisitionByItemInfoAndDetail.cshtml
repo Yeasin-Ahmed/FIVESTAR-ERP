@@ -4,7 +4,7 @@
 }
 
 
-<div class="row">
+<div class="row text-sm">
     <div class="col-md-12">
         <div class="card card-primary card-outline card-tabs">
             <div class="card-header p-0 pt-1 border-bottom-0">
@@ -153,14 +153,14 @@
                                     </div>
                                     <div class="card-body text-sm">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-1">
                                                 <label for="ddlReqTypeRequisition" class="control-label">
                                                     REQ Type
                                                 </label>
-                                                @Html.DropDownList("ddlReqTypeRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                @Html.DropDownList("ddlReqTypeRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Type--", new { @class = "form-control form-control-sm ctrl-changed" })
                                                 <span class="error hide req-type">Requisition Type is required</span>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label for="ddlReqForRequisition" class="control-label font-weight-bold">REQ For</label>
                                                 <select id="ddlReqForRequisition" class="form-control form-control-sm">
                                                     <option value="Production">Production</option>
@@ -170,30 +170,28 @@
                                                 </select>
                                                 <span class="error hide req-reqFor">REQ For is required</span>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label for="ddlAssemblyLineWithProductionRequisition" class="control-label">Assembly</label>
                                                 @Html.DropDownList("ddlAssemblyLineWithProductionRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlAssemblyLineWithProduction, "--Select Assembly--", new { @class = "form-control form-control-sm" })
                                                 <span class="error hide req-line">Assembly is required</span>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label for="ddlModelNameRequisition" class="control-label font-weight-bold">Model</label>
                                                 @Html.DropDownList("ddlModelNameRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
                                                 <span class="error hide req-model">Model is required</span>
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-3">
                                                 <label for="ddlItemsRequisition" class="control-label font-weight-bold">Item/Item-Color</label>
                                                 @Html.DropDownList("ddlItemsRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item-Color--", new { @class = "form-control form-control-sm select2 select2-danger" })
                                                 <span class="error hide req-item">Item-Color is required</span>
                                                 <span class="error hide dup-item">Duplicate item color</span>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <label for="txtQuantity" class="control-label font-weight-bold">Quantity</label>
-                                                <input type="text" class="form-control form-control-sm" id="txtQuantity" />
+                                                <input type="number" class="form-control form-control-sm" id="txtQuantity" />
                                                 <span class="error hide req-qty">Quantity is required</span>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <label for="btnAddtoList" class="control-label font-weight-bold" style="visibility:hidden">Add</label>
                                                 <div class="clearfix">
                                                     <button type="button" class="btn btn-sm btn-warning btn-flat" id="btnAddtoList">
@@ -259,6 +257,22 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfReqInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
 
@@ -275,6 +289,8 @@
         var ddlPackagingList = $("#ddlPackagingList");
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
+        var hdfReqInfoId = $("#hdfReqInfoId");
+        var hdfRowIndex = $("#hdfRowIndex");
 
         // Add Requisition //
         var ddlReqTypeRequisition = $("#ddlReqTypeRequisition");
@@ -675,8 +691,33 @@
             })
         }
 
-        $(document).on('click', '.data-details', function (e) {
+        // Requisition Modal
+        function OpenModal() {
+            $("#modelDataContainer").empty();
+            hdfReqInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalReqDetails").modal("show");
+        }
+
+        $(document).on("click", "a.data-details", function (e) {
             e.preventDefault();
+            OpenModal();
+            var data = {
+                flag:flag.detail,
+                reqInfoId: TryParseInt($(this).attr("data-details"), 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+            $.when(getReqWithData('html', 'GET', '/Production/GetRequisitionByItemInfoAndDetail', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfReqInfoId.val(data.reqId);
+                    hdfRowIndex.val(idx)
+                    $("#modelDataContainer").empty();
+                    $("#modelDataContainer").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
         })
     </script>
 }

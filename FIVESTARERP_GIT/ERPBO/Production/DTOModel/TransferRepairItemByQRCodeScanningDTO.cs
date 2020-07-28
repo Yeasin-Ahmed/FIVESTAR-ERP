@@ -11,6 +11,7 @@ namespace ERPBO.Production.DTOModel
     {
         [Required,StringLength(150)]
         public string QRCode { get; set; }
+        public long AssemblyLineId { get; set; }
         public long RepairLineId { get; set; }
         public long QCLineId { get; set; }
         public long ModelId { get; set; }

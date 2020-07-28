@@ -14,6 +14,7 @@ namespace ERPBO.Production.ViewModels
         public long? QCLineId { get; set; }
         public long? RepairLineId { get; set; }
         public long? ProductionLineId { get; set; }
+        public long? AssemblyLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
@@ -34,6 +35,8 @@ namespace ERPBO.Production.ViewModels
         public string RefferenceNumber { get; set; }
 
         // Custom Properties
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         [StringLength(100)]
         public string QCLineName { get; set; }
         [StringLength(100)]

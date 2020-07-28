@@ -17,6 +17,7 @@ namespace ERPBO.Production.DomainModels
         public string TransferCode { get; set; }
         public long? DescriptionId { get; set; }
         public long? LineId { get; set; }
+        public long? AssemblyLineId { get; set; }
         public long? WarehouseId { get; set; }
         public long? QCLineId { get; set; }
         public long? RepairLineId { get; set; }

@@ -180,7 +180,9 @@
     <Compile Include="Production\Interface\IQRCodeTransferToRepairInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IProductionAssembleStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IRequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemInfoBusiness.cs" />
+    <Compile Include="Production\Interface\ITempQRCodeTraceBusiness.cs" />
     <Compile Include="Production\ProductionAssembleStockDetailBusiness.cs" />
     <Compile Include="Production\ProductionAssembleStockInfoBusiness.cs" />
     <Compile Include="Production\ProductionFaultyStockDetailBusiness.cs" />
@@ -279,11 +281,13 @@
     <Compile Include="Production\RepairLineBusiness.cs" />
     <Compile Include="Production\RepairSectionFaultyItemTransferInfoBusiness.cs" />
     <Compile Include="Production\RepairSectionRequisitionInfoBusiness.cs" />
+    <Compile Include="Production\RequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\RequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\RequsitionDetailBusiness.cs" />
     <Compile Include="Production\RequsitionInfoBusiness.cs" />
     <Compile Include="Inventory\UnitBusiness.cs" />
     <Compile Include="Inventory\WarehouseBusiness.cs" />
+    <Compile Include="Production\TempQRCodeTraceBusiness.cs" />
     <Compile Include="Production\TransferRepairItemToQcDetailBusiness.cs" />
     <Compile Include="Production\TransferRepairItemToQcInfoBusiness.cs" />
     <Compile Include="Production\TransferFromQCInfoBusiness.cs" />

@@ -13,5 +13,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<QCPassTransferInformation> GetQCPassTransferInformation(long orgId);
         QCPassTransferInformation GetQCPassTransferInformationById(long qcPassId,long orgId);
         bool SaveQCPassTransferInformation(QCPassTransferInformationDTO qcPassInfo, long userId, long orgId);
+        Task<bool> SaveQCPassTransferToMiniStockByQRCodeAsync(QCPassTransferInformationDTO qcPassInfo, string qrCode, long userId, long orgId);
+        Task<QCPassTransferInformation> GetQCPassTransferInformationByFloorAssemblyQcModelItemTypeItem(long floorId, long assembly,long qc, long model, long itemType, long item, string status, long orgId);
     }
 }

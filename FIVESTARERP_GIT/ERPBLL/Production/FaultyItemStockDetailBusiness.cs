@@ -65,6 +65,7 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                 FaultyItemStockDetail faultyItem = new FaultyItemStockDetail()
                 {
                     ProductionFloorId = item.ProductionFloorId,
+                    AsseemblyLineId = item.AsseemblyLineId,
                     DescriptionId = item.DescriptionId,
                     QCId = item.QCId,
                     RepairLineId = item.RepairLineId,

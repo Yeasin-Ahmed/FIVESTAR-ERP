@@ -21,14 +21,14 @@ namespace ERPBLL.Production
             this._repairItemStockInfoRepository = new RepairItemStockInfoRepository(this._productionDb);
         }
 
-        public RepairItemStockInfo GetRepairItem(long qcId, long repairLineId, long modelId, long itemId, long orgId)
+        public RepairItemStockInfo GetRepairItem(long assembly,long qcId, long repairLineId, long modelId, long itemId, long orgId)
         {
-            return _repairItemStockInfoRepository.GetOneByOrg(d => d.QCId == qcId && d.RepairLineId == repairLineId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
+            return _repairItemStockInfoRepository.GetOneByOrg(d => d.AssemblyLineId == assembly && d.QCId == qcId && d.RepairLineId == repairLineId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
         }
 
-        public async Task<RepairItemStockInfo> GetRepairItemAsync(long qcId, long repairLineId, long modelId, long itemId, long orgId)
+        public async Task<RepairItemStockInfo> GetRepairItemAsync(long assembly,long qcId, long repairLineId, long modelId, long itemId, long orgId)
         {
-            return await _repairItemStockInfoRepository.GetOneByOrgAsync(d => d.QCId == qcId && d.RepairLineId == repairLineId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
+            return await _repairItemStockInfoRepository.GetOneByOrgAsync(d => d.AssemblyLineId == assembly && d.QCId == qcId && d.RepairLineId == repairLineId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
         }
 
         public IEnumerable<RepairItemStockInfo> GetRepairItemStockInfById(long repairLineId, long modelId, long itemId, long orgId)
@@ -41,12 +41,12 @@ namespace ERPBLL.Production
             return _repairItemStockInfoRepository.GetAll(d => d.QCId == qcId && d.DescriptionId == modelId && d.ItemId == itemId && d.OrganizationId == orgId);
         }
 
-        public IEnumerable<RepairItemStockInfoDTO> GetRepairItemStockInfosByQuery(long? floorId, long? modelId, long? qcId, long? repairId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,long orgId)
+        public IEnumerable<RepairItemStockInfoDTO> GetRepairItemStockInfosByQuery(long? floorId,long? assemblyId, long? modelId, long? qcId, long? repairId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<RepairItemStockInfoDTO>(QueryForRepairItemStockInfos(floorId,modelId,qcId,repairId,warehouseId,itemTypeId,itemId,lessOrEq,orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<RepairItemStockInfoDTO>(QueryForRepairItemStockInfos(floorId, assemblyId, modelId,qcId,repairId,warehouseId,itemTypeId,itemId,lessOrEq,orgId)).ToList();
         }
 
-        private string QueryForRepairItemStockInfos(long? floorId, long? modelId, long? qcId, long? repairId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
+        private string QueryForRepairItemStockInfos(long? floorId, long? assemblyId, long? modelId, long? qcId, long? repairId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -55,6 +55,10 @@ namespace ERPBLL.Production
             if(floorId != null && floorId > 0)
             {
                 param += string.Format(@" and ri.ProductionFloorId={0}", floorId);
+            }
+            if (assemblyId != null && assemblyId > 0)
+            {
+                param += string.Format(@" and ri.AssemblyLineId={0}", assemblyId);
             }
             if (modelId != null && modelId > 0)
             {
@@ -86,11 +90,12 @@ namespace ERPBLL.Production
                 param += string.Format(@" and  (ri.Quantity - ri.QCQty) <= {0}", qty);
             }
 
-            query = string.Format(@"Select ri.ProductionFloorId,pl.LineNumber 'ProductionFloorName',ri.RepairLineId,rl.RepairLineName,
+            query = string.Format(@"Select ri.ProductionFloorId,pl.LineNumber 'ProductionFloorName',ri.AssemblyLineId,al.AssemblyLineName,ri.RepairLineId,rl.RepairLineName,
 ri.QCId,qc.QCName,ri.DescriptionId,de.DescriptionName 'ModelName',ri.WarehouseId,w.WarehouseName,ri.ItemTypeId,it.ItemName 'ItemTypeName',ri.ItemId,i.ItemName,
 ri.Quantity,ri.QCQty 
 From [Production].dbo.tblRepairItemStockInfo ri
 Inner Join [Production].dbo.tblProductionLines pl on ri.ProductionFloorId = pl.LineId
+Inner Join [Production].dbo.tblAssemblyLines al on ri.AssemblyLineId = al.AssemblyLineId
 Inner Join [Production].dbo.tblRepairLine rl on ri.RepairLineId = rl.RepairLineId
 Inner Join [Production].dbo.tblQualityControl qc on ri.QCId = qc.QCId
 Inner Join [Inventory].dbo.tblDescriptions de on ri.DescriptionId = de.DescriptionId

@@ -1,0 +1,103 @@
+﻿@model ERPBO.Production.ViewModels.RequsitionInfoViewModel
+@{
+    int sl = 0;
+    int slNo = 0;
+    string level = ViewBag.Level;
+    string badge = Model.StateStatus == "Pending" ? "badge badge-warning" : (Model.StateStatus == "Approved" ? "badge badge-success" : (Model.StateStatus == "Accepted" ? "badge badge-primary" : "badge badge-danger"));
+}
+
+<div class="row text-sm">
+    <div class="col-md-12">
+        <table class="table table-bordered table-responsive-lg table-sm">
+            <tbody>
+                <tr>
+                    <td class="alert-secondary" style="width:10%">Req Code</td>
+                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.ReqInfoCode</td>
+                    <td class="alert-secondary" style="width:10%">Floor</td>
+                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.LineNumber</td>
+                    <td class="alert-secondary" style="width:12%">Assembly</td>
+                    <td class="text-bold" style="width:16%; background-color:#e1dada">@Model.AssemblyLineName</td>
+                    <td class="alert-secondary" style="width:10%">Model</td>
+                    <td class="text-bold" style="width:12%; background-color:#e1dada">@Model.ModelName</td>
+                </tr>
+                <tr>
+                    <td class="alert-secondary" style="width:10%">Warehouse</td>
+                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.WarehouseName</td>
+                    <td class="alert-secondary" style="width:10%">Requistion By</td>
+                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
+                    <td class="alert-secondary" style="width:12%">Entry Date</td>
+                    <td class="text-bold" style="width:16%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                    <td class="alert-secondary" style="width:10%">Status</td>
+                    <td class="text-bold" style="width:12%; background-color:#e1dada">
+                        <span class="@badge">
+                            @Model.StateStatus
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row text-sm">
+    <div class="col-md-5">
+        <table class="table table-responsive-lg table-bordered table-sm">
+            <tbody>
+                @foreach (var rii in Model.RequisitionItemInfos)
+                {
+                    sl = 0;
+                    string itemNameRi = rii.ItemName + " [" + rii.ItemTypeName + "-" + rii.WarehouseName + "]";
+                    <tr class="btn-dark">
+                        <th colspan="4">
+                            @itemNameRi
+                            <span class="text-primary">(Qty-@rii.Quantity.ToString())</span>
+                        </th>
+                    </tr>
+                    foreach (var rid in rii.RequisitionItemDetails)
+                    {
+                        string itemName = rid.ItemName + " [" + rid.ItemTypeName + "-" + rid.WarehouseName + "]";
+                        sl = sl + 1;
+                        <tr>
+                            <td class="text-center text-bold">@sl</td>
+                            <td>@itemName</td>
+                            <td class="text-center text-bold">@rid.ConsumptionQty</td>
+                            <td class="text-center text-bold">@rid.TotalQuantity</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-7">
+        <table class="table table-bordered table-striped table-sm table-responsive-lg">
+            <thead class="text-center">
+                <tr class="btn-dark">
+                    <th>#SL</th>
+                    <th>Item Name</th>
+                    <th>Type Of Unit</th>
+                    <th>Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.RequisitionDetails)
+                {
+                    slNo = slNo + 1;
+                    string itemName = item.ItemName + " [" + item.ItemTypeName + "]";
+                    <tr>
+                        <td class="text-center text-bold">@slNo</td>
+                        <td>@itemName</td>
+                        <td class="text-center text-bold">@item.UnitName</td>
+                        <td class="text-center text-bold">@item.Quantity</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@if (Model.StateStatus == "Approved" && level == "Assembly")
+{
+    <div class="modal-footer">
+        <button class="btn btn-sm btn-success btn-flat btnAccepted">
+            Accept
+        </button>
+    </div>
+}

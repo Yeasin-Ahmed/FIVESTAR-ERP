@@ -347,4 +347,12 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+
+    public class TempQRCodeTraceRepository : ProductionBaseRepository<TempQRCodeTrace>
+    {
+        public TempQRCodeTraceRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

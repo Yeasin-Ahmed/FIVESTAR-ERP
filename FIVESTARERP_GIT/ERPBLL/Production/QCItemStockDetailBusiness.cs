@@ -133,11 +133,11 @@ namespace ERPBLL.Production
                     StockStatus = StockStatus.StockIn
                 };
 
-                var stockInfoInDb = await _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(item.ProductionFloorId.Value,item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = await _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(item.ProductionFloorId.Value,item.AssemblyLineId.Value,item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
 
                 if (stockInfoInDb != null)
                 {
-                    stockInfoInDb.Quantity += item.Quantity;
+                    //stockInfoInDb.Quantity += item.Quantity;
                     if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair" && item.RepairLineId != null && item.RepairLineId > 0)
                     {
                         stockInfoInDb.RepairQty -= item.Quantity;
@@ -145,6 +145,10 @@ namespace ERPBLL.Production
                     else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
                     {
                         stockInfoInDb.LabQty -= item.Quantity;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "MiniStock")
+                    {
+                        stockInfoInDb.MiniStockQty += item.Quantity;
                     }
                     stockInfoInDb.UpUserId = userId;
                     this._qCItemStockInfoRepository.Update(stockInfoInDb);
@@ -262,9 +266,33 @@ namespace ERPBLL.Production
                     Flag = item.Flag
                 };
 
-                var stockInfoInDb = await _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(item.ProductionFloorId.Value,item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = await _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItemAsync(item.ProductionFloorId.Value, item.AssemblyLineId.Value, item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
 
-                stockInfoInDb.Quantity -= item.Quantity;
+                //stockInfoInDb.Quantity -= item.Quantity;
+                if(stockInfoInDb == null)
+                {
+                    stockInfoInDb = new QCItemStockInfo()
+                    {
+                        ProductionFloorId = item.ProductionFloorId,
+                        QCId = item.QCId,
+                        DescriptionId = item.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = 0,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        Remarks = item.Remarks,
+                        LabQty =0,
+                        MiniStockQty =0,
+                        RepairQty =0
+                    };
+                }
+                else
+                {
+                    stockInfoInDb.UpUserId = userId;
+                }
                 if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair" && item.RepairLineId != null && item.RepairLineId > 0)
                 {
                     stockInfoInDb.RepairQty += item.Quantity;
@@ -277,8 +305,16 @@ namespace ERPBLL.Production
                 {
                     stockInfoInDb.MiniStockQty += item.Quantity;
                 }
-                stockInfoInDb.UpUserId = userId;
-                _qCItemStockInfoRepository.Update(stockInfoInDb);
+                
+                if(stockInfoInDb.QCItemStockInfoId == 0)
+                {
+                    _qCItemStockInfoRepository.Insert(stockInfoInDb);
+                }
+                else
+                {
+                    _qCItemStockInfoRepository.Update(stockInfoInDb);
+                }
+                
                 stockDetails.Add(stock);
             }
             if (stockDetails.Count > 0)

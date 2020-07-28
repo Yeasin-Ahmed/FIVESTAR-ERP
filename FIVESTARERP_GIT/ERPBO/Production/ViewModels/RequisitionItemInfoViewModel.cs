@@ -9,7 +9,7 @@ namespace ERPBO.Production.ViewModels
 {
     public class RequisitionItemInfoViewModel
     {
-        public long ReqItenInfoId { get; set; }
+        public long ReqItemInfoId { get; set; }
         public long FloorId { get; set; }
         public long AssemblyLineId { get; set; }
         public long? DescriptionId { get; set; }
@@ -46,6 +46,7 @@ namespace ERPBO.Production.ViewModels
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
+        public int? TotalItems { get; set; }
         public List<RequisitionItemDetailViewModel> RequisitionItemDetails { get; set; }
     }
 }

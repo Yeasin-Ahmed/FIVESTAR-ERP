@@ -32,8 +32,10 @@ namespace ERPBLL.Production
         private readonly IQRCodeTransferToRepairInfoBusiness _qRCodeTransferToRepairInfoBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
+        private readonly ITempQRCodeTraceBusiness _tempQRCodeTraceBusiness;
+        private readonly IAssemblyLineStockDetailBusiness _assemblyLineStockDetailBusiness;
 
-        public TransferRepairItemToQcInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IQCItemStockDetailBusiness qcItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, TransferRepairItemToQcDetailRepository transferRepairItemToQcDetailRepository, QRCodeTransferToRepairInfoRepository qRCodeTransferToRepairInfoRepository)
+        public TransferRepairItemToQcInfoBusiness(IProductionUnitOfWork productionDb, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IQCItemStockDetailBusiness qcItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, TransferRepairItemToQcDetailRepository transferRepairItemToQcDetailRepository, QRCodeTransferToRepairInfoRepository qRCodeTransferToRepairInfoRepository, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness)
         {
             // Database
             this._productionDb = productionDb;
@@ -54,6 +56,8 @@ namespace ERPBLL.Production
             this._repairItemStockInfoBusiness = repairItemStockInfoBusiness;
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
+            this._tempQRCodeTraceBusiness = tempQRCodeTraceBusiness;
+            this._assemblyLineStockDetailBusiness = assemblyLineStockDetailBusiness;
         }
 
         public TransferRepairItemToQcInfo GetTransferRepairItemToQcInfoById(long transferId, long orgId)
@@ -220,7 +224,6 @@ namespace ERPBLL.Production
 
         public async Task<bool> SaveTransferByQRCodeScanningAsync(TransferRepairItemByQRCodeScanningDTO dto, long user, long orgId)
         {
-
             string code = string.Empty;
             long transferId = 0;
             // Checking the QRCode is exist with the Receive Status
@@ -228,7 +231,7 @@ namespace ERPBLL.Production
             if (QrCodeInfoDto != null)
             {
                 // Preivous Transfer Information
-                var transferInfo = await GetTransferRepairItemToQcInfoByIdAsync(dto.RepairLineId, dto.QCLineId, dto.ModelId, dto.ItemId, RequisitionStatus.Approved, orgId);
+                var transferInfo = await GetTransferRepairItemToQcInfoByIdAsync(dto.AssemblyLineId, dto.RepairLineId, dto.QCLineId, dto.ModelId, dto.ItemId, RequisitionStatus.Approved, orgId);
 
                 // Item Preparation Info //
                 var itemPreparationInfo = await _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndTypeAsync(ItemPreparationType.Production, dto.ModelId, dto.ItemId, orgId);
@@ -270,6 +273,7 @@ namespace ERPBLL.Production
                     transferInfo = new TransferRepairItemToQcInfo()
                     {
                         LineId = QrCodeInfoDto.FloorId,
+                        AssemblyLineId = QrCodeInfoDto.AssemblyLineId,
                         QCLineId = QrCodeInfoDto.QCLineId,
                         RepairLineId = QrCodeInfoDto.RepairLineId,
                         ForQty = 1,
@@ -294,6 +298,7 @@ namespace ERPBLL.Production
                     RepairLineStockDetailDTO repairLineStock = new RepairLineStockDetailDTO()
                     {
                         ProductionLineId = QrCodeInfoDto.FloorId,
+                        AssemblyLineId = QrCodeInfoDto.AssemblyLineId,
                         RepairLineId = QrCodeInfoDto.RepairLineId,
                         QCLineId = QrCodeInfoDto.QCLineId,
                         DescriptionId = itemPreparationInfo.DescriptionId,
@@ -317,6 +322,7 @@ namespace ERPBLL.Production
                     new RepairItemStockDetailDTO()
                     {
                         ProductionFloorId = QrCodeInfoDto.FloorId,
+                        AssemblyLineId= QrCodeInfoDto.AssemblyLineId,
                         RepairLineId = QrCodeInfoDto.RepairLineId,
                         QCId = QrCodeInfoDto.QCLineId,
                         DescriptionId = QrCodeInfoDto.DescriptionId,
@@ -361,17 +367,17 @@ namespace ERPBLL.Production
             return false;
         }
 
-        public async Task<TransferRepairItemToQcInfo> GetTransferRepairItemToQcInfoByIdAsync(long repairLineId, long qcLineId, long modelId, long itemId, string status, long orgId)
+        public async Task<TransferRepairItemToQcInfo> GetTransferRepairItemToQcInfoByIdAsync(long assemblyLineId, long repairLineId, long qcLineId, long modelId, long itemId, string status, long orgId)
         {
-            return await _transferRepairItemToQcInfoRepository.GetOneByOrgAsync(s => s.RepairLineId == repairLineId && s.QCLineId == qcLineId && s.DescriptionId == modelId && s.ItemId == itemId && s.StateStatus == status && s.OrganizationId == orgId);
+            return await _transferRepairItemToQcInfoRepository.GetOneByOrgAsync(s => s.AssemblyLineId == assemblyLineId && s.RepairLineId == repairLineId && s.QCLineId == qcLineId && s.DescriptionId == modelId && s.ItemId == itemId && s.StateStatus == status && s.OrganizationId == orgId);
         }
 
-        public IEnumerable<TransferRepairItemToQcInfoDTO> GetTransferRepairItemToQcInfosByQuery(long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate, long orgId)
+        public IEnumerable<TransferRepairItemToQcInfoDTO> GetTransferRepairItemToQcInfosByQuery(long? floorId, long? assemblyId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<TransferRepairItemToQcInfoDTO>(QueryForTransferRepairItemToQcInfos(floorId, repairLineId, qcLineId, modelId, warehouseId, itemTypeId, itemId, status, transferCode, fromDate, toDate, orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<TransferRepairItemToQcInfoDTO>(QueryForTransferRepairItemToQcInfos(floorId, assemblyId, repairLineId, qcLineId, modelId, warehouseId, itemTypeId, itemId, status, transferCode, fromDate, toDate, orgId)).ToList();
         }
 
-        private string QueryForTransferRepairItemToQcInfos(long? floorId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate, long orgId)
+        private string QueryForTransferRepairItemToQcInfos(long? floorId, long? assemblyId, long? repairLineId, long? qcLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string transferCode, string fromDate, string toDate, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -380,6 +386,10 @@ namespace ERPBLL.Production
             if (floorId != null && floorId > 0)
             {
                 param += string.Format(@" and ti.LineId={0}", floorId);
+            }
+            if (assemblyId != null && assemblyId > 0)
+            {
+                param += string.Format(@" and ti.AssemblyLineId={0}", assemblyId);
             }
             if (repairLineId != null && repairLineId > 0)
             {
@@ -447,6 +457,100 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers app on ti.EUserId = app.UserId
 Where 1= 1 {0}", param);
 
             return query;
+        }
+
+        public async Task<bool> SaveTransferInfoStateStatusAsync(long transferId, string status, long userId, long orgId)
+        {
+            //Transfer Info
+            var transferInDb = await GetTransferRepairItemToQcInfoByIdAsync(transferId, orgId);
+
+            if(transferInDb != null && transferInDb.StateStatus == RequisitionStatus.Approved && status == RequisitionStatus.Accepted)
+            {
+                // Transfer Info
+                transferInDb.StateStatus = RequisitionStatus.Accepted;
+                transferInDb.UpdateDate = DateTime.Now;
+                transferInDb.UpUserId = userId;
+
+                // Transfer Detail
+                var transferDetail = await _transferRepairItemToQcDetailBusiness.GetTransferRepairItemToQcDetailByInfoAsync(transferInDb.TRQInfoId, orgId);
+
+                // Item Preparation Info //
+                var itemPreparationInfo = await _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndTypeAsync(ItemPreparationType.Production, transferInDb.DescriptionId.Value, transferInDb.ItemId.Value, orgId);
+
+                // Item Preparation Detail //
+                var itemPreparationDetail = (List<ItemPreparationDetail>)await _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoIdAsync(itemPreparationInfo.PreparationInfoId, orgId);
+
+                List<QCItemStockDetailDTO> qCItemStocks = new List<QCItemStockDetailDTO>() {
+                new QCItemStockDetailDTO{
+                    ProductionFloorId= transferInDb.LineId,
+                    AssemblyLineId = transferInDb.AssemblyLineId,
+                    QCId = transferInDb.QCLineId,
+                    RepairLineId = transferInDb.RepairLineId,
+                    DescriptionId = transferInDb.DescriptionId,
+                    WarehouseId = transferInDb.WarehouseId,
+                    ItemTypeId = transferInDb.ItemTypeId,
+                    ItemId = transferInDb.ItemId,
+                    Quantity = transferInDb.ForQty.Value,
+                    StockStatus = StockStatus.StockIn,
+                    EntryDate= DateTime.Now,
+                    EUserId = userId,
+                    Flag="Repair",
+                    OrganizationId = orgId,
+                    ReferenceNumber = transferInDb.TransferCode,
+                    Remarks ="Stock In By Repair Item Return"
+                }};
+
+                List<AssemblyLineStockDetailDTO> assemblyLineStocks = new List<AssemblyLineStockDetailDTO>();
+                foreach (var item in itemPreparationDetail)
+                {
+                    AssemblyLineStockDetailDTO assemblyLineStock = new AssemblyLineStockDetailDTO()
+                    {
+                        ProductionLineId = transferInDb.LineId,
+                        AssemblyLineId = transferInDb.AssemblyLineId,
+                        DescriptionId = transferInDb.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = (transferInDb.ForQty * item.Quantity).Value,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        StockStatus = StockStatus.StockIn,
+                        RefferenceNumber = transferInDb.TransferCode,
+                        Remarks = "Stock In By Repair Item Return",
+                        UnitId = item.UnitId
+                    };
+                    assemblyLineStocks.Add(assemblyLineStock);
+                }
+
+                // QRCode //
+                var qrCodes = transferDetail.Select(s => s.QRCode).ToList();
+                var getQRCodeForUpdate =await _tempQRCodeTraceBusiness.GetTempQRCodeTracesByQRCodesAsync(qrCodes, orgId);
+                foreach (var item in getQRCodeForUpdate)
+                {
+                    item.StateStatus = QRCodeStatus.Assembly;
+                    item.UpdateDate = DateTime.Now;
+                    item.UpUserId = userId;
+                }   
+
+                _transferRepairItemToQcInfoRepository.Update(transferInDb);
+                if(await _transferRepairItemToQcInfoRepository.SaveAsync())
+                {
+                    if(await _assemblyLineStockDetailBusiness.SaveAssemblyLineStockInAsync(assemblyLineStocks, userId, orgId))
+                    {
+                        if(await _qcItemStockDetailBusiness.SaveQCItemStockInAsync(qCItemStocks, userId, orgId))
+                        {
+                            return await _tempQRCodeTraceBusiness.UpdateQRCodeBatchAsync(getQRCodeForUpdate.ToList(), orgId);
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public async Task<TransferRepairItemToQcInfo> GetTransferRepairItemToQcInfoByIdAsync(long transferId, long orgId)
+        {
+            return await _transferRepairItemToQcInfoRepository.GetOneByOrgAsync(t => t.TRQInfoId == transferId && t.OrganizationId == orgId);
         }
     }
 }

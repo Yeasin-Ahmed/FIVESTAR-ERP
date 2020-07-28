@@ -13,6 +13,9 @@ namespace ERPBO.Production.ViewModels
         public long ProductionFloorId { get; set; }
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
+        public long AssemblyLineId { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         public long QCLineId { get; set; }
         [StringLength(100)]
         public string QCLineName { get; set; }
@@ -40,6 +43,8 @@ namespace ERPBO.Production.ViewModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }       
         public long QPassId { get; set; }
+        [StringLength(100)]
+        public string QRCode { get; set; }
     }
 
 }

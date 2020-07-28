@@ -27,6 +27,11 @@ namespace ERPBLL.Production
             return _assemblyLineStockInfoRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.AssemblyLineId == assemblyId && s.ItemId == itemId && s.DescriptionId == modelId);
         }
 
+        public async Task<AssemblyLineStockInfo> GetAssemblyLineStockInfoByAssemblyAndItemAndModelIdAsync(long assemblyId, long itemId, long modelId, long orgId)
+        {
+            return await _assemblyLineStockInfoRepository.GetOneByOrgAsync(s => s.OrganizationId == orgId && s.AssemblyLineId == assemblyId && s.ItemId == itemId && s.DescriptionId == modelId);
+        }
+
         public IEnumerable<AssemblyLineStockInfo> GetAssemblyLineStockInfoByAssemblyAndItemId(long assemblyId, long itemId, long orgId)
         {
             return _assemblyLineStockInfoRepository.GetAll(s => s.OrganizationId == orgId && s.AssemblyLineId == assemblyId && s.ItemId == itemId);

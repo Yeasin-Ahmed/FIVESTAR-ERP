@@ -567,6 +567,7 @@
     <Content Include="Views\Production\_GetRequisitionByItemInfo.cshtml" />
     <Content Include="Views\Production\GetAssemblyLineStockInfoFS.cshtml" />
     <Content Include="Views\Production\_GetAssemblyLineStockInfoFS.cshtml" />
+    <Content Include="Views\Production\_GetRequisitionItemDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

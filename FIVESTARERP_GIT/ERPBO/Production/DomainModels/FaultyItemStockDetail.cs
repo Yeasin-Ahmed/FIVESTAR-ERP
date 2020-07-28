@@ -14,6 +14,7 @@ namespace ERPBO.Production.DomainModels
         [Key]
         public long FaultyItemStockDetailId { get; set; }
         public long? ProductionFloorId { get; set; }
+        public long? AsseemblyLineId { get; set; }
         public long? QCId { get; set; }
         public long? RepairLineId { get; set; }
         public long? DescriptionId { get; set; }

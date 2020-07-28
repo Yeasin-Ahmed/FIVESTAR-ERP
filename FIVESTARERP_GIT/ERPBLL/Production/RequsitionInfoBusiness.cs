@@ -23,6 +23,7 @@ namespace ERPBLL.Production
         private readonly RequsitionInfoRepository requsitionInfoRepository; // table
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly IItemBusiness _itemBusiness; // interface
+        
 
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         public RequsitionInfoBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IItemBusiness itemBusiness)
@@ -89,7 +90,7 @@ namespace ERPBLL.Production
             }
             if (!string.IsNullOrEmpty(status) && status.Trim() != "")
             {
-                param += string.Format(@" and ri.StateStatus='{0}'", status);
+                param += string.Format(@" and ri.StateStatus IN({0})", status);
             }
             if (!string.IsNullOrEmpty(reqFlag) && reqFlag.Trim() != "")
             {
@@ -283,5 +284,7 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
             requsitionInfoRepository.Insert(requsitionInfo);
             return requsitionInfoRepository.Save();
         }
+
+        
     }
 }

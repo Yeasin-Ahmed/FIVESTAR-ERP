@@ -16,5 +16,7 @@ namespace ERPBLL.Production.Interface
         IEnumerable<RequsitionDetail> GetRequsitionDetailByReqId(long id, long orgId);
         RequsitionDetail GetRequsitionDetailById(long id, long orgId);
         bool SaveRequisitionDetail(ReqInfoDTO reqInfoDTO, long userId, long orgId);
+        IEnumerable<RequsitionDetailDTO> GetRequisitionDetailsByQuery(long? reqInfoId,long? reqDetailId,long? itemType,long? itemId,long orgId);
+        
     }
 }

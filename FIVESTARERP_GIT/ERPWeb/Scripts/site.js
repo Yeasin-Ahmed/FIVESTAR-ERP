@@ -71,6 +71,14 @@ function toggleAlert(msg) {
     setTimeout(function () { al.modal('hide'); }, 1000);
 }
 
+function toastrErrorAlert(msg) {
+    toastr.error(msg).fadeOut(1500);
+}
+
+function toastrSuccessAlert(msg) {
+    toastr.success(msg).fadeOut(1500);
+}
+
 
 // Loading dropdown using ajax..
 // All the Parameters are required accept contextKey

@@ -84,6 +84,60 @@ namespace ERPBLL.Production
             return _assemblyLineStockDetailRepository.Save();
         }
 
+        public async Task<bool> SaveAssemblyLineStockInAsync(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId)
+        {
+            List<AssemblyLineStockDetail> assemblyLineStockDetail = new List<AssemblyLineStockDetail>();
+            foreach (var item in assemblyLineStockDetailDTO)
+            {
+                AssemblyLineStockDetail stockDetail = new AssemblyLineStockDetail();
+                stockDetail.AssemblyLineId = item.AssemblyLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var assemblyStockInfo = await _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfoByAssemblyAndItemAndModelIdAsync(item.AssemblyLineId.Value,item.ItemId.Value,item.DescriptionId.Value, orgId);
+
+                if (assemblyStockInfo != null)
+                {
+                    assemblyStockInfo.StockInQty += item.Quantity;
+                    _assemblyLineStockInfoRepository.Update(assemblyStockInfo);
+                }
+                else
+                {
+                    AssemblyLineStockInfo info = new AssemblyLineStockInfo();
+                    info.AssemblyLineId = item.AssemblyLineId;
+                    info.ProductionLineId = item.ProductionLineId;
+                    info.WarehouseId = item.WarehouseId;
+                    info.DescriptionId = item.DescriptionId;
+
+                    info.ItemTypeId = item.ItemTypeId;
+                    info.ItemId = item.ItemId;
+                    info.UnitId = stockDetail.UnitId;
+                    info.StockInQty = item.Quantity;
+                    info.StockOutQty = 0;
+                    info.OrganizationId = orgId;
+                    info.EUserId = userId;
+                    info.EntryDate = DateTime.Now;
+
+                    _assemblyLineStockInfoRepository.Insert(info);
+                }
+                assemblyLineStockDetail.Add(stockDetail);
+            }
+            _assemblyLineStockDetailRepository.InsertAll(assemblyLineStockDetail);
+            return await _assemblyLineStockDetailRepository.SaveAsync();
+        }
+
         public bool SaveAssemblyLineStockOut(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId, string flag)
         {
             List<AssemblyLineStockDetail> assemblyLineStockDetail = new List<AssemblyLineStockDetail>();
@@ -115,5 +169,36 @@ namespace ERPBLL.Production
             return _assemblyLineStockDetailRepository.Save();
         }
 
+        public async Task<bool> SaveAssemblyLineStockOutAsync(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId, string flag)
+        {
+            List<AssemblyLineStockDetail> assemblyLineStockDetail = new List<AssemblyLineStockDetail>();
+            foreach (var item in assemblyLineStockDetailDTO)
+            {
+                AssemblyLineStockDetail stockDetail = new AssemblyLineStockDetail();
+                stockDetail.AssemblyLineId = item.AssemblyLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var assemblyStockInfo = await _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfoByAssemblyAndItemAndModelIdAsync(item.AssemblyLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
+                assemblyStockInfo.StockOutQty += item.Quantity;
+                _assemblyLineStockInfoRepository.Update(assemblyStockInfo);
+                assemblyLineStockDetail.Add(stockDetail);
+            }
+            _assemblyLineStockDetailRepository.InsertAll(assemblyLineStockDetail);
+            return await _assemblyLineStockDetailRepository.SaveAsync();
+        }
     }
 }
