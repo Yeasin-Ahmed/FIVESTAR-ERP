@@ -46,6 +46,7 @@ namespace ERPBLL.Inventory
             else
             {
                 warehouse = GetWarehouseOneByOrgId(warehouseDTO.Id, orgId);
+                warehouse.WarehouseName = warehouseDTO.WarehouseName;
                 warehouse.Remarks = warehouseDTO.Remarks;
                 warehouse.IsActive = warehouseDTO.IsActive;
                 warehouse.UpUserId = userId;

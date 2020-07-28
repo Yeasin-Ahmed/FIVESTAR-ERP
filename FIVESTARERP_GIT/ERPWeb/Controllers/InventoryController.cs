@@ -1277,5 +1277,103 @@ namespace ERPWeb.Controllers
         {
             base.Dispose(disposing);
         }
+
+        #region PartialView
+
+        public ActionResult _GetDescriptionPartialList(int? page)
+        {
+            IEnumerable<DescriptionDTO> dto = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new DescriptionDTO
+            {
+                DescriptionId = des.DescriptionId,
+                DescriptionName = des.DescriptionName,
+                SubCategoryId = des.SubCategoryId,
+                StateStatus = (des.IsActive == true ? "Active" : "Inactive"),
+                Remarks = des.Remarks,
+                OrganizationId = des.OrganizationId,
+                EUserId = des.EUserId,
+                EntryDate = des.EntryDate,
+                UpUserId = des.UpUserId,
+                UpdateDate = des.UpdateDate,
+                EntryUser = UserForEachRecord(des.EUserId.Value).UserName,
+                UpdateUser = (des.UpUserId == null || des.UpUserId == 0) ? "" : UserForEachRecord(des.UpUserId.Value).UserName
+
+            }).OrderBy(des => des.DescriptionId).ToList();
+
+
+            IEnumerable<DescriptionViewModel> viewModel = new List<DescriptionViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModel);
+            return View(viewModel);
+        }
+
+        public ActionResult _GetItemTypePartialList(int? page)
+        {
+            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
+            var allData = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId);
+            IEnumerable<ItemTypeDTO> dto = allData.Select(item => new ItemTypeDTO
+            {
+                ItemId = item.ItemId,
+                WarehouseId = item.WarehouseId,
+                ShortName = item.ShortName,
+                ItemName = item.ItemName,
+                Remarks = item.Remarks,
+                StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
+                OrganizationId = item.OrganizationId,
+                WarehouseName = (_warehouseBusiness.GetWarehouseOneByOrgId(item.WarehouseId, User.OrgId).WarehouseName),
+                EntryUser = UserForEachRecord(item.EUserId.Value).UserName,
+                UpdateUser = (item.UpUserId == null || item.UpUserId == 0) ? "" : UserForEachRecord(item.UpUserId.Value).UserName
+            }).OrderBy(item => item.ItemId).ToPagedList(page ?? 1, 15);
+
+            IEnumerable<ItemTypeViewModel> viewModels = new List<ItemTypeViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemTypeList");
+            return View(viewModels);
+        }
+
+        public ActionResult _GetAllUnitPartialList()
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetAllUnitList");
+            IEnumerable<UnitDomainDTO> unitDomains = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new UnitDomainDTO
+            {
+                UnitId = unit.UnitId,
+                UnitName = unit.UnitName,
+                UnitSymbol = unit.UnitSymbol,
+                Remarks = unit.Remarks,
+                OrganizationId = unit.OrganizationId,
+                EntryUser = UserForEachRecord(unit.EUserId.Value).UserName,
+                UpdateUser = (unit.UpUserId == null || unit.UpUserId == 0) ? "" : UserForEachRecord(unit.UpUserId.Value).UserName
+            }).ToList();
+            List<UnitViewModel> unitViewModels = new List<UnitViewModel>();
+            AutoMapper.Mapper.Map(unitDomains, unitViewModels);
+            return View(unitViewModels);
+        }
+
+        public ActionResult _GetItemPartialList()
+        {
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemList");
+            ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
+
+            ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
+
+            var allData = _itemBusiness.GetAllItemByOrgId(1);
+            IEnumerable<ItemDomainDTO> dto = allData.Select(item => new ItemDomainDTO
+            {
+                ItemId = item.ItemId,
+                ItemName = item.ItemName,
+                Remarks = item.Remarks,
+                StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
+                OrganizationId = item.OrganizationId,
+                ItemTypeId = item.ItemTypeId,
+                ItemTypeName = _itemTypeBusiness.GetItemType(item.ItemTypeId, User.OrgId).ItemName,
+                UnitId = item.UnitId,
+                UnitName = _unitBusiness.GetUnitOneByOrgId(item.UnitId, User.OrgId).UnitName,
+                ItemCode = item.ItemCode,
+                EntryUser = UserForEachRecord(item.EUserId.Value).UserName,
+                UpdateUser = (item.UpUserId == null || item.UpUserId == 0) ? "" : UserForEachRecord(item.UpUserId.Value).UserName
+            }).OrderBy(item => item.ItemId).ToList();
+            IEnumerable<ItemViewModel> viewModel = new List<ItemViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModel);
+            return View(viewModel);
+        }
+        #endregion
     }
 }

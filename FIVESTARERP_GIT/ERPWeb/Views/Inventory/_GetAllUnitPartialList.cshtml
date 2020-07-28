@@ -3,72 +3,77 @@
     ViewBag.Title = "GetAllUnitList";
     int sl = 0;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    Layout = null;
 }
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">All Unit List</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblUnitData tbody tr',this)" />
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <h6 class="card-title">Search By</h6>
             </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4 text-right">
-                @if (privilege.Add)
-                {
-                    <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Unit</button>
-                }
+            <div class="card-body text-sm">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-4">
+                        <input type="text" name="searchUnit" id="searchByUnit" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblUnitData tbody tr',this)" />
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-right">
+                        @if (privilege.Add)
+                        {
+                            <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNewUnit"><i class="fa fa-plus"></i> Add New Unit</button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:-25px">
+                <div class="col-md-12 mt-2 " style="overflow-y:scroll">
+                    <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblUnitData">
+                        <thead class="btn-dark">
+                            <tr class="text-center">
+                                <th>SL No.</th>
+                                <th class="hide"></th>
+                                <th>UnitName</th>
+                                <th>Unit Symbol</th>
+                                <th>Remarks</th>
+                                <th>Entry User</th>
+                                <th>Update User</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var unit in Model)
+                            {
+                                sl = sl + 1;
+                                <tr>
+                                    <td class="text-center" width="10%">@sl</td>
+                                    <td class="hide">@unit.UnitId</td>
+                                    <td>@unit.UnitName</td>
+                                    <td class="text-center">@unit.UnitSymbol</td>
+                                    <td>@unit.Remarks</td>
+                                    <td class="text-center">@unit.EntryUser</td>
+                                    <td class="text-center">@unit.UpdateUser</td>
+                                    <td class="text-center">
+                                        @if (privilege.Edit)
+                                        {
+                                            <a href="#" class="btn btn-warning btn-sm data-edit-item-unit" style="line-height:1" data-edit-item-unit="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @if (Model.Count() == 0)
+                            {
+                                <tr class="text-center empty-row">
+                                    <td colspan="5">
+                                        No Rows Found
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-12">
-        <table class="table table-bordered table-sm table-striped" id="tblUnitData">
-            <thead class="btn-dark">
-                <tr class="text-center">
-                    <th>SL No.</th>
-                    <th class="hide"></th>
-                    <th>UnitName</th>
-                    <th>Unit Symbol</th>
-                    <th>Remarks</th>
-                    <th>Entry User</th>
-                    <th>Update User</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var unit in Model)
-                {
-                    sl = sl + 1;
-                <tr>
-                    <td class="text-center" width="10%">@sl</td>
-                    <td class="hide">@unit.UnitId</td>
-                    <td>@unit.UnitName</td>
-                    <td class="text-center">@unit.UnitSymbol</td>
-                    <td>@unit.Remarks</td>
-                    <td class="text-center">@unit.EntryUser</td>
-                    <td class="text-center">@unit.UpdateUser</td>
-                    <td class="text-center">
-                        @if (privilege.Edit)
-                        {
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
-                        }
-                    </td>
-                </tr>
-                }
-                @if (Model.Count() == 0)
-                {
-                    <tr class="text-center empty-row">
-                        <td colspan="5">
-                            No Rows Found
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>
 
@@ -76,7 +81,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Unit</span></h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadUnit">Add New Unit</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -99,7 +104,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
-                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                            <input type="text" name="remarks" value="" id="txtRemarksUnit" class="form-control form-control-sm" />
                         </div>
                     </div>
                 </form>
@@ -115,7 +120,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitUnit"><i class="far fa-save"></i> <span id="spanSaveTextUnit">Save </span> </button>
             </div>
         </div>
     </div>
@@ -126,11 +131,11 @@
         var hdfUnitId = $("#hdfUnitId");
         var txtUnitName = $("#txtUnitName");
         var txtUnitSymbol = $("#txtUnitSymbol");
-        var txtRemarks = $("#txtRemarks");
+        var txtRemarksUnit = $("#txtRemarksUnit");
 
         $(document).ready(function () {
             $('#tblUnitData').DataTable({
-                "paging": false,
+                "paging": true,
                 "lengthChange": false,
                 "searching": false,
                 "ordering": true,
@@ -139,25 +144,25 @@
             });
         })
 
-        function OpenModal() {
-            $("#spanModalHead").text('Add New Unit');
-            $("#spanSaveText").text('Save');
+        function OpenModalUnit() {
+            $("#spanModalHeadUnit").text('Add New Unit');
+            $("#spanSaveTextUnit").text('Save');
             $("#modalUnit").modal("show");
             $(".error").addClass("hide");
         }
 
-        $("#btnAddNew").click(function (e) {
+        $("#btnAddNewUnit").click(function (e) {
             e.preventDefault();
             clearCtrl();
-            OpenModal();
+            OpenModalUnit();
         })
 
 
-        $("#btnSubmit").click(function (e) {
+        $("#btnSubmitUnit").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");
-            if (validateForm() == true) {
-                var data = JSON.stringify({ UnitId: TryParseInt(hdfUnitId.val(), 0), UnitName: txtUnitName.val(), UnitSymbol: txtUnitSymbol.val(), Remarks: txtRemarks.val()});
+            if (validateFormUnit() == true) {
+                var data = JSON.stringify({ UnitId: TryParseInt(hdfUnitId.val(), 0), UnitName: txtUnitName.val(), UnitSymbol: txtUnitSymbol.val(), Remarks: txtRemarksUnit.val()});
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveUnit', data, getToken())).then(function (res, status) {
                     console.log(status);
@@ -168,16 +173,16 @@
                     else {
                         message("#msg2");
                     }
-                    enable("#btnSubmit");
+                    enable("#btnSubmitUnit");
                 }).fail(function (err) {
                     console.log(err);
-                    enable("#btnSubmit");
+                    enable("#btnSubmitUnit");
                 });
             }
 
         })
 
-        function validateForm() {
+        function validateFormUnit() {
             $(".error").addClass("hide");
             var isValid = true;
             if ($.trim(txtUnitName.val()) == "") {
@@ -196,7 +201,7 @@
         }
 
 
-        $(document).on("click", "a.data-edit-item", function (e) {
+        $(document).on("click", "a.data-edit-item-unit", function (e) {
             e.preventDefault()
             clearCtrl();
             var row = $(this).parent().parents('tr');
@@ -208,24 +213,23 @@
             hdfUnitId.val(td1);
             txtUnitName.val(td2);
             txtUnitSymbol.val(td3)
-            txtRemarks.val(td4);
-            
+            txtRemarksUnit.val(td4);
+
         })
 
         function clearCtrl() {
             hdfUnitId.val('0');
             txtUnitName.val('');
             txtUnitSymbol.val('');
-            txtRemarks.val('');
+            txtRemarksUnit.val('');
 
         }
-        $(".data-edit-item").click(function (e) {
+        $(".data-edit-item-unit").click(function (e) {
             e.preventDefault()
-            OpenModal()
+            OpenModalUnit()
             $("#spanModalHead").text('Update Unit');
-            $("#spanSaveText").text('Update');
+            $("#spanSaveTextUnit").text('Update');
         });
     </script>
-
-    }
+}
 
