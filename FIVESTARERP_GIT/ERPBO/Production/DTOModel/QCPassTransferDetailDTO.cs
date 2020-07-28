@@ -46,6 +46,9 @@ namespace ERPBO.Production.DTOModel
         public long QPassId { get; set; }
         [StringLength(100)]
         public string QRCode { get; set; }
+
+        public string QCPassCode { get; set; }
+        public string StateStatus { get; set; }
     }
 
 }

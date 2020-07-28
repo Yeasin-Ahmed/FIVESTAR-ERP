@@ -1,4 +1,5 @@
 ﻿using ERPBO.Production.DomainModels;
+using ERPBO.Production.DTOModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace ERPBLL.Production.Interface
         FaultyItemStockInfo GetFaultyItemStockInfoByQCandRepairandItem(long qcId, long repairLine, long itemId,long orgId);
         FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndItem(long repairLine, long itemId, long orgId);
         FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndModelAndItem(long repairLine,long modelId, long itemId, long orgId);
+        IEnumerable<FaultyItemStockInfoDTO> GetFaultyItemStockInfosByQuery(long? floorId, long? repairId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId);
     }
 }

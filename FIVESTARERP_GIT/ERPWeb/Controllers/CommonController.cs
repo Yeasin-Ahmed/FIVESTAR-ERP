@@ -705,7 +705,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult IsQRCodeExistInRepair(string qrCode)
         {
-            var IsExist = _qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(qrCode, string.Format(@"'Receiced','Send'"), User.OrgId);
+            var IsExist = _qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(qrCode, string.Format(@"'Received'"), User.OrgId);
             return Json(IsExist);
         }
 

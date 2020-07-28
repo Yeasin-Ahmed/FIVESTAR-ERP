@@ -379,7 +379,8 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                         EntryDate = DateTime.Now,
                         ReferenceNumber = qrCodeInfo.QRCode,
                         TransferCode = qrCodeInfo.TransferCode,
-                        TransferId = qrCodeInfo.TransferId
+                        TransferId = qrCodeInfo.TransferId,
+                        UnitId = itemInfo.UnitId
                     };
 
                     faultyItemStocks.Add(faultyItemStock);
@@ -430,6 +431,73 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
         public bool IsQRCodeExistInTransferWithStatus(string qrCode, string status, long orgId)
         {
             return this.GetQRCodeWiseItemInfo(qrCode, status, orgId) != null;
+        }
+
+        public IEnumerable<QRCodeTransferToRepairInfoDTO> GetQRCodeTransferToRepairInfosByQuery(long? floorId, long? assemblyId, long? qcLineId, long? repairLineId, string qrCode, string transferCode, string status, string date, long? userId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<QRCodeTransferToRepairInfoDTO>(QueryForQRCodeTransferToRepairInfos(floorId, assemblyId, qcLineId, repairLineId, qrCode, transferCode, status, date, userId, orgId)).ToList();
+        }
+
+        private string QueryForQRCodeTransferToRepairInfos(long? floorId, long? assemblyId, long? qcLineId, long? repairLineId, string qrCode, string transferCode, string status,string date, long? userId, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            param += string.Format(@" and qr.OrganizationId={0}",orgId);
+
+            if (floorId != null  && floorId> 0)
+            {
+                param += string.Format(@" and qr.FloorId={0}", floorId);
+            }
+            if(assemblyId != null && assemblyId > 0)
+            {
+                param += string.Format(@" and qr.AssemblyLineId={0}", assemblyId);
+            }
+            if(qcLineId != null && qcLineId > 0)
+            {
+                param += string.Format(@" and qr.QCLineId={0}", qcLineId);
+            }
+            if (repairLineId != null && repairLineId > 0)
+            {
+                param += string.Format(@" and qr.RepairLineId={0}", qcLineId);
+            }
+            if (!string.IsNullOrEmpty(qrCode) && qrCode !="")
+            {
+                param += string.Format(@" and qr.QRCode Like '%{0}%'", qrCode);
+            }
+            if (!string.IsNullOrEmpty(transferCode) && transferCode != "")
+            {
+                param += string.Format(@" and qr.TransferCode Like '%{0}%'", transferCode);
+            }
+            if(!string.IsNullOrEmpty(date) && date != "")
+            {
+                string fDate = Convert.ToDateTime(date).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(qr.EntryDate as date)='{0}'", fDate);
+            }
+
+            if (!string.IsNullOrEmpty(status) && status.Trim() != "")
+            {
+                param += string.Format(@" and qr.StateStatus ='{0}'", status);
+            }
+            {
+                param += string.Format(@" and qr.EUserId ={0}", userId);
+            }
+            if (userId != null && userId > 0)
+            {
+                param += string.Format(@" and qr.EUserId ={0}", userId);
+            }
+
+            query = string.Format(@"Select qr.QRTRInfoId,qr.FloorId,pl.LineNumber 'FloorName',qr.AssemblyLineId,al.AssemblyLineName, 
+qr.QCLineId,qc.QCName 'QCLineName',qr.RepairLineId,rl.RepairLineName,qr.QRCode,qr.StateStatus,qr.TransferCode,qr.EntryDate,
+qr.UpdateDate
+From [Production].dbo.tblQRCodeTransferToRepairInfo qr
+Inner Join [Production].dbo.tblProductionLines pl on qr.FloorId = pl.LineId
+Inner Join [Production].dbo.tblAssemblyLines al on qr.AssemblyLineId=al.AssemblyLineId
+Inner Join [Production].dbo.tblQualityControl qc on qr.QCLineId = qc.QCId
+Inner Join [Production].dbo.tblRepairLine rl on qr.RepairLineId = rl.RepairLineId
+Where 1=1 {0}", Utility.ParamChecker(param));
+
+            return query;
         }
     }
 }
