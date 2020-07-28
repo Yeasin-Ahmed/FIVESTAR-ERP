@@ -315,7 +315,6 @@
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
-    <Compile Include="Controllers\ReportSSController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryToken.cs" />
@@ -570,8 +569,10 @@
     <Content Include="Views\Production\_GetAssemblyLineStockInfoFS.cshtml" />
     <Content Include="Views\Production\_GetRequisitionItemDetail.cshtml" />
     <Content Include="Views\Configuration\GetWorkShopList.cshtml" />
-    <Content Include="Views\Production\_GetRepairableQRCode.cshtml" />
-    <Content Include="Views\Production\_GetQCPassQrCodes.cshtml" />
+    <Content Include="Views\Inventory\_GetDescriptionPartialList.cshtml" />
+    <Content Include="Views\Inventory\_GetItemTypePartialList.cshtml" />
+    <Content Include="Views\Inventory\_GetAllUnitPartialList.cshtml" />
+    <Content Include="Views\Inventory\_GetItemPartialList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -6,75 +6,263 @@
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
+
 <div class="row">
-    <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">List Of Warehouse</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblWarehouseData tbody tr',this)" />
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-warehouseList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseList" role="tab" aria-controls="custom-tabs-two-warehouseList" aria-selected="true">Warehouse List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="true">Description List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-itemTypeList-tab" data-toggle="pill" href="#custom-tabs-two-itemTypeList" role="tab" aria-controls="custom-tabs-two-itemTypeList" aria-selected="false">Item Type List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-unitList-tab" data-toggle="pill" href="#custom-tabs-two-unitList" role="tab" aria-controls="custom-tabs-two-unitList" aria-selected="false">Unit List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-itemList-tab" data-toggle="pill" href="#custom-tabs-two-itemList" role="tab" aria-controls="custom-tabs-two-itemList" aria-selected="false">Item List</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                @if (privilege.Add)
-                {
-                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Warehouse</button>
-                }
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+
+                    <div class="tab-pane fade show active" id="custom-tabs-two-warehouseList" role="tabpanel" aria-labelledby="custom-tabs-two-warehouseList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Warehouse
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblWarehouseData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                @if (privilege.Add)
+                                                {
+                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Warehouse</button>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-25px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-30px">
+                                            <div class="col-md-12 mt-2" style="overflow-y:scroll">
+                                                <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblWarehouseData">
+                                                    <thead class="btn-dark">
+                                                        <tr class="text-center">
+                                                            <th>#SL</th>
+                                                            <th class="hide"></th>
+                                                            <th>Warehouse Name</th>
+                                                            <th>Entry User</th>
+                                                            <th>Update User</th>
+                                                            <th>StateStatus</th>
+                                                            <th>Remarks</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            sl = sl + 1;
+                                                            badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
+                                                            <tr>
+                                                                <td class="text-center">@sl</td>
+                                                                <td class="hide">@item.Id</td>
+                                                                <td>@item.WarehouseName</td>
+
+                                                                <td class="text-center">@item.EntryUser</td>
+                                                                <td class="text-center">@item.UpdateUser</td>
+
+                                                                <td class="text-center" data-val="@item.StateStatus">
+                                                                    <span class="@badge">@item.StateStatus</span>
+                                                                </td>
+                                                                <td>@item.Remarks</td>
+                                                                <td class="text-center">
+                                                                    @if (privilege.Edit)
+                                                                    {
+                                                                        <a href="#" class="btn btn-warning btn-sm data-edit-item" style="line-height:1" data-edit-item="@item.Id"><i class="fa fa-sm fa-pen"></i> Edit</a>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-descriptionList" role="tabpanel" aria-labelledby="custom-tabs-two-descriptionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Description List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                            @{Html.RenderAction("_GetDescriptionPartialList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-itemTypeList" role="tabpanel" aria-labelledby="custom-tabs-two-itemTypeList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Item Type List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @{Html.RenderAction("_GetItemTypePartialList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-unitList" role="tabpanel" aria-labelledby="custom-tabs-two-unitList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Unit List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                            @{Html.RenderAction("_GetAllUnitPartialList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-itemList" role="tabpanel" aria-labelledby="custom-tabs-two-itemList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Item List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+                                            @{Html.RenderAction("_GetItemPartialList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseData">
-            <thead class="btn-dark">
-                <tr class="text-center">
-                    <th>#SL</th>
-                    <th class="hide"></th>
-                    <th>Warehouse Name</th>
-                    <th>Remarks</th>
-                    <th>StateStatus</th>
-                    <th>Entry User</th>
-                    <th>Update User</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    sl = sl + 1;
-                    badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                    <tr>
-                        <td class="text-center">@sl</td>
-                        <td class="hide">@item.Id</td>
-                        <td>@item.WarehouseName</td>
-                        <td>@item.Remarks</td>
-                        <td class="text-center" data-val="@item.StateStatus">
-                            <span class="@badge">@item.StateStatus</span>
-                        </td>
-                        <td class="text-center">@item.EntryUser</td>
-                        <td class="text-center">@item.UpdateUser</td>
-                        <td class="text-center">
-                            @if (privilege.Edit)
-                            {
-                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@item.Id"><i class="fa fa-pen"></i> Edit</a>
-                            }
-                        </td>
-                    </tr>
-                }
-                @*@if (Model.Count() == 0)
-                    {
-                        <tr class="text-center empty-row">
-                            <td colspan="6">
-                                No Rows Found
-                            </td>
-                        </tr>
-                    }*@
-            </tbody>
-        </table>
-    </div>
 </div>
+
 
 <div class="modal fade" id="modalWarehouse" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -125,7 +313,9 @@
 </div>
 
 @section scripts{
+
     <script type="text/javascript">
+
         var txtWarehouseName = $("#txtWarehousename");
         var txtRemarks = $("#txtRemarks");
         var chkStatestatus = $("#chkStatestatus");
@@ -133,10 +323,10 @@
 
         $(document).ready(function () {
             $('#tblWarehouseData').DataTable({
-                "paging": false,
+                "paging": true,
                 "lengthChange": false,
                 "searching": false,
-                "ordering": true,
+                "ordering": false,
                 "info": false,
                 "autoWidth": false,
             });
@@ -157,6 +347,7 @@
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
+            console.log("btnsubmit click");
             $(".error").addClass("hide");
             if (validateForm() == true) {
                 var data = JSON.stringify({ Id: TryParseInt(hdfWarehouseId.val(), 0), WarehouseName: txtWarehouseName.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked") });
@@ -185,14 +376,13 @@
             var row = $(this).parent().parents('tr');
             var td1 = row.find('td:eq(1)').html();
             var td2 = row.find('td:eq(2)').html();
-            var td3 = row.find('td:eq(3)').html();
-            var td4 = row.find('td:eq(4)').attr("data-val");
-
+            var td3 = row.find('td:eq(6)').html();
+            var td4 = row.find('td:eq(5)').attr("data-val"); //row.children('td').eq()//
             hdfWarehouseId.val(td1);
             txtWarehouseName.val(td2);
             txtRemarks.val(td3);
             chkStatestatus.prop("checked", false);
-            if (td4 === 'Active') {
+            if (td4.toLowerCase() === 'active') {
                 chkStatestatus.prop("checked", true);
             }
         })
@@ -229,5 +419,419 @@
         }
 
     </script>
+
+    <script type="text/javascript">
+
+        var hdfItemTypeId = $("#hdfItemTypeId");
+        var ddlWarehouseName = $("#ddlWarehouseName");
+        var txtitemTypeName = $("#txtitemTypeName");
+        var txtRemarksitemType = $("#txtRemarksitemType");
+        var chkStatestatusitemType = $("#chkStatestatusitemType");
+        var txtShortName = $("#txtShortName");
+
+        $(document).ready(function () {
+            $('#tblItemTypeData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "pageLength": 10,
+            });
+            
+        })
+        function OpenModalitemType() {
+            $("#spanModalHeadItemType").text('Add New ItemType');
+            $("#spanSaveTextItemType").text('Save');
+            $("#modalItemType").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewitemType").click(function (e) {
+            e.preventDefault();
+            clearCtrl();
+            OpenModalitemType();
+        })
+
+
+        function validateFormitemType() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(ddlWarehouseName.val()) == "") {
+                $(".required-warehouseNameitemType").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfItemTypeId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, itemTypeName: txtitemTypeName.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0) }), '/Common/IsDuplicateItemTypeName', getToken()) == true) {
+                    $(".duplicate-itemTypeName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(txtitemTypeName.val()) == "") {
+                $(".required-itemTypeName").removeClass("hide");
+                isValid = false;
+            }
+            if (txtShortName.val() === '') {
+                $(".required-shortName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfItemTypeId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, shortName: txtShortName.val().trim() }), '/Common/IsDuplicateItemTypeShortName', getToken()) == true) {
+                    $(".duplicate-shortName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+
+        $("#btnSubmititemType").click(function (e) {
+            e.preventDefault();
+            //console.log("btnsubmititemType click");
+            $(".error").addClass("hide");
+            if (validateFormitemType() == true) {
+                var data = JSON.stringify({ ItemId: TryParseInt(hdfItemTypeId.val(), 0), WarehouseId: ddlWarehouseName.val(), ItemName: txtitemTypeName.val(), Remarks: txtRemarksitemType.val(), IsActive: chkStatestatusitemType.is(":checked"), ShortName: txtShortName.val().trim() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItemType', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#modalItemType");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmititemType");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmititemType");
+                });
+            }
+
+        })
+
+        $(".data-edit-item-type").click(function (e) {
+            e.preventDefault()
+            OpenModalitemType()
+            $("#spanModalHead").text('Update ItemType');
+            $("#spanSaveTextItemType").text('Update');
+        });
+
+        $(document).on("click", "a.data-edit-item-type", function (e) {
+            e.preventDefault()
+            clearCtrl();
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(4)').html();
+            var td4 = row.find('td:eq(5)').html();
+            var td5 = row.find('td:eq(6)').attr("data-val");
+            var td6 = row.find('td:eq(7)').html();
+
+            hdfItemTypeId.val(td1);
+            ddlWarehouseName.val(td2);
+            txtitemTypeName.val(td3);
+            txtRemarksitemType.val(td4);
+            txtShortName.val(td6);
+            chkStatestatusitemType.prop("checked", false);
+            if (td5.toLowerCase() === 'active') {
+                chkStatestatusitemType.prop("checked", true);
+            }
+        })
+
+        function clearCtrl() {
+            hdfItemTypeId.val('0');
+            ddlWarehouseName.val('');
+            txtitemTypeName.val('');
+            txtRemarksitemType.val('');
+            txtShortName.val('');
+            chkStatestatusitemType.prop("checked", false);
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblDescriptionData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "pageLength": 10,
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        var hdfUnitId = $("#hdfUnitId");
+        var txtUnitName = $("#txtUnitName");
+        var txtUnitSymbol = $("#txtUnitSymbol");
+        var txtRemarksUnit = $("#txtRemarksUnit");
+
+        $(document).ready(function () {
+            $('#tblUnitData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+            });
+        })
+
+        function OpenModalUnit() {
+            $("#spanModalHeadUnit").text('Add New Unit');
+            $("#spanSaveTextUnit").text('Save');
+            $("#modalUnit").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewUnit").click(function (e) {
+            e.preventDefault();
+            clearCtrl();
+            OpenModalUnit();
+        })
+
+
+        $("#btnSubmitUnit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateFormUnit() == true) {
+                var data = JSON.stringify({ UnitId: TryParseInt(hdfUnitId.val(), 0), UnitName: txtUnitName.val(), UnitSymbol: txtUnitSymbol.val(), Remarks: txtRemarksUnit.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveUnit', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#modalUnit");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmitUnit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitUnit");
+                });
+            }
+
+        })
+
+        function validateFormUnit() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtUnitName.val()) == "") {
+                $(".required-unitName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfUnitId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, unitName: txtUnitName.val().trim() }), '/Common/IsDuplicateUnitName', getToken()) == true) {
+                    $(".duplicate-unitName").removeClass("hide");
+                    isValid = false;
+                }
+
+            }
+            return isValid;
+        }
+
+
+        $(document).on("click", "a.data-edit-item-unit", function (e) {
+            e.preventDefault()
+            clearCtrl();
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+
+            hdfUnitId.val(td1);
+            txtUnitName.val(td2);
+            txtUnitSymbol.val(td3)
+            txtRemarksUnit.val(td4);
+
+        })
+
+        function clearCtrl() {
+            hdfUnitId.val('0');
+            txtUnitName.val('');
+            txtUnitSymbol.val('');
+            txtRemarksUnit.val('');
+
+        }
+        $(".data-edit-item-unit").click(function (e) {
+            e.preventDefault()
+            OpenModalUnit()
+            $("#spanModalHead").text('Update Unit');
+            $("#spanSaveTextUnit").text('Update');
+        });
+    </script>
+
+    <script type="text/javascript">
+        var hdfItemId = $("#hdfItemId");
+        var txtItemName = $("#txtItemName");
+        var ddlItemTypeName = $("#ddlItemTypeName");
+        var ddlUnitName = $("#ddlUnitName");
+        var txtRemarksItem = $("#txtRemarksItem");
+        var chkStatestatusItem = $("#chkStatestatusItem");
+
+        $(document).ready(function () {
+            $('#tblItemData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "pageLength": 10,
+
+            });
+        })
+
+        function OpenModalItem() {
+            $("#spanModalHeadItem").text('Add New Item');
+            $("#spanSaveTextItem").text('Save');
+            $("#modalItem").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewItem").click(function (e) {
+            e.preventDefault();
+            clearCtrlItem();
+            OpenModalItem();
+        })
+
+        //Data add
+        $("#btnSubmitItem").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateFormItem() == true) {
+                var data = JSON.stringify({ ItemId: TryParseInt(hdfItemId.val(), 0), ItemName: txtItemName.val(), ItemTypeId: ddlItemTypeName.val(), UnitId: ddlUnitName.val(), Remarks: txtRemarksItem.val(), IsActive: chkStatestatusItem.is(":checked") });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveItem', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#modalItem");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmitItem");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitItem");
+                });
+            }
+
+        })
+        //validation
+        function validateFormItem() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtItemName.val()) == "") {
+                $(".required-itemName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfItemId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, itemName: txtItemName.val().trim() }), '/Common/IsDuplicateItemName', getToken()) == true) {
+                    $(".duplicate-itemName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(ddlItemTypeName.val()) == "") {
+                $(".required-itemTypeName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(ddlUnitName.val()) == "") {
+                $(".required-UnitName").removeClass("hide");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        ////data edit
+        //$(".data-edit-item").click(function (e) {
+        //    e.preventDefault()
+        //    OpenModal()
+        //});
+        $(document).on("click", "a.data-edit-item-Item", function (e) {
+            e.preventDefault()
+            clearCtrlItem();
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(5)').html();
+            var td5 = row.find('td:eq(6)').html();
+            var td6 = row.find('td:eq(7)').attr("data-val");
+
+            console.log(td1);
+            console.log(td2);
+            console.log(td3);
+            console.log(td4);
+            console.log(td5);
+            console.log(td6);
+            hdfItemId.val(td1);
+            ddlItemTypeName.val(td2);
+            txtItemName.val(td3);
+            ddlUnitName.val(td4);
+            txtRemarksItem.val(td5);
+            chkStatestatusItem.prop("checked", false);
+            if (td6.toLowerCase() === 'active') {
+                chkStatestatusItem.prop("checked", true);
+            }
+
+        })
+        $(".data-edit-item-Item").click(function (e) {
+            e.preventDefault()
+            OpenModalItem()
+            $("#spanModalHeadItem").text('Update Item');
+            $("#spanSaveTextItem").text('Update');
+        });
+        //$(document).on("click", "a.data-edit-item-Item", function (e) {
+        //    e.preventDefault();
+        //    var id = $(this).attr("data-edit-item-Item");
+
+        //    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/GetItemById', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+        //        console.log(res);
+        //        console.log(status);
+        //        if (res != null) {
+        //            hdfItemId.val(res.ItemId);
+        //            txtItemName.val(res.ItemName);
+        //            ddlItemTypeName.val(res.ItemTypeId);
+        //            ddlUnitName.val(res.UnitId);
+        //            txtRemarksItem.val(res.Remarks);
+        //            chkStatestatusItem.prop("checked", false);
+        //            if (res.IsActive === true) {
+        //                chkStatestatusItem.prop("checked", true);
+        //            }
+        //            OpenModalItem();
+        //            $("#spanModalHeadItem").text('Update Item');
+        //            $("#spanSaveTextItem").text('Update');
+        //        }
+        //        else {
+        //            alert("No data found..")
+        //        }
+        //    }).fail(function (error) {
+        //        console.log(error);
+        //    })
+        //})
+        function clearCtrlItem() {
+            hdfItemId.val('0');
+            txtItemName.val('');
+            ddlItemTypeName.val('');
+            ddlUnitName.val('');
+            txtRemarksItem.val('');
+            chkStatestatusItem.prop("checked", false);
+        }
+    </script>
 }
+
 
