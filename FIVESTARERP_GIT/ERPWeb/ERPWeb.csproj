@@ -258,6 +258,17 @@
     <Content Include="Reports\DataSets\ProductionDS.xss">
       <DependentUpon>ProductionDS.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\ServicesDS.xsc">
+      <DependentUpon>ServicesDS.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\ServicesDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ServicesDS.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\ServicesDS.xss">
+      <DependentUpon>ServicesDS.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\download.js" />
@@ -315,6 +326,7 @@
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ReportSSController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryToken.cs" />
@@ -330,6 +342,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProductionDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\ServicesDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServicesDS.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -567,6 +584,7 @@
     <Content Include="Views\Production\_GetRequisitionByItemInfo.cshtml" />
     <Content Include="Views\Production\GetAssemblyLineStockInfoFS.cshtml" />
     <Content Include="Views\Production\_GetAssemblyLineStockInfoFS.cshtml" />
+    <Content Include="Views\Configuration\GetWorkShopList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -579,6 +597,7 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common2\" />
+    <Folder Include="Views\ReportSS\" />
     <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
@@ -600,6 +619,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\rptProductionRequisition.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

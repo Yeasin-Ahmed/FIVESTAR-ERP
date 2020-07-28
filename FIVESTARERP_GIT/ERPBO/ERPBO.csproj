@@ -71,6 +71,7 @@
     <Compile Include="Configuration\DomainModels\TechnicalServiceEng.cs" />
     <Compile Include="Configuration\DomainModels\TransferDetail.cs" />
     <Compile Include="Configuration\DomainModels\TransferInfo.cs" />
+    <Compile Include="Configuration\DomainModels\WorkShop.cs" />
     <Compile Include="Configuration\DTOModels\AccessoriesDTO.cs" />
     <Compile Include="Configuration\DTOModels\BranchDTO.cs" />
     <Compile Include="Configuration\DTOModels\ClientProblemDTO.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Configuration\DTOModels\TechnicalServiceEngDTO.cs" />
     <Compile Include="Configuration\DTOModels\TransferDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\TransferInfoDTO.cs" />
+    <Compile Include="Configuration\DTOModels\WorkShopDTO.cs" />
     <Compile Include="Configuration\ViewModels\AccessoriesViewModel.cs" />
     <Compile Include="Configuration\ViewModels\BranchViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ClientProblemViewModel.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Configuration\ViewModels\TechnicalServiceEngViewModel.cs" />
     <Compile Include="Configuration\ViewModels\TransferDetailViewModel.cs" />
     <Compile Include="Configuration\ViewModels\TransferInfoViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\WorkShopViewModel.cs" />
     <Compile Include="ControlPanel\DomainModels\Branch.cs" />
     <Compile Include="ControlPanel\DomainModels\AppUser.cs" />
     <Compile Include="ControlPanel\DomainModels\MainMenu.cs" />
@@ -179,6 +182,7 @@
     <Compile Include="FrontDesk\DTOModels\TSStockInfoDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TsStockReturnDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TsStockReturnInfoDTO.cs" />
+    <Compile Include="FrontDesk\ReportModels\ServicesReportHead.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardApprovedRequsitionViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailyBillingAndWarrantyJobViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailyReceiveJobOrderViewModel.cs" />
@@ -472,7 +476,6 @@
   <ItemGroup>
     <Folder Include="Configuration\ReportModels\" />
     <Folder Include="ControlPanel\ReportModels\" />
-    <Folder Include="FrontDesk\ReportModels\" />
     <Folder Include="Inventory\ReportModels\" />
     <Folder Include="ReportModels\" />
   </ItemGroup>

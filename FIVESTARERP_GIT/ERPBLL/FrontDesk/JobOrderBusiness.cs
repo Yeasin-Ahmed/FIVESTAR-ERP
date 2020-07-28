@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
+using ERPBLL.ReportSS.Interface;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPBO.Production.DTOModel;
@@ -18,12 +19,12 @@ namespace ERPBLL.FrontDesk
         private readonly JobOrderRepository _jobOrderRepository;
         private readonly JobOrderAccessoriesRepository _jobOrderAccessoriesRepository;
         private readonly JobOrderProblemRepository _jobOrderProblemRepository;
-
         private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
         private readonly IJobOrderAccessoriesBusiness _jobOrderAccessoriesBusiness;
         private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
+        private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
 
-        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness)
+        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._jobOrderRepository = new JobOrderRepository(this._frontDeskUnitOfWork);
@@ -31,6 +32,7 @@ namespace ERPBLL.FrontDesk
             this._jobOrderAccessoriesRepository = new JobOrderAccessoriesRepository(this._frontDeskUnitOfWork);
             this._jobOrderProblemBusiness = jobOrderProblemBusiness;
             this._jobOrderProblemRepository = new JobOrderProblemRepository(this._frontDeskUnitOfWork);
+            this._jobOrderReportBusiness = jobOrderReportBusiness;
 
         }
 
@@ -409,7 +411,7 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,UserName,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -419,7 +421,11 @@ Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames'
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
 Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ap.UserName 'TSName'
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ap.UserName 'TSName',
+(Select Top 1 app.UserName  from tblJobOrders j
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on j.EUserId = app.UserId
+Where j.JodOrderId = jo.JodOrderId
+Order By j.EUserId desc) 'EntryUser'
 
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
@@ -557,7 +563,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
         public JobOrder GetReferencesNumberByIMEI(string imei, long orgId, long branchId)
         {
             imei = imei.Trim();
-            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).LastOrDefault();
+            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
         }
 
         public IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyJobOrder(long orgId, long branchId)
@@ -659,16 +665,39 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
             return _jobOrderRepository.Save();
         }
 
+        public JobOrderDTO GetJobOrderReceipt(long jobOrderId, long userId, long orgId, long branchId)
+        {
+            JobOrderDTO jobOrder = new JobOrderDTO();
+            if (UpdateJobOrderDeliveryStatus(jobOrderId, userId, orgId, branchId))
+            {
+                jobOrder= _jobOrderReportBusiness.GetReceiptForJobOrder(jobOrderId, orgId, branchId);
+            }
+            return jobOrder;
+        }
+
         public JobOrder GetReferencesNumberByMobileNumber(string mobileNumber, long orgId, long branchId)
         {
             mobileNumber = mobileNumber.Trim();
-            return _jobOrderRepository.GetAll(job => job.MobileNo == mobileNumber.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).LastOrDefault();
+            return _jobOrderRepository.GetAll(job => job.MobileNo == mobileNumber.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
         }
 
         public JobOrder GetReferencesNumberByIMEI2(string imei2, long orgId, long branchId)
         {
             imei2 = imei2.Trim();
-            return _jobOrderRepository.GetAll(job => job.IMEI2 == imei2.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).LastOrDefault();
+            return _jobOrderRepository.GetAll(job => job.IMEI2 == imei2.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
+        }
+
+        public bool IsIMEIExistWithRunningJobOrder(string iMEI1, long orgId, long branchId)
+        {
+            bool IsExist = false;
+            var jobOrder = _jobOrderRepository.GetAll(job => job.IMEI == iMEI1 && job.OrganizationId == orgId && job.BranchId == branchId).LastOrDefault();
+            if (jobOrder != null) {
+                if(jobOrder.StateStatus != JobOrderStatus.DeliveryDone)
+                {
+                    IsExist = true;
+                }
+            }
+            return IsExist;
         }
     }
 }

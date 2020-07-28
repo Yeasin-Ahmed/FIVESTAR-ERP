@@ -42,6 +42,8 @@ namespace ERPBLL.FrontDesk.Interface
 
         JobOrder GetReferencesNumberByMobileNumber(string mobileNumber, long orgId, long branchId);
         JobOrder GetReferencesNumberByIMEI2(string imei2, long orgId, long branchId);
+        JobOrderDTO GetJobOrderReceipt(long jobOrderId, long userId, long orgId, long branchId);
+        bool IsIMEIExistWithRunningJobOrder(string iMEI1, long orgId, long branchId);
 
     }
 }

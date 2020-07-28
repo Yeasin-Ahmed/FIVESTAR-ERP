@@ -98,18 +98,19 @@ namespace ERPWeb.Controllers
                 var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
-                AutoMapper.Mapper.Map(dto, viewModels);
+               
                 if (flag == "view" || flag == "search")
                 {
                     // Pagination //
-                    ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
-                    dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                    dto = dto.Skip((page - 1) * 5).Take(5).ToList();
                     //-----------------//
-
+                    AutoMapper.Mapper.Map(dto, viewModels);
                     return PartialView("_GetJobOrders", viewModels);
                 }
                 else if (flag == "Detail")// Flag = Detail
                 {
+                    AutoMapper.Mapper.Map(dto, viewModels);
                     ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                     return PartialView("_GetJobOrderDetail", viewModels.FirstOrDefault());
                 }
@@ -220,16 +221,6 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult UpdateJobOrderDeliveryStatus(long jobOrderId)
-        {
-            bool IsSuccess = false;
-            if (jobOrderId > 0)
-            {
-                IsSuccess = _jobOrderBusiness.UpdateJobOrderDeliveryStatus(jobOrderId, User.UserId, User.OrgId, User.BranchId);
-            }
-            return Json(IsSuccess);
-        }
         #endregion
 
         #region JobOrderTS

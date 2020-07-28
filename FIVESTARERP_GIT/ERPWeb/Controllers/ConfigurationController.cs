@@ -31,8 +31,9 @@ namespace ERPWeb.Controllers
         private readonly IBranchBusiness _branchBusinesss;
         private readonly IFaultBusiness _faultBusiness;
         private readonly IServiceBusiness _serviceBusiness;
+        private readonly IWorkShopBusiness _workShopBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -49,6 +50,7 @@ namespace ERPWeb.Controllers
             this._branchBusinesss = branchBusinesss;
             this._faultBusiness = faultBusiness;
             this._serviceBusiness = serviceBusiness;
+            this._workShopBusiness = workShopBusiness;
         }
         #region tblAccessories
         public ActionResult AccessoriesList()
@@ -917,6 +919,61 @@ namespace ERPWeb.Controllers
                 try
                 {
                     isSuccess = _serviceBusiness.DeleteService(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region tblWorkShop
+        public ActionResult GetWorkShopList()
+        {
+            IEnumerable<WorkShopDTO> workShopDTO = _workShopBusiness.GetAllWorkShopByOrgId(User.OrgId, User.BranchId).Select(shop => new WorkShopDTO
+            {
+                WorkShopId = shop.WorkShopId,
+                WorkShopName=shop.WorkShopName,
+                Remarks=shop.Remarks,
+                OrganizationId=shop.OrganizationId,
+                BranchId=shop.BranchId,
+                EUserId=shop.EUserId,
+                EntryDate=shop.EntryDate
+            }).ToList();
+            List<WorkShopViewModel> workShopViewModels = new List<WorkShopViewModel>();
+            AutoMapper.Mapper.Map(workShopDTO, workShopViewModels);
+            return View(workShopViewModels);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveWorkShop(WorkShopViewModel workShopViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    WorkShopDTO dto = new WorkShopDTO();
+                    AutoMapper.Mapper.Map(workShopViewModel, dto);
+                    isSuccess = _workShopBusiness.SaveWorkShop(dto, User.UserId, User.OrgId, User.BranchId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteWorkShop(long id)
+        {
+            bool isSuccess = false;
+            if (id > 0)
+            {
+                try
+                {
+                    isSuccess = _workShopBusiness.DeleteWorkShop(id, User.OrgId, User.BranchId);
                 }
                 catch (Exception ex)
                 {

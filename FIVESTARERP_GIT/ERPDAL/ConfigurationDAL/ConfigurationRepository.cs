@@ -67,4 +67,8 @@ namespace ERPDAL.ConfigurationDAL
     {
         public RepairRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
+    public class WorkShopRepository : ConfigurationBaseRepository<WorkShop>
+    {
+        public WorkShopRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
 }

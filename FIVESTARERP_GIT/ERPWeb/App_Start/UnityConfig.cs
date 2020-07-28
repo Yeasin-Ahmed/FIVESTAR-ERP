@@ -10,6 +10,8 @@ using ERPBLL.Production;
 using ERPBLL.Production.Interface;
 using ERPBLL.Report;
 using ERPBLL.Report.Interface;
+using ERPBLL.ReportSS;
+using ERPBLL.ReportSS.Interface;
 using ERPDAL.ConfigurationDAL;
 using ERPDAL.ControlPanelDAL;
 using ERPDAL.FrontDeskDAL;
@@ -130,6 +132,7 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IWorkShopBusiness, WorkShopBusiness>();
             container.RegisterType<IRepairBusiness, RepairBusiness>();
             container.RegisterType<IServiceBusiness, ServiceBusiness>();
             container.RegisterType<IFaultBusiness, FaultBusiness>();
@@ -166,7 +169,7 @@ namespace ERPWeb
             #endregion
 
             #region Report
-
+            container.RegisterType<IJobOrderReportBusiness, JobOrderReportBusiness>();
             container.RegisterType<IProductionReportBusiness, ProductionReportBusiness>();
 
             #endregion

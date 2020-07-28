@@ -207,13 +207,19 @@ namespace ERPWeb.Controllers
             bool isExist = _jobOrderFaultBusiness.IsDuplicateFaultName(id, faultId, User.OrgId);
             return Json(isExist);
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateServicesId(long id, long servicesId)
         {
             bool isExist = _jobOrderServiceBusiness.IsDuplicateServicesName(id, servicesId, User.OrgId);
             return Json(isExist);
         }
-
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsIMEIExistWithRunningJobOrder(string iMEI)
+        {
+            bool isExist = _jobOrderBusiness.IsIMEIExistWithRunningJobOrder(iMEI, User.OrgId, User.BranchId);
+            return Json(isExist);
+        }
         [HttpPost]
         public ActionResult GetCostPriceForDDL(long partsId)
         {

@@ -88,6 +88,7 @@
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
+                            <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
                         </div>
                         <div class="col-md-3">
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2</label>
@@ -489,6 +490,12 @@
         //})
 
         ///
+        $("#searchCustomer").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchCustomer.val()) !== "") {
+                getCustomer($.trim(txtSearchCustomer.val()));
+            }
+        })
         function getCustomer(mobileNo) {
             var data = JSON.stringify({ mobileNo: mobileNo });
             $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetCustomerByMobileNo', data)).then(function (res, status) {
@@ -595,46 +602,46 @@
 
 
         //serch By MobileNumber GetAll Information Job
-        $("#searchCustomer").click(function (e) {
-            e.preventDefault();
-            if ($.trim(txtSearchCustomer.val()) !== "") {
-                getMobileNumber($.trim(txtSearchCustomer.val()));
-            }
-        })
+        //$("#searchCustomer").click(function (e) {
+        //    e.preventDefault();
+        //    if ($.trim(txtSearchCustomer.val()) !== "") {
+        //        getMobileNumber($.trim(txtSearchCustomer.val()));
+        //    }
+        //})
 
-        function getMobileNumber(mobileNumber) {
-            var data = JSON.stringify({ mobileNumber: mobileNumber });
-            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByMobileNumber', data)).then(function (res, status) {
-                if (status === "success") {
-                    if (res.JodOrderId > 0) {
-                        txtIMEI.val(res.IMEI);
-                        txtReferenceNumber.val(res.ReferenceNumber);
-                        txtIMEI2.val(res.IMEI2);
-                        ddlPhoneTypes.val(res.Type);
-                        ddlPhoneTypes.trigger('change');
-                        ddlModelColor.val(res.ModelColor);
-                        ddlModelColor.trigger('change');
-                        ddlJobOrderType.val(res.JobOrderType);
-                        ddlJobOrderType.trigger('change');
-                        txtRemarks.val(res.Remarks);
-                        if (ddlJobOrderType.val() == "Warrenty") {
-                            dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
-                        }
-                        ddlDescriptions.val(res.DescriptionId);
-                        ddlDescriptions.trigger('change');
-                        txtCustomer.val(res.CustomerName);
-                        txtAddress.val(res.Address);
-                        txtMobileNumber.val(res.MobileNo);
+        //function getMobileNumber(mobileNumber) {
+        //    var data = JSON.stringify({ mobileNumber: mobileNumber });
+        //    $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByMobileNumber', data)).then(function (res, status) {
+        //        if (status === "success") {
+        //            if (res.JodOrderId > 0) {
+        //                txtIMEI.val(res.IMEI);
+        //                txtReferenceNumber.val(res.ReferenceNumber);
+        //                txtIMEI2.val(res.IMEI2);
+        //                ddlPhoneTypes.val(res.Type);
+        //                ddlPhoneTypes.trigger('change');
+        //                ddlModelColor.val(res.ModelColor);
+        //                ddlModelColor.trigger('change');
+        //                ddlJobOrderType.val(res.JobOrderType);
+        //                ddlJobOrderType.trigger('change');
+        //                txtRemarks.val(res.Remarks);
+        //                if (ddlJobOrderType.val() == "Warrenty") {
+        //                    dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
+        //                }
+        //                ddlDescriptions.val(res.DescriptionId);
+        //                ddlDescriptions.trigger('change');
+        //                txtCustomer.val(res.CustomerName);
+        //                txtAddress.val(res.Address);
+        //                txtMobileNumber.val(res.MobileNo);
 
-                    }
-                    else {
-                        bootbox.alert('References is not found');
-                    }
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
-        }
+        //            }
+        //            else {
+        //                bootbox.alert('References is not found');
+        //            }
+        //        }
+        //    }).fail(function (error) {
+        //        console.log(error);
+        //    })
+        //}
         //end
         
         function validateForm() {
@@ -660,6 +667,13 @@
             if (txtIMEI.val() === "") {
                 $(".require-IMEI").removeClass("hide");
                 isValid = false;
+            }
+            else {
+                
+                if (ajaxBooleanChecker(JSON.stringify({ iMEI: txtIMEI.val().trim() }), '/Common2/IsIMEIExistWithRunningJobOrder', getToken()) == true) {
+                    $(".duplicate-IMEI").removeClass("hide");
+                    isValid = false;
+                }
             }
             if (txtIMEI2.val() === "") {
                 $(".require-IMEI2").removeClass("hide");

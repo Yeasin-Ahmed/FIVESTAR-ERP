@@ -29,5 +29,6 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<Fault> tblFault { get; set; }
         public DbSet<Service> tblServices { get; set; }
         public DbSet<Repair> tblRepair { get; set; }
+        public DbSet<WorkShop> tblWorkShop { get; set; }
     }
 }

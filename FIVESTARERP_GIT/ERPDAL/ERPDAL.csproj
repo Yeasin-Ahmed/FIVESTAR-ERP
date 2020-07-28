@@ -141,6 +141,10 @@
     <Compile Include="ConfigurationContextMigrations\202007050554097_Configuration_Repair.Designer.cs">
       <DependentUpon>202007050554097_Configuration_Repair.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202007250501546_Configuration_WorkShopadd.cs" />
+    <Compile Include="ConfigurationContextMigrations\202007250501546_Configuration_WorkShopadd.Designer.cs">
+      <DependentUpon>202007250501546_Configuration_WorkShopadd.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -487,6 +491,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202007050554097_Configuration_Repair.resx">
       <DependentUpon>202007050554097_Configuration_Repair.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202007250501546_Configuration_WorkShopadd.resx">
+      <DependentUpon>202007250501546_Configuration_WorkShopadd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

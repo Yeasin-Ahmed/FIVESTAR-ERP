@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-3">
-
+                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" id="btnReport" title="Pdf Report"><i class="fas fa-file-pdf"></i></a>
             </div>
             <div class="col-md-6 text-center">
                 <h4><b style="color:darkblue">List of Job Order</b></h4>
@@ -18,37 +18,35 @@
         </div>
         <hr />
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 text-sm">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label">IMEI1 No</label>
                 <input type="text" id="txtIMEINo" class="form-control form-control-sm" placeholder="Search By IMEI1" />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label">IMEI2 No</label>
                 <input type="text" id="txtIMEI2No" class="form-control form-control-sm" placeholder="Search By IMEI2" />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label">Model Name</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Search By Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label">Mobile No</label>
                 <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label">JobCode</label>
                 <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="col-form-label">StateStatus</label>
                 @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
             </div>
         </div>
     </div>
-    <div class="col-md-12 mt-2" id="dataContainer" style="overflow-y:scroll">
+    <div class="col-md-12 mt-2 text-sm" id="dataContainer" style="overflow-y:scroll">
         @{Html.RenderAction("GetJobOrders", new { @flag = "view" });}
     </div>
 </div>
@@ -62,7 +60,7 @@
                 <h4 id="modalHeading" class="modal-title">JobOrder Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body" id="dataContainer2" >
+            <div class="modal-body" id="dataContainer2">
 
             </div>
         </div>
@@ -93,7 +91,7 @@
 
         txtMobileNo.keyup(function () {
             LoadDataTable();
-            
+
         })
 
         txtJobCode.keyup(function () {
@@ -292,17 +290,17 @@
         function changeJobOrderStatus(status) {
             var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val()});
 
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderDeliveryStatus', data, getToken())).then(function (res, status) {
-                if (res === true && status === "success") {
-                    $("#modalJobOrderDetails").modal("toggle");
-                    $('.toastrJobOrderSuccess').trigger('click');
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/GetJobOrderReceiptReport', data, getToken())).then(function (res, status) {
+                if (res.IsSuccess === true && status === "success") {
+                    //alert("Success");
+                    setTimeout(function () {
+                                    redirectPage('@Url.Action("GetJobOrders")');
+                                }, 1000);
+                    var pdfWindow = window.open("", "_blank")
+                    console.log(res.File);
+                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
+                    download(res.File, res.FileName, "application/pdf"); // Download
                 }
-                else {
-                    $('.toastrJobOrderError').trigger('click');
-                }
-                setTimeout(function () {
-                            redirectPage('@Url.Action("GetJobOrders","FrontDesk",new {})');
-                        }, 1500);
             }).fail(function (error) {
                 console.log(error);
             })
@@ -310,6 +308,29 @@
             console.log(data);
         }
 
-        //var dots = $("#tblJobOrderList tbody").children("tr").eq(0).children('td').html();
+        // Report
+        $("#btnReport").click(function (e) {
+            e.preventDefault();
+            var data = JSON.stringify({ flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val() });
+            //return console.log(data)
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/GetJobOrderReport', data, getToken())).then(function (res, status) {
+                console.log(res.IsSuccess);
+                if (res.IsSuccess === true) {
+                    var pdfWindow = window.open("", "_blank")
+                    console.log(res.File);
+                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
+                    download(res.File, res.FileName, "application/pdf"); // Download
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+        $(document).on('click', '.data-report-item', function (e) {
+            e.preventDefault();
+
+        })
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
     </script>
 }
