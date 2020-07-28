@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.QRCodeTransferToRepairInfoViewModel>
+@{
+    int sl = 0;
+    string belt = string.Empty;
+    string badge = string.Empty;
+}
+
+<div class="row text-sm">
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg tblRepairableQRCode">
+            <thead class="text-center">
+                <tr class="btn-dark">
+                    <th style="width:5%;vertical-align:middle">#SL</th>
+                    <th style="width:15%;vertical-align:middle">TransferCode</th>
+                    <th style="width:30%;vertical-align:middle">Belt</th>
+                    <th style="width:15%;vertical-align:middle">QRCode</th>
+                    <th style="width:11%;vertical-align:middle">Status</th>
+                    <th style="width:12%;vertical-align:middle">Transfer Datetime</th>
+                    <th style="width:12%;vertical-align:middle">Repair Datetime</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    belt = "(" + item.FloorName + ")-(" + item.AssemblyLineName + ")-(" + item.QCLineName + ")-(" + item.RepairLineName + ")";
+                    string repairTime = item.UpdateDate.HasValue ? item.UpdateDate.Value.ToString("dd-MMM-yyyy hh:mm tt") : "";
+                    badge = item.StateStatus == "Send" ? "badge badge-warning" : (item.StateStatus == "Received" ? "badge badge-success" : "badge badge-primary");
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="text-center text-bold">@item.TransferCode</td>
+                        <td class="text-bold">@belt</td>
+                        <td class="text-center">@item.QRCode</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                        <td>@repairTime</td>
+                    </tr>
+                }
+                @if(Model.Count() == 0)
+                {
+                    <tr class="text-center">
+                        <td colspan="7">No data found in the table</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12"></div>
+</div>
+
+

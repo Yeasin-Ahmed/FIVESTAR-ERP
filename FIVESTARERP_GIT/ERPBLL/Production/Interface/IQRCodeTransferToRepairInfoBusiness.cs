@@ -21,5 +21,6 @@ namespace ERPBLL.Production.Interface
         ExecutionStateWithText CheckingAvailabilityOfSparepartsWithRepairLineStock(long modelId, long itemId, long repairLineId,long orgId);
         Task<QRCodeTransferToRepairInfo> GetQRCodeTransferToRepairInfoByIdAsync(long id, long orgId);
         bool IsQRCodeExistInTransferWithStatus(string qrCode, string status, long orgId);
+        IEnumerable<QRCodeTransferToRepairInfoDTO> GetQRCodeTransferToRepairInfosByQuery(long? floorId, long? assemblyId, long? qcLineId, long? repairLineId, string qrCode,string transferCode ,string status, string date, long? userId, long orgId);
     }
 }

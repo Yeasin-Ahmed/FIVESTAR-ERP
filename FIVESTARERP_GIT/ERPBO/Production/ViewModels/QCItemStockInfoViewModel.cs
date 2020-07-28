@@ -11,8 +11,6 @@ namespace ERPBO.Production.ViewModels
     public class QCItemStockInfoViewModel
     {
         public long QCItemStockInfoId { get; set; }
-        [StringLength(100)]
-        public string QCPassCode { get; set; }
         public long? ProductionFloorId { get; set; }
         public long? AssemblyLineId { get; set; }
         public long? QCId { get; set; }
