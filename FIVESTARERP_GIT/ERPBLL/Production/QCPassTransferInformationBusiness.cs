@@ -295,7 +295,7 @@ namespace ERPBLL.Production
                     Quantity = item.Quantity,
                     EntryDate = DateTime.Now,
                     UnitId = item.UnitId,
-                    RefferenceNumber = codes,
+                    RefferenceNumber = code,
                     StockStatus = StockStatus.StockIn
                 };
                 stockDetailDTOs.Add(assemblyStock);
