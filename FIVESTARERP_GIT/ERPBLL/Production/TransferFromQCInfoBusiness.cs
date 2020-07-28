@@ -124,6 +124,7 @@ namespace ERPBLL.Production
                             new RepairItemStockDetailDTO()
                             {
                                 ProductionFloorId = transferInDb.LineId,
+                                AssemblyLineId= transferInDb.AssemblyLineId,
                                 DescriptionId = transferInDb.DescriptionId,
                                 QCId = transferInDb.QCLineId,
                                 RepairLineId = transferInDb.RepairLineId,
@@ -142,6 +143,7 @@ namespace ERPBLL.Production
                         {
                             RepairLineStockDetailDTO repair = new RepairLineStockDetailDTO()
                             {
+                                AssemblyLineId = transferInDb.AssemblyLineId,
                                 QCLineId = transferInDb.QCLineId.Value,
                                 RepairLineId = transferInDb.RepairLineId,
                                 DescriptionId = transferInDb.DescriptionId,
@@ -275,9 +277,9 @@ namespace ERPBLL.Production
             return _transferFromQCInfoRepository.GetAll(t => t.TransferFor == transferFor && t.OrganizationId == orgId);
         }
 
-        public async Task<TransferFromQCInfo> GetNonReceivedTransferFromQCInfoByQRCodeKeyAsync(long qcLineId, long repairLineId, long modelId, long warehouseId, long itemTypeId, long itemId, long orgId)
+        public async Task<TransferFromQCInfo> GetNonReceivedTransferFromQCInfoByQRCodeKeyAsync(long AssemblyId,long qcLineId, long repairLineId, long modelId, long warehouseId, long itemTypeId, long itemId, long orgId)
         {
-            return await _transferFromQCInfoRepository.GetOneByOrgAsync(t => t.QCLineId == qcLineId && t.RepairLineId == repairLineId && t.DescriptionId == modelId && t.WarehouseId == warehouseId && t.ItemTypeId == itemTypeId && t.ItemId == itemId && t.OrganizationId == orgId && t.StateStatus == RequisitionStatus.Approved);
+            return await _transferFromQCInfoRepository.GetOneByOrgAsync(t => t.AssemblyLineId == AssemblyId && t.QCLineId == qcLineId && t.RepairLineId == repairLineId && t.DescriptionId == modelId && t.WarehouseId == warehouseId && t.ItemTypeId == itemTypeId && t.ItemId == itemId && t.OrganizationId == orgId && t.StateStatus == RequisitionStatus.Approved);
         }
 
         public IEnumerable<TransferFromQCInfoDTO> GetTransferFromQCInfos(long? floorId, long? qcLineId, long? repairLineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate, string transferCode,long? transferInfoId ,long orgId)

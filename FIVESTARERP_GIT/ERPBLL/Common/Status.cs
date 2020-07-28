@@ -133,4 +133,12 @@ namespace ERPBLL.Common
         public static readonly string Packaging = "Packaging";
     }
 
+    public class QRCodeStatus
+    {
+        public static readonly string Assembly = "Assembly";
+        public static readonly string AssemblyRepair = "Assembly-Repair";
+        public static readonly string MiniStock = "MiniStock";
+        public static readonly string Packaging = "Packaging";
+    }
+
 }

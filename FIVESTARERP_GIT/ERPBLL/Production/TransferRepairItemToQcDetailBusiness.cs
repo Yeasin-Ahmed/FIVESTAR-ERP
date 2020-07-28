@@ -53,5 +53,10 @@ Where 1=1 {0}", Utility.ParamChecker(param));
         {
             return _transferRepairItemToQcRepository.GetAll(t => t.OrganizationId == orgId).ToList();
         }
+
+        public async Task<IEnumerable<TransferRepairItemToQcDetail>> GetTransferRepairItemToQcDetailByInfoAsync(long infoId, long orgId)
+        {
+            return await _transferRepairItemToQcRepository.GetAllAsync(t => t.TRQInfoId == infoId && t.OrganizationId == orgId);
+        }
     }
 }

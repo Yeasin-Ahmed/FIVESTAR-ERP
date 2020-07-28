@@ -9,7 +9,7 @@ namespace ERPBO.Production.DTOModel
 {
     public class RequisitionItemInfoDTO
     {
-        public long ReqItenInfoId { get; set; }
+        public long ReqItemInfoId { get; set; }
         public long FloorId { get; set; }
         public long AssemblyLineId { get; set; }
         public long? DescriptionId { get; set; }
@@ -29,6 +29,8 @@ namespace ERPBO.Production.DTOModel
 
         // Custom Properties
         [StringLength(100)]
+        public string ReqInfoCode { get; set; }
+        [StringLength(100)]
         public string FloorName { get; set; }
         [StringLength(100)]
         public string AssemblyLineName { get; set; }
@@ -46,6 +48,7 @@ namespace ERPBO.Production.DTOModel
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
+        public int? TotalItems { get; set; }
         public List<RequisitionItemDetailDTO> RequisitionItemDetails { get; set; }
     }
 }

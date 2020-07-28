@@ -16,6 +16,7 @@ namespace ERPBO.Production.DomainModels
         public long? QCLineId { get; set; }
         public long? RepairLineId { get; set; }
         public long? ProductionLineId { get; set; }
+        public long? AssemblyLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }

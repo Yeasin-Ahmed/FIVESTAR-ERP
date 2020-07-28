@@ -13,6 +13,7 @@ namespace ERPBO.Production.DTOModel
         public long RLStockDetailId { get; set; }
         public long? QCLineId { get; set; }
         public long? RepairLineId { get; set; }
+        public long? AssemblyLineId { get; set; }
         public long? ProductionLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? WarehouseId { get; set; }
@@ -40,6 +41,8 @@ namespace ERPBO.Production.DTOModel
         public string RepairLineName { get; set; }
         [StringLength(100)]
         public string ProductionLineName { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         [StringLength(200)]
         public string ModelName { get; set; }
         [StringLength(100)]

@@ -14,10 +14,12 @@ namespace ERPBLL.Production
     {
         private readonly IProductionUnitOfWork _productionDb;
         private readonly QRCodeTraceRepository _qRCodeTraceRepository;
+        private readonly TempQRCodeTraceRepository _tempQRCodeTraceRepository;
         public QRCodeTraceBusiness(IProductionUnitOfWork productionDb)
         {
             this._productionDb = productionDb;
             this._qRCodeTraceRepository = new QRCodeTraceRepository(this._productionDb);
+            this._tempQRCodeTraceRepository = new TempQRCodeTraceRepository(this._productionDb);
         }
         public QRCodeTrace GetQRCodeTraceByCode(string code, long orgId)
         {
@@ -36,6 +38,7 @@ namespace ERPBLL.Production
         public bool SaveQRCodeTrace(List<QRCodeTraceDTO> dtos, long userId, long orgId)
         {
             List<QRCodeTrace> list = new List<QRCodeTrace>();
+            List<TempQRCodeTrace> tempList = new List<TempQRCodeTrace>();
             foreach (var item in dtos)
             {
                 QRCodeTrace qRCode = new QRCodeTrace()
@@ -63,11 +66,39 @@ namespace ERPBLL.Production
                     AssemblyId =item.AssemblyId,
                     AssemblyLineName = item.AssemblyLineName
                 };
+                TempQRCodeTrace tempQRCode = new TempQRCodeTrace()
+                {
+                    ProductionFloorId = item.ProductionFloorId,
+                    DescriptionId = item.DescriptionId,
+                    ColorId = item.ColorId,
+                    ColorName = item.ColorName,
+                    CodeNo = item.CodeNo,
+                    CodeImage = item.CodeImage,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    ReferenceId = item.ReferenceId,
+                    ReferenceNumber = item.ReferenceNumber,
+                    Remarks = item.Remarks,
+                    ProductionFloorName = item.ProductionFloorName,
+                    ModelName = item.ModelName,
+                    WarehouseName = item.WarehouseName,
+                    ItemTypeName = item.ItemTypeName,
+                    ItemName = item.ItemName,
+                    AssemblyId = item.AssemblyId,
+                    AssemblyLineName = item.AssemblyLineName,
+                    StateStatus="Assembly"
+                };
                 list.Add(qRCode);
+                tempList.Add(tempQRCode);
             }
             if(list.Count > 0)
             {
                 _qRCodeTraceRepository.InsertAll(list);
+                _tempQRCodeTraceRepository.InsertAll(tempList);
             }
             return _qRCodeTraceRepository.Save();
         }

@@ -53,7 +53,7 @@ namespace ERPWeb.Controllers
         private readonly IFaultyCaseBusiness _faultyCaseBusiness;
         private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
         private readonly IQRCodeTransferToRepairInfoBusiness _qRCodeTransferToRepairInfoBusiness;
-
+        private readonly ITempQRCodeTraceBusiness _tempQRCodeTraceBusiness;
         #endregion
 
         #region ControlPanel
@@ -64,7 +64,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -99,6 +99,7 @@ namespace ERPWeb.Controllers
             this._faultyCaseBusiness = faultyCaseBusiness;
             this._faultyItemStockDetailBusiness = faultyItemStockDetailBusiness;
             this._qRCodeTransferToRepairInfoBusiness = qRCodeTransferToRepairInfoBusiness;
+            this._tempQRCodeTraceBusiness = tempQRCodeTraceBusiness;
             #endregion
 
             #region ControlPanel
@@ -376,9 +377,9 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetRepairLineQCRemainQty(long repairLineId, long qcLineId, long modelId, long itemId)
+        public ActionResult GetRepairLineQCRemainQty(long assemblyLineId,long repairLineId, long qcLineId, long modelId, long itemId)
         {
-            var transferQty = _repairItemStockInfoBusiness.GetRepairItem(qcLineId, repairLineId, modelId, itemId, User.OrgId);
+            var transferQty = _repairItemStockInfoBusiness.GetRepairItem(assemblyLineId, qcLineId, repairLineId, modelId, itemId, User.OrgId);
             var remainQty = transferQty.Quantity - transferQty.QCQty;
             return Json(remainQty);
         }
@@ -707,6 +708,19 @@ namespace ERPWeb.Controllers
             var IsExist = _qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(qrCode, string.Format(@"'Receiced','Send'"), User.OrgId);
             return Json(IsExist);
         }
+
+        [HttpPost]
+        public ActionResult IsExistInAssembly(string qrCode)
+        {
+            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, QRCodeStatus.Assembly, User.OrgId);
+            return Json(IsExist);
+        }
+        [HttpPost]
+        public ActionResult IsExistInAssemblyRepair(string qrCode)
+        {
+            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, QRCodeStatus.AssemblyRepair, User.OrgId);
+            return Json(IsExist);
+        }
         #endregion
 
 
@@ -771,7 +785,7 @@ namespace ERPWeb.Controllers
         
         public ActionResult GetQCItemStockQtyByFloorAndQcAndModelAndItem(long floorId, long qcId, long modelId, long itemId)
         {
-            var stock =_qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItem(floorId, qcId, modelId, itemId, User.OrgId);
+            var stock =_qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItem(floorId,0, qcId, modelId, itemId, User.OrgId);
             return Json(stock.Quantity);
         }
 
@@ -861,7 +875,7 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public async Task<ActionResult> GetQRCodeTraceByCodeAsync(string qrCode)
         {
-            var data = await _qRCodeTraceBusiness.GetQRCodeTraceByCodeAsync(qrCode, User.OrgId);
+            var data = await _tempQRCodeTraceBusiness.GetTempQRCodeTraceByCodeAsync(qrCode, User.OrgId);
             var qrCodeData = new {Floor=(data !=null ? data.ProductionFloorId: 0),Assembly=(data !=null?data.AssemblyId : 0),Model=(data !=null ?data.DescriptionId : 0),Item= (data !=null ?  data.ItemId :0 ),ItemType= (data != null ? data.ItemTypeId : 0),Warehouse= (data != null ? data.WarehouseId : 0) };
             var passedData = qrCodeData.Floor == 0 ? null : qrCodeData;
             return Json(qrCodeData);

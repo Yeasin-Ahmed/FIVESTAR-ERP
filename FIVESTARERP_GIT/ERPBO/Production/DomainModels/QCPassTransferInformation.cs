@@ -13,9 +13,14 @@ namespace ERPBO.Production.DomainModels
     {
         [Key]
         public long QPassId { get; set; }
+        [StringLength(100)]
+        public string QCPassCode { get; set; }
         public long ProductionFloorId { get; set; }
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
+        public long AssemblyLineId { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         public long QCLineId { get; set; }
         [StringLength(100)]
         public string QCLineName { get; set; }

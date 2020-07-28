@@ -2,7 +2,7 @@
     ViewBag.Title = "Assembly Line Spare Parts Stock";
 }
 
-<div class="row">
+<div class="row text-sm">
     <div class="col-md-12">
         <div class="card card-primary card-outline card-tabs">
             <div class="card-header p-0 pt-1 border-bottom-0">
@@ -166,7 +166,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("GetRequisitionByItemInfoAndDetail", new { @flag = "View", @transferFor="Assembly",@status="Approved" });}
+                                                @{Html.RenderAction("ReceiveSparePartsFromProductionRequisitionInAssembly", new { @flag = "Info"});}
                                             </div>
                                         </div>
                                     </div>
@@ -261,12 +261,13 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="modalReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary">
                 <input type="hidden" id="hdfInfoId" />
-                <h4 id="modalHeading" class="modal-title"></h4>
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="modelContaine1">
@@ -291,6 +292,8 @@
         var pageNo = 1;
 
         ///Receive list //
+        var hdfRowIndex = $("#hdfRowIndex");
+        var hdfInfoId = $("#hdfInfoId");
         var ddlModelNameReceiveList = $("#ddlModelNameReceiveList");
         var ddlAssemblyReceiveList = $("#ddlAssemblyReceiveList");
         var ddlStateStatusReceiveList = $("#ddlStateStatusReceiveList");
@@ -438,16 +441,17 @@
 
         function LoadDataTableReceiveList() {
             getProductionFloorAndAssembly();
-            var data = { flag: "search", floorId: floorList, transferFor: "Assembly", repairLineId: 0, assemblyId: assmblyList, modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, reqFlag:"Direct" };
+            //reqInfoId
+            var data = { flag: "info", floorId: floorList, transferFor: "Assembly", repairLineId: 0, assemblyId: assmblyList, modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, reqFlag:"Direct" };
 
-            $.when(getReqWithData('html', 'GET', '/Production/GetRequisitionByItemInfoAndDetail', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Production/ReceiveSparePartsFromProductionRequisitionInAssembly', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer2").fadeOut('500', function () {
                         $("#dataContainer2").empty();
                         $("#dataContainer2").append(res).fadeIn('500');
-                        //$(".transferFor").addClass('hide');
-                        //$(".repairLine").addClass('hide');
+                        $(".transferFor").addClass('hide');
+                        $(".repairLine").addClass('hide');
                     });
                 }
             }).fail(function (error) {
@@ -456,19 +460,28 @@
             //pageNo = 1;
         }
 
-        $(document).on('click', 'a.data-floor-item-detail', function (e) {
+        function OpenModal() {
+            $("#modelDataContainer").empty();
+            hdfInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalReqDetails").modal("show");
+        }
+
+        $(document).on("click", "a.data-details", function (e) {
             e.preventDefault();
-            var id = $(this).attr("data-floor-item-detail");
-            hdfInfoId.val('0')
-            hdfInfoId.val(id)
-            $.when(getReqWithData('html', type.get, '/Production/GetFloorStockTransferList', { flag: "detail", transferInfoId: id })).then(function (res, status) {
-                if (status === "success") {
+            var data = {
+                flag: flag.detail,
+                reqInfoId: TryParseInt($(this).attr("data-details"), 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+           
+            $.when(getReqWithData('html', 'GET', '/Production/ReceiveSparePartsFromProductionRequisitionInAssembly', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfInfoId.val(data.reqInfoId);
+                    hdfRowIndex.val(idx)
                     $("#modelContaine1").empty();
                     $("#modelContaine1").append(res);
-                    $("#modalHeading").empty();
-                    $("#modalHeading").text("Receive Details");
-                    $("#modalTransferDetails").modal("toggle");
-                    //$(".btnAccepted").addClass("hide")
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -482,13 +495,15 @@
         })
 
         function fnTransferStateChange(id, status) {
-            var data = JSON.stringify({ transferId: id, status: status });
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveProductionStockReceiveInByAssemblyOrRepair', data, getToken())).then(function (res, status) {
+            var data = JSON.stringify({ reqInfoId: id, status: status });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRequisitionItemsByAssemblyOrRepairOrPackaging', data, getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
-                    $("#modalTransferDetails").modal("toggle").toggle("fast");
+                    $("#modalReqDetails").modal("toggle").toggle("fast");
                     hdfInfoId.val('0');
+                    fnRemoveARowFromTbody(".tblReqInfo",hdfRowIndex.val())
                     $('.toastrDefaultSuccess').trigger('click');
-                    LoadDataTableReceiveStockList();
+                    LoadDataTableReceiveList();
+                    LoadDataTableStockInfo();
                 }
             }).fail(function (error) {
                 console.log(error);

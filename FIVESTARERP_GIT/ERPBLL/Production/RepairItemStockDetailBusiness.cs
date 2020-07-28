@@ -38,6 +38,7 @@ namespace ERPBLL.Production
                 RepairItemStockDetail stock = new RepairItemStockDetail
                 {
                     ProductionFloorId = item.ProductionFloorId,
+                    AssemblyLineId = item.AssemblyLineId,
                     QCId = item.QCId,
                     DescriptionId = item.DescriptionId,
                     RepairLineId = item.RepairLineId,
@@ -52,7 +53,7 @@ namespace ERPBLL.Production
                     Remarks = item.Remarks,
                     StockStatus = StockStatus.StockIn
                 };
-                var stockInfoInDb = _repairItemStockInfoBusiness.GetRepairItem(item.QCId.Value, item.RepairLineId.Value,item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = _repairItemStockInfoBusiness.GetRepairItem(item.AssemblyLineId.Value,item.QCId.Value, item.RepairLineId.Value,item.DescriptionId.Value, item.ItemId.Value, orgId);
                 if (stockInfoInDb != null)
                 {
                     stockInfoInDb.Quantity += item.Quantity;
@@ -111,7 +112,7 @@ namespace ERPBLL.Production
                     StockStatus = StockStatus.StockOut
                 };
 
-                var stockInfoInDb = _repairItemStockInfoBusiness.GetRepairItem(item.QCId.Value, item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = _repairItemStockInfoBusiness.GetRepairItem(item.AssemblyLineId.Value,item.QCId.Value, item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
                 stockInfoInDb.Quantity -= item.Quantity;
                 stockInfoInDb.QCQty += item.Quantity;
                 stockInfoInDb.UpUserId = userId;
@@ -149,7 +150,7 @@ namespace ERPBLL.Production
                     StockStatus = StockStatus.StockOut
                 };
 
-                var stockInfoInDb = await _repairItemStockInfoBusiness.GetRepairItemAsync(item.QCId.Value, item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = await _repairItemStockInfoBusiness.GetRepairItemAsync(item.AssemblyLineId.Value,item.QCId.Value, item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
                 //stockInfoInDb.Quantity -= item.Quantity;
                 stockInfoInDb.QCQty += item.Quantity;
                 stockInfoInDb.UpUserId = userId;

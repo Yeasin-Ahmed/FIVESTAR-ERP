@@ -14,6 +14,7 @@ namespace ERPBO.Production.DomainModels
         [Key]
         public long QCItemStockInfoId { get; set; }
         public long? ProductionFloorId { get; set; }
+        public long? AssemblyLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? QCId { get; set; }
         public long? WarehouseId { get; set; }

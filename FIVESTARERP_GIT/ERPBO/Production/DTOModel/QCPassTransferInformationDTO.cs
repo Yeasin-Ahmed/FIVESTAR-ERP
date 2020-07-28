@@ -10,9 +10,14 @@ namespace ERPBO.Production.DTOModel
     public class QCPassTransferInformationDTO
     {
         public long QPassId { get; set; }
+        [StringLength(100)]
+        public string QCPassCode { get; set; }
         public long ProductionFloorId { get; set; }
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
+        public long AssemblyLineId { get; set; }
+        [StringLength(100)]
+        public string AssemblyLineName { get; set; }
         public long QCLineId { get; set; }
         [StringLength(100)]
         public string QCLineName { get; set; }
@@ -41,6 +46,5 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public List<QCPassTransferDetailDTO> QCPassTransferDetails { get; set; }
-
     }
 }

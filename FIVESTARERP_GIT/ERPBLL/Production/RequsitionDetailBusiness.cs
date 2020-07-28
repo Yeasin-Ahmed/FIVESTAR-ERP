@@ -15,11 +15,13 @@ namespace ERPBLL.Production
         private readonly IProductionUnitOfWork _productionDb; // database
         private readonly RequsitionDetailRepository _requsitionDetailRepository; // table
         private readonly IRequsitionInfoBusiness _requsitionInfoBusiness;
-        public RequsitionDetailBusiness(IProductionUnitOfWork productionDb, IRequsitionInfoBusiness requsitionInfoBusiness)
+        private readonly IRequisitionItemDetailBusiness _requisitionItemDetailBusiness;
+        public RequsitionDetailBusiness(IProductionUnitOfWork productionDb, IRequsitionInfoBusiness requsitionInfoBusiness, IRequisitionItemDetailBusiness requisitionItemDetailBusiness)
         {
             this._productionDb = productionDb;
             this._requsitionDetailRepository = new RequsitionDetailRepository(this._productionDb);
             this._requsitionInfoBusiness = requsitionInfoBusiness;
+            this._requisitionItemDetailBusiness = requisitionItemDetailBusiness;
         }
 
         public IEnumerable<RequsitionDetail> GetAllReqDetailByOrgId(long orgId)
@@ -88,5 +90,47 @@ namespace ERPBLL.Production
         {
             return _requsitionDetailRepository.GetAll(rd => rd.ReqDetailId == id && rd.OrganizationId == orgId).FirstOrDefault();
         }
+
+        public IEnumerable<RequsitionDetailDTO> GetRequisitionDetailsByQuery(long? reqInfoId, long? reqDetailId, long? itemTypeId, long? itemId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<RequsitionDetailDTO>(QueryForRequisitionDetails(reqInfoId, reqDetailId, itemTypeId,itemId,orgId)).ToList();
+        }
+
+        private string QueryForRequisitionDetails(long? reqInfoId, long? reqDetailId, long? itemTypeId, long? itemId, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            param += string.Format(@" and rd.OrganizationId={0}",orgId);
+            if(reqInfoId != null && reqInfoId > 0)
+            {
+                param += string.Format(@" and ri.ReqInfoId={0}", reqInfoId);
+            }
+            if (reqDetailId != null && reqDetailId > 0)
+            {
+                param += string.Format(@" and rd.ReqDetailId={0}", reqDetailId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and rd.ItemTypeId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and rd.ItemId={0}", itemId);
+            }
+
+            query = string.Format(@"Select ri.ReqInfoId,rd.ReqDetailId,rd.ItemTypeId,it.ItemName 'ItemTypeName',rd.ItemId,i.ItemName,rd.UnitId,
+u.UnitSymbol 'UnitName',rd.Quantity,rd.EntryDate,app.UserName 'EntryUser',rd.UpdateDate,(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId = rd.UpUserId) 'UpdateUser' 
+From [Production].dbo.tblRequsitionDetails rd
+Inner Join [Production].dbo.tblRequsitionInfo ri on rd.ReqInfoId = ri.ReqInfoId
+Inner Join [Inventory].dbo.tblItemTypes it on rd.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on rd.ItemId = i.ItemId
+Inner Join [Inventory].dbo.tblUnits u on i.UnitId = u.UnitId
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on rd.EUserId = app.UserId
+Where 1=1 {0}",Utility.ParamChecker(param));
+
+            return query;
+        }
+
+        
     }
 }

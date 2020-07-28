@@ -165,6 +165,9 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
+            txtSearchQRCode.val('');
+            txtSearchQRCode.focus();
         })
 
         function clearHdf() {
@@ -181,33 +184,52 @@
             $("#tblFaultItems tbody").empty();
         }
 
+        function validateQRCodeInRepair() {
+            return ajaxBooleanChecker(JSON.stringify({ qrCode: $.trim(txtSearchQRCode.val()) }), '/Common/IsQRCodeExistInRepair', getToken()) == true;
+        }
+
         txtSearchQRCode.change(function () {
             clearHdf();
             if ($.trim(txtSearchQRCode.val()) !== "") {
                 var data = JSON.stringify({ qrCode: $.trim(txtSearchQRCode.val()) });
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetRepairItemDetailsByQRCode', data, getToken())).then(function (res, status) {
-                    console.log(res);
-                    console.log(status);
-                    if (res != null) {
-                        //alert("foo")
-                        bindQrCodeDetails(res.info);
-                        bindQrCodeProblems(res.problems);
-                        bindQRCodeFaultyItems(res.faultyItems);
-                        hdfTransferId.val(res.info.TransferId);
-                        hdfModelId.val(res.info.DescriptionId);
-                        hdfItem.val(res.info.ItemId);
-                        hdfQRCode.val(res.info.QRCode);
-                        LoadDropdownByData(res.items, ddlItems);
-                        hdfRepairLineId.val(res.info.RepairLineId);
-                        hdfQCLineId.val(res.info.QCLineId);
-                    }
-                }).fail(function (error) {
-                    console.log(error);
+                if (validateQRCodeInRepair()) {
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetRepairItemDetailsByQRCode', data, getToken())).then(function (res, status) {
+                        console.log(res);
+                        console.log(status);
+                        if (!$.isEmptyObject(res.info)) {
+                            //alert("foo")
+                            bindQrCodeDetails(res.info);
+                            bindQrCodeProblems(res.problems);
+                            bindQRCodeFaultyItems(res.faultyItems);
+                            hdfTransferId.val(res.info.TransferId);
+                            hdfModelId.val(res.info.DescriptionId);
+                            hdfItem.val(res.info.ItemId);
+                            hdfQRCode.val(res.info.QRCode);
+                            LoadDropdownByData(res.items, ddlItems);
+                            hdfRepairLineId.val(res.info.RepairLineId);
+                            hdfQCLineId.val(res.info.QCLineId);
+                        }
+                        else {
+                            var al = bootbox.alert("QRCode not found");
+                            al.show();
+                            setTimeout(function () { al.modal('hide'); txtSearchQRCode.focus(); }, 700);
+                            txtSearchQRCode.val('');
+                        }
+                    }).fail(function (error) {
+                        console.log(error);
+                        var al = bootbox.alert("QRCode not found");
+                        al.show();
+                        setTimeout(function () { al.modal('hide'); txtSearchQRCode.focus(); }, 700);
+                        txtSearchQRCode.val('');
+                    })
+                }
+                else {
+                    console.log('validation................');
                     var al = bootbox.alert("QRCode not found");
                     al.show();
-                    setTimeout(function () { al.modal('hide'); txtSearchQRCode.focus();}, 700);
+                    setTimeout(function () { al.modal('hide'); txtSearchQRCode.focus(); }, 700);
                     txtSearchQRCode.val('');
-                })
+                }
             }
             txtSearchQRCode.focus();
         })
@@ -503,7 +525,8 @@
                     if (res.IsSuccess === true) {
                         toggleAlert("Save Successful");
                         clearHdf();
-                        
+                        txtSearchQRCode.val('');
+                        txtSearchQRCode.focus();
                     }
                     else {
                         toggleAlert("Save Failed");

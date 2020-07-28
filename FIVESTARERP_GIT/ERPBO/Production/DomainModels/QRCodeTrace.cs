@@ -41,5 +41,11 @@ namespace ERPBO.Production.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        [StringLength(300)]
+        public string IMEI { get; set; }
+        [StringLength(200)]
+        public string BatteryCode { get; set; }
+        [StringLength(100)]
+        public string StateStatus { get; set; }
     }
 }

@@ -171,23 +171,35 @@
             fnProblemsData();
         })
 
+        function validateQRCodeInRepair() {
+            return ajaxBooleanChecker(JSON.stringify({ qrCode: $.trim(txtItemQRCode.val()) }), '/Common/IsExistInAssembly', getToken()) == true;
+        }
+
         txtItemQRCode.change(function () {
             qrCodeDataObj = {};
             if ($.trim(txtItemQRCode.val()) !== "") {
-                var data = JSON.stringify({ qrCode: $.trim(txtItemQRCode.val()) });
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetQRCodeTraceByCodeAsync', data, getToken())).then(function (res, status) {
-                    if (status === "success" && res.Item > 0) {
-                        qrCodeDataObj = res;
-                        txtProblemQRCode.val('');
-                        txtProblemQRCode.focus();
-                    }
-                    else {
-                        txtItemQRCode.val('');
-                        txtItemQRCode.focus();
-                    }
-                }).fail(function (error) {
-                    console.log(error);
-                })
+                if (validateQRCodeInRepair()) {
+                    var data = JSON.stringify({ qrCode: $.trim(txtItemQRCode.val()) });
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetQRCodeTraceByCodeAsync', data, getToken())).then(function (res, status) {
+                        if (status === "success" && res.Item > 0) {
+                            qrCodeDataObj = res;
+                            txtProblemQRCode.val('');
+                            txtProblemQRCode.focus();
+                        }
+                        else {
+                            txtItemQRCode.val('');
+                            txtItemQRCode.focus();
+                        }
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+                else {
+                    txtItemQRCode.val('');
+                    txtItemQRCode.focus();
+                    //toggleAlert("");
+                    toastrErrorAlert('QRCode may has been transfered')
+                }
             }
         })
 
@@ -292,7 +304,7 @@
                 isValid = false;
             }
             else {
-                if (ajaxBooleanChecker(JSON.stringify({ qrCode: txtItemQRCode.val() }),'/Common/IsQRCodeExistInRepair',getToken()) === true) {
+                if (ajaxBooleanChecker(JSON.stringify({ qrCode: txtItemQRCode.val() }),'/Common/IsExistInAssembly',getToken()) === false) {
                     $(".duplicate-QrCode").removeClass("hide");
                     isValid = false;
                     $("#tblProb tbody").empty();
@@ -340,7 +352,7 @@
                         txtItemQRCode.val('');
                     }
                     else {
-                        bootbox.alert(res.Msg);
+                        bootbox.alert("This QrCode already has been transfered to Repair/MiniStock");
                     }
                 }).fail(function (error) {
                     console.log(error);

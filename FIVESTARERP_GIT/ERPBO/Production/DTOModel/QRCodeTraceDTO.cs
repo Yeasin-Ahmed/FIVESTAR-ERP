@@ -51,6 +51,11 @@ namespace ERPBO.Production.DTOModel
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
-
+        [StringLength(300)]
+        public string IMEI { get; set; }
+        [StringLength(200)]
+        public string BatteryCode { get; set; }
+        [StringLength(100)]
+        public string StateStatus { get; set; }
     }
 }
