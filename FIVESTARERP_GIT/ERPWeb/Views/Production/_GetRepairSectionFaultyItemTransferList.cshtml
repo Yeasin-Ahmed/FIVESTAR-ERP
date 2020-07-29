@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionFaultyItemTransferInfoViewModel>
 @{
     Layout = null;
-    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
-    int sl = pagerData.Serial;
+    //var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = 0;//pagerData.Serial;
     string badge = string.Empty;
     //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
-<div class="card-body">
+@*<div class="card-body">*@
     <div class="row">
         <div class="col-md-12" style="overflow-y:scroll">
             <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblData">
@@ -68,7 +68,7 @@
             </table>
         </div>
         <div class="col-md-12 mt-1">
-            @Html.Partial("_Pagination", pagerData)
+            @*@Html.Partial("_Pagination", pagerData)*@
         </div>
     </div>
-</div>
+@*</div>*@

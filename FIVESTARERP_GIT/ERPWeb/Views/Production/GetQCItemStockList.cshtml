@@ -271,7 +271,6 @@
                                     <h6 class="card-title">Search By</h6>
                                 </div>
                                 <div class="card-body">
-
                                     <div class="row" style="margin-top:-15px">
                                         <div class="col-md-3">
                                             <label for="ddlLineNumber2" class="control-label font-weight-bold">Floor</label>
@@ -292,16 +291,15 @@
                                             @Html.DropDownList("ddlWarehouse2", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12" style="margin-top:-10px">
-                            <div class="card">
+                            <div class="card card-navy text-sm">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("GetQCPassList", new { @flag = "View" });}
+                                            @{Html.RenderAction("GetQCPassList", new { @flag = "Search" });}
                                         </div>
                                     </div>
                                 </div>
@@ -424,7 +422,8 @@
         var txtQcPassQty = $("#txtQcPassQty");
 
         $(document).ready(function () {
-            $(".cell-action").addClass('hide');
+            //$(".cell-action").addClass('hide');
+            $(".btnReceive").addClass('hide');
             $('.select2').select2();
 
             //Initialize Select2 Elements
@@ -637,7 +636,7 @@
                     $("#dataContainer1").fadeOut('500', function () {
                         $("#dataContainer1").empty();
                         $("#dataContainer1").append(res).fadeIn('500');
-                        $(".cell-action").addClass('hide');
+                        //$(".cell-action").addClass('hide');
                     });
                 }
             }).fail(function (error) {
@@ -783,5 +782,24 @@
                 console.log(error);
             })
         }
+
+        $(document).on('click', '.data-qcPass-item-detail', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-qcPass-item-detail");
+            if (id > 0) {
+                var data = { flag: "detail", floorId: 0, assemblyId: 0, modelId: 0, qcId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, status: '', qcPassCode: '', qcPassId: TryParseInt(id,0), fromDate: '', toDate: ''};
+                $.when(getReqWithData('html', 'GET', '/Production/GetQCPassList', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalContainer1").empty();
+                        $("#modalContainer1").append(res);
+                        $("#modalTransferDetails").modal("toggle");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
+
+            }
+        })
     </script>
 }

@@ -4,6 +4,8 @@
     Layout = null;
     int sl = 0;
     string badge = string.Empty;
+    string belt = string.Empty;
+    string itemName = string.Empty;
 }
 <div class="row">
     <div class="col-md-12" style="overflow-y:scroll">
@@ -11,13 +13,9 @@
             <thead class="btn-dark">
                 <tr class="text-center">
                     <th>#SL</th>
-                    <th class="hide"></th>
-                    <th>Floor</th>
-                    <th>QC Line</th>
+                    <th>Belt</th>
                     <th>Model</th>
-                    <th>Warehouse</th>
-                    <th>ItemType</th>
-                    <th>Item Name</th>
+                    <th>Item/Item-Color</th>
                     <th>Quantity</th>
                     <th>StateStatus</th>
                     <th class="cell-action">Action</th>
@@ -28,24 +26,22 @@
                 {
                     sl = sl + 1;
                     badge = item.StateStatus == "Send By QC" ? "badge bg-success" : "badge bg-primary";
+                    belt = "(" + item.ProductionFloorName + ")-(" + item.AssemblyLineName + ")-(" + item.QCLineName + ")";
+                    itemName = item.ItemName + " ["+item.ItemTypeName+"-"+item.WarehouseName+"]";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
-                        <td class="hide">@item.ProductionFloorId</td>
-                        <td>@item.ProductionFloorName</td>
-                        <td>@item.QCLineName</td>
+                        <td>@belt</td>
                         <td>@item.ModelName</td>
-                        <td>@item.WarehouseName</td>
-                        <td>@item.ItemTypeName</td>
-                        <td>@item.ItemName</td>
+                        <td>@itemName</td>
                         <td class="text-center text-bold">@item.Quantity</td>
-                        
                         <td class="text-center " data-val="@item.StateStatus">
                             <span class="@badge">@item.StateStatus</span>
                         </td>
                         <td class="text-center cell-action">
+                            <a href="#" class="btn btn-sm btn-info btn-flat data-qcPass-item-detail" title="View QC Pass Item" data-qcPass-item-detail="@item.QPassId"><i class="fas fa-eye"></i></a>
                             @if (item.StateStatus == "Send By QC")
                             {
-                                <a href="#" class="btn btn-sm btn-success btn-flat data-item-receive" title="Receive QC Pass Item" data-item-val="@item.QPassId"><i class="fas fa-check"></i></a>
+                                <a href="#" class="btn btn-sm btn-success btn-flat data-item-receive btnReceive" title="Receive QC Pass Item" data-item-val="@item.QPassId"><i class="fas fa-check"></i></a>
                             }
                         </td>
                     </tr>
