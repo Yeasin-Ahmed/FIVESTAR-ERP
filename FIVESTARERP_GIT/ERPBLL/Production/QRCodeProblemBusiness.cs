@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Production.Interface;
+using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
 using System;
@@ -37,7 +38,7 @@ namespace ERPBLL.Production
                 param += string.Format(@" and qp.QRCode='{0}'", qrCode.Trim());
             }
             query = string.Format(@"Select * From [Production].dbo.tblQRCodeProblem qp
-Where 1=1 {0}",param);
+Where 1=1 {0} order by QRProbId desc", param);
             return query;
         }
     }

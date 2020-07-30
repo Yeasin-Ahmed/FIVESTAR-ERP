@@ -61,5 +61,7 @@ namespace ERPBO.Production.ViewModels
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
+
+        public string StateStatus { get; set; }
     }
 }

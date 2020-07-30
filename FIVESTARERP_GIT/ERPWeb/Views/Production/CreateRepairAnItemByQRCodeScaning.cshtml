@@ -27,6 +27,7 @@
                             <input type="hidden" id="hdfModelId" />
                             <input type="hidden" id="hdfItem" />
                             <input type="hidden" id="hdfQRCode" />
+                            <input type="hidden" id="hdfAssemblyLineId" />
                             <input type="hidden" id="hdfRepairLineId" />
                             <input type="hidden" id="hdfQCLineId" />
                             <input type="text" class="form-control" placeholder="Search Repair Item By QRCode" id="txtSearchQRCode" />
@@ -153,6 +154,7 @@
         var ddlItems = $("#ddlItems");
         var hdfRepairLineId = $("#hdfRepairLineId");
         var hdfQCLineId = $("#hdfQCLineId");
+        var hdfAssemblyLineId = $("#hdfAssemblyLineId");
         var warehouse = '';
         var itemType = '';
         var item = '';
@@ -177,6 +179,7 @@
             hdfItem.val('');
             hdfQRCode.val('');
             hdfRepairLineId.val('');
+            hdfAssemblyLineId.val('');
             hdfQCLineId.val('');
             clearDropdown("ddlItems");
             $("#tblQRCodeDetails tbody").empty();
@@ -199,7 +202,7 @@
                         if (!$.isEmptyObject(res.info)) {
                             //alert("foo")
                             bindQrCodeDetails(res.info);
-                            bindQrCodeProblems(res.problems);
+                            bindQrCodeProblems(res.problems, res.info.TransferId);
                             bindQRCodeFaultyItems(res.faultyItems);
                             hdfTransferId.val(res.info.TransferId);
                             hdfModelId.val(res.info.DescriptionId);
@@ -208,6 +211,7 @@
                             LoadDropdownByData(res.items, ddlItems);
                             hdfRepairLineId.val(res.info.RepairLineId);
                             hdfQCLineId.val(res.info.QCLineId);
+                            hdfAssemblyLineId.val(res.info.AssemblyLineId)
                         }
                         else {
                             var al = bootbox.alert("QRCode not found");
@@ -278,12 +282,13 @@
             }
         }
 
-        function bindQrCodeProblems(obj) {
+        function bindQrCodeProblems(obj,transferId) {
             $("#tblQRCodeProblems tbody").empty();
             if (!$.isEmptyObject(obj)) {
                 $.each(obj, function (index, item) {
+                    var status = (transferId == item.TransferId) ? "<span class='badge badge-success'>New</span>" : "<span class='badge badge-primary'>Old</span>"
                     var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
-                    var td2 = "<td>" + item.ProblemName + "</td>";
+                    var td2 = "<td>" + item.ProblemName+' '+ status+ "</td>";
                     var td3 = "<td class='hide'>" + item.ProblemId + "</td>";
                     var tr = "<tr>" + td1 + td2 + td3 + "</tr>";
                     $("#tblQRCodeProblems tbody").append(tr);
@@ -515,7 +520,7 @@
         function fnRepairDone() {
             if (validateRepairDone())
             {
-                var data = JSON.stringify({ QRCode: hdfQRCode.val(), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
+                var data = JSON.stringify({ QRCode: hdfQRCode.val(), AssemblyLineId:TryParseInt(hdfAssemblyLineId.val(),0), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
                 console.log("Repair Done");
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairItemByQRCodeScaning', data, getToken())).then(function (res, status) {

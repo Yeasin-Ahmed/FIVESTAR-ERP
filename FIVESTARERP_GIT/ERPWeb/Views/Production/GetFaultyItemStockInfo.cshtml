@@ -135,8 +135,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="ddlStateStatusTL" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlStateStatusTL", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <label for="ddlStateStatusTL" class="control-label font-weight-bold">Status</label>
+                                                @Html.DropDownList("ddlStateStatusTL", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
@@ -197,26 +197,24 @@
                                         <input type="hidden" id="hdfItemId" value="0" />
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <label for="ddlProductionFloor" class="control-label font-weight-bold">Production Floor</label>
                                                     @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
                                                     <span class="error hide req-floor font-weight-bold">Production Floor is required</span>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <label for="ddlRepairLineST" class="control-label font-weight-bold">Repair Line</label>
                                                     <select id="ddlRepairLineST" class="form-control form-control-sm">
-                                                        <option value="0">--Select Repair Line--</option>
+                                                        <option value="0">--Select Repair--</option>
                                                     </select>
                                                     <span class="error hide req-repair">Repair line is required</span>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-2">
                                                     <label for="ddlModelNameST" class="control-label font-weight-bold">Model</label>
                                                     @Html.DropDownList("ddlModelNameST", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                                                     <span class="error hide req-model">Model is required</span>
                                                 </div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-md-5">
+                                                <div class="col-md-4">
                                                     <label for="ddlItemsST" class="control-label font-weight-bold">Item</label>
                                                     <select id="ddlItemsST" class="form-control form-control-sm select2 select2-danger">
                                                         <option value="">--Select Items--</option>
@@ -240,6 +238,8 @@
                                                     <span class="error hide require-quantity">Quantity is required</span>
                                                     <span class="error hide req-stockOver">Stock is not available</span>
                                                 </div>
+                                            </div>
+                                            <div class="row mb-2">
                                                 <div class="col-md-4">
                                                     <label for="txtRemarks" class="control-label font-weight-bold">Item Remarks</label>
                                                     <div class="row">
@@ -440,16 +440,28 @@
         ddlFloorsTL.change(function () {
             clearDropdown("ddlRepairLineTL");
             if (ddlFloorsTL.val() != "") {
-                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlFloorsTL.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineTL, JSON.stringify({ lineId: ddlFloorsTL.val() }));
             }
             LoadDataTableTransferList();
         })
 
+        ddlRepairLineTL.change(function () {
+            LoadDataTableTransferList();
+        })
+       
         txtTransferCode.keyup(function () {
             LoadDataTableTransferList();
         })
 
-        ddlRepairLineTL.change(function () {
+        ddlFloorsTL.change(function () {
+            LoadDataTableTransferList();
+        })
+
+        dptFromDate.change(function () {
+            LoadDataTableTransferList();
+        })
+
+        dptToDate.change(function () {
             LoadDataTableTransferList();
         })
 

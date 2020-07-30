@@ -47,7 +47,7 @@ namespace ERPBLL.Production
         {
             return _repairSectionFaultyItemTransferInfoRepository.GetOneByOrg(s => s.RSFIRInfoId == transferId && s.OrganizationId == orgId);
         }
-
+        
         public bool SaveRepairSectionFaultyItemTransfer(RepairSectionFaultyItemTransferInfoDTO faultyItems, long orgId, long userId)
         {
             bool IsSuccess = false;

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.FaultyItemStockInfoViewModel>
 @{
-    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
-    int sl = pagerData.Serial;
+    //var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = 0;//pagerData.Serial;
     int stock = 0;
 }
 <div class="row">
@@ -58,5 +58,7 @@
             </tbody>
         </table>
     </div>
+    <div class="col-md-12">
+        @*@Html.Partial("_Pagination", pagerData)*@
+    </div>
 </div>
-@Html.Partial("_Pagination", pagerData)
