@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -57,6 +58,14 @@ namespace ERPBLL.Production
                 }
             }
             return _packagingLineRepository.Save();
+        }
+        public IEnumerable<Dropdown> GetPackagingLinesWithProduction(long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (pac.PackagingLineName+' ['+pl.LineNumber+']') 'text'
+, Cast(pac.PackagingLineId as Nvarchar(50))+'#'+Cast(pl.LineId as Nvarchar(50)) 'value'
+From [Production].dbo.tblPackagingLine pac
+Inner Join  [Production].dbo.tblProductionLines pl on pl.LineId = pac.PackagingLineId
+Where 1=1 and pac.OrganizationId={0}", orgId)).ToList();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace ERPBO.Production.DTOModel
         [StringLength(100)]
         public string RequisitionFor { get; set; }
         public long? AssemblyLineId { get; set; }
-
+        public long? PackagingLineId { get; set; }
         [StringLength(100)]
         public string WarehouseName { get; set; }
         [StringLength(100)]
@@ -53,6 +53,8 @@ namespace ERPBO.Production.DTOModel
         public string UnitName { get; set; }
         [StringLength(100)]
         public string AssemblyLineName { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
 
         public List<RequisitionItemInfoDTO> RequisitionItemInfos { get; set; }
         public List<RequsitionDetailDTO> RequisitionDetails { get; set; }

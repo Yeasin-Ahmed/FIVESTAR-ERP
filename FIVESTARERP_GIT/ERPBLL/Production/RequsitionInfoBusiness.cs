@@ -53,12 +53,12 @@ namespace ERPBLL.Production
             return requsitionInfoRepository.GetOneByOrg(req => req.ReqInfoId == reqId && req.OrganizationId == orgId);
         }
 
-        public IEnumerable<RequsitionInfoDTO> GetRequsitionInfosByQuery(long? floorId, long? assemblyId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status,string reqFlag,long? reqInfoId, long orgId)
+        public IEnumerable<RequsitionInfoDTO> GetRequsitionInfosByQuery(long? floorId, long? assemblyId,long? packagingId, long? repairLineId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status,string reqFlag,long? reqInfoId, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<RequsitionInfoDTO>(QueryForRequsitionInfos(floorId, assemblyId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<RequsitionInfoDTO>(QueryForRequsitionInfos(floorId, assemblyId, packagingId, repairLineId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, orgId)).ToList();
         }
 
-        private string QueryForRequsitionInfos(long? floorId, long? assemblyId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, string reqFlag, long? reqInfoId, long orgId)
+        private string QueryForRequsitionInfos(long? floorId, long? assemblyId, long? packagingId, long? repairLineId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, string reqFlag, long? reqInfoId, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -71,6 +71,14 @@ namespace ERPBLL.Production
             if (assemblyId != null && assemblyId > 0)
             {
                 param += string.Format(@" and ri.AssemblyLineId={0}", assemblyId);
+            }
+            if (packagingId != null && packagingId > 0)
+            {
+                param += string.Format(@" and ri.PackagingLineId={0}", packagingId);
+            }
+            if (repairLineId != null && repairLineId > 0)
+            {
+                param += string.Format(@" and ri.RepairLineId={0}", repairLineId);
             }
             if (warehouseId != null && warehouseId > 0)
             {
@@ -121,7 +129,7 @@ namespace ERPBLL.Production
                 param += string.Format(@" and ri.ReqInfoId={0}", reqInfoId);
             }
             query = string.Format(@"Select ri.ReqInfoId,ri.ReqInfoCode,ri.RequisitionType,ri.RequisitionFor,
-ri.LineId,pl.LineNumber,ri.AssemblyLineId,al.AssemblyLineName,
+ri.LineId,pl.LineNumber,ri.AssemblyLineId,al.AssemblyLineName,ri.PackagingLineId,pac.PackagingLineName,
 ri.WarehouseId,wi.WarehouseName,ri.DescriptionId,de.DescriptionName 'ModelName',ri.StateStatus,
 ri.IsBundle,ri.Flag,ri.Remarks,(Select Count(*) From tblRequsitionDetails Where ReqInfoId = ri.ReqInfoId) 'TotalReqCount',
 ri.EntryDate,app.UserName 'EntryUser',ri.UpdateDate, (Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId= ri.UpUserId ) 'UpdateUser'
@@ -129,6 +137,7 @@ From [Production].dbo.tblRequsitionInfo ri
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on ri.EUserId = app.UserId
 Inner Join [Production].dbo.tblProductionLines pl on ri.LineId = pl.LineId
 Left Join [Production].dbo.tblAssemblyLines al on ri.AssemblyLineId = al.AssemblyLineId
+Left Join [Production].dbo.tblPackagingLine pac on ri.PackagingLineId = pac.PackagingLineId
 Inner Join [Inventory].dbo.tblDescriptions de on ri.DescriptionId = de.DescriptionId
 Inner Join [Inventory].dbo.tblWarehouses wi on ri.WarehouseId = wi.Id
 Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
@@ -205,10 +214,10 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                 RequisitionFor = infoDTO.RequisitionFor,
                 RequisitionType = infoDTO.RequisitionType,
                 LineId = infoDTO.LineId,
+                PackagingLineId = infoDTO.PackagingLineId,
                 AssemblyLineId = infoDTO.AssemblyLineId,
                 DescriptionId = infoDTO.DescriptionId,
                 WarehouseId = infoDTO.WarehouseId,
-
                 ItemTypeId = infoDTO.ItemTypeId,
                 ItemId = infoDTO.ItemId,
                 ForQty = infoDTO.ForQty,
@@ -217,10 +226,11 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                 EUserId = userId,
                 EntryDate = DateTime.Now,
                 StateStatus = RequisitionStatus.Pending,
-                Remarks = "Requisition By Production Floor For Assembly",
+                Remarks = "Requisition By Production Floor For "+ infoDTO.RequisitionFor,
                 IsBundle = true,
                 Flag = Flag.Direct
             };
+
             List<RequsitionDetail> requsitionDetails = new List<RequsitionDetail>();
             List<RequisitionItemInfo> requisitionItemInfos = new List<RequisitionItemInfo>();
 
@@ -236,11 +246,12 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                     EUserId = userId,
                     Quantity = item.Quantity,
                     IssueQty = 0,
-                    Remarks = "Requisition By Production Floor For Assembly",
+                    Remarks = "Requisition By Production Floor For "+infoDTO.RequisitionFor,
                     UnitId = allItemsInDb.FirstOrDefault(s => s.ItemId == item.ItemId).UnitId
                 };
                 requsitionDetails.Add(requsitionDetail);
             }
+
             requsitionInfo.RequsitionDetails = requsitionDetails;
 
             foreach (var item in infoDTO.RequisitionItemInfos)
@@ -255,6 +266,7 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     AssemblyLineId = item.AssemblyLineId,
+                    PackagingLineId = item.PackagingLineId,
                     FloorId = item.FloorId,
                     DescriptionId = item.DescriptionId,
                     Remarks = "",
@@ -273,13 +285,14 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                         OrganizationId = orgId,
                         EUserId = userId,
                         EntryDate = DateTime.Now,
-                        Remarks = ""
+                        Remarks = "Requisition By Production Floor For " + infoDTO.RequisitionFor
                     };
                     requisitionItemDetails.Add(requisitionItemDetail);
                 }
                 requisitionItemInfo.RequisitionItemDetails = requisitionItemDetails;
                 requisitionItemInfos.Add(requisitionItemInfo);
             }
+
             requsitionInfo.RequisitionItemInfos = requisitionItemInfos;
             requsitionInfoRepository.Insert(requsitionInfo);
             return requsitionInfoRepository.Save();

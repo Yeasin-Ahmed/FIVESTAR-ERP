@@ -3972,7 +3972,7 @@ namespace ERPWeb.Controllers
 
         // FiveStar - 
         #region Production - Requisition - New [21-July-2020] // FiveStar
-        public ActionResult GetRequisitionByItemInfoAndDetail(string flag, long? floorId, long? assemblyId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, long? reqInfoId, string reqFlag)
+        public ActionResult GetRequisitionByItemInfoAndDetail(string flag, long? floorId, long? assemblyId, long? packagingId, long? repairLineId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, long? reqInfoId, string reqFlag)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -3987,6 +3987,8 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Where(s => s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem { Text = s.ItemName, Value = s.ItemId.ToString() }).ToList();
 
                 ViewBag.ddlAssemblyLineWithProduction = _assemblyLineBusiness.GetAssemblyLinesWithProduction(User.OrgId).Select(s => new SelectListItem { Text = s.text, Value = s.value.ToString() }).ToList();
+
+                ViewBag.ddlPackagingLineWithProduction = _packagingLineBusiness.GetPackagingLinesWithProduction(User.OrgId).Select(s => new SelectListItem { Text = s.text, Value = s.value.ToString() }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.value != RequisitionStatus.Pending).Select(st => new SelectListItem
                 {
@@ -4003,7 +4005,7 @@ namespace ERPWeb.Controllers
             else if (!string.IsNullOrEmpty(flag) && (flag.ToLower() == Flag.View.ToLower() || flag.ToLower() == Flag.Search.ToLower()))
             {
                 status = (!string.IsNullOrEmpty(status) && status.Trim() != "") ? string.Format(@"'{0}'", status) : null;
-                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
+                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId, packagingId, repairLineId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
 
                 IEnumerable<RequsitionInfoViewModel> viewModels = new List<RequsitionInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -4094,7 +4096,7 @@ namespace ERPWeb.Controllers
             reqFor = reqFor == null ? "Assembly" : "Assembly";
             if (!string.IsNullOrEmpty(flag) && (flag.Trim().ToLower() == Flag.Info.ToLower()))
             {
-                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
+                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId,0,0, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
 
                 IEnumerable<RequsitionInfoViewModel> viewModels = new List<RequsitionInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -4110,9 +4112,6 @@ namespace ERPWeb.Controllers
             }
             return new EmptyResult();
         }
-
-
-
 
         #endregion
 

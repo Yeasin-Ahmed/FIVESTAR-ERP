@@ -55,9 +55,9 @@
                                             <div class="col-md-2">
                                                 <label for="ddlReqForList" class="control-label font-weight-bold">REQ For</label>
                                                 <select id="ddlReqForList" class="form-control form-control-sm">
-                                                    <option value="Production">Production</option>
+                                                    @*<option value="Production">Production</option>*@
                                                     <option value="Assembly" selected>Assembly</option>
-                                                    <option value="Repair">Repair</option>
+                                                    @*<option value="Repair">Repair</option>*@
                                                     <option value="Packaging">Packaging</option>
                                                 </select>
                                             </div>
@@ -163,17 +163,22 @@
                                             <div class="col-md-2">
                                                 <label for="ddlReqForRequisition" class="control-label font-weight-bold">REQ For</label>
                                                 <select id="ddlReqForRequisition" class="form-control form-control-sm">
-                                                    <option value="Production">Production</option>
                                                     <option value="Assembly" selected>Assembly</option>
-                                                    <option value="Repair">Repair</option>
                                                     <option value="Packaging">Packaging</option>
+                                                    @*<option value="Production">Production</option>
+                <option value="Repair">Repair</option>*@
                                                 </select>
                                                 <span class="error hide req-reqFor">REQ For is required</span>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 reqFor assembly-REQ">
                                                 <label for="ddlAssemblyLineWithProductionRequisition" class="control-label">Assembly</label>
                                                 @Html.DropDownList("ddlAssemblyLineWithProductionRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlAssemblyLineWithProduction, "--Select Assembly--", new { @class = "form-control form-control-sm" })
                                                 <span class="error hide req-line">Assembly is required</span>
+                                            </div>
+                                            <div class="col-md-2 reqFor packaging-REQ hide">
+                                                <label for="ddlPackagingLineWithProductionRequisition" class="control-label">Packaging</label>
+                                                @Html.DropDownList("ddlPackagingLineWithProductionRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-line">Packaging is required</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="ddlModelNameRequisition" class="control-label font-weight-bold">Model</label>
@@ -296,6 +301,7 @@
         var ddlReqTypeRequisition = $("#ddlReqTypeRequisition");
         var ddlReqForRequisition = $("#ddlReqForRequisition");
         var ddlAssemblyLineWithProductionRequisition = $("#ddlAssemblyLineWithProductionRequisition");
+        var ddlPackagingLineWithProductionRequisition = $("#ddlPackagingLineWithProductionRequisition"); 
         var ddlModelNameRequisition = $("#ddlModelNameRequisition");
         var ddlItemsRequisition = $("#ddlItemsRequisition");
         var txtQuantity = $("#txtQuantity");
@@ -304,9 +310,10 @@
         var itemReq = '';
         var productionReq = '';
         var assemblyReq = '';
+        var packagingReq = '';
 
         $(document).ready(function () {
-            disable("#ddlReqForRequisition");
+            //disable("#ddlReqForRequisition");
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -330,6 +337,18 @@
             });
         })
 
+        ddlReqForRequisition.change(function () {
+            $(".reqFor").addClass('hide')
+            if (ddlReqForRequisition.val() == "Assembly") {
+                $(".assembly-REQ").removeClass('hide');
+                ddlAssemblyLineWithProductionRequisition.val("");
+            }
+            if (ddlReqForRequisition.val() == "Packaging") {
+                $(".packaging-REQ").removeClass('hide');
+                ddlPackagingLineWithProductionRequisition.val("");
+            }
+        })
+
         function getItemDetailsByReq() {
             warehouseReq = '';
             itemTypeReq = '';
@@ -346,9 +365,11 @@
             disable("#ddlModelNameRequisition");
             getItemDetailsByReq();
             if (ValidateModelItems()) {
+                disable("#ddlReqForRequisition");
                 getItemDetailsByReq();
                 var qty = TryParseInt(txtQuantity.val(), 0);
-                var data = JSON.stringify({ type: preparationType.production, modelId: TryParseInt(ddlModelNameRequisition.val(), 0), itemId: TryParseInt(itemReq, 0) });
+                var pType = ddlReqForRequisition.val() == "Packaging" ? preparationType.packaging : preparationType.production;
+                var data = JSON.stringify({ type: pType, modelId: TryParseInt(ddlModelNameRequisition.val(), 0), itemId: TryParseInt(itemReq, 0) });
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/GetBundleItems', data, getToken())).then(function (res, status) {
                     if (status === "success") {
                         console.log(res);
@@ -461,7 +482,6 @@
             $('.error').addClass("hide");
             getItemDetailsByReq();
             var itemInfos = $("#tblItems").find("tr[data-head-itemid='" + itemReq + "']");
-
             if (itemInfos.length > 0) {
                 $('.dup-item').removeClass("hide");
                 isValid = false;
@@ -485,6 +505,7 @@
         function getProductionFloorAndAssembly() {
             productionReq = '';
             assemblyReq = '';
+            packagingReq = '';
             if (ddlAssemblyLineWithProductionRequisition.val() != '') {
                 var val = ddlAssemblyLineWithProductionRequisition.val();
                 assemblyReq = val.substring(0, val.lastIndexOf("#"));
@@ -492,23 +513,34 @@
             }
         }
 
+        function getProductionFloorAndPackaging() {
+            productionReq = '';
+            packagingReq = '';
+            assemblyReq=''
+            if (ddlPackagingLineWithProductionRequisition.val() != '') {
+                var val = ddlPackagingLineWithProductionRequisition.val();
+                packagingReq = val.substring(0, val.lastIndexOf("#"));
+                productionReq = val.substring(val.lastIndexOf("#") + 1);
+            }
+        }
+
         $('#btnSubmit').click(function (e) {
             e.preventDefault();
             if (1 === 1) {
-                getProductionFloorAndAssembly();
-
+                fnReqForIds();
                 var wi = $("#tblMergeItems tbody").children('tr').eq(length - 1).children('td').eq('8').html();
                 var RequisitionInfo = {
                     RequisitionType: ddlReqTypeRequisition.val(),
                     RequisitionFor: ddlReqForRequisition.val(),
                     LineId: productionReq,
-                    AssemblyLineId: assemblyReq,
+                    AssemblyLineId: TryParseInt(assemblyReq,0),
                     DescriptionId: TryParseInt(ddlModelNameRequisition.val(), 0),
                     WarehouseId: TryParseInt(wi, 0),
                     ItemTypeId: 0,
                     ItemId: 0,
                     ForQty: txtQuantity.val(),
-                    UnitId: 0
+                    UnitId: 0,
+                    PackagingLineId: TryParseInt(packagingReq, 0)
                 };
                 RequisitionInfo.RequisitionItemInfos = fnGetItemObj();
 
@@ -532,7 +564,7 @@
                 console.log("Requisition Object");
                 console.log(RequisitionInfo);
                 var data = JSON.stringify({ model: RequisitionInfo })
-                return;
+                
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRequisitionWithItemInfoAndDetail', data, getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
@@ -541,6 +573,15 @@
                 })
             }
         })
+
+        function fnReqForIds() {
+            if (ddlReqForRequisition.val() == "Assembly") {
+                getProductionFloorAndAssembly();
+            }
+            if (ddlReqForRequisition.val() == "Packaging") {
+                getProductionFloorAndPackaging()
+            }
+        }
 
         function fnGetItemObj() {
             var itemObj = [];
@@ -551,7 +592,8 @@
                 var itemTypeInfoId = trInfotds.eq('2').html();
                 var warehouseInfoId = trInfotds.eq('3').html();
                 var qtyInfo = trInfotds.eq('4').html();
-                getProductionFloorAndAssembly();
+
+                fnReqForIds();
 
                 var details = []; details.length = 0;
                 var trDetails = $("#tblItems").find('tr[data-row-headId="' + $(this).attr('data-head-id') + '"]');
@@ -575,7 +617,8 @@
 
                 itemObj.push({
                     FloorId: productionReq,
-                    AssemblyLineId: assemblyReq,
+                    AssemblyLineId: TryParseInt(assemblyReq, 0),
+                    PackagingLineId: TryParseInt(packagingReq,0),
                     DescriptionId: ddlModelNameRequisition.val(),
                     ItemName: trInfotds.eq('0').html(),
                     ItemId: itemInfoId,
@@ -632,12 +675,13 @@
             clearDropdown('ddlAssemblyList');
             clearDropdown('ddlRepairList'); 
             clearDropdown('ddlPackagingList');
+            LoadDataTableForReqList();
             if (ddlProductionFloorList.val() != "") {
                 LoadDropDown('/Common/GetAssembliesByLine', 'POST', ddlAssemblyList, JSON.stringify({ lineId: ddlProductionFloorList.val() }));
                 LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairList, JSON.stringify({ lineId: ddlProductionFloorList.val() }));
                 LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackagingList, JSON.stringify({ lineId: ddlProductionFloorList.val() }));
             }
-            LoadDataTableForReqList();
+            
         })
 
         ddlAssemblyList.change(function () {
@@ -676,7 +720,7 @@
         })
 
         function LoadDataTableForReqList() {
-            var data = { flag: "search", floorId: TryParseInt(ddlProductionFloorList.val(), 0), assemblyId: TryParseInt(ddlAssemblyList.val(), 0), warehouseId: TryParseInt(ddlWarehouseList.val(), 0), modelId: TryParseInt(ddlModelNameList.val(), 0), reqCode: txtReqCodeList.val(), reqType: ddlRequisitionTypeList.val(), reqFor: ddlReqForList.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), status: ddlStateStatusList.val(), reqInfoId:0, reqFlag: "Direct" };
+            var data = { flag: "search", floorId: TryParseInt(ddlProductionFloorList.val(), 0), assemblyId: TryParseInt(ddlAssemblyList.val(), 0), packagingId: TryParseInt(ddlPackagingList.val(),0), repairLineId:0,warehouseId: TryParseInt(ddlWarehouseList.val(), 0), modelId: TryParseInt(ddlModelNameList.val(), 0), reqCode: txtReqCodeList.val(), reqType: ddlRequisitionTypeList.val(), reqFor: ddlReqForList.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), status: ddlStateStatusList.val(), reqInfoId: 0, reqFlag: "Direct"};
 
             $.when(getReqWithData(dataType.html, type.post, '/Production/GetRequisitionByItemInfoAndDetail', data)).then(function (res, status)
             {

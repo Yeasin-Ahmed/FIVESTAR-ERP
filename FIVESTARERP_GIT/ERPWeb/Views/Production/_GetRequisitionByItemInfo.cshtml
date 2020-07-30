@@ -4,6 +4,7 @@
     int sl = 0;
     string updateDate = "";
     string badge = string.Empty;
+    string sectionName = string.Empty;
 }
 
 <div class="row">
@@ -16,7 +17,7 @@
                     <th style="vertical-align:middle">Type</th>
                     <th style="vertical-align:middle">REQ For</th>
                     <th style="vertical-align:middle">Floor</th>
-                    <th style="vertical-align:middle">Assembly</th>
+                    <th style="vertical-align:middle">Section</th>
                     <th style="vertical-align:middle;white-space:nowrap">Warehouse</th>
                     <th style="vertical-align:middle">Model</th>
                     <th style="vertical-align:middle">Item Count</th>
@@ -35,13 +36,14 @@
                     sl = sl + 1;
                     updateDate = item.UpdateDate.HasValue ? item.UpdateDate.Value.ToString("dd-MMM-yyyy hh:mm tt") : "";
                     badge = item.StateStatus == "Pending" ? "badge badge-warning" : (item.StateStatus == "Approved" ? "badge badge-success" : (item.StateStatus == "Accepted" ? "badge badge-primary" : "badge badge-danger"));
+                    sectionName = (item.AssemblyLineId != null && item.AssemblyLineId > 0) ? item.AssemblyLineName : item.PackagingLineName;
                     <tr>
                         <td class="text-center text-bold">@sl</td>
                         <td>@item.ReqInfoCode</td>
                         <td class="text-center text-bold">@item.RequisitionType</td>
                         <td>@item.RequisitionFor</td>
                         <td>@item.LineNumber</td>
-                        <td>@item.AssemblyLineName</td>
+                        <td>@sectionName</td>
                         <td style="white-space:nowrap">@item.WarehouseName</td>
                         <td class="text-center text-bold">@item.ModelName</td>
                         <td class="text-center text-bold">@item.TotalReqCount</td>

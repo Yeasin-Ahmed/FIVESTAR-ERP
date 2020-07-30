@@ -573,6 +573,8 @@
     <Content Include="Views\Inventory\_GetItemTypePartialList.cshtml" />
     <Content Include="Views\Inventory\_GetAllUnitPartialList.cshtml" />
     <Content Include="Views\Inventory\_GetItemPartialList.cshtml" />
+    <Content Include="Views\Production\_GetQCPassQrCodes.cshtml" />
+    <Content Include="Views\Production\_GetRepairableQRCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

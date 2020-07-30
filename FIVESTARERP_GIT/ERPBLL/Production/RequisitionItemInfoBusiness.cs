@@ -50,31 +50,31 @@ namespace ERPBLL.Production
             }
             if (reqInfoId != null && reqInfoId > 0)
             {
-                param += string.Format(@" and and rii.ReqInfoId={0}", reqInfoId);
+                param += string.Format(@" and rii.ReqInfoId={0}", reqInfoId);
             }
             if (floorId != null && floorId > 0)
             {
-                param += string.Format(@" and and rii.ReqInfoId={0}", floorId);
+                param += string.Format(@" and rii.ReqInfoId={0}", floorId);
             }
             if (assembly != null && assembly > 0)
             {
-                param += string.Format(@" and and rii.AssemblyLineId={0}", assembly);
+                param += string.Format(@" and rii.AssemblyLineId={0}", assembly);
             }
             if(modelId != null && modelId > 0)
             {
-                param += string.Format(@" and and rii.DescriptionId={0}", modelId);
+                param += string.Format(@" and rii.DescriptionId={0}", modelId);
             }
             if (warehouseId != null && warehouseId > 0)
             {
-                param += string.Format(@" and and rii.WarehouseId={0}", warehouseId);
+                param += string.Format(@" and rii.WarehouseId={0}", warehouseId);
             }
             if (itemTypeId != null && itemTypeId > 0)
             {
-                param += string.Format(@" and and rii.ItemTypeId={0}", itemTypeId);
+                param += string.Format(@" and rii.ItemTypeId={0}", itemTypeId);
             }
             if (itemId != null && itemId > 0)
             {
-                param += string.Format(@" and and rii.ItemId={0}", itemId);
+                param += string.Format(@" and rii.ItemId={0}", itemId);
             }
             if (!string.IsNullOrEmpty(status) && status.Trim() != "")
             {
@@ -82,7 +82,7 @@ namespace ERPBLL.Production
             }
             if (!string.IsNullOrEmpty(reqCode) && reqCode.Trim() !="")
             {
-                param += string.Format(@" and and ri.ReqInfoCode LIKE'%{0}%'", reqCode);
+                param += string.Format(@" and ri.ReqInfoCode LIKE'%{0}%'", reqCode);
             }
 
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
@@ -102,20 +102,22 @@ namespace ERPBLL.Production
                 param += string.Format(@" and Cast(ri.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select ri.ReqInfoId,rii.ReqItemInfoId,rii.FloorId,pl.LineNumber 'FloorName',rii.AssemblyLineId, al.AssemblyLineName,rii.DescriptionId,de.DescriptionName 'ModelName',rii.WarehouseId,w.WarehouseName,
+            query = string.Format(@"Select ri.ReqInfoId,rii.ReqItemInfoId,rii.FloorId,pl.LineNumber 'FloorName',rii.AssemblyLineId, al.AssemblyLineName,rii.PackagingLineId, pac.PackagingLineName,
+rii.DescriptionId,de.DescriptionName 'ModelName',rii.WarehouseId,w.WarehouseName,
 rii.ItemTypeId,it.ItemName 'ItemTypeName',rii.ItemId,i.ItemName,rii.UnitId,un.UnitSymbol 'UnitName',
 rii.Quantity,rii.EntryDate,app.UserName 'EntryUser',rii.UpdateDate,(Select UserName from [ControlPanel].dbo.tblApplicationUsers Where UserId = rii.UpUserId) 'UpdateUser'
 From [Production].dbo.tblRequisitionItemInfo rii
 Inner Join [Production].dbo.tblRequsitionInfo ri on rii.ReqInfoId = ri.ReqInfoId
 Inner Join [Production].dbo.tblProductionLines pl on rii.FloorId = pl.LineId
-Inner Join [Production].dbo.tblAssemblyLines al on rii.AssemblyLineId = al.AssemblyLineId
+Left Join [Production].dbo.tblAssemblyLines al on rii.AssemblyLineId = al.AssemblyLineId
+Left Join [Production].dbo.tblPackagingLine pac on ri.PackagingLineId = pac.PackagingLineId
 Inner Join [Inventory].dbo.tblDescriptions de on rii.DescriptionId = de.DescriptionId
 Inner Join [Inventory].dbo.tblWarehouses w on rii.WarehouseId = w.Id
 Inner Join [Inventory].dbo.tblItemTypes it on rii.ItemTypeId = it.ItemId
 Inner Join [Inventory].dbo.tblItems i on rii.ItemId = i.ItemId
 Inner Join [Inventory].dbo.tblUnits un on rii.UnitId = un.UnitId
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on rii.EUserId = app.UserId
-Where 1=1",Utility.ParamChecker(param));
+Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
         public IEnumerable<RequisitionItemInfo> GetRequisitionItemInfosByReqInfoId(long reqInfoId, long orgId)
@@ -225,7 +227,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
 
         public RequsitionInfoDTO GetRequsitionInfoModalProcessData(long? floorId, long? assemblyId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, string reqFlag, long? reqInfoId, long orgId)
         {
-            var reqInfoDto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(null, null, null, null, null, null, null, null, null, null, null, reqInfoId, orgId).FirstOrDefault();
+            var reqInfoDto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(null, null,null,null, null, null, null, null, null, null, null, null, null, reqInfoId, orgId).FirstOrDefault();
             if (reqInfoDto != null)
             {
                 // Requisition Details

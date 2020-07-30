@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBO.CustomValidationAttribute.Production;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -34,8 +35,9 @@ namespace ERPBO.Production.ViewModels
         public long? UnitId { get; set; }
         [StringLength(100)]
         public string RequisitionFor { get; set; }
-        [Range(1,long.MaxValue)]
+        [RequisitionForInProductionRequisitionAttr]
         public long? AssemblyLineId { get; set; }
+        public long? PackagingLineId { get; set; }
 
         //Custom
         [StringLength(100)]
@@ -58,6 +60,8 @@ namespace ERPBO.Production.ViewModels
         public string UnitName { get; set; }
         [StringLength(100)]
         public string AssemblyLineName { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
         public List<RequisitionItemInfoViewModel> RequisitionItemInfos { get; set; }
         public List<RequsitionDetailViewModel> RequisitionDetails { get; set; }
     }

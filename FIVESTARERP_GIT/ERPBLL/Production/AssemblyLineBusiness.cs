@@ -28,7 +28,6 @@ namespace ERPBLL.Production
         {
             return _assemblyLineRepository.GetAll(a =>a.OrganizationId == orgId).ToList();
         }
-
         public IEnumerable<Dropdown> GetAssemblyLinesWithProduction(long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (al.AssemblyLineName+' ['+pl.LineNumber+']') 'text'
@@ -37,7 +36,6 @@ From [Production].dbo.tblAssemblyLines al
 Inner Join  [Production].dbo.tblProductionLines pl on pl.LineId = al.AssemblyLineId
 Where 1=1 and al.OrganizationId={0}", orgId)).ToList();
         }
-
         public bool SaveAssembly(AssemblyLineDTO line, long userId, long orgId)
         {
             if(line != null)

@@ -4,6 +4,7 @@
     int slNo = 0;
     string level = ViewBag.Level;
     string badge = Model.StateStatus == "Pending" ? "badge badge-warning" : (Model.StateStatus == "Approved" ? "badge badge-success" : (Model.StateStatus == "Accepted" ? "badge badge-primary" : "badge badge-danger"));
+    string sectionName = (Model.AssemblyLineId != null && Model.AssemblyLineId > 0) ? Model.AssemblyLineName : Model.PackagingLineName;
 }
 
 <div class="row text-sm">
@@ -15,8 +16,8 @@
                     <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.ReqInfoCode</td>
                     <td class="alert-secondary" style="width:10%">Floor</td>
                     <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.LineNumber</td>
-                    <td class="alert-secondary" style="width:12%">Assembly</td>
-                    <td class="text-bold" style="width:16%; background-color:#e1dada">@Model.AssemblyLineName</td>
+                    <td class="alert-secondary" style="width:12%">Section</td>
+                    <td class="text-bold" style="width:16%; background-color:#e1dada">@sectionName</td>
                     <td class="alert-secondary" style="width:10%">Model</td>
                     <td class="text-bold" style="width:12%; background-color:#e1dada">@Model.ModelName</td>
                 </tr>

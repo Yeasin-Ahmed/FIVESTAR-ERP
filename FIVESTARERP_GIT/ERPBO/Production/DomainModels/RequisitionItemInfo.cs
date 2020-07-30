@@ -15,6 +15,7 @@ namespace ERPBO.Production.DomainModels
         public long ReqItemInfoId { get; set; }
         public long FloorId  { get; set; }
         public long AssemblyLineId { get; set; }
+        public long PackagingLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }

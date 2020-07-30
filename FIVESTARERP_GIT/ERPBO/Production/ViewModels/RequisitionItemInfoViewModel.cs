@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBO.CustomValidationAttribute.Production;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,9 @@ namespace ERPBO.Production.ViewModels
     {
         public long ReqItemInfoId { get; set; }
         public long FloorId { get; set; }
+        [RequisitionForInProductionRequisitionAttr]
         public long AssemblyLineId { get; set; }
+        public long PackagingLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
@@ -29,9 +32,13 @@ namespace ERPBO.Production.ViewModels
 
         // Custom Properties
         [StringLength(100)]
+        public string ReqInfoCode { get; set; }
+        [StringLength(100)]
         public string FloorName { get; set; }
         [StringLength(100)]
         public string AssemblyLineName { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
         [StringLength(100)]

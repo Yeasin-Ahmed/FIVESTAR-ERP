@@ -140,6 +140,14 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+
+        public static int TryParseInt(string value)
+        {
+            int i = 0;
+            int.TryParse(value, out i);
+            return i;
+        }
+
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

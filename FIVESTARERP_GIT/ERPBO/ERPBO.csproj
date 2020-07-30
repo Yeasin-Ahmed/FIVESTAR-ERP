@@ -151,6 +151,7 @@
     <Compile Include="ControlPanel\ViewModels\UserLogInViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
+    <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderAccessories.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderFault.cs" />
