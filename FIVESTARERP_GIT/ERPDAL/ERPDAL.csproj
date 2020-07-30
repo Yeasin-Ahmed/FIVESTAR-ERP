@@ -271,6 +271,10 @@
     <Compile Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.Designer.cs">
       <DependentUpon>202007070424522_Inventory_AddPreparationType.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202007301032163_Inventory_%27tblIQCList.cs" />
+    <Compile Include="InventoryContextMigrations\202007301032163_Inventory_%27tblIQCList.Designer.cs">
+      <DependentUpon>202007301032163_Inventory_%27tblIQCList.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -611,6 +615,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.resx">
       <DependentUpon>202007070424522_Inventory_AddPreparationType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202007301032163_Inventory_%27tblIQCList.resx">
+      <DependentUpon>202007301032163_Inventory_%27tblIQCList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>

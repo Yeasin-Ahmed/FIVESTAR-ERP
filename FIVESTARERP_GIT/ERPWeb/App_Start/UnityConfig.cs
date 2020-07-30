@@ -34,6 +34,7 @@ namespace ERPWeb
 
             // Inventory Database
             #region Inventory
+            container.RegisterType<IIQCBusiness, IQCBusiness>();
             container.RegisterType<IWarehouseStockDetailBusiness, WarehouseStockDetailBusiness>();
             container.RegisterType<IWarehouseStockInfoBusiness, WarehouseStockInfoBusiness>();
             container.RegisterType<IItemBusiness, ItemBusiness>();

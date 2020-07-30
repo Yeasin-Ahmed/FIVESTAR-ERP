@@ -66,7 +66,14 @@ namespace ERPBLL.Inventory
                 stockDetail.EUserId = userId;
                 stockDetail.Remarks = item.Remarks;
                 stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
-                stockDetail.EntryDate = DateTime.Now;
+                if(item.EntryDate != null)
+                {
+                    stockDetail.EntryDate = item.EntryDate;
+                }
+                else
+                {
+                    stockDetail.EntryDate = DateTime.Now;
+                }
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
                 stockDetail.DescriptionId = item.DescriptionId;
@@ -92,7 +99,16 @@ namespace ERPBLL.Inventory
                     warehouseStockInfo.StockOutQty = 0;
                     warehouseStockInfo.OrganizationId = orgId;
                     warehouseStockInfo.EUserId = userId;
-                    warehouseStockInfo.EntryDate = DateTime.Now;
+                    warehouseStockInfo.Remarks = item.Remarks;
+                    if (item.EntryDate != null)
+                    {
+                        warehouseStockInfo.EntryDate = item.EntryDate;
+                    }
+                    else
+                    {
+                        warehouseStockInfo.EntryDate = DateTime.Now;
+                    }
+                    
                     warehouseStockInfoRepository.Insert(warehouseStockInfo);
                 }
                 warehouseStockDetails.Add(stockDetail);

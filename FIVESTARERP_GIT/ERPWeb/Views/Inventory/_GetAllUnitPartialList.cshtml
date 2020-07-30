@@ -3,130 +3,61 @@
     ViewBag.Title = "GetAllUnitList";
     int sl = 0;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-    Layout = null;
 }
 
 <div class="row">
-    <div class="col-md-12" style="margin-top:-10px">
-        <div class="card card-navy">
-            <div class="card-header">
-                <h6 class="card-title">Search By</h6>
-            </div>
-            <div class="card-body text-sm">
-                <div class="row" style="margin-top:-15px">
-                    <div class="col-md-4">
-                        <input type="text" name="searchUnit" id="searchByUnit" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblUnitData tbody tr',this)" />
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-right">
-                        @if (privilege.Add)
-                        {
-                            <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNewUnit"><i class="fa fa-plus"></i> Add New Unit</button>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top:-25px">
-                <div class="col-md-12 mt-2 " style="overflow-y:scroll">
-                    <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblUnitData">
-                        <thead class="btn-dark">
-                            <tr class="text-center">
-                                <th>SL No.</th>
-                                <th class="hide"></th>
-                                <th>UnitName</th>
-                                <th>Unit Symbol</th>
-                                <th>Remarks</th>
-                                <th>Entry User</th>
-                                <th>Update User</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var unit in Model)
+
+    <div class="col-md-12 mt-2 " style="overflow-y:scroll">
+        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblUnitData" id="tblUnitData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>SL No.</th>
+                    <th class="hide"></th>
+                    <th>UnitName</th>
+                    <th>Unit Symbol</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var unit in Model)
+                {
+                    sl = sl + 1;
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@unit.UnitId</td>
+                        <td>@unit.UnitName</td>
+                        <td class="text-center">@unit.UnitSymbol</td>
+                        <td>@unit.Remarks</td>
+                        <td class="text-center">@unit.EntryUser</td>
+                        <td class="text-center">@unit.UpdateUser</td>
+                        <td class="text-center">
+                            @if (privilege.Edit)
                             {
-                                sl = sl + 1;
-                                <tr>
-                                    <td class="text-center" width="10%">@sl</td>
-                                    <td class="hide">@unit.UnitId</td>
-                                    <td>@unit.UnitName</td>
-                                    <td class="text-center">@unit.UnitSymbol</td>
-                                    <td>@unit.Remarks</td>
-                                    <td class="text-center">@unit.EntryUser</td>
-                                    <td class="text-center">@unit.UpdateUser</td>
-                                    <td class="text-center">
-                                        @if (privilege.Edit)
-                                        {
-                                            <a href="#" class="btn btn-warning btn-sm data-edit-item-unit" style="line-height:1" data-edit-item-unit="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
-                                        }
-                                    </td>
-                                </tr>
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item-unit" style="line-height:1" data-edit-item-unit="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
                             }
-                            @if (Model.Count() == 0)
-                            {
-                                <tr class="text-center empty-row">
-                                    <td colspan="5">
-                                        No Rows Found
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="5">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
-<div class="modal fade" id="modalUnit" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadUnit">Add New Unit</span></h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmUnit">
-                    <input type="hidden" name="Id" id="hdfUnitId" />
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="txtUnitName" class="control-label font-weight-bold">UnitName</label>
-                            <input type="text" name="txtUnitName" value="" id="txtUnitName" class="form-control form-control-sm" />
-                            <span class="error hide required-unitName font-weight-bold">Input Unit Name!</span>
-                            <span class="error hide duplicate-unitName font-weight-bold">Already UnitName Exist!</span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="txtUnitSymbol" class="control-label font-weight-bold">UnitSymbol</label>
-                            <input type="text" name="txtUnitSymbol" value="" id="txtUnitSymbol" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
-                            <input type="text" name="remarks" value="" id="txtRemarksUnit" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                </form>
-            </div>
 
-            <div class="modal-footer btn-light">
-                <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
-                        Data has been saved Successful!
-                    </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
-                        Data has been failed to save!
-                    </div>
-                </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitUnit"><i class="far fa-save"></i> <span id="spanSaveTextUnit">Save </span> </button>
-            </div>
-        </div>
-    </div>
-</div>
 
-@section scripts{
+
+@*@section scripts{
     <script type="text/javascript">
         var hdfUnitId = $("#hdfUnitId");
         var txtUnitName = $("#txtUnitName");
@@ -231,5 +162,5 @@
             $("#spanSaveTextUnit").text('Update');
         });
     </script>
-}
+}*@
 

@@ -3,94 +3,56 @@
     ViewBag.Title = "Description List";
     int sl = 0;
     string badge = string.Empty;
-    Layout = null;
-    //var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
-    //int sl = pagerData.Serial;
-    //string badge = string.Empty;
+
 }
 
 <div class="row">
-    <div class="col-md-12" style="margin-top:-10px">
-        <div class="card card-navy">
-            <div class="card-header">
-                <h6 class="card-title">Search By</h6>
-            </div>
-            <div class="card-body text-sm" style="padding:0">
-                <div class="row" style="margin-top:-15px">
-                    <div class="card-body text-sm ">
-                        <input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblDescriptionData tbody tr',this)" />
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"></div>
-                </div>
-                <div class="row" style="margin-top:-25px">
-                    <div class="col-md-12 mt-2 " style="overflow-y:scroll">
-                        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblDescriptionData">
-                            <thead class="btn-dark">
-                                <tr class="text-center">
-                                    <th>#SL</th>
-                                    <th class="hide"></th>
-                                    <th class="hide">SubCategoryId</th>
-                                    <th>Model Name</th>
-                                    <th>StateStatus</th>
-                                    <th>Remarks</th>
-                                    <th>Entry User</th>
-                                    <th>Update User</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var des in Model)
-                                {
-                                    sl = sl + 1;
-                                    badge = des.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                                    <tr>
-                                        <td class="text-center" width="10%">@sl</td>
-                                        <td class="hide">@des.DescriptionId</td>
-                                        <td class="hide">@des.SubCategoryId</td>
-                                        <td class="text-center">@des.DescriptionName</td>
-                                        <td class="text-center" data-val="@des.StateStatus">
-                                            <span class="@badge">@des.StateStatus</span>
-                                        </td>
-                                        <td>@des.Remarks</td>
-                                        <td class="text-center">@des.EntryUser</td>
-                                        <td class="text-center">@des.UpdateUser</td>
-                                    </tr>
-                                }
-                                @if (Model.Count() == 0)
-                                {
-                                    <tr class="text-center empty-row">
-                                        <td colspan="5">
-                                            No Rows Found
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    @*<div class="col-md-12">
-            @Html.Partial("_Pagination", pagerData)
-        </div>*@
+    <div class="col-md-12 mt-2 " style="overflow-y:scroll">
+        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblDescriptionData" id="tblDescriptionData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th class="hide">SubCategoryId</th>
+                    <th>Model Name</th>
+                    <th>StateStatus</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var des in Model)
+                {
+                    sl = sl + 1;
+                    badge = des.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@des.DescriptionId</td>
+                        <td class="hide">@des.SubCategoryId</td>
+                        <td class="text-center">@des.DescriptionName</td>
+                        <td class="text-center" data-val="@des.StateStatus">
+                            <span class="@badge">@des.StateStatus</span>
+                        </td>
+                        <td>@des.Remarks</td>
+                        <td class="text-center">@des.EntryUser</td>
+                        <td class="text-center">@des.UpdateUser</td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="5">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-@section scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblDescriptionData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "pageLength": 10,
-            });
-        })
-    </script>
-}
+
 
 

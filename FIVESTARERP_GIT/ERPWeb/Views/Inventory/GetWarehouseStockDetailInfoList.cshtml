@@ -4,8 +4,128 @@
     ViewBag.Title = "Warehouse Stock Details";
 }
 
-
 <div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            @*<div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-warehouseStockDetailList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockDetailList" role="tab" aria-controls="custom-tabs-two-warehouseStockDetailList" aria-selected="true">Warehouse Stock Info List</a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-two-warehouseStockDetailList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockDetailList" role="tab" aria-controls="custom-tabs-two-warehouseStockDetailList" aria-selected="true">Warehouse StockDetail List</a>
+                        </li>
+                </ul>
+            </div>*@
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+
+                    <div class="tab-pane fade show active" id="custom-tabs-two-warehouseStockDetailList" role="tabpanel" aria-labelledby="custom-tabs-two-warehouseStockDetailList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                                <div class="col-md-3">
+                                                    <a href="/Inventory/GetWarehouseStockInfoList" class="btn btn-sm btn-outline-primary float-left" title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                                                </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Warehouse Stock Details
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Refference Number</label>
+                                                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Ref Num." />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
+                                                <select id="ddlItemType" class="form-control form-control-sm">
+                                                    <option value="">--Select Item Type--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                                <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
+                                                    <option value="">--Select Item--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Stock Status</label>
+                                                @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            
+                                            <div class="col-md-2">
+                                                <label for="ddlSupplier" class="control-label font-weight-bold">Supplier Name</label>
+                                                @Html.DropDownList("ddlSupplier", (IEnumerable<SelectListItem>)ViewBag.ddlSupplier, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetWarehouseStockDetailInfoList", new { @flag = "load" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
     <div class="col-md-12 text-center">
         <div class="row">
             <div class="col-md-3">
@@ -82,7 +202,7 @@
     <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
         @{Html.RenderAction("GetWarehouseStockDetailInfoList", new { @flag = "load" });}
     </div>
-</div>
+</div>*@
 
 @section scripts{
     <script type="text/javascript">

@@ -4,154 +4,77 @@
     var sl = 0;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
     string badge = string.Empty;
-    Layout = null;
 }
 
 <div class="row">
-    <div class="col-md-12" style="margin-top:-10px">
-        <div class="card card-navy">
-            <div class="card-header">
-                <h6 class="card-title">Search By</h6>
-            </div>
-            <div class="card-body text-sm">
-                <div class="row" style="margin-top:-15px">
-                    <div class="col-md-4">
-                        <input type="text" name="searchItem" id="searchByItem" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblItemData tbody tr',this)" />
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-right">
-                        @if (privilege.Add)
-                        {
-                            <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewItem"><i class="fa fa-plus"></i> Create New Item</button>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top:-25px">
-                <div class="col-md-12 mt-2 " style="overflow-y:scroll">
-                    <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblItemData">
-                        <thead class="btn-dark">
-                            <tr class="text-center">
-                                <th>#SL </th>
-                                <th class="hide"></th>
-                                <th>ItemType Name</th>
-                                <th>Item Name</th>
-                                <th>Item Code</th>
-                                <th>Unit Name</th>
-                                <th>Remarks</th>
-                                <th>StateStatus</th>
-                                <th>Entry User</th>
-                                <th>Update User</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                sl = sl + 1;
-                                badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                                <tr>
-                                    <td class="text-center"><b>@sl</b></td>
-                                    <td class="hide">@item.ItemId</td>
-                                    <td>@item.ItemTypeName</td>
-                                    <td>@item.ItemName</td>
-                                    <td class="text-center">@item.ItemCode</td>
-                                    <td class="text-center">@item.UnitName</td>
-                                    <td class="text-center">@item.Remarks</td>
-                                    <td class="text-center" data-val="@item.StateStatus">
-                                        <span class="@badge">@item.StateStatus</span>
-                                    </td>
-                                    <td class="text-center">@item.EntryUser</td>
-                                    <td class="text-center">@item.UpdateUser</td>
-                                    <td class="text-center">
-                                        @if (privilege.Edit)
-                                        {
-                                            <a href="#" class="btn btn-warning btn-sm data-edit-item-Item" style="line-height:1" data-edit-item-Item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                            @if (Model.Count() == 0)
-                            {
-                                <tr class="text-center empty-row">
-                                    <td colspan="9">
-                                        No Rows Found
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="col-md-12 mt-2 " style="overflow-y:scroll">
+            <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblItemData" id="tblItemData">
+                <thead class="btn-dark">
+                    <tr class="text-center">
+                        <th>#SL </th>
+                        <th class="hide"></th>
+                        <th class="hide"></th>
+                        <th>ItemType Name</th>
+                        <th>Item Name</th>
+                        <th>Item Code</th>
+                        <th class="hide"></th>
+                        <th>Unit Name</th>
+                        <th>Remarks</th>
+                        <th>StateStatus</th>
+                        <th>Entry User</th>
+                        <th>Update User</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        sl = sl + 1;
+                        badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
+                        <tr>
+                            <td class="text-center"><b>@sl</b></td>
+                            <td class="hide">@item.ItemId</td>
+                            <td class="hide">@item.ItemTypeId</td>
+                            <td>@item.ItemTypeName</td>
+                            <td>@item.ItemName</td>
+                            <td class="text-center">@item.ItemCode</td>
+                            <td class="hide">@item.UnitId</td>
+                            <td class="text-center">@item.UnitName</td>
+                            <td class="text-center">@item.Remarks</td>
+                            <td class="text-center" data-val="@item.StateStatus">
+                                <span class="@badge">@item.StateStatus</span>
+                            </td>
+                            <td class="text-center">@item.EntryUser</td>
+                            <td class="text-center">@item.UpdateUser</td>
+                            <td class="text-center">
+                                @if (privilege.Edit)
+                                {
+                                    <a href="#" class="btn btn-warning btn-sm data-edit-item-Item" style="line-height:1" data-edit-item-Item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Count() == 0)
+                    {
+                        <tr class="text-center empty-row">
+                            <td colspan="9">
+                                No Rows Found
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
+
 
 <!--Data add & Edit-->
 
-<div class="modal fade" id="modalItem" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadItem">Add New Item</span></h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmItem">
-                    <input type="hidden" name="Id" id="hdfItemId" />
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="txtItemName" class="control-label font-weight-bold">Item Name</label>
-                            <input type="text" name="itemName" value="" id="txtItemName" class="form-control form-control-sm" />
-                            <span class="error hide required-itemName font-weight-bold">Input Item Name!</span>
-                            <span class="error hide duplicate-itemName font-weight-bold">Already ItemName Exist!</span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="ddlItemTypeName" class="control-label font-weight-bold">ItemType Name</label>
-                            @Html.DropDownList("ddlItemTypeName", (IEnumerable<SelectListItem>)ViewBag.ddlItemTypeName, "--Select ItemType--", new { @class = "form-control form-control-sm" })
-                            <span class="error hide required-itemTypeName font-weight-bold">Required ItemaType Name!</span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="ddlUnitName" class="control-label font-weight-bold">Unit Name</label>
-                            @Html.DropDownList("ddlUnitName", (IEnumerable<SelectListItem>)ViewBag.ddlUnitName, "--Select UnitName--", new { @class = "form-control form-control-sm" })
-                            <span class="error hide required-UnitName font-weight-bold">Required Unit Name!</span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
-                            <input type="text" name="remarks" value="" id="txtRemarksItem" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="form-control form-control-sm">
-                                <input type="checkbox" id="chkStatestatusItem" /> <b>Is Active?</b>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
 
-            <div class="modal-footer btn-light">
-                <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
-                        Data has been saved Successful!
-                    </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
-                        Data has been failed to save!
-                    </div>
-                </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitItem"><i class="far fa-save"></i> <span id="spanSaveTextItem">Save</span> </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--Java Scripts Code-->
 
-@section scripts{
+@*@section scripts{
     <script type="text/javascript">
         var hdfItemId = $("#hdfItemId");
         var txtItemName = $("#txtItemName");
@@ -280,5 +203,5 @@
             chkStatestatusItem.prop("checked", false);
         }
     </script>
-}
+}*@
 

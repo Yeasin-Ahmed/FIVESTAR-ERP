@@ -16,7 +16,7 @@
                         <a class="nav-link active" id="custom-tabs-two-warehouseList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseList" role="tab" aria-controls="custom-tabs-two-warehouseList" aria-selected="true">Warehouse List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="true">Description List</a>
+                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="false">Description List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-itemTypeList-tab" data-toggle="pill" href="#custom-tabs-two-itemTypeList" role="tab" aria-controls="custom-tabs-two-itemTypeList" aria-selected="false">Item Type List</a>
@@ -26,6 +26,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-itemList-tab" data-toggle="pill" href="#custom-tabs-two-itemList" role="tab" aria-controls="custom-tabs-two-itemList" aria-selected="false">Item List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-IQCList-tab" data-toggle="pill" href="#custom-tabs-two-IQCList" role="tab" aria-controls="custom-tabs-two-IQCList" aria-selected="false">IQC List</a>
                     </li>
                 </ul>
             </div>
@@ -62,7 +65,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblWarehouseData tbody tr',this)" />
+                                                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblWarehouseData tbody tr',this)" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
@@ -76,59 +79,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12" style="margin-top:-25px">
+                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="row" style="margin-top:-30px">
-                                            <div class="col-md-12 mt-2" style="overflow-y:scroll">
-                                                <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblWarehouseData">
-                                                    <thead class="btn-dark">
-                                                        <tr class="text-center">
-                                                            <th>#SL</th>
-                                                            <th class="hide"></th>
-                                                            <th>Warehouse Name</th>
-                                                            <th>Entry User</th>
-                                                            <th>Update User</th>
-                                                            <th>StateStatus</th>
-                                                            <th>Remarks</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var item in Model)
-                                                        {
-                                                            sl = sl + 1;
-                                                            badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                                                            <tr>
-                                                                <td class="text-center">@sl</td>
-                                                                <td class="hide">@item.Id</td>
-                                                                <td>@item.WarehouseName</td>
-
-                                                                <td class="text-center">@item.EntryUser</td>
-                                                                <td class="text-center">@item.UpdateUser</td>
-
-                                                                <td class="text-center" data-val="@item.StateStatus">
-                                                                    <span class="@badge">@item.StateStatus</span>
-                                                                </td>
-                                                                <td>@item.Remarks</td>
-                                                                <td class="text-center">
-                                                                    @if (privilege.Edit)
-                                                                    {
-                                                                        <a href="#" class="btn btn-warning btn-sm data-edit-item" style="line-height:1" data-edit-item="@item.Id"><i class="fa fa-sm fa-pen"></i> Edit</a>
-                                                                    }
-                                                                </td>
-                                                            </tr>
-                                                        }
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("_GetWarehousePartialList");}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade show" id="custom-tabs-two-descriptionList" role="tabpanel" aria-labelledby="custom-tabs-two-descriptionList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -151,6 +113,23 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDescriptionData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer2">
@@ -161,6 +140,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade show " id="custom-tabs-two-itemTypeList" role="tabpanel" aria-labelledby="custom-tabs-two-itemTypeList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -183,6 +163,27 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchitemType" id="searchByitemType" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblItemTypeData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                @if (privilege.Add)
+                                                {
+                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewitemType"><i class="fa fa-plus"></i>Add New ItemType</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer3">
@@ -193,6 +194,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade show " id="custom-tabs-two-unitList" role="tabpanel" aria-labelledby="custom-tabs-two-unitList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -215,6 +217,27 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchUnit" id="searchByUnit" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblUnitData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4 text-right">
+                                                @if (privilege.Add)
+                                                {
+                                                    <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNewUnit"><i class="fa fa-plus"></i> Add New Unit</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer4">
@@ -225,6 +248,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="tab-pane fade show " id="custom-tabs-two-itemList" role="tabpanel" aria-labelledby="custom-tabs-two-itemList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -247,10 +271,86 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchItem" id="searchByItem" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblItemData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4 text-right">
+                                                @if (privilege.Add)
+                                                {
+                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewItem"><i class="fa fa-plus"></i> Create New Item</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer5">
                                             @{Html.RenderAction("_GetItemPartialList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-IQCList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of IQC
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchIQC" id="searchByIQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblIQCData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                @if (privilege.Add)
+                                                {
+                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewIQC"><i class="fa fa-plus"></i> Create IQC</button>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer6">
+                                            @{Html.RenderAction("GetIQCList");}
                                         </div>
                                     </div>
                                 </div>
@@ -265,29 +365,29 @@
 
 
 <div class="modal fade" id="modalWarehouse" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
-                <h4 id="modalHeading" class="modal-title"><i class="fas fa-angle-double-right"></i><span id="spanModalHead">Add New Warehouse</span></h4>
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">@*<i class="fas fa-angle-double-right"></i>*@<span id="spanModalHead">Add New Warehouse</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <form id="frmWarehouse">
                     <input type="hidden" name="Id" id="hdfWarehouseId" />
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label for="txtWarehousename" class="control-label font-weight-bold">Warehouse Name</label>
                             <input type="text" name="warehouseName" value="" id="txtWarehousename" class="form-control form-control-sm" />
                             <span class="error hide required-warehouseName font-weight-bold">Input Warehouse Name!</span>
                             <span class="error hide duplicate-warehouseName font-weight-bold">Already WarehouseName Exist!</span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <div class="form-control">
                                 <input type="checkbox" id="chkStatestatus" /> <b>Is Active?</b>
                             </div>
@@ -296,7 +396,7 @@
                 </form>
             </div>
 
-            <div class="modal-footer btn-light">
+            <div class="modal-footer btn-default">
                 <div class="col-md-6">
                     <div id="msg1" class="alert alert-success hide float-left">
                         Data has been saved Successful!
@@ -305,12 +405,234 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmit"><i class="fas fa-paper-plane"></i> <span id="spanSaveText">Save</span> </button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalItemType" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">@*<i class="fas fa-angle-double-right"></i>*@<span id="spanModalHeadItemType">Add New ItemType</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmItemType">
+                    <input type="hidden" name="Id" id="hdfItemTypeId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
+                            @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-warehouseNameitemType font-weight-bold">Required Warehouse Name!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtitemTypeName" class="control-label font-weight-bold">ItemTypeName</label>
+                            <input type="text" name="txtitemTypeName" value="" id="txtitemTypeName" class="form-control form-control-sm" />
+                            <span class="error hide required-itemTypeName font-weight-bold">Input ItemType Name!</span>
+                            <span class="error hide duplicate-itemTypeName font-weight-bold">Already ItemType Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtShortName" class="control-label font-weight-bold">Short Name</label>
+                            <input type="text" name="txtShortName" value="" id="txtShortName" class="form-control form-control-sm" maxlength="3" />
+                            <span class="error hide required-shortName font-weight-bold">Input Short Name!</span>
+                            <span class="error hide duplicate-shortName font-weight-bold">Already Short Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksitemType" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-control">
+                                <input type="checkbox" id="chkStatestatusitemType" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-default">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmititemType"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextItemType">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalUnit" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadUnit">Add New Unit</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmUnit">
+                    <input type="hidden" name="Id" id="hdfUnitId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtUnitName" class="control-label font-weight-bold">UnitName</label>
+                            <input type="text" name="txtUnitName" value="" id="txtUnitName" class="form-control form-control-sm" />
+                            <span class="error hide required-unitName font-weight-bold">Input Unit Name!</span>
+                            <span class="error hide duplicate-unitName font-weight-bold">Already UnitName Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtUnitSymbol" class="control-label font-weight-bold">UnitSymbol</label>
+                            <input type="text" name="txtUnitSymbol" value="" id="txtUnitSymbol" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksUnit" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-default">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitUnit"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextUnit">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalItem" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadItem">Add New Item</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmItem">
+                    <input type="hidden" name="Id" id="hdfItemId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtItemName" class="control-label font-weight-bold">Item Name</label>
+                            <input type="text" name="itemName" value="" id="txtItemName" class="form-control form-control-sm" />
+                            <span class="error hide required-itemName font-weight-bold">Input Item Name!</span>
+                            <span class="error hide duplicate-itemName font-weight-bold">Already ItemName Exist!</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="ddlItemTypeName" class="control-label font-weight-bold">ItemType Name</label>
+                            @Html.DropDownList("ddlItemTypeName", (IEnumerable<SelectListItem>)ViewBag.ddlItemTypeName, "--Select ItemType--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-itemTypeName font-weight-bold">Required ItemaType Name!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlUnitName" class="control-label font-weight-bold">Unit Name</label>
+                            @Html.DropDownList("ddlUnitName", (IEnumerable<SelectListItem>)ViewBag.ddlUnitName, "--Select UnitName--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-UnitName font-weight-bold">Required Unit Name!</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksItem" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatusItem" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-default">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitItem"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextItem">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalIQC" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">@*<i class="fas fa-angle-double-right"></i>*@<span id="spanModalHeadIQC">Add New IQC</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmIQC">
+                    <input type="hidden" name="Id" id="hdfIQCId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtIQCName" class="control-label font-weight-bold">IQC Name</label>
+                            <input type="text" name="IQCName" value="" id="txtIQCName" class="form-control form-control-sm" />
+                            <span class="error hide required-IQCName font-weight-bold">Input IQC Name!</span>
+                            <span class="error hide duplicate-IQCName font-weight-bold">Already IQC Exist!</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarksIQC" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksIQC" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-control">
+                                <input type="checkbox" id="chkStatestatusIQC" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-default">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitIQC"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextIQC">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section scripts{
 
@@ -322,6 +644,10 @@
         var hdfWarehouseId = $("#hdfWarehouseId");
 
         $(document).ready(function () {
+            tableInitializeForWarehouse();
+        })
+
+        function tableInitializeForWarehouse() {
             $('#tblWarehouseData').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -330,7 +656,18 @@
                 "info": false,
                 "autoWidth": false,
             });
-        })
+        }
+
+        function LoadWarehouseDataTable() {
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetWarehousePartialList', null)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer").empty();
+                    $("#dataContainer").append(res);
+                    tableInitializeForWarehouse();
+                }
+            }).fail(function (err) { console.log(err) })
+        }
 
         function OpenModal() {
             $("#spanModalHead").text('Create Warehouse');
@@ -356,10 +693,14 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#modalWarehouse");
+                        //message("#msg1", "#modalWarehouse");
+                        $("#modalWarehouse").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadWarehouseDataTable();
                     }
                     else {
-                        message("#msg2");
+                        //message("#msg2");
+                        toastrErrorAlert(execuStatus.fail);
                     }
                     enable("#btnSubmit");
                 }).fail(function (err) {
@@ -385,6 +726,10 @@
             if (td4.toLowerCase() === 'active') {
                 chkStatestatus.prop("checked", true);
             }
+
+            OpenModal()
+            $("#spanModalHead").text('Update Warehouse')
+            $("#spanSaveText").text('Update');
         })
         function clearCtrl() {
             hdfWarehouseId.val('0');
@@ -393,12 +738,12 @@
             chkStatestatus.prop("checked", false);
 
         }
-        $(".data-edit-item").click(function (e) {
-            e.preventDefault()
-            OpenModal()
-            $("#spanModalHead").text('Update Warehouse')
-            $("#spanSaveText").text('Update');
-        });
+        //$(".data-edit-item").click(function (e) {
+        //    e.preventDefault()
+        //    OpenModal()
+        //    $("#spanModalHead").text('Update Warehouse')
+        //    $("#spanSaveText").text('Update');
+        //});
 
 
         function validateForm() {
@@ -421,6 +766,20 @@
     </script>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblDescriptionData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "pageLength": 10,
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
 
         var hdfItemTypeId = $("#hdfItemTypeId");
         var ddlWarehouseName = $("#ddlWarehouseName");
@@ -430,6 +789,10 @@
         var txtShortName = $("#txtShortName");
 
         $(document).ready(function () {
+            tableInitializeForItemType();
+        })
+
+        function tableInitializeForItemType() {
             $('#tblItemTypeData').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -439,8 +802,21 @@
                 "autoWidth": false,
                 "pageLength": 10,
             });
-            
-        })
+        }
+
+        function LoadItemTypeDataTable() {
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetItemTypePartialList', null)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer3").empty();
+                    $("#dataContainer3").append(res);
+                    tableInitializeForItemType();
+                }
+            }).fail(function (err) {
+                console.log(err);
+            })
+        }
+
         function OpenModalitemType() {
             $("#spanModalHeadItemType").text('Add New ItemType');
             $("#spanSaveTextItemType").text('Save');
@@ -450,7 +826,7 @@
 
         $("#btnAddNewitemType").click(function (e) {
             e.preventDefault();
-            clearCtrl();
+            clearCtrlItemType();
             OpenModalitemType();
         })
 
@@ -490,7 +866,6 @@
 
         $("#btnSubmititemType").click(function (e) {
             e.preventDefault();
-            //console.log("btnsubmititemType click");
             $(".error").addClass("hide");
             if (validateFormitemType() == true) {
                 var data = JSON.stringify({ ItemId: TryParseInt(hdfItemTypeId.val(), 0), WarehouseId: ddlWarehouseName.val(), ItemName: txtitemTypeName.val(), Remarks: txtRemarksitemType.val(), IsActive: chkStatestatusitemType.is(":checked"), ShortName: txtShortName.val().trim() });
@@ -499,10 +874,14 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#modalItemType");
+                        //message("#msg1", "#modalItemType");
+                        $("#modalItemType").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadItemTypeDataTable();
                     }
                     else {
-                        message("#msg2");
+                        //message("#msg2");
+                        toastrErrorAlert(execuStatus.fail);
                     }
                     enable("#btnSubmititemType");
                 }).fail(function (err) {
@@ -513,16 +892,16 @@
 
         })
 
-        $(".data-edit-item-type").click(function (e) {
-            e.preventDefault()
-            OpenModalitemType()
-            $("#spanModalHead").text('Update ItemType');
-            $("#spanSaveTextItemType").text('Update');
-        });
+        //$(".data-edit-item-type").click(function (e) {
+        //    e.preventDefault()
+        //    OpenModalitemType()
+        //    $("#spanModalHeadItemType").text('Update ItemType');
+        //    $("#spanSaveTextItemType").text('Update');
+        //});
 
         $(document).on("click", "a.data-edit-item-type", function (e) {
             e.preventDefault()
-            clearCtrl();
+            clearCtrlItemType();
             var row = $(this).parent().parents('tr');
             var td1 = row.find('td:eq(1)').html();
             var td2 = row.find('td:eq(2)').html();
@@ -540,9 +919,13 @@
             if (td5.toLowerCase() === 'active') {
                 chkStatestatusitemType.prop("checked", true);
             }
+
+            OpenModalitemType()
+            $("#spanModalHeadItemType").text('Update ItemType');
+            $("#spanSaveTextItemType").text('Update');
         })
 
-        function clearCtrl() {
+        function clearCtrlItemType() {
             hdfItemTypeId.val('0');
             ddlWarehouseName.val('');
             txtitemTypeName.val('');
@@ -553,26 +936,16 @@
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblDescriptionData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "pageLength": 10,
-            });
-        })
-    </script>
-
-    <script type="text/javascript">
         var hdfUnitId = $("#hdfUnitId");
         var txtUnitName = $("#txtUnitName");
         var txtUnitSymbol = $("#txtUnitSymbol");
         var txtRemarksUnit = $("#txtRemarksUnit");
 
         $(document).ready(function () {
+            tableInitializeForUnit()
+        })
+
+        function tableInitializeForUnit() {
             $('#tblUnitData').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -581,7 +954,20 @@
                 "info": false,
                 "autoWidth": false,
             });
-        })
+        }
+
+        function LoadUnitDataTable() {
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetAllUnitPartialList', null)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer4").empty();
+                    $("#dataContainer4").append(res);
+                    tableInitializeForUnit();
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
 
         function OpenModalUnit() {
             $("#spanModalHeadUnit").text('Add New Unit');
@@ -592,7 +978,7 @@
 
         $("#btnAddNewUnit").click(function (e) {
             e.preventDefault();
-            clearCtrl();
+            clearCtrlUnit();
             OpenModalUnit();
         })
 
@@ -607,10 +993,14 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#modalUnit");
+                        //message("#msg1", "#modalUnit");
+                        $("#modalUnit").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadUnitDataTable();
                     }
                     else {
-                        message("#msg2");
+                        //message("#msg2");
+                        toastrErrorAlert(execuStatus.fail);
                     }
                     enable("#btnSubmitUnit");
                 }).fail(function (err) {
@@ -642,7 +1032,7 @@
 
         $(document).on("click", "a.data-edit-item-unit", function (e) {
             e.preventDefault()
-            clearCtrl();
+            clearCtrlUnit();
             var row = $(this).parent().parents('tr');
             var td1 = row.find('td:eq(1)').html();
             var td2 = row.find('td:eq(2)').html();
@@ -654,21 +1044,24 @@
             txtUnitSymbol.val(td3)
             txtRemarksUnit.val(td4);
 
+            OpenModalUnit();
+            $("#spanModalHead").text('Update Unit');
+            $("#spanSaveTextUnit").text('Update');
         })
 
-        function clearCtrl() {
+        function clearCtrlUnit() {
             hdfUnitId.val('0');
             txtUnitName.val('');
             txtUnitSymbol.val('');
             txtRemarksUnit.val('');
 
         }
-        $(".data-edit-item-unit").click(function (e) {
-            e.preventDefault()
-            OpenModalUnit()
-            $("#spanModalHead").text('Update Unit');
-            $("#spanSaveTextUnit").text('Update');
-        });
+        //$(".data-edit-item-unit").click(function (e) {
+        //    e.preventDefault()
+        //    OpenModalUnit()
+        //    $("#spanModalHead").text('Update Unit');
+        //    $("#spanSaveTextUnit").text('Update');
+        //});
     </script>
 
     <script type="text/javascript">
@@ -680,6 +1073,10 @@
         var chkStatestatusItem = $("#chkStatestatusItem");
 
         $(document).ready(function () {
+            tableInitializeForItem();
+        })
+
+        function tableInitializeForItem() {
             $('#tblItemData').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -690,13 +1087,15 @@
                 "pageLength": 10,
 
             });
-        })
+        }
 
         function OpenModalItem() {
+
             $("#spanModalHeadItem").text('Add New Item');
             $("#spanSaveTextItem").text('Save');
             $("#modalItem").modal("show");
             $(".error").addClass("hide");
+            //alert('Modal');
         }
 
         $("#btnAddNewItem").click(function (e) {
@@ -704,6 +1103,20 @@
             clearCtrlItem();
             OpenModalItem();
         })
+
+        function LoadItemDataTable() {
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetItemPartialList', null)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer5").empty();
+                    $("#dataContainer5").append(res);
+                    tableInitializeForItem();
+
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
 
         //Data add
         $("#btnSubmitItem").click(function (e) {
@@ -716,10 +1129,12 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#modalItem");
+                        $("#modalItem").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadItemDataTable();
                     }
                     else {
-                        message("#msg2");
+                        toastrErrorAlert(execuStatus.fail);
                     }
                     enable("#btnSubmitItem");
                 }).fail(function (err) {
@@ -756,28 +1171,19 @@
             return isValid;
         }
 
-        ////data edit
-        //$(".data-edit-item").click(function (e) {
-        //    e.preventDefault()
-        //    OpenModal()
-        //});
-        $(document).on("click", "a.data-edit-item-Item", function (e) {
+        $(document).on("click", ".data-edit-item-Item", function (e) {
             e.preventDefault()
+            //alert("Click")
             clearCtrlItem();
+
             var row = $(this).parent().parents('tr');
             var td1 = row.find('td:eq(1)').html();
             var td2 = row.find('td:eq(2)').html();
-            var td3 = row.find('td:eq(3)').html();
-            var td4 = row.find('td:eq(5)').html();
-            var td5 = row.find('td:eq(6)').html();
-            var td6 = row.find('td:eq(7)').attr("data-val");
+            var td3 = row.find('td:eq(4)').html();
+            var td4 = row.find('td:eq(6)').html();
+            var td5 = row.find('td:eq(8)').html();
+            var td6 = row.find('td:eq(9)').attr("data-val");
 
-            console.log(td1);
-            console.log(td2);
-            console.log(td3);
-            console.log(td4);
-            console.log(td5);
-            console.log(td6);
             hdfItemId.val(td1);
             ddlItemTypeName.val(td2);
             txtItemName.val(td3);
@@ -787,42 +1193,17 @@
             if (td6.toLowerCase() === 'active') {
                 chkStatestatusItem.prop("checked", true);
             }
-
-        })
-        $(".data-edit-item-Item").click(function (e) {
-            e.preventDefault()
-            OpenModalItem()
+            OpenModalItem();
             $("#spanModalHeadItem").text('Update Item');
             $("#spanSaveTextItem").text('Update');
-        });
-        //$(document).on("click", "a.data-edit-item-Item", function (e) {
-        //    e.preventDefault();
-        //    var id = $(this).attr("data-edit-item-Item");
 
-        //    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/GetItemById', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
-        //        console.log(res);
-        //        console.log(status);
-        //        if (res != null) {
-        //            hdfItemId.val(res.ItemId);
-        //            txtItemName.val(res.ItemName);
-        //            ddlItemTypeName.val(res.ItemTypeId);
-        //            ddlUnitName.val(res.UnitId);
-        //            txtRemarksItem.val(res.Remarks);
-        //            chkStatestatusItem.prop("checked", false);
-        //            if (res.IsActive === true) {
-        //                chkStatestatusItem.prop("checked", true);
-        //            }
-        //            OpenModalItem();
-        //            $("#spanModalHeadItem").text('Update Item');
-        //            $("#spanSaveTextItem").text('Update');
-        //        }
-        //        else {
-        //            alert("No data found..")
-        //        }
-        //    }).fail(function (error) {
-        //        console.log(error);
-        //    })
-        //})
+        })
+        //$(".data-edit-item-Item").click(function (e) {
+        //    e.preventDefault()
+
+        //    $("#spanModalHeadItem").text('Update Item');
+        //    $("#spanSaveTextItem").text('Update');
+        //});
         function clearCtrlItem() {
             hdfItemId.val('0');
             txtItemName.val('');
@@ -831,6 +1212,127 @@
             txtRemarksItem.val('');
             chkStatestatusItem.prop("checked", false);
         }
+    </script>
+
+    <script type="text/javascript">
+
+        var txtIQCName = $("#txtIQCName");
+        var txtRemarksIQC = $("#txtRemarksIQC");
+        var chkStatestatusIQC = $("#chkStatestatusIQC");
+        var hdfIQCId = $("#hdfIQCId");
+
+        $(document).ready(function () {
+            tableInitializeForIQC();
+        })
+
+        function tableInitializeForIQC() {
+            $('#tblIQCData').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+            });
+        }
+
+        function LoadIQCDataTable() {
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetIQCList', null)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer6").empty();
+                    $("#dataContainer6").append(res);
+                    tableInitializeForIQC();
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+
+        function OpenModalIQC() {
+            $("#spanModalHeadIQC").text('Create IQC');
+            $("#spanSaveTextIQC").text('Save');
+            $("#modalIQC").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewIQC").click(function (e) {
+            e.preventDefault();
+            OpenModalIQC();
+            clearCtrlIQC();
+        })
+
+        $("#btnSubmitIQC").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateFormIQC() == true) {
+                var data = JSON.stringify({ Id: TryParseInt(hdfIQCId.val(), 0), IQCName: txtIQCName.val(), Remarks: txtRemarksIQC.val(), IsActive: chkStatestatusIQC.is(":checked") });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveIQC', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        //message("#msg1", "#modalWarehouse");
+                        $("#modalIQC").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadIQCDataTable();
+                    }
+                    else {
+                        //message("#msg2");
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitIQC");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitIQC");
+                });
+            }
+
+        })
+
+        $(document).on("click", "a.data-edit-IQC", function (e) {
+            e.preventDefault()
+            clearCtrl();
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(6)').html();
+            var td4 = row.find('td:eq(5)').attr("data-val"); //row.children('td').eq()//
+            hdfIQCId.val(td1);
+            txtIQCName.val(td2);
+            txtRemarksIQC.val(td3);
+            chkStatestatusIQC.prop("checked", false);
+            if (td4.toLowerCase() === 'active') {
+                chkStatestatusIQC.prop("checked", true);
+            }
+
+            OpenModalIQC();
+            $("#spanModalHeadIQC").text('Update IQC')
+            $("#spanSaveTextIQC").text('Update');
+        })
+        function clearCtrlIQC() {
+            hdfIQCId.val('0');
+            txtIQCName.val('');
+            txtRemarksIQC.val('');
+            chkStatestatusIQC.prop("checked", false);
+
+        }
+
+        function validateFormIQC() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtIQCName.val()) == "") {
+                $(".required-IQCName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfIQCId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ iqcId: id, iqcName: txtIQCName.val().trim() }), '/Common/IsDuplicateIQCName', getToken()) == true) {
+                    $(".duplicate-IQCName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
     </script>
 }
 

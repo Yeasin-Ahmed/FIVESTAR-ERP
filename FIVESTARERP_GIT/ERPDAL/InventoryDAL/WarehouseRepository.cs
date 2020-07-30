@@ -55,4 +55,9 @@ namespace ERPDAL.InventoryDAL
     {
         public SupplierRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
+
+    public class IQCRepository : InventoryBaseRepository<IQC>
+    {
+        public IQCRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base (inventoryUnitOfWork) { }
+    }
 }
