@@ -5,68 +5,107 @@
 }
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <div class="row">
-            <div class="col-md-3">
-                @if (privilege.Detail)
-                {
-                    <a href="/Inventory/GetWarehouseStockDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                        <i class="fas fa-eye"></i> Go To Details View
-                    </a>
-                }
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-warehouseStockInfoList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockInfoList" role="tab" aria-controls="custom-tabs-two-warehouseStockInfoList" aria-selected="true">Warehouse Stock Info List</a>
+                    </li>
+                    @*<li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-warehouseStockDetailList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockDetailList" role="tab" aria-controls="custom-tabs-two-warehouseStockDetailList" aria-selected="true">Warehouse StockDetail List</a>
+                    </li>*@
+                </ul>
             </div>
-            <div class="col-md-6">
-                <h4><b style="color:darkblue">Warehouse Stock List</b></h4>
-            </div>
-            <div class="col-md-3">
-                @if (privilege.Add)
-                {
-                    <a href="/Inventory/CreateStock" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Warehouse Stock-In</a>
-                }
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
-                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
-                <select id="ddlItemType" class="form-control form-control-sm">
-                    <option value="">--Select Item Type--</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
-                <select id="ddlItem" class="form-control form-control-sm">
-                    <option value="">--Select Item--</option>
-                </select>
-                <span class="error hide duplicate-itemName font-weight-bold">The itemName is already exist!</span>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
 
+                    <div class="tab-pane fade show active" id="custom-tabs-two-warehouseStockInfoList" role="tabpanel" aria-labelledby="custom-tabs-two-warehouseStockInfoList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @if (privilege.Detail)
+                                                {
+                                                    <a href="/Inventory/GetWarehouseStockDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>
+                                                }
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Warehouse Stock Info List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @if (privilege.Add)
+                                                {
+                                                    <a href="/Inventory/CreateStock" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Warehouse Stock-In</a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                                                <select id="ddlItemType" class="form-control form-control-sm">
+                                                    <option value="">--Select Item Type--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                                <select id="ddlItem" class="form-control form-control-sm">
+                                                    <option value="">--Select Item--</option>
+                                                </select>
+                                                <span class="error hide duplicate-itemName font-weight-bold">The itemName is already exist!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetWarehouseStockInfoPartialList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
-                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("GetWarehouseStockInfoPartialList");}
     </div>
 </div>
+
 
 @section scripts{
     <script type="text/javascript">

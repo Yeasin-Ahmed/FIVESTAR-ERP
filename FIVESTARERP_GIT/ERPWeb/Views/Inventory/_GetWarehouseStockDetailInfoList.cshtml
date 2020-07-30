@@ -5,53 +5,58 @@
     string badge = string.Empty;
 }
 
-<table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblWarehouseDetailList">
-    <thead class="btn-dark">
-        <tr class="text-center">
-            <th style="vertical-align:middle">#SL</th>
-            <th style="vertical-align:middle">Warehouse</th>
-            <th style="vertical-align:middle">Model Name</th>
-            <th style="vertical-align:middle">ItemType Name</th>
-            <th style="vertical-align:middle">Item Name</th>
-            <th style="vertical-align:middle">Type Of Unit</th>
-            <th style="vertical-align:middle">Quantity</th>
-            <th style="vertical-align:middle">Order Qty</th>
-            <th style="vertical-align:middle">Stock Status</th>
-            <th style="vertical-align:middle">Supplier</th>
-            <th style="vertical-align:middle">Entry Date</th>
-            <th style="vertical-align:middle">Ref Number</th>
-            <th style="vertical-align:middle">Entry User</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            sl = sl + 1;
-            badge = item.StockStatus.ToLower() == "stock-in" ? "badge bg-success" : (item.StockStatus.ToLower() == "stock-out" ? "badge bg-primary" : "badge bg-danger");
-            <tr>
-                <td class="text-center"><b>@sl</b></td>
-                <td>@item.WarehouseName</td>
-                <td class="text-center">@item.ModelName</td>
-                <td>@item.ItemTypeName</td>
-                <td>@item.ItemName</td>
-                <td class="text-center">@item.UnitName</td>
-                <td class="text-center">@item.Quantity</td>
-                <td class="text-center">@item.OrderQty</td>
-                <td class="text-center" data-val="@item.StockStatus">
-                    <span class="@badge">@item.StockStatus</span>
-                </td>
-                <td>@item.SupplierName</td>
-                <td class="text-center">@item.EntryDate</td>
-                <td>@item.RefferenceNumber</td>
-                <td class="text-center">@item.EntryUser</td>
-            </tr>
-        }
-        @if (Model.Count() == 0)
-        {
-            <tr class="text-center text-bold">
-                <td colspan="14">No data found in the table</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-12 mt-2" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblWarehouseDetailList">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="vertical-align:middle">#SL</th>
+                    <th style="vertical-align:middle">Warehouse</th>
+                    <th style="vertical-align:middle">Model Name</th>
+                    <th style="vertical-align:middle">ItemType Name</th>
+                    <th style="vertical-align:middle">Item Name</th>
+                    <th style="vertical-align:middle">Type Of Unit</th>
+                    <th style="vertical-align:middle">Quantity</th>
+                    <th style="vertical-align:middle">Order Qty</th>
+                    <th style="vertical-align:middle">Stock Status</th>
+                    <th style="vertical-align:middle">Supplier</th>
+                    <th style="vertical-align:middle">Entry Date</th>
+                    <th style="vertical-align:middle">Ref Number</th>
+                    <th style="vertical-align:middle">Entry User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.StockStatus.ToLower() == "stock-in" ? "badge bg-success" : (item.StockStatus.ToLower() == "stock-out" ? "badge bg-primary" : "badge bg-danger");
+                    <tr>
+                        <td class="text-center"><b>@sl</b></td>
+                        <td>@item.WarehouseName</td>
+                        <td class="text-center">@item.ModelName</td>
+                        <td>@item.ItemTypeName</td>
+                        <td>@item.ItemName</td>
+                        <td class="text-center">@item.UnitName</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-center">@item.OrderQty</td>
+                        <td class="text-center" data-val="@item.StockStatus">
+                            <span class="@badge">@item.StockStatus</span>
+                        </td>
+                        <td>@item.SupplierName</td>
+                        <td class="text-center">@item.EntryDate</td>
+                        <td>@item.RefferenceNumber</td>
+                        <td class="text-center">@item.EntryUser</td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center text-bold">
+                        <td colspan="14">No data found in the table</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
 @Html.Partial("_Pagination", pagerData)

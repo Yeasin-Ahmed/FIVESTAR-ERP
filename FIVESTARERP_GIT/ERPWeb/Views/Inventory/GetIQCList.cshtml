@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ERPBO.Inventory.ViewModels.IQCViewModel>
+@{
+    ViewBag.Title = "List Of IQC";
+    int sl = 0;
+    string badge = string.Empty;
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
+
+<div class="row">
+    <div class="col-md-12 mt-2" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblIQCData" id="tblIQCData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>IQC Name</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                    <th>StateStatus</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
+                    <tr>
+                        <td class="text-center">@sl</td>
+                        <td class="hide">@item.Id</td>
+                        <td>@item.IQCName</td>
+
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.UpdateUser</td>
+
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center">
+                            @if (privilege.Edit)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-IQC" style="line-height:1" data-edit-IQC="@item.Id"><i class="fa fa-sm fa-pen"></i> Edit</a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

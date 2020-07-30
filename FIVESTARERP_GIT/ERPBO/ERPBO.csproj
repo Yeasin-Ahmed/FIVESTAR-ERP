@@ -203,7 +203,10 @@
     <Compile Include="FrontDesk\ViewModels\TSStockInfoViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TsStockReturnDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\TsStockReturnInfoViewModel.cs" />
+    <Compile Include="Inventory\DomainModels\IQC.cs" />
+    <Compile Include="Inventory\DTOModel\IQCDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\ViewModels\IQCViewModel.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
     <Compile Include="Production\DomainModels\ProductionAssembleStockDetail.cs" />

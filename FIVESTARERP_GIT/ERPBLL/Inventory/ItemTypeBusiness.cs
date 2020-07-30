@@ -47,13 +47,16 @@ namespace ERPBLL.Inventory
             }
             else
             {
-                itemType = GetItemTypeOneByOrgId(itemTypeDTO.ItemId, itemTypeDTO.WarehouseId, orgId);
+                itemType = GetItemType(itemTypeDTO.ItemId, orgId);
                 //itemType.ItemName = itemTypeDTO.ItemName;
                 itemType.Remarks = itemTypeDTO.Remarks;
                 itemType.IsActive = itemTypeDTO.IsActive;
+                itemType.ItemName = itemTypeDTO.ItemName;
+                itemType.ShortName = itemTypeDTO.ShortName;
                 itemType.UpUserId = userId;
                 itemType.UpdateDate = DateTime.Now;
                 itemType.OrganizationId = orgId;
+                itemType.WarehouseId = itemTypeDTO.WarehouseId;
                 itemTypeRepository.Update(itemType);
             }
             return itemTypeRepository.Save();
@@ -69,7 +72,7 @@ namespace ERPBLL.Inventory
 
         public ItemType GetItemTypeOneByOrgId(long id, long warehouseId, long orgId)
         {
-            return itemTypeRepository.GetOneByOrg(item => item.ItemId == id && item.OrganizationId == orgId && item.WarehouseId==warehouseId);
+            return itemTypeRepository.GetOneByOrg(item => item.ItemId == id && item.OrganizationId == orgId && item.WarehouseId == warehouseId);
         }
 
         public ItemType GetItemType(long id, long orgId)
