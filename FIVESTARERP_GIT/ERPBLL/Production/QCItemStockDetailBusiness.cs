@@ -212,22 +212,60 @@ namespace ERPBLL.Production
                 };
 
                 var stockInfoInDb = _qCItemStockInfoBusiness.GetQCItemStockInfById(item.QCId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                if(stockInfoInDb != null)
+                {
+                    //stockInfoInDb.Quantity -= item.Quantity;
+                    if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair Line" && item.RepairLineId != null && item.RepairLineId > 0)
+                    {
+                        stockInfoInDb.RepairQty += item.Quantity;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
+                    {
+                        stockInfoInDb.LabQty += item.Quantity;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "MiniStock")
+                    {
+                        stockInfoInDb.MiniStockQty += item.Quantity;
+                    }
+                    stockInfoInDb.UpUserId = userId;
+                    _qCItemStockInfoRepository.Update(stockInfoInDb);
+                }
+               
+                else
+	            {
+                    QCItemStockInfo info = new QCItemStockInfo()
+                    {
+                        ProductionFloorId = item.ProductionFloorId,
+                        AssemblyLineId=item.AssemblyLineId,
+                        DescriptionId = item.DescriptionId,
+                        QCId = item.QCId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        RepairQty = 0,
+                        LabQty = 0,
+                        MiniStockQty = 0,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        Remarks = ""
+                    };
 
-                stockInfoInDb.Quantity -= item.Quantity;
-                if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag =="Repair Line" && item.RepairLineId != null && item.RepairLineId > 0)
-                {
-                    stockInfoInDb.RepairQty += item.Quantity;
+                    if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Repair Line" && item.RepairLineId != null && item.RepairLineId > 0)
+                    {
+                        info.RepairQty += item.Quantity;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
+                    {
+                        info.LabQty += item.Quantity;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "MiniStock")
+                    {
+                        info.MiniStockQty += item.Quantity;
+                    }
+                    this._qCItemStockInfoRepository.Insert(info);
                 }
-                else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "Lab" && item.LabId != null && item.LabId > 0)
-                {
-                    stockInfoInDb.LabQty += item.Quantity;
-                }
-                else if (!string.IsNullOrWhiteSpace(item.Flag) && item.Flag == "MiniStock")
-                {
-                    stockInfoInDb.MiniStockQty += item.Quantity;
-                }
-                stockInfoInDb.UpUserId = userId;
-                _qCItemStockInfoRepository.Update(stockInfoInDb);
                 stockDetails.Add(stock);
             }
             if (stockDetails.Count > 0)
@@ -274,6 +312,7 @@ namespace ERPBLL.Production
                     stockInfoInDb = new QCItemStockInfo()
                     {
                         ProductionFloorId = item.ProductionFloorId,
+                        AssemblyLineId =item.AssemblyLineId,
                         QCId = item.QCId,
                         DescriptionId = item.DescriptionId,
                         WarehouseId = item.WarehouseId,

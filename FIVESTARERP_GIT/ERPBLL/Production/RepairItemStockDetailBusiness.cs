@@ -65,6 +65,7 @@ namespace ERPBLL.Production
                     RepairItemStockInfo info = new RepairItemStockInfo()
                     {
                         ProductionFloorId = item.ProductionFloorId,
+                        AssemblyLineId = item.AssemblyLineId,
                         RepairLineId = item.RepairLineId,
                         DescriptionId = item.DescriptionId,
                         QCId = item.QCId,

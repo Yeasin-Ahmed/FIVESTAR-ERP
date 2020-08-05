@@ -228,6 +228,7 @@ namespace ERPBLL.Production
             }
             else
             {
+                var unitInDb = _itemBusiness.GetItemOneByOrgId(qcPassInfo.ItemId, orgId);
                 code = "QCP-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss");
                 qcPassInfoInDb = new QCPassTransferInformation()
                 {
@@ -247,7 +248,8 @@ namespace ERPBLL.Production
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     Remarks ="Item In By QRCode Scaning",
-                    QCPassCode = code
+                    QCPassCode = code,
+                    UnitId= unitInDb.UnitId
                 };
                 qcPassInfoInDb.QCPassTransferDetails = qCPassTransferDetail;
             }
