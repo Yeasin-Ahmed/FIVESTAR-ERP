@@ -2719,7 +2719,7 @@ namespace ERPWeb.Controllers
 
         public ActionResult GetPackagingLineStockInfo(string flag, long? lineId, long? packagingId, long? qcId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
         {
-            ViewBag.UserPrivilege = UserPrivilege("Production", "GetPackagingLineStockInfo");
+            //ViewBag.UserPrivilege = UserPrivilege("Production", "GetPackagingLineStockInfo");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
@@ -2731,6 +2731,8 @@ namespace ERPWeb.Controllers
                     Text = ware.WarehouseName,
                     Value = ware.Id.ToString()
                 }).ToList();
+
+                ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem {Text=s.ItemName,Value= s.ItemName }).ToList();
 
                 return View();
             }

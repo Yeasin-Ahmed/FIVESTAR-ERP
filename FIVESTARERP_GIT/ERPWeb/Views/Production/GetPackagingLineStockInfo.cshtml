@@ -1,28 +1,31 @@
 ﻿@{
     ViewBag.Title = "Packaging Line Stock Info";
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-}   
+    //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+}
 
 <div class="row">
     <div class="col-md-12 text-center">
         <div class="row">
             <div class="col-md-3">
-                @if (privilege != null && privilege.Detail)
-                {
-                    <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                        <i class="fas fa-eye"></i> Go To Details View
-                    </a>
-                }
+                @*@if (privilege != null && privilege.Detail)
+                    {
+
+                    }*@
+                <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                    <i class="fas fa-eye"></i> Go To Details View
+                </a>
             </div>
             <div class="col-md-6 text-center">
                 <h4><b style="color:darkblue">Packaging Line Stock Info</b></h4>
             </div>
             <div class="col-md-3">
+                @*@if (privilege.Edit)
+                    {
+
+                    }*@
                 @if (privilege.Edit)
                 {
-                    <a href="/Production/GetReceiveStockFromQC" class="float-right btn btn-sm btn-outline-success" title="Receive Stock From QC">
-                        <i class="fas fa-plus"></i> Stock In
-                    </a>
+
                 }
             </div>
         </div>
@@ -32,7 +35,7 @@
         <h5 class="text-cyan"><b>Search By</b></h5>
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="ddlLineNumber" class="control-label font-weight-bold">Floor</label>
                 @Html.DropDownList("ddlLineNumber", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
             </div>
@@ -42,13 +45,13 @@
                     <option value="0">--Select QC Line--</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="ddlPackagingLine" class="control-label font-weight-bold">Packaging Line</label>
                 <select id="ddlPackagingLine" class="form-control form-control-sm ctrl-change">
                     <option value="0">--Select Packaging Line--</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
             </div>
@@ -78,7 +81,7 @@
         <hr />
     </div>
     <div class="col-md-12" id="dataContainer" style="overflow-y:scroll">
-        @{Html.RenderAction("GetPackagingLineStockInfo", new {@flag="View" });}
+        @{Html.RenderAction("GetPackagingLineStockInfo", new { @flag = "View" });}
     </div>
 </div>
 
@@ -152,7 +155,7 @@
         function LoadDataTable() {
 
             //string flag, long ? lineId, long ? packagingId, long ? qcId, long ? modelId, long ? warehouseId, long ? itemTypeId, long ? itemId, string lessOrEq, int page = 1
-            var data = { flag: "search", lineId: ddlLineNumber.val(), packagingId: TryParseInt(ddlPackagingLine.val(),0), modelId: TryParseInt(ddlModelName.val(),0), qcId: TryParseInt(ddlQCLine.val(),0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0),lessOrEq: txtLessOrEq.val(), page: pageNo };
+            var data = { flag: "search", lineId: ddlLineNumber.val(), packagingId: TryParseInt(ddlPackagingLine.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), qcId: TryParseInt(ddlQCLine.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetPackagingLineStockInfo', data)).then(function (res, status) {
                 console.log(status);
