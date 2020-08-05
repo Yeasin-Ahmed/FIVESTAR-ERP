@@ -568,6 +568,13 @@
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRequisitionWithItemInfoAndDetail', data, getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
+                    if (res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#tblMergeItems tbody").empty();
+                        $("#tblItems tbody").empty();
+                        LoadDataTableForReqList();
+                        $("#custom-tabs-two-requisitionList-tab").trigger('click');
+                    }
                 }).fail(function (error) {
 
                 })
