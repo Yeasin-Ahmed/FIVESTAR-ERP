@@ -888,12 +888,18 @@ namespace ERPWeb.Controllers
             {
                 ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
-                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).OrderBy(s => s.Text).ToList();
 
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
                 {
                     Text = ware.WarehouseName,
                     Value = ware.Id.ToString()
+                }).ToList();
+
+                ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.text == RequisitionStatus.Accepted || s.text == RequisitionStatus.Approved).Select(st => new SelectListItem
+                {
+                    Text = st.text,
+                    Value = st.value
                 }).ToList();
 
                 return View();
@@ -2478,7 +2484,7 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
-        public ActionResult GetQCPassList(string flag, long? floorId, long? assemblyId, long? modelId, long? qcId, long? warehouseId, long? itemTypeId, long? itemId, string status, string qcPassCode,long? qcPassId, string fromDate, string toDate, int page = 1)
+        public ActionResult GetQCPassList(string flag, long? floorId, long? assemblyId, long? modelId, long? qcId, long? warehouseId, long? itemTypeId, long? itemId, string status, string qcPassCode, long? qcPassId, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -2498,7 +2504,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag.ToLower() == Flag.Detail.ToLower())
             {
-                var dto = _qCPassTransferDetailBusiness.GetQCPassTransferDetailsByQuery(floorId, assemblyId, qcId, string.Empty,qcPassCode,status,string.Empty,qcPassId,null,User.OrgId);
+                var dto = _qCPassTransferDetailBusiness.GetQCPassTransferDetailsByQuery(floorId, assemblyId, qcId, string.Empty, qcPassCode, status, string.Empty, qcPassId, null, User.OrgId);
 
                 List<QCPassTransferDetailViewModel> viewModels = new List<QCPassTransferDetailViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -2726,7 +2732,7 @@ namespace ERPWeb.Controllers
                     Value = ware.Id.ToString()
                 }).ToList();
 
-                ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem {Text=s.ItemName,Value= s.ItemName }).ToList();
+                ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem { Text = s.ItemName, Value = s.ItemName }).ToList();
 
                 return View();
             }
@@ -3451,7 +3457,7 @@ namespace ERPWeb.Controllers
             {
                 ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).OrderBy(s => s.Text).ToList();
 
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
                 {
@@ -3459,7 +3465,7 @@ namespace ERPWeb.Controllers
                     Value = ware.Id.ToString()
                 }).ToList();
 
-                ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem {Text=s.ItemName,Value=s.ItemId }).ToList();
+                ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem { Text = s.ItemName, Value = s.ItemId }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.text == RequisitionStatus.Accepted || s.text == RequisitionStatus.Approved).Select(st => new SelectListItem
                 {
@@ -3472,7 +3478,7 @@ namespace ERPWeb.Controllers
             else
             {
                 IEnumerable<FaultyItemStockInfoDTO> dto = _faultyItemStockInfoBusiness.GetFaultyItemStockInfosByQuery(lineId, repairId, modelId, warehouseId, itemTypeId, itemId, lessOrEq, User.OrgId);
-                    
+
                 //    .GetFaultyItemStockInfos(User.OrgId).Select(info => new FaultyItemStockInfoDTO
                 //{
                 //    FaultyItemStockInfoId = info.FaultyItemStockInfoId,
@@ -3511,8 +3517,8 @@ namespace ERPWeb.Controllers
                 //).OrderByDescending(s => s.FaultyItemStockInfoId).ToList();
 
                 // Pagination //
-                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
-                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                //dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 //-----------------//
                 List<FaultyItemStockInfoViewModel> viewModels = new List<FaultyItemStockInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -3616,7 +3622,18 @@ namespace ERPWeb.Controllers
 
         }
 
-        public ActionResult GetRepairSectionFaultyItemTransferList(string flag, long? floorId, long? repairLineId, string transferCode, string status, string fromDate, string toDate, int page = 1)
+        //[HttpPost, ValidateJsonAntiForgeryToken]
+        //public ActionResult SaveReceiveRepairSectionFaulty(long transferId, string status)
+        //{
+        //    bool IsSuccess = false;
+        //    if(transferId > 0 && string.IsNullOrEmpty(status))
+        //    {
+        //        IsSuccess=_repairSectionFaultyItemTransferInfoBusiness.SaveReceiveRepairFaultyTransfer(transferId, status, User.UserId, User.OrgId);
+        //    }
+        //    return Json(IsSuccess);
+        //}
+
+        public ActionResult GetRepairSectionFaultyItemTransferList(string flag, long? floorId, long? repairLineId, string transferCode, long? transferId, string status, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -3628,7 +3645,7 @@ namespace ERPWeb.Controllers
                 }).ToList();
                 return View();
             }
-            else
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim().ToLower() == Flag.View.ToLower())
             {
                 var dto = _repairSectionFaultyItemTransferInfoBusiness.GetRepairSectionFaultyItemTransferInfoList(floorId, repairLineId, transferCode, status, fromDate, toDate, User.OrgId);
 
@@ -3640,8 +3657,26 @@ namespace ERPWeb.Controllers
                 List<RepairSectionFaultyItemTransferInfoViewModel> viewModels = new List<RepairSectionFaultyItemTransferInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetRepairSectionFaultyItemTransferList", viewModels);
-
             }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim().ToLower() == Flag.Detail.ToLower())
+            {
+                var dto = _repairSectionFaultyItemTransferDetailBusiness.GetRepairSectionFaultyItemTransferDetailsByQuery(floorId, repairLineId, status, transferId, User.OrgId);
+
+                ViewBag.Info = new RepairSectionFaultyItemTransferInfoViewModel
+                {
+                    RSFIRInfoId = dto.FirstOrDefault().RSFIRInfoId,
+                    ProductionFloorName = dto.FirstOrDefault().ProductionFloorName,
+                    RepairLineName = dto.FirstOrDefault().RepairLineName,
+                    TransferCode = dto.FirstOrDefault().TransferCode,
+                    StateStatus = dto.FirstOrDefault().StateStatus,
+                    EntryUser = dto.FirstOrDefault().EntryUser,
+                    EntryDate = dto.FirstOrDefault().EntryDate
+                };
+                List<RepairSectionFaultyItemTransferDetailViewModel> viewModels = new List<RepairSectionFaultyItemTransferDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetRepairSectionFaultyItemTransferDetail", viewModels);
+            }
+            return View();
         }
 
         #endregion
@@ -3653,7 +3688,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlRepairLine = _repairLineBusiness.GetRepairLineWithFloor(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
 
-            ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value.ToString() }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
             return View();
         }
 
@@ -3811,7 +3846,7 @@ namespace ERPWeb.Controllers
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "QCPass")
             {
                 date = string.IsNullOrEmpty(date) || date.Trim() == "" ? DateTime.Now.ToString("dd-MMM-yyyy") : date;
-                var dto = _qCPassTransferDetailBusiness.GetQCPassTransferDetailsByQuery(floorId, assemblyId, qcLineId, qrCode, transferCode, status, date,null, User.UserId, User.OrgId);
+                var dto = _qCPassTransferDetailBusiness.GetQCPassTransferDetailsByQuery(floorId, assemblyId, qcLineId, qrCode, transferCode, status, date, null, User.UserId, User.OrgId);
                 IEnumerable<QCPassTransferDetailViewModel> viewModels = new List<QCPassTransferDetailViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetQCPassQrCodes", viewModels);
@@ -3902,7 +3937,8 @@ namespace ERPWeb.Controllers
 
             if (QrCodeItemInfo != null && QrCodeItemInfo.StateStatus == "Received")
             {
-                var QrCodeItemProblems = _qRCodeProblemBusiness.GetQRCodeProblemDTOByQuery(QrCodeItemInfo.TransferId, qrCode, User.OrgId);
+                //QrCodeItemInfo.TransferId
+                var QrCodeItemProblems = _qRCodeProblemBusiness.GetQRCodeProblemDTOByQuery(0, qrCode, User.OrgId);
 
                 List<Dropdown> dropdowns = new List<Dropdown>();
                 dropdowns = _itemBusiness.GetItemPreparationItems(QrCodeItemInfo.DescriptionId, QrCodeItemInfo.ItemId.Value, ItemPreparationType.Production, User.OrgId).Select(i => new Dropdown { text = i.ItemName, value = i.ItemId }).ToList();
@@ -3939,7 +3975,7 @@ namespace ERPWeb.Controllers
 
         // FiveStar - 
         #region Production - Requisition - New [21-July-2020] // FiveStar
-        public ActionResult GetRequisitionByItemInfoAndDetail(string flag, long? floorId, long? assemblyId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, long? reqInfoId, string reqFlag)
+        public ActionResult GetRequisitionByItemInfoAndDetail(string flag, long? floorId, long? assemblyId, long? packagingId, long? repairLineId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, long? reqInfoId, string reqFlag)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -3954,6 +3990,8 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Where(s => s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem { Text = s.ItemName, Value = s.ItemId.ToString() }).ToList();
 
                 ViewBag.ddlAssemblyLineWithProduction = _assemblyLineBusiness.GetAssemblyLinesWithProduction(User.OrgId).Select(s => new SelectListItem { Text = s.text, Value = s.value.ToString() }).ToList();
+
+                ViewBag.ddlPackagingLineWithProduction = _packagingLineBusiness.GetPackagingLinesWithProduction(User.OrgId).Select(s => new SelectListItem { Text = s.text, Value = s.value.ToString() }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(s => s.value != RequisitionStatus.Pending).Select(st => new SelectListItem
                 {
@@ -3970,7 +4008,7 @@ namespace ERPWeb.Controllers
             else if (!string.IsNullOrEmpty(flag) && (flag.ToLower() == Flag.View.ToLower() || flag.ToLower() == Flag.Search.ToLower()))
             {
                 status = (!string.IsNullOrEmpty(status) && status.Trim() != "") ? string.Format(@"'{0}'", status) : null;
-                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId,0,0, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
+                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId, packagingId, repairLineId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
 
                 IEnumerable<RequsitionInfoViewModel> viewModels = new List<RequsitionInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -4061,7 +4099,7 @@ namespace ERPWeb.Controllers
             reqFor = reqFor == null ? "Assembly" : "Assembly";
             if (!string.IsNullOrEmpty(flag) && (flag.Trim().ToLower() == Flag.Info.ToLower()))
             {
-                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId,0,0, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
+                var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(floorId, assemblyId, 0, 0, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, User.OrgId);
 
                 IEnumerable<RequsitionInfoViewModel> viewModels = new List<RequsitionInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -4077,9 +4115,6 @@ namespace ERPWeb.Controllers
             }
             return new EmptyResult();
         }
-
-
-
 
         #endregion
 

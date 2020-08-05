@@ -29,6 +29,7 @@ namespace ERPWeb.Controllers
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
         private readonly ISupplierBusiness _supplierBusiness;
+        private readonly IIQCBusiness _iQCBusiness;
         #endregion
 
         #region Production
@@ -64,7 +65,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IIQCBusiness iQCBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -75,6 +76,7 @@ namespace ERPWeb.Controllers
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._supplierBusiness = supplierBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
+            this._iQCBusiness = iQCBusiness;
             #endregion
 
             #region Production Module
@@ -279,7 +281,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId, long modelId,string stockFor)
+        public ActionResult GetItemUnitAndPDNStockQtyByLineAndModelId(long itemId, long lineId, long modelId, string stockFor)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
@@ -363,11 +365,11 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetProductionAssembleStockInfoByLineAndItemAndModelId(long lineId, long itemId,  long modelId)
+        public ActionResult GetProductionAssembleStockInfoByLineAndItemAndModelId(long lineId, long itemId, long modelId)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
             var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
-            var packagingStock = _productionAssembleStockInfoBusiness.productionAssembleStockInfoByFloorAndModelAndItem(lineId,modelId,itemId, User.OrgId);
+            var packagingStock = _productionAssembleStockInfoBusiness.productionAssembleStockInfoByFloorAndModelAndItem(lineId, modelId, itemId, User.OrgId);
             var itemStock = 0;
             if (packagingStock != null)
             {
@@ -377,7 +379,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetRepairLineQCRemainQty(long assemblyLineId,long repairLineId, long qcLineId, long modelId, long itemId)
+        public ActionResult GetRepairLineQCRemainQty(long assemblyLineId, long repairLineId, long qcLineId, long modelId, long itemId)
         {
             var transferQty = _repairItemStockInfoBusiness.GetRepairItem(assemblyLineId, qcLineId, repairLineId, modelId, itemId, User.OrgId);
             var remainQty = transferQty.Quantity - transferQty.QCQty;
@@ -779,17 +781,17 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult IsItemPreparationExistWithThistype(string type, long modelId, long itemId)
         {
-            var preparation =_itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(type, modelId, itemId, User.OrgId);
+            var preparation = _itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(type, modelId, itemId, User.OrgId);
             return Json(preparation);
         }
-        
+
         public ActionResult GetQCItemStockQtyByFloorAndQcAndModelAndItem(long floorId, long qcId, long modelId, long itemId)
         {
-            var stock =_qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItem(floorId,0, qcId, modelId, itemId, User.OrgId);
+            var stock = _qCItemStockInfoBusiness.GetQCItemStockInfoByFloorAndQcAndModelAndItem(floorId, 0, qcId, modelId, itemId, User.OrgId);
             return Json(stock.Quantity);
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetItemBundleQtyChecking(long floorId, long qcLineId, long modelId, long itemId, int qty, string type)
         {
             ExecutionStateWithText execution = new ExecutionStateWithText();
@@ -825,8 +827,8 @@ namespace ERPWeb.Controllers
             return Json(execution);
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
-        public ActionResult GetItemPreparationBundleByTypeModelItem(string type, long model,long item)
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetItemPreparationBundleByTypeModelItem(string type, long model, long item)
         {
             var preparationInfo = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndType(type, model, item, User.OrgId);
             long infoId = preparationInfo == null ? 0 : preparationInfo.PreparationInfoId;
@@ -861,10 +863,28 @@ namespace ERPWeb.Controllers
             var supplierInDb = this._supplierBusiness.GetSuppliers(User.OrgId).FirstOrDefault(s => s.Email == email && s.SupplierId != supId) != null;
             return Json(supplierInDb);
         }
+
+        [HttpPost]
+        public ActionResult IsDuplicateIQCName(long iqcId, string iqcName)
+        {
+            bool isExists = _iQCBusiness.IsDuplicateIQCName(iqcId, User.OrgId, iqcName);
+            return Json(isExists);
+        }
+
+        #region DropdownList
+
+        [HttpPost]
+        public ActionResult GetItemDetailsForDDL()
+        {
+            var items = _itemBusiness.GetItemDetails(User.OrgId).AsEnumerable();
+            var dropDown = items.Select(i => new Dropdown { text = i.ItemName, value = i.ItemId }).ToList();
+            return Json(dropDown);
+        }
+        #endregion
         #endregion
 
         #region  Async Action Methods
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public async Task<ActionResult> GetFaultyCasesListAsync()
         {
             var data = await _faultyCaseBusiness.GetFaultyCasesAsync(User.OrgId);
@@ -876,7 +896,7 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> GetQRCodeTraceByCodeAsync(string qrCode)
         {
             var data = await _tempQRCodeTraceBusiness.GetTempQRCodeTraceByCodeAsync(qrCode, User.OrgId);
-            var qrCodeData = new {Floor=(data !=null ? data.ProductionFloorId: 0),Assembly=(data !=null?data.AssemblyId : 0),Model=(data !=null ?data.DescriptionId : 0),Item= (data !=null ?  data.ItemId :0 ),ItemType= (data != null ? data.ItemTypeId : 0),Warehouse= (data != null ? data.WarehouseId : 0) };
+            var qrCodeData = new { Floor = (data != null ? data.ProductionFloorId : 0), Assembly = (data != null ? data.AssemblyId : 0), Model = (data != null ? data.DescriptionId : 0), Item = (data != null ? data.ItemId : 0), ItemType = (data != null ? data.ItemTypeId : 0), Warehouse = (data != null ? data.WarehouseId : 0) };
             var passedData = qrCodeData.Floor == 0 ? null : qrCodeData;
             return Json(qrCodeData);
         }
@@ -884,18 +904,18 @@ namespace ERPWeb.Controllers
 
 
         #region Repair Section
-        [HttpPost,ValidateJsonAntiForgeryToken]
-        public ActionResult GetFaultyItemsByQRCode(string qrCode,long transferId)
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetFaultyItemsByQRCode(string qrCode, long transferId)
         {
             IEnumerable<FaultyItemStockDetailViewModel> faultyItemsViewModel = new List<FaultyItemStockDetailViewModel>();
-            var faultyItemsDto = _faultyItemStockDetailBusiness.GetFaultyItemStockDetailsByQrCode(qrCode,transferId, User.OrgId);
+            var faultyItemsDto = _faultyItemStockDetailBusiness.GetFaultyItemStockDetailsByQrCode(qrCode, transferId, User.OrgId);
             AutoMapper.Mapper.Map(faultyItemsDto, faultyItemsViewModel);
             return Json(new { faultyItems = faultyItemsViewModel });
         }
-        
-        public ActionResult CheckingAvailabilityOfSparepartsWithRepairLineStock(long modelId, long itemId,long repairLineId)
+
+        public ActionResult CheckingAvailabilityOfSparepartsWithRepairLineStock(long modelId, long itemId, long repairLineId)
         {
-            ExecutionStateWithText execution = _qRCodeTransferToRepairInfoBusiness.CheckingAvailabilityOfSparepartsWithRepairLineStock(modelId,itemId,repairLineId,User.OrgId);
+            ExecutionStateWithText execution = _qRCodeTransferToRepairInfoBusiness.CheckingAvailabilityOfSparepartsWithRepairLineStock(modelId, itemId, repairLineId, User.OrgId);
             return Json(execution);
         }
 
