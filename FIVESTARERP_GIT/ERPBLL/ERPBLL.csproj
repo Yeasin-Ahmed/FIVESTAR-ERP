@@ -128,6 +128,8 @@
     <Compile Include="ControlPanel\RoleAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\UserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\SubMenuBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IInvoiceDetailBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IInvoiceInfoBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderAccessoriesBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderFaultBusiness.cs" />
@@ -140,6 +142,8 @@
     <Compile Include="FrontDesk\Interface\ITechnicalServicesStockBusiness.cs" />
     <Compile Include="FrontDesk\Interface\ITsStockReturnDetailsBusiness.cs" />
     <Compile Include="FrontDesk\Interface\ITsStockReturnInfoBusiness.cs" />
+    <Compile Include="FrontDesk\InvoiceDetailBusiness.cs" />
+    <Compile Include="FrontDesk\InvoiceInfoBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderAccessoriesBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderFaultBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderProblemBusiness.cs" />

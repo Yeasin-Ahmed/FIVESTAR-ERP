@@ -257,6 +257,18 @@
     <Compile Include="FrontDeskContextMigrations\202007210307586_FrontDesk_JobCloseDate&amp;CUserId.Designer.cs">
       <DependentUpon>202007210307586_FrontDesk_JobCloseDate&amp;CUserId.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007280556107_FrontDesk_InvoiceInfoDetails.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007280556107_FrontDesk_InvoiceInfoDetails.designer.cs">
+      <DependentUpon>202007280556107_FrontDesk_InvoiceInfoDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007290401146_FrontDesk_PartsName.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007290401146_FrontDesk_PartsName.designer.cs">
+      <DependentUpon>202007290401146_FrontDesk_PartsName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202007300348439_FrontDesk_CustomerType.cs" />
+    <Compile Include="FrontDeskContextMigrations\202007300348439_FrontDesk_CustomerType.designer.cs">
+      <DependentUpon>202007300348439_FrontDesk_CustomerType.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -617,6 +629,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202007210307586_FrontDesk_JobCloseDate&amp;CUserId.resx">
       <DependentUpon>202007210307586_FrontDesk_JobCloseDate&amp;CUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007280556107_FrontDesk_InvoiceInfoDetails.resx">
+      <DependentUpon>202007280556107_FrontDesk_InvoiceInfoDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007290401146_FrontDesk_PartsName.resx">
+      <DependentUpon>202007290401146_FrontDesk_PartsName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202007300348439_FrontDesk_CustomerType.resx">
+      <DependentUpon>202007300348439_FrontDesk_CustomerType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

@@ -50,6 +50,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfCustomerType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=CustomerType.WalkInCustomer,value=CustomerType.WalkInCustomer},
+                new Dropdown(){text=CustomerType.Dealer,value=CustomerType.Dealer}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfStockStatus()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
@@ -140,14 +149,12 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
-
         public static int TryParseInt(string value)
         {
             int i = 0;
             int.TryParse(value, out i);
             return i;
         }
-
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

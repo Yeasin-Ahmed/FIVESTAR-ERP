@@ -17,11 +17,15 @@ namespace ERPWeb.Controllers
     {
         public readonly IJobOrderReportBusiness _jobOrderReportBusiness;
         private readonly IJobOrderBusiness _jobOrderBusiness;
+        private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
+        private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
         // GET: ReportSS
-        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness)
+        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness)
         {
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
+            this._invoiceInfoBusiness = invoiceInfoBusiness;
+            this._invoiceDetailBusiness = invoiceDetailBusiness;
         }
         [HttpPost,ValidateJsonAntiForgeryToken]
         public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2)
@@ -125,6 +129,50 @@ namespace ERPWeb.Controllers
                 return Json(new { IsSuccess = IsSuccess, File = fs, FileName = reportData.JobOrderCode });
             }
             return Json(new { IsSuccess = IsSuccess, Id = jobOrderId });
+        }
+
+        public ActionResult InvoiceReport(long infoId)
+        {
+            var infodata = _invoiceInfoBusiness.InvoiceInfoReport(infoId, User.OrgId, User.BranchId);
+
+           // var detailsdata = _invoiceDetailBusiness.InvoiceDetailsReport(infoId,User.OrgId, User.BranchId);
+            IEnumerable<InvoiceDetailDTO> detailsdata = _invoiceDetailBusiness.InvoiceDetailsReport(infoId, User.OrgId, User.BranchId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptInvoiceReceipt.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+            }
+            ReportDataSource dataSource1 = new ReportDataSource("InvoiceInfo", infodata);
+            ReportDataSource dataSource2 = new ReportDataSource("InvoiceDetails", detailsdata);
+            ReportDataSource dataSource3 = new ReportDataSource("ReportHead", servicesReportHeads);
+            localReport.DataSources.Add(dataSource1);
+            localReport.DataSources.Add(dataSource2);
+            localReport.DataSources.Add(dataSource3);
+
+            string reportType = "PDF";
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+            Warning[] warnings;
+            string[] streams;
+
+            var renderedBytes = localReport.Render(
+                reportType,
+                "",
+                out mimeType,
+                out encoding,
+                out fileNameExtension,
+                out streams,
+                out warnings
+                );
+            return File(renderedBytes, mimeType);
         }
     }
 }

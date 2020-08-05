@@ -54,6 +54,9 @@ namespace ERPBO.FrontDesk.DomainModels
         public string TsRepairStatus { get; set; }
         public Nullable<DateTime> CloseDate { get; set; }
         public long? CUserId { get; set; }
+        public long InvoiceInfoId { get; set; }
+        public string InvoiceCode { get; set; }
+        public string CustomerType { get; set; }
 
     }
 }

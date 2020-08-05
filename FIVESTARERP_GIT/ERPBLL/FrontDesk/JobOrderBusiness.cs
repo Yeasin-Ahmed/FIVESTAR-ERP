@@ -96,8 +96,8 @@ namespace ERPBLL.FrontDesk
 CloseDate,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -127,6 +127,7 @@ Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.Descripti
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
 Where 1 = 1 {0}) tbl Order By EntryDate desc
+
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -144,6 +145,7 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
                     IMEI = jobOrderDto.IMEI,
                     IMEI2 = jobOrderDto.IMEI2,
                     Type = jobOrderDto.Type,
+                    CustomerType = jobOrderDto.CustomerType,
                     ModelColor = jobOrderDto.ModelColor,
                     JobOrderType= jobOrderDto.JobOrderType,
                     WarrantyDate = jobOrderDto.WarrantyDate,
@@ -213,6 +215,7 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
                 jobOrderDb.IMEI = jobOrderDto.IMEI;
                 jobOrderDb.IMEI2 = jobOrderDto.IMEI2;
                 jobOrderDb.Type = jobOrderDto.Type;
+                jobOrderDb.CustomerType = jobOrderDto.CustomerType;
                 jobOrderDb.ModelColor = jobOrderDto.ModelColor;
                 jobOrderDb.JobOrderType = jobOrderDto.JobOrderType;
                 jobOrderDb.WarrantyDate = jobOrderDto.WarrantyDate;
@@ -687,10 +690,10 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
             return _jobOrderRepository.GetAll(job => job.IMEI2 == imei2.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
         }
 
-        public bool IsIMEIExistWithRunningJobOrder(string iMEI1, long orgId, long branchId)
+        public bool IsIMEIExistWithRunningJobOrder(long jobOrderId, string iMEI1, long orgId, long branchId)
         {
             bool IsExist = false;
-            var jobOrder = _jobOrderRepository.GetAll(job => job.IMEI == iMEI1 && job.OrganizationId == orgId && job.BranchId == branchId).LastOrDefault();
+            var jobOrder = _jobOrderRepository.GetAll(job => job.JodOrderId== jobOrderId && job.IMEI == iMEI1 && job.OrganizationId == orgId && job.BranchId == branchId).LastOrDefault();
             if (jobOrder != null) {
                 if(jobOrder.StateStatus != JobOrderStatus.DeliveryDone)
                 {
@@ -698,6 +701,11 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
                 }
             }
             return IsExist;
+        }
+
+        public JobOrder GetAllJobOrderById(long branchId, long orgId)
+        {
+            return _jobOrderRepository.GetOneByOrg(job => job.BranchId==branchId && job.OrganizationId==orgId);
         }
     }
 }
