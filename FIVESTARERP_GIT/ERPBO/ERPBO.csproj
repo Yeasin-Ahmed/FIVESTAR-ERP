@@ -152,6 +152,8 @@
     <Compile Include="ControlPanel\ViewModels\UserMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
+    <Compile Include="FrontDesk\DomainModels\InvoiceDetail.cs" />
+    <Compile Include="FrontDesk\DomainModels\InvoiceInfo.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderAccessories.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderFault.cs" />
@@ -170,6 +172,9 @@
     <Compile Include="FrontDesk\DTOModels\DashboardDailySingInAndOutDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardRequestSparePartsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\InvoiceDetailDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\InvoiceInfoDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\InvoiceUsedPartsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderFaultDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderRepairDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderServiceDTO.cs" />
@@ -190,6 +195,9 @@
     <Compile Include="FrontDesk\ViewModels\DashboardDailySingInAndOutViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardRequestSparePartsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="FrontDesk\ViewModels\InvoiceDetailViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\InvoiceInfoViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\InvoiceUsedPartsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderFaultViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderRepairViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderServiceViewModel.cs" />

@@ -1,4 +1,5 @@
-﻿using ERPBO.FrontDesk.DomainModels;
+﻿using ERPBO.ControlPanel.DomainModels;
+using ERPBO.FrontDesk.DomainModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,5 +55,13 @@ namespace ERPDAL.FrontDeskDAL
     public class TsStockReturnDetailRepository : FrontDeskBaseRepository<TsStockReturnDetail>
     {
         public TsStockReturnDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
+    public class InvoiceInfoRepository : FrontDeskBaseRepository<InvoiceInfo>
+    {
+        public InvoiceInfoRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
+    public class InvoiceDetailRepository : FrontDeskBaseRepository<InvoiceDetail>
+    {
+        public InvoiceDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
     }
 }

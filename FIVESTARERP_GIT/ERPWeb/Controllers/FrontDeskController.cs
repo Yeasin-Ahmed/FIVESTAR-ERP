@@ -9,6 +9,7 @@ using ERPBO.Configuration.ViewModels;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPBO.FrontDesk.ViewModels;
+using ERPDAL.FrontDeskDAL;
 using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,10 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderRepairBusiness _jobOrderRepairBusiness;
         private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
         private readonly ITsStockReturnDetailsBusiness _tsStockReturnDetailsBusiness;
+        private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
+        private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -79,6 +82,8 @@ namespace ERPWeb.Controllers
             this._roleBusiness = roleBusiness;
             this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
             this._tsStockReturnDetailsBusiness = tsStockReturnDetailsBusiness;
+            this._invoiceInfoBusiness = invoiceInfoBusiness;
+            this._invoiceDetailBusiness = invoiceDetailBusiness;
         }
 
         #region JobOrder
@@ -121,7 +126,6 @@ namespace ERPWeb.Controllers
                     return PartialView("_GetJobOrderAssing", viewModels.FirstOrDefault());
                 }
             }
-
             return View();
         }
 
@@ -139,6 +143,8 @@ namespace ERPWeb.Controllers
             ViewBag.ddlPhoneTypes = Utility.ListOfPhoneTypes().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
             ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
             long jobOrder = 0;
             if (jobOrderId != null && jobOrderId > 0)
@@ -180,6 +186,7 @@ namespace ERPWeb.Controllers
                 JobOrderCode = jobOrder.JobOrderCode,
                 CustomerId = jobOrder.CustomerId,
                 CustomerName = jobOrder.CustomerName,
+                CustomerType=jobOrder.CustomerType,
                 MobileNo = jobOrder.MobileNo,
                 Address = jobOrder.Address,
                 DescriptionId = jobOrder.DescriptionId,
@@ -877,6 +884,37 @@ namespace ERPWeb.Controllers
             if (returnInfoId > 0 && !string.IsNullOrEmpty(status))
             {
                 IsSuccess = _tsStockReturnInfoBusiness.UpdateReturnInfoStatus(returnInfoId, status, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region Invoice
+        public ActionResult GetPartsUsedStock(long jobOrderId)
+        {
+            IEnumerable<InvoiceUsedPartsDTO> dto = _invoiceDetailBusiness.GetUsedPartsDetails(jobOrderId, User.OrgId, User.BranchId).Select(qty => new InvoiceUsedPartsDTO
+            {
+                PartsId = qty.PartsId,
+                MobilePartName = qty.MobilePartName,
+                UsedQty = qty.UsedQty,
+                Price = qty.Price,
+                Total = qty.Total
+            }).ToList();
+            List<InvoiceUsedPartsViewModel> viewModel = new List<InvoiceUsedPartsViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModel);
+            return PartialView("GetPartsUsedStock", viewModel);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveInvoiceForJobOrder(InvoiceInfoViewModel info, List<InvoiceDetailViewModel> details)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                InvoiceInfoDTO dtoInfo = new InvoiceInfoDTO();
+                List<InvoiceDetailDTO> dtoDetail = new List<InvoiceDetailDTO>();
+                AutoMapper.Mapper.Map(info, dtoInfo);
+                AutoMapper.Mapper.Map(details, dtoDetail);
+                IsSuccess = _invoiceInfoBusiness.SaveInvoiceForJobOrder(dtoInfo, dtoDetail, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
         }

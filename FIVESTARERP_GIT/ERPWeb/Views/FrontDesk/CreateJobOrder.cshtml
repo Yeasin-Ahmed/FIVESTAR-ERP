@@ -79,8 +79,9 @@
                             <span class="error hide require-address font-weight-bold">Mobile No is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="txtReferenceNumber" class="control-label font-weight-bold">ReferencesNumber</label>
-                            <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
+                            <label for="ddlCustomerType" class="control-label font-weight-bold">CustomerType</label>
+                            @Html.DropDownList("ddlCustomerType", (IEnumerable<SelectListItem>)ViewBag.ddlCustomerType, "--Select CustomerType--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-customerType font-weight-bold">Customer Type is required !</span>
                         </div>
                     </div>
                     <div class="row">
@@ -130,6 +131,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
+                            <label for="txtReferenceNumber" class="control-label font-weight-bold">ReferencesNumber</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
+                        </div>
+                        <div class="col-md-3">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" class="form-control form-control-sm" id="txtRemarks" />
                         </div>
@@ -150,6 +155,16 @@
                                 <b>Warrenty Paper?</b>
                                 <input type="radio" name="Enclosed" id="enclosedYes" /><b> Yes</b>
                                 <input type="radio" name="Enclosed" id="enclosedNo" checked /><b> No</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" id="chkHandset">
+                            <label for="" style="visibility:hidden;">HandSet</label>
+                            <div class="form-control form-control-sm clearfix">
+                                <b>HandSet?</b>
+                                <input type="radio" name="HandSet" id="handsetDOA"  /><b> DOA</b>
+                                <input type="radio" name="HandSet" id="handsetDAP" checked /><b> DAP</b>
                             </div>
                         </div>
                     </div>
@@ -247,6 +262,7 @@
         var hdfJobOrderId = $("#hdfJobOrderId");
         var chkWarrantyPaper = $("#chkWarrantyPaper");
         var ddlJobOrderType = $("#ddlJobOrderType");
+        var ddlCustomerType = $("#ddlCustomerType");
 
         $(document).ready(function () {
             var date = new Date();
@@ -285,9 +301,12 @@
                 todayHighlight: true
             });
 
-            var thisDate = date.getDate() + ' ' + getMonthName(date.getMonth() + 1, "MM") + " " + date.getFullYear();
-            $('#dptJobEntryDate').val(thisDate)
-            $('#dptJobEntryDate').trigger('change');
+            if (TryParseInt(hdfJobOrderId.val(), 0) <= 0) {
+                var thisDate = date.getDate() + ' ' + getMonthName(date.getMonth() + 1, "MM") + " " + date.getFullYear();
+                $('#dptJobEntryDate').val(thisDate)
+                $('#dptJobEntryDate').trigger('change');
+            }
+            
 
             loadData();
 
@@ -343,6 +362,8 @@
                         ddlModelColor.trigger('change');
                         ddlJobOrderType.val(jobOrder.JobOrderType);
                         ddlJobOrderType.trigger('change');
+                        ddlCustomerType.val(jobOrder.CustomerType);
+                        ddlCustomerType.trigger('change');
                         //chkIsWarrentyAvailable.prop("checked", jobOrder.IsWarrantyAvailable);
                         if (jobOrder.IsWarrantyPaperEnclosed) {
                             rdnEnclosedYes.prop("checked", true);
@@ -408,6 +429,7 @@
             clearDropdown("ddlAccessories");
             clearDropdown("ddlPhoneTypes");
             clearDropdown("ddlDescriptions");
+            clearDropdown("ddlCustomerType");
             clearDropdown("ddlProblems");
             txtCustomer.val('');
             txtMobileNumber.val('');
@@ -535,6 +557,8 @@
                         ddlModelColor.trigger('change');
                         ddlJobOrderType.val(res.JobOrderType);
                         ddlJobOrderType.trigger('change');
+                        ddlCustomerType.val(res.CustomerType);
+                        ddlCustomerType.trigger('change');
                         txtRemarks.val(res.Remarks);
                         if (ddlJobOrderType.val() == "Warrenty") {
                             dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
@@ -574,10 +598,12 @@
                         txtIMEI2.val(res.IMEI2);
                         ddlPhoneTypes.val(res.Type);
                         ddlPhoneTypes.trigger('change');
-                        ddlModelColor.val(res.ModelColor);
+                        ddlModelColor.val(res.ModelColor); 
                         ddlModelColor.trigger('change');
                         ddlJobOrderType.val(res.JobOrderType);
                         ddlJobOrderType.trigger('change');
+                        ddlCustomerType.val(res.CustomerType);
+                        ddlCustomerType.trigger('change');
                         txtRemarks.val(res.Remarks);
                         if (ddlJobOrderType.val() == "Warrenty") {
                             dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
@@ -660,8 +686,12 @@
                 $(".require-address").removeClass("hide");
                 isValid = false;
             }
+            if (ddlCustomerType.val() === "") {
+                $(".require-customerType").removeClass("hide");
+                isValid = false;
+            }
             if (ddlDescriptions.val() === "") {
-                $(".require-modelName").removeClass("hide");
+                $(".require-modelName").removeClass("hide"); 
                 isValid = false;
             }
             if (txtIMEI.val() === "") {
@@ -669,8 +699,8 @@
                 isValid = false;
             }
             else {
-                
-                if (ajaxBooleanChecker(JSON.stringify({ iMEI: txtIMEI.val().trim() }), '/Common2/IsIMEIExistWithRunningJobOrder', getToken()) == true) {
+
+                if (ajaxBooleanChecker(JSON.stringify({ iMEI: txtIMEI.val().trim(), jobOrdeId: hdfJobOrderId.val() }), '/Common2/IsIMEIExistWithRunningJobOrder', getToken()) == true) {
                     $(".duplicate-IMEI").removeClass("hide");
                     isValid = false;
                 }
@@ -727,8 +757,13 @@
                 //    WarrantyDate = new Date(dptWarrantyDate.val());
                 //    WarrantyEndDate = new Date(dptWarrantyEndDate.val())
                 //}
+                //dptJobEntryDate.val()
+                var entryDate = null;
+                if (dptJobEntryDate.val().trim() != "") {
+                    entryDate=   new Date(dptJobEntryDate.val());
+                }
 
-                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: customerId.val(), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: ddlDescriptions.val(), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: dptJobEntryDate.val(), Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val() };
+                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate , Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val() };
 
                 var aryAccessories = []; aryAccessories.length = 0;
                 var accessories = ddlAccessories.val();

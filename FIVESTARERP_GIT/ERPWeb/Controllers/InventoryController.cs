@@ -48,7 +48,6 @@ namespace ERPWeb.Controllers
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
         private readonly ISupplierBusiness _supplierBusiness;
-        private readonly IIQCBusiness _iQCBusiness;
         #endregion
 
         #region Production
@@ -58,7 +57,7 @@ namespace ERPWeb.Controllers
         #endregion
 
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -79,7 +78,6 @@ namespace ERPWeb.Controllers
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             this._supplierBusiness = supplierBusiness;
-            this._iQCBusiness = iQCBusiness;
 
             #region Production
             this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
@@ -132,10 +130,6 @@ namespace ERPWeb.Controllers
                 UpdateUser = (ware.UpUserId == null || ware.UpUserId == 0) ? "" : UserForEachRecord(ware.UpUserId.Value).UserName
 
             }).ToList();
-            ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
-            ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
-            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
-
             List<WarehouseViewModel> viewModel = new List<WarehouseViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseList");
@@ -380,7 +374,7 @@ namespace ERPWeb.Controllers
             ViewBag.ddlModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
 
             ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
-            ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Select(s => new SelectListItem { Text = s.ItemName, Value = s.ItemId }).ToList();
+
             ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
 
             ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
@@ -468,7 +462,7 @@ namespace ERPWeb.Controllers
         // Used By  GetReqInfoList
         public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType,long? reqInfoId, int page = 1)
         {
-            var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(line, 0,0,0, warehouseId, modelId, reqCode, requisitionType, string.Empty, fromDate, toDate, status, string.Empty, reqInfoId, User.OrgId);
+            var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(line,0,0 ,0, warehouseId, modelId, reqCode, requisitionType, string.Empty, fromDate, toDate, status, string.Empty, reqInfoId, User.OrgId);
 
             //var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
             //IEnumerable<RequsitionInfoDTO> dto = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
@@ -1279,26 +1273,13 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+
         #region PartialView
 
-        public ActionResult _GetWarehousePartialList()
-        {
-            IEnumerable<WarehouseDTO> dto = _warehouseBusiness.GetAllWarehouseByOrgId(1).Select(ware => new WarehouseDTO
-            {
-                Id = ware.Id,
-                WarehouseName = ware.WarehouseName,
-                Remarks = ware.Remarks,
-                StateStatus = (ware.IsActive == true ? "Active" : "Inactive"),
-                OrganizationId = ware.OrganizationId,
-                EntryUser = UserForEachRecord(ware.EUserId.Value).UserName,
-                UpdateUser = (ware.UpUserId == null || ware.UpUserId == 0) ? "" : UserForEachRecord(ware.UpUserId.Value).UserName
-
-            }).ToList();
-            List<WarehouseViewModel> viewModel = new List<WarehouseViewModel>();
-            AutoMapper.Mapper.Map(dto, viewModel);
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseList");
-            return PartialView(viewModel);
-        }
         public ActionResult _GetDescriptionPartialList(int? page)
         {
             IEnumerable<DescriptionDTO> dto = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new DescriptionDTO
@@ -1321,7 +1302,7 @@ namespace ERPWeb.Controllers
 
             IEnumerable<DescriptionViewModel> viewModel = new List<DescriptionViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
-            return PartialView(viewModel);
+            return View(viewModel);
         }
 
         public ActionResult _GetItemTypePartialList(int? page)
@@ -1345,7 +1326,7 @@ namespace ERPWeb.Controllers
             IEnumerable<ItemTypeViewModel> viewModels = new List<ItemTypeViewModel>();
             AutoMapper.Mapper.Map(dto, viewModels);
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemTypeList");
-            return PartialView(viewModels);
+            return View(viewModels);
         }
 
         public ActionResult _GetAllUnitPartialList()
@@ -1363,7 +1344,7 @@ namespace ERPWeb.Controllers
             }).ToList();
             List<UnitViewModel> unitViewModels = new List<UnitViewModel>();
             AutoMapper.Mapper.Map(unitDomains, unitViewModels);
-            return PartialView(unitViewModels);
+            return View(unitViewModels);
         }
 
         public ActionResult _GetItemPartialList()
@@ -1391,59 +1372,8 @@ namespace ERPWeb.Controllers
             }).OrderBy(item => item.ItemId).ToList();
             IEnumerable<ItemViewModel> viewModel = new List<ItemViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
-            return PartialView(viewModel);
+            return View(viewModel);
         }
         #endregion
-
-        #region IQC
-
-        [HttpGet]
-        public ActionResult GetIQCList()
-        {
-            IEnumerable<IQCDTO> dto = _iQCBusiness.GetAllIQCByOrgId(1).Select(iqc => new IQCDTO
-            {
-                Id = iqc.Id,
-                IQCName = iqc.IQCName,
-                Remarks = iqc.Remarks,
-                StateStatus = iqc.IsActive == true ? "Active" : "InActive",
-                OrganizationId = iqc.OrganizationId,
-                EntryUser = UserForEachRecord(iqc.EUserId.Value).UserName,
-                UpdateUser = iqc.UpUserId == null || iqc.UpUserId == 0 ? "" : UserForEachRecord(iqc.EUserId.Value).UserName,
-            }).ToList();
-
-            List<IQCViewModel> viewModel = new List<IQCViewModel>();
-            AutoMapper.Mapper.Map(dto, viewModel);
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetIQCList");
-
-            return PartialView(viewModel);
-        }
-
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SaveIQC(IQCViewModel viewModel)
-        {
-            bool isSuccess = false;
-            var pre = UserPrivilege("Inventory", "GetIQCList");
-            var permission = (viewModel.Id == 0 && pre.Add) || (viewModel.Id > 0 && pre.Edit);
-            if(ModelState.IsValid && permission)
-            {
-                try
-                {
-                    IQCDTO dto = new IQCDTO();
-                    AutoMapper.Mapper.Map(viewModel, dto);
-                    isSuccess = _iQCBusiness.SaveIQC(dto, User.UserId, User.OrgId);
-                }
-                catch (Exception ex)
-                {
-                    isSuccess = false;
-                }
-            }
-            return Json(isSuccess);
-        }
-        #endregion
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }       
     }
 }

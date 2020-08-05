@@ -56,5 +56,8 @@ namespace ERPBO.FrontDesk.DTOModels
         public long? CUserId { get; set; }
         public string CloseUser { get; set; }
         public Nullable<DateTime> RepairDate { get; set; }
+        public long InvoiceInfoId { get; set; }
+        public string InvoiceCode { get; set; }
+        public string CustomerType { get; set; }
     }
 }

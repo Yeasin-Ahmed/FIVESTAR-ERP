@@ -37,8 +37,10 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderFaultBusiness _jobOrderFaultBusiness;
         private readonly IJobOrderServiceBusiness _jobOrderServiceBusiness;
         private readonly IDescriptionBusiness _descriptionBusiness;
+        private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
+        private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -55,6 +57,8 @@ namespace ERPWeb.Controllers
             this._jobOrderFaultBusiness = jobOrderFaultBusiness;
             this._jobOrderServiceBusiness = jobOrderServiceBusiness;
             this._descriptionBusiness = descriptionBusiness;
+            this._invoiceInfoBusiness = invoiceInfoBusiness;
+            this._invoiceDetailBusiness = invoiceDetailBusiness;
         }
 
         #region Configuration Module
@@ -94,6 +98,7 @@ namespace ERPWeb.Controllers
                 viewModel.CustomerName = Refe.CustomerName;
                 viewModel.Address = Refe.Address;
                 viewModel.MobileNo = Refe.MobileNo;
+                viewModel.CustomerType = Refe.CustomerType;
             }
             return Json(viewModel);
         }
@@ -118,6 +123,7 @@ namespace ERPWeb.Controllers
                 viewModel.CustomerName = Refe.CustomerName;
                 viewModel.Address = Refe.Address;
                 viewModel.MobileNo = Refe.MobileNo;
+                viewModel.CustomerType = Refe.CustomerType;
             }
             return Json(viewModel);
         }
@@ -215,9 +221,13 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsIMEIExistWithRunningJobOrder(string iMEI)
+        public ActionResult IsIMEIExistWithRunningJobOrder(string iMEI,long jobOrdeId)
         {
-            bool isExist = _jobOrderBusiness.IsIMEIExistWithRunningJobOrder(iMEI, User.OrgId, User.BranchId);
+            bool isExist = false;
+            if (jobOrdeId == 0)
+            {
+                isExist = _jobOrderBusiness.IsIMEIExistWithRunningJobOrder(jobOrdeId, iMEI, User.OrgId, User.BranchId);
+            }
             return Json(isExist);
         }
         [HttpPost]

@@ -42,7 +42,6 @@ namespace ERPWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                SessionClear();
                 string password = Utility.Encrypt(loginModel.Password);
                 loginModel.Password = password;
                 var userInformation = await _appUserBusiness.GetUserInformation(loginModel);
@@ -155,20 +154,15 @@ namespace ERPWeb.Controllers
         [CustomAuthorize]
         public ActionResult LogOut()
         {
-            SessionClear();
+            Session["UserDetail"] = null;
+            Session["AllSubmenus"] = null;
+            Session["UserAuthorizeMenus"] = null;
+            Session["UserList"] = null;
             System.Web.HttpContext.Current.Session.Clear();
             System.Web.HttpContext.Current.Session.Abandon();
             System.Web.HttpContext.Current.Session.RemoveAll();
             FormsAuthentication.SignOut();
             return RedirectToAction("LogIn", "Access", null);
-        }
-
-        private void SessionClear()
-        {
-            Session["UserDetail"] = null;
-            Session["AllSubmenus"] = null;
-            Session["UserAuthorizeMenus"] = null;
-            Session["UserList"] = null;
         }
 
         public ActionResult Token()
