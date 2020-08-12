@@ -601,6 +601,17 @@
     <Content Include="Views\Production\IMEIWriteOrUpdate.cshtml" />
     <Content Include="Views\Production\BatteryWrite.cshtml" />
     <Content Include="Views\Production\GetIMEIScanningInQC.cshtml" />
+    <Content Include="Views\Inventory\CreateIQCReq.cshtml" />
+    <Content Include="Views\Inventory\GetAllIQCStockDetailList.cshtml" />
+    <Content Include="Views\Inventory\GetAllIQCStockInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCItemReqDetailInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCItemReqDetailList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCItemReqInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCReqInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCReqInfoListForWarehouse.cshtml" />
+    <Content Include="Views\Inventory\IssueIQCItemReq.cshtml" />
+    <Content Include="Views\Inventory\_GetAllIQCItemReqPartialList.cshtml" />
+    <Content Include="Views\Inventory\_GetAllIQCStockDetailPartialList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
