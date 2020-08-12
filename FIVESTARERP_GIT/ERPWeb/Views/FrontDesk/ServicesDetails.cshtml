@@ -1,23 +1,27 @@
 ﻿@using ERPBO.Configuration.ViewModels;
 @{
-    ViewBag.Title = "T.S Services Details";
-    int sl = 0;
-    int sl2 = 0;
-    var jobOrder = (ERPBO.FrontDesk.ViewModels.JobOrderViewModel)ViewBag.JobOrder;
-    var repair = (ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel)ViewBag.jobrepair;
-    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel> Problems = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel>)ViewBag.Problem;
-    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel> Faulty = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel>)ViewBag.faulty;
-    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel> services = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel>)ViewBag.services;
-    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel> Repair = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel>)ViewBag.repair;
-    IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel> WareStock = (IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel>)ViewBag.warehouseStock;
-    IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel> availableQty = (IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel>)ViewBag.SparePartsAvailableAndReqQty;
-    IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel> tsStock = (IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel>)ViewBag.TechnicalServicesStock;
-    string faulty = string.Empty;
-    string service = string.Empty;
-    // string repair = string.Empty;
-    string problem = string.Empty;
+                /**/
+
+                /**/
+
+                ViewBag.Title = "T.S Services Details";
+                int sl = 0;
+                int sl2 = 0;
+                var jobOrder = (ERPBO.FrontDesk.ViewModels.JobOrderViewModel)ViewBag.JobOrder;
+                var repair = (ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel)ViewBag.jobrepair;
+                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel> Problems = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel>)ViewBag.Problem;
+                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel> Faulty = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel>)ViewBag.faulty;
+                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel> services = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel>)ViewBag.services;
+                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel> Repair = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel>)ViewBag.repair;
+                IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel> WareStock = (IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel>)ViewBag.warehouseStock;
+                IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel> availableQty = (IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel>)ViewBag.SparePartsAvailableAndReqQty;
+                IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel> tsStock = (IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel>)ViewBag.TechnicalServicesStock;
+                string faulty = string.Empty;
+                string service = string.Empty;
+                // string repair = string.Empty;
+                string problem = string.Empty;
 }
-<div class="row" style="overflow-y:scroll">
+<div class="row text-sm" style="overflow-y:scroll">
     <div class="col-md-6">
         @Html.AntiForgeryToken()
         <input type="hidden" name="Id" id="hdfJobOrderId" value="@jobOrder.JodOrderId" />
@@ -38,7 +42,7 @@
         <hr />
         <div class="row">
             <div class="col-md-4">
-                <h6><b>Customer Details</b></h6>
+                <b style="color:darkblue">Customer Details</b>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
@@ -54,17 +58,17 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <h6><b>Handset Details</b></h6>
+                <b style="color:darkblue">Handset Details</b>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
                     <tbody style="background-color: lightsteelblue">
                         <tr>
+                            <td>Model: <b>@jobOrder.ModelName</b></td>
+                            <td>Type: <b>@jobOrder.Type</b></td>
+                            <td>Color: <b>@jobOrder.ModelColor</b></td>
                             <td>IMEI1: <b>@jobOrder.IMEI</b></td>
                             <td>IMEI2: <b>@jobOrder.IMEI2</b></td>
-                            <td>Type: <b>@jobOrder.Type</b></td>
-                            <td>Model: <b>@jobOrder.ModelName</b></td>
-                            <td>Color: <b>@jobOrder.ModelColor</b></td>
                         </tr>
                     </tbody>
                 </table>
@@ -184,21 +188,21 @@
             </div>
         </div>
         @*<div class="row">
-            <div class="col-md-11">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>TSRemarks: </b>@jobOrder.TSRemarks
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-1">
-                <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
-            </div>
-        </div>*@
+                <div class="col-md-11">
+                    <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <b>TSRemarks: </b>@jobOrder.TSRemarks
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
+                </div>
+            </div>*@
         <div class="row">
             <div class="col-md-9">
                 <div class="form-row">
@@ -213,7 +217,7 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-12">
-                <h6 class="text-center" style="visibility:hidden">Parts Requsition</h6>
+                <b class="text-center" style="visibility:hidden">Parts Requsition</b>
             </div>
         </div>
 
@@ -221,7 +225,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-9">
-                        <h6><b style="color:darkblue">Parts Requsition </b></h6>
+                        <b style="color:darkblue">Parts Requsition </b>
                     </div>
                     <div class="col-md-3">
                         <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
@@ -254,7 +258,7 @@
 
         <div class="row hide">
             <div class="col-md-4">
-                <h5><b>Spare Parts</b></h5>
+                <b>Spare Parts</b>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
@@ -284,7 +288,7 @@
 
         <div class="row">
             <div class="col-md-4">
-                <h5><b style="color:darkblue">Spare Parts</b></h5>
+                <b style="color:darkblue">Spare Parts</b>
             </div>
             <div class="col-md-12">
                 <table class="table table-bordered table-sm table-striped" id="tblTechnicalServicesStockData">
@@ -295,9 +299,10 @@
                             <th class="hide"></th>
                             <th class="hide">SWarehouseName</th>
                             <th class="hide"></th>
-                            <th>Req. Code</th>
+                            <th>RequsitionCode</th>
                             <th class="hide"></th>
                             <th>PartsName</th>
+                            <th>PartsCode</th>
                             <th>Qty.</th>
                             <th class="hide">UsedQty</th>
                             <th class="hide">TotalQty</th>
@@ -318,6 +323,7 @@
                                 <td>@stock.RequsitionCode</td>
                                 <td class="hide">@stock.PartsId</td>
                                 <td>@stock.PartsName</td>
+                                <td>@stock.MobilePartCode</td>
                                 <td class="text-center">@stock.Quantity</td>
                                 <td class="text-center hide">@stock.UsedQty</td>
                                 <td class="text-center hide">@stock.TotalQty</td>
@@ -357,11 +363,11 @@
                         </div>
                     </div>
                     @*<div class="form-row">
-            <div class="form-group col-md-12">
-                <label for="txtFaultRemarks" class="control-label font-weight-bold">Remarks</label>
-                <input type="text" name="remarks" value="" id="txtFaultRemarks" class="form-control form-control-sm" />
-            </div>
-        </div>*@
+                            <div class="form-group col-md-12">
+                                <label for="txtFaultRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <input type="text" name="remarks" value="" id="txtFaultRemarks" class="form-control form-control-sm" />
+                            </div>
+                        </div>*@
                 </form>
             </div>
 
@@ -566,8 +572,8 @@
                             <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="ddlMobilePart" class="control-label font-weight-bold">Mobile Parts Name</label>
-                            @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select ddlMobileParts--", new { @class = "form-control form-control-sm" })
+                            <label for="ddlMobilePart" class="control-label font-weight-bold">Parts Name</label>
+                            @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-parts font-weight-bold">Parts is required !</span>
                             <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                         </div>
@@ -605,7 +611,7 @@
                                 <tr class="btn-dark text-center">
                                     <th>#SL</th>
                                     <th class="hide"></th>
-                                    <th>MobileParts Name</th>
+                                    <th>Parts Name</th>
                                     <th>Qty.</th>
                                     <th>Remarks</th>
                                     <th>Action</th>
@@ -664,254 +670,270 @@
     <script type="text/javascript">
         //Fault
         var hdfFaultId = $("#hdfFaultId");
-        var ddlFaultName = $("#ddlFaultName");
-        var txtFaultRemarks = $("#txtFaultRemarks");
-        var hdfJobOrderId = $("#hdfJobOrderId");
+                                        var ddlFaultName = $("#ddlFaultName");
+                                        var txtFaultRemarks = $("#txtFaultRemarks");
+                                        var hdfJobOrderId = $("#hdfJobOrderId");
         //Stock text
         $(document).ready(function () {
             $('.select2').select2();
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
-                theme: 'bootstrap4'
+                                            theme: 'bootstrap4'
             });
 
             $("#ddlSymptomName").attr("data-placeholder", "Select Symptom");
             $("#ddlFaultName").attr("data-placeholder", "Select Fault");
             $("#ddlServiceName").attr("data-placeholder", "Select Services");
+            $("#ddlMobilePart").attr("data-placeholder", "Select Parts");
             //Initialize Select2 Elements
             $('.select2').select2();
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
-                theme: 'bootstrap4'
+                                            theme: 'bootstrap4'
             });
-        });
+                                        });
 
-        function OpenFaultModal() {
-            clearCtrlFault();
+                                        function OpenFaultModal() {
+                                            clearCtrlFault();
             $("#modalFault").modal("show");
             $(".error").addClass("hide");
-        }
+                                        }
 
         $("#btnFault").click(function (e) {
-            e.preventDefault();
-            clearCtrlFault();
-            OpenFaultModal();
-        })
+                                            e.preventDefault();
+                                            clearCtrlFault();
+                                            OpenFaultModal();
+                                        })
         function clearCtrlFault() {
-            hdfFaultId.val('0');
-            ddlFaultName.val('');
-            txtFaultRemarks.val('');
-        }
-        function validateFaultForm() {
-            var isValid = true;
+                                            hdfFaultId.val('0');
+                                            ddlFaultName.val('');
+                                            txtFaultRemarks.val('');
+                                        }
+                                        function validateFaultForm() {
+                                            var isValid = true;
             $(".error").addClass('hide');
 
-            if (ddlFaultName.val() === "") {
+                                            if (ddlFaultName.val() === "") {
                 $(".required-faultName").removeClass("hide");
-                isValid = false;
-            }
-            else {
-                var id = TryParseInt(hdfJobOrderId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, faultId: TryParseInt(ddlFaultName.val(), 0) }), '/Common2/IsDuplicateFaultId', getToken()) == true) {
-                    $(".duplicate-faultName").removeClass("hide");
-                    isValid = false;
-                }
-            }
+                                                isValid = false;
+                                            }
+                                            else {
+                                                var id = TryParseInt(hdfJobOrderId.val(), 0);
+                                                $.each(ddlFaultName.val(), function (index,item) {
+                                                    if (ajaxBooleanChecker(JSON.stringify({ id: id, faultId: TryParseInt(item, 0) }), '/Common2/IsDuplicateFaultId', getToken()) == true) {
+                                                        $(".duplicate-faultName").removeClass("hide");
+                                                        isValid = false;
+                                                    }
+                                                })
+
+
+                                    }
             return isValid;
         }
 
+        //ddlFaultName.change(function () {
+        //    console.log("ddlFaultName change");
+        //    console.log(ddlFaultName.val());
+        //})
+
         $("#btnSubmitFault").click(function (e) {
-            e.preventDefault();
-            if (validateFaultForm()) {
+                                    e.preventDefault();
+                                    if (validateFaultForm()) {
 
-                //var aryFault = []; aryFault.length = 0;
-                //var Fault = ddlFaultName.val();
-                //aryFault.push({
-                //    FaultId: Fault,
-                //    JobOrderId: hdfJobOrderId.val()
-                //});
-                var aryFault = []; aryFault.length = 0;
-                var Fault = ddlFaultName.val();
-                for (var i = 0; i < Fault.length; i++) {
-                    aryFault.push({
-                        FaultId: Fault[i],
+                                        //var aryFault = []; aryFault.length = 0;
+                                        //var Fault = ddlFaultName.val();
+                                        //aryFault.push({
+                                        //    FaultId: Fault,
+                                        //    JobOrderId: hdfJobOrderId.val()
+                                        //});
+                                        var aryFault = []; aryFault.length = 0;
+                                        var Fault = ddlFaultName.val();
+                                        for (var i = 0; i < Fault.length; i++) {
+                                            aryFault.push({
+                                            FaultId: Fault[i],
                         JobOrderId: hdfJobOrderId.val()
-                    });
-                }
+                                            });
+                                    }
 
-                var data = JSON.stringify({ jobOrderFaultViewModels: aryFault });
-                console.log("Faulty List");
-                console.log(data);
+                                    var data = JSON.stringify({ jobOrderFaultViewModels: aryFault });
+                                    console.log("Faulty List");
+                                    console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderFault', data, getToken())).then(function (res, status) {
-                    if (res === true && status === "success") {
+                                        if (res === true && status === "success") {
                         $('.toastrDefaultSuccess').trigger('click');
-                        setTimeout(function () {
-                            redirectPage('@Url.Action("ServicesDetails", "FrontDesk", new { @joborderId = jobOrder.JodOrderId })');
-                        }, 1000);
-                    }
-                    else {
+                                            setTimeout(function () {
+                                                redirectPage('@Url.Action("ServicesDetails", "FrontDesk", new { @joborderId = jobOrder.JodOrderId })');
+                                            }, 1000);
+                                        }
+                                        else {
                         $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    console.log(error);
+                                        }
+                                    }).fail(function (error) {
+                                        console.log(error);
                     $('.toastrDefaultError').trigger('click');
-                });
-            }
-        });
+                                    });
+                                }
+                            });
         //Service
         var hdfServicesId = $("#hdfServicesId");
         var ddlServiceName = $("#ddlServiceName");
         var txtServiceRemarks = $("#txtServiceRemarks");
 
         function OpenServicesModal() {
-            clearCtrlService();
+                                clearCtrlService();
             $("#modalServices").modal("show");
             $(".error").addClass("hide");
-        }
+                            }
 
         $("#btnService").click(function (e) {
-            e.preventDefault();
-            clearCtrlService();
-            OpenServicesModal();
-        })
+                                e.preventDefault();
+                                clearCtrlService();
+                                OpenServicesModal();
+                            })
         function clearCtrlService() {
-            hdfServicesId.val('0');
-            ddlServiceName.val('');
-            txtServiceRemarks.val('');
-        }
-        function validateServiceForm() {
-            var isValid = true;
+                                hdfServicesId.val('0');
+                                ddlServiceName.val('');
+                                txtServiceRemarks.val('');
+                            }
+                            function validateServiceForm() {
+                                var isValid = true;
             $(".error").addClass('hide');
-            if (ddlServiceName.val() === "") {
+                                if (ddlServiceName.val() === "") {
                 $(".required-ServiceName").removeClass("hide");
-                isValid = false;
-            }
-            else {
-                var id = TryParseInt(hdfJobOrderId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, servicesId: TryParseInt(ddlServiceName.val(), 0) }), '/Common2/IsDuplicateServicesId', getToken()) == true) {
-                    $(".duplicate-servicesName").removeClass("hide");
-                    isValid = false;
-                }
-            }
-            return isValid;
-        }
+                                    isValid = false;
+                                }
+                                else {
+                                    var id = TryParseInt(hdfJobOrderId.val(), 0);
+                                    $.each(ddlServiceName.val(), function (index, item) {
+                                        if (ajaxBooleanChecker(JSON.stringify({ id: id, servicesId: TryParseInt(item, 0) }), '/Common2/IsDuplicateServicesId', getToken()) == true) {
+                                            $(".duplicate-servicesName").removeClass("hide");
+                                            isValid = false;
+                                        }
+                                    });
+                                    
+                                }
+                                return isValid;
+                            }
 
         $("#btnSubmitService").click(function (e) {
-            e.preventDefault();
-            if (validateServiceForm()) {
+                                e.preventDefault();
+                                if (validateServiceForm()) {
 
-                //var aryService = []; aryService.length = 0;
-                //var Service = ddlServiceName.val();
-                //aryService.push({
-                //    ServiceId: Service,
-                //    JobOrderId: hdfJobOrderId.val()
-                //});
-                var aryService = []; aryService.length = 0;
-                var Service = ddlServiceName.val();
-                for (var i = 0; i < Service.length; i++) {
-                    aryService.push({
-                        ServiceId: Service[i],
+                                    //var aryService = []; aryService.length = 0;
+                                    //var Service = ddlServiceName.val();
+                                    //aryService.push({
+                                    //    ServiceId: Service,
+                                    //    JobOrderId: hdfJobOrderId.val()
+                                    //});
+                                    var aryService = []; aryService.length = 0;
+                                    var Service = ddlServiceName.val();
+                                    for (var i = 0; i < Service.length; i++) {
+                                        aryService.push({
+                                        ServiceId: Service[i],
                         JobOrderId: hdfJobOrderId.val()
-                    });
-                }
+                                        });
+                                }
 
-                var data = JSON.stringify({ jobOrderServiceViewModels: aryService });
-                console.log("Service List");
-                console.log(data);
+                                var data = JSON.stringify({ jobOrderServiceViewModels: aryService });
+                                console.log("Service List");
+                                console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderService', data, getToken())).then(function (res, status) {
-                    if (res === true && status === "success") {
+                                    if (res === true && status === "success") {
                         $('.toastrDefaultSuccess').trigger('click');
-                        setTimeout(function () {
-                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
-                        }, 1000);
-                    }
-                    else {
+                                        setTimeout(function () {
+                                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                                        }, 1000);
+                                    }
+                                    else {
                         $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    console.log(error);
+                                    }
+                                }).fail(function (error) {
+                                    console.log(error);
                     $('.toastrDefaultError').trigger('click');
-                });
-            }
+                                });
+                            }
         });
         //symptom
         var hdfSymptomId = $("#hdfSymptomId");
         var ddlSymptomName = $("#ddlSymptomName");
 
         function OpenSymptomModal() {
-            clearCtrlSymptom();
+                                clearCtrlSymptom();
             $("#modalSymptom").modal("show");
             $(".error").addClass("hide");
-        }
+                            }
 
         $("#btnSymptom").click(function (e) {
-            e.preventDefault();
-            clearCtrlSymptom();
-            OpenSymptomModal();
-        })
+                                e.preventDefault();
+                                clearCtrlSymptom();
+                                OpenSymptomModal();
+                            })
         function clearCtrlSymptom() {
-            hdfSymptomId.val('0');
-            ddlSymptomName.val('');
-        }
-        function validateSymptomForm() {
-            var isValid = true;
+                                hdfSymptomId.val('0');
+                                ddlSymptomName.val('');
+                            }
+                            function validateSymptomForm() {
+                                var isValid = true;
             $(".error").addClass('hide');
-            if (ddlSymptomName.val() === "") {
+                                if (ddlSymptomName.val() === "") {
                 $(".required-SymptomName").removeClass("hide");
-                isValid = false;
-            }
-            else {
-                var id = TryParseInt(hdfJobOrderId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, prblmId: TryParseInt(ddlSymptomName.val(),0) }), '/Common2/IsDuplicateSymptomId', getToken()) == true) {
-                    $(".duplicate-Symptom").removeClass("hide");
-                    isValid = false;
-                }
-            }
-            return isValid;
-        }
+                                    isValid = false;
+                                }
+                                else {
+                                    var id = TryParseInt(hdfJobOrderId.val(), 0);
+                                    $.each(ddlSymptomName.val(), function (index, item) {
+                                        if (ajaxBooleanChecker(JSON.stringify({ id: id, prblmId: TryParseInt(item, 0) }), '/Common2/IsDuplicateSymptomId', getToken()) == true) {
+                                            $(".duplicate-Symptom").removeClass("hide");
+                                            isValid = false;
+                                        }
+                                    });
+                                    
+                                }
+                                return isValid;
+                            }
 
         $("#btnSubmitSymptom").click(function (e) {
-            e.preventDefault();
-            if (validateSymptomForm()) {
+                                e.preventDefault();
+                                if (validateSymptomForm()) {
 
-                //var arySymptom = []; arySymptom.length = 0;
-                //var symptom = ddlSymptomName.val();
-                //arySymptom.push({
-                //    ProblemId: symptom,
-                //    JobOrderId: hdfJobOrderId.val()
-                //});
-                var arySymptom = []; arySymptom.length = 0;
-                var symptom = ddlSymptomName.val();
-                for (var i = 0; i < symptom.length; i++) {
-                    arySymptom.push({
-                        ProblemId: symptom[i],
+                                    //var arySymptom = []; arySymptom.length = 0;
+                                    //var symptom = ddlSymptomName.val();
+                                    //arySymptom.push({
+                                    //    ProblemId: symptom,
+                                    //    JobOrderId: hdfJobOrderId.val()
+                                    //});
+                                    var arySymptom = []; arySymptom.length = 0;
+                                    var symptom = ddlSymptomName.val();
+                                    for (var i = 0; i < symptom.length; i++) {
+                                        arySymptom.push({
+                                        ProblemId: symptom[i],
                         JobOrderId: hdfJobOrderId.val()
-                    });
-                }
+                                        });
+                                }
 
-                var data = JSON.stringify({ jobOrderProblemViewModels: arySymptom });
-                console.log("Problem List");
-                console.log(data);
+                                var data = JSON.stringify({ jobOrderProblemViewModels: arySymptom });
+                                console.log("Problem List");
+                                console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderProblem', data, getToken())).then(function (res, status) {
-                    if (res === true && status === "success") {
+                                    if (res === true && status === "success") {
                         $('.toastrDefaultSuccess').trigger('click');
-                        setTimeout(function () {
-                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
-                        }, 1000);
-                    }
-                    else {
+                                        setTimeout(function () {
+                                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                                        }, 1000);
+                                    }
+                                    else {
                         $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    console.log(error);
+                                    }
+                                }).fail(function (error) {
+                                    console.log(error);
                     $('.toastrDefaultError').trigger('click');
-                });
-            }
+                                });
+                            }
         });
 
         //Repair
@@ -920,98 +942,98 @@
         var txtRepairRemarks = $("#txtRepairRemarks");
 
         function OpenRepairModal() {
-            clearCtrlRepair();
+                                clearCtrlRepair();
             $("#modalRepair").modal("show");
             $(".error").addClass("hide");
-        }
+                            }
 
         $("#btnRepair").click(function (e) {
-            e.preventDefault();
-            clearCtrlRepair();
-            OpenRepairModal();
-        })
+                                e.preventDefault();
+                                clearCtrlRepair();
+                                OpenRepairModal();
+                            })
         function clearCtrlRepair() {
-            hdfRepairId.val('0');
-            ddlRepairName.val('');
-            txtRepairRemarks.val('');
-        }
-        function validateRepairForm() {
-            var isValid = true;
+                                hdfRepairId.val('0');
+                                ddlRepairName.val('');
+                                txtRepairRemarks.val('');
+                            }
+                            function validateRepairForm() {
+                                var isValid = true;
             $(".error").addClass('hide');
-            if (ddlRepairName.val() === "") {
+                                if (ddlRepairName.val() === "") {
                 $(".required-Repair").removeClass("hide");
-                isValid = false;
-            }
-            return isValid;
-        }
+                                    isValid = false;
+                                }
+                                return isValid;
+                            }
 
         $("#btnSubmitRepair").click(function (e) {
-            e.preventDefault();
-            if (validateRepairForm()) {
+                                e.preventDefault();
+                                if (validateRepairForm()) {
 
-                var aryRepair = []; aryRepair.length = 0;
-                var Repair = ddlRepairName.val();
-                aryRepair.push({
-                    RepairId: Repair,
+                                    var aryRepair = []; aryRepair.length = 0;
+                                    var Repair = ddlRepairName.val();
+                                    aryRepair.push({
+                                    RepairId: Repair,
                     JobOrderId: hdfJobOrderId.val()
-                    });
+                                        });
 
-                var data = JSON.stringify({ jobOrderRepairViewModels: aryRepair, jobOrderId: hdfJobOrderId.val() });
-                console.log("Repair List");
-                console.log(data);
+                                    var data = JSON.stringify({ jobOrderRepairViewModels: aryRepair, jobOrderId: hdfJobOrderId.val() });
+                                    console.log("Repair List");
+                                    console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderRepair', data, getToken())).then(function (res, status) {
-                    if (res === true && status === "success") {
+                                        if (res === true && status === "success") {
                         $('.toastrDefaultSuccess').trigger('click');
-                        setTimeout(function () {
-                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
-                        }, 1000);
-                    }
-                    else {
+                                            setTimeout(function () {
+                                                redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                                            }, 1000);
+                                        }
+                                        else {
                         $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    console.log(error);
+                                        }
+                                    }).fail(function (error) {
+                                        console.log(error);
                     $('.toastrDefaultError').trigger('click');
-                });
-            }
-        });
+                                    });
+                                }
+                            });
         //Remarks For Ts
         var txtTSRemarks = $("#txtTSRemarks");
 
         function OpenTsRemarksModal() {
-            clearCtrlTsRemarks();
+                                clearCtrlTsRemarks();
             $("#modalTsRemarks").modal("show");
             $(".error").addClass("hide");
-        }
+                            }
 
         $("#btnTsRemarks").click(function (e) {
-            e.preventDefault();
-            clearCtrlTsRemarks();
-            OpenTsRemarksModal();
-        })
+                                e.preventDefault();
+                                clearCtrlTsRemarks();
+                                OpenTsRemarksModal();
+                            })
         function clearCtrlTsRemarks() {
 
-            txtTSRemarks.val('');
-        }
+                                txtTSRemarks.val('');
+                            }
         $("#btnSave").click(function (e) {
             e.preventDefault();
             var data = JSON.stringify({ jobOrderId: TryParseInt( hdfJobOrderId.val(),0), remarks: txtTSRemarks.val() });
-                console.log(data);
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderTsRemarks', data, getToken())).then(function (res, status) {
-                    if (res === true && status === "success") {
-                        $('.toastrDefaultSuccess').trigger('click');
-                        setTimeout(function () {
-                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
-                        }, 1000);
-                    }
-                    else {
-                        $('.toastrDefaultError').trigger('click');
-                    }
-                }).fail(function (error) {
-                    console.log(error);
-                    $('.toastrDefaultError').trigger('click');
-                });
+            console.log(data);
+$.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderTsRemarks', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+    $('.toastrDefaultSuccess').trigger('click');
+                    setTimeout(function () {
+                        redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                    }, 1000);
+                }
+                else {
+    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+$('.toastrDefaultError').trigger('click');
+            });
         });
 
         //Requsition Page
@@ -1029,213 +1051,213 @@
             $("#stockQty").text('');
             if (ddlServicesWarehouse.val() != "", ddlMobilePart.val() != "") {
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetPartsStockByParts', JSON.stringify({ warehouseId: ddlServicesWarehouse.val(), partsId: ddlMobilePart.val() }), getToken())).then(function (res, status) {
-                    console.log(res);
-                    console.log(status);
-                    if (status == "success") {
+                                console.log(res);
+                                console.log(status);
+                                if (status == "success") {
                         $("#stockQty").text('(' + res + ')');
-                    }
-                }).fail(function (error) {
-                    consoleLog(error);
-                })
+                                }
+                            }).fail(function (error) {
+                                consoleLog(error);
+                            })
             }
 
         })
 
         $("#btnReset").click(function (e) {
-            e.preventDefault();
-            clearDropdown("#ddlMobilePart");
+                                e.preventDefault();
+                                clearDropdown("#ddlMobilePart");
             $("#tblRequsitionDetailForJobOrders tbody").empty();
-            txtStockInQty.val('0');
-            txtRemarks.val('');
-        })
+                                txtStockInQty.val('0');
+                                txtRemarks.val('');
+                            })
         function OpenModal() {
             $("#modalRequstionDetailForJobOrder").modal("show");
             $(".error").addClass("hide");
-            clearCtrl();
-        }
+                                clearCtrl();
+                            }
 
         $("#btnAddNew").click(function (e) {
-            e.preventDefault();
-            OpenModal();
-        })
+                                e.preventDefault();
+                                OpenModal();
+                            })
 
         function validateInput() {
             $('.error').addClass('hide');
-            var isValid = true;
-            var count = $("#tblRequsitionDetailForJobOrders tbody tr").length;
-            if (count > 0) {
+                                var isValid = true;
+                                var count = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+                                if (count > 0) {
                 $.each($("#tblRequsitionDetailForJobOrders tbody tr"), function (index, item) {
-                    var partsId = $(this).children('td').eq(1).html();
-                    if (partsId == ddlMobilePart.val()) {
-                        isValid = false;
+                                        var partsId = $(this).children('td').eq(1).html();
+                                        if (partsId == ddlMobilePart.val()) {
+                                            isValid = false;
                         $(".duplicate-parts").removeClass('hide');
-                    }
-                })
+                                        }
+                                    })
             }
-            if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
-                isValid = false;
+                                if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
+                                    isValid = false;
                 $(".require-warehouse").removeClass("hide");
-            }
-            if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
-                isValid = false;
+                                }
+                                if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
+                                    isValid = false;
                 $(".require-parts").removeClass("hide");
-            }
-            if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
-                isValid = false;
+                                }
+                                if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
+                                    isValid = false;
                 $(".required-qty").removeClass("hide");
-            }
-            return isValid;
-        }
+                                }
+                                return isValid;
+                            }
 
         $("#btnAddToList").click(function (e) {
-            e.preventDefault();
-            if (validateInput() == true) {
-                disable("#ddlServicesWarehouse");
-                var sl = $("#tblRequsitionDetailForJobOrders tbody tr").length;
-                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
-                var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
-                var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
-                var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
-                var td5 = "<td>" + txtRemarks.val() + "</td>";
-                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                                e.preventDefault();
+                                if (validateInput() == true) {
+                                    disable("#ddlServicesWarehouse");
+                                    var sl = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+                                    var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
+                                    var td2 = "<td class='hide'>" + ddlMobilePart.val() + "</td>";
+                                    var td3 = "<td>" + $("#ddlMobilePart option:selected").text() + "</td>";
+                                    var td4 = "<td class='text-center'>" + txtStockInQty.val() + "</td>";
+                                    var td5 = "<td>" + txtRemarks.val() + "</td>";
+                                    var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
 
-                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
-                if ($("#tblRequsitionDetailForJobOrders tbody tr").length == 0) {
+                                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + "</tr>";
+                                    if ($("#tblRequsitionDetailForJobOrders tbody tr").length == 0) {
                     $("#tblRequsitionDetailForJobOrders tbody").append(tr);
-                }
+                                    }
                 else {
                     $("#tblRequsitionDetailForJobOrders tbody tr").eq(0).before(tr);
-                }
-                clearCtrl();
-            }
-        });
+                                    }
+                                    clearCtrl();
+                                }
+                            });
 
         function clearCtrl() {
-            ddlMobilePart.val('');
-            txtStockInQty.val('');
-            txtRemarks.val('');
-            stockQty.text('(0)');
-        }
+                                ddlMobilePart.val('');
+                                txtStockInQty.val('');
+                                txtRemarks.val('');
+                                stockQty.text('(0)');
+                            }
 
 
         $(document).on("click", "a.data-onfly-del", function (e) {
-            e.preventDefault();
-            var index = $(this).parent().parents('tbody tr').index();
-            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
-                if (result === true) {
-                    removeTableRow("#tblRequsitionDetailForJobOrders tbody", index);
-                    fnFixTheTbodyRowSerialInDecsOrder("#tblRequsitionDetailForJobOrders", index);
-                };
-            }));
-        })
+                                e.preventDefault();
+                                var index = $(this).parent().parents('tbody tr').index();
+                                if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                                    if (result === true) {
+                                        removeTableRow("#tblRequsitionDetailForJobOrders tbody", index);
+                                        fnFixTheTbodyRowSerialInDecsOrder("#tblRequsitionDetailForJobOrders", index);
+                                    };
+                                }));
+                            })
 
         $("#btnSubmit").click(function (e) {
-            e.preventDefault();
+                                e.preventDefault();
             $(".error").addClass("hide");
-                bootbox.confirm("Are you sure you want to save?", function (result) {
-                    if (result) {
-                        disable("#btnSubmit");
-                        var info = {
+                                bootbox.confirm("Are you sure you want to save?", function (result) {
+                                    if (result) {
+                                        disable("#btnSubmit");
+                                        var info = {
                             JobOrderId: TryParseInt(hdfJobCodeId.val(), 0),
                             SWarehouseId: TryParseInt(ddlServicesWarehouse.val(),0),
                         };
 
-                        var details = []; details.length = 0;
+                                    var details = []; details.length = 0;
                         $.each($("#tblRequsitionDetailForJobOrders tbody tr"), function (index, item) {
-                            var tds = $(this).children('td');
-                            var partsId = tds.eq('1').html();
-                            var qty = tds.eq('3').html();
-                            var rmk = tds.eq('4').html();
+                                        var tds = $(this).children('td');
+                                        var partsId = tds.eq('1').html();
+                                        var qty = tds.eq('3').html();
+                                        var rmk = tds.eq('4').html();
 
-                            details.push({
-                                RequsitionDetailForJobOrderId: 0,
+                                        details.push({
+                                        RequsitionDetailForJobOrderId: 0,
                                 PartsId: TryParseInt(partsId, 0),
                                 Quantity: TryParseInt(qty, 0),
                                 Remarks: rmk
-                            })
+                                        })
                         });
 
-                        var data = JSON.stringify({ info: info, details: details });
-                        console.log("Requsition Job Order");
-                        console.log(data);
+                                    var data = JSON.stringify({ info: info, details: details });
+                                    console.log("Requsition Job Order");
+                                    console.log(data);
 
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveRequisitionInfoForJobOrder', data, getToken())).then(function (res, status) {
-                            console.log(res);
-                            console.log(status);
-                            enable("#btnSubmit");
-                            if (res == true) {
+                                        console.log(res);
+                                        console.log(status);
+                                        enable("#btnSubmit");
+                                        if (res == true) {
                                 $('.toastrDefaultSuccess').trigger('click');
 
-                                setTimeout(function () {
-                                    redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId=jobOrder.JodOrderId })');
-                                }, 1000);
-                            }
-                            else {
+                                            setTimeout(function () {
+                                                redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId=jobOrder.JodOrderId })');
+                                            }, 1000);
+                                        }
+                                        else {
                                 $('.toastrDefaultError').trigger('click');
-                            }
-                        }).fail(function (error) {
-                            consoleLog(error)
-                        })
+                                        }
+                                    }).fail(function (error) {
+                                        consoleLog(error)
+                                    })
                         enable("#btnSubmit");
-                    }
-                });
+                                }
+                            });
         });
         function clearCtrlTsRemarks() {
 
-            txtTSRemarks.val('');
-        }
+                                txtTSRemarks.val('');
+                            }
 
-        function OpenModalDetails() {
-            clearCtr()
-            $("#modalRequsitionJobOrderDetails").modal("show");
+                            function OpenModalDetails() {
+                                clearCtr()
+                                $("#modalRequsitionJobOrderDetails").modal("show");
             $("#dataContainer1").empty();
-            hdfRequsitionDetailId.val('0');
-            hdfRowIndex.val("");
+                                hdfRequsitionDetailId.val('0');
+                                hdfRowIndex.val("");
 
-        }
+                            }
 
         $(document).on("click", "a.data-item-details", function (e) {
-            e.preventDefault();
-            OpenModalDetails()
+                                e.preventDefault();
+                                OpenModalDetails()
             var data = {
                 requsitionInfoId: TryParseInt($(this).attr("data-item-details"), 0)
             };
-            var idx = $(this).parent().parents('tr').index();
+                            var idx = $(this).parent().parents('tr').index();
             $.when(getReqWithData('html', 'GET', '/FrontDesk/RequsitionForJobOrderDetails', data)).then(function (res, status) {
-                if (status == "success") {
-                    hdfRequsitionDetailId.val(data.requsitionInfoId);
-                    hdfRowIndex.val(idx)
-                    $("#dataContainer1").empty();
+                                if (status == "success") {
+                                    hdfRequsitionDetailId.val(data.requsitionInfoId);
+                                    hdfRowIndex.val(idx)
+                                    $("#dataContainer1").empty();
                     $("#dataContainer1").append(res);
-                }
-            }).fail(function (error) {
-                console.log(error);
-                })
+                                }
+                            }).fail(function (error) {
+                                console.log(error);
+                            })
             clearCtr()
         })
 
         function clearCtr() {
-            hdfRequsitionDetailId.val('0');
-            hdfRowIndex.val('0');
-        }
-        ////req end
+                                hdfRequsitionDetailId.val('0');
+                                hdfRowIndex.val('0');
+                            }
+                            ////req end
 
-        ///TS Stock Return
-        function OpenTSStockModal() {
+                            ///TS Stock Return
+                            function OpenTSStockModal() {
             $("#modalTSStock").modal("show");
             $(".error").addClass("hide");
-        }
+                            }
 
-        var jobOrderSignOutObj = {};
+                            var jobOrderSignOutObj = {};
 
         $("#btnJobSingOut").click(function (e) {
-            jobOrderSignOutObj = {};
-            e.preventDefault();
+                                jobOrderSignOutObj = {};
+                                e.preventDefault();
             $("#tblStockByRequsition tbody").empty();
-            //OpenTSStockModal();
-            var data = JSON.stringify({
-                jobOrderId: TryParseInt(hdfJobOrderId.val(), 0)
-            });
+                                //OpenTSStockModal();
+                                var data = JSON.stringify({
+                                jobOrderId: TryParseInt(hdfJobOrderId.val(), 0)
+                                });
             //$.when(getReqWithData('html', 'GET', '/FrontDesk/GetTSStockByRequsition', data)).then(function (response, status) {
             //    if (status == "success") {
             //        $("#dataContainer2").empty();
@@ -1252,98 +1274,98 @@
             //console.log(data);
             //return;
             $.when(postReqWithToken(dataType.applicationJson,dataType.json, type.post, '/FrontDesk/JobOrderTsStock', data,getToken())).then(function (response, status) {
-                if (response != null && status == "success") {
-                    //$("#dataContainer2").empty();
-                    //$("#dataContainer2").append(res);
-                    //fnDisableRowsInputElementByRepairStatus();
-                    console.log("JobOrder Objects");
-                    //console.log(response.jobOrder);
+                                    if (response != null && status == "success") {
+                                        //$("#dataContainer2").empty();
+                                        //$("#dataContainer2").append(res);
+                                        //fnDisableRowsInputElementByRepairStatus();
+                                        console.log("JobOrder Objects");
+                                        //console.log(response.jobOrder);
 
-                    //console.log(response.tsStock);
-                    jobOrderSignOutObj.jobOrder = response.jobOrder;
-                    jobOrderSignOutObj.tsStock = response.tsStock;
-                    //console.log("jobOrderSignOutObj");
-                    //console.log(jobOrderSignOutObj.jobOrder);
-                    //console.log(jobOrderSignOutObj.tsStock);
-                    fnJobOrderSignOut(jobOrderSignOutObj)
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
+                                        //console.log(response.tsStock);
+                                        jobOrderSignOutObj.jobOrder = response.jobOrder;
+                                        jobOrderSignOutObj.tsStock = response.tsStock;
+                                        //console.log("jobOrderSignOutObj");
+                                        //console.log(jobOrderSignOutObj.jobOrder);
+                                        //console.log(jobOrderSignOutObj.tsStock);
+                                        fnJobOrderSignOut(jobOrderSignOutObj)
+                                    }
+                                }).fail(function (error) {
+                                    console.log(error);
+                                })
         });
 
         function fnJobOrderSignOut(jobOrderobj)
-        {
-             // Condition //
-            var info = jobOrderSignOutObj.jobOrder;// single obj
-            var stocks = jobOrderSignOutObj.tsStock; // list
-            console.log("fnJobOrderSignOut");
-            console.log(info);
-            console.log(stocks);
-            if (info.TsRepairStatus === "REPAIR AND RETURN")
-            {
-                // If Stocks avaiable // used qty
-                //alert("Lenght" +stocks.length)
-                if (stocks.length > 0) {
-                    fnBindTsStockmodalForSignOut(stocks);
-                }
-                else {
-                    //
-                    fnSubmitJobSignOut(jobOrderSignOutObj);
-                }
-            }
-            else {
-                // not used qty
-                // Direct Stock Singout
-                fnSubmitJobSignOut(jobOrderSignOutObj);
-            }
-        }
+                            {
+                                // Condition //
+                                var info = jobOrderSignOutObj.jobOrder;// single obj
+                                var stocks = jobOrderSignOutObj.tsStock; // list
+                                console.log("fnJobOrderSignOut");
+                                console.log(info);
+                                console.log(stocks);
+                                if (info.TsRepairStatus === "REPAIR AND RETURN")
+                                {
+                                    // If Stocks avaiable // used qty
+                                    //alert("Lenght" +stocks.length)
+                                    if (stocks.length > 0) {
+                                        fnBindTsStockmodalForSignOut(stocks);
+                                    }
+                                    else {
+                                        //
+                                        fnSubmitJobSignOut(jobOrderSignOutObj);
+                                    }
+                                }
+                                else {
+                                    // not used qty
+                                    // Direct Stock Singout
+                                    fnSubmitJobSignOut(jobOrderSignOutObj);
+                                }
+                            }
 
-        function fnBindTsStockmodalForSignOut(stocks) {
+                            function fnBindTsStockmodalForSignOut(stocks) {
             $("#tblStockByRequsition tbody").empty();
-            if (!$.isEmptyObject(stocks)) { // list
+                                if (!$.isEmptyObject(stocks)) { // list
                 //console.log("Model Fn");
                 //console.log(stocks);
                 $.each(stocks, function (index,item) {
-                    var td1 = "<td>" + (index + 1) + "</td>";
-                    var td2 = "<td class='hide'>" + item.RequsitionInfoForJobOrderId + "</td>";
-                    var td3 = "<td>" + item.RequsitionCode+"</td>";
-                    var td4 = "<td class='hide'>"+item.PartsId+"</td>";
-                    var td5 = "<td>" + item.PartsName+"</td>";
-                    var td6 = "<td class='text-center'>" + item.Quantity+"</td>";
-                    var td7 = "<td class='text-center' style='width:15%'><input type='number' value=0 class='form-control form-control-sm' name='usedQty' /></td>";
-                    var td8 = "<td class='hide'></td>";
-                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + "</tr>";
+                                        var td1 = "<td>" + (index + 1) + "</td>";
+                                        var td2 = "<td class='hide'>" + item.RequsitionInfoForJobOrderId + "</td>";
+                                        var td3 = "<td>" + item.RequsitionCode+"</td>";
+                                        var td4 = "<td class='hide'>"+item.PartsId+"</td>";
+                                        var td5 = "<td>" + item.PartsName+"</td>";
+                                        var td6 = "<td class='text-center'>" + item.Quantity+"</td>";
+                                        var td7 = "<td class='text-center' style='width:15%'><input type='number' value=0 class='form-control form-control-sm' name='usedQty' /></td>";
+                                        var td8 = "<td class='hide'></td>";
+                                        var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + "</tr>";
                     $("#tblStockByRequsition tbody").append(tr);
-                })
+                                    })
                 OpenTSStockModal();
-            }
-        }
+                                }
+                            }
 
-        function fnSubmitJobSignOut(obj) {
-            //alert("Fooooooooooooooooooooooooo");
-            console.log("Fooooo");
-            console.log(obj); // Final Obj
-            //alert(obj.TsRepairStatus);
+                            function fnSubmitJobSignOut(obj) {
+                                //alert("Fooooooooooooooooooooooooo");
+                                console.log("Fooooo");
+                                console.log(obj); // Final Obj
+                                                  //alert(obj.TsRepairStatus);
 
-            var stocks = []; stocks.length;
+                                var stocks = []; stocks.length;
 
-            var info = {
+                                var info = {
                 TsRepairStatus: obj.jobOrder.TsRepairStatus,
                 JobOrderId: obj.jobOrder.JodOrderId,
                 TSId: obj.jobOrder.TSId
-            };
+                                };
 
             $.each(obj.tsStock, function (index,item) {
-                stocks.push({
-                    RequsitionInfoForJobOrderId: item.RequsitionInfoForJobOrderId,
+                                stocks.push({
+                                RequsitionInfoForJobOrderId: item.RequsitionInfoForJobOrderId,
                     RequsitionCode: item.RequsitionCode,
                     PartsId: item.PartsId,
                     PartsName: item.PartsName,
                     Quantity: item.Quantity,
                     UsedQty:item.UsedQty
-                });
-            })
+                                });
+                            })
             info.StockDetails = stocks;
            // alert("Infooooooooooooooooooo");
             console.log(info);
@@ -1359,39 +1381,39 @@
                     console.log("stock Return");
                     console.log(data);
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveReturnStockandTsStockOut', data, getToken())).then(function (res, status) {
-                console.log(res);
-                console.log(status);
-                if (res == true) {
+                                console.log(res);
+                                console.log(status);
+                                if (res == true) {
                     $('.toastrDefaultSuccess').trigger('click');
 
-                    setTimeout(function () {
-                        redirectPage('@Url.Action("GetJobOrdersTS")');
-                    }, 1000);
-                }
-                else {
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJobOrdersTS")');
+                                    }, 1000);
+                                }
+                                else {
                     $('.toastrDefaultError').trigger('click');
-                }
-            }).fail(function (error) {
-                consoleLog(error)
-            });
+                                }
+                            }).fail(function (error) {
+                                consoleLog(error)
+                            });
         }
 
         $("#btnReturnStock").click(function (e) {
-            e.preventDefault();
-            var tbllength = $("#tblStockByRequsition tbody").length;
-            if (tbllength > 0) {
+                                e.preventDefault();
+                                var tbllength = $("#tblStockByRequsition tbody").length;
+                                if (tbllength > 0) {
                 $.each(jobOrderSignOutObj.tsStock, function (index, item) {
                     $.each($("#tblStockByRequsition tbody tr"), function (ix, it) {
-                        var tds = $(this).children('td');
-                        var pId = tds.eq(3).html();
-                        var iuputQty = tds.eq(6).children('input').val();
-                        if (item.PartsId == pId) {
-                            item.UsedQty = TryParseInt(iuputQty,0);
-                        }
-                    })
+                                            var tds = $(this).children('td');
+                                            var pId = tds.eq(3).html();
+                                            var iuputQty = tds.eq(6).children('input').val();
+                                            if (item.PartsId == pId) {
+                                                item.UsedQty = TryParseInt(iuputQty,0);
+                                            }
+                                        })
                 })
             }
-            fnSubmitJobSignOut(jobOrderSignOutObj);
+                                fnSubmitJobSignOut(jobOrderSignOutObj);
 
 
             @* $(".error").addClass("hide");

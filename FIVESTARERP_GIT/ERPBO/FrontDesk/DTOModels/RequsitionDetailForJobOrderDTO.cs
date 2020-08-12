@@ -28,5 +28,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public double CostPrice { get; set; }
         public double SellPrice { get; set; }
         public int AvailableQty { get; set; }
+        public string MobilePartCode { get; set; }
     }
 }

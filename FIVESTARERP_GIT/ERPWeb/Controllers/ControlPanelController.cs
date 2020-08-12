@@ -128,6 +128,7 @@ namespace ERPWeb.Controllers
                 BranchName = br.BranchName,
                 ShortName = br.ShortName,
                 MobileNo = br.MobileNo,
+                Address=br.Address,
                 Email = br.Email,
                 PhoneNo = br.PhoneNo,
                 Fax = br.Fax,

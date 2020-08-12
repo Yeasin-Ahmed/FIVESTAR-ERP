@@ -38,5 +38,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public string Type { get; set; }
         public string Requestby { get; set; }
         public Nullable<DateTime> Date { get; set; }
+        public string ModelColor { get; set; }
     }
 }

@@ -86,6 +86,16 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
+                            <label for="ddlDescriptions" class="control-label font-weight-bold">Model</label>
+                            @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide require-modelName font-weight-bold">Model is required !</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type</label>
+                            @Html.DropDownList("ddlPhoneTypes", (IEnumerable<SelectListItem>)ViewBag.ddlPhoneTypes, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-Type font-weight-bold">Mobile Type is required !</span>
+                        </div>
+                        <div class="col-md-3">
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
@@ -95,33 +105,24 @@
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                             <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type</label>
-                            @Html.DropDownList("ddlPhoneTypes", (IEnumerable<SelectListItem>)ViewBag.ddlPhoneTypes, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
-                            <span class="error hide require-Type font-weight-bold">Mobile Type is required !</span>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="ddlDescriptions" class="control-label font-weight-bold">Model Name</label>
-                            @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
-                            <span class="error hide require-modelName font-weight-bold">Model is required !</span>
+                            <span class="error hide duplicate-IMEI2 font-weight-bold">Already This IMEI2 Job Pending !</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="ddlModelColor" class="control-label font-weight-bold">ModelColor</label>
+                            <label for="ddlModelColor" class="control-label font-weight-bold">Color</label>
                             @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required !</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="ddlProblems" class="control-label font-weight-bold">Symptom</label>
+                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Symptom--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-problem font-weight-bold">Symptom is required !</span>
                         </div>
                         <div class="col-md-3">
                             <label for="ddlAccessories" class="control-label font-weight-bold">Accessories</label>
                             @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide require-accessories font-weight-bold">Accessories is required !</span>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="ddlProblems" class="control-label font-weight-bold">Symptom</label>
-                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Symptom--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
-                            <span class="error hide require-problem font-weight-bold">Problem is required !</span>
                         </div>
                         <div class="col-md-3">
                             <label for="ddlJobOrderType" class="control-label font-weight-bold">JobOrder Type</label>
@@ -131,9 +132,23 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
+                            <label for="txtCourierName" class="control-label font-weight-bold">CourierName</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtCourierName" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="txtCourierNumber" class="control-label font-weight-bold">CourierNumber</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtCourierNumber" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="txtApproxBill" class="control-label font-weight-bold">ApproxBill</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtApproxBill" />
+                        </div>
+                        <div class="col-md-3">
                             <label for="txtReferenceNumber" class="control-label font-weight-bold">ReferencesNumber</label>
                             <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" class="form-control form-control-sm" id="txtRemarks" />
@@ -157,14 +172,12 @@
                                 <input type="radio" name="Enclosed" id="enclosedNo" checked /><b> No</b>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3" id="chkHandset">
                             <label for="" style="visibility:hidden;">HandSet</label>
                             <div class="form-control form-control-sm clearfix">
                                 <b>HandSet?</b>
-                                <input type="radio" name="HandSet" id="handsetDOA"  /><b> DOA</b>
-                                <input type="radio" name="HandSet" id="handsetDAP" checked /><b> DAP</b>
+                                <input type="checkbox" name="HandSet" id="handsetDOA" /><b> DOA</b>
+                                <input type="checkbox" name="HandSet" id="handsetDAP" /><b> DAP</b>
                             </div>
                         </div>
                     </div>
@@ -263,6 +276,9 @@
         var chkWarrantyPaper = $("#chkWarrantyPaper");
         var ddlJobOrderType = $("#ddlJobOrderType");
         var ddlCustomerType = $("#ddlCustomerType");
+        var txtCourierNumber = $("#txtCourierNumber");
+        var txtCourierName = $("#txtCourierName");
+        var txtApproxBill = $("#txtApproxBill");
 
         $(document).ready(function () {
             var date = new Date();
@@ -389,6 +405,9 @@
                         ddlProblems.trigger('change');
                         ddlDescriptions.val(jobOrder.DescriptionId);
                         ddlDescriptions.trigger('change');
+                        txtCourierName.val(jobOrder.CourierName);
+                        txtCourierNumber.val(jobOrder.CourierNumber);
+                        txtApproxBill.val(jobOrder.ApproxBill);
                     }
                     else {
                        // alert("No data found..")
@@ -472,7 +491,7 @@
             //ddlAccessories
             customerId.val('0');
             $("#ddlAccessories").attr("data-placeholder", "Select Accessories");
-            $("#ddlProblems").attr("data-placeholder", "Select Problems");
+            $("#ddlProblems").attr("data-placeholder", "Select Symptom");
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -568,6 +587,9 @@
                         txtCustomer.val(res.CustomerName);
                         txtAddress.val(res.Address);
                         txtMobileNumber.val(res.MobileNo);
+                        txtCourierName.val(res.CourierName);
+                        txtCourierNumber.val(res.CourierNumber);
+                        txtApproxBill.val(res.ApproxBill);
 
                     }
                     else {
@@ -613,6 +635,9 @@
                         txtCustomer.val(res.CustomerName);
                         txtAddress.val(res.Address);
                         txtMobileNumber.val(res.MobileNo);
+                        txtCourierName.val(res.CourierName);
+                        txtCourierNumber.val(res.CourierNumber);
+                        txtApproxBill.val(res.ApproxBill);
 
                     }
                     else {
@@ -708,6 +733,11 @@
             if (txtIMEI2.val() === "") {
                 $(".require-IMEI2").removeClass("hide");
                 isValid = false;
+            } else {
+                if (ajaxBooleanChecker(JSON.stringify({ iMEI2: txtIMEI2.val().trim(), jobOrdeId: hdfJobOrderId.val() }), '/Common2/IsIMEI2ExistWithRunningJobOrder', getToken()) == true) {
+                    $(".duplicate-IMEI2").removeClass("hide");
+                    isValid = false;
+                }
             }
             if (ddlPhoneTypes.val() === "") {
                 $(".require-Type").removeClass("hide");
@@ -743,6 +773,10 @@
                 $(".require-problem").removeClass("hide");
                 isValid = false;
             }
+            if (ddlAccessories.val().length === 0) {
+                $(".require-accessories").removeClass("hide");
+                isValid = false;
+            }
             return isValid;
         }
 
@@ -763,7 +797,7 @@
                     entryDate=   new Date(dptJobEntryDate.val());
                 }
 
-                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate , Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val() };
+                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate, Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val(), CourierName: txtCourierName.val(), CourierNumber: txtCourierNumber.val(), ApproxBill: txtApproxBill.val() };
 
                 var aryAccessories = []; aryAccessories.length = 0;
                 var accessories = ddlAccessories.val();
@@ -785,11 +819,16 @@
                 console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrder', data, getToken())).then(function (res, status) {
-                    if (res === true && status === "success") {
-                        $('.toastrDefaultSuccess').trigger('click');
+                    if (res.IsSuccess === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        download(res.file, res.FileName, "application/pdf"); // Download
+                        var pdfWindow = window.open("", "_blank")
+                        console.log(res.File);
+                        pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.file + "'></embed >");
                         setTimeout(function () {
                             redirectPage('@Url.Action("GetJobOrders")');
                         }, 1000);
+                       
                     }
                     else {
                         $('.toastrDefaultError').trigger('click');
@@ -814,6 +853,9 @@
             txtModelColor.val("");
             txtRemarks.val("");
             txtWarrantyDate.val("");
+            txtCourierName.val("");
+            txtCourierNumber.val("");
+            txtApproxBill.val("");
 
             ddlDescriptions.val("");
             ddlDescriptions.trigger("change");

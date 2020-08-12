@@ -1,4 +1,5 @@
 ﻿using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace ERPBLL.Configuration.Interface
         MobilePartStockInfo GetAllMobilePartStockInfoBySellPrice(long warehouseId, long partsId, double sprice, long orgId, long branchId);
         MobilePartStockInfo GetAllMobilePartStockById(long orgId, long branchId);
        IEnumerable<MobilePartStockInfo> GetAllMobilePartStockByParts(long warehouseId, long partsId,long orgId, long branchId);
+
+        IEnumerable<MobilePartStockInfoDTO> GetCurrentStock(long orgId, long branchId);
     }
 }

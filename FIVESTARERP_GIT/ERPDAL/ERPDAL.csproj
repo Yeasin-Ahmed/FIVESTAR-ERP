@@ -155,6 +155,10 @@
     <Compile Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.Designer.cs">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlPanelContextMigrations\202008050953442_ControlPanel_BranchAddress.cs" />
+    <Compile Include="ControlPanelContextMigrations\202008050953442_ControlPanel_BranchAddress.Designer.cs">
+      <DependentUpon>202008050953442_ControlPanel_BranchAddress.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelRepository.cs" />
@@ -268,6 +272,10 @@
     <Compile Include="FrontDeskContextMigrations\202007300348439_FrontDesk_CustomerType.cs" />
     <Compile Include="FrontDeskContextMigrations\202007300348439_FrontDesk_CustomerType.designer.cs">
       <DependentUpon>202007300348439_FrontDesk_CustomerType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008101006208_FrontDesk_CourierAndApproxBill.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008101006208_FrontDesk_CourierAndApproxBill.Designer.cs">
+      <DependentUpon>202008101006208_FrontDesk_CourierAndApproxBill.cs</DependentUpon>
     </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
@@ -558,6 +566,9 @@
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202008050953442_ControlPanel_BranchAddress.resx">
+      <DependentUpon>202008050953442_ControlPanel_BranchAddress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202006030537280_FrontDesk_DbInitialize.resx">
       <DependentUpon>202006030537280_FrontDesk_DbInitialize.cs</DependentUpon>
     </EmbeddedResource>
@@ -638,6 +649,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202007300348439_FrontDesk_CustomerType.resx">
       <DependentUpon>202007300348439_FrontDesk_CustomerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008101006208_FrontDesk_CourierAndApproxBill.resx">
+      <DependentUpon>202008101006208_FrontDesk_CourierAndApproxBill.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
       <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>

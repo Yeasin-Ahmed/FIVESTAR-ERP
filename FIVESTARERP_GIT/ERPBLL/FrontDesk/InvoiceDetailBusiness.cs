@@ -30,7 +30,7 @@ where info.MobilePartId=tstock.PartsId) 'Price'
 from [FrontDesk].dbo.tblTechnicalServicesStock tstock
 inner join [Configuration].dbo.tblMobileParts parts
 on tstock.PartsId=parts.MobilePartId
-where tstock.JobOrderId={0}) tbl", jobOrderId, orgId, branchId)).ToList();
+where tstock.UsedQty>0 and tstock.JobOrderId={0} ) tbl ", jobOrderId, orgId, branchId)).ToList();
             return data;
         }
 

@@ -36,5 +36,6 @@ namespace ERPBO.ControlPanel.ViewModels
         public string StateStatus { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public string Address { get; set; }
     }
 }

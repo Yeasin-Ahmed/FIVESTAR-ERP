@@ -220,6 +220,7 @@ namespace ERPWeb.Controllers
                     JobOrderCode = (jobOrderInfo.JobOrderCode),
                     Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId, User.BranchId, User.OrgId).Type),
                     ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                    ModelColor= jobOrderInfo.ModelColor,
                     Requestby = UserForEachRecord(info.EUserId.Value).UserName,
                     EntryDate = info.EntryDate,
                 };
@@ -232,6 +233,7 @@ namespace ERPWeb.Controllers
                 ReturnDetailId = detail.ReturnDetailId,
                 PartsId = detail.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.PartsId, User.OrgId).MobilePartName),
+                PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.PartsId, User.OrgId).MobilePartCode),
                 Quantity = detail.Quantity,
             }).ToList();
             List<TsStockReturnDetailViewModel> detailViewModels = new List<TsStockReturnDetailViewModel>();

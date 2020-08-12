@@ -10,7 +10,7 @@
                 <a href="/Configuration/MobilePartStockInfoList" class="btn btn-sm btn-outline-primary float-left" title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></a>
             </div>
             <div class="col-md-6 text-center">
-                <h4 style="color:darkblue"><b>Mobile Parts Stock Details</b></h4>
+                <h4 style="color:darkblue"><b>Parts Stock Details</b></h4>
             </div>
             <div class="col-md-3">
             </div>
@@ -25,15 +25,15 @@
                 @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select S.Warehouse--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
-                <label for="ddlMobileParts" class="control-label font-weight-bold">MobileParts Name</label>
-                @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select MobileParts--", new { @class = "form-control form-control-sm" })
+                <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
+                @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
             </div>
             <div class="col-md-3">
                 <label for="ddlStockStatus" class="control-label font-weight-bold">Stock Status</label>
                 @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
             <div class="col-md-3">
-                <label class="col-form-label">From Date</label>
+                <label class="control-label font-weight-bold">From Date</label>
                 <div class="input-group input-group-sm ">
                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
                     <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
@@ -43,7 +43,7 @@
 
             </div>
             <div class="col-md-3">
-                <label class="col-form-label">To Date</label>
+                <label class="control-label font-weight-bold">To Date</label>
                 <div class="input-group input-group-sm ">
                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
                     <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
@@ -56,9 +56,8 @@
             
             <div class="col-md-3"></div>
         </div>
-        <hr />
     </div>
-    <div class="col-md-12" id="dataContainer">
+    <div class="col-md-12 mt-2" id="dataContainer">
         @{Html.RenderAction("MobilePartStockDetailList",new {flag="view" });}
     </div>
 </div>

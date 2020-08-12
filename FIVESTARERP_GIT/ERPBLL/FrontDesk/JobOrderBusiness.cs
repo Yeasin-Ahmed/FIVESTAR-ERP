@@ -2,6 +2,7 @@
 using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.ReportSS.Interface;
+using ERPBO.Common;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPBO.Production.DTOModel;
@@ -41,12 +42,12 @@ namespace ERPBLL.FrontDesk
             return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.OrganizationId == orgId);
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId)
+        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate)).ToList();
         }
 
-        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId)
+        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -91,23 +92,56 @@ namespace ERPBLL.FrontDesk
             {
                 param += string.Format(@"and jo.BranchId={0}", branchId);
             }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jo.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
+            }
 
             query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
-CloseDate,
-SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
+CloseDate,TSRemarks,
+SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,
+
+Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
+Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
+Where jof.JobOrderId = jo.JodOrderId
+Order BY FaultName For XML PATH('')) as nvarchar(MAX))  'FaultName',
+
+Cast((Select ServiceName+',' From [Configuration].dbo.tblServices ser
+Inner Join tblJobOrderServices jos on ser.ServiceId = jos.ServiceId
+Where jos.JobOrderId = jo.JodOrderId
+Order BY ServiceName For XML PATH('')) as nvarchar(MAX))  'ServiceName',
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
 Where joa.JobOrderId = jo.JodOrderId
 Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
 
+Cast((Select  (parts.MobilePartName+' (Qty-' + Cast(tstock.UsedQty as nvarchar(20)))+')'+',' from [FrontDesk].dbo.tblTechnicalServicesStock tstock
+inner join [Configuration].dbo.tblMobileParts parts
+on tstock.PartsId=parts.MobilePartId
+Where tstock.UsedQty>0 and tstock.JobOrderId = jo.JodOrderId
+Order BY (parts.MobilePartName+'#' + Cast(tstock.UsedQty as nvarchar(20))) For XML PATH('')) as nvarchar(MAX)) 'PartsName',
+
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
-Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,
+Where jop.JobOrderId = jo.JodOrderId 
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,jo.TSRemarks,
 --ts.Name ,
 jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus,
 (Select UserName  from tblJobOrders job
@@ -126,7 +160,7 @@ from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
-Where 1 = 1 {0}) tbl Order By EntryDate desc
+Where 1 = 1{0}) tbl Order By EntryDate desc
 
 ", Utility.ParamChecker(param));
             return query;
@@ -205,7 +239,6 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
             {
                 // when edit first retreive the data from database then change the entity object with new data
                 var jobOrderDb = GetJobOrderById(jobOrderDto.JodOrderId, orgId);
-
 
                 jobOrderDb.JodOrderId = jobOrderDto.JodOrderId;
                 jobOrderDb.CustomerId = jobOrderDto.CustomerId;
@@ -335,6 +368,219 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
             return _jobOrderRepository.Save();
         }
 
+        public ExecutionStateWithText SaveJobOrderWithReport(JobOrderDTO jobOrderDto, List<JobOrderAccessoriesDTO> jobOrderAccessoriesDto, List<JobOrderProblemDTO> jobOrderProblemsDto, long userId, long orgId, long branchId)
+        {
+            ExecutionStateWithText execution = new ExecutionStateWithText();
+            JobOrder jobOrder = null;
+            if (jobOrderDto.JodOrderId == 0)
+            {
+                jobOrder = new JobOrder
+                {
+                    CustomerId = jobOrderDto.CustomerId,
+                    CustomerName = jobOrderDto.CustomerName,
+                    MobileNo = jobOrderDto.MobileNo,
+                    Address = jobOrderDto.Address,
+                    IMEI = jobOrderDto.IMEI,
+                    IMEI2 = jobOrderDto.IMEI2,
+                    Type = jobOrderDto.Type,
+                    CustomerType = jobOrderDto.CustomerType,
+                    ModelColor = jobOrderDto.ModelColor,
+                    JobOrderType = jobOrderDto.JobOrderType,
+                    WarrantyDate = jobOrderDto.WarrantyDate,
+                    Remarks = jobOrderDto.Remarks,
+                    CourierName=jobOrderDto.CourierName,
+                    CourierNumber= jobOrderDto.CourierNumber,
+                    ApproxBill= jobOrderDto.ApproxBill,
+                    ReferenceNumber = jobOrderDto.ReferenceNumber,
+                    DescriptionId = jobOrderDto.DescriptionId,
+                    IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable,
+                    IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed,
+                    EntryDate = jobOrderDto.EntryDate,
+                    EUserId = userId,
+                    OrganizationId = orgId,
+                    StateStatus = JobOrderStatus.CustomerApproved,
+                    JobOrderCode = ("JOB-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
+                    BranchId = branchId
+                };
+                if (jobOrder.JobOrderType == "Warrenty")
+                {
+                    jobOrder.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
+                    jobOrder.IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed;
+                    //jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                }
+                List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                foreach (var item in jobOrderAccessoriesDto)
+                {
+                    JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                    {
+                        AccessoriesId = item.AccessoriesId,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        OrganizationId = orgId
+                    };
+                    listJobOrderAccessories.Add(jobOrderAccessories);
+                }
+
+                if (jobOrderAccessoriesDto.Count > 0)
+                {
+                    jobOrder.JobOrderAccessories = listJobOrderAccessories;
+                }
+
+                List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
+                foreach (var item in jobOrderProblemsDto)
+                {
+                    JobOrderProblem jobOrderProblem = new JobOrderProblem
+                    {
+                        ProblemId = item.ProblemId,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        OrganizationId = orgId
+                    };
+                    listjobOrderProblems.Add(jobOrderProblem);
+                }
+                jobOrder.JobOrderProblems = listjobOrderProblems;
+
+                _jobOrderRepository.Insert(jobOrder);
+            }
+            else
+            {
+                // when edit first retreive the data from database then change the entity object with new data
+                var jobOrderDb = GetJobOrderById(jobOrderDto.JodOrderId, orgId);
+
+                jobOrderDb.JodOrderId = jobOrderDto.JodOrderId;
+                jobOrderDb.CustomerId = jobOrderDto.CustomerId;
+                jobOrderDb.CustomerName = jobOrderDto.CustomerName;
+                jobOrderDb.MobileNo = jobOrderDto.MobileNo;
+                jobOrderDb.Address = jobOrderDto.Address;
+                jobOrderDb.IMEI = jobOrderDto.IMEI;
+                jobOrderDb.IMEI2 = jobOrderDto.IMEI2;
+                jobOrderDb.Type = jobOrderDto.Type;
+                jobOrderDb.CustomerType = jobOrderDto.CustomerType;
+                jobOrderDb.ModelColor = jobOrderDto.ModelColor;
+                jobOrderDb.JobOrderType = jobOrderDto.JobOrderType;
+                jobOrderDb.WarrantyDate = jobOrderDto.WarrantyDate;
+                jobOrderDb.Remarks = jobOrderDto.Remarks;
+                jobOrderDb.CourierName = jobOrderDto.CourierName;
+                jobOrderDb.CourierNumber = jobOrderDto.CourierNumber;
+                jobOrderDb.ApproxBill = jobOrderDto.ApproxBill;
+                jobOrderDb.ReferenceNumber = jobOrderDto.ReferenceNumber;
+                jobOrderDb.DescriptionId = jobOrderDto.DescriptionId;
+                jobOrderDb.IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable;
+                jobOrderDb.IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed;
+                jobOrderDb.UpUserId = userId;
+                jobOrderDb.UpdateDate = DateTime.Now;
+
+                if (jobOrderDb.JobOrderType == "Warrenty")
+                {
+                    jobOrderDb.WarrantyDate = jobOrderDto.WarrantyDate.Value.Date;
+                    jobOrderDb.IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed;
+                    //jobOrderDb.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                }
+
+                var jobOrderAccessoriesInDb = _jobOrderAccessoriesBusiness.GetJobOrderAccessoriesByJobOrder(jobOrderDb.JodOrderId, orgId).ToList();
+                _jobOrderAccessoriesRepository.DeleteAll(jobOrderAccessoriesInDb);
+
+                List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                foreach (var item in jobOrderAccessoriesDto)
+                {
+                    JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                    {
+                        AccessoriesId = item.AccessoriesId,
+                        UpdateDate = DateTime.Now,
+                        UpUserId = userId,
+                        OrganizationId = orgId
+                    };
+                    listJobOrderAccessories.Add(jobOrderAccessories);
+                }
+                if (listJobOrderAccessories.Count > 0)
+                {
+                    jobOrderDb.JobOrderAccessories = listJobOrderAccessories;
+                }
+
+                // Now retreive the accessories data From Job Order Accessories Business;
+                #region Accessories_obsoulte
+
+
+                //if (jobOrderAccessoriesInDb.Count() > 0)  // the joborder has got one ore more accessories ib Db
+                //{
+                //    //new accessories
+                //    var allAccessories = jobOrderAccessoriesDto.Select(s => s.AccessoriesId).ToList();
+                //    if (allAccessories.Count > 0)
+                //    { // jobOrder has got one or more new accessories
+
+                //        // find the unmatchaing accessories with the new data..
+                //        var unMatchingAccessories = jobOrderAccessoriesInDb.Where(acc => !allAccessories.Contains(acc.AccessoriesId)).ToList();
+
+                //        if (unMatchingAccessories.Count > 0)
+                //        {
+                //            // _jobOrderAccessoriesRepository.Delete(ass=> ass.);
+                //            _jobOrderAccessoriesRepository.DeleteAll(unMatchingAccessories);
+                //        }
+
+                //        var matchingAccessories = jobOrderAccessoriesInDb.Where(acc => allAccessories.Contains(acc.AccessoriesId)).Select(s => s.AccessoriesId).ToList();
+                //        if (matchingAccessories.Count > 0)
+                //        {
+                //            var newAccessories = jobOrderAccessoriesDto.Where(acc => !matchingAccessories.Contains(acc.AccessoriesId)).ToList();
+                //        }
+                //        else
+                //        {
+
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    // If the joborder does not have any accessories in Db
+                //    // New Accessories
+                //    List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                //    foreach (var item in jobOrderAccessoriesDto)
+                //    {
+                //        JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                //        {
+                //            AccessoriesId = item.AccessoriesId,
+                //            UpdateDate = DateTime.Now,
+                //            UpUserId = userId,
+                //            OrganizationId = orgId
+                //        };
+                //        listJobOrderAccessories.Add(jobOrderAccessories);
+                //    }
+                //    if (listJobOrderAccessories.Count > 0)
+                //    {
+                //        jobOrderDb.JobOrderAccessories = listJobOrderAccessories;
+                //    }
+                //} 
+
+                #endregion
+
+                var jobOrderPrblmInDb = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(jobOrderDb.JodOrderId, orgId).ToList();
+                _jobOrderProblemRepository.DeleteAll(jobOrderPrblmInDb);
+
+                List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
+                foreach (var item in jobOrderProblemsDto)
+                {
+                    JobOrderProblem jobOrderProblem = new JobOrderProblem
+                    {
+                        ProblemId = item.ProblemId,
+                        UpdateDate = DateTime.Now,
+                        UpUserId = userId,
+                        OrganizationId = orgId
+                    };
+
+                    listjobOrderProblems.Add(jobOrderProblem);
+                }
+                if (listjobOrderProblems.Count > 0)
+                {
+                    jobOrderDb.JobOrderProblems = listjobOrderProblems;
+                }
+
+                _jobOrderRepository.Update(jobOrderDb);
+            }
+
+            execution.isSuccess =  _jobOrderRepository.Save();
+            execution.text = jobOrderDto.JodOrderId == 0 ? jobOrder.JodOrderId.ToString() : jobOrderDto.JodOrderId.ToString();
+            return execution;
+        }
+
         public bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
@@ -409,8 +655,6 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
             {
                 param += string.Format(@" and jo.TSId ={0}", userId);
             }
-            
-
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
@@ -433,7 +677,7 @@ Order By j.EUserId desc) 'EntryUser'
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.TSId = ap.UserId 
-Where 1 = 1  and jo.StateStatus='TS-Assigned' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Where 1 = 1  and jo.StateStatus='TS-Assigned' or jo.StateStatus='Repair-Done'{0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -693,7 +937,8 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public bool IsIMEIExistWithRunningJobOrder(long jobOrderId, string iMEI1, long orgId, long branchId)
         {
             bool IsExist = false;
-            var jobOrder = _jobOrderRepository.GetAll(job => job.JodOrderId== jobOrderId && job.IMEI == iMEI1 && job.OrganizationId == orgId && job.BranchId == branchId).LastOrDefault();
+            //job.JodOrderId== jobOrderId && 
+            var jobOrder = _jobOrderRepository.GetAll(job => job.IMEI == iMEI1 && job.OrganizationId == orgId && job.BranchId == branchId).LastOrDefault();
             if (jobOrder != null) {
                 if(jobOrder.StateStatus != JobOrderStatus.DeliveryDone)
                 {
@@ -706,6 +951,78 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public JobOrder GetAllJobOrderById(long branchId, long orgId)
         {
             return _jobOrderRepository.GetOneByOrg(job => job.BranchId==branchId && job.OrganizationId==orgId);
+        }
+
+        public IEnumerable<JobOrderDTO> GetJobCreateReceipt(long jobOrderId, long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
+                string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+CloseDate,TSRemarks,
+SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,
+
+Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
+Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
+Where jof.JobOrderId = jo.JodOrderId
+Order BY FaultName For XML PATH('')) as nvarchar(MAX))  'FaultName',
+
+Cast((Select ServiceName+',' From [Configuration].dbo.tblServices ser
+Inner Join tblJobOrderServices jos on ser.ServiceId = jos.ServiceId
+Where jos.JobOrderId = jo.JodOrderId
+Order BY ServiceName For XML PATH('')) as nvarchar(MAX))  'ServiceName',
+
+Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
+Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
+Where joa.JobOrderId = jo.JodOrderId
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
+
+Cast((Select  (parts.MobilePartName+' (Qty-' + Cast(tstock.UsedQty as nvarchar(20)))+')'+',' from [FrontDesk].dbo.tblTechnicalServicesStock tstock
+inner join [Configuration].dbo.tblMobileParts parts
+on tstock.PartsId=parts.MobilePartId
+Where tstock.JobOrderId = jo.JodOrderId
+Order BY (parts.MobilePartName+'#' + Cast(tstock.UsedQty as nvarchar(20))) For XML PATH('')) as nvarchar(MAX)) 'PartsName',
+
+Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
+Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
+Where jop.JobOrderId = jo.JodOrderId 
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,jo.TSRemarks,
+--ts.Name ,
+jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus,
+(Select UserName  from tblJobOrders job
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on job.CUserId = app.UserId where job.JodOrderId=jo.JodOrderId) 'CloseUser',
+
+(Select Top 1 UserName 'TSName' from tblJobOrderTS jts
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on jts.TSId = app.UserId
+Where jts.JodOrderId = jo.JodOrderId 
+Order By JTSId desc) 'TSName',
+
+(Select top 1 SignOutDate from tblJobOrderTS jt
+Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
+Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
+
+from tblJobOrders jo
+Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
+
+Where jo.JodOrderId={0} and  jo.OrganizationId={1} and jo.BranchId={2}) tbl Order By EntryDate desc",jobOrderId, orgId, branchId)).ToList();
+        }
+
+        public bool IsIMEI2ExistWithRunningJobOrder(long jobOrderId, string iMEI2, long orgId, long branchId)
+        {
+            bool IsExist = false;
+            //job.JodOrderId== jobOrderId && 
+            var jobOrder = _jobOrderRepository.GetAll(job => job.IMEI2 == iMEI2 && job.OrganizationId == orgId && job.BranchId == branchId).LastOrDefault();
+            if (jobOrder != null)
+            {
+                if (jobOrder.StateStatus != JobOrderStatus.DeliveryDone)
+                {
+                    IsExist = true;
+                }
+            }
+            return IsExist;
         }
     }
 }

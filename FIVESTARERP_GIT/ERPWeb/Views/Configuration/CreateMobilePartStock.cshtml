@@ -10,7 +10,7 @@
                 <a href="/Configuration/MobilePartStockInfoList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
             </div>
             <div class="col-md-6 text-center">
-                <h4 style="color:darkblue"><b>MobilePart Stock-In</b></h4>
+                <h4 style="color:darkblue"><b>Parts Stock-In</b></h4>
             </div>
             <div class="col-md-3">
                 <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
@@ -27,9 +27,15 @@
                     @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm" })
                     <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                 </div>
-                <div class="col-md-3">
+                @*<div class="col-md-3">
                     <label for="ddlMobilePart" class="control-label font-weight-bold">MobilePart Name</label>
                     @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select MobilePart--", new { @class = "form-control form-control-sm" })
+                    <span class="error hide require-parts font-weight-bold">Parts is required !</span>
+                    <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
+                </div>*@
+                <div class="form-group col-md-3">
+                    <label for="ddlMobilePart" class="control-label font-weight-bold">Parts Name</label>
+                    @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2 select2-danger" })
                     <span class="error hide require-parts font-weight-bold">Parts is required !</span>
                     <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                 </div>
@@ -83,7 +89,7 @@
                         <tr class="btn-dark text-center">
                             <th>#SL</th>
                             <th class="hide"></th>
-                            <th>MobilePart Name</th>
+                            <th>Parts Name</th>
                             <th>CostPrice</th>
                             <th>SellPrice</th>
                             <th>Stock-In Qty.</th>
@@ -231,6 +237,22 @@
                   })
             }
         })
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            $("#ddlMobilePart").attr("data-placeholder", "Select Parts");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
 
         $("#btnReset").click(function (e) {
             e.preventDefault();

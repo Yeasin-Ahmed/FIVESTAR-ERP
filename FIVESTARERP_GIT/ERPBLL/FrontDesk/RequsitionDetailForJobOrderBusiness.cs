@@ -34,14 +34,14 @@ namespace ERPBLL.FrontDesk
         public IEnumerable<RequsitionDetailForJobOrderDTO> GetAvailableQtyByRequsition(long reqInfoId, long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<RequsitionDetailForJobOrderDTO>(
-                string.Format(@"select rd.RequsitionInfoForJobOrderId,rd.RequsitionDetailForJobOrderId,rd.PartsId,parts.MobilePartName 'PartsName',rd.Quantity,ISNULL(Sum(std.StockInQty-std.StockOutQty),0) 'AvailableQty' 
+                string.Format(@"select rd.RequsitionInfoForJobOrderId,rd.RequsitionDetailForJobOrderId,rd.PartsId,parts.MobilePartName 'PartsName',parts.MobilePartCode,rd.Quantity,ISNULL(Sum(std.StockInQty-std.StockOutQty),0) 'AvailableQty' 
         from tblRequsitionDetailForJobOrders rd
         inner join [Configuration].dbo.tblMobilePartStockInfo std
         on rd.PartsId=std.MobilePartId
         left join [Configuration].dbo.tblMobileParts parts
         on rd.PartsId=parts.MobilePartId
         where rd.RequsitionInfoForJobOrderId={0} and rd.OrganizationId={1} and rd.BranchId={2}
-        group by rd.RequsitionDetailForJobOrderId,rd.PartsId,rd.Quantity,parts.MobilePartName,rd.RequsitionInfoForJobOrderId", reqInfoId, orgId, branchId)).ToList();
+        group by rd.RequsitionDetailForJobOrderId,rd.PartsId,rd.Quantity,parts.MobilePartName,parts.MobilePartCode,rd.RequsitionInfoForJobOrderId", reqInfoId, orgId, branchId)).ToList();
         }
     }
 }

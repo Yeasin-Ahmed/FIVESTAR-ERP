@@ -11,16 +11,16 @@
         <td style="width:20%"><b>@info.JobOrderCode</b></td>
         <td style="width:13%">RequsitionCode</td>
         <td style="width:20%"><b>@info.RequsitionCode</b></td>
-        <td style="width:13%">Type</td>
-        <td style="width:20%"><b>@info.Type</b></td>
+        <td style="width:13%">Model</td>
+        <td style="width:20%"><b>@info.ModelName</b></td>
     </tr>
     <tr>
         <td style="width:13%">RequestBy</td>
         <td style="width:20%"><b>@info.Requestby</b></td>
         <td style="width:13%">RequestDate</td>
         <td style="width:20%"><b>@info.EntryDate</b></td>
-        <td style="width:13%">ModelName</td>
-        <td style="width:20%"><b>@info.ModelName</b></td>
+        <td style="width:13%">Color</td>
+        <td style="width:20%"><b>@info.ModelColor</b></td>
     </tr>
 </table>
 <table class="table table-bordered table-sm table-striped" id="tblWarehouseStockInfo">
@@ -31,6 +31,7 @@
             <th class="hide"></th>
             <th class="hide"></th>
             <th>PartsName</th>
+            <th>PartsCode</th>
             <th>Quantity</th>
 
         </tr>
@@ -45,7 +46,8 @@
                 <td class="hide">@details.ReturnDetailId</td>
                 <td class="hide">@details.PartsId</td>
                 <td>@details.PartsName</td>
-                <td>@details.Quantity</td>
+                <td>@details.PartsCode</td>
+                <td class="text-center">@details.Quantity</td>
             </tr>
         }
         @if (Model.Count() == 0)

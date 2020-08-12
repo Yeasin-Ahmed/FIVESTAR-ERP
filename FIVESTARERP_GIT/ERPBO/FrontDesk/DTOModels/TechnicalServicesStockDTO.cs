@@ -34,9 +34,12 @@ namespace ERPBO.FrontDesk.DTOModels
         //custom p
         public string SWarehouseName { get; set; }
         public string PartsName { get; set; }
-        public int TotalQty { get
+        public int TotalQty
+        { get
             {
                 return (this.Quantity - this.UsedQty);
-            } }
+            }
+        }
+        public string MobilePartCode { get; set; }
     }
 }

@@ -37,6 +37,7 @@
                     <th>Short Name</th>
                     <th class="hide"></th>
                     <th>Organization</th>
+                    <th>Address</th>
                     <th>MobileNo</th>
                     <th>Email</th>
                     <th>PhoneNo</th>
@@ -60,6 +61,7 @@
                     <td>@br.ShortName</td>
                     <td class="hide">@br.OrgId</td>
                     <td>@br.OrganizationName</td>
+                    <td>@br.Address</td>
                     <td>@br.MobileNo</td>
                     <td style="word-break:break-word">@br.Email</td>
                     <td>@br.PhoneNo</td>
@@ -108,49 +110,51 @@
                 <form id="frmBranch">
                     <input type="hidden" name="Id" id="hdfBranchId" />
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="txtBranchName" class="control-label font-weight-bold">Branch Name</label>
                             <input type="text" name="branchName" value="" id="txtBranchName" class="form-control form-control-sm" />
                             <span class="error hide required-branchName font-weight-bold">Input Branch Name!</span>
                             <span class="error hide duplicate-branchName font-weight-bold">Already Branch Exist!</span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="txtShortName" class="control-label font-weight-bold">Short Name</label>
                             <input type="text" name="shortName" value="" id="txtShortName" class="form-control form-control-sm" />
                         </div>
+                        <div class="form-group col-md-4">
+                            <label for="txtAddress" class="control-label font-weight-bold">Address</label>
+                            <input type="text" name="address" value="" id="txtAddress" class="form-control form-control-sm" />
+                        </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="txtMobileNo" class="control-label font-weight-bold">MobileNo</label>
                             <input type="text" name="mobileNumber" value="" id="txtMobileNo" class="form-control form-control-sm" />
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="txtEmail" class="control-label font-weight-bold">Email</label>
                             <input type="text" name="remarks" value="" id="txtEmail" class="form-control form-control-sm" />
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="txtPhoneNo" class="control-label font-weight-bold">PhoneNo</label>
                             <input type="text" name="phoneNo" value="" id="txtPhoneNo" class="form-control form-control-sm" />
                         </div>
-                        <div class="form-group col-md-6">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
                             <label for="txtFax" class="control-label font-weight-bold">Fax</label>
                             <input type="text" name="fax" value="" id="txtFax" class="form-control form-control-sm" />
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="ddlOrganizationName" class="control-label font-weight-bold">OrganizationName</label>
                             @Html.DropDownList("ddlOrganizationName", (IEnumerable<SelectListItem>)ViewBag.ddlOrganizationName, "--Select OrganizationName--", new { @class = "form-control form-control-sm" })
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <div class="form-control form-control-sm">
                                 <input type="checkbox" id="chkStatestatus" /> <b>Is Active?</b>
                             </div>
@@ -187,6 +191,7 @@
         var txtRemarks = $("#txtRemarks");
         var ddlOrganizationName = $("#ddlOrganizationName");
         var chkStatestatus = $("#chkStatestatus");
+        var txtAddress = $("#txtAddress");
 
         $(document).ready(function () {
             $('#tblBranchData').DataTable({
@@ -241,6 +246,7 @@
                     MobileNo: txtMobileNo.val(),
                     Email: txtEmail.val(),
                     PhoneNo: txtPhoneNo.val(),
+                    Address: txtAddress.val(),
                     Fax: txtFax.val(),
                     OrgId: TryParseInt(ddlOrganizationName.val(),0),
                     Remarks: txtRemarks.val(),
@@ -278,27 +284,30 @@
             var td7 = row.find('td:eq(7)').html();
             var td8 = row.find('td:eq(8)').html();
             var td9 = row.find('td:eq(9)').html();
-            var td10 = row.find('td:eq(10)').attr("data-val");
-            var td11= row.find('td:eq(11)').html();
+            var td10 = row.find('td:eq(10)').html();
+            var td11 = row.find('td:eq(11)').attr("data-val");
+            var td12= row.find('td:eq(12)').html();
 
             hdfBranchId.val(td1);
             txtBranchName.val(td2);
             txtShortName.val(td3);
             ddlOrganizationName.val(td5);
-            txtMobileNo.val(td6);
-            txtEmail.val(td7);
-            txtPhoneNo.val(td8);
-            txtFax.val(td9);
+            txtAddress.val(td6);
+            txtMobileNo.val(td7);
+            txtEmail.val(td8);
+            txtPhoneNo.val(td9);
+            txtFax.val(td10);
             chkStatestatus.prop("checked", false);
-            if (td10 === 'Active') {
+            if (td11 === 'Active') {
                 chkStatestatus.prop("checked", true);
             }
-            txtRemarks.val(td11)
+            txtRemarks.val(td12)
         })
         function clearCtrl() {
             hdfBranchId.val('0');
             txtBranchName.val('');
             txtShortName.val('');
+            txtAddress.val('');
             ddlOrganizationName.val('');
             txtMobileNo.val('');
             txtEmail.val('');

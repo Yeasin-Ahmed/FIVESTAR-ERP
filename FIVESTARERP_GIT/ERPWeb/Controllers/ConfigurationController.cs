@@ -64,7 +64,7 @@ namespace ERPWeb.Controllers
                 StateStatus = (access.IsActive == true ? "Active" : "Inactive"),
                 OrganizationId = access.OrganizationId,
                 EUserId = access.EUserId,
-                EntryDate = DateTime.Now,
+                EntryDate = access.EntryDate,
                 UpUserId = access.UpUserId,
                 UpdateDate = access.UpdateDate,
             }).ToList();
@@ -121,7 +121,7 @@ namespace ERPWeb.Controllers
                 Remarks = client.Remarks,
                 OrganizationId = client.OrganizationId,
                 EUserId = client.EUserId,
-                EntryDate = DateTime.Now,
+                EntryDate = client.EntryDate,
                 UpUserId = client.UpUserId,
                 UpdateDate = client.UpdateDate,
             }).ToList();
@@ -178,7 +178,7 @@ namespace ERPWeb.Controllers
                 Remarks = part.Remarks,
                 OrganizationId = part.OrganizationId,
                 EUserId = part.EUserId,
-                EntryDate = DateTime.Now,
+                EntryDate = part.EntryDate,
                 UpUserId = part.UpUserId,
                 UpdateDate = part.UpdateDate,
             }).ToList();
@@ -236,9 +236,9 @@ namespace ERPWeb.Controllers
                 Remarks = cus.Remarks,
                 OrganizationId = cus.OrganizationId,
                 EUserId = cus.EUserId,
-                EntryDate = DateTime.Now,
+                EntryDate = cus.EntryDate,
                 UpUserId = cus.UpUserId,
-                UpdateDate = DateTime.Now,
+                UpdateDate = cus.UpdateDate,
             }).ToList();
             List<CustomerViewModel> viewModel = new List<CustomerViewModel>();
             AutoMapper.Mapper.Map(customerDTO, viewModel);
@@ -467,7 +467,7 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
 
-            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
             return View();
         }
@@ -476,7 +476,7 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
 
-            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
             return View();
         }
@@ -489,7 +489,8 @@ namespace ERPWeb.Controllers
                 ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                 MobilePartId = info.MobilePartId,
                 MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
-                CostPrice=info.CostPrice,
+                PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartCode),
+                CostPrice =info.CostPrice,
                 SellPrice=info.SellPrice,
                 StockInQty = info.StockInQty,
                 StockOutQty = info.StockOutQty,
@@ -529,8 +530,8 @@ namespace ERPWeb.Controllers
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
-
-                ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            
+                ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
                 ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
                 {
@@ -548,7 +549,8 @@ namespace ERPWeb.Controllers
                     ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(detail.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                     MobilePartId = detail.MobilePartId,
                     MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
-                    CostPrice=detail.CostPrice,
+                    PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartCode),
+                    CostPrice =detail.CostPrice,
                     SellPrice=detail.SellPrice,
                     Quantity = detail.Quantity,
                     StockStatus = detail.StockStatus,
@@ -826,9 +828,9 @@ namespace ERPWeb.Controllers
                 Remarks = fault.Remarks,
                 OrganizationId = fault.OrganizationId,
                 EUserId = fault.EUserId,
-                EntryDate = DateTime.Now,
+                EntryDate = fault.EntryDate,
                 UpUserId = fault.UpUserId,
-                UpdateDate = DateTime.Now,
+                UpdateDate = fault.UpdateDate,
             }).ToList();
             List<FaultViewModel> viewModel = new List<FaultViewModel>();
             AutoMapper.Mapper.Map(faultDTO, viewModel);
@@ -883,9 +885,9 @@ namespace ERPWeb.Controllers
                 Remarks = services.Remarks,
                 OrganizationId = services.OrganizationId,
                 EUserId = services.EUserId,
-                EntryDate = DateTime.Now,
+                EntryDate = services.EntryDate,
                 UpUserId = services.UpUserId,
-                UpdateDate = DateTime.Now,
+                UpdateDate = services.UpdateDate,
             }).ToList();
             List<ServiceViewModel> viewModel = new List<ServiceViewModel>();
             AutoMapper.Mapper.Map(serviceDTO, viewModel);
@@ -981,6 +983,24 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
+        }
+        #endregion
+
+        #region Reports
+        [HttpGet]
+        public ActionResult GetCurrentStockList()
+        {
+            var dto = _mobilePartStockInfoBusiness.GetCurrentStock(User.OrgId, User.BranchId);
+            IEnumerable<MobilePartStockInfoViewModel> viewModels = new List<MobilePartStockInfoViewModel>();
+
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return PartialView("_GetCurrentStockList", viewModels);
+        }
+        [HttpGet]
+        public ActionResult GetCurrentStockReport()
+        {
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            return View();
         }
         #endregion
     }

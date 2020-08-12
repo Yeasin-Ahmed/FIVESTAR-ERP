@@ -57,6 +57,9 @@ namespace ERPBO.FrontDesk.DomainModels
         public long InvoiceInfoId { get; set; }
         public string InvoiceCode { get; set; }
         public string CustomerType { get; set; }
-
+        //courier number---courier Name--Approx Bill
+        public string CourierNumber { get; set; }
+        public string CourierName { get; set; }
+        public string ApproxBill { get; set; }
     }
 }

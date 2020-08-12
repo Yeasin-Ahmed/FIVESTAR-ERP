@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Current Stock";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="@Url.Action("GetCurrentStock","ReportSS",new {rptType="PDF" })" class="btn btn-sm btn-outline-danger data-report-item"  title="Pdf Report"><i class="fas fa-file-pdf"> PDF</i></a>
+                <a href="@Url.Action("GetCurrentStock","ReportSS",new {rptType="EXCEL" })" class="btn btn-sm btn-outline-success data-report-item"  title="Excel Report"><i class="fas fa-file-excel"> EXCEL</i></a>
+            </div>
+            <div class="col-md-6 text-center">
+                <h4><b style="color:darkblue">Current Stock Report</b></h4>
+            </div>
+            @*<div class="col-md-3">
+            <a href="/Configuration/CreateMobilePartStock" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Parts Stock-In</a>
+        </div>*@
+        </div>
+        <hr />
+    </div>
+    <div class="col-md-12 mb-2">
+        @Html.AntiForgeryToken()
+        <div class="row">
+        </div>
+    </div>
+    <div class="col-md-12" id="dataContainer">
+        @{Html.RenderAction("GetCurrentStockList");}
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlMobilePart = $("#ddlMobilePart");
+        var pageNo = 1;
+
+        ddlMobilePart.change(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = 0;
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/Configuration/GetCurrentStockList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+
+        //Report
+        //$("#btnReport").click(function (e) {
+        //    e.preventDefault();
+        //    var data = 0;
+        //    //return console.log(data)
+        //    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/GetCurrentStock', data, getToken())).then(function (res, status) {
+        //        console.log(res.IsSuccess);
+        //        if (res.IsSuccess === true) {
+        //            var pdfWindow = window.open("", "_blank")
+        //            console.log(res.File);
+        //            pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
+        //            download(res.File, res.FileName, "application/pdf"); // Download
+        //        }
+        //    }).fail(function (error) {
+        //        console.log(error);
+        //    })
+        //})
+    </script>
+}
+

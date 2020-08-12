@@ -26,6 +26,14 @@ namespace ERPBLL.Configuration
             return mobilePartRepository.Save();
         }
 
+        public IEnumerable<MobilePartDTO> GetAllMobilePartAndCode(long orgId)
+        {
+                return this._configurationDb.Db.Database.SqlQuery<MobilePartDTO>(
+                    string.Format(@"SELECT MobilePartId,CAST(MobilePartName AS VARCHAR(25)) +'_'+ CAST(MobilePartCode AS VARCHAR(10)) 'MobilePartName'
+FROM [Configuration].dbo.tblMobileParts
+where OrganizationId={0}", orgId)).ToList();
+        }
+
         public IEnumerable<MobilePart> GetAllMobilePartByOrgId(long orgId)
         {
             return mobilePartRepository.GetAll(part => part.OrganizationId == orgId).ToList();
@@ -36,9 +44,9 @@ namespace ERPBLL.Configuration
             return mobilePartRepository.GetOneByOrg(part => part.MobilePartId == id && part.OrganizationId == orgId);
         }
 
-        public bool IsDuplicateMobilePart(string mobilePartName, long id, long orgId)
+        public bool IsDuplicateMobilePartCode(string partsCode, long id, long orgId)
         {
-            return mobilePartRepository.GetOneByOrg(part => part.MobilePartName == mobilePartName && part.MobilePartId != id && part.OrganizationId == orgId) != null ? true : false;
+            return mobilePartRepository.GetOneByOrg(part => part.MobilePartCode == partsCode && part.MobilePartId != id && part.OrganizationId == orgId) != null ? true : false;
         }
 
         public bool SaveMobile(MobilePartDTO mobilePartDTO, long userId, long orgId)

@@ -39,7 +39,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.06958in</Top>
-        <Left>2.38208in</Left>
+        <Left>2.68208in</Left>
         <Height>0.22917in</Height>
         <Width>1.53125in</Width>
         <ZIndex>1</ZIndex>
@@ -74,7 +74,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.31264in</Top>
-        <Left>2.24667in</Left>
+        <Left>2.54667in</Left>
         <Height>0.22917in</Height>
         <Width>1.77083in</Width>
         <ZIndex>2</ZIndex>
@@ -115,7 +115,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.54459in</Top>
-        <Left>2.24667in</Left>
+        <Left>2.54667in</Left>
         <Height>0.22917in</Height>
         <Width>1.77083in</Width>
         <ZIndex>3</ZIndex>
@@ -136,7 +136,8 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Address</Value>
+                <Label>Address</Label>
+                <Value>=First(Fields!Address.Value, "ReportHead")</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                 </Style>
@@ -149,7 +150,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.78903in</Top>
-        <Left>2.24667in</Left>
+        <Left>2.54667in</Left>
         <Height>0.22917in</Height>
         <Width>1.77083in</Width>
         <ZIndex>4</ZIndex>
@@ -197,7 +198,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>1.03209in</Top>
-        <Left>2.07584in</Left>
+        <Left>2.37584in</Left>
         <Height>0.22917in</Height>
         <Width>2.08333in</Width>
         <ZIndex>5</ZIndex>
@@ -828,7 +829,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Sell Price</Value>
+                              <Value>Price</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>

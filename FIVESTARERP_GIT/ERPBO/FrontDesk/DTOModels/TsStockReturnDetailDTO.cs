@@ -23,5 +23,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public long ReturnInfoId { get; set; }
         //c
         public string PartsName { get; set; }
+        public string PartsCode { get; set; }
     }
 }

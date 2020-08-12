@@ -11,7 +11,7 @@
         <tr class="text-center">
             <th class="hide"></th>
             <th style="vertical-align:middle">
-                <input type="checkbox" name="allJobOrder" id="allJobOrder"/>
+                <input type="checkbox" name="allJobOrder" id="allJobOrder" />
             </th>
             <th style="vertical-align:middle">#SL</th>
             <th style="vertical-align:middle">JobCode</th>
@@ -19,8 +19,8 @@
             <th style="vertical-align:middle">MobileNo</th>
             <th style="vertical-align:middle">Address</th>
             <th style="vertical-align:middle">Model</th>
+            <th style="vertical-align:middle">Symptom</th>
             <th style="vertical-align:middle">Accessories</th>
-            <th style="vertical-align:middle">Problems</th>
             @*<th style="vertical-align:middle">Warrenty Available</th>*@
             <th style="vertical-align:middle">Warrenty Paper</th>
             <th style="vertical-align:middle">JobStatus</th>
@@ -35,27 +35,27 @@
             sl = sl + 1;
             isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
             isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-            <tr>
-                <td class="hide">@item.JodOrderId</td>
-                <td style="vertical-align:middle">
-                    <input type="checkbox" name="jobOrderName" data-item-val="@item.JodOrderId" data-code-val="@item.JobOrderCode"/>
-                </td>
-                <td class="text-center text-bold">@sl</td>
-                <td class="text-center text-bold">@item.JobOrderCode</td>
-                <td>@item.CustomerName</td>
-                <td>@item.MobileNo</td>
-                <td>@item.Address</td>
-                <td>@item.ModelName</td>
-                <td>@item.AccessoriesNames</td>
-                <td>@item.Problems</td>
-                @*<td class="text-center">@isWarrantyAvailable</td>*@
-                <td class="text-center">@isWarrantyPaperEnclosed</td>
-                <td class="text-center" data-val="@item.StateStatus">
-                    <span class="@badge">@item.StateStatus</span>
-                </td>
-                <td class="text-center text-bold">@item.EntryUser</td>
-                <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-            </tr>
+        <tr>
+            <td class="hide">@item.JodOrderId</td>
+            <td style="vertical-align:middle">
+                <input type="checkbox" name="jobOrderName" data-item-val="@item.JodOrderId" data-code-val="@item.JobOrderCode" />
+            </td>
+            <td class="text-center text-bold">@sl</td>
+            <td class="text-center text-bold">@item.JobOrderCode</td>
+            <td>@item.CustomerName</td>
+            <td>@item.MobileNo</td>
+            <td>@item.Address</td>
+            <td>@item.ModelName</td>
+            <td>@item.Problems</td>
+            <td>@item.AccessoriesNames</td>
+            @*<td class="text-center">@isWarrantyAvailable</td>*@
+            <td class="text-center">@isWarrantyPaperEnclosed</td>
+            <td class="text-center" data-val="@item.StateStatus">
+                <span class="@badge">@item.StateStatus</span>
+            </td>
+            <td class="text-center text-bold">@item.EntryUser</td>
+            <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+        </tr>
         }
         @if (Model.Count() == 0)
         {

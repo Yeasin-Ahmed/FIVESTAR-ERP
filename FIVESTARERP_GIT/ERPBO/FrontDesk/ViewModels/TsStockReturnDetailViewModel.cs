@@ -23,6 +23,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public long ReturnInfoId { get; set; }
         //c
         public string PartsName { get; set; }
-        
+        public string PartsCode { get; set; }
+
     }
 }

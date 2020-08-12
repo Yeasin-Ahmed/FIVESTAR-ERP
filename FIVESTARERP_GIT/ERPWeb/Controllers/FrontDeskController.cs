@@ -3,14 +3,17 @@ using ERPBLL.Configuration.Interface;
 using ERPBLL.ControlPanel.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Inventory.Interface;
+using ERPBLL.ReportSS.Interface;
 using ERPBO.Common;
 using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
+using ERPBO.FrontDesk.ReportModels;
 using ERPBO.FrontDesk.ViewModels;
 using ERPDAL.FrontDeskDAL;
 using ERPWeb.Filters;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,8 +57,9 @@ namespace ERPWeb.Controllers
         private readonly ITsStockReturnDetailsBusiness _tsStockReturnDetailsBusiness;
         private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
         private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
+        private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -84,11 +88,12 @@ namespace ERPWeb.Controllers
             this._tsStockReturnDetailsBusiness = tsStockReturnDetailsBusiness;
             this._invoiceInfoBusiness = invoiceInfoBusiness;
             this._invoiceDetailBusiness = invoiceDetailBusiness;
+            this._jobOrderReportBusiness = jobOrderReportBusiness;
         }
 
         #region JobOrder
         [HttpGet]
-        public ActionResult GetJobOrders(string flag, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", int page = 1)
+        public ActionResult GetJobOrders(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -98,9 +103,9 @@ namespace ERPWeb.Controllers
 
                 return View();
             }
-            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign"))
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign" || flag=="TSWork"))
             {
-                var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId);
+                var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId, fromDate, toDate);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
                
@@ -113,6 +118,11 @@ namespace ERPWeb.Controllers
                     AutoMapper.Mapper.Map(dto, viewModels);
                     return PartialView("_GetJobOrders", viewModels);
                 }
+                //if (flag == "TSWork")
+                //{
+                //    AutoMapper.Mapper.Map(dto, viewModels);
+                //    return PartialView("_GetTSWorkDetails", viewModels.FirstOrDefault());
+                //}
                 else if (flag == "Detail")// Flag = Detail
                 {
                     AutoMapper.Mapper.Map(dto, viewModels);
@@ -127,6 +137,15 @@ namespace ERPWeb.Controllers
                 }
             }
             return View();
+        }
+        [HttpGet]
+        public ActionResult GetTsWorksDetails(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", int page = 1)
+        {
+            var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId, fromDate, toDate);
+
+            IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return PartialView("_GetTSWorkDetails", viewModels.FirstOrDefault());
         }
 
         [HttpGet]
@@ -161,6 +180,7 @@ namespace ERPWeb.Controllers
         public ActionResult SaveJobOrder(JobOrderViewModel jobOrder, List<JobOrderAccessoriesViewModel> jobOrderAccessories, List<JobOrderProblemViewModel> jobOrderProblems)
         {
             bool IsSuccess = false;
+            string file = string.Empty;
             if (ModelState.IsValid && jobOrderProblems.Count > 0)
             {
                 JobOrderDTO jobOrderDTO = new JobOrderDTO();
@@ -171,9 +191,59 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(jobOrderAccessories, listJobOrderAccessoriesDTO);
                 AutoMapper.Mapper.Map(jobOrderProblems, listJobOrderProblemDTO);
 
-                IsSuccess = _jobOrderBusiness.SaveJobOrder(jobOrderDTO, listJobOrderAccessoriesDTO, listJobOrderProblemDTO, User.UserId, User.OrgId, User.BranchId);
+                var exe = _jobOrderBusiness.SaveJobOrderWithReport(jobOrderDTO, listJobOrderAccessoriesDTO, listJobOrderProblemDTO, User.UserId, User.OrgId, User.BranchId);
+
+                IsSuccess = exe.isSuccess;
+                file = GetJobOrderReport(Convert.ToInt64(exe.text));
             }
-            return Json(IsSuccess);
+            return Json(new { IsSuccess = IsSuccess, file = file });
+        }
+
+        private string GetJobOrderReport(long jobOrderId)
+        {
+            string file = string.Empty;
+            IEnumerable<JobOrderDTO> jobOrderDetails = _jobOrderBusiness.GetJobCreateReceipt(jobOrderId, User.OrgId, User.BranchId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptJobOrderCreateReceipt.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("JobCreateReceipt", jobOrderDetails);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Receipt";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -201,11 +271,13 @@ namespace ERPWeb.Controllers
                 JobOrderType = jobOrder.JobOrderType,
                 WarrantyDate = jobOrder.WarrantyDate,
                 Remarks = jobOrder.Remarks,
+                CourierName= jobOrder.CourierName,
+                CourierNumber= jobOrder.CourierNumber,
+                ApproxBill= jobOrder.ApproxBill,
                 ReferenceNumber = jobOrder.ReferenceNumber,
                 EntryDate = jobOrder.EntryDate,
                 OrganizationId = jobOrder.OrganizationId,
                 BranchId = jobOrder.BranchId
-
             };
 
             var jorderAccessories = _jobOrderAccessoriesBusiness.GetJobOrderAccessoriesByJobOrder(jobOrderId, User.OrgId).Select(s => s.AccessoriesId).ToArray();
@@ -337,7 +409,7 @@ namespace ERPWeb.Controllers
             };
             ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
 
-            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
             return View();
         }
 
@@ -385,7 +457,8 @@ namespace ERPWeb.Controllers
                 RequsitionDetailForJobOrderId = s.RequsitionDetailForJobOrderId,
                 PartsId=s.PartsId,
                 PartsName= (_mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId.Value, User.OrgId).MobilePartName),
-                SellPrice=s.SellPrice,
+                MobilePartCode= (_mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId.Value, User.OrgId).MobilePartCode),
+                SellPrice =s.SellPrice,
                 CostPrice=s.CostPrice,
                 Quantity = s.Quantity,
                 Remarks = s.Remarks
@@ -475,7 +548,7 @@ namespace ERPWeb.Controllers
                 JobOrderCode = (jobOrderInfo.JobOrderCode),
                 Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId).Type),
                 ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
-
+                ModelColor=jobOrderInfo.ModelColor,
                 Requestby = UserForEachRecord(info.EUserId.Value).UserName,
                 EntryDate = info.EntryDate,
                 SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
@@ -607,7 +680,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
 
-            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
             ViewBag.ddlSymptomName = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.ProblemName, Value = mobile.ProblemId.ToString() }).ToList();
 
@@ -714,6 +787,7 @@ namespace ERPWeb.Controllers
                 SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(stock.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                 PartsId = stock.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(stock.PartsId.Value, User.OrgId).MobilePartName),
+                MobilePartCode= (_mobilePartBusiness.GetMobilePartOneByOrgId(stock.PartsId.Value, User.OrgId).MobilePartCode),
                 CostPrice = stock.CostPrice,
                 SellPrice = stock.SellPrice,
                 Quantity = stock.Quantity,
@@ -917,6 +991,89 @@ namespace ERPWeb.Controllers
                 IsSuccess = _invoiceInfoBusiness.SaveInvoiceForJobOrder(dtoInfo, dtoDetail, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
+        }
+        #endregion
+
+        #region Reports
+        [HttpGet]
+        public ActionResult GetJobOrderListReport()
+        {
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ReturnParts(string flag, long? mobilePartId, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                IEnumerable<TsStockReturnDetailDTO> dto = _tsStockReturnDetailsBusiness.GetAllTsStockReturn(User.OrgId, User.BranchId).Select(ret => new TsStockReturnDetailDTO
+                {
+                    RequsitionCode = ret.RequsitionCode,
+                    PartsId = ret.PartsId,
+                    PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartName),
+                    PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartCode),
+                    Quantity = ret.Quantity,
+                    EntryDate = ret.EntryDate
+                }).AsEnumerable();
+                dto = dto.Where(f => 1 == 1 && (mobilePartId == null || mobilePartId <= 0 || f.PartsId == mobilePartId) &&
+                             (
+                                 (fromDate == null && toDate == null)
+                                 ||
+                                  (fromDate == "" && toDate == "")
+                                 ||
+                                 (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                                     f.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                                     f.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                                 ||
+                                 (fromDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                                 ||
+                                 (toDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                             )
+                         );
+                List<TsStockReturnDetailViewModel> viewModel = new List<TsStockReturnDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return PartialView("_ReturnParts", viewModel);
+            }
+        }
+        [HttpGet]
+        public ActionResult GetUsedParts(string flag, long? partsId, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _technicalServicesStockBusiness.GetUsedParts(partsId, User.OrgId, User.BranchId, fromDate, toDate);
+                List<TechnicalServicesStockViewModel> viewModels = new List<TechnicalServicesStockViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetUsedParts", viewModels);
+            }
+        }
+
+        public ActionResult GetSellsReport(string flag, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _invoiceInfoBusiness.GetSellsReport(User.OrgId, User.BranchId, fromDate, toDate);
+                List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetSellsReport", viewModels);
+            }
         }
         #endregion
 

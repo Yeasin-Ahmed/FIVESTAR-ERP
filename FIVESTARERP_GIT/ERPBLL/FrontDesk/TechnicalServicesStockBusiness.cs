@@ -47,6 +47,54 @@ namespace ERPBLL.FrontDesk
             return _frontDeskUnitOfWork.Db.Database.SqlQuery<TSStockByRequsitionDTO>(QueryForStock(jobOrderId,tsId,orgId,branchId,roleName)).ToList();
         }
 
+        public IEnumerable<TechnicalServicesStockDTO> GetUsedParts(long? partsId,long orgId, long branchId, string fromDate, string toDate)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<TechnicalServicesStockDTO>(QueryForUsedParts(partsId,orgId, branchId, fromDate, toDate)).ToList();
+        }
+        private string QueryForUsedParts(long? partsId, long orgId, long branchId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            if (partsId !=null && partsId > 0)
+            {
+                param += string.Format(@"and ts.PartsId={0}", partsId);
+            }
+            if (orgId > 0)
+            {
+                param += string.Format(@"and ts.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and ts.BranchId={0}", branchId);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ts.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ts.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(ts.EntryDate as date)='{0}'", tDate);
+            }
+            query = string.Format(@"select ts.PartsId,rq.RequsitionCode,ps.MobilePartName 'PartsName',ps.MobilePartCode,ts.UsedQty ,ts.EntryDate
+from tblTechnicalServicesStock ts
+left join [Configuration].dbo.tblMobileParts ps
+on ts.PartsId=ps.MobilePartId
+left join tblRequsitionInfoForJobOrders rq
+on ts.RequsitionInfoForJobOrderId=rq.RequsitionInfoForJobOrderId
+where ts.UsedQty>0 and 1=1{0}
+
+", Utility.ParamChecker(param));
+            return query;
+        }
+
         public bool SaveJobSignOutWithStock(TSStockInfoDTO dto, long userId, long orgId, long branchId)
         {
             bool IsSuccess = true;

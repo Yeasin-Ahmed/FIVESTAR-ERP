@@ -6,13 +6,13 @@
 <div class="row">
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 hide">
                 <a href="#" class="btn btn-sm btn-outline-danger data-report-item" id="btnReport" title="Pdf Report"><i class="fas fa-file-pdf"></i></a>
             </div>
-            <div class="col-md-6 text-center">
+            <div class="col-md-10 text-center">
                 <h4><b style="color:darkblue">List of Job Order</b></h4>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <a href="/FrontDesk/CreateJobOrder" class="btn btn-outline-primary btn-sm float-lg-right" id="btnReset"><i class="fas fa-plus"></i> Job Order</a>
             </div>
         </div>
@@ -21,28 +21,48 @@
     <div class="col-md-12 text-sm">
         <div class="row">
             <div class="col-md-2">
-                <label class="col-form-label">IMEI1 No</label>
+                <label class="col-form-label">JobCode</label>
+                <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">Model</label>
+                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Search By Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">IMEI1</label>
                 <input type="text" id="txtIMEINo" class="form-control form-control-sm" placeholder="Search By IMEI1" />
             </div>
             <div class="col-md-2">
-                <label class="col-form-label">IMEI2 No</label>
+                <label class="col-form-label">IMEI2</label>
                 <input type="text" id="txtIMEI2No" class="form-control form-control-sm" placeholder="Search By IMEI2" />
-            </div>
-            <div class="col-md-2">
-                <label class="col-form-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Search By Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
             </div>
             <div class="col-md-2">
                 <label class="col-form-label">Mobile No</label>
                 <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
             </div>
             <div class="col-md-2">
-                <label class="col-form-label">JobCode</label>
-                <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                <label class="col-form-label">JobStatus</label>
+                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label font-weight-bold">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2">
-                <label class="col-form-label">StateStatus</label>
-                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
+                <label class="control-label font-weight-bold">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -136,6 +156,46 @@
         var txtTax = $("#txtTax");
         var txtDiscount = $("#txtDiscount");
         var txtRemarks = $("#txtRemarks");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+        dptFromDate.change(function () {
+            LoadDataTable();
+        })
+        dptToDate.change(function () {
+            LoadDataTable();
+        })
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -168,7 +228,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {
@@ -200,6 +260,12 @@
             e.preventDefault();
             var id = $(this).attr("data-item-details");
             getJobOrderDetail("Detail",id);
+        })
+        //Ts Work Details
+        $(document).on('click', 'a.data-item-tsWork', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-tsWork");
+            getJobOrderDetail("TSWork", id);
         })
 
         // assign a T.S.
@@ -433,27 +499,39 @@
                         //alert("totalItemsAmount="+totalItemsAmount);
                         //return;
                         var details = []; details.length = 0;
-                        $.each($("#tblPartsUsedQty tbody tr"), function (index, item) {
-                            var tds = $(this).children('td');
-                            var partsId = tds.eq('1').html();
-                            var pName = tds.eq('2').html();
-                            var qty = tds.eq('3').html();
-                            var price = tds.eq('4').html();
-                            var total = tds.eq('5').html();
+                        //empty-row
+                        //if (('.empty-row').length > 0) {
+                            
+                        //}
+                        if ($("#tblPartsUsedQty tbody").length > 0) {
 
-                            details.push({
-                                InvoiceDetailId: 0,
-                                PartsId: TryParseInt(partsId, 0),
-                                PartsName: pName,
-                                Quantity: TryParseInt(qty, 0),
-                                SellPrice: TryParseFloat(price, 0),
-                                Total: TryParseFloat(total, 0),
-                            })
-                        });
+                            // 
+                            if (($("#tblPartsUsedQty tbody tr").length == 1 && !$("#tblPartsUsedQty tbody tr").hasClass('empty-row')) || $("#tblPartsUsedQty tbody tr").length > 1) {
+                                $.each($("#tblPartsUsedQty tbody tr"), function (index, item) {
+                                    var tds = $(this).children('td');
+                                    var partsId = tds.eq('1').html();
+                                    var pName = tds.eq('2').html();
+                                    var qty = tds.eq('3').html();
+                                    var price = tds.eq('4').html();
+                                    var total = tds.eq('5').html();
+
+                                    details.push({
+                                        InvoiceDetailId: 0,
+                                        PartsId: TryParseInt(partsId, 0),
+                                        PartsName: pName,
+                                        Quantity: TryParseInt(qty, 0),
+                                        SellPrice: TryParseFloat(price, 0),
+                                        Total: TryParseFloat(total, 0),
+                                    })
+                                });
+                            }
+                            
+                        }
+                        
                         var data = JSON.stringify({ info: info, details: details});
                         console.log("Invoice");
                         console.log(data);
-                       //return console.log(data);
+                      // return console.log(data);
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveInvoiceForJobOrder', data, getToken())).then(function (res, status) {
                             console.log(res);
                             console.log(status);

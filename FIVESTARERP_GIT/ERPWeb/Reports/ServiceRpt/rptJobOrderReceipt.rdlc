@@ -651,7 +651,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>JobOrder Receipt</Value>
+                <Value>Delivery Receipt</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                   <FontSize>12pt</FontSize>
@@ -760,14 +760,16 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.33849in</Top>
-        <Left>1.1496in</Left>
+        <Top>0.31349in</Top>
+        <Left>2.0996in</Left>
         <Height>0.21627in</Height>
-        <Width>2.07143in</Width>
+        <Width>2.7968in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -801,14 +803,16 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.57004in</Top>
-        <Left>1.14716in</Left>
+        <Top>0.54504in</Top>
+        <Left>2.09716in</Left>
         <Height>0.21627in</Height>
-        <Width>2.07143in</Width>
+        <Width>2.79924in</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -827,22 +831,24 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Label>Address</Label>
-                <Value>Address</Value>
+                <Label>address</Label>
+                <Value>=First(Fields!Address.Value, "ServicesReportHead")</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                   <FontSize>9pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.78859in</Top>
-        <Left>1.14824in</Left>
+        <Top>0.76359in</Top>
+        <Left>2.09824in</Left>
         <Height>0.21627in</Height>
-        <Width>2.07143in</Width>
+        <Width>2.79816in</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -881,14 +887,16 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>1.00764in</Top>
-        <Left>1.1458in</Left>
+        <Top>0.98264in</Top>
+        <Left>2.0958in</Left>
         <Height>0.21627in</Height>
-        <Width>2.07143in</Width>
+        <Width>2.8006in</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>

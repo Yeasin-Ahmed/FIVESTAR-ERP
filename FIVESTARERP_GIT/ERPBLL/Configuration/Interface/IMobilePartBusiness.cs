@@ -11,8 +11,9 @@ namespace ERPBLL.Configuration.Interface
    public interface IMobilePartBusiness
     {
         IEnumerable<MobilePart> GetAllMobilePartByOrgId(long orgId);
+        IEnumerable<MobilePartDTO> GetAllMobilePartAndCode(long orgId);
         bool SaveMobile(MobilePartDTO mobilePartDTO, long userId, long orgId);
-        bool IsDuplicateMobilePart(string mobilePartName, long id, long orgId);
+        bool IsDuplicateMobilePartCode(string partsCode, long id, long orgId);
         MobilePart GetMobilePartOneByOrgId(long id, long orgId);
         bool DeleteMobilePart(long id, long orgId);
     }

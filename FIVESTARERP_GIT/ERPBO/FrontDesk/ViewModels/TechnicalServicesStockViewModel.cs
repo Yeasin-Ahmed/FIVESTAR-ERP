@@ -41,5 +41,6 @@ namespace ERPBO.FrontDesk.ViewModels
                 return (this.Quantity - this.UsedQty);
             }
         }
+        public string MobilePartCode { get; set; }
     }
 }

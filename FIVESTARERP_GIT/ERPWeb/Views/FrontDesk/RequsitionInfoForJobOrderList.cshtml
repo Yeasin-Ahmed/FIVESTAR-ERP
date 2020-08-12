@@ -65,7 +65,7 @@
                             <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="ddlMobilePart" class="control-label font-weight-bold">Mobile Parts Name</label>
+                            <label for="ddlMobilePart" class="control-label font-weight-bold">Parts Name</label>
                             @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select ddlMobileParts--", new { @class = "form-control form-control-sm" })
                             <span class="error hide require-parts font-weight-bold">Parts is required !</span>
                             <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>

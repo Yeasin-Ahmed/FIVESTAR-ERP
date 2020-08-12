@@ -1,4 +1,5 @@
-﻿using ERPBLL.FrontDesk.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.FrontDesk.Interface;
 using ERPBO.ControlPanel.DomainModels;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
@@ -29,6 +30,46 @@ namespace ERPBLL.FrontDesk
         public InvoiceInfo GetAllInvoice(long jobOrderId, long orgId, long branchId)
         {
             return _invoiceInfoRepository.GetOneByOrg(inv => inv.JobOrderId == jobOrderId && inv.OrganizationId == orgId && inv.BranchId == branchId);
+        }
+
+        public IEnumerable<InvoiceInfoDTO> GetSellsReport(long orgId, long branchId, string fromDate, string toDate)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceInfoDTO>(QueryForSells( orgId, branchId, fromDate, toDate)).ToList();
+        }
+        private string QueryForSells(long orgId, long branchId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            
+            if (orgId > 0)
+            {
+                param += string.Format(@"and OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and BranchId={0}", branchId);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(EntryDate as date)='{0}'", tDate);
+            }
+            query = string.Format(@"select InvoiceCode,CustomerName,NetAmount,EntryDate,OrganizationId,BranchId from tblInvoiceInfo
+where 1=1{0}
+
+", Utility.ParamChecker(param));
+            return query;
         }
 
         public IEnumerable<InvoiceInfo> InvoiceInfoReport(long infoId,long orgId, long branchId)

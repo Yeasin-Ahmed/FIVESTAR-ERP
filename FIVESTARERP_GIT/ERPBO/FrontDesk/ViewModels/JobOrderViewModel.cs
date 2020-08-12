@@ -60,6 +60,13 @@ namespace ERPBO.FrontDesk.ViewModels
         public long InvoiceInfoId { get; set; }
         public string InvoiceCode { get; set; }
         public string CustomerType { get; set; }
+        public string PartsName { get; set; }
+        public int Quantity { get; set; }
+        public string FaultName { get; set; }
+        public string ServiceName { get; set; }
+        public string CourierNumber { get; set; }
+        public string CourierName { get; set; }
+        public string ApproxBill { get; set; }
 
     }
 }

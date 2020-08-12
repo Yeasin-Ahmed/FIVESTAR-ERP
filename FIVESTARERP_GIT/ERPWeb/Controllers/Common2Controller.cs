@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace ERPWeb.Controllers
 {
+    [CustomAuthorize]
     public class Common2Controller : BaseController
     {
         // This controller is only for Configuration & FrontDesk Modules
@@ -99,6 +100,11 @@ namespace ERPWeb.Controllers
                 viewModel.Address = Refe.Address;
                 viewModel.MobileNo = Refe.MobileNo;
                 viewModel.CustomerType = Refe.CustomerType;
+
+                viewModel.CourierName = Refe.CourierName;
+                viewModel.CourierNumber = Refe.CourierNumber;
+                viewModel.ApproxBill = Refe.ApproxBill;
+
             }
             return Json(viewModel);
         }
@@ -124,6 +130,10 @@ namespace ERPWeb.Controllers
                 viewModel.Address = Refe.Address;
                 viewModel.MobileNo = Refe.MobileNo;
                 viewModel.CustomerType = Refe.CustomerType;
+
+                viewModel.CourierName = Refe.CourierName;
+                viewModel.CourierNumber = Refe.CourierNumber;
+                viewModel.ApproxBill = Refe.ApproxBill;
             }
             return Json(viewModel);
         }
@@ -153,6 +163,8 @@ namespace ERPWeb.Controllers
         }
 
         #endregion
+
+        #region Duplicate Check
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateAccessoriesName(string accessoriesName, long id)
         {
@@ -166,21 +178,21 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicateMobilePartName(string mobilePartName, long id)
+        public ActionResult IsDuplicateMobilePartCode(string partsCode, long id)
         {
-            bool isExist = _mobilePartBusiness.IsDuplicateMobilePart(mobilePartName, id, User.OrgId);
+            bool isExist = _mobilePartBusiness.IsDuplicateMobilePartCode(partsCode, id, User.OrgId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateCustomerPhone(string customerPhone, long id)
         {
-            bool isExist = _customerBusiness.IsDuplicateCustomerPhone(customerPhone, id, User.OrgId,User.BranchId);
+            bool isExist = _customerBusiness.IsDuplicateCustomerPhone(customerPhone, id, User.OrgId, User.BranchId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateTSName(string name, long id)
         {
-            bool isExist = _technicalServiceBusiness.IsDuplicateTechnicalName(name, id, User.OrgId,User.BranchId);
+            bool isExist = _technicalServiceBusiness.IsDuplicateTechnicalName(name, id, User.OrgId, User.BranchId);
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -202,7 +214,7 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult IsDuplicateSymptomId(long id,long prblmId)
+        public ActionResult IsDuplicateSymptomId(long id, long prblmId)
         {
             bool isExist = _jobOrderProblemBusiness.IsDuplicateSymptomName(id, prblmId, User.OrgId);
             return Json(isExist);
@@ -220,6 +232,8 @@ namespace ERPWeb.Controllers
             bool isExist = _jobOrderServiceBusiness.IsDuplicateServicesName(id, servicesId, User.OrgId);
             return Json(isExist);
         }
+        #endregion
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsIMEIExistWithRunningJobOrder(string iMEI,long jobOrdeId)
         {
@@ -230,20 +244,43 @@ namespace ERPWeb.Controllers
             }
             return Json(isExist);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsIMEI2ExistWithRunningJobOrder(string iMEI2, long jobOrdeId)
+        {
+            bool isExist = false;
+            if (jobOrdeId == 0)
+            {
+                isExist = _jobOrderBusiness.IsIMEI2ExistWithRunningJobOrder(jobOrdeId, iMEI2, User.OrgId, User.BranchId);
+            }
+            return Json(isExist);
+        }
+
+        #region Front-Desk Module
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetPartsStockByParts(long warehouseId, long partsId)
+        {
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouseId, partsId, User.OrgId, User.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            if (stock == null)
+            {
+                stock = 0;
+            }
+            return Json(stock);
+        }
+
         [HttpPost]
         public ActionResult GetCostPriceForDDL(long partsId)
         {
-            var cost = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId,User.BranchId).AsEnumerable();
+            var cost = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).AsEnumerable();
             var dropDown = cost.Where(i => i.MobilePartId == partsId).Select(i => new Dropdown { text = i.CostPrice.ToString(), value = i.CostPrice.ToString() }).ToList();
             return Json(dropDown);
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetPartsStockByPrice(long warehouseId,long partsId,double cprice)
+        public ActionResult GetPartsStockByPrice(long warehouseId, long partsId, double cprice)
         {
             var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByInfoId(warehouseId, partsId, cprice, User.OrgId, User.BranchId);
             int total = 0;
-            if(stock != null)
+            if (stock != null)
             {
                 total = (stock.StockInQty - (stock.StockOutQty)).Value;
             }
@@ -258,18 +295,6 @@ namespace ERPWeb.Controllers
             price.MobilePartStockInfoId = detailDTO.MobilePartStockDetailId;
             price.SellPrice = detailDTO.SellPrice;
             return Json(detailDTO);
-        }
-
-        #region Front-Desk Module
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetPartsStockByParts(long warehouseId, long partsId)
-        {
-            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouseId, partsId, User.OrgId, User.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
-            if (stock == null)
-            {
-                stock = 0;
-            }
-            return Json(stock);
         }
         #endregion
     }

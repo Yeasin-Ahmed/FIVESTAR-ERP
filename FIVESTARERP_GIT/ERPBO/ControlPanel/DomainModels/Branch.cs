@@ -30,5 +30,6 @@ namespace ERPBO.ControlPanel.DomainModels
         public long OrganizationId { get; set; }
         public Organization Organization { get; set; }
         public ICollection<AppUser> AppUsers { get; set; }
+        public string Address { get; set; }
     }
 }

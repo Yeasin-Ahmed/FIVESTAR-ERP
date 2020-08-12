@@ -24,13 +24,13 @@ namespace ERPBLL.ReportSS
         public ServicesReportHead GetBranchInformation(long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<ServicesReportHead>(
-                string.Format(@"select org.OrganizationName,bh.BranchName,org.OrgLogoPath,bh.PhoneNo,bh.MobileNo,bh.Fax,bh.Email from 
+                string.Format(@"select org.OrganizationName,bh.BranchName,bh.Address,org.OrgLogoPath,bh.PhoneNo,bh.MobileNo,bh.Fax,bh.Email from 
             [ControlPanel].dbo.tblBranch bh
             inner join [ControlPanel].dbo.tblOrganizations org
         on bh.OrganizationId=org.OrganizationId
         where bh.OrganizationId={0} and bh.BranchId={1}", orgId, branchId)).FirstOrDefault();
         }
-        private string QueryForJobOrderReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId)
+        private string QueryForJobOrderReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -75,6 +75,22 @@ namespace ERPBLL.ReportSS
             {
                 param += string.Format(@"and jo.BranchId={0}", branchId);
             }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jo.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
+            }
 
             query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 CloseDate,
@@ -115,10 +131,10 @@ Where 1 = 1 {0}) tbl Order By EntryDate desc
             return query;
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrdersReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId)
+        public IEnumerable<JobOrderDTO> GetJobOrdersReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate)
         {
             //return _jobOrderBusiness.GetJobOrders(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId);
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderReport(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderReport(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId,  fromDate,  toDate)).ToList();
         }
 
         public JobOrderDTO GetReceiptForJobOrder(long jobOrderId, long orgId, long branchId)

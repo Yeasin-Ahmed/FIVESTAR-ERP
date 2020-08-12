@@ -45,6 +45,7 @@ namespace ERPBLL.ControlPanel
                     branch.BranchName = branchDTO.BranchName;
                     branch.ShortName = branchDTO.ShortName;
                     branch.MobileNo = branchDTO.MobileNo;
+                    branch.Address = branchDTO.Address;
                     branch.Email = branchDTO.Email;
                     branch.PhoneNo = branchDTO.PhoneNo;
                     branch.Fax = branchDTO.Fax;
@@ -62,6 +63,7 @@ namespace ERPBLL.ControlPanel
                     branchInDb.BranchName = branchDTO.BranchName;
                     branchInDb.ShortName = branchDTO.ShortName;
                     branchInDb.MobileNo = branchDTO.MobileNo;
+                    branchInDb.Address = branchDTO.Address;
                     branchInDb.Email = branchDTO.Email;
                     branchInDb.PhoneNo = branchDTO.PhoneNo;
                     branchInDb.Fax = branchDTO.Fax;

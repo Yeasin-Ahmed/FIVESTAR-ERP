@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Mobile Parts List</b></h4>
+        <h4><b style="color:darkblue">Parts List</b></h4>
         <hr />
     </div>
     <div class="col-md-12 mb-2">
@@ -27,7 +27,7 @@
                 <tr class="text-center">
                     <th>SL No.</th>
                     <th class="hide"></th>
-                    <th>MobileParts Name</th>
+                    <th>Parts Name</th>
                     <th>Parts Code</th>
                     <th>Remarks</th>
                     <th>Entry Date</th>
@@ -44,7 +44,7 @@
                         <td>@part.MobilePartName</td>
                         <td class="text-center">@part.MobilePartCode</td>
                         <td class="text-center">@part.Remarks</td>
-                        <td>@part.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td>@part.EntryDate</td>
                         <td class="text-center">
                             <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@part.MobilePartId"><i class="fa fa-pen"></i> Edit</a>
                             <a href="#" class="btn btn-danger btn-sm data-del-item" data-del-item="@part.MobilePartId"><i class="fa fa-pen"></i> Delete</a>
@@ -76,16 +76,18 @@
                     <input type="hidden" name="Id" id="hdfMobilePartId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtMobilePartName" class="control-label font-weight-bold">Mobile Parts Name</label>
+                            <label for="txtMobilePartName" class="control-label font-weight-bold">Parts Name</label>
                             <input type="text" name="txtMobilePartName" value="" id="txtMobilePartName" class="form-control form-control-sm" />
-                            <span class="error hide required-mobilePartName font-weight-bold">Input Mobile Parts Name!</span>
-                            <span class="error hide duplicate-mobilePartName font-weight-bold">Already MobileParts Name Exist!</span>
+                            <span class="error hide required-mobilePartName font-weight-bold">Input Parts Name!</span>
+                            <span class="error hide duplicate-mobilePartName font-weight-bold">Already Parts Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="txtMobilePartCode" class="control-label font-weight-bold">Parts Code</label>
                             <input type="text" name="txtMobilePartCode" value="" id="txtMobilePartCode" class="form-control form-control-sm" />
+                            <span class="error hide required-partsCode font-weight-bold">Input Parts Code!</span>
+                            <span class="error hide duplicate-partsCode font-weight-bold">Already Parts Code Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -152,10 +154,14 @@
                 $(".required-mobilePartName").removeClass("hide");
                 isValid = false;
             }
+            if ($.trim(txtMobilePartCode.val()) == "") {
+                $(".required-partsCode").removeClass("hide");
+                isValid = false;
+            }
             else {
                 var id = TryParseInt(hdfMobilePartId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, mobilePartName: txtMobilePartName.val().trim() }), '/Common2/IsDuplicateMobilePartName', getToken()) == true) {
-                    $(".duplicate-mobilePartName").removeClass("hide");
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, partsCode: txtMobilePartCode.val().trim() }), '/Common2/IsDuplicateMobilePartCode', getToken()) == true) {
+                    $(".duplicate-partsCode").removeClass("hide");
                     isValid = false;
                 }
             }

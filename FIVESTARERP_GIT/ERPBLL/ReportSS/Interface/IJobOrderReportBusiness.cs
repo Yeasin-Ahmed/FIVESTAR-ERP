@@ -11,7 +11,7 @@ namespace ERPBLL.ReportSS.Interface
 {
    public interface IJobOrderReportBusiness
     {
-        IEnumerable<JobOrderDTO> GetJobOrdersReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId);
+        IEnumerable<JobOrderDTO> GetJobOrdersReport(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate);
         ServicesReportHead GetBranchInformation(long orgId, long branchId);
         JobOrderDTO GetReceiptForJobOrder(long jobOrderId, long orgId, long branchId);
     }

@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Sells Report";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h4><b style="color:darkblue">Sells Report</b></h4>
+    </div>
+    <div class="col-md-12 mb-2">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <h5 class="text-cyan"><b>Search By</b></h5>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">From Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="control-label font-weight-bold">To Date</label>
+                <div class="input-group input-group-sm ">
+                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label for="ddlMobileParts" style="visibility:hidden">MobileParts Name</label>
+                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" id="btnReport" title="Pdf Report"><i class="fas fa-file-pdf"> Download</i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mt-2" id="dataContainer">
+        @{Html.RenderAction("GetSellsReport", new { flag = "view" });}
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+        dptFromDate.change(function () {
+            LoadDataTable();
+        })
+        dptToDate.change(function () {
+            LoadDataTable();
+        })
+        function LoadDataTable() {
+            var data = { flag: "search", fromDate: dptFromDate.val(), toDate: dptToDate.val()
+        };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetSellsReport', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $("#btnReport").click(function (e) {
+            e.preventDefault();
+            var data = JSON.stringify({ flag: "search", fromDate: dptFromDate.val(), toDate: dptToDate.val() });
+            //return console.log(data)
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/SellsReport', data, getToken())).then(function (res, status) {
+                console.log(res.IsSuccess);
+                if (res.IsSuccess === true) {
+                    var pdfWindow = window.open("", "_blank")
+                    console.log(res.File);
+                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
+                    download(res.File, res.FileName, "application/pdf"); // Download
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+    </script>
+}

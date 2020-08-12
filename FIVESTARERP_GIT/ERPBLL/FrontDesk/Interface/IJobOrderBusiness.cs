@@ -1,4 +1,5 @@
-﻿using ERPBO.FrontDesk.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPBO.Production.DTOModel;
 using System;
@@ -11,7 +12,7 @@ namespace ERPBLL.FrontDesk.Interface
 {
     public interface IJobOrderBusiness
     {
-        IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode,string iMEI, string iMEI2, long orgId,long branchId);
+        IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode,string iMEI, string iMEI2, long orgId,long branchId, string fromDate, string toDate);
         JobOrder GetJobOrderById(long jobOrderId, long orgId);
         bool SaveJobOrder(JobOrderDTO jobOrder, List<JobOrderAccessoriesDTO> jobOrderAccessories, List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId,long branchId);
         bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId,long branchId);
@@ -44,7 +45,9 @@ namespace ERPBLL.FrontDesk.Interface
         JobOrder GetReferencesNumberByIMEI2(string imei2, long orgId, long branchId);
         JobOrderDTO GetJobOrderReceipt(long jobOrderId, long userId, long orgId, long branchId);
         bool IsIMEIExistWithRunningJobOrder(long jobOrderId,string iMEI1, long orgId, long branchId);
+        bool IsIMEI2ExistWithRunningJobOrder(long jobOrderId, string iMEI2, long orgId, long branchId);
         JobOrder GetAllJobOrderById(long branchId, long orgId);
-
+        IEnumerable<JobOrderDTO> GetJobCreateReceipt(long jobOrderId, long orgId, long branchId);
+        ExecutionStateWithText SaveJobOrderWithReport(JobOrderDTO jobOrder, List<JobOrderAccessoriesDTO> jobOrderAccessories, List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId, long branchId);
     }
 }

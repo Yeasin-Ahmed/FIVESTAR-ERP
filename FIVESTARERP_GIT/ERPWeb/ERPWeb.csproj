@@ -258,6 +258,17 @@
     <Content Include="Reports\DataSets\ProductionDS.xss">
       <DependentUpon>ProductionDS.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\ServicesDS.xsc">
+      <DependentUpon>ServicesDS.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\ServicesDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ServicesDS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\DataSets\ServicesDS.xss">
+      <DependentUpon>ServicesDS.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\download.js" />
@@ -331,6 +342,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProductionDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\ServicesDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServicesDS.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -579,6 +595,16 @@
     <Content Include="Views\Inventory\GetIQCList.cshtml" />
     <Content Include="Views\Inventory\_GetWarehousePartialList.cshtml" />
     <Content Include="Views\FrontDesk\GetPartsUsedStock.cshtml" />
+    <Content Include="Views\FrontDesk\_GetTSWorkDetails.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobOrderListReport.cshtml" />
+    <Content Include="Views\Configuration\GetCurrentStockReport.cshtml" />
+    <Content Include="Views\Configuration\_GetCurrentStockList.cshtml" />
+    <Content Include="Views\FrontDesk\ReturnParts.cshtml" />
+    <Content Include="Views\FrontDesk\_ReturnParts.cshtml" />
+    <Content Include="Views\FrontDesk\GetUsedParts.cshtml" />
+    <Content Include="Views\FrontDesk\_GetUsedParts.cshtml" />
+    <Content Include="Views\FrontDesk\GetSellsReport.cshtml" />
+    <Content Include="Views\FrontDesk\_GetSellsReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -602,9 +628,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc" />
+    <Content Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrder.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
@@ -619,6 +651,31 @@
       <Project>{c075def3-a65b-4b86-90fa-dd698b139db4}</Project>
       <Name>ERPDAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\rptSellsReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -15,32 +15,36 @@
                     <th class="hide"></th>
                     <th style="vertical-align:middle">#SL</th>
                     <th style="vertical-align:middle">JobOrder</th>
+                    <th style="vertical-align:middle">Model</th>
+                    <th style="vertical-align:middle">Type</th>
                     <th style="vertical-align:middle">IMEI1</th>
                     <th style="vertical-align:middle">IMEI2</th>
+                    <th style="vertical-align:middle">Color</th>
+                    <th style="vertical-align:middle">Symptoms</th>
+                    <th style="vertical-align:middle">Accessories</th>
+                    <th style="vertical-align:middle">JobType</th>
                     <th style="vertical-align:middle">Customer Name</th>
                     <th style="vertical-align:middle">Mobile No</th>
                     <th style="vertical-align:middle">Customer Type</th>
                     @*<th style="vertical-align:middle">Address</th>*@
-                    <th style="vertical-align:middle">Type</th>
-                    <th style="vertical-align:middle">Model</th>
-                    <th style="vertical-align:middle">Color</th>
-                    <th style="vertical-align:middle">Accessories</th>
-                    <th style="vertical-align:middle">Symptoms</th>
-                    <th style="vertical-align:middle">JobType</th>
                     <th style="vertical-align:middle">Warrenty Paper</th>
                     <th style="vertical-align:middle">WarrantyDate</th>
                     <th style="vertical-align:middle">JobStatus</th>
-                    <th style="vertical-align:middle">WorkStatus</th>
+                    <th style="vertical-align:middle">TS WorkStatus</th>
                     <th style="vertical-align:middle">Ref.Number</th>
                     <th style="vertical-align:middle">TSName</th>
+                    @*<th style="vertical-align:middle">TSWork</th>*@
                     @*<th style="vertical-align:middle">Remarks</th>*@
+                    <th style="vertical-align:middle">CourierNumber</th>
+                    <th style="vertical-align:middle">CourierName</th>
+                    <th style="vertical-align:middle">ApproxBill</th>
                     <th style="vertical-align:middle">Issued by</th>
                     <th style="vertical-align:middle">Close by</th>
                     <th style="vertical-align:middle">CreateDate</th>
                     <th style="vertical-align:middle">RepairDate</th>
                     <th style="vertical-align:middle">CloseDate</th>
-                    <th style="vertical-align:middle">Invoice</th>
-                    <th style="vertical-align:middle">Action</th>
+                    <th style="vertical-align:middle" class="action">Invoice</th>
+                    <th style="vertical-align:middle" class="action">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,18 +62,19 @@
                     <td class="hide">@item.JodOrderId</td>
                     <td class="text-center text-bold">@sl</td>
                     <td class="text-center text-bold">@item.JobOrderCode</td>
+
+                    <td>@item.ModelName</td>
+                    <td>@item.Type</td>
                     <td>@item.IMEI</td>
                     <td>@item.IMEI2</td>
+                    <td>@item.ModelColor</td>
+                    <td>@item.Problems</td>
+                    <td class="hiddendots">@item.AccessoriesNames</td>
+                    <td>@item.JobOrderType</td>
                     <td>@item.CustomerName</td>
                     <td>@item.MobileNo</td>
                     <td>@item.CustomerType</td>
                     @*<td>@item.Address</td>*@
-                    <td>@item.Type</td>
-                    <td>@item.ModelName</td>
-                    <td>@item.ModelColor</td>
-                    <td class="hiddendots">@item.AccessoriesNames</td>
-                    <td>@item.Problems</td>
-                    <td>@item.JobOrderType</td>
                     @*<td class="text-center" data-val="@item.JobOrderType">
             <span class="@badge1">@item.JobOrderType</span>
         </td>*@
@@ -81,14 +86,27 @@
                     <td>@item.TsRepairStatus</td>
                     <td>@item.ReferenceNumber</td>
                     <td>@item.TSName</td>
+                    <td>@item.CourierNumber</td>
+                    <td>@item.CourierName</td>
+                    <td>@item.ApproxBill</td>
+                    @*<td>
+            @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone)
+            {
+                <a href="#" class="data-item-tsWork" data-item-tsWork="@item.JodOrderId" title="View TS Work">
+                    TSWork
+                </a>
+            }
+        </td>*@
                     @*<td>@item.Remarks</td>*@
                     <td class="text-center text-bold">@item.EntryUser</td>
                     <td class="text-center text-bold">@item.CloseUser</td>
                     <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                     <td>@repairDate</td>
                     <td>@closeDate</td>
-                    <td>@item.InvoiceCode</td>
-                    <td class="text-center">
+                    <td class="action">
+                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2 " style="color:blue" id="btnReport" title="Download Invoice">@item.InvoiceCode</a>
+                    </td>
+                    <td class="text-center action">
                         <a href="#" class="btn btn-sm btn-info data-item-details" data-item-details="@item.JodOrderId" title="View Job Order">
                             <i class="fas fa-eye"></i>
                         </a>
@@ -97,10 +115,10 @@
                         {
                             <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit"><i class="fas fa-edit"></i> </a>
                         }
-                        @if (item.InvoiceCode != null)
-                        {
-                            <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn btn-sm btn-outline-danger data-report-item2" id="btnReport" title="Invoice Report"><i class="fas fa-file-pdf"></i></a>
-                        }
+                        @*@if (item.InvoiceCode != null)
+            {
+                <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn btn-sm btn-outline-danger data-report-item2" id="btnReport" title="Invoice Report"><i class="fas fa-file-pdf"></i></a>
+            }*@
                     </td>
                 </tr>
                 }
