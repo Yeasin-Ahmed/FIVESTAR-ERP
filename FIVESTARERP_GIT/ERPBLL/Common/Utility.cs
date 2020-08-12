@@ -50,6 +50,16 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+
+        public static IEnumerable<Dropdown> ListOfCustomerType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=CustomerType.WalkInCustomer,value=CustomerType.WalkInCustomer},
+                new Dropdown(){text=CustomerType.Dealer,value=CustomerType.Dealer}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfStockType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>

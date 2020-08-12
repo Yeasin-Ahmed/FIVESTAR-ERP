@@ -145,5 +145,9 @@ namespace ERPBLL.Common
         public static readonly string MiniStock = "MiniStock";
         public static readonly string Packaging = "Packaging";
     }
-
+    public class CustomerType
+    {
+        public static readonly string WalkInCustomer = "Walk In Customer";
+        public static readonly string Dealer = "Dealer";
+    }
 }
