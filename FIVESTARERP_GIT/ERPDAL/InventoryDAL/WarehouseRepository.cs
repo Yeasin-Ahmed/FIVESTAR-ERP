@@ -60,4 +60,34 @@ namespace ERPDAL.InventoryDAL
     {
         public IQCRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base (inventoryUnitOfWork) { }
     }
+
+    public class IQCItemReqInfoListRepository : InventoryBaseRepository<IQCItemReqInfoList>
+    {
+        public IQCItemReqInfoListRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base (inventoryUnitOfWork)
+        {
+
+        }
+    }
+
+    public class IQCItemReqDetailListRepository : InventoryBaseRepository<IQCItemReqDetailList>
+    {
+        public IQCItemReqDetailListRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork)
+        {
+
+        }
+    }
+    public class IQCStockInfoRepository : InventoryBaseRepository<IQCStockInfo>
+    {
+        public IQCStockInfoRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork)
+        {
+
+        }
+    }
+    public class IQCStockDetailRepository : InventoryBaseRepository<IQCStockDetail>
+    {
+        public IQCStockDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork)
+        {
+
+        }
+    }
 }

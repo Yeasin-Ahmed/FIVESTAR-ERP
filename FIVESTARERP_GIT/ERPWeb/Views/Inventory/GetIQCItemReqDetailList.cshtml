@@ -1,0 +1,102 @@
+﻿@model ERPBO.Inventory.ViewModels.IQCItemReqInfoListViewModel
+@{
+    int sl = 0;
+    string badge = Model.StateStatus == "Pending" ? "badge badge-warning" : (Model.StateStatus == "Approved" ? "badge badge-primary" : (Model.StateStatus == "Accepted" ? "badge badge-success" : (Model.StateStatus == "Rechecked" ? "badge badge-secondary" : "badge badge-danger")));
+
+}
+<div class="row text-sm">
+    <div class="col-md-12">
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="hdfRequisitionId" value="@Model.IQCItemReqInfoId" />
+        <input type="hidden" id="hdfRequisitionCode" value="@Model.IQCReqCode" />
+        <input type="hidden" id="hdfModel" value="@Model.DescriptionId" />
+        <input type="hidden" id="hdfWarehouse" value="@Model.WarehouseId" />
+        <input type="hidden" id="hdfIQC" value="@Model.IQCId" />
+        <input type="hidden" id="hdfSupplier" value="@Model.SupplierId" />
+        <input type="hidden" id="hdfRemarks" value="@Model.Remarks" />
+        <input type="hidden" id="hdfStateStatus" value="@Model.StateStatus" />
+        <table class="table table-bordered table-responsive-lg table-sm">
+            <tbody>
+                <tr>
+                    <td class="alert-secondary" style="width:15%">IQCReq Code</td>
+                    <td class="text-bold" style="width:20%; background-color:#e1dada">@Model.IQCReqCode</td>
+
+                    <td class="alert-secondary" style="width:10%">IQC Name</td>
+                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.IQCName</td>
+
+                    <td class="alert-secondary" style="width:10%">Model</td>
+                    <td class="text-bold" style="width:10%; background-color:#e1dada">@Model.ModelName</td>
+
+                    <td class="alert-secondary" style="width:10%">Status</td>
+                    <td class="text-bold" style="width:12%; background-color:#e1dada">
+                        <span class="@badge">
+                            @Model.StateStatus
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="alert-secondary" style="width:15%">Warehouse</td>
+                    <td class="text-bold" style="width:20%; background-color:#e1dada">@Model.Warehouse</td>
+
+                    <td class="alert-secondary" style="width:10%">REQ By</td>
+                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
+
+                    <td class="alert-secondary" style="width:10%">Entry Date</td>
+                    <td class="text-bold" colspan="3" style=" background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row text-sm">
+    <div class="col-md-12">
+        <table class="table table-responsive-lg table-bordered table-sm tblDataDetail">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="vertical-align:middle">#SL</th>
+                    <th style="vertical-align:middle">ItemType Name</th>
+                    <th style="vertical-align:middle">Item Name</th>
+                    <th style="vertical-align:middle">Unit</th>
+                    <th style="vertical-align:middle">Request Quantity</th>
+                    <th style="vertical-align:middle">Issue Quantity</th>
+                    <th style="vertical-align:middle">Entry User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.IQCItemReqDetails)
+                {
+                    sl = sl + 1;
+                    <tr>
+                        <td class="text-center"><b>@sl</b></td>
+                        <td class="hide">@item.IQCItemReqDetailId</td>
+                        <td class="hide">@item.ItemTypeId</td>
+                        <td class="hide">@item.ItemId</td>
+                        <td class="hide">@item.UnitId</td>
+                        <td>@item.ItemType</td>
+                        <td>@item.Item</td>
+                        <td class="text-center">@item.Unit</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-center">@item.IssueQty</td>
+                        <td class="text-center">@item.EntryUser</td>
+                    </tr>
+                }
+                @if (Model.IQCItemReqDetails.Count() == 0)
+                {
+                    <tr class="text-center text-bold">
+                        <td colspan="14">No data found in the table</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row float-right">
+    @if (Model.StateStatus == "Approved")
+    {
+        <div class="col-md-12" style="float:right">
+            <button type="button" class="btn-outline-primary btn-sm btnReacive" id="btnReacive"><i class="fas fa-paper-plane"></i>Receive</button>
+        </div>
+
+    }
+</div>
+

@@ -1,0 +1,485 @@
+﻿@model IEnumerable<ERPBO.Inventory.ViewModels.IQCItemReqInfoListViewModel>
+@{
+    ViewBag.Title = "IQC Item Req Info";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    string tab = (string)ViewBag.tab == null ? "" : ViewBag.tab;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-IQCItemReqInfoList-tab" data-toggle="pill" href="#custom-tabs-two-IQCItemReqInfoList" role="tab" aria-controls="custom-tabs-two-IQCItemReqInfoList" aria-selected="true">IQC Item Request Info List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-IQCStockList-tab" data-toggle="pill" href="#custom-tabs-two-IQCStockList" role="tab" aria-controls="custom-tabs-two-IQCStockList" aria-selected="true">IQC Stock List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+
+                    <div class="tab-pane fade show active" id="custom-tabs-two-IQCItemReqInfoList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCItemReqInfoList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @if (privilege.Detail)
+                                                {
+                                                    <a href="/Inventory/GetIQCItemReqDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>
+                                                }
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IQC Item Request Info List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @if (privilege.Add)
+                                                {
+                                                    <a href="/Inventory/CreateIQCReq" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Create IQC Req</a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnResetForIQCItemReqInfo" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">State Status</label>
+                                                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            @*<div class="col-md-2">
+                                    <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                </div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetIQCReqInfoList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-IQCStockList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCStockList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @*@if (privilege.Detail)
+                                                {*@
+                                                    <a href="/Inventory/GetAllIQCStockDetailList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>
+                                                @*}*@
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IQC Stock Info List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnResetForIQCStockInfo" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseForIQCStockInfo" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseForIQCStockInfo", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameForIQCStockInfo" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelNameForIQCStockInfo", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                                                <select id="ddlItemType" class="form-control form-control-sm">
+                                                    <option value="">--Select Item Type--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                                <select id="ddlItem" class="form-control form-control-sm">
+                                                    <option value="">--Select Item--</option>
+                                                </select>
+                                                <span class="error hide duplicate-itemName font-weight-bold">The itemName is already exist!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                            @{Html.RenderAction("GetAllIQCStockInfoList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalIQCReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">IQC Item Request Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelContainer1">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtInQuantity = $("#txtInQuantity");
+        var txtRemarks = $("#txtRemarks");
+        var unitName = $("#unitName");
+        var txtLessOrEq = $("#txtLessOrEq");
+        var ddlModelName = $("#ddlModelName");
+        var pageNo = 1;
+
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            if ('@tab' != null && '@tab' != '') {
+                $("#custom-tabs-two-IQCStockList-tab").trigger('click');
+            }
+        })
+
+        $(document).on('change', '.date-datePicker', function (e) {
+            var dateval = $(this).val();
+            console.log(dateval);
+        })
+
+        //Modal
+        var hdfRowIndex = $("#hdfRowIndex");
+        var hdfInfoId = $("#hdfInfoId");
+
+        function OpenModal() {
+            $("#modelDataContainer").empty();
+            hdfInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalIQCReqDetails").modal("show");
+        }
+
+        $(document).on("click", ".data-details", function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-details");
+            var data = {
+                reqInfoId: TryParseInt(id, 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+
+            console.log(data);
+            //return;
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCItemReqDetailList', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfInfoId.val(data.reqInfoId);
+                    hdfRowIndex.val(idx)
+                    $("#modelContainer1").empty();
+                    $("#modelContainer1").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        ddlWarehouse.change(function () {
+            LoadDataTable();
+        })
+
+        ddlModelName.change(function () {
+            LoadDataTable();
+        })
+
+        ddlStateStatus.change(function () { LoadDataTable(); })
+
+        function LoadDataTable() {
+            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), /*ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(),*/stateStatus: ddlStateStatus.val(), page: pageNo };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCReqInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Warehouse');
+                if ($(this).parent().parents('div').hasClass('IQCItemReqInfo')) {
+                    pageNo = $(this).attr('data-page-no');
+                    //console.log('Page No');
+                    //console.log(!isNaN(pageNo));
+                    LoadDataTable();
+                }
+            }
+        })
+        $("#btnResetForIQCItemReqInfo").click(function (e) {
+            e.preventDefault();
+            ddlWarehouse.val("");
+            ddlWarehouse.trigger("change");
+            ddlModelName.val('');
+            ddlModelName.trigger("change");
+            ddlStateStatus.val('');
+            ddlStateStatus.trigger("change");
+            $("#tblIQCItemReqInfoData tbody").empty();
+        })
+        var hdfRequisitionId = $("#hdfRequisitionId");
+        var hdfRequisitionCode = $("#hdfRequisitionCode");
+        var txtQty = $("#txtQty");
+        var hdfWarehouse = $("#hdfWarehouse");
+        var hdfModel = $("#hdfModel");
+        var hdfIQC = $("#hdfIQC");
+        var hdfSupplier = $("#hdfSupplier");
+        var hdfRemarks = $("#hdfRemarks");
+        var hdfStateStatus = $("#hdfStateStatus");
+
+        function validateSubmit() {
+            var isValid = true;
+            if (ddlAction.val() === "") {
+                isValid = false;
+                bootbox.alert("Please select a Action before submit");
+            }
+            if ($(".tblDataDetail tbody tr").length == 0) {
+                isValid = false;
+                bootbox.alert("Requistion details not found");
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".btnReacive", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange(hdfInfoId.val(), hdfRowIndex.val(), reqStatus.accepted);
+        })
+
+        function fnRequisitionStateChange(id, index, status) {
+            if (id > 0) {
+                var data = JSON.stringify({ reqId: id, status: status });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveIQCStockInStatus', data, getToken())).then(function (res, status) {
+                    if (status == "success" && res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalIQCReqDetails").modal("toggle").toggle("fast");
+                        hdfInfoId.val('0');
+                        hdfRowIndex.val("");
+                        removeTableRow("#tblIQCItemReqInfoData tbody", index);
+                        setTimeout(function () {
+                            LoadDataTable();
+                        }, 1500);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    $(".toastrDefaultError").trigger('click');
+                })
+            }
+        }
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+    </script>
+
+    <script type="text/javascript">
+        var ddlWarehouseForIQCStockInfo = $("#ddlWarehouseForIQCStockInfo");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtInQuantity = $("#txtInQuantity");
+        var txtRemarks = $("#txtRemarks");
+        var unitName = $("#unitName");
+        var txtLessOrEq = $("#txtLessOrEq");
+        var ddlModelNameForIQCStockInfo = $("#ddlModelNameForIQCStockInfo");
+        var page = 1;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            @*if ('@tab' != null && '@tab' != '') {
+                $("#custom-tabs-two-IQCItemReqInfoList-tab").trigger('click');
+            }*@
+        })
+
+        $(document).on('change', '.date-datePicker', function (e) {
+            var dateval = $(this).val();
+            console.log(dateval);
+        })
+
+        //casced dropdown load for itemtype
+        ddlWarehouseForIQCStockInfo.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouseForIQCStockInfo.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouseForIQCStockInfo.val() }));
+            }
+            LoadDataTableForIQCStockInfo();
+        })
+
+        //casced dropdown load for item
+        ddlItemType.change(function () {
+            $("#unitName").text('');
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTableForIQCStockInfo();
+        })
+
+        ddlItem.change(function () {
+            LoadDataTableForIQCStockInfo();
+        })
+
+        ddlModelNameForIQCStockInfo.change(function () {
+            LoadDataTableForIQCStockInfo();
+        })
+
+        txtLessOrEq.keyup(function () {
+            LoadDataTableForIQCStockInfo();
+        })
+
+        function LoadDataTableForIQCStockInfo() {
+            var data = { /*flag: "search"*/warehouseId: TryParseInt(ddlWarehouseForIQCStockInfo.val(), 0), modelId: TryParseInt(ddlModelNameForIQCStockInfo.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(), page: page };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetAllIQCStockInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            page = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('IQCStockInfoPage')) {
+                    page = $(this).attr('data-page-no');
+                    //console.log('Page No');
+                    //console.log(!isNaN(pageNo));
+                    LoadDataTableForIQCStockInfo();
+                }
+            }
+        })
+        $("#btnResetForIQCStockInfo").click(function (e) {
+            e.preventDefault();
+            ddlItem.val('');
+            ddlItem.trigger("change");
+            ddlWarehouseForIQCStockInfo.val("");
+            ddlWarehouseForIQCStockInfo.trigger("change");
+            ddlModelNameForIQCStockInfo.val('');
+            ddlModelNameForIQCStockInfo.trigger("change");
+            $("#tblIQCStockInfo tbody").empty();
+            txtLessOrEq.val("");
+        })
+
+    </script>
+}

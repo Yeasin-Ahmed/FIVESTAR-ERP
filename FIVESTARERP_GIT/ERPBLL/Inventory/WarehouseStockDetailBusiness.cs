@@ -120,10 +120,12 @@ namespace ERPBLL.Inventory
         {
             List<WarehouseStockDetail> warehouseStockDetails = new List<WarehouseStockDetail>();
             bool isValidate = true;
+            warehouseStockDetailDTOs = warehouseStockDetailDTOs.Where(s => s.Quantity > 0).ToList();
             var items = warehouseStockDetailDTOs.Select(s => s.ItemId).ToList();
             var des = warehouseStockDetailDTOs.Select(s => s.DescriptionId).FirstOrDefault();
             var stock = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(orgId).Where(s => items.Contains(s.ItemId.Value) && des == s.DescriptionId).Select(s => s.ItemId).ToList();
 
+           
             if (items.Count() == stock.Count())
             {
                 foreach (var item in warehouseStockDetailDTOs)
@@ -159,6 +161,7 @@ namespace ERPBLL.Inventory
                     }
                 }
             }
+           
             if (isValidate == true)
             {
                 warehouseStockDetailRepository.InsertAll(warehouseStockDetails);
@@ -341,5 +344,6 @@ Left Join [ControlPanel].dbo.tblApplicationUsers au on wsd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
+
     }
 }

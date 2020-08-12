@@ -153,8 +153,13 @@
     <Compile Include="FrontDesk\TsStockReturnDetailsBusiness.cs" />
     <Compile Include="FrontDesk\TsStockReturnInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IIQCBusiness.cs" />
+    <Compile Include="Inventory\Interface\IIQCItemReqDetailList.cs" />
+    <Compile Include="Inventory\Interface\IIQCItemReqInfoList.cs" />
+    <Compile Include="Inventory\Interface\IIQCStockDetailBusiness.cs" />
+    <Compile Include="Inventory\Interface\IIQCStockInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationDetailBusiness.cs" />
+    <Compile Include="Inventory\IQCStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IRepairStockInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemTypeBusiness.cs" />
@@ -163,6 +168,9 @@
     <Compile Include="Inventory\Interface\IWarehouseStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseStockInfoBusiness.cs" />
     <Compile Include="Inventory\IQCBusiness.cs" />
+    <Compile Include="Inventory\IQCItemReqDetailListBusiness.cs" />
+    <Compile Include="Inventory\IQCItemReqInfoListBusiness.cs" />
+    <Compile Include="Inventory\IQCStockInfoBusiness.cs" />
     <Compile Include="Inventory\ItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\ItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\RepairStockDetailBusiness.cs" />

@@ -21,6 +21,11 @@ namespace ERPBLL.Common
         public static readonly string Current = "Current";
         public static readonly string Void = "Void";
     }
+    public class StockType
+    {
+        public static readonly string FreshStock = "FreshStock";
+        public static readonly string FaultyStock = "FaultyStock";
+    }
     public class StockStatus
     {
         public static readonly string StockIn = "Stock-In";

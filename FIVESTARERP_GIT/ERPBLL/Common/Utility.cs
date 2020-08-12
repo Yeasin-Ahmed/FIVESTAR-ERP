@@ -50,6 +50,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfStockType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=StockType.FreshStock,value=StockType.FreshStock},
+                new Dropdown(){text=StockType.FaultyStock,value=StockType.FaultyStock},
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfStockStatus()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>

@@ -49,6 +49,10 @@ namespace ERPWeb.Controllers
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
         private readonly ISupplierBusiness _supplierBusiness;
         private readonly IIQCBusiness _iQCBusiness;
+        private readonly IIQCItemReqDetailList _iQCItemReqDetailList;
+        private readonly IIQCItemReqInfoList _iQCItemReqInfoList;
+        private readonly IIQCStockDetailBusiness _iQCStockDetailBusiness;
+        private readonly IIQCStockInfoBusiness _iQCStockInfoBusiness;
         #endregion
 
         #region Production
@@ -58,7 +62,7 @@ namespace ERPWeb.Controllers
         #endregion
 
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness)
         {
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -80,6 +84,10 @@ namespace ERPWeb.Controllers
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             this._supplierBusiness = supplierBusiness;
             this._iQCBusiness = iQCBusiness;
+            this._iQCItemReqDetailList = iQCItemReqDetailList;
+            this._iQCItemReqInfoList = iQCItemReqInfoList;
+            this._iQCStockDetailBusiness = iQCStockDetailBusiness;
+            this._iQCStockInfoBusiness = iQCStockInfoBusiness;
 
             #region Production
             this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
@@ -137,6 +145,7 @@ namespace ERPWeb.Controllers
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
 
             List<WarehouseViewModel> viewModel = new List<WarehouseViewModel>();
+
             AutoMapper.Mapper.Map(dto, viewModel);
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseList");
             return View(viewModel);
@@ -316,58 +325,86 @@ namespace ERPWeb.Controllers
 
         #region Warehouse Stock Info -Table
         [HttpGet]
-        public ActionResult GetWarehouseStockInfoList()
+        public ActionResult GetWarehouseStockInfoList(string tab, string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
         {
-            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            if (string.IsNullOrEmpty(flag))
             {
-                Text = ware.WarehouseName,
-                Value = ware.Id.ToString()
-            }).ToList();
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+                ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Select(s => new SelectListItem
+                {
+                    Text = s.text,
+                    Value = s.value
+                }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
+                ViewBag.tab = tab;
+            }
+            else
+            {
+                var dto = _warehouseStockInfoBusiness.GetWarehouseStockInfoLists(warehouseId, modelId, itemTypeId, itemId, lessOrEq, User.OrgId).OrderByDescending(s => s.StockInfoId).ToList();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+                dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+                //ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                //dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //-----------------//
 
-            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
+                List<WarehouseStockInfoViewModel> warehouseStockInfoViews = new List<WarehouseStockInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, warehouseStockInfoViews);
+                return PartialView("_WarehouseStockInfoList", warehouseStockInfoViews);
+            }
+
             return View();
         }
+        #region Comment Old GetWarehouseStockInfoPartialList
+        //[HttpGet]
+        //public ActionResult GetWarehouseStockInfoPartialList(string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
+        //{
+        //    var dto = _warehouseStockInfoBusiness.GetWarehouseStockInfoLists(warehouseId, modelId, itemTypeId, itemId, lessOrEq,  User.OrgId).OrderByDescending(s => s.StockInfoId).ToList();
 
-        [HttpGet]
-        public ActionResult GetWarehouseStockInfoPartialList(long? WarehouseId, long? modelId, long? ItemTypeId, long? ItemId, string lessOrEq, int page = 1)
-        {
-            IEnumerable<WarehouseStockInfoDTO> dto = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId).Select(info => new WarehouseStockInfoDTO
-            {
-                StockInfoId = info.StockInfoId,
-                WarehouseId = info.WarehouseId,
-                DescriptionId = info.DescriptionId,
-                Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, User.OrgId).DescriptionName),
-                ItemTypeId = info.ItemTypeId,
-                ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
-                ItemId = info.ItemId,
-                Item = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, User.OrgId).ItemName),
-                UnitId = info.UnitId,
-                Unit = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, User.OrgId).UnitSymbol),
-                StockInQty = info.StockInQty,
-                StockOutQty = info.StockOutQty,
-                Remarks = info.Remarks,
-                OrganizationId = info.OrganizationId
-            }).AsEnumerable();
+        //    IEnumerable<WarehouseStockInfoDTO> dto = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(User.OrgId).Select(info => new WarehouseStockInfoDTO
+        //    {
+        //        StockInfoId = info.StockInfoId,
+        //        WarehouseId = info.WarehouseId,
+        //        DescriptionId = info.DescriptionId,
+        //        Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+        //        ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, User.OrgId).DescriptionName),
+        //        ItemTypeId = info.ItemTypeId,
+        //        ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
+        //        ItemId = info.ItemId,
+        //        Item = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, User.OrgId).ItemName),
+        //        UnitId = info.UnitId,
+        //        Unit = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, User.OrgId).UnitSymbol),
+        //        StockInQty = info.StockInQty,
+        //        StockOutQty = info.StockOutQty,
+        //        Remarks = info.Remarks,
+        //        OrganizationId = info.OrganizationId
+        //    }).AsEnumerable();
 
-            dto = dto.Where(ws =>
-            (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId)
-            && (modelId == null || modelId == 0 || ws.DescriptionId == modelId)
-            && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId)
-            && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)
-            && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
-            ).ToList();
+        //    dto = dto.Where(ws =>
+        //    (WarehouseId == null || WarehouseId == 0 || ws.WarehouseId == WarehouseId)
+        //    && (modelId == null || modelId == 0 || ws.DescriptionId == modelId)
+        //    && (ItemTypeId == null || ItemTypeId == 0 || ws.ItemTypeId == ItemTypeId)
+        //    && (ItemId == null || ItemId == 0 || ws.ItemId == ItemId)
+        //    && (string.IsNullOrEmpty(lessOrEq) || (ws.StockInQty - ws.StockOutQty) <= Convert.ToInt32(lessOrEq))
+        //    ).ToList();
 
-            // Pagination //
-            ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
-            dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            //-----------------//
+        //    // Pagination //
+        //    ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+        //    dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+        //    //ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+        //    //dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        //    //-----------------//
 
-            List<WarehouseStockInfoViewModel> warehouseStockInfoViews = new List<WarehouseStockInfoViewModel>();
-            AutoMapper.Mapper.Map(dto, warehouseStockInfoViews);
-            return PartialView("_WarehouseStockInfoList", warehouseStockInfoViews);
-        }
+        //    List<WarehouseStockInfoViewModel> warehouseStockInfoViews = new List<WarehouseStockInfoViewModel>();
+        //    AutoMapper.Mapper.Map(dto, warehouseStockInfoViews);
+        //    return PartialView("_WarehouseStockInfoList", warehouseStockInfoViews);
+        //}
+        #endregion
 
         public ActionResult CreateStock()
         {
@@ -466,9 +503,9 @@ namespace ERPWeb.Controllers
         }
 
         // Used By  GetReqInfoList
-        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType,long? reqInfoId, int page = 1)
+        public ActionResult GetReqInfoParitalList(string reqCode, long? warehouseId, string status, long? line, long? modelId, string fromDate, string toDate, string requisitionType, long? reqInfoId, int page = 1)
         {
-            var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(line, 0,0,0, warehouseId, modelId, reqCode, requisitionType, string.Empty, fromDate, toDate, status, string.Empty, reqInfoId, User.OrgId);
+            var dto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(line, 0, 0, 0, warehouseId, modelId, reqCode, requisitionType, string.Empty, fromDate, toDate, status, string.Empty, reqInfoId, User.OrgId);
 
             //var descriptionData = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
             //IEnumerable<RequsitionInfoDTO> dto = _requsitionInfoBusiness.GetAllReqInfoByOrgId(User.OrgId).Where(req =>
@@ -985,7 +1022,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Item Preparation
-        public ActionResult GetItemPreparation(string flag, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? id,string type, int page = 1)
+        public ActionResult GetItemPreparation(string flag, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? id, string type, int page = 1)
         {
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemPreparation");
             if (string.IsNullOrEmpty(flag))
@@ -1019,7 +1056,7 @@ namespace ERPWeb.Controllers
                     (warehouseId == null || warehouseId <= 0 || warehouseId == i.WarehouseId) &&
                     (itemTypeId == null || itemTypeId <= 0 || itemTypeId == i.ItemTypeId) &&
                     (itemId == null || itemId <= 0 || itemId == i.ItemId) &&
-                    (string.IsNullOrEmpty(type) || type.Trim() =="" || type == i.PreparationType)
+                    (string.IsNullOrEmpty(type) || type.Trim() == "" || type == i.PreparationType)
                 ).Select(i => new ItemPreparationInfoDTO
                 {
                     PreparationInfoId = i.PreparationInfoId,
@@ -1344,13 +1381,13 @@ namespace ERPWeb.Controllers
 
             IEnumerable<ItemTypeViewModel> viewModels = new List<ItemTypeViewModel>();
             AutoMapper.Mapper.Map(dto, viewModels);
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemTypeList");
+            //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemTypeList");
             return PartialView(viewModels);
         }
 
         public ActionResult _GetAllUnitPartialList()
         {
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetAllUnitList");
+            //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetAllUnitList");
             IEnumerable<UnitDomainDTO> unitDomains = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new UnitDomainDTO
             {
                 UnitId = unit.UnitId,
@@ -1368,7 +1405,7 @@ namespace ERPWeb.Controllers
 
         public ActionResult _GetItemPartialList()
         {
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemList");
+            //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemList");
             ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
 
             ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
@@ -1395,8 +1432,8 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region IQC
-
+        #region IQC Item
+        #region Create IQC
         [HttpGet]
         public ActionResult GetIQCList()
         {
@@ -1413,7 +1450,7 @@ namespace ERPWeb.Controllers
 
             List<IQCViewModel> viewModel = new List<IQCViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
-            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetIQCList");
+            //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetIQCList");
 
             return PartialView(viewModel);
         }
@@ -1424,7 +1461,7 @@ namespace ERPWeb.Controllers
             bool isSuccess = false;
             var pre = UserPrivilege("Inventory", "GetIQCList");
             var permission = (viewModel.Id == 0 && pre.Add) || (viewModel.Id > 0 && pre.Edit);
-            if(ModelState.IsValid && permission)
+            if (ModelState.IsValid && permission)
             {
                 try
                 {
@@ -1441,9 +1478,358 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
+        #region CreateIQCItemRequest
+        public ActionResult CreateIQCReq()
+        {
+            ViewBag.ddlIQC = _iQCBusiness.GetAllIQCByOrgId(User.OrgId).Select(iqc => new SelectListItem { Text = iqc.IQCName, Value = iqc.Id.ToString() }).ToList();
+
+            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            {
+                Text = ware.WarehouseName,
+                Value = ware.Id.ToString()
+            }).ToList();
+
+            ViewBag.ddlModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
+            //ViewBag.UserPrivilege = UserPrivilege("Inventory", "CreateIQCReq");
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetIQCItemReqInfoList(string tab)
+        {
+            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            {
+                Text = ware.WarehouseName,
+                Value = ware.Id.ToString()
+            }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Select(s => new SelectListItem
+            {
+                Text = s.text,
+                Value = s.value
+            }).ToList();
+            ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetIQCItemReqInfoList");
+            ViewBag.tab = tab;
+            return View();
+        }
+        public ActionResult SaveIQCReq(List<IQCItemReqDetailListViewModel> models)
+        {
+            bool isSuccess = false;
+            var pre = UserPrivilege("Inventory", "GetIQCItemReqInfoList");
+            var permission = ((pre.Add) || (pre.Edit));
+            if (ModelState.IsValid && models.Count > 0 && permission)
+            {
+                try
+                {
+                    List<IQCItemReqDetailListDTO> dtos = new List<IQCItemReqDetailListDTO>();
+                    AutoMapper.Mapper.Map(models, dtos);
+                    isSuccess = _iQCItemReqDetailList.SaveIQCItemReq(dtos, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpGet]
+        public ActionResult GetIQCReqInfoList(long? WarehouseId, long? modelId, string stateStatus, int page = 1)
+        {
+            var dto = _iQCItemReqInfoList.GetIQCItemReqInfoLists(WarehouseId, modelId, stateStatus, User.OrgId).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+            #region Comment Old Code
+            // IEnumerable<IQCItemReqInfoListDTO> dto = _iQCItemReqInfoList.GetIQCItemReqInfoListByOrgId(User.OrgId).Select(info => new IQCItemReqInfoListDTO
+            // {
+            //     IQCId = info.IQCId,
+            //     IQCItemReqInfoId = info.IQCItemReqInfoId,
+            //     IQCName = (_iQCBusiness.GetIQCOneByOrgId(info.IQCId.Value, User.OrgId).IQCName),
+            //     StateStatus = info.StateStatus,
+            //     WarehouseId = info.WarehouseId,
+            //     DescriptionId = info.DescriptionId,
+            //     Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+            //     ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, User.OrgId).DescriptionName),
+            //     SupplierId = info.SupplierId,
+            //     Supplier = (_supplierBusiness.GetSupplierById(info.SupplierId.Value, User.OrgId).SupplierName),
+            //     Remarks = info.Remarks,
+            //     OrganizationId = info.OrganizationId
+            // }).OrderByDescending(s=> s.IQCItemReqInfoId).ToList();
+
+            // dto = dto.Where(iqc =>
+            //(WarehouseId == null || WarehouseId == 0 || iqc.WarehouseId == WarehouseId)
+            //&& (modelId == null || modelId == 0 || iqc.DescriptionId == modelId)
+            //&& (stateStatus == null || stateStatus == "" || iqc.StateStatus == stateStatus)
+            //).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+            #endregion
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+            dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+
+            List<IQCItemReqInfoListViewModel> iQCItemReqInfoListViewModels = new List<IQCItemReqInfoListViewModel>();
+            AutoMapper.Mapper.Map(dto, iQCItemReqInfoListViewModels);
+            return PartialView(iQCItemReqInfoListViewModels);
+        }
+
+        public ActionResult GetIQCItemReqDetailInfoList(string flag, long? warehouseId, long? modelId, long? unitId, long? itemTypeId, long? itemId, string fromDate, string toDate, string qty, long? reqInfoId, int page = 1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
+                ViewBag.ddlItemType = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(item => new SelectListItem { Text = item.ItemName, Value = item.ItemId.ToString() });
+            }
+            else
+            {
+                var dto = _iQCItemReqDetailList.GetIQCItemReqDetailList(itemTypeId, itemId, unitId, qty, fromDate, toDate, User.OrgId).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+                #region Comment Old Code
+                //IEnumerable<IQCItemReqDetailListDTO> dto = _iQCItemReqDetailList.GetIQCItemReqInfoListByOrgId(User.OrgId).Select(info => new IQCItemReqDetailListDTO
+                //{
+                //    ItemTypeId = info.ItemTypeId,
+                //    ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
+                //    ItemId = info.ItemId,
+                //    Item = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, User.OrgId).ItemName),
+                //    UnitId = info.UnitId,
+                //    Unit = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, User.OrgId).UnitName),
+                //    EUserId = info.EUserId,
+                //    EntryDate = info.EntryDate,
+                //    Quantity = info.Quantity,
+                //    EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
+                //    OrganizationId = info.OrganizationId,
+                //}).OrderByDescending(s=> s.IQCItemReqDetailId).ToList();
+
+                //dto = dto.Where(iqc =>
+                //(itemId == null || itemId == 0 || iqc.ItemId == itemId)
+                //&& (itemTypeId == null || itemTypeId == 0 || iqc.ItemTypeId == itemTypeId)
+                //&& (qty == null || qty == "" || iqc.Quantity >= Convert.ToDecimal(qty) )
+                //&& (fromDate == null || fromDate == "" || iqc.EntryDate >= DateTime.Parse(fromDate))
+                //&& (toDate == null || toDate == "" || iqc.EntryDate >= DateTime.Parse(toDate))
+                //).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+                #endregion
+                List<IQCItemReqDetailListViewModel> viewModel = new List<IQCItemReqDetailListViewModel>();
+
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+                dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return PartialView("_GetAllIQCItemReqPartialList", viewModel);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetIQCItemReqDetailList(long? reqInfoId, int page = 1)
+        {
+            IQCItemReqInfoListDTO dto = _iQCItemReqInfoList.GetIQCItemReqDataById(reqInfoId.Value, User.OrgId);
+            dto.IQCItemReqDetails = _iQCItemReqDetailList.GetIQCItemReqDetails(reqInfoId.Value, User.OrgId).ToList();
+            #region Comment Old Code
+            //IQCItemReqInfoListDTO dto = _iQCItemReqInfoList.GetIQCItemReqInfoListByOrgId(User.OrgId).Where(s => s.IQCItemReqInfoId == reqInfoId).Select(info => new IQCItemReqInfoListDTO
+            //{
+            //    IQCItemReqInfoId = info.IQCItemReqInfoId,
+            //    IQCId = info.IQCId,
+            //    IQCReqCode = info.IQCReqCode,
+            //    IQCName = (_iQCBusiness.GetIQCOneByOrgId(info.IQCId.Value, User.OrgId).IQCName),
+            //    StateStatus = info.StateStatus,
+            //    WarehouseId = info.WarehouseId,
+            //    DescriptionId = info.DescriptionId,
+            //    Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+            //    ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, User.OrgId).DescriptionName),
+            //    SupplierId = info.SupplierId,
+            //    Supplier = (_supplierBusiness.GetSupplierById(info.SupplierId.Value, User.OrgId).SupplierName),
+            //    Remarks = info.Remarks,
+            //    OrganizationId = info.OrganizationId,
+            //    EntryDate = info.EntryDate,
+            //    EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
+            //}).FirstOrDefault();
+
+            //dto.IQCItemReqDetails = _iQCItemReqDetailList.GetIQCItemReqInfoListByInfo(reqInfoId.Value, User.OrgId).Select(info => new IQCItemReqDetailListDTO
+            //{
+            //    ItemTypeId = info.ItemTypeId,
+            //    ItemType = (_itemTypeBusiness.GetItemType(info.ItemTypeId.Value, User.OrgId).ItemName),
+            //    ItemId = info.ItemId,
+            //    Item = (_itemBusiness.GetItemOneByOrgId(info.ItemId.Value, User.OrgId).ItemName),
+            //    UnitId = info.UnitId,
+            //    Unit = (_unitBusiness.GetUnitOneByOrgId(info.UnitId.Value, User.OrgId).UnitName),
+            //    EUserId = info.EUserId,
+            //    EntryDate = info.EntryDate.ToString(),
+            //    Quantity = info.Quantity,
+            //    IssueQty = info.IssueQty,
+            //    EntryUser = UserForEachRecord(info.EUserId.Value).UserName,
+            //    OrganizationId = info.OrganizationId,
+            //}).ToList();
+
+            #endregion
+
+            IQCItemReqInfoListViewModel iQCItemReqInfoListViewModel = new IQCItemReqInfoListViewModel();
+            AutoMapper.Mapper.Map(dto, iQCItemReqInfoListViewModel);
+            return PartialView(iQCItemReqInfoListViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult GetIQCReqInfoListForWarehouse(long? WarehouseId, long? modelId, string stateStatus, int page = 1)
+        {
+            var dto = _iQCItemReqInfoList.GetIQCItemReqInfoLists(WarehouseId, modelId, stateStatus, User.OrgId).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+            #region Comment Old Code
+            // IEnumerable<IQCItemReqInfoListDTO> dto = _iQCItemReqInfoList.GetIQCItemReqInfoListByOrgId(User.OrgId).Select(info => new IQCItemReqInfoListDTO
+            // {
+            //     IQCId = info.IQCId,
+            //     IQCItemReqInfoId = info.IQCItemReqInfoId,
+            //     IQCName = (_iQCBusiness.GetIQCOneByOrgId(info.IQCId.Value, User.OrgId).IQCName),
+            //     StateStatus = info.StateStatus,
+            //     WarehouseId = info.WarehouseId,
+            //     DescriptionId = info.DescriptionId,
+            //     Warehouse = (_warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId.Value, User.OrgId).WarehouseName),
+            //     ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId.Value, User.OrgId).DescriptionName),
+            //     SupplierId = info.SupplierId,
+            //     Supplier = (_supplierBusiness.GetSupplierById(info.SupplierId.Value, User.OrgId).SupplierName),
+            //     Remarks = info.Remarks,
+            //     OrganizationId = info.OrganizationId
+            // }).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+
+            // dto = dto.Where(iqc =>
+            //(WarehouseId == null || WarehouseId == 0 || iqc.WarehouseId == WarehouseId)
+            //&& (modelId == null || modelId == 0 || iqc.DescriptionId == modelId)
+            //&& (stateStatus == null || stateStatus == "" || iqc.StateStatus == stateStatus)
+            //).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+            #endregion
+            //Pagination 
+            ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+            dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+            //ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+            //dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            List<IQCItemReqInfoListViewModel> iQCItemReqInfoListViewModels = new List<IQCItemReqInfoListViewModel>();
+            AutoMapper.Mapper.Map(dto, iQCItemReqInfoListViewModels);
+            return PartialView(iQCItemReqInfoListViewModels);
+        }
+        public ActionResult IssueIQCItemReq(long reqId)
+        {
+            var req = _iQCItemReqInfoList.GetIQCItemReqById(reqId, User.OrgId);
+            if (req != null && req.StateStatus == RequisitionStatus.Pending)
+            {
+                IQCItemReqInfoListDTO dto = _iQCItemReqInfoList.GetIQCItemReqDataById(reqId, User.OrgId);
+                dto.IQCItemReqDetails = _iQCItemReqDetailList.GetIQCItemReqDetails(reqId, User.OrgId).ToList();
+
+                IQCItemReqInfoListViewModel viewModel = new IQCItemReqInfoListViewModel();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return View(viewModel);
+            }
+            return RedirectToAction("GetIQCReqInfoListForWarehouse");
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveIQCItemReqStatus(IQCItemReqInfoListViewModel models)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                if (models.StateStatus == RequisitionStatus.Approved && models.IQCItemReqDetails.Count > 0)
+                {
+                    IQCItemReqInfoListDTO dto = new IQCItemReqInfoListDTO();
+                    AutoMapper.Mapper.Map(models, dto);
+                    IsSuccess = _iQCItemReqDetailList.SaveIQCItemRequestIssueByWarehouse(dto, User.OrgId, User.UserId);
+                }
+                else
+                {
+                    IsSuccess = _iQCItemReqDetailList.SaveIQCItemRequestStatus(models.IQCItemReqInfoId, models.StateStatus, User.OrgId, User.UserId);
+                }
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region IQCStock
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveIQCStockInStatus(long reqId, string status)
+        {
+            bool IsSuccess = false;
+            if (reqId > 0)
+            {
+                if (reqId > 0 && !string.IsNullOrEmpty(status) && status == RequisitionStatus.Accepted)
+                {
+                    IsSuccess = _iQCStockDetailBusiness.SaveIQCStockInByIQCRequest(reqId, status, User.OrgId, User.UserId);
+                }
+                else
+                {
+                    IsSuccess = _iQCItemReqInfoList.SaveIQCReqInfoStatus(reqId, status, User.OrgId, User.UserId);
+                }
+            }
+            return Json(IsSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveIQCStockIn(List<IQCStockDetailViewModel> models)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                try
+                {
+                    List<IQCStockDetailDTO> dto = new List<IQCStockDetailDTO>();
+                    AutoMapper.Mapper.Map(models, dto);
+                    IsSuccess = _iQCStockDetailBusiness.SaveIQCStockIn(dto, User.OrgId, User.UserId);
+                }
+                catch (Exception)
+                {
+                    IsSuccess = false;
+                }
+            }
+            return Json(IsSuccess);
+        }
+
+        public ActionResult GetAllIQCStockInfoList( long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
+        {
+            var dto = _iQCStockInfoBusiness.GetAllIQCStockInformationList(warehouseId, modelId, itemTypeId, itemId, lessOrEq, User.OrgId).OrderByDescending(s=> s.StockInfoId).ToList();
+            //Pagination 
+            ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+            dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+
+            IEnumerable<IQCStockInfoViewModel> viewModels = new List<IQCStockInfoViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return PartialView(viewModels);
+        }
+
+        public ActionResult GetAllIQCStockDetailList(string flag, string refNum, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate, int page = 1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+                {
+                    Text = ware.WarehouseName,
+                    Value = ware.Id.ToString()
+                }).ToList();
+                ViewBag.ddlStockType = Utility.ListOfStockType().Select(s => new SelectListItem
+                {
+                    Text = s.text,
+                    Value = s.value
+                }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
+            }
+            else
+            {
+                var dto = _iQCStockDetailBusiness.GetAllIQCStockDetailList(refNum, warehouseId, modelId, itemTypeId, itemId, status, fromDate, toDate, User.OrgId).ToList();
+                //Pagination 
+                ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+                dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+
+                List<IQCStockDetailViewModel> viewModels = new List<IQCStockDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetAllIQCStockDetailPartialList", viewModels);
+            }
+            return View();
+        }
+        #endregion
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-        }       
+        }
     }
 }
