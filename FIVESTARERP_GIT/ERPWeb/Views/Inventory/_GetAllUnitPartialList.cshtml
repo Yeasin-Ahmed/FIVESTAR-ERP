@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "GetAllUnitList";
     int sl = 0;
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -11,7 +11,7 @@
         <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblUnitData" id="tblUnitData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>SL No.</th>
+                    <th>#SL</th>
                     <th class="hide"></th>
                     <th>UnitName</th>
                     <th>Unit Symbol</th>
@@ -34,10 +34,10 @@
                         <td class="text-center">@unit.EntryUser</td>
                         <td class="text-center">@unit.UpdateUser</td>
                         <td class="text-center">
-                            @if (privilege.Edit)
-                            {
+                            @*@if (privilege.Edit)
+                            {*@
                                 <a href="#" class="btn btn-warning btn-sm data-edit-item-unit" style="line-height:1" data-edit-item-unit="@unit.UnitId"><i class="fa fa-pen"></i> Edit</a>
-                            }
+                            @*}*@
                         </td>
                     </tr>
                 }

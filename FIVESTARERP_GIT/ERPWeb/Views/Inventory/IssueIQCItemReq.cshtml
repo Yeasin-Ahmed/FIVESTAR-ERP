@@ -1,0 +1,301 @@
+﻿
+@model ERPBO.Inventory.ViewModels.IQCItemReqInfoListViewModel
+
+@{
+    ViewBag.Title = "Issue Pending Request";
+    var sl = 0;
+}
+
+
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">
+                            Issue Pending Request
+                        </h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card card-navy">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6 class="card-title">
+                            IQC Request Information
+                        </h6>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <select class="form-control form-control-sm" id="ddlAction">
+                                <option value="">---Select Action---</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Rechecked">Rechecked</option>
+                            </select>
+                            <div class="input-group-append" style="cursor:pointer">
+                                <a id="btnSubmit" href="#" title="Submit Request" style="background-color:#2386b9" class="input-group-text">
+                                    <i class="fas fa-paper-plane"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-12">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="hdfRequisitionId" value="@Model.IQCItemReqInfoId" />
+                        <input type="hidden" id="hdfRequisitionCode" value="@Model.IQCReqCode" />
+                        <input type="hidden" id="hdfModel" value="@Model.DescriptionId" />
+                        <input type="hidden" id="hdfWarehouse" value="@Model.WarehouseId" />
+                        <input type="hidden" id="hdfIQC" value="@Model.IQCId" />
+                        <input type="hidden" id="hdfSupplier" value="@Model.SupplierId" />
+                        <input type="hidden" id="hdfRemarks" value="@Model.Remarks" />
+                        <table class="table table-bordered table-sm table-responsive-lg text-bold text-sm" id="tblInfo">
+                            <tbody>
+                                <tr>
+                                    <td class="alert-secondary" style="width:10%">Req Code</td>
+                                    <td style="width:15%; background-color:#e1dada">@Model.IQCReqCode</td>
+                                    <td class="alert-secondary" style="width:10%">IQC Name</td>
+                                    <td style="width:15%; background-color:#e1dada">@Model.IQCName</td>
+                                    <td class="alert-secondary" style="width:12%">Warehouse Name</td>
+                                    <td style="width:16%; background-color:#e1dada">@Model.Warehouse</td>
+                                    <td class="alert-secondary" style="width:10%">Model Name</td>
+                                    <td style="width:12%; background-color:#e1dada">@Model.ModelName</td>
+                                </tr>
+                                <tr>
+                                    <td class="alert-secondary" style="width:10%">Status</td>
+                                    <td style="width:15%; background-color:#e1dada">
+                                        <span class="badge badge-warning">
+                                            @Model.StateStatus
+                                        </span>
+                                    </td>
+                                    <td class="alert-secondary" style="width:10%">Request By</td>
+                                    <td style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
+                                    <td class="alert-secondary" style="width:12%">Entry Date</td>
+                                    <td style="width:16%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                                    <td class="alert-secondary" style="width:10%"></td>
+                                    <td style="width:12%; background-color:#e1dada"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-sm table-striped table-responsive-lg tblDataDetail" id="tblDataDetail">
+                            <thead class="btn-dark">
+                                <tr class="text-center text-sm">
+                                    <th>#SL</th>
+                                    <th class="hide id"></th>
+                                    <th class="hide itemType"></th>
+                                    <th class="hide item"></th>
+                                    <th class="hide unit"></th>
+                                    <th>ItemType Name</th>
+                                    <th>Item Name</th>
+                                    <th>Request Qty</th>
+                                    <th>Type of Unit</th>
+                                    <th>Issue Qty</th>
+                                    <th>Available Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.IQCItemReqDetails)
+                                {
+                                    sl = sl + 1;
+                                    <tr class="text-sm text-bold">
+                                        <td class="text-center text-bold" style="width:5%">@sl</td>
+                                        <td class="hide">@item.IQCItemReqDetailId</td>
+                                        <td class="hide">@item.ItemTypeId</td>
+                                        <td class="hide">@item.ItemId</td>
+                                        <td class="hide">@item.UnitId</td>
+                                        <td>@item.ItemType</td>
+                                        <td>@item.Item</td>
+                                        <td class="text-center" style="width:10%">@item.Quantity</td>
+                                        <td class="text-center" style="width:10%">@item.Unit</td>
+                                        <td style="width:10%">
+                                            <input type="number" class="txtQty form-control form-control-sm" value="@item.Quantity" id="txtQty" required/>
+                                            <span class="error hide req-qty font-weight-bold">Quantity is required !</span>
+                                            <span class="error hide req-stockOver font-weight-bold">Quantity is not available !</span>
+                                        </td>
+                                        <td class="text-center availableQty"  id="availableQty" style="width:10%">@item.AvailableQty</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-12">
+
+                </div>
+                <div class="col-md-12">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var hdfRequisitionId = $("#hdfRequisitionId");
+        var hdfRequisitionCode = $("#hdfRequisitionCode");
+        var txtQty = $("#txtQty");
+        var ddlAction = $("#ddlAction");
+        var hdfWarehouse = $("#hdfWarehouse");
+        var hdfModel = $("#hdfModel");
+        var hdfIQC = $("#hdfIQC");
+        var hdfSupplier = $("#hdfSupplier");
+        var hdfRemarks = $("#hdfRemarks");
+        var availableQty = $("#availableQty")
+        function validateSubmit() {
+            var isValid = true;
+            if (ddlAction.val() === "") {
+                isValid = false;
+                bootbox.alert("Please select a Action before submit");
+            }
+            if ($(".tblDataDetail tbody tr").length == 0) {
+                isValid = false;
+                bootbox.alert("Requistion details not found");
+            }
+            else {
+                 // Server Side Checking //
+                $.each($("#tblDataDetail tbody tr"), function (index,item) {
+                    var tds = $(this).children('td');
+                    var issueQty = tds.eq('9').children('input[type="number"]').val();
+                    var itemType = tds.eq(2).html();
+                    var item = tds.eq(3).html();
+                    var availableQty = 0;//
+                    var data = JSON.stringify({ itemId: TryParseInt(item, 0), itemTypeId: TryParseInt(itemType, 0), modelId: TryParseInt(hdfModel.val(),0)})
+                    availableQty = ajaxValueReturnable(data, '/Common/GetWarehouseItemAvailableQty', getToken());
+                    tds.eq(10).html(availableQty);
+
+                    if (ddlAction.val() === "Approved") {
+                        if (availableQty < issueQty) {
+                            isValid = false;
+                            tds.eq('9').children('input[type="number"]').css("border", "1px solid red");
+                        }
+                        else {
+                            tds.eq('9').children('input[type="number"]').css("border-style", "none");
+                        }
+                    }
+                   
+
+                    //    if (issueQty === 0) {
+                    //        isValid = false;
+                    //        tds.eq('9').children('input[type="number"]').css("border", "1px solid red");
+                    //    }
+                    //    else {
+                    //        tds.eq('9').children('input[type="number"]').css("border-style", "none");
+                    //    }  
+                    //if (issueQty === '') {
+                    //    isValid = false;
+                    //    tds.eq('9').children('input[type="number"]').css("border", "1px solid red");
+                    //}
+                    //else {
+                    //    tds.eq('9').children('input[type="number"]').css("border-style", "none");
+                    //}
+                })
+            }
+            //if (txtQty.val() == "" || TryParseInt(txtQty.val(), 0) <= 0) {
+            //    isValid = false;
+            //    $(".req-qty").removeClass("hide");
+            //}
+            //else {
+            //    if ($("#availableQty").text() === '') {
+            //        $('.req-stockOver').removeClass('hide');
+            //        isValid = false;
+            //    }
+            //    else {
+            //        var sq = $("#availableQty").text().trim();
+            //        sq = sq.substring(1, sq.length - 1);
+            //        //console.log("Stock Qty");
+            //        console.log(sq);
+            //        if (TryParseInt(txtQty.val(), 0) > TryParseInt(sq, 0)) {
+            //            isValid = false;
+            //            $('.req-stockOver').removeClass('hide');
+            //        }
+            //    }
+            //}
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+
+            if (validateSubmit()) {
+                bootbox.confirm("Are you sure you want to save this IQC Request with " + ddlAction.val() + " status", function (result) {
+                    if (result) {
+                        disable("#btnSubmit");
+
+                        var info = { IQCItemReqInfoId: TryParseInt(hdfRequisitionId.val(), 0), IQCReqCode: hdfRequisitionCode.val(), StateStatus: ddlAction.val(), WarehouseId: TryParseInt(hdfWarehouse.val(), 0), DescriptionId: TryParseInt(hdfModel.val(), 0), IQCId: TryParseInt(hdfIQC.val(), 0), SupplierId: TryParseInt(hdfSupplier.val(), 0), Remarks: TryParseInt(hdfRemarks.val(), null) };
+                        var details = []; details.length = 0;
+
+                        if (ddlAction.val() === "Approved") {
+                            $.each($(".tblDataDetail tbody tr"), function (index, item) {
+                                var tds = $(this).children('td');
+                                details.push({
+                                    IQCItemReqDetailId: tds.eq(1).html(),
+                                    ItemTypeId: tds.eq(2).html(),
+                                    ItemId: tds.eq(3).html(),
+                                    UnitId: tds.eq(4).html(),
+                                    Quantity: tds.eq(7).html(),
+                                    IssueQty: tds.eq(9).children('input[type="number"]').val(),
+                                })
+                            })
+                        }
+                        
+                        info.IQCItemReqDetails = details;
+                        //details.Details = info;
+                        console.log(info);
+                        var data = JSON.stringify({ models: info });
+
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveIQCItemReqStatus', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            if (res === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                 setTimeout(function () {
+                                    redirectPage('@Url.Action("GetWarehouseStockInfoList",new {tab="IQC" })');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            enable("#btnSubmit");
+                        })
+
+                    }// confirm
+                })// bootbox
+            }// submit
+        })
+
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+
+    </script>
+}

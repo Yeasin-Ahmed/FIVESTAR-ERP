@@ -3,7 +3,7 @@
     ViewBag.Title = "List Of IQC";
     int sl = 0;
     string badge = string.Empty;
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <div class="row">
@@ -39,10 +39,10 @@
                         </td>
                         <td>@item.Remarks</td>
                         <td class="text-center">
-                            @if (privilege.Edit)
-                            {
+                            @*@if (privilege.Edit)
+                            {*@
                                 <a href="#" class="btn btn-warning btn-sm data-edit-IQC" style="line-height:1" data-edit-IQC="@item.Id"><i class="fa fa-sm fa-pen"></i> Edit</a>
-                            }
+                            @*}*@
                         </td>
                     </tr>
                 }

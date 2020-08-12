@@ -27,7 +27,10 @@ namespace ERPDAL.InventoryDAL
         public DbSet<ItemPreparationDetail> tblItemPreparationDetail { get; set; }
         public DbSet<Supplier> tblSupplier { get; set; }
         public DbSet<IQC> tblIQCList { get; set; }
-        //
+        public DbSet<IQCItemReqInfoList> tblIQCItemReqInfoList { get; set; }
+        public DbSet<IQCItemReqDetailList> tblIQCItemReqDetailList { get; set; }
+        public DbSet <IQCStockDetail> tblIQCStockDetails { get; set; }
+        public DbSet<IQCStockInfo> tblIQCStockInfo { get; set; }
 
     }
 }

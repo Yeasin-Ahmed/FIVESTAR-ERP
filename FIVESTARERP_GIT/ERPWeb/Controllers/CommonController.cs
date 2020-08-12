@@ -880,6 +880,20 @@ namespace ERPWeb.Controllers
             var dropDown = items.Select(i => new Dropdown { text = i.ItemName, value = i.ItemId }).ToList();
             return Json(dropDown);
         }
+
+        [HttpPost]
+
+        public ActionResult GetItemByWarehouseId(long warehouseId)
+        {
+            var item = _itemBusiness.GetItemsByWarehouseId(warehouseId, User.OrgId).AsEnumerable();
+            return Json(item);
+        }
+        [HttpPost]
+        public ActionResult GetWarehouseItemAvailableQty(long? itemTypeId,long? itemId,long? modelId)
+        {
+            var qty = _warehouseStockInfoBusiness.GetWarehouseStock(null, modelId, null, itemTypeId, itemId, User.OrgId);
+            return Json(qty);
+        }
         #endregion
         #endregion
 

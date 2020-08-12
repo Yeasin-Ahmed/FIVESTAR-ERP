@@ -21,10 +21,10 @@ namespace ERPBLL.Common
         public static readonly string Current = "Current";
         public static readonly string Void = "Void";
     }
-    public class CustomerType
+    public class StockType
     {
-        public static readonly string WalkInCustomer = "Walk In Customer";
-        public static readonly string Dealer = "Dealer";
+        public static readonly string FreshStock = "FreshStock";
+        public static readonly string FaultyStock = "FaultyStock";
     }
     public class StockStatus
     {
