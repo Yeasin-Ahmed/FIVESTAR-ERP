@@ -165,9 +165,13 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                 requsitionInfo.ItemTypeId = reqInfoDTO.ItemTypeId;
                 requsitionInfo.ItemId = reqInfoDTO.ItemId;
                 requsitionInfo.ForQty = reqInfoDTO.ForQty;
-                requsitionInfo.Flag = Flag.Indirect;
-                if (reqInfoDTO.ItemId != null && reqInfoDTO.ItemId > 0)
+                requsitionInfo.Flag = reqInfoDTO.Flag;
+                requsitionInfo.AssemblyLineId = reqInfoDTO.AssemblyLineId;
+                requsitionInfo.PackagingLineId = reqInfoDTO.PackagingLineId;
+
+                if (requsitionInfo.IsBundle == true)
                 {
+                    //reqInfoDTO.ItemId != null && reqInfoDTO.ItemId > 0
                     requsitionInfo.UnitId = items.FirstOrDefault(i => i.ItemId == reqInfoDTO.ItemId.Value).UnitId;
                 }
 
@@ -190,9 +194,7 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                 requsitionInfoRepository.Insert(requsitionInfo);
                 IsSuccess = requsitionInfoRepository.Save();
             }
-            else
-            {
-            }
+           
             return IsSuccess;
         }
         public bool SaveRequisitionStatus(long reqId, string status, long orgId, long userId)

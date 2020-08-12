@@ -75,7 +75,7 @@ namespace ERPBLL.Production
             }
             if (itemId != null && itemId > 0)
             {
-                param += string.Format(@" and ai.ItemId={0}", itemTypeId);
+                param += string.Format(@" and ai.ItemId={0}", itemId);
             }
             if (!string.IsNullOrEmpty(lessOrEq) && lessOrEq.Trim() != "")
             {
@@ -86,13 +86,13 @@ namespace ERPBLL.Production
 ai.DescriptionId,de.DescriptionName 'ModelName',ai.WarehouseId,w.WarehouseName,ai.ItemTypeId,it.ItemName 'ItemTypeName',ai.ItemId,i.ItemName,
 ai.StockInQty,ai.StockOutQty,ai.UnitId,u.UnitSymbol 'UnitName'
 From [Production].dbo.tblAssemblyLineStockInfo ai
-Inner Join [Production].dbo.tblProductionLines pl on ai.ProductionLineId = pl.LineId
-Inner Join [Production].dbo.tblAssemblyLines al on ai.AssemblyLineId = al.AssemblyLineId
-Inner Join [Inventory].dbo.tblDescriptions de on ai.DescriptionId = de.DescriptionId
-Inner Join [Inventory].dbo.tblWarehouses w on ai.WarehouseId = w.Id
-Inner Join [Inventory].dbo.tblItemTypes it on ai.ItemTypeId = it.ItemId
-Inner Join [Inventory].dbo.tblItems i on ai.ItemId= i.ItemId
-Inner Join [Inventory].dbo.tblUnits u on ai.UnitId= u.UnitId
+Left Join [Production].dbo.tblProductionLines pl on ai.ProductionLineId = pl.LineId
+Left Join [Production].dbo.tblAssemblyLines al on ai.AssemblyLineId = al.AssemblyLineId
+Left Join [Inventory].dbo.tblDescriptions de on ai.DescriptionId = de.DescriptionId
+Left Join [Inventory].dbo.tblWarehouses w on ai.WarehouseId = w.Id
+Left Join [Inventory].dbo.tblItemTypes it on ai.ItemTypeId = it.ItemId
+Left Join [Inventory].dbo.tblItems i on ai.ItemId= i.ItemId
+Left Join [Inventory].dbo.tblUnits u on ai.UnitId= u.UnitId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }

@@ -17,13 +17,16 @@ namespace ERPBLL.Production
         private readonly PackagingItemStockDetailRepository _packagingItemStockDetailRepository;
         private readonly PackagingItemStockInfoRepository _packagingItemStockInfoRepository;
         private readonly IPackagingItemStockInfoBusiness _packagingItemStockInfoBusiness;
-        public PackagingItemStockDetailBusiness(IProductionUnitOfWork productionDb, IPackagingItemStockInfoBusiness packagingItemStockInfoBusiness)
+        private readonly IMiniStockTransferInfoBusiness _miniStockTransferInfoBusiness;
+        private readonly IMiniStockTransferDetailBusiness _miniStockTransferDetailBusiness;
+        public PackagingItemStockDetailBusiness(IProductionUnitOfWork productionDb, IPackagingItemStockInfoBusiness packagingItemStockInfoBusiness, IMiniStockTransferInfoBusiness miniStockTransferInfoBusiness, IMiniStockTransferDetailBusiness miniStockTransferDetailBusiness)
         {
             this._productionDb = productionDb;
             this._packagingItemStockInfoBusiness = packagingItemStockInfoBusiness;
             this._packagingItemStockInfoRepository = new PackagingItemStockInfoRepository(this._productionDb);
             this._packagingItemStockDetailRepository = new PackagingItemStockDetailRepository(this._productionDb);
-
+            this._miniStockTransferInfoBusiness = miniStockTransferInfoBusiness;
+            this._miniStockTransferDetailBusiness = miniStockTransferDetailBusiness;
         }
 
         public IEnumerable<PackagingItemStockDetail> GetPackagingItemStockDetails(long orgId)
@@ -53,7 +56,8 @@ namespace ERPBLL.Production
                     ReferenceNumber = item.ReferenceNumber,
                     StockStatus = StockStatus.StockIn,
                     Remarks = item.Remarks,
-                    EntryDate = DateTime.Now
+                    EntryDate = DateTime.Now,
+                    UnitId = item.UnitId,
                 };
 
                 var packagingStockInDb = _packagingItemStockInfoBusiness.GetPackagingItemStockInfoByPackagingId(item.PackagingLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
@@ -72,6 +76,7 @@ namespace ERPBLL.Production
                         WarehouseId = item.WarehouseId,
                         ItemTypeId = item.ItemTypeId,
                         ItemId = item.ItemId,
+                        UnitId = item.UnitId,
                         PackagingLineId = item.PackagingLineId,
                         EUserId = userId,
                         EntryDate = DateTime.Now,
@@ -115,7 +120,8 @@ namespace ERPBLL.Production
                     ReferenceNumber = item.ReferenceNumber,
                     StockStatus = StockStatus.StockOut,
                     Remarks = item.Remarks,
-                    EntryDate = DateTime.Now
+                    EntryDate = DateTime.Now,
+                    UnitId = item.UnitId,
                 };
 
                 var packagingStockInDb = _packagingItemStockInfoBusiness.GetPackagingItemStockInfoByPackagingId(item.PackagingLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
@@ -130,6 +136,44 @@ namespace ERPBLL.Production
                 IsSuccess = _packagingItemStockDetailRepository.Save();
             }
 
+            return IsSuccess;
+        }
+
+        public bool SavePackagingItemStockInByMiniStockTransfer(long transferId, string status, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            var transferInfo = _miniStockTransferInfoBusiness.GetMiniStockTransferInfosById(transferId, orgId);
+            var transferDetail = _miniStockTransferDetailBusiness.GetMiniStockTransfersByInfo(transferId, orgId);
+
+            if(transferInfo !=null && transferDetail.Count() > 0 && transferInfo.StateStatus == FinishGoodsSendStatus.Send && status == FinishGoodsSendStatus.Received)
+            {
+                List<PackagingItemStockDetailDTO> stockDetails = new List<PackagingItemStockDetailDTO>();
+                foreach (var item in transferDetail)
+                {
+                    PackagingItemStockDetailDTO stock = new PackagingItemStockDetailDTO()
+                    {
+                        ProductionFloorId =  transferInfo.FloorId,
+                        PackagingLineId = transferInfo.PackagingLineId,
+                        DescriptionId = item.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        UnitId = item.UnitId,
+                        Quantity = item.Quantity,
+                        EUserId= userId,
+                        EntryDate = DateTime.Now,
+                        ReferenceNumber = transferInfo.TransferCode,
+                        StockStatus = StockStatus.StockIn,
+                        OrganizationId = orgId,
+                        Remarks = "Stock In By Mini Stock Transfer"
+                    };
+                    stockDetails.Add(stock);
+                }
+                if (_miniStockTransferInfoBusiness.SaveMiniStockTranferStatus(transferInfo.MSTInfoId, status, userId, orgId))
+                {
+                    IsSuccess = SavePackagingItemStockIn(stockDetails, userId, orgId);
+                }
+            }
             return IsSuccess;
         }
     }

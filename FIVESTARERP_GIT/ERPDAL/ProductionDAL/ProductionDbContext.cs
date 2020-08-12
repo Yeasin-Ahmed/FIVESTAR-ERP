@@ -74,5 +74,7 @@ namespace ERPDAL.ProductionDAL
         public DbSet<RequisitionItemInfo> tblRequisitionItemInfo { get; set; }
         public DbSet<RequisitionItemDetail> tblRequisitionItemDetail { get; set; }
         public DbSet<TempQRCodeTrace> tblTempQRCodeTrace { get; set; }
+        public DbSet<MiniStockTransferInfo> tblMiniStockTransferInfo { get; set; }
+        public DbSet<MiniStockTransferDetail> tblMiniStockTransferDetail { get; set; }
     }
 }

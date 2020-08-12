@@ -157,7 +157,7 @@ namespace ERPBLL.Production
                 stockDetail.Remarks = item.Remarks;
                 stockDetail.UnitId = item.UnitId;
                 stockDetail.EntryDate = DateTime.Now;
-                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.StockStatus = StockStatus.StockOut;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
                 var assemblyStockInfo = _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.AssemblyLineId == item.AssemblyLineId).FirstOrDefault();
@@ -188,7 +188,7 @@ namespace ERPBLL.Production
                 stockDetail.Remarks = item.Remarks;
                 stockDetail.UnitId = item.UnitId;
                 stockDetail.EntryDate = DateTime.Now;
-                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.StockStatus = StockStatus.StockOut;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
                 var assemblyStockInfo = await _assemblyLineStockInfoBusiness.GetAssemblyLineStockInfoByAssemblyAndItemAndModelIdAsync(item.AssemblyLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);

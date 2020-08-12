@@ -19,6 +19,7 @@ namespace ERPBO.Production.DTOModel
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
+        public long? UnitId { get; set; }
         public int Quantity { get; set; }
         public string StockStatus { get; set; }
         [StringLength(150)]
@@ -47,6 +48,8 @@ namespace ERPBO.Production.DTOModel
         public string ItemTypeName { get; set; }
         [StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(150)]
+        public string UnitName { get; set; }
         [StringLength(100)]
         public string EntryUser { get; set; }
         [StringLength(100)]

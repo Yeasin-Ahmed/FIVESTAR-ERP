@@ -155,6 +155,10 @@
     <Compile Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.Designer.cs">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlPanelContextMigrations\202008050953442_ControlPanel_BranchAddress.cs" />
+    <Compile Include="ControlPanelContextMigrations\202008050953442_ControlPanel_BranchAddress.designer.cs">
+      <DependentUpon>202008050953442_ControlPanel_BranchAddress.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlPanelContextMigrations\Configuration.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelDbContext.cs" />
     <Compile Include="ControlPanelDAL\ControlPanelRepository.cs" />
@@ -466,6 +470,34 @@
     <Compile Include="ProductionContextMigrations\202007300928352_Production_AddPackagingLineIdInRequisitionItemInfo.Designer.cs">
       <DependentUpon>202007300928352_Production_AddPackagingLineIdInRequisitionItemInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202008080335131_Production_AddIsChinaFaultyInFaultyStock.cs" />
+    <Compile Include="ProductionContextMigrations\202008080335131_Production_AddIsChinaFaultyInFaultyStock.Designer.cs">
+      <DependentUpon>202008080335131_Production_AddIsChinaFaultyInFaultyStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008090638383_Production_AddRepairLineInReqInfo.cs" />
+    <Compile Include="ProductionContextMigrations\202008090638383_Production_AddRepairLineInReqInfo.Designer.cs">
+      <DependentUpon>202008090638383_Production_AddRepairLineInReqInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008091411302_Production_MiniStockTransfer.cs" />
+    <Compile Include="ProductionContextMigrations\202008091411302_Production_MiniStockTransfer.Designer.cs">
+      <DependentUpon>202008091411302_Production_MiniStockTransfer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008100420223_Production_AddUnitAndWarehouseInMiniStockDetail.cs" />
+    <Compile Include="ProductionContextMigrations\202008100420223_Production_AddUnitAndWarehouseInMiniStockDetail.Designer.cs">
+      <DependentUpon>202008100420223_Production_AddUnitAndWarehouseInMiniStockDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008110553305_Production_AddUnitPackagingItem.cs" />
+    <Compile Include="ProductionContextMigrations\202008110553305_Production_AddUnitPackagingItem.Designer.cs">
+      <DependentUpon>202008110553305_Production_AddUnitPackagingItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008110824434_Production_AddPackagingLineAndPreviousIMEI.cs" />
+    <Compile Include="ProductionContextMigrations\202008110824434_Production_AddPackagingLineAndPreviousIMEI.Designer.cs">
+      <DependentUpon>202008110824434_Production_AddPackagingLineAndPreviousIMEI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008111121230_Production_AddPackagingLineNameAndQCInQRCode.cs" />
+    <Compile Include="ProductionContextMigrations\202008111121230_Production_AddPackagingLineNameAndQCInQRCode.Designer.cs">
+      <DependentUpon>202008111121230_Production_AddPackagingLineNameAndQCInQRCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -557,6 +589,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlPanelContextMigrations\202008050953442_ControlPanel_BranchAddress.resx">
+      <DependentUpon>202008050953442_ControlPanel_BranchAddress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202006030537280_FrontDesk_DbInitialize.resx">
       <DependentUpon>202006030537280_FrontDesk_DbInitialize.cs</DependentUpon>
@@ -779,6 +814,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202007300928352_Production_AddPackagingLineIdInRequisitionItemInfo.resx">
       <DependentUpon>202007300928352_Production_AddPackagingLineIdInRequisitionItemInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008080335131_Production_AddIsChinaFaultyInFaultyStock.resx">
+      <DependentUpon>202008080335131_Production_AddIsChinaFaultyInFaultyStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008090638383_Production_AddRepairLineInReqInfo.resx">
+      <DependentUpon>202008090638383_Production_AddRepairLineInReqInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008091411302_Production_MiniStockTransfer.resx">
+      <DependentUpon>202008091411302_Production_MiniStockTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008100420223_Production_AddUnitAndWarehouseInMiniStockDetail.resx">
+      <DependentUpon>202008100420223_Production_AddUnitAndWarehouseInMiniStockDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008110553305_Production_AddUnitPackagingItem.resx">
+      <DependentUpon>202008110553305_Production_AddUnitPackagingItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008110824434_Production_AddPackagingLineAndPreviousIMEI.resx">
+      <DependentUpon>202008110824434_Production_AddPackagingLineAndPreviousIMEI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008111121230_Production_AddPackagingLineNameAndQCInQRCode.resx">
+      <DependentUpon>202008111121230_Production_AddPackagingLineNameAndQCInQRCode.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

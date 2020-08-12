@@ -57,5 +57,8 @@ namespace ERPBO.Production.DTOModel
         public long? ItemId { get; set; }
         public int? ForQty { get; set; }
         public bool IsBundle { get; set; }
+        public long? AssemblyLineId { get; set; }
+        public long? PackagingLineId { get; set; }
+        public string Flag { get; set; }
     }
 }

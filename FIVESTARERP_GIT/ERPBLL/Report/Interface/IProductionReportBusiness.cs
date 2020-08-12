@@ -10,5 +10,6 @@ namespace ERPBLL.Report.Interface
     public interface IProductionReportBusiness
     {
         IEnumerable<ProductionRequisitionReport> GetProductionRequisitionReport(long reqInfoId);
+        IEnumerable<QRCodesByRef> GetQRCodesByRefId(long? itemId, long referenceId,long orgId);
     }
 }

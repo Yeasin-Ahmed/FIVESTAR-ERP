@@ -54,7 +54,7 @@
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-2">
                                                 <label for="ddlLineNumberStockInfo" class="control-label font-weight-bold">Floor</label>
-                                                @Html.DropDownList("ddlLineNumberStockInfo", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlLineNumberStockInfo", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="ddlAssemblyStockInfo" class="control-label font-weight-bold">Assembly Line</label>
@@ -157,7 +157,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +269,7 @@
                 <h4 id="modalHeading" class="modal-title">Requisition Item Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body" id="modelContaine1">
+            <div class="modal-body" id="modalContainer1">
 
             </div>
         </div>
@@ -358,7 +357,11 @@
             LoadDataTableStockInfo();
         })
 
-        ddlItemsStockInfo.change(function () {
+        ddlModelNameStockInfo.change(function () {
+            LoadDataTableStockInfo();
+        })
+
+        ddlAssemblyStockInfo.change(function () {
             LoadDataTableStockInfo();
         })
 
@@ -367,9 +370,6 @@
         })
 
         function LoadDataTableStockInfo() {
-
-            //string flag,long? lineId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,int page=1
-
             getItemDetailsByStock();
             var data = { flag: "search", lineId: ddlLineNumberStockInfo.val(), assemblyId: ddlAssemblyStockInfo.val(), modelId: ddlModelNameStockInfo.val(), warehouseId: warehouseStock, itemTypeId: itemTypeStock, itemId: itemStock, lessOrEq: txtLessOrEq.val(), page: pageNo };
 
@@ -450,8 +450,8 @@
                     $("#dataContainer2").fadeOut('500', function () {
                         $("#dataContainer2").empty();
                         $("#dataContainer2").append(res).fadeIn('500');
-                        $(".transferFor").addClass('hide');
-                        $(".repairLine").addClass('hide');
+                        //$(".transferFor").addClass('hide');
+                        //$(".repairLine").addClass('hide');
                     });
                 }
             }).fail(function (error) {
@@ -480,8 +480,8 @@
                     OpenModal();
                     hdfInfoId.val(data.reqInfoId);
                     hdfRowIndex.val(idx)
-                    $("#modelContaine1").empty();
-                    $("#modelContaine1").append(res);
+                    $("#modalContainer1").empty();
+                    $("#modalContainer1").append(res);
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -502,8 +502,11 @@
                     hdfInfoId.val('0');
                     fnRemoveARowFromTbody(".tblReqInfo",hdfRowIndex.val())
                     $('.toastrDefaultSuccess').trigger('click');
-                    LoadDataTableReceiveList();
-                    LoadDataTableStockInfo();
+
+                    setTimeout(function () {
+                        LoadDataTableReceiveList();
+                        LoadDataTableStockInfo();
+                    }, 1300);
                 }
             }).fail(function (error) {
                 console.log(error);

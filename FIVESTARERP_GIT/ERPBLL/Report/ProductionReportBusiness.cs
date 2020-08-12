@@ -1,4 +1,5 @@
-﻿using ERPBLL.Report.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Report.Interface;
 using ERPBO.Production.ReportModels;
 using ERPDAL.ProductionDAL;
 using System;
@@ -12,6 +13,8 @@ namespace ERPBLL.Report
     public class ProductionReportBusiness: IProductionReportBusiness
     {
         private readonly IProductionUnitOfWork _productionDb; // database
+        private string query = string.Empty;
+        private string param = string.Empty;
         public ProductionReportBusiness(IProductionUnitOfWork productionDb)
         {
             this._productionDb = productionDb;
@@ -34,6 +37,25 @@ Inner Join [Inventory].dbo.tblUnits un on rd.UnitId = Un.UnitId
 Inner Join [ControlPanel].dbo.tblApplicationUsers us on ri.EUserId = us.UserId
 Where ri.ReqInfoId={0}", reqInfoId)).ToList();
             return list;
+        }
+
+        public IEnumerable<QRCodesByRef> GetQRCodesByRefId(long? itemId, long referenceId,long orgId)
+        {
+            param = string.Empty;
+            param += string.Format(@" and OrganizationId={0}",orgId);
+            if(itemId !=null&& itemId > 0)
+            {
+                param += string.Format(@" and ItemId={0}", itemId);
+            }
+            if(referenceId > 0)
+            {
+                param += string.Format(@" and ReferenceId='{0}'", referenceId);
+            }
+
+            return this._productionDb.Db.Database.SqlQuery<QRCodesByRef>(string.Format(@"Select ReferenceId,ReferenceNumber,CodeNo,ProductionFloorName,AssemblyLineName,ModelName,WarehouseName,ItemTypeName,ItemName	 
+From [Production].dbo.tblQRCodeTrace
+Where 1=1 {0}", Utility.ParamChecker(param))).ToList();
+            
         }
     }
 }

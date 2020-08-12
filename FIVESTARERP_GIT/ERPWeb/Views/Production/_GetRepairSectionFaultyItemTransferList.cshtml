@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionFaultyItemTransferInfoViewModel>
 @{
-    Layout = null;
     //var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = 0;//pagerData.Serial;
     string badge = string.Empty;
@@ -43,7 +42,7 @@
                             </td>
                             <td class="text-center text-sm">@info.EntryUser</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Details" data-item-detail="@info.RSFIRInfoId"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail-FTL" title="View Details" data-item-detail="@info.RSFIRInfoId"><i class="fas fa-eye"></i></a>
                                 @*@if (privilege != null && privilege.Detail)
                                     {
 
@@ -52,7 +51,7 @@
                                     {
 
                                     }*@
-                                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" title="Pdf Report" data-report-item="@info.RSFIRInfoId"><i class="fas fa-file-pdf"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-danger data-report-item hide" title="Pdf Report" data-report-item="@info.RSFIRInfoId"><i class="fas fa-file-pdf"></i></a>
                             </td>
                         </tr>
                     }

@@ -19,5 +19,10 @@ namespace ERPBLL.Production.Interface
         Task<bool> UpdateQRCodeStatusAsync(string qrCode, string status, long orgId);
         Task<IEnumerable<TempQRCodeTrace>> GetTempQRCodeTracesByQRCodesAsync(List<string> qrCodes, long orgId);
         Task<bool> UpdateQRCodeBatchAsync(List<TempQRCodeTrace> qrCodes, long orgId);
+        Task<TempQRCodeTrace> GetTempQRCodeTraceByCodeWithFloorAsync(string code, string status, long? floorId, long orgId);
+        Task<bool> UpdateQRCodeStatusWithQCAsync(string qrCode, string status, long qcId, string qcName, long orgId);
+        Task<bool> SaveQRCodeIEMIAsync(IMEIWriteDTO dto, long userId, long orgId);
+        Task<TempQRCodeTrace> GetIMEIinQRCode(string imei, string status, long floorId, long packagingId, long orgId);
+        Task<bool> SaveBatteryCodeAsync(BatteryWriteDTO dto, long userId, long orgId);
     }
 }

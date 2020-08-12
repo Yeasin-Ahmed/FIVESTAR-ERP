@@ -178,6 +178,8 @@
     <Compile Include="Production\FaultyCaseBusiness.cs" />
     <Compile Include="Production\FaultyItemStockDetailBusiness.cs" />
     <Compile Include="Production\FaultyItemStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IMiniStockTransferDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IMiniStockTransferInfoBusiness.cs" />
     <Compile Include="Production\Interface\IProductionAssembleStockInfoBusiness.cs" />
     <Compile Include="Production\Interface\IProductionFaultyStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IProductionFaultyStockInfoBusiness.cs" />
@@ -192,6 +194,8 @@
     <Compile Include="Production\Interface\IRequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITempQRCodeTraceBusiness.cs" />
+    <Compile Include="Production\MiniStockTransferDetailBusiness.cs" />
+    <Compile Include="Production\MiniStockTransferInfoBusiness.cs" />
     <Compile Include="Production\ProductionAssembleStockDetailBusiness.cs" />
     <Compile Include="Production\ProductionAssembleStockInfoBusiness.cs" />
     <Compile Include="Production\ProductionFaultyStockDetailBusiness.cs" />

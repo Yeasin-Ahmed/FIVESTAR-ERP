@@ -1,0 +1,396 @@
+﻿
+@{
+    ViewBag.Title = "IMEI Scaning In Packaging Line QC";
+}
+
+<div class="row">
+    <div class="col-md-12 text-sm">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-scanning-tab" data-toggle="pill" href="#custom-tabs-two-scanning" role="tab" aria-controls="custom-tabs-two-scanning" aria-selected="true">IMEI Scanning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-repairImei-tab" data-toggle="pill" href="#custom-tabs-two-repairImei" role="tab" aria-controls="custom-tabs-two-repairImei" aria-selected="true">Pass To Repair</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-qcPassImei-tab" data-toggle="pill" href="#custom-tabs-two-qcPassImei" role="tab" aria-controls="custom-tabs-two-qcPassImei" aria-selected="true">Pass To Finish</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-problems-tab" data-toggle="pill" href="#custom-tabs-two-problems" role="tab" aria-controls="custom-tabs-two-problems" aria-selected="true">Problems</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-scanning" role="tabpanel" aria-labelledby="custom-tabs-two-scanning-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IMEI Scanning
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label">Floor</label>
+                                                @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlProductionFloor, "--- Select Floor ---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-6">
+                                                <h5 style="border-bottom:2px solid #70cf44">SCANING</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <input type="text" id="txtItemIMEICode" placeholder="SCAN ITEM BY IMEI HERE" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <input type="text" id="txtProblemQRCode" placeholder="SCAN PROBLEM BY QR CODE HERE" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+
+                                                    <div class="col-md-12">
+                                                        <ul>
+                                                            <li class="error hide floor">Packaging line is required</li>
+                                                            <li class="error hide qrCode">IMEI is required</li>
+                                                            <li class="error hide invalid-qrCode">Invalid IMEI</li>
+                                                            <li class="error hide prob-notFound">Add Problems</li>
+                                                            <li class="error hide qc-not-for-pdn">This IMEI is not belongs to this Floor and Packaging Line</li>
+                                                            <li class="error hide duplicate-QrCode">This IMEI already has been transfered</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-sm btn-lg btn-flat btn-primary" id="btnSubmit">
+                                                            <i class="fas fa-paper-plane"></i> SUBMIT
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 style="border-bottom:2px solid #ee4f4f">PROBLEMS</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-sm table-bordered table-striped table-responsive-lg" id="tblProb">
+                                                            <thead class="btn-dark">
+                                                                <tr class="text-center text-bold">
+                                                                    <th style="width:10%">#SL</th>
+                                                                    <th style="width:75%">Problems</th>
+                                                                    <th style="width:15%">Action</th>
+                                                                    <th class="hide"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-repairQrCodes" role="tabpanel" aria-labelledby="custom-tabs-two-repairQrCodes-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Pass To Repair
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer1">
+                                                @{Html.RenderAction("GetQRCodeScanningInQC", new { @flag = "QRCodes" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-qcPassQrCodes" role="tabpanel" aria-labelledby="custom-tabs-two-qcPassQrCodes-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Pass To MiniStock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer2">
+                                                @*@{Html.RenderAction("GetQRCodeScanningInQC", new { @flag = "QCPass" });}*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-problems" role="tabpanel" aria-labelledby="custom-tabs-two-problems-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Problem List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer3">
+                                                @*@{Html.RenderAction("GetQRCodeScanningInQC", new { @flag = "Problems" });}*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlProductionFloor = $("#ddlProductionFloor");
+        var txtItemIMEICode = $("#txtItemIMEICode");
+        var txtProblemQRCode = $("#txtProblemQRCode");
+        var problemsObj = []; // data obj
+        var qrCodeDataObj = {};
+
+        $(document).ready(function () {
+            txtItemIMEICode.focus();
+            fnProblemsData();
+        })
+
+        function validateQRCodeInRepair() {
+            return ajaxBooleanChecker(JSON.stringify({ qrCode: $.trim(txtItemIMEICode.val()) }), '/Common/IsExistInAssembly', getToken()) == true;
+        }
+
+        txtItemIMEICode.change(function () {
+            qrCodeDataObj = {};
+            if ($.trim(txtItemIMEICode.val()) !== "") {
+                if (validateQRCodeInRepair()) {
+                    var data = JSON.stringify({ qrCode: $.trim(txtItemIMEICode.val()) });
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetQRCodeTraceByCodeAsync', data, getToken())).then(function (res, status) {
+                        if (status === "success" && res.Item > 0) {
+                            qrCodeDataObj = res;
+                            txtProblemQRCode.val('');
+                            txtProblemQRCode.focus();
+                        }
+                        else {
+                            txtItemIMEICode.val('');
+                            txtItemIMEICode.focus();
+                        }
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+                else {
+                    txtItemIMEICode.val('');
+                    txtItemIMEICode.focus();
+                    //toggleAlert("");
+                    toastrErrorAlert('QRCode may has been transfered')
+                }
+            }
+        })
+
+        txtProblemQRCode.change(function () {
+            if ($.trim(txtProblemQRCode.val()) !== "") {
+                var prob = jQuery.grep(problemsObj, function (item) {
+                    return item.ProblemDescription === $.trim(txtProblemQRCode.val());
+                })
+                if (prob.length > 0) {
+                    if (!fnIsProbExist(prob)) {
+                        fnProblemTblBind(prob);
+                    }
+                }
+            }
+            txtProblemQRCode.val('');
+            txtProblemQRCode.focus();
+        })
+
+        function fnIsProbExist(prob) {
+            var isExist = false;
+            if ($("#tblProb tbody tr").length > 0) {
+                $.each($("#tblProb tbody tr"), function (index,item) {
+                    var probCode = $(this).children('td').eq(3).html();
+                    if (prob[0].CaseId == probCode) {
+                        isExist = true;
+                    }
+                })
+            }
+            return isExist;
+        }
+
+        function fnProblemTblBind(p) {
+            if (!$.isEmptyObject(p)) {
+                var cellNo = $("#tblProb tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (cellNo + 1) + "</td>";
+                var td2 = "<td>" + p[0].ProblemDescription + "</td>";
+                var td3 = "<td class='text-center'><a href='#' class='btn btn-sm btn-flat btn-danger data-del-onfly'><i class='fas fa-trash'></i></a></td>";
+                var td4 = "<td class='hide'>" + p[0].CaseId + "</td>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + "</tr>";
+                $("#tblProb tbody").append(tr);
+            }
+        }
+
+        $(document).on('click','a.data-del-onfly', function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            removeTableRow("#tblProb tbody", index);
+            fnFixTheTbodyRowSerial("#tblProb", index);
+        })
+
+        function fnProblemsData() {
+            problemsObj.length = 0;
+            $.when(postReqWithToken(null, dataType.json, type.post, '/Common/GetFaultyCasesListAsync', null, getToken())).then(function (res, status) {
+                if (status === "success" && res.length > 0) {
+                    problemsObj = res;
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        function validationForm() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if (TryParseInt(ddlProductionFloor.val(), 0) <= 0) {
+                $(".floor").removeClass("hide");
+                isValid = false;
+            }
+            
+            if ($.isEmptyObject(qrCodeDataObj) || qrCodeDataObj.Item <= 0) {
+                $(".invalid-qrCode").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                if (TryParseInt(ddlProductionFloor.val(), 0) > 0 && qrCodeDataObj.Floor != (TryParseInt(ddlProductionFloor.val(), 0))){
+                    $(".qc-not-for-pdn").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            //if ($("#tblProb tbody tr").length === 0) {
+            //    $(".prob-notFound").removeClass("hide");
+            //    isValid = false;
+            //}
+            if ($.trim(txtItemIMEICode.val()) === "") {
+                $(".qrCode").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                if (ajaxBooleanChecker(JSON.stringify({ qrCode: txtItemIMEICode.val() }),'/Common/IsExistInAssembly',getToken()) === false) {
+                    $(".duplicate-QrCode").removeClass("hide");
+                    isValid = false;
+                    $("#tblProb tbody").empty();
+                    txtItemIMEICode.val('');
+                    txtItemIMEICode.focus();
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            //console.log("qrCodeDataObj");
+            //console.log(qrCodeDataObj);
+            //console.log("problemsObj");
+            //console.log(problemsObj);
+            //alert('submit')
+            //var qrCodeData = new { Floor=(data != null ? data.ProductionFloorId : 0), Assembly=(data != null ? data.AssemblyId : 0), Model=(data != null ? data.DescriptionId : 0), Item= (data != null ? data.ItemId : 0) };
+
+            if (validationForm()) {
+
+                var info = { FloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), QRCode: txtItemIMEICode.val(), AssemblyLineId: qrCodeDataObj.Assembly, DescriptionId: qrCodeDataObj.Model, ItemId: qrCodeDataObj.Item, ItemTypeId: qrCodeDataObj.ItemType, WarehouseId: qrCodeDataObj.Warehouse};
+
+                var problems = []; problems.length = 0;
+                $.each($("#tblProb tbody tr"), function (index,item) {
+                    var tds = $(this).children('td');
+                    problems.push({
+                        ProblemId:TryParseInt(tds.eq(3).html(),0),
+                        ProblemName: tds.eq(1).html()
+                    })
+                })
+                info.QRCodeProblems = problems;
+                var data = JSON.stringify({model:info})
+                console.log("Info Data");
+                console.log(data);
+                //return;
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQRCodeWiseQcItemTransfer', data, getToken())).then(function (res,status) {
+                    console.log(res);
+                    console.log(status);
+                    console.log("res.IsSuccess");
+                    console.log(res.IsSuccess);
+                    if (res.IsSuccess === true) {
+                        toastrSuccessAlert('Successful');
+                        $("#tblProb tbody").empty();
+                        txtItemIMEICode.val('');
+                    }
+                    else {
+                        bootbox.alert("This QrCode already has been transfered to Repair/MiniStock");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    bootbox.alert("Fail");
+                })
+            }
+        })
+    </script>
+}
+

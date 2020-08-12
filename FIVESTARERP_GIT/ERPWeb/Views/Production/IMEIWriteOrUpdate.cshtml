@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "IMEI Write";
+}
+
+<div class="row">
+    <div class="col-md-12 text-sm">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-IEMIWrite-tab" data-toggle="pill" href="#custom-tabs-two-IEMIWrite" role="tab" aria-controls="custom-tabs-two-IEMIWrite" aria-selected="true">IEMI Write</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-IEMIWrite" role="tabpanel" aria-labelledby="custom-tabs-two-IEMIWrite-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IEMI Write
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="hdfCodeId" value="0" />
+                                            <div class="col-md-4">
+                                                @Html.DropDownList("ddlPackagingLine", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-6" style="border-right:2px solid #eba573">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="txtQRCode" class="form-control form-control-sm" placeholder="Enter QR Code Here" />
+                                                    </div>
+                                                    <div class="col-md-12 mt-2">
+                                                        <textarea id="txtBarCode" class="form-control form-control-sm" placeholder="Enter Barcode Here" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <ul id="errroContainer"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <table class="table table-sm text-sm table-responsive-lg text-bold">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="alert-secondary" style="width:15%">Belt</td>
+                                                            <td style="width:85%; background-color:#e1dada" colspan="3" class="beltName">N/A</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="alert-secondary" style="width:15%">Item-Color</td>
+                                                            <td style="width:85%; background-color:#e1dada" colspan="3" class="itemName">N/A</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="alert-secondary" style="width:15%">Status</td>
+                                                            <td style="width:25%; background-color:#e1dada" class="statestatus">N/A</td>
+                                                            <td class="alert-secondary" style="width:25%">Packaging Line</td>
+                                                            <td style="width:35%; background-color:#e1dada" class="packagingLine">N/A</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="alert-secondary" style="width:15%">IMEI</td>
+                                                            <td style="width:85%; background-color:#e1dada" colspan="3" class="imei">N/A</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="alert-secondary" style="width:15%">Battery Code</td>
+                                                            <td style="width:85%; background-color:#e1dada" colspan="3" class="batteryCode">N/A</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success btn-flat" id="btnSubmit">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show hide" id="custom-tabs-two-transferList" role="tabpanel" aria-labelledby="custom-tabs-two-transferList-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var txtQRCode = $("#txtQRCode");
+        var txtBarCode = $("#txtBarCode");
+        var ddlPackagingLine = $("#ddlPackagingLine");
+        var hdfCodeId = $("#hdfCodeId");
+
+        $(document).ready(function () {
+            txtQRCode.focus();
+        })
+
+        txtQRCode.change(function () {
+            if (txtQRCode.val().trim() != "" && ddlPackagingLine.val() != "") {
+                var floorId = ddlPackagingLine.val() != "" ? ddlPackagingLine.val().split("#") : ["0", "0"];
+                fnGetQRCodeDetail(txtQRCode.val(), floorId[1]);
+            }
+        })
+
+        function fnGetQRCodeDetail(qrCode, floorId) {
+            var data = JSON.stringify({ code: qrCode, floorId: floorId });
+            hdfCodeId.val("0");
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Production/GetTempQRCodeTraceByCodeWithFloorAsync', data)).then(function (res, status) {
+                console.log(res);
+                fnBindQRCodeData(res);
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        function fnBindQRCodeData(obj) {
+            if (!$.isEmptyObject(obj)) {
+                hdfCodeId.val(obj.CodeId);
+                $(".beltName").empty();
+                $(".beltName").text('(' + obj.ProductionFloorName + ')-(' + obj.AssemblyLineName + ')-(' + obj.QCLineName + ')');
+                $('.itemName').empty();
+                $('.itemName').text(obj.ItemName + ' [' + obj.ItemTypeName + '-' + obj.WarehouseName + ']');
+                $('.statestatus').empty();
+                $('.statestatus').append('<span class="badge badge-warning">' + obj.StateStatus + '</span>');
+                $('.packagingLine').empty();
+                $('.packagingLine').text(obj.PackagingLineName);
+                $('.imei').empty();
+                $('.imei').text(obj.IMEI);
+                $('.batteryCode').empty();
+                $('.batteryCode').text(obj.BatteryCode);
+                if (obj.StateStatus == "MiniStock") {
+                    $("#btnSubmit").text('Save');
+                }
+                else {
+                    $("#btnSubmit").text('Update');
+                }
+
+                txtBarCode.focus();
+            }
+        }
+
+        txtBarCode.change(function () {
+            //if (txtBarCode.val().trim() != "") {
+
+            //}
+        })
+
+        function validateInput() {
+            var isValid = true;
+            if (ddlPackagingLine.val() == "") {
+                isValid = false;
+            }
+            if (txtQRCode.val().trim() == "") {
+                isValid = false;
+            }
+            if (txtBarCode.val().trim() == "") {
+                isValid = false;
+            }
+            else {
+                if ($.trim(txtBarCode.val()).length < 15)
+                    isValid = false;
+            }
+            if (TryParseInt(hdfCodeId.val(), 0) <= 0) {
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateInput()) {
+                disable("btnSubmit");
+                var floorId = ddlPackagingLine.val() != "" ? ddlPackagingLine.val().split("#") : ["0", "0"];
+                var packagingLineName = dropDownSelectedText("ddlPackagingLine");
+                packagingLineName = packagingLineName.substring(0, packagingLineName.lastIndexOf("["));
+                var data = JSON.stringify({ codeId: hdfCodeId.val(), qrCode: txtQRCode.val(), barCode: txtBarCode.val(), floorId: floorId[1], packagingLineId: floorId[0], packagingLineName: packagingLineName.trim() });
+                console.log(data);
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQRCodeIEMIAsync', data, getToken())).then(function (res, status) {
+                    if (res === true && status == "success") {
+                        resetUI();
+                        toastrSuccessAlert(execuStatus.successSave);
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("btnSubmit");
+                }).fail(function (error) {
+                    toastrErrorAlert(execuStatus.fail);
+                    console.log(error);
+                    enable("btnSubmit");
+                })
+            }
+        })
+
+        function resetUI() {
+            $(".beltName").empty();
+            $('.itemName').empty();
+            $('.statestatus').empty();
+            $('.packagingLine').empty();
+            $('.imei').empty();
+            $('.batteryCode').empty();
+            txtBarCode.val('');
+            txtQRCode.val('');
+            ddlPackagingLine.val('')
+        }
+
+    </script>
+}

@@ -15,6 +15,7 @@ namespace ERPBO.Production.ViewModels
         [RequisitionForInProductionRequisitionAttr]
         public long AssemblyLineId { get; set; }
         public long PackagingLineId { get; set; }
+        public long? RepairLineId { get; set; }
         public long? DescriptionId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
@@ -39,6 +40,8 @@ namespace ERPBO.Production.ViewModels
         public string AssemblyLineName { get; set; }
         [StringLength(100)]
         public string PackagingLineName { get; set; }
+        [StringLength(100)]
+        public string RepairLineName { get; set; }
         [StringLength(100)]
         public string ModelName { get; set; }
         [StringLength(100)]

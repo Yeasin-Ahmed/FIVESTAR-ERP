@@ -217,6 +217,8 @@
     <Compile Include="Inventory\ViewModels\IQCViewModel.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
+    <Compile Include="Production\DomainModels\MiniStockTransferDetail.cs" />
+    <Compile Include="Production\DomainModels\MiniStockTransferInfo.cs" />
     <Compile Include="Production\DomainModels\ProductionAssembleStockDetail.cs" />
     <Compile Include="Production\DomainModels\ProductionAssembleStockInfo.cs" />
     <Compile Include="Production\DomainModels\ProductionFaultyStockDetail.cs" />
@@ -319,6 +321,10 @@
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemPreparationDetailWithInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\BatteryWriteDTO.cs" />
+    <Compile Include="Production\DTOModel\IMEIWriteDTO.cs" />
+    <Compile Include="Production\DTOModel\MiniStockTransferDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\MiniStockTransferInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionAssembleStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionAssembleStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionFaultyStockDetailDTO.cs" />
@@ -401,6 +407,7 @@
     <Compile Include="Production\DTOModel\TransferStockToQCDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferStockToQCInfoDTO.cs" />
     <Compile Include="Production\ReportModels\ProductionRequisitionReport.cs" />
+    <Compile Include="Production\ReportModels\QRCodesByRef.cs" />
     <Compile Include="Production\ViewModels\AddingFaultyByQRCodeViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockInfoViewModel.cs" />
@@ -420,9 +427,13 @@
     <Compile Include="Production\ViewModels\FinishGoodsStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\FinishGoodsStockInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\ItemPreparationDetailWithInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\BatteryWriteViewModel.cs" />
+    <Compile Include="Production\ViewModels\IMEIWriteViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnDetailListViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\MiniStockTransferDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\MiniStockTransferInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingItemStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingItemStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineStockDetailViewModel.cs" />

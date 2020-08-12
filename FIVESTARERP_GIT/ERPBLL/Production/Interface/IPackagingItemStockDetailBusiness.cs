@@ -13,5 +13,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<PackagingItemStockDetail> GetPackagingItemStockDetails(long orgId);
         bool SavePackagingItemStockOut(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId);
         bool SavePackagingItemStockIn(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId);
+        bool SavePackagingItemStockInByMiniStockTransfer(long transferId, string status, long userId, long orgId);
     }
 }

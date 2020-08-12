@@ -162,7 +162,7 @@ namespace ERPWeb.Controllers
                         // Subsubmenu
                         List<UserSubSubmenuViewModel> listOfSubSubmenu = new List<UserSubSubmenuViewModel>();
                         var subsubmenuItems = (from sub in userAllMenus
-                                               where sub.ParentSubMenuId == submenu.ParentSubMenuId
+                                               where sub.ParentSubMenuId == submenu.ParentSubMenuId && sub.IsViewable == true
                                                select new { SubmenuName = sub.SubMenuName, SubmenuId = sub.SubmenuId, ControllerName = sub.ControllerName, ActionName = sub.ActionName }).ToList();
 
                         foreach (var item in subsubmenuItems)

@@ -518,10 +518,10 @@
             pageNo = 1;
         }
 
-        $(document).on('click', 'a.data-item-detail', function (e) {
+        $(document).on('click', 'a.data-item-detail-RFQ', function (e) {
             e.preventDefault();
             hdfInfoId.val("0")
-            var id = $(this).attr("data-item-detail");
+            var id = $(this).attr("data-item-detail-RFQ");
             hdfInfoId.val(id);
             $.when(getReqWithData('html', type.get, '/Production/GetReceiveStockForRepairFromQC', { flag: "detail", transferInfoId: id })).then(function (res, status) {
                 if (status === "success") {
@@ -535,7 +535,7 @@
         })
 
         
-        $(document).on("click", ".btnAccepted", function (e) {
+        $(document).on("click", ".btnAcceptedRFQ", function (e) {
             e.preventDefault();
             fnTransferStateChange(hdfInfoId.val(), reqStatus.accepted);
         })

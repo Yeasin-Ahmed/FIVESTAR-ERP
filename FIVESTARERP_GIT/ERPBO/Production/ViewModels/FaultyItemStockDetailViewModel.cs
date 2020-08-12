@@ -30,6 +30,7 @@ namespace ERPBO.Production.ViewModels
         public long? UnitId { get; set; }
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
+        public bool IsChinaFaulty { get; set; }
         public string StockStatus { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
@@ -62,5 +63,6 @@ namespace ERPBO.Production.ViewModels
         public string ItemName { get; set; }
         [StringLength(100)]
         public string UnitName { get; set; }
+        public string FaultyReason { get; set; }
     }
 }

@@ -13,7 +13,13 @@
                         <a class="nav-link active" id="custom-tabs-two-requisitionList-tab" data-toggle="pill" href="#custom-tabs-two-requisitionList" role="tab" aria-controls="custom-tabs-two-requisitionList" aria-selected="true">Requisition List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-addRequisition-tab" data-toggle="pill" href="#custom-tabs-two-addRequisition" role="tab" aria-controls="custom-tabs-two-addRequisition" aria-selected="true">Add Requisition</a>
+                        <a class="nav-link" id="custom-tabs-two-addBundleRequisition-tab" data-toggle="pill" href="#custom-tabs-two-addBundleRequisition" role="tab" aria-controls="custom-tabs-two-addBundleRequisition" aria-selected="true">Bundle Requisition</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-addSingleRequisition-tab" data-toggle="pill" href="#custom-tabs-two-addSingleRequisition" role="tab" aria-controls="custom-tabs-two-addSingleRequisition" aria-selected="true">Single Requisition</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-transferList-tab" data-toggle="pill" href="#custom-tabs-three-transferList" role="tab" aria-controls="custom-tabs-three-transferList" aria-selected="true">Mini Stock Transfer</a>
                     </li>
                 </ul>
             </div>
@@ -63,7 +69,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="txtReqCodeList" class="control-label font-weight-bold">Req Code</label>
-                                                <input type="text" id="txtReqCodeList" class="form-control form-control-sm" placeholder="Enter Code Here"/>
+                                                <input type="text" id="txtReqCodeList" class="form-control form-control-sm" placeholder="Enter Code Here" />
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="ddlWarehouseList" class="control-label font-weight-bold">Warehouse</label>
@@ -127,14 +133,14 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("GetRequisitionByItemInfoAndDetail", new { @flag = "View", @reqFlag= "Direct" });}
+                                            @{Html.RenderAction("GetRequisitionByItemInfoAndDetail", new { @flag = "View", @reqFlag = "Direct" });}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-addRequisition" role="tabpanel" aria-labelledby="custom-tabs-two-addRequisition-tab">
+                    <div class="tab-pane fade show" id="custom-tabs-two-addBundleRequisition" role="tabpanel" aria-labelledby="custom-tabs-two-addRequisition-tab">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -144,7 +150,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    Add Requisition
+                                                    Add Bundle Requisition
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -166,7 +172,7 @@
                                                     <option value="Assembly" selected>Assembly</option>
                                                     <option value="Packaging">Packaging</option>
                                                     @*<option value="Production">Production</option>
-                <option value="Repair">Repair</option>*@
+                                        <option value="Repair">Repair</option>*@
                                                 </select>
                                                 <span class="error hide req-reqFor">REQ For is required</span>
                                             </div>
@@ -256,6 +262,196 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-addSingleRequisition" role="tabpanel" aria-labelledby="custom-tabs-two-addSingleRequisition-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Add Single Requisition
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <label for="ddlReqTypeSingleReq" class="control-label">
+                                                    REQ Type
+                                                </label>
+                                                @Html.DropDownList("ddlReqTypeSingleReq", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionType, "--Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                <span class="error hide req-single-type">Requisition Type is required</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlReqForSingleReq" class="control-label font-weight-bold">REQ For</label>
+                                                <select id="ddlReqForSingleReq" class="form-control form-control-sm">
+                                                    <option value="Assembly" selected>Assembly</option>
+                                                    <option value="Packaging">Packaging</option>
+                                                    @*<option value="Production">Production</option>
+                                        <option value="Repair">Repair</option>*@
+                                                </select>
+                                                <span class="error hide req-single-reqFor">REQ For is required</span>
+                                            </div>
+                                            <div class="col-md-2 reqFor-Single assembly-single-REQ">
+                                                <label for="ddlAssemblyLineWithProductionSingleRequisition" class="control-label">Assembly</label>
+                                                @Html.DropDownList("ddlAssemblyLineWithProductionSingleRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlAssemblyLineWithProduction, "--Select Assembly--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-single-line">Assembly is required</span>
+                                            </div>
+                                            <div class="col-md-2 reqFor-Single packaging-single-REQ hide">
+                                                <label for="ddlPackagingLineWithProductionSingleRequisition" class="control-label">Packaging</label>
+                                                @Html.DropDownList("ddlPackagingLineWithProductionSingleRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
+                                                <span class="error hide req-single-pack">Packaging is required</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameSingleRequisition" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameSingleRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                                                <span class="error hide req-single-model">Model is required</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlItemsSingleRequisition" class="control-label font-weight-bold">Item</label>
+                                                @Html.DropDownList("ddlItemsSingleRequisition", (IEnumerable<SelectListItem>)ViewBag.ddlItemsForSingleReq, "--Select Item--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <span class="error hide req-single-item">Item is required</span>
+                                                <span class="error hide dup-single-item">Duplicate item</span>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="txtSingleQuantity" class="control-label font-weight-bold">
+                                                    Qty
+                                                    <span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
+                                                </label>
+                                                <input type="number" class="form-control form-control-sm" id="txtSingleQuantity" />
+                                                <span class="error hide req-single-qty">Quantity is required</span>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="btnSingleAddtoList" class="control-label font-weight-bold" style="visibility:hidden">Add</label>
+                                                <div class="clearfix">
+                                                    <button type="button" class="btn btn-sm btn-warning btn-flat" id="btnSingleAddtoList">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-striped table-sm text-sm table-responsive-lg" id="tblSingleItems">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="9">
+                                                                <button class="btn btn-outline-success btn-sm float-lg-left" id="btnSingleSubmit">SAVE <i class="fas fa-paper-plane"></i></button>
+                                                            </th>
+                                                        </tr>
+                                                        <tr class="text-center btn-dark">
+                                                            <th style="width:5%">#SL</th>
+                                                            <th style="width:45%">Item Name</th>
+                                                            <th style="width:10%">Quantity</th>
+                                                            <th style="width:10%">Type Of Unit</th>
+                                                            <th style="width:20%" class="hide">Remarks</th>
+                                                            <th style="width:10%">Action</th>
+                                                            <th class="hide itemType"></th>
+                                                            <th class="hide item"></th>
+                                                            <th class="hide"></th>
+                                                            <th class="hide"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-three-transferList" role="tabpanel" aria-labelledby="custom-tabs-three-transferList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">Mini Stock Transfer List</h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="/Production/CreateMiniStockTransfer" class="float-right btn btn-sm btn-outline-primary">Add Transfer</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="txtMSTCode" class="control-label font-weight-bold">Transfer Code</label>
+                                                <input type="text" id="txtMSTCode" class="form-control form-control-sm" placeholder="Search By REQ Code" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlLineNumberTL" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlLineNumberTL", (IEnumerable<SelectListItem>)ViewBag.ddlProductionFloor, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlPackagingTL" class="control-label font-weight-bold">Packaging Line</label>
+                                                <select id="ddlPackagingTL" class="form-control form-control-sm">
+                                                    <option value="0">--Select Packaging--</option>
+                                                </select>
+                                                <span class="error hide req-packaging">Packaging Line is required</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptFromDateTransferItem" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date-transferItem dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptToDateTransferItem" />
+                                                    <div class="input-group-prepend remove-date-transferItem dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatusTL" class="control-label font-weight-bold">State Status</label>
+                                                <select class="form-control form-control-sm" id="ddlStateStatusTL">
+                                                    <option value="">Select Status</option>
+                                                    <option value="Send">Send</option>
+                                                    <option value="Received">Received</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="row">
+                                        <div class="card-body">
+                                            <div class="col-md-12" id="dataContainer3">
+                                                @{Html.RenderAction("GetMiniStockTransferInfos", new { @flag = "View" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -272,6 +468,21 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdTransferInfoId" />
+                <h4 id="modalHeading" class="modal-title">Mini Stock Transfer Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelDataContainer2">
 
             </div>
         </div>
@@ -312,6 +523,26 @@
         var assemblyReq = '';
         var packagingReq = '';
 
+        // Single Item Requisition //
+        var ddlReqTypeSingleReq = $("#ddlReqTypeSingleReq");
+        var ddlReqForSingleReq = $("#ddlReqForSingleReq");
+        var ddlAssemblyLineWithProductionSingleRequisition = $("#ddlAssemblyLineWithProductionSingleRequisition");
+        var ddlPackagingLineWithProductionSingleRequisition = $('#ddlPackagingLineWithProductionSingleRequisition');
+        var ddlModelNameSingleRequisition = $('#ddlModelNameSingleRequisition');
+        var ddlItemsSingleRequisition = $("#ddlItemsSingleRequisition");
+        var txtSingleQuantity = $("#txtSingleQuantity");
+        var warehouseSingleReq = '';
+        var itemTypeSingleReq = '';
+        var itemSingleReq = '';
+
+        // Transfer List
+        var ddlLineNumberTL = $("#ddlLineNumberTL");
+        var ddlPackagingTL = $("#ddlPackagingTL");
+        var ddlStateStatusTL = $("#ddlStateStatusTL");
+        var txtMSTCode = $("#txtMSTCode");
+        var dptFromDateTransferItem = $("#dptFromDateTransferItem");
+        var dptToDateTransferItem = $("#dptToDateTransferItem");
+
         $(document).ready(function () {
             //disable("#ddlReqForRequisition");
             //Initialize Select2 Elements
@@ -331,6 +562,21 @@
                 todayHighlight: true
             });
             $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
+            dptFromDateTransferItem.prop('readonly', true);
+            dptToDateTransferItem.prop('readonly', true);
+            dptFromDateTransferItem.css("background-color", "#fff");
+            dptToDateTransferItem.css("background-color", "#fff");
+            $('#dptFromDateTransferItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDateTransferItem').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
                 todayHighlight: true
@@ -444,6 +690,21 @@
             else {
                 bootbox.alert('Bundle not found');
             }
+        }
+
+        function clearCtrl() {
+            $("#tblMergeItems tbody").empty();
+            $("#tblItems").empty();
+            $("#ddlReqTypeRequisition").val('');
+            enable("#ddlReqTypeRequisition");
+            ddlReqForRequisition.val('');
+            ddlAssemblyLineWithProductionRequisition.val('');
+            ddlModelNameRequisition.val('')
+            enable("#ddlModelNameRequisition");
+            ddlModelNameRequisition.trigger('change');
+            ddlItemsRequisition.val('');
+            ddlItemsRequisition.trigger('change');
+            txtQuantity.val('0');
         }
 
         function fnBindMergeItemsInTable(obj, qty) {
@@ -569,9 +830,8 @@
                     console.log(res);
                     console.log(status);
                     if (res === true) {
+                        clearCtrl();
                         toastrSuccessAlert(execuStatus.successSave);
-                        $("#tblMergeItems tbody").empty();
-                        $("#tblItems tbody").empty();
                         LoadDataTableForReqList();
                         $("#custom-tabs-two-requisitionList-tab").trigger('click');
                     }
@@ -770,5 +1030,333 @@
                 console.log(error);
             })
         })
+
+        // Single Item Requisition //
+        ddlReqForSingleReq.change(function () {
+            $(".reqFor-Single").addClass('hide')
+            if (ddlReqForSingleReq.val() == "Assembly") {
+                $(".assembly-single-REQ").removeClass('hide');
+                ddlAssemblyLineWithProductionSingleRequisition.val("");
+            }
+            if (ddlReqForSingleReq.val() == "Packaging") {
+                $(".packaging-single-REQ").removeClass('hide');
+                ddlPackagingLineWithProductionSingleRequisition.val("");
+            }
+        })
+
+        function getItemDetailsBySingleReq() {
+            warehouseSingleReq = '';
+            itemTypeSingleReq = '';
+            itemSingleReq = '';
+            if (ddlItemsSingleRequisition.val() != '') {
+                itemSingleReq = ddlItemsSingleRequisition.val().substring(0, ddlItemsSingleRequisition.val().indexOf("#"));
+                itemTypeSingleReq = ddlItemsSingleRequisition.val().substring(ddlItemsSingleRequisition.val().indexOf("#") + 1, ddlItemsSingleRequisition.val().lastIndexOf("#"));
+                warehouseSingleReq = ddlItemsSingleRequisition.val().substring(ddlItemsSingleRequisition.val().lastIndexOf("#") + 1);
+            }
+        }
+
+        ddlItemsSingleRequisition.change(function () {
+            $("#unitName").text('');
+            getItemDetailsBySingleReq();
+            if (TryParseInt(itemSingleReq, 0) > 0) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetUnitByItemId', JSON.stringify({ itemId: TryParseInt(itemSingleReq, 0) }), getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res != null && status == "success") {
+                        $("#unitName").text('('+res.UnitSymbol+')');
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+        })
+
+        function validateSingleAddToList() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (ddlItemsSingleRequisition.val() == "") {
+                $(".req-single-item").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                var count = 0;
+                $.each($("#tblSingleItems tbody tr"), function (index, item) {
+                    var rowItemId = $(this).children('td').eq('7').html();
+                    getItemDetailsBySingleReq();
+                    if (TryParseInt(itemSingleReq, 0) == TryParseInt(rowItemId, 0)) {
+                        count++;
+                    }
+                })
+                if (count > 0) {
+                    $(".dup-single-item").removeClass('hide');
+                    isValid = false;
+                }
+            }
+            if (TryParseInt(txtSingleQuantity.val(), 0) <= 0) {
+                $(".req-single-qty").removeClass('hide');
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        function validateSingleReqSubmit() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if (ddlReqTypeSingleReq.val() == "") {
+                $(".req-single-type").removeClass('hide');
+                isValid = false;
+            }
+            if (ddlReqForSingleReq.val() == "") {
+                isValid = false;
+                $(".req-single-reqFor").removeClass('hide');
+            }
+            else {
+                if (ddlReqTypeSingleReq.val() == "Assembly") {
+                    if (ddlAssemblyLineWithProductionSingleRequisition.val() == "") {
+                        isValid = false;
+                        $(".req-single-line").removeClass('hide');
+                    }
+                }
+                else if (ddlReqTypeSingleReq.val() == "Packaging") {
+                    if (ddlPackagingLineWithProductionSingleRequisition.val() == "") {
+                        isValid = false;
+                        $(".req-single-pack").removeClass('hide');
+                    }
+                }
+            }
+            if (ddlModelNameSingleRequisition.val() == "") {
+                isValid = false;
+                $(".req-single-model").removeClass('hide');
+            }
+
+            if ($("#tblSingleItems tbody tr").length == 0) {
+                toastrErrorAlert("No row(s) found to save");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        function clearAllFOrSingleReq() {
+            $(".error").addClass('hide');
+            $("#ddlReqTypeSingleReq").val("")
+            ddlAssemblyLineWithProductionSingleRequisition.val("");
+            ddlPackagingLineWithProductionSingleRequisition.val("");
+            ddlModelNameSingleRequisition.val("");
+            ddlModelNameSingleRequisition.trigger("change");
+            ddlItemsSingleRequisition.val("");
+            ddlItemsSingleRequisition.trigger("change");
+            txtSingleQuantity.val('0');
+            $("#tblSingleItems tbody").empty();
+        }
+
+        $("#btnSingleAddtoList").click(function (e) {
+            e.preventDefault();
+            if (validateSingleAddToList()) {
+                getItemDetailsBySingleReq();
+                var sl = $("#tblSingleItems tbody tr").length;
+                var re = ''; //(item.Remarks === null) ? "" : item.Remarks;
+                var td1 = "<td class='text-center'><b>" + (sl + 1) + "</b></td>"
+                var td2 = "<td>" + dropDownSelectedText("ddlItemsSingleRequisition") + "</td>";
+                var td3 = "<td class='text-center text-bold'>" + TryParseInt(txtSingleQuantity.val(), 0)+ "</td>";
+                var td4 = "<td class='text-center text-bold'>" + $("#unitName").text(); + "</td>";
+                var td5 = "<td class='hide'>" + re + "</td>";
+                var td6 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-single-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+                var td7 = "<td class='hide'>" + itemTypeSingleReq + "</td>";
+                var td8 = "<td class='hide'>" + itemSingleReq + "</td>";
+                var td9 = "<td class='hide'>" + warehouseSingleReq + "</td>";
+                var td10 = "<td class='hide'>" + txtSingleQuantity.val() + "</td>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + "</tr>";
+                $("#tblSingleItems tbody").append(tr);
+                txtSingleQuantity.val('0');
+                ddlItemsRequisition.val('')
+            }
+        })
+
+        $(document).on("click", "a.data-onfly-single-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            removeTableRow("#tblSingleItems tbody", index);
+            fnFixTheTbodyRowSerial("#tblSingleItems", index);
+        })
+
+        $("#btnSingleSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateSingleReqSubmit() === true) {
+                bootbox.confirm("Are you sure you want to save", function (result) {
+                    if (result === true) {
+                        disable("#btnSingleSubmit")
+                        var reqDetails = [];
+                        reqDetails.length = 0;
+
+                        var wi = $("#tblSingleItems tbody").children('tr').eq(0).children('td').eq(8).html();
+                        $.each($("#tblSingleItems tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            var iTypeId = tds.eq('6').html();
+                            var iId = tds.eq('7').html();
+                            var qty = tds.eq('2').html();
+                            var rmk = tds.eq('4').html();
+                            reqDetails.push({
+                                ReqDetailId: 0,
+                                WarehouseId: wi,
+                                ItemTypeId: TryParseInt(iTypeId, 0),
+                                ItemId: TryParseInt(iId, 0),
+                                Quantity: TryParseInt(qty, 0),
+                                Remarks: rmk
+                            })
+                        })
+
+                        var floorId = 0;
+                        var assemblyId = 0;
+                        var packagingId = 0;
+                        if (ddlReqForSingleReq.val() == "Assembly") {
+                            var itemValue = ddlAssemblyLineWithProductionSingleRequisition.val();
+                            assemblyId = itemValue.substring(0, itemValue.indexOf("#"));
+                            floorId = itemValue.substring(itemValue.indexOf("#")+1);
+                        }
+                        else if (ddlReqForSingleReq.val() == "Packaging") {
+                            var itemValue = ddlPackagingLineWithProductionSingleRequisition.val();
+                            packagingId = itemValue.substring(0, itemValue.indexOf("#"));
+                            floorId = itemValue.substring(itemValue.indexOf("#") + 1);
+                        }
+                        var requsitionInfo =
+                        {
+                            ReqInfoId: 0,
+                            LineId: floorId,
+                            WarehouseId: wi,
+                            DescriptionId: TryParseInt(ddlModelNameSingleRequisition.val(), 0),
+                            RequisitionType: ddlReqTypeSingleReq.val(),
+                            RequisitionFor: ddlReqForSingleReq.val(),
+                            ItemTypeId: 0,
+                            ItemId: 0,
+                            ForQty: 0,
+                            AssemblyLineId: assemblyId,
+                            PackagingLineId: packagingId,
+                            IsBundle: false,
+                            ReqDetails: reqDetails,
+                            Flag:"Direct"
+                        };
+                        console.log("Final Data");
+                        var data = JSON.stringify({ model: requsitionInfo });
+                        console.log(data);
+
+                        //return;
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveRequsition', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                           
+                            if (res == true) {
+                                toastrSuccessAlert(execuStatus.successSave);
+                                hdfReqInfoId.val("0");
+                                setTimeout(function () {
+                                    //LoadDataTableForReqList();
+                                }, 1000);
+
+                            }
+                            else {
+                                toastrErrorAlert(execuStatus.fail);
+                            }
+                            enable("#btnSingleSubmit")
+                        }).fail(function (error) {
+                            consoleLog(error);
+                            toastrErrorAlert(execuStatus.fail);
+                            enable("#btnSingleSubmit")
+                        })
+                    }
+                })
+            }
+        })
+
+        // Transfer List //
+        ddlLineNumberTL.change(function () {
+            LoadTransferListDataTable();
+            clearDropdown("ddlPackagingTL");
+            if (ddlLineNumberTL.val() != "") {
+                LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackagingTL, JSON.stringify({ lineId: ddlLineNumberTL.val() }));
+            }
+        })
+
+        ddlPackagingTL.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date-transferItem', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateTransferItem.val() !== '') {
+                    dptToDateTransferItem.val('');
+                    LoadTransferListDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateTransferItem.val() !== '') {
+                    dptFromDateTransferItem.val('');
+                    LoadTransferListDataTable();
+                }
+            }
+        })
+        dptFromDateTransferItem.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        dptToDateTransferItem.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        txtMSTCode.keyup(function () {
+            LoadTransferListDataTable();
+        })
+
+        ddlStateStatusTL.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        function LoadTransferListDataTable() {
+            //string flag,long? floorId,long? packagingLineId, string status, string fromDate, string toDate, string transferCode, long? transferId
+            var data = { flag: "view", floorId: TryParseInt(ddlLineNumberTL.val(), 0), packagingLineId: TryParseInt(ddlPackagingTL.val(), 0), status: ddlStateStatusTL.val(), fromDate: dptFromDateTransferItem.val(), toDate: dptToDateTransferItem.val(), transferCode: txtMSTCode.val(), transferInfoId: 0 };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetMiniStockTransferInfos', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                        //$(".cell-action").addClass('hide');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        $(document).on('click', 'a.data-item-transfer', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            //alert(id);
+            //return;
+            if (TryParseInt(id, 0) > 0) {
+                LoadDetails(id);
+            }
+        })
+
+        function LoadDetails(id) {
+
+            var data = { flag: "detail", floorId: 0, packagingLineId: 0, modelId: 0, itemTypeId: 0, itemId: 0, status: 0, transferId: id, fromDate: "", toDate: "" };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetMiniStockTransferInfos', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#modalDetails").modal("show");
+                    $("#modelDataContainer2").empty();
+                    $("#modelDataContainer2").append(res);
+                    $(".btnReceiveMiniStock").addClass('hide');
+                    $(".btnSendMiniStock").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+
     </script>
 }

@@ -72,11 +72,11 @@ function toggleAlert(msg) {
 }
 
 function toastrErrorAlert(msg) {
-    toastr.error(msg).fadeOut(1500);
+    toastr.error(msg).fadeOut(1000);
 }
 
 function toastrSuccessAlert(msg) {
-    toastr.success(msg).fadeOut(1500);
+    toastr.success(msg).fadeOut(1000);
 }
 
 

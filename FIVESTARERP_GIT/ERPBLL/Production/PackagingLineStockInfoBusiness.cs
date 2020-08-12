@@ -77,15 +77,15 @@ namespace ERPBLL.Production
             }
 
             query = string.Format(@"
-Select psi.PLStockInfoId,pl.LineNumber 'ProductionFloorName', psi.PackagingLineId,pac.PackagingLineName,
+Select psi.PLStockInfoId,pl.LineNumber 'ProductionLineName', psi.PackagingLineId,pac.PackagingLineName,
 psi.DescriptionId,de.DescriptionName 'ModelName',psi.WarehouseId,w.WarehouseName,psi.ItemTypeId,it.ItemName 'ItemTypeName',psi.ItemId,i.ItemName,psi.StockInQty,psi.StockOutQty
 From [Production].dbo.tblPackagingLineStockInfo psi
 Inner Join [Production].dbo.tblProductionLines pl on psi.ProductionLineId = pl.LineId
-Inner Join [Production].dbo.tblPackagingLine pac on psi.PackagingLineId = pac.PackagingLineId
-Inner Join [Inventory].dbo.tblDescriptions de on psi.DescriptionId = de.DescriptionId
-Inner Join [Inventory].dbo.tblWarehouses w on psi.WarehouseId = w.Id
-Inner Join [Inventory].dbo.tblItemTypes it on psi.ItemTypeId = it.ItemId
-Inner Join [Inventory].dbo.tblItems i on psi.ItemId = i.ItemId Where 1=1 {0}",Utility.ParamChecker(param));
+Left Join [Production].dbo.tblPackagingLine pac on psi.PackagingLineId = pac.PackagingLineId
+Left Join [Inventory].dbo.tblDescriptions de on psi.DescriptionId = de.DescriptionId
+Left Join [Inventory].dbo.tblWarehouses w on psi.WarehouseId = w.Id
+Left Join [Inventory].dbo.tblItemTypes it on psi.ItemTypeId = it.ItemId
+Left Join [Inventory].dbo.tblItems i on psi.ItemId = i.ItemId Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
     }

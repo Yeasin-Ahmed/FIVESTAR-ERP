@@ -32,5 +32,8 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-sm btn-flat btn-primary btnAcceptRepairTransfer">Accept</button>
+    @if (ViewBag.StateStatus == "Approved")
+    {
+        <button class="btn btn-sm btn-flat btn-primary btnAcceptRepairTransfer">Accept</button>
+    }
 </div>

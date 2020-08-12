@@ -5,6 +5,7 @@
     string level = ViewBag.Level;
     string badge = Model.StateStatus == "Pending" ? "badge badge-warning" : (Model.StateStatus == "Approved" ? "badge badge-success" : (Model.StateStatus == "Accepted" ? "badge badge-primary" : "badge badge-danger"));
     string sectionName = (Model.AssemblyLineId != null && Model.AssemblyLineId > 0) ? Model.AssemblyLineName : Model.PackagingLineName;
+    string totalItemQty = Model.RequisitionItemInfos.Sum(s => s.Quantity).ToString() + " pcs";
 }
 
 <div class="row text-sm">
@@ -19,82 +20,127 @@
                     <td class="alert-secondary" style="width:12%">Section</td>
                     <td class="text-bold" style="width:16%; background-color:#e1dada">@sectionName</td>
                     <td class="alert-secondary" style="width:10%">Model</td>
-                    <td class="text-bold" style="width:12%; background-color:#e1dada">@Model.ModelName</td>
-                </tr>
-                <tr>
-                    <td class="alert-secondary" style="width:10%">Warehouse</td>
-                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.WarehouseName</td>
-                    <td class="alert-secondary" style="width:10%">Requistion By</td>
-                    <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
-                    <td class="alert-secondary" style="width:12%">Entry Date</td>
-                    <td class="text-bold" style="width:16%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
-                    <td class="alert-secondary" style="width:10%">Status</td>
                     <td class="text-bold" style="width:12%; background-color:#e1dada">
-                        <span class="@badge">
-                            @Model.StateStatus
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                        @Model.ModelName
+                        @if (Model.IsBundle)
+                        {
+                            <span class="badge badge-warning">@totalItemQty</span>
+                        }
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="alert-secondary" style="width:10%">Warehouse</td>
+                <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.WarehouseName</td>
+                <td class="alert-secondary" style="width:10%">Requistion By</td>
+                <td class="text-bold" style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
+                <td class="alert-secondary" style="width:12%">Entry Date</td>
+                <td class="text-bold" style="width:16%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                <td class="alert-secondary" style="width:10%">Status</td>
+                <td class="text-bold" style="width:12%; background-color:#e1dada">
+                    <span class="@badge">
+                        @Model.StateStatus
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </div>
 <div class="row text-sm">
-    <div class="col-md-5">
-        <table class="table table-responsive-lg table-bordered table-sm">
-            <tbody>
-                @foreach (var rii in Model.RequisitionItemInfos)
-                {
-                    sl = 0;
-                    string itemNameRi = rii.ItemName + " [" + rii.ItemTypeName + "-" + rii.WarehouseName + "]";
-                    <tr class="btn-dark">
-                        <th colspan="4">
-                            @itemNameRi
-                            <span class="text-primary">(Qty-@rii.Quantity.ToString())</span>
-                        </th>
-                    </tr>
-                    foreach (var rid in rii.RequisitionItemDetails)
+    @if (Model.IsBundle)
+    {
+        <div class="col-md-5">
+            <table class="table table-responsive-lg table-bordered table-sm">
+                <tbody>
+                    @foreach (var rii in Model.RequisitionItemInfos)
                     {
-                        string itemName = rid.ItemName + " [" + rid.ItemTypeName + "-" + rid.WarehouseName + "]";
-                        sl = sl + 1;
+                        sl = 0;
+                        string itemNameRi = rii.ItemName + " [" + rii.ItemTypeName + "-" + rii.WarehouseName + "]";
+                        <tr class="btn-dark">
+                            <th colspan="4">
+                                @itemNameRi
+                                <span class="text-primary">(Qty-@rii.Quantity.ToString())</span>
+                                @if (Model.StateStatus == "Accepted" && level == "Assembly")
+                                {
+                                    <a href="@Url.Action("GetQrCodeFileByItemColorAndRefNum", "Report", new { itemId = rii.ItemId, referenceId = rii.ReqInfoId.ToString(), rptType = "EXCEL" })" target="_blank" class="btn btn-sm btn-default excel btn-flat float-right" title="Download QR Code Excel File">
+                                        <i class="fas fa-file-excel">
+                                        </i>
+                                    </a>
+                                }
+                            </th>
+                        </tr>
+                        foreach (var rid in rii.RequisitionItemDetails)
+                        {
+                            string itemName = rid.ItemName + " [" + rid.ItemTypeName + "-" + rid.WarehouseName + "]";
+                            sl = sl + 1;
+                            <tr>
+                                <td class="text-center text-bold">@sl</td>
+                                <td>@itemName</td>
+                                <td class="text-center text-bold">@rid.ConsumptionQty</td>
+                                <td class="text-center text-bold">@rid.TotalQuantity</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-7">
+            <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                <thead class="text-center">
+                    <tr class="btn-dark">
+                        <th>#SL</th>
+                        <th>Item Name</th>
+                        <th>Qty</th>
+                        <th>Type Of Unit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RequisitionDetails)
+                    {
+                        slNo = slNo + 1;
+                        string itemName = item.ItemName + " [" + item.ItemTypeName + "]";
                         <tr>
-                            <td class="text-center text-bold">@sl</td>
+                            <td class="text-center text-bold">@slNo</td>
                             <td>@itemName</td>
-                            <td class="text-center text-bold">@rid.ConsumptionQty</td>
-                            <td class="text-center text-bold">@rid.TotalQuantity</td>
+                            <td class="text-center text-bold">@item.Quantity</td>
+                            <td class="text-center text-bold">@item.UnitName</td>
                         </tr>
                     }
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-7">
-        <table class="table table-bordered table-striped table-sm table-responsive-lg">
-            <thead class="text-center">
-                <tr class="btn-dark">
-                    <th>#SL</th>
-                    <th>Item Name</th>
-                    <th>Type Of Unit</th>
-                    <th>Qty</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.RequisitionDetails)
-                {
-                    slNo = slNo + 1;
-                    string itemName = item.ItemName + " [" + item.ItemTypeName + "]";
-                    <tr>
-                        <td class="text-center text-bold">@slNo</td>
-                        <td>@itemName</td>
-                        <td class="text-center text-bold">@item.UnitName</td>
-                        <td class="text-center text-bold">@item.Quantity</td>
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-7">
+            <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                <thead class="text-center">
+                    <tr class="btn-dark">
+                        <th>#SL</th>
+                        <th>Item Name</th>
+                        <th>Qty</th>
+                        <th>Type Of Unit</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RequisitionDetails)
+                    {
+                        slNo = slNo + 1;
+                        string itemName = item.ItemName + " [" + item.ItemTypeName + "]";
+                        <tr>
+                            <td class="text-center text-bold">@slNo</td>
+                            <td>@itemName</td>
+                            <td class="text-center text-bold">@item.Quantity</td>
+                            <td class="text-center text-bold">@item.UnitName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
-@if (Model.StateStatus == "Approved" && level == "Assembly")
+@if (Model.StateStatus == "Approved" && (level == "Assembly" || level =="Packaging"))
 {
     <div class="modal-footer">
         <button class="btn btn-sm btn-success btn-flat btnAccepted">
