@@ -7,13 +7,13 @@ namespace ERPDAL.InventoryContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Inventory_IQCForignKey : IMigrationMetadata
+    public sealed partial class Inventory_AllEntities_12Aug2020 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Inventory_IQCForignKey));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Inventory_AllEntities_12Aug2020));
         
         string IMigrationMetadata.Id
         {
-            get { return "202008060958151_Inventory_IQCForignKey"; }
+            get { return "202008121414323_Inventory_AllEntities_12-Aug-2020"; }
         }
         
         string IMigrationMetadata.Source

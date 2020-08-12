@@ -283,45 +283,9 @@
     <Compile Include="FrontDeskDAL\FrontDeskUnitOfWork.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskBaseRepository.cs" />
     <Compile Include="FrontDeskDAL\IFrontDeskUnitOfWork.cs" />
-    <Compile Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.cs" />
-    <Compile Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.Designer.cs">
-      <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.cs" />
-    <Compile Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.Designer.cs">
-      <DependentUpon>202007070424522_Inventory_AddPreparationType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202007301032163_Inventory_%27tblIQCList.cs" />
-    <Compile Include="InventoryContextMigrations\202007301032163_Inventory_%27tblIQCList.Designer.cs">
-      <DependentUpon>202007301032163_Inventory_%27tblIQCList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008051217566_IQCItemReqDetailListInventory_.cs" />
-    <Compile Include="InventoryContextMigrations\202008051217566_IQCItemReqDetailListInventory_.Designer.cs">
-      <DependentUpon>202008051217566_IQCItemReqDetailListInventory_.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008060958151_Inventory_IQCForignKey.cs" />
-    <Compile Include="InventoryContextMigrations\202008060958151_Inventory_IQCForignKey.Designer.cs">
-      <DependentUpon>202008060958151_Inventory_IQCForignKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008061000122_Inventory_IQCForignKey_NonNullable.cs" />
-    <Compile Include="InventoryContextMigrations\202008061000122_Inventory_IQCForignKey_NonNullable.Designer.cs">
-      <DependentUpon>202008061000122_Inventory_IQCForignKey_NonNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008061026538_Inventory_AddIQCReqCodeProperty_NonNullable.cs" />
-    <Compile Include="InventoryContextMigrations\202008061026538_Inventory_AddIQCReqCodeProperty_NonNullable.Designer.cs">
-      <DependentUpon>202008061026538_Inventory_AddIQCReqCodeProperty_NonNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008080400484_Inventory_Add_IssueQty_Property_in_IQCReqDetailList.cs" />
-    <Compile Include="InventoryContextMigrations\202008080400484_Inventory_Add_IssueQty_Property_in_IQCReqDetailList.Designer.cs">
-      <DependentUpon>202008080400484_Inventory_Add_IssueQty_Property_in_IQCReqDetailList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008100750363_Inventory_tblIQCStockDetailandtblIQCStockInfo.cs" />
-    <Compile Include="InventoryContextMigrations\202008100750363_Inventory_tblIQCStockDetailandtblIQCStockInfo.Designer.cs">
-      <DependentUpon>202008100750363_Inventory_tblIQCStockDetailandtblIQCStockInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InventoryContextMigrations\202008101020377_Inventory_RemoveForeignKey.cs" />
-    <Compile Include="InventoryContextMigrations\202008101020377_Inventory_RemoveForeignKey.Designer.cs">
-      <DependentUpon>202008101020377_Inventory_RemoveForeignKey.cs</DependentUpon>
+    <Compile Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.cs" />
+    <Compile Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.Designer.cs">
+      <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
@@ -709,35 +673,8 @@
     <EmbeddedResource Include="FrontDeskContextMigrations\202008101006208_FrontDesk_CourierAndApproxBill.resx">
       <DependentUpon>202008101006208_FrontDesk_CourierAndApproxBill.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202006181444268_Inventory_AllEntities_18-june-2020.resx">
-      <DependentUpon>202006181444268_Inventory_AllEntities_18-june-2020.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202007070424522_Inventory_AddPreparationType.resx">
-      <DependentUpon>202007070424522_Inventory_AddPreparationType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202007301032163_Inventory_%27tblIQCList.resx">
-      <DependentUpon>202007301032163_Inventory_%27tblIQCList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008051217566_IQCItemReqDetailListInventory_.resx">
-      <DependentUpon>202008051217566_IQCItemReqDetailListInventory_.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008060958151_Inventory_IQCForignKey.resx">
-      <DependentUpon>202008060958151_Inventory_IQCForignKey.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008061000122_Inventory_IQCForignKey_NonNullable.resx">
-      <DependentUpon>202008061000122_Inventory_IQCForignKey_NonNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008061026538_Inventory_AddIQCReqCodeProperty_NonNullable.resx">
-      <DependentUpon>202008061026538_Inventory_AddIQCReqCodeProperty_NonNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008080400484_Inventory_Add_IssueQty_Property_in_IQCReqDetailList.resx">
-      <DependentUpon>202008080400484_Inventory_Add_IssueQty_Property_in_IQCReqDetailList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008100750363_Inventory_tblIQCStockDetailandtblIQCStockInfo.resx">
-      <DependentUpon>202008100750363_Inventory_tblIQCStockDetailandtblIQCStockInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InventoryContextMigrations\202008101020377_Inventory_RemoveForeignKey.resx">
-      <DependentUpon>202008101020377_Inventory_RemoveForeignKey.cs</DependentUpon>
+    <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
+      <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>

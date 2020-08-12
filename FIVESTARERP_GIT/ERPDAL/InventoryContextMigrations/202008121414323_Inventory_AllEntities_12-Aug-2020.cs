@@ -3,7 +3,7 @@ namespace ERPDAL.InventoryContextMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Inventory_AllEntities_18june2020 : DbMigration
+    public partial class Inventory_AllEntities_12Aug2020 : DbMigration
     {
         public override void Up()
         {
@@ -23,6 +23,110 @@ namespace ERPDAL.InventoryContextMigrations
                         UpdateDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.DescriptionId);
+            
+            CreateTable(
+                "dbo.tblIQCItemReqDetailList",
+                c => new
+                    {
+                        IQCItemReqDetailId = c.Long(nullable: false, identity: true),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        UnitId = c.Long(),
+                        Quantity = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        IssueQty = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                        IQCItemReqInfoId = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => t.IQCItemReqDetailId)
+                .ForeignKey("dbo.tblIQCItemReqInfoList", t => t.IQCItemReqInfoId, cascadeDelete: true)
+                .Index(t => t.IQCItemReqInfoId);
+            
+            CreateTable(
+                "dbo.tblIQCItemReqInfoList",
+                c => new
+                    {
+                        IQCItemReqInfoId = c.Long(nullable: false, identity: true),
+                        IQCReqCode = c.String(),
+                        IQCId = c.Long(),
+                        WarehouseId = c.Long(),
+                        DescriptionId = c.Long(),
+                        SupplierId = c.Long(),
+                        Remarks = c.String(),
+                        StateStatus = c.String(),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.IQCItemReqInfoId);
+            
+            CreateTable(
+                "dbo.tblIQCList",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        IQCName = c.String(maxLength: 100),
+                        Remarks = c.String(maxLength: 150),
+                        IsActive = c.Boolean(nullable: false),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.tblIQCStockDetails",
+                c => new
+                    {
+                        StockDetailId = c.Long(nullable: false, identity: true),
+                        IQCId = c.Long(),
+                        WarehouseId = c.Long(),
+                        DescriptionId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        UnitId = c.Long(),
+                        Quantity = c.Int(nullable: false),
+                        StockType = c.String(maxLength: 150),
+                        ReferenceNumber = c.String(maxLength: 150),
+                        SupplierId = c.Long(),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.StockDetailId);
+            
+            CreateTable(
+                "dbo.tblIQCStockInfo",
+                c => new
+                    {
+                        StockInfoId = c.Long(nullable: false, identity: true),
+                        WarehouseId = c.Long(),
+                        DescriptionId = c.Long(),
+                        ItemTypeId = c.Long(),
+                        ItemId = c.Long(),
+                        UnitId = c.Long(),
+                        StockInQty = c.Int(),
+                        StockOutQty = c.Int(),
+                        StockType = c.String(maxLength: 150),
+                        SupplierId = c.Long(),
+                        Remarks = c.String(maxLength: 150),
+                        OrganizationId = c.Long(nullable: false),
+                        EUserId = c.Long(),
+                        EntryDate = c.DateTime(),
+                        UpUserId = c.Long(),
+                        UpdateDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.StockInfoId);
             
             CreateTable(
                 "dbo.tblItemPreparationDetail",
@@ -51,6 +155,7 @@ namespace ERPDAL.InventoryContextMigrations
                 c => new
                     {
                         PreparationInfoId = c.Long(nullable: false, identity: true),
+                        PreparationType = c.String(maxLength: 100),
                         WarehouseId = c.Long(nullable: false),
                         ItemTypeId = c.Long(nullable: false),
                         ItemId = c.Long(nullable: false),
@@ -267,11 +372,13 @@ namespace ERPDAL.InventoryContextMigrations
             DropForeignKey("dbo.tblItems", "ItemTypeId", "dbo.tblItemTypes");
             DropForeignKey("dbo.tblItemTypes", "WarehouseId", "dbo.tblWarehouses");
             DropForeignKey("dbo.tblItemPreparationDetail", "PreparationInfoId", "dbo.tblItemPreparationInfo");
+            DropForeignKey("dbo.tblIQCItemReqDetailList", "IQCItemReqInfoId", "dbo.tblIQCItemReqInfoList");
             DropIndex("dbo.tblWarehouseStockDetails", new[] { "WarehouseStockInfo_StockInfoId" });
             DropIndex("dbo.tblRepairStockDetails", new[] { "RepairStockInfo_RStockInfoId" });
             DropIndex("dbo.tblItemTypes", new[] { "WarehouseId" });
             DropIndex("dbo.tblItems", new[] { "ItemTypeId" });
             DropIndex("dbo.tblItemPreparationDetail", new[] { "PreparationInfoId" });
+            DropIndex("dbo.tblIQCItemReqDetailList", new[] { "IQCItemReqInfoId" });
             DropTable("dbo.tblWarehouseStockInfo");
             DropTable("dbo.tblWarehouseStockDetails");
             DropTable("dbo.tblUnits");
@@ -283,6 +390,11 @@ namespace ERPDAL.InventoryContextMigrations
             DropTable("dbo.tblItems");
             DropTable("dbo.tblItemPreparationInfo");
             DropTable("dbo.tblItemPreparationDetail");
+            DropTable("dbo.tblIQCStockInfo");
+            DropTable("dbo.tblIQCStockDetails");
+            DropTable("dbo.tblIQCList");
+            DropTable("dbo.tblIQCItemReqInfoList");
+            DropTable("dbo.tblIQCItemReqDetailList");
             DropTable("dbo.tblDescriptions");
         }
     }
