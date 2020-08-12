@@ -21,6 +21,7 @@ namespace ERPBO.Production.DTOModel
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
         public int Quantity { get; set; }
+        public bool IsChinaFaulty { get; set; }
         public string StockStatus { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
@@ -53,5 +54,6 @@ namespace ERPBO.Production.DTOModel
         public string ItemName { get; set; }
         [StringLength(100)]
         public string UnitName { get; set; }
+        public string FaultyReason { get; set; }
     }
 }

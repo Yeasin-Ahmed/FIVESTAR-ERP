@@ -595,16 +595,23 @@
     <Content Include="Views\Inventory\GetIQCList.cshtml" />
     <Content Include="Views\Inventory\_GetWarehousePartialList.cshtml" />
     <Content Include="Views\FrontDesk\GetPartsUsedStock.cshtml" />
-    <Content Include="Views\FrontDesk\_GetTSWorkDetails.cshtml" />
-    <Content Include="Views\FrontDesk\GetJobOrderListReport.cshtml" />
-    <Content Include="Views\Configuration\GetCurrentStockReport.cshtml" />
-    <Content Include="Views\Configuration\_GetCurrentStockList.cshtml" />
-    <Content Include="Views\FrontDesk\ReturnParts.cshtml" />
-    <Content Include="Views\FrontDesk\_ReturnParts.cshtml" />
-    <Content Include="Views\FrontDesk\GetUsedParts.cshtml" />
-    <Content Include="Views\FrontDesk\_GetUsedParts.cshtml" />
-    <Content Include="Views\FrontDesk\GetSellsReport.cshtml" />
-    <Content Include="Views\FrontDesk\_GetSellsReport.cshtml" />
+    <Content Include="Views\Production\CreateMiniStockTransfer.cshtml" />
+    <Content Include="Views\Production\_GetMiniStockTransferInfo.cshtml" />
+    <Content Include="Views\Production\_GetMiniStockTransferDetail.cshtml" />
+    <Content Include="Views\Production\IMEIWriteOrUpdate.cshtml" />
+    <Content Include="Views\Production\BatteryWrite.cshtml" />
+    <Content Include="Views\Production\GetIMEIScanningInQC.cshtml" />
+    <Content Include="Views\Inventory\CreateIQCReq.cshtml" />
+    <Content Include="Views\Inventory\GetAllIQCStockDetailList.cshtml" />
+    <Content Include="Views\Inventory\GetAllIQCStockInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCItemReqDetailInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCItemReqDetailList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCItemReqInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCReqInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCReqInfoListForWarehouse.cshtml" />
+    <Content Include="Views\Inventory\IssueIQCItemReq.cshtml" />
+    <Content Include="Views\Inventory\_GetAllIQCItemReqPartialList.cshtml" />
+    <Content Include="Views\Inventory\_GetAllIQCStockDetailPartialList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -623,20 +630,15 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Reports\rptProductionRequisition.rdlc">
+    <Content Include="Reports\ERPRpt\rptProductionRequisition.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\ServiceRpt\rptJobOrder.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Reports\ERPRpt\rptQRCodesByRef.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
@@ -651,31 +653,6 @@
       <Project>{c075def3-a65b-4b86-90fa-dd698b139db4}</Project>
       <Name>ERPDAL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptSellsReport.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

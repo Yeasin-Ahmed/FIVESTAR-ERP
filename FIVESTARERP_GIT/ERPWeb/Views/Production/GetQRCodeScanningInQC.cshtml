@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 text-sm">
         <div class="card card-primary card-outline card-tabs">
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
@@ -12,11 +12,13 @@
                         <a class="nav-link active" id="custom-tabs-two-scanning-tab" data-toggle="pill" href="#custom-tabs-two-scanning" role="tab" aria-controls="custom-tabs-two-scanning" aria-selected="true">QRCode Scanning</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-repairQrCodes-tab" data-toggle="pill" href="#custom-tabs-two-repairQrCodes" role="tab" aria-controls="custom-tabs-two-repairQrCodes" aria-selected="true">QRCode List in Repair</a>
+                        <a class="nav-link" id="custom-tabs-two-repairQrCodes-tab" data-toggle="pill" href="#custom-tabs-two-repairQrCodes" role="tab" aria-controls="custom-tabs-two-repairQrCodes" aria-selected="true">Pass To Repair</a>
+                        @*QRCode List in Repair*@
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-qcPassQrCodes-tab" data-toggle="pill" href="#custom-tabs-two-qcPassQrCodes" role="tab" aria-controls="custom-tabs-two-qcPassQrCodes" aria-selected="true">QC-Pass QRCode List</a>
+                        <a class="nav-link" id="custom-tabs-two-qcPassQrCodes-tab" data-toggle="pill" href="#custom-tabs-two-qcPassQrCodes" role="tab" aria-controls="custom-tabs-two-qcPassQrCodes" aria-selected="true">Pass To MiniStock</a>
+                        @*QC-Pass QRCode List*@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-problems-tab" data-toggle="pill" href="#custom-tabs-two-problems" role="tab" aria-controls="custom-tabs-two-problems" aria-selected="true">Problems</a>
@@ -138,7 +140,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                   QRCode List in Repair
+                                                    Pass To Repair
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -166,7 +168,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    QCPass QRCode List
+                                                    Pass To MiniStock
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -410,7 +412,7 @@
                     console.log("res.IsSuccess");
                     console.log(res.IsSuccess);
                     if (res.IsSuccess === true) {
-                        bootbox.alert("Successful");
+                        toastrSuccessAlert('Successful');
                         $("#tblProb tbody").empty();
                         txtItemQRCode.val('');
                     }

@@ -151,7 +151,7 @@
             pageNo = 1;
         }
 
-        $(document).on('click', 'a.data-item-receive', function (e) {
+        $(document).on('click', 'a.data-item-transfer', function (e) {
             e.preventDefault();
             var id = $(this).attr("data-item-val");
             if (TryParseInt(id, 0) > 0) {

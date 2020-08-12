@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBO.CustomValidationAttribute.Production;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -57,5 +58,9 @@ namespace ERPBO.Production.ViewModels
         public bool IsBundle { get; set; }
         [Required, StringLength(100)]
         public string RequisitionFor { get; set; }
+        [RequisitionForInProductionRequisitionAttr]
+        public long? AssemblyLineId { get; set; }
+        public long? PackagingLineId { get; set; }
+        public string Flag { get; set; }
     }
 }

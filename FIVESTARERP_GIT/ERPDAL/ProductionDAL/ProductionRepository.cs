@@ -355,4 +355,19 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+
+    public class MiniStockTransferInfoRepository: ProductionBaseRepository<MiniStockTransferInfo>
+    {
+        public MiniStockTransferInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class MiniStockTransferDetailRepository : ProductionBaseRepository<MiniStockTransferDetail>
+    {
+        public MiniStockTransferDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

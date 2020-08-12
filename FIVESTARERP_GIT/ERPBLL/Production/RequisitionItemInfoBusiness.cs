@@ -20,7 +20,8 @@ namespace ERPBLL.Production
         private readonly RequisitionItemInfoRepository _requisitionItemInfoRepository;
         private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
         private readonly IAssemblyLineStockDetailBusiness _assemblyLineStockDetailBusiness;
-        public RequisitionItemInfoBusiness(IProductionUnitOfWork productionDb, RequisitionItemInfoRepository requisitionItemInfoRepository, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IRequisitionItemDetailBusiness requisitionItemDetailBusiness)
+        private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
+        public RequisitionItemInfoBusiness(IProductionUnitOfWork productionDb, RequisitionItemInfoRepository requisitionItemInfoRepository, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IRequisitionItemDetailBusiness requisitionItemDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness)
         {
             this._productionDb = productionDb;
             this._requisitionItemInfoRepository = requisitionItemInfoRepository;
@@ -29,16 +30,17 @@ namespace ERPBLL.Production
             this._qRCodeTraceBusiness = qRCodeTraceBusiness;
             this._assemblyLineStockDetailBusiness = assemblyLineStockDetailBusiness;
             this._requisitionItemDetailBusiness = requisitionItemDetailBusiness;
+            this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
         }
         public IEnumerable<RequisitionItemInfo> GetRequisitionItemInfos(long orgId)
         {
             return this._requisitionItemInfoRepository.GetAll(s => s.OrganizationId == orgId).ToList();
         }
-        public IEnumerable<RequisitionItemInfoDTO> GetRequisitionItemInfosByQuery(long? reqItemIfoId, long? floorId, long? assembly, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? reqInfoId, string status, string reqCode, string fromDate, string toDate, long orgId)
+        public IEnumerable<RequisitionItemInfoDTO> GetRequisitionItemInfosByQuery(long? reqItemIfoId, long? floorId, long? assembly,long? packagingLine, long? repairLine, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? reqInfoId, string status, string reqCode, string fromDate, string toDate, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<RequisitionItemInfoDTO>(QueryFortRequisitionItemInfos(reqItemIfoId, floorId, assembly, modelId, warehouseId, itemTypeId, itemId, reqInfoId, status, reqCode, fromDate, toDate, orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<RequisitionItemInfoDTO>(QueryFortRequisitionItemInfos(reqItemIfoId, floorId, assembly,packagingLine,repairLine, modelId, warehouseId, itemTypeId, itemId, reqInfoId, status, reqCode, fromDate, toDate, orgId)).ToList();
         }
-        private string QueryFortRequisitionItemInfos(long? reqItemIfoId, long? floorId, long? assembly, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? reqInfoId, string status, string reqCode, string fromDate, string toDate, long orgId)
+        private string QueryFortRequisitionItemInfos(long? reqItemIfoId, long? floorId, long? assembly, long? packagingLine, long? repairLine, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? reqInfoId, string status, string reqCode, string fromDate, string toDate, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -60,7 +62,15 @@ namespace ERPBLL.Production
             {
                 param += string.Format(@" and rii.AssemblyLineId={0}", assembly);
             }
-            if(modelId != null && modelId > 0)
+            if (packagingLine != null && packagingLine > 0)
+            {
+                param += string.Format(@" and rii.PackagingLineId={0}", packagingLine);
+            }
+            if (repairLine != null && repairLine > 0)
+            {
+                param += string.Format(@" and rii.RepairLineId={0}", assembly);
+            }
+            if (modelId != null && modelId > 0)
             {
                 param += string.Format(@" and rii.DescriptionId={0}", modelId);
             }
@@ -132,6 +142,7 @@ Where 1=1 {0}", Utility.ParamChecker(param));
                 var reqDetail = _requsitionDetailBusiness.GetRequsitionDetailByReqId(reqInfoId, orgId).ToList();
 
                 List<AssemblyLineStockDetailDTO> assemblyStocks = new List<AssemblyLineStockDetailDTO>();
+                List<PackagingLineStockDetailDTO> packagingStocks = new List<PackagingLineStockDetailDTO>();
                 foreach (var detail in reqDetail)
                 {
                     if (reqInfo.RequisitionFor == "Assembly")
@@ -155,16 +166,48 @@ Where 1=1 {0}", Utility.ParamChecker(param));
                         };
                         assemblyStocks.Add(assemblyStock);
                     }
+                    else if (reqInfo.RequisitionFor == "Packaging")
+                    {
+                        PackagingLineStockDetailDTO packagingStock = new PackagingLineStockDetailDTO()
+                        {
+                            ProductionLineId = reqInfo.LineId,
+                            PackagingLineId = reqInfo.PackagingLineId,
+                            DescriptionId = reqInfo.DescriptionId,
+                            WarehouseId = reqInfo.WarehouseId,
+                            ItemTypeId = detail.ItemTypeId,
+                            ItemId = detail.ItemId,
+                            Quantity = (int)detail.Quantity.Value,
+                            OrganizationId = orgId,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            RefferenceNumber = reqInfo.ReqInfoCode,
+                            UnitId = detail.UnitId,
+                            StockStatus = StockStatus.StockIn,
+                            Remarks = "Stock In By Production Requisition"
+                        };
+                        packagingStocks.Add(packagingStock);
+                    }
                 }
                 if (_requsitionInfoBusiness.SaveRequisitionStatus(reqInfo.ReqInfoId, RequisitionStatus.Accepted, orgId, userId))
                 {
                     if (reqInfo.RequisitionFor == "Assembly")
                     {
-                        var qrCodes = GenerateQRCodeTraces(reqInfo.ReqInfoId, userId, orgId);
                         if (_assemblyLineStockDetailBusiness.SaveAssemblyLineStockIn(assemblyStocks, userId, orgId))
                         {
-                            return _qRCodeTraceBusiness.SaveQRCodeTrace(qrCodes, userId, orgId);
+                            if (reqInfo.IsBundle)
+                            {
+                                var qrCodes = GenerateQRCodeTraces(reqInfo.ReqInfoId, userId, orgId);
+                                return _qRCodeTraceBusiness.SaveQRCodeTrace(qrCodes, userId, orgId);
+                            }
+                            else
+                            {
+                                return true;
+                            }
                         };
+                    }
+                    else if (reqInfo.RequisitionFor == "Packaging")
+                    {
+                        return _packagingLineStockDetailBusiness.SavePackagingLineStockIn(packagingStocks, userId, orgId);
                     }
                 }
             }
@@ -225,7 +268,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
             return qRCodeTraces;
         }
 
-        public RequsitionInfoDTO GetRequsitionInfoModalProcessData(long? floorId, long? assemblyId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, string reqFlag, long? reqInfoId, long orgId)
+        public RequsitionInfoDTO GetRequsitionInfoModalProcessData(long? floorId, long? assemblyId, long? packagingLine, long? repairLine, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, string reqFlag, long? reqInfoId, long orgId)
         {
             var reqInfoDto = _requsitionInfoBusiness.GetRequsitionInfosByQuery(null, null,null,null, null, null, null, null, null, null, null, null, null, reqInfoId, orgId).FirstOrDefault();
             if (reqInfoDto != null)
@@ -234,7 +277,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
                 reqInfoDto.RequisitionDetails = _requsitionDetailBusiness.GetRequisitionDetailsByQuery(reqInfoId, null, null, null, orgId).ToList();
 
                 // Requisition Item Infos
-                reqInfoDto.RequisitionItemInfos = GetRequisitionItemInfosByQuery(null, null, null, null, null, null, null, reqInfoId, null, null, null, null, orgId).ToList();
+                reqInfoDto.RequisitionItemInfos = GetRequisitionItemInfosByQuery(null, null,null,null, null, null, null, null, null, reqInfoId, null, null, null, null, orgId).ToList();
 
                 // Requisition Item Details By ReqInfo
                 var reqItemDetailDtos = _requisitionItemDetailBusiness.GetRequisitionItemDetailsByQuery(reqInfoId, null, null, null, null, orgId);

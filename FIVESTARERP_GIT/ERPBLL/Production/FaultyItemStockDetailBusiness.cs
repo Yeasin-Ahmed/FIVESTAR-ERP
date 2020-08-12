@@ -31,17 +31,17 @@ namespace ERPBLL.Production
             string param = string.Empty;
 
             param += string.Format(@" and fsd.OrganizationId={0}", orgId);
-            if(transferId > 0)
+            if (transferId > 0)
             {
                 param += string.Format(@" and fsd.TransferId={0}", transferId);
             }
-            if (!string.IsNullOrEmpty(QRCode) && QRCode.Trim() !="")
+            if (!string.IsNullOrEmpty(QRCode) && QRCode.Trim() != "")
             {
                 param += string.Format(@" and fsd.ReferenceNumber='{0}'", QRCode);
             }
 
             query = string.Format(@"Select fsd.FaultyItemStockDetailId,fsd.ReferenceNumber,fsd.TransferId,fsd.TransferCode,w.Id 'WarehouseId',w.WarehouseName,it.ItemId 'ItemTypeId',
-it.ItemName 'ItemTypeName',i.ItemId,i.ItemName,fsd.Quantity
+it.ItemName 'ItemTypeName',i.ItemId,i.ItemName,fsd.Quantity,fsd.IsChinaFaulty
  From [Production].dbo.tblFaultyItemStockDetail fsd
 Inner Join [Inventory].dbo.tblWarehouses w on fsd.WarehouseId = w.Id
 Inner Join [Inventory].dbo.tblItemTypes it on fsd.ItemTypeId = it.ItemId
@@ -72,7 +72,7 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                     WarehouseId = item.WarehouseId,
                     ItemTypeId = item.ItemTypeId,
                     ItemId = item.ItemId,
-                    UnitId =  item.UnitId,
+                    UnitId = item.UnitId,
                     OrganizationId = orgId,
                     EUserId = userId,
                     Quantity = item.Quantity,
@@ -80,10 +80,11 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                     Remarks = "Stock In By Repair Item Stock",
                     StockStatus = StockStatus.StockIn,
                     EntryDate = DateTime.Now,
-                    TransferCode= item.TransferCode,
-                    TransferId = item.TransferId
+                    TransferCode = item.TransferCode,
+                    TransferId = item.TransferId,
+                    IsChinaFaulty = item.IsChinaFaulty
                 };
-                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItem(item.RepairLineId.Value,item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItemAndFultyType(item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, item.IsChinaFaulty, orgId);
 
                 if (stockInfoInDb != null)
                 {
@@ -109,19 +110,20 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                         StockInQty = item.Quantity,
                         StockOutQty = 0,
                         Remarks = item.Remarks,
-                        EntryDate = DateTime.Now
+                        EntryDate = DateTime.Now,
+                        IsChinaFaulty = item.IsChinaFaulty
                     };
                     _faultyItemStockInfoRepository.Insert(stockInfo);
                 }
 
                 faultyItemStocks.Add(faultyItem);
             }
-            if(faultyItemStocks.Count > 0)
+            if (faultyItemStocks.Count > 0)
             {
                 this._faultyItemStockDetailRepository.InsertAll(faultyItemStocks);
                 IsSuccess = _faultyItemStockDetailRepository.Save();
             }
-            return  IsSuccess;
+            return IsSuccess;
         }
         public bool SaveFaultyItemStockOut(List<FaultyItemStockDetailDTO> stockDetails, long userId, long orgId)
         {
@@ -144,22 +146,23 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                     ReferenceNumber = item.ReferenceNumber,
                     Remarks = item.Remarks,
                     StockStatus = StockStatus.StockOut,
-                    EntryDate = DateTime.Now
+                    EntryDate = DateTime.Now,
+                    IsChinaFaulty = item.IsChinaFaulty
                 };
-                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItem(item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                var stockInfoInDb = this._faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItemAndFultyType(item.RepairLineId.Value, item.DescriptionId.Value, item.ItemId.Value, item.IsChinaFaulty, orgId);
                 stockInfoInDb.StockOutQty += item.Quantity;
-                    stockInfoInDb.UpdateDate = DateTime.Now;
-                    stockInfoInDb.UpUserId = userId;
-                    _faultyItemStockInfoRepository.Update(stockInfoInDb);
+                stockInfoInDb.UpdateDate = DateTime.Now;
+                stockInfoInDb.UpUserId = userId;
+                _faultyItemStockInfoRepository.Update(stockInfoInDb);
                 faultyItemStocks.Add(faultyItem);
             }
             if (faultyItemStocks.Count > 0)
             {
                 this._faultyItemStockDetailRepository.InsertAll(faultyItemStocks);
-                IsSuccess=_faultyItemStockDetailRepository.Save();
+                IsSuccess = _faultyItemStockDetailRepository.Save();
             }
-            return IsSuccess; 
+            return IsSuccess;
         }
-       
+
     }
 }

@@ -5,29 +5,30 @@
     Layout = null;
     int sl = 0;
     RepairSectionRequisitionInfoViewModel info = (RepairSectionRequisitionInfoViewModel)ViewBag.Info;
+    string badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
 }
 
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
+<table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblInfo">
     <tbody>
         <tr>
             <td class="hide">@info.RSRInfoId</td>
             <td style="width:15%">Requisition Code</td>
-            <td style="width:20%"><b>@info.RequisitionCode</b></td>
-            <td style="width:20%">Repair Line</td>
-            <td style="width:15%"><b>@info.RepairLineName</b></td>
+            <td style="width:15%"><b>@info.RequisitionCode</b></td>
+            <td style="width:15%">Repair Line</td>
+            <td style="width:20%"><b>@info.RepairLineName</b></td>
             <td style="width:15%">Model</td>
             <td style="width:15%"><b>@info.ModelName</b></td>
         </tr>
         <tr>
             <td style="width:15%">Warehouse</td>
-            <td style="width:20%"><b>@info.WarehouseName</b></td>
-            <td style="width:20%">StateStatus</td>
-            <td colspan="3"><b>@info.StateStatus</b></td>
+            <td style="width:15%"><b>@info.WarehouseName</b></td>
+            <td style="width:15%">StateStatus</td>
+            <td colspan="3"><span class="@badge">@info.StateStatus</span></td>
         </tr>
     </tbody>
 </table>
 
-<table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
+<table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblDetail">
     <thead class="thead-dark">
         <tr class="text-center">
             <th>#SL</th>

@@ -47,7 +47,7 @@ Inner Join tblSubMenus s on s.SubMenuId = u.SubmenuId and u.UserId={0}
 Inner Join tblOrganizationAuthorization oa on s.MMId = oa.MainmenuId
 Inner Join tblMainMenus mm on oa.MainmenuId = mm.MMId
 Inner Join tblModules m on oa.ModuleId = m.MId
-Where oa.OrganizationId = {1} and s.IsActAsParent = 0", userId, orgId)).ToList();
+Where oa.OrganizationId = {1} and s.IsActAsParent = 0 Order By u.TaskId", userId, orgId)).ToList();
         }
 
         public IEnumerable<UserCustomMenusDTO> GetUserCustomMenus(long userId, long orgId)

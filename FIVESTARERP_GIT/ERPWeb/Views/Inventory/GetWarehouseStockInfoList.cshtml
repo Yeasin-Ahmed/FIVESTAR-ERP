@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Warehouse Stock Info";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    string tab = (string)ViewBag.tab == null ? "": ViewBag.tab;
 }
 
 <div class="row">
@@ -12,9 +13,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="custom-tabs-two-warehouseStockInfoList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockInfoList" role="tab" aria-controls="custom-tabs-two-warehouseStockInfoList" aria-selected="true">Warehouse Stock Info List</a>
                     </li>
-                    @*<li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-warehouseStockDetailList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockDetailList" role="tab" aria-controls="custom-tabs-two-warehouseStockDetailList" aria-selected="true">Warehouse StockDetail List</a>
-                    </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-IQCItemReqInfoList-tab" data-toggle="pill" href="#custom-tabs-two-IQCItemReqInfoList" role="tab" aria-controls="custom-tabs-two-IQCItemReqInfoList" aria-selected="true">IQC REQ List</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -93,7 +94,78 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer">
-                                            @{Html.RenderAction("GetWarehouseStockInfoPartialList");}
+                                            @{Html.RenderAction("GetWarehouseStockInfoList", new { @flag = "load" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-IQCItemReqInfoList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCItemReqInfoList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IQC REQ List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnResetForIQCReq" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseForIQCReq" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseForIQCReq", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameForIQCReq" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelNameForIQCReq", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">State Status</label>
+                                                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            @*<div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                                </div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                            @{Html.RenderAction("GetIQCReqInfoListForWarehouse");}
                                         </div>
                                     </div>
                                 </div>
@@ -106,6 +178,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalIQCReqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">IQC Item Request Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelContainer1">
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts{
     <script type="text/javascript">
@@ -127,6 +214,10 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
+            if ('@tab' != null && '@tab' != '') {
+                $("#custom-tabs-two-IQCItemReqInfoList-tab").trigger('click');
+            }
         })
 
         $(document).on('change', '.date-datePicker', function (e) {
@@ -168,8 +259,8 @@
         })
 
         function LoadDataTable() {
-            var data = { WarehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(),page: pageNo };
-            $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockInfoPartialList', data)).then(function (res, status) {
+            var data = { flag: "search",warehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(), page: pageNo };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockInfoList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {
@@ -187,13 +278,138 @@
         $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
             if (!$(this).hasClass('current-page')) {
-                //alert('Page Clicked');
-                pageNo = $(this).attr('data-page-no');
-                //console.log('Page No');
-                //console.log(!isNaN(pageNo));
-                LoadDataTable();
+                //alert('Warehouse');
+                if ($(this).parent().parents('div').hasClass('warehouseStock')) {
+                    pageNo = $(this).attr('data-page-no');
+                    //console.log('Page No');
+                    //console.log(!isNaN(pageNo));
+                    LoadDataTable();
+                }
             }
         })
 
+      
+
+    </script>
+
+    <script type="text/javascript">
+        var ddlWarehouseForIQCReq = $("#ddlWarehouseForIQCReq");
+        var ddlStateStatus = $("#ddlStateStatus");
+        var ddlModelNameForIQCReq = $("#ddlModelNameForIQCReq");
+        var pageNoForIQCReq = 1;
+
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+            $("#btnReacive").hide();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        $(document).on('change', '.date-datePicker', function (e) {
+            var dateval = $(this).val();
+            console.log(dateval);
+        })
+
+        //Modal
+        var hdfRowIndex = $("#hdfRowIndex");
+        var hdfInfoId = $("#hdfInfoId");
+
+        function OpenModal() {
+            $("#modelDataContainer").empty();
+            hdfInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalIQCReqDetails").modal("show");
+            
+        }
+
+        $(document).on("click", ".data-details", function (e) {
+            
+            e.preventDefault();
+            var id = $(this).attr("data-details");
+            
+            var data = {
+                reqInfoId: TryParseInt(id, 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+
+            console.log(data);
+            //return;
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCItemReqDetailList', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfInfoId.val(data.reqInfoId);
+                    hdfRowIndex.val(idx);
+                    $("#modelContainer1").empty();
+                    $("#modelContainer1").append(res);
+                    $(".btnReacive").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        ddlWarehouseForIQCReq.change(function () {
+
+            LoadDataTableForIQCReq();
+        })
+
+        ddlModelNameForIQCReq.change(function () {
+            LoadDataTableForIQCReq();
+        })
+
+        ddlStateStatus.change(function () { LoadDataTableForIQCReq(); })
+
+        //txtLessOrEq.keyup(function () {
+        //    LoadDataTable();
+        //})
+
+        function LoadDataTableForIQCReq() {
+            var data = { WarehouseId: TryParseInt(ddlWarehouseForIQCReq.val(), 0), modelId: TryParseInt(ddlModelNameForIQCReq.val(), 0), /*ItemTypeId: TryParseInt(ddlItemType.val(), 0), ItemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val(),*/stateStatus: ddlStateStatus.val(), page: pageNoForIQCReq };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCReqInfoListForWarehouse', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNoForIQCReq = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                if ($(this).parent().parents('div').hasClass('IQCReqPage')) {
+                    //alert('Page Found');
+                    pageNoForIQCReq = $(this).attr('data-page-no');
+                    //console.log('Page No');
+                    //console.log(!isNaN(pageNo));
+                    LoadDataTableForIQCReq();
+                }
+               
+            }
+        })
+
+        $("#btnResetForIQCReq").click(function (e) {
+            e.preventDefault();
+            ddlItem.val('');
+            ddlItem.trigger("change");
+            ddlWarehouseForIQCReq.val("");
+            ddlWarehouseForIQCReq.trigger("change");
+            ddlModelNameForIQCReq.val('');
+            ddlModelNameForIQCReq.trigger("change");
+            ddlStateStatus.val('');
+            ddlStateStatus.trigger("change");
+            $("#tblIQCReq tbody").empty();
+        })
     </script>
 }

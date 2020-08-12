@@ -50,12 +50,12 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
-        public static IEnumerable<Dropdown> ListOfCustomerType()
+        public static IEnumerable<Dropdown> ListOfStockType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
             {
-                new Dropdown(){text=CustomerType.WalkInCustomer,value=CustomerType.WalkInCustomer},
-                new Dropdown(){text=CustomerType.Dealer,value=CustomerType.Dealer}
+                new Dropdown(){text=StockType.FreshStock,value=StockType.FreshStock},
+                new Dropdown(){text=StockType.FaultyStock,value=StockType.FaultyStock},
             };
             return dropdowns;
         }
@@ -149,12 +149,14 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+
         public static int TryParseInt(string value)
         {
             int i = 0;
             int.TryParse(value, out i);
             return i;
         }
+
         public static string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKV2SPBNI99212";

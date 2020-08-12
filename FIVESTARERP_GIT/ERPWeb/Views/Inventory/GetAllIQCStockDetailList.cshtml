@@ -1,0 +1,267 @@
+﻿@model ERPBO.Inventory.ViewModels.IQCStockDetailViewModel
+
+@{
+    ViewBag.Title = "IQC Stock Details";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+
+                    <div class="tab-pane fade show active" id="custom-tabs-two-iqcStockDetailList" role="tabpanel" aria-labelledby="custom-tabs-two-iqcStockDetailList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button @*href="/Inventory/GetIQCItemReqInfoList"*@ class="btn btn-sm btn-outline-primary float-left" id="btnBack"  title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IQC Stock Details
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnResetForIQCStockDetail" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Refference Number</label>
+                                                <input type="text" id="txtCode" class="form-control form-control-sm" placeholder="Enter Ref Num." />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItemType" class="control-label font-weight-bold">Item Type Name</label>
+                                                <select id="ddlItemType" class="form-control form-control-sm">
+                                                    <option value="">--Select Item Type--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                                <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
+                                                    <option value="">--Select Item--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Stock Type</label>
+                                                @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockType, "Select Type", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+
+                                            @*<div class="col-md-2">
+                                                <label for="ddlSupplier" class="control-label font-weight-bold">Supplier Name</label>
+                                                @Html.DropDownList("ddlSupplier", (IEnumerable<SelectListItem>)ViewBag.ddlSupplier, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>*@
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetAllIQCStockDetailList", new { @flag = "load" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var ddlWarehouse = $("#ddlWarehouse");
+        var ddlItemType = $("#ddlItemType");
+        var ddlItem = $("#ddlItem");
+        var txtCode = $("#txtCode");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var ddlStockStatus = $("#ddlStockStatus");
+        var ddlModelName = $("#ddlModelName");
+        var ddlSupplier = $("#ddlSupplier");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+        $("#btnBack").click(function (e) {
+            e.preventDefault();
+            redirectPage('@Url.Action("GetIQCItemReqInfoList", new {tab="IQCStock" })');
+        });
+
+        txtCode.keyup(function () {
+            LoadDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        ddlWarehouse.change(function () {
+            clearDropdown("ddlItemType");
+            clearDropdown("ddlItem");
+            if (ddlWarehouse.val() != "") {
+                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+            }
+            LoadDataTable();
+        })
+
+        ddlItemType.change(function () {
+            clearDropdown("ddlItem");
+            if (ddlItemType.val() != "") {
+                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+            }
+            LoadDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", warehouseId: TryParseInt(ddlWarehouse.val(), 0), modelId: TryParseInt(ddlModelName.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), status: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), refNum: txtCode.val(), page: pageNo };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetAllIQCStockDetailList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('IQCStockDetailPage')) {
+                    //alert('Page Clicked');
+                    pageNo = $(this).attr('data-page-no');
+                    //console.log('Page No');
+                    //console.log(!isNaN(pageNo));
+                    LoadDataTable();
+                }               
+            }
+        })
+        $("#btnResetForIQCStockDetail").click(function (e) {
+            e.preventDefault();
+            ddlItem.val('');
+            ddlItemType.val('');
+            ddlItemType.trigger("change");
+            ddlItem.trigger("change");
+            ddlWarehouse.val("");
+            ddlWarehouse.trigger("change");
+            ddlModelName.val('');
+            ddlModelName.trigger("change");
+            txtCode.val('');
+            ddlStockStatus.val('');
+            ddlStockStatus.trigger("change");
+            dptFromDate.val('');
+            dptToDate.val('');
+            $(".tblIQCDetailList tbody").empty();
+        })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+    </script>
+}

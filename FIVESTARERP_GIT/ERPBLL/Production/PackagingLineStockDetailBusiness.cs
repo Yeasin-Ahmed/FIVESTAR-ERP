@@ -53,7 +53,7 @@ namespace ERPBLL.Production
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
-                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.PackagingLineId == item.PackagingLineId).FirstOrDefault();
+                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfoByPackagingAndItemAndModelId(item.ProductionLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
                 if (packagingStockInfo != null)
                 {
                     packagingStockInfo.StockInQty += item.Quantity;
@@ -112,7 +112,8 @@ namespace ERPBLL.Production
                 stockDetail.StockStatus = StockStatus.StockIn;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
-                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.PackagingLineId == item.PackagingLineId).FirstOrDefault();
+                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfoByPackagingAndItemAndModelId(item.ProductionLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
                 packagingStockInfo.StockOutQty += item.Quantity;
                 _packagingLineStockInfoRepository.Update(packagingStockInfo);
                 packagingLineStockDetails.Add(stockDetail);

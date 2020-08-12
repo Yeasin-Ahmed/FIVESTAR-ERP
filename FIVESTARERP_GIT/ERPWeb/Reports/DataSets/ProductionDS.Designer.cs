@@ -26,6 +26,8 @@ namespace ERPWeb.Reports.DataSets {
         
         private ProductionRequisitionDataTable tableProductionRequisition;
         
+        private QRCodesByRefDataTable tableQRCodesByRef;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -57,6 +59,9 @@ namespace ERPWeb.Reports.DataSets {
                 if ((ds.Tables["ProductionRequisition"] != null)) {
                     base.Tables.Add(new ProductionRequisitionDataTable(ds.Tables["ProductionRequisition"]));
                 }
+                if ((ds.Tables["QRCodesByRef"] != null)) {
+                    base.Tables.Add(new QRCodesByRefDataTable(ds.Tables["QRCodesByRef"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -82,6 +87,16 @@ namespace ERPWeb.Reports.DataSets {
         public ProductionRequisitionDataTable ProductionRequisition {
             get {
                 return this.tableProductionRequisition;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public QRCodesByRefDataTable QRCodesByRef {
+            get {
+                return this.tableQRCodesByRef;
             }
         }
         
@@ -155,6 +170,9 @@ namespace ERPWeb.Reports.DataSets {
                 if ((ds.Tables["ProductionRequisition"] != null)) {
                     base.Tables.Add(new ProductionRequisitionDataTable(ds.Tables["ProductionRequisition"]));
                 }
+                if ((ds.Tables["QRCodesByRef"] != null)) {
+                    base.Tables.Add(new QRCodesByRefDataTable(ds.Tables["QRCodesByRef"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -194,6 +212,12 @@ namespace ERPWeb.Reports.DataSets {
                     this.tableProductionRequisition.InitVars();
                 }
             }
+            this.tableQRCodesByRef = ((QRCodesByRefDataTable)(base.Tables["QRCodesByRef"]));
+            if ((initTable == true)) {
+                if ((this.tableQRCodesByRef != null)) {
+                    this.tableQRCodesByRef.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -206,11 +230,19 @@ namespace ERPWeb.Reports.DataSets {
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableProductionRequisition = new ProductionRequisitionDataTable();
             base.Tables.Add(this.tableProductionRequisition);
+            this.tableQRCodesByRef = new QRCodesByRefDataTable();
+            base.Tables.Add(this.tableQRCodesByRef);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializeProductionRequisition() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeQRCodesByRef() {
             return false;
         }
         
@@ -271,6 +303,9 @@ namespace ERPWeb.Reports.DataSets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void ProductionRequisitionRowChangeEventHandler(object sender, ProductionRequisitionRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void QRCodesByRefRowChangeEventHandler(object sender, QRCodesByRefRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -675,6 +710,365 @@ namespace ERPWeb.Reports.DataSets {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "ProductionRequisitionDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class QRCodesByRefDataTable : global::System.Data.TypedTableBase<QRCodesByRefRow> {
+            
+            private global::System.Data.DataColumn columnReferenceId;
+            
+            private global::System.Data.DataColumn columnReferenceNumber;
+            
+            private global::System.Data.DataColumn columnCodeNo;
+            
+            private global::System.Data.DataColumn columnProductionFloorName;
+            
+            private global::System.Data.DataColumn columnAssemblyLineName;
+            
+            private global::System.Data.DataColumn columnModelName;
+            
+            private global::System.Data.DataColumn columnWarehouseName;
+            
+            private global::System.Data.DataColumn columnItemTypeName;
+            
+            private global::System.Data.DataColumn columnItemName;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public QRCodesByRefDataTable() {
+                this.TableName = "QRCodesByRef";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal QRCodesByRefDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected QRCodesByRefDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReferenceIdColumn {
+                get {
+                    return this.columnReferenceId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReferenceNumberColumn {
+                get {
+                    return this.columnReferenceNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CodeNoColumn {
+                get {
+                    return this.columnCodeNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ProductionFloorNameColumn {
+                get {
+                    return this.columnProductionFloorName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AssemblyLineNameColumn {
+                get {
+                    return this.columnAssemblyLineName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ModelNameColumn {
+                get {
+                    return this.columnModelName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WarehouseNameColumn {
+                get {
+                    return this.columnWarehouseName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ItemTypeNameColumn {
+                get {
+                    return this.columnItemTypeName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ItemNameColumn {
+                get {
+                    return this.columnItemName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public QRCodesByRefRow this[int index] {
+                get {
+                    return ((QRCodesByRefRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event QRCodesByRefRowChangeEventHandler QRCodesByRefRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event QRCodesByRefRowChangeEventHandler QRCodesByRefRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event QRCodesByRefRowChangeEventHandler QRCodesByRefRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event QRCodesByRefRowChangeEventHandler QRCodesByRefRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddQRCodesByRefRow(QRCodesByRefRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public QRCodesByRefRow AddQRCodesByRefRow(string ReferenceId, string ReferenceNumber, string CodeNo, string ProductionFloorName, string AssemblyLineName, string ModelName, string WarehouseName, string ItemTypeName, string ItemName) {
+                QRCodesByRefRow rowQRCodesByRefRow = ((QRCodesByRefRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ReferenceId,
+                        ReferenceNumber,
+                        CodeNo,
+                        ProductionFloorName,
+                        AssemblyLineName,
+                        ModelName,
+                        WarehouseName,
+                        ItemTypeName,
+                        ItemName};
+                rowQRCodesByRefRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowQRCodesByRefRow);
+                return rowQRCodesByRefRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                QRCodesByRefDataTable cln = ((QRCodesByRefDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new QRCodesByRefDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnReferenceId = base.Columns["ReferenceId"];
+                this.columnReferenceNumber = base.Columns["ReferenceNumber"];
+                this.columnCodeNo = base.Columns["CodeNo"];
+                this.columnProductionFloorName = base.Columns["ProductionFloorName"];
+                this.columnAssemblyLineName = base.Columns["AssemblyLineName"];
+                this.columnModelName = base.Columns["ModelName"];
+                this.columnWarehouseName = base.Columns["WarehouseName"];
+                this.columnItemTypeName = base.Columns["ItemTypeName"];
+                this.columnItemName = base.Columns["ItemName"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnReferenceId = new global::System.Data.DataColumn("ReferenceId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReferenceId);
+                this.columnReferenceNumber = new global::System.Data.DataColumn("ReferenceNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReferenceNumber);
+                this.columnCodeNo = new global::System.Data.DataColumn("CodeNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCodeNo);
+                this.columnProductionFloorName = new global::System.Data.DataColumn("ProductionFloorName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductionFloorName);
+                this.columnAssemblyLineName = new global::System.Data.DataColumn("AssemblyLineName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAssemblyLineName);
+                this.columnModelName = new global::System.Data.DataColumn("ModelName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModelName);
+                this.columnWarehouseName = new global::System.Data.DataColumn("WarehouseName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWarehouseName);
+                this.columnItemTypeName = new global::System.Data.DataColumn("ItemTypeName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemTypeName);
+                this.columnItemName = new global::System.Data.DataColumn("ItemName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemName);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public QRCodesByRefRow NewQRCodesByRefRow() {
+                return ((QRCodesByRefRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new QRCodesByRefRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(QRCodesByRefRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.QRCodesByRefRowChanged != null)) {
+                    this.QRCodesByRefRowChanged(this, new QRCodesByRefRowChangeEvent(((QRCodesByRefRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.QRCodesByRefRowChanging != null)) {
+                    this.QRCodesByRefRowChanging(this, new QRCodesByRefRowChangeEvent(((QRCodesByRefRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.QRCodesByRefRowDeleted != null)) {
+                    this.QRCodesByRefRowDeleted(this, new QRCodesByRefRowChangeEvent(((QRCodesByRefRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.QRCodesByRefRowDeleting != null)) {
+                    this.QRCodesByRefRowDeleting(this, new QRCodesByRefRowChangeEvent(((QRCodesByRefRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveQRCodesByRefRow(QRCodesByRefRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ProductionDS ds = new ProductionDS();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "QRCodesByRefDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -1153,6 +1547,273 @@ namespace ERPWeb.Reports.DataSets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class QRCodesByRefRow : global::System.Data.DataRow {
+            
+            private QRCodesByRefDataTable tableQRCodesByRef;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal QRCodesByRefRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableQRCodesByRef = ((QRCodesByRefDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ReferenceId {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.ReferenceIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReferenceId\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.ReferenceIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ReferenceNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.ReferenceNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReferenceNumber\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.ReferenceNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CodeNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.CodeNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CodeNo\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.CodeNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ProductionFloorName {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.ProductionFloorNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductionFloorName\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.ProductionFloorNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string AssemblyLineName {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.AssemblyLineNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AssemblyLineName\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.AssemblyLineNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ModelName {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.ModelNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ModelName\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.ModelNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string WarehouseName {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.WarehouseNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WarehouseName\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.WarehouseNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ItemTypeName {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.ItemTypeNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ItemTypeName\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.ItemTypeNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ItemName {
+                get {
+                    try {
+                        return ((string)(this[this.tableQRCodesByRef.ItemNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ItemName\' in table \'QRCodesByRef\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableQRCodesByRef.ItemNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReferenceIdNull() {
+                return this.IsNull(this.tableQRCodesByRef.ReferenceIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReferenceIdNull() {
+                this[this.tableQRCodesByRef.ReferenceIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReferenceNumberNull() {
+                return this.IsNull(this.tableQRCodesByRef.ReferenceNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReferenceNumberNull() {
+                this[this.tableQRCodesByRef.ReferenceNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCodeNoNull() {
+                return this.IsNull(this.tableQRCodesByRef.CodeNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCodeNoNull() {
+                this[this.tableQRCodesByRef.CodeNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsProductionFloorNameNull() {
+                return this.IsNull(this.tableQRCodesByRef.ProductionFloorNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetProductionFloorNameNull() {
+                this[this.tableQRCodesByRef.ProductionFloorNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAssemblyLineNameNull() {
+                return this.IsNull(this.tableQRCodesByRef.AssemblyLineNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAssemblyLineNameNull() {
+                this[this.tableQRCodesByRef.AssemblyLineNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsModelNameNull() {
+                return this.IsNull(this.tableQRCodesByRef.ModelNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetModelNameNull() {
+                this[this.tableQRCodesByRef.ModelNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWarehouseNameNull() {
+                return this.IsNull(this.tableQRCodesByRef.WarehouseNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWarehouseNameNull() {
+                this[this.tableQRCodesByRef.WarehouseNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsItemTypeNameNull() {
+                return this.IsNull(this.tableQRCodesByRef.ItemTypeNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetItemTypeNameNull() {
+                this[this.tableQRCodesByRef.ItemTypeNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsItemNameNull() {
+                return this.IsNull(this.tableQRCodesByRef.ItemNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetItemNameNull() {
+                this[this.tableQRCodesByRef.ItemNameColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -1172,6 +1833,40 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public ProductionRequisitionRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class QRCodesByRefRowChangeEvent : global::System.EventArgs {
+            
+            private QRCodesByRefRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public QRCodesByRefRowChangeEvent(QRCodesByRefRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public QRCodesByRefRow Row {
                 get {
                     return this.eventRow;
                 }

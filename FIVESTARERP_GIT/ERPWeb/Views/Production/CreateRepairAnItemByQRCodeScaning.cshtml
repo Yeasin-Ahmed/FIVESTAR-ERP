@@ -101,6 +101,7 @@
                                             <button type="button" class="btn btn-sm btn-sm btn-flat btn-warning" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                             <div class="card-body">
@@ -109,17 +110,19 @@
                                         <table class="table table-bordered table-striped table-sm table-responsive-lg text-sm" id="tblFaultItems">
                                             <thead class="btn-dark">
                                                 <tr class="text-center">
-                                                    <th style="width:15%">#SL</th>
+                                                    <th style="width:10% ; vertical-align: middle">#SL</th>
                                                     <th class="hide"></th>
-                                                    <th style="width:65%">Item/Item-Color</th>
-                                                    <th style="width:10%">Qty</th>
-                                                    <th style="width:10%">Action</th>
+                                                    <th style="width:55%; vertical-align: middle">Item/Item-Color</th>
+                                                    <th style="width:10%; vertical-align: middle">Qty</th>
+                                                    <th style="width:15%; vertical-align: middle">Is China Faulty</th>
+                                                    <th style="width:10%; vertical-align: middle">Action</th>
                                                     <th class="hide warehouse"></th>
                                                     <th class="hide itemType"></th>
                                                     <th class="hide item"></th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -300,14 +303,16 @@
             $("#tblFaultItems tbody").empty();
             if (!$.isEmptyObject(obj)) {
                 $.each(obj, function (index, item) {
+                    var isChecked = item.IsChinaFaulty === true ? "checked='checked'" : "";
                     var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
                     var td2 = "<td>" + item.ItemName + "[" + item.ItemTypeName + "-" + item.WarehouseName + "]" + "</td>";
                     var td3 = "<td class='text-center text-bold'>" + item.Quantity + "</td>";
-                    var td4 = "<td></td>";
-                    var td5 = "<td class='hide warehouse'>" + item.WarehouseId + "</td>";
-                    var td6 = "<td class='hide itemType'>" + item.ItemTypeId + "</td>";
-                    var td7 = "<td class='hide item'>" + item.ItemId + "</td>";
-                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + "</tr>";
+                    var td4 = "<td class='text-center'><input type='checkbox' class='chkChinaFaulty' name='chinaFaulty'" + isChecked+"  /></td>"
+                    var td5 = "<td></td>";
+                    var td6 = "<td class='hide warehouse'>" + item.WarehouseId + "</td>";
+                    var td7 = "<td class='hide itemType'>" + item.ItemTypeId + "</td>";
+                    var td8 = "<td class='hide item'>" + item.ItemId + "</td>";
+                    var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + "</tr>";
                     $("#tblFaultItems tbody").append(tr);
                 })
             }
@@ -343,7 +348,7 @@
             var count = $("#tblFaultItems tbody tr").length;
             if (count > 0) {
                 $.each($("#tblFaultItems tbody tr"), function (index, item) {
-                    var itemId = $(this).children('td').eq(6).html();
+                    var itemId = $(this).children('td').eq(7).html();
                     var itemVal = ddlItems.val();
                     var val1 = itemVal.substring(0, itemVal.indexOf("#"));
                     if (itemId == val1) {
@@ -391,12 +396,13 @@
                 var td1 = "<td class='text-center text-bold'>" + (rows + 1) + "</td>";
                 var td2 = "<td>" + itemText + "</td>";
                 var td3 = "<td class='text-center text-bold'>" + txtQuantity.val() + "</td>";
-                var td4 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i></a></td>";
-                var td5 = "<td class='hide warehouse'>" + warehouse + "</td>";
-                var td6 = "<td class='hide itemType'>" + itemType + "</td>";
-                var td7 = "<td class='hide item'>" + item + "</td>";
+                var td4 = "<td class='text-center'><input type='checkbox' class='chkChinaFaulty' name='chinaFaulty' checked='checked' /></td>";
+                var td5 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i></a></td>";
+                var td6 = "<td class='hide warehouse'>" + warehouse + "</td>";
+                var td7 = "<td class='hide itemType'>" + itemType + "</td>";
+                var td8 = "<td class='hide item'>" + item + "</td>";
 
-                var tr = "<tr class='new-item'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + "</tr>";
+                var tr = "<tr class='new-item'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 +td8+ "</tr>";
                 $("#tblFaultItems tbody").append(tr);
                 txtQuantity.val('0');
             }
@@ -432,10 +438,11 @@
                 $.each(newFaultyRows, function (index, item) {
                     var tds = $(this).children('td');
                     faultyItems.push({
-                        ItemId: TryParseInt(tds.eq(6).html(), 0),
-                        ItemTypeId: TryParseInt(tds.eq(5).html(), 0),
-                        WarehouseId: TryParseInt(tds.eq(4).html(), 0),
-                        Quantity: TryParseInt(tds.eq(2).html(), 0)
+                        ItemId: TryParseInt(tds.eq(7).html(), 0),
+                        ItemTypeId: TryParseInt(tds.eq(6).html(), 0),
+                        WarehouseId: TryParseInt(tds.eq(5).html(), 0),
+                        Quantity: TryParseInt(tds.eq(2).html(), 0),
+                        IsChinaFaulty: tds.eq(3).children('input[name="chinaFaulty"]').is(':checked')
                     })
                 })
 
@@ -444,12 +451,12 @@
                 var data = JSON.stringify({ model: FaultyInfo });
                 console.log('FaultyItems');
                 console.log(data);
-
+                //return;
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFaultyItemByQRCodeScaning', data, getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
-
                     if (res === true || status === "success") {
+                        toastrSuccessAlert("Faulty item added");
                         fnGetFaultyItemsAfterSubmit(FaultyInfo.QRCode, FaultyInfo.TransferId);
                     }
                     enable('.btn-Action');
@@ -499,7 +506,7 @@
                 }
             }
             if ($.trim(errorText) !== "") {
-                bootbox.alert(errorText);
+                toastrErrorAlert(errorText);
             }
             return isValid;
         }
@@ -528,13 +535,13 @@
                     console.log(res.Msg);
                     console.log(status);
                     if (res.IsSuccess === true) {
-                        toggleAlert("Save Successful");
+                        toastrSuccessAlert("Successfully Repair Done");
                         clearHdf();
                         txtSearchQRCode.val('');
                         txtSearchQRCode.focus();
                     }
                     else {
-                        toggleAlert("Save Failed");
+                        toastrErrorAlert("Save Failed");
                     }
                     enable('.btn-Action');
                 }).fail(function (error) {

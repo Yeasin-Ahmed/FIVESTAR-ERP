@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace ERPWeb.Controllers
 {
+    [CustomAuthorize]
     public class ReportController : BaseController
     {
         private readonly IProductionReportBusiness _productionReportBusiness; // Production
@@ -30,7 +31,7 @@ namespace ERPWeb.Controllers
             reportData.FirstOrDefault().OrganizationName = User.OrgName;
             reportData.FirstOrDefault().ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/rptProductionRequisition.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ERPRpt/rptProductionRequisition.rdlc");
             string id = string.Empty;
             if (System.IO.File.Exists(reportPath))
             {
@@ -74,6 +75,36 @@ namespace ERPWeb.Controllers
                 //return File(renderedBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ProductionRequisition.xlsx");
             }
             return Json(new { IsSuccess= IsSuccess,Id=id });
+        }
+
+        public ActionResult GetQrCodeFileByItemColorAndRefNum(long? itemId, long referenceId,string rptType)
+        {
+            IEnumerable<QRCodesByRef> reportData = _productionReportBusiness.GetQRCodesByRefId(itemId, referenceId,User.OrgId);
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ERPRpt/rptQRCodesByRef.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+            }
+            ReportDataSource dataSource1 = new ReportDataSource("QRCodesByRef", reportData);
+            localReport.DataSources.Add(dataSource1);
+            string reportType = rptType;
+            string mimeType;
+            string encoding;
+            string fileNameExtension;
+            Warning[] warnings;
+            string[] streams;
+
+            var renderedBytes = localReport.Render(
+                reportType,
+                "",
+                out mimeType,
+                out encoding,
+                out fileNameExtension,
+                out streams,
+                out warnings
+                );
+            return File(renderedBytes, mimeType);
         }
 
         public ActionResult GetYourReport(string id, string type="",string reportName="")

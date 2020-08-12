@@ -47,5 +47,11 @@ namespace ERPBO.Production.DomainModels
         public string BatteryCode { get; set; }
         [StringLength(100)]
         public string StateStatus { get; set; }
+        public long? PackagingLineId { get; set; }
+        [StringLength(300)]
+        public string  PreviousIMEI { get; set; }
+        public long? QCLineId { get; set; }
+        public string QCLineName { get; set; }
+        public string PackagingLineName { get; set; }
     }
 }

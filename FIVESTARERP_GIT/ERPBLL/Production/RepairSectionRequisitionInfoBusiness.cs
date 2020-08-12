@@ -35,7 +35,7 @@ namespace ERPBLL.Production
             return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(QueryForRepairSectionRequisitionInfo(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, queryFor, orgId)).ToList();
         }
 
-        private string QueryForRepairSectionRequisitionInfo(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate,string queryFor, long orgId)
+        private string QueryForRepairSectionRequisitionInfo(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, string queryFor, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -44,7 +44,8 @@ namespace ERPBLL.Production
 
             if (!string.IsNullOrEmpty(queryFor))
             {
-                if (queryFor == "Production" || queryFor =="Repair") {
+                if (queryFor == "Production" || queryFor == "Repair")
+                {
                     param += string.Format(@" and req.StateStatus IN('Pending','Checked','Rechecked','Rejected','Approved','HandOver','Accepted')");
                 }
                 else
@@ -53,7 +54,7 @@ namespace ERPBLL.Production
                 }
             }
 
-            
+
             if (repairLineId != null && repairLineId > 0)
             {
                 param += string.Format(@" and req.RepairLineId={0}", repairLineId);
@@ -113,7 +114,7 @@ Inner Join tblRepairLine rl on req.RepairLineId = rl.RepairLineId
 Inner Join tblProductionLines pl on req.ProductionFloorId = pl.LineId
 Inner Join [Inventory].dbo.tblWarehouses w on req.WarehouseId = w.Id
 Inner Join [ControlPanel].dbo.tblApplicationUsers appUser on appUser.OrganizationId={1} and req.EUserId = appUser.UserId
-Where 1=1 {0}", Utility.ParamChecker(param),orgId);
+Where 1=1 {0}", Utility.ParamChecker(param), orgId);
             return query;
         }
 
@@ -190,40 +191,39 @@ Where 1=1 and ri.OrganizationId={0} and ri.RSRInfoId={1}", orgId, reqId)).Single
         {
             if (model.Status == RequisitionStatus.Approved)
             {
+                var reqInfo = GetRepairSectionRequisitionById(model.RequistionId, orgId);
+                List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
+                foreach (var item in model.Details)
+                {
+                    WarehouseStockDetailDTO warehouse = new WarehouseStockDetailDTO
+                    {
+                        WarehouseId = reqInfo.WarehouseId,
+                        DescriptionId = reqInfo.DescriptionId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.IssueQty,
+                        OrganizationId = orgId,
+                        UnitId = item.UnitId,
+                        StockStatus = StockStatus.StockOut,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        RefferenceNumber = reqInfo.RequisitionCode,
+                        Remarks = "Repair Section Requisition has been issued"
+                    };
+                    warehouseStocks.Add(warehouse);
+
+                    // Requisition Detail Issue Qty Update
+                    var reqDetail = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailById(item.RSRDetailId, reqInfo.RSRInfoId, orgId);
+                    if (reqDetail != null)
+                    {
+                        reqDetail.IssueQty = item.IssueQty;
+                        reqDetail.UpdateDate = DateTime.Now;
+                        reqDetail.UpUserId = userId;
+                        _repairSectionRequisitionDetailRepository.Update(reqDetail);
+                    }
+                }
                 if (SaveRepairSectionRequisitionStatus(model.RequistionId, model.Status, orgId, userId))
                 {
-                    var reqInfo = GetRepairSectionRequisitionById(model.RequistionId, orgId);
-
-                    List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
-                    foreach (var item in model.Details)
-                    {
-                        WarehouseStockDetailDTO warehouse = new WarehouseStockDetailDTO
-                        {
-                            WarehouseId = reqInfo.WarehouseId,
-                            DescriptionId = reqInfo.DescriptionId,
-                            ItemTypeId = item.ItemTypeId,
-                            ItemId = item.ItemId,
-                            Quantity = item.IssueQty,
-                            OrganizationId = orgId,
-                            UnitId = item.UnitId,
-                            StockStatus = StockStatus.StockOut,
-                            EUserId = userId,
-                            EntryDate = DateTime.Now,
-                            RefferenceNumber = reqInfo.RequisitionCode,
-                            Remarks = "Repair Section Requisition has been issued"
-                        };
-                        warehouseStocks.Add(warehouse);
-
-                        // Requisition Detail Issue Qty Update
-                        var reqDetail = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailById(item.RSRDetailId, reqInfo.RSRInfoId, orgId);
-                        if (reqDetail != null)
-                        {
-                            reqDetail.IssueQty = item.IssueQty;
-                            reqDetail.UpdateDate = DateTime.Now;
-                            reqDetail.UpUserId = userId;
-                            _repairSectionRequisitionDetailRepository.Update(reqDetail);
-                        }
-                    }
                     if (_repairSectionRequisitionDetailRepository.Save())
                     {
                         return _warehouseStockDetailBusiness.SaveWarehouseStockOut(warehouseStocks, userId, orgId, string.Empty);
@@ -236,7 +236,7 @@ Where 1=1 and ri.OrganizationId={0} and ri.RSRInfoId={1}", orgId, reqId)).Single
         public bool SaveRepairSectionRequisitionStatus(long requisitionId, string status, long orgId, long userId)
         {
             var reqInfo = GetRepairSectionRequisitionById(requisitionId, orgId);
-            if (reqInfo.StateStatus == RequisitionStatus.Pending && status == RequisitionStatus.Checked )
+            if (reqInfo.StateStatus == RequisitionStatus.Pending && status == RequisitionStatus.Checked)
             {
                 reqInfo.CheckedDate = DateTime.Now;
                 reqInfo.CheckedBy = userId;

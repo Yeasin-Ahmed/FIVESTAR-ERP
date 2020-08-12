@@ -24,6 +24,7 @@ namespace ERPBO.Production.DomainModels
         public long? UnitId { get; set; }
         public int StockInQty { get; set; }
         public int StockOutQty { get; set; }
+        public bool IsChinaFaulty { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }

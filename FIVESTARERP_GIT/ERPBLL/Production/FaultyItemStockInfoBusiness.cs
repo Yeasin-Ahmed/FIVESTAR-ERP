@@ -39,6 +39,11 @@ namespace ERPBLL.Production
             return this._faultyItemStockInfoRepository.GetOneByOrg(f => f.RepairLineId == repairLine && f.DescriptionId == modelId && f.ItemId == itemId && f.OrganizationId == orgId);
         }
 
+        public FaultyItemStockInfo GetFaultyItemStockInfoByRepairAndModelAndItemAndFultyType(long repairLine, long modelId, long itemId, bool isChinaFaulty, long orgId)
+        {
+            return this._faultyItemStockInfoRepository.GetOneByOrg(f => f.RepairLineId == repairLine && f.DescriptionId == modelId && f.ItemId == itemId && f.IsChinaFaulty == isChinaFaulty && f.OrganizationId == orgId);
+        }
+
         public IEnumerable<FaultyItemStockInfo> GetFaultyItemStockInfos(long orgId)
         {
             return this._faultyItemStockInfoRepository.GetAll(f => f.OrganizationId == orgId);
@@ -82,14 +87,14 @@ namespace ERPBLL.Production
             if(!string.IsNullOrEmpty(lessOrEq) && lessOrEq.Trim() != "")
             {
                 int i = 0;
-                if (int.TryParse(lessOrEq, out i)) {
-                    param += string.Format(@" and (fs.StockInQty-fs.StockOutQty) <={0}", i);
+                if (int.TryParse(lessOrEq, out i) && i > 0) {
+                    param += string.Format(@" and (fs.StockInQty-fs.StockOutQty) >{0}", i);
                 };
             }
 
             query = string.Format(@"Select fs.FaultyItemStockInfoId,ISNULL(pl.LineNumber,'') 'ProductionFloorName',fs.RepairLineId,rl.RepairLineName 'RepairName', ISNULL(de.DescriptionName,'') 'ModelName', 
 ISNULL(w.WarehouseName,'') 'WarehouseName', ISNULL(it.ItemName,'') 'ItemTypeName', ISNULL(i.ItemName,'') 'ItemName',
-ISNULL(u.UnitSymbol,'') 'UnitName',fs.StockInQty,fs.StockOutQty
+ISNULL(u.UnitSymbol,'') 'UnitName',fs.StockInQty,fs.StockOutQty, fs.IsChinaFaulty,(Case When fs.IsChinaFaulty = 1 then 'China Made' else 'Man Made' End)'FaultyReason'
 From tblFaultyItemStockInfo fs
 Left Join tblProductionLines pl on fs.ProductionFloorId= pl.LineId
 Left Join tblRepairLine rl on fs.RepairLineId= rl.RepairLineId

@@ -19,6 +19,7 @@ namespace ERPBLL.Production
         private readonly QCPassTransferInformationRepository _qCPassTransferInformationRepository;
         private readonly QCPassTransferDetailRepository _qCPassTransferDetailRepository;
 
+        private readonly IQualityControlBusiness _qualityControlBusiness;
         private readonly IItemBusiness _itemBusiness;
 
         // Item Preparation //
@@ -37,10 +38,11 @@ namespace ERPBLL.Production
 
         // Temp QRCode //
         private readonly ITempQRCodeTraceBusiness _tempQRCodeTraceBusiness;
-        public QCPassTransferInformationBusiness(IProductionUnitOfWork productionDb, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, QCPassTransferDetailRepository qCPassTransferDetailRepository, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness)
+        public QCPassTransferInformationBusiness(IProductionUnitOfWork productionDb, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IItemBusiness itemBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness)
         {
             this._productionDb = productionDb;
             this._qCPassTransferInformationRepository = new QCPassTransferInformationRepository(this._productionDb);
+            
             this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             this._qCLineStockDetailBusiness = qCLineStockDetailBusiness;
@@ -48,8 +50,9 @@ namespace ERPBLL.Production
             this._itemBusiness = itemBusiness;
             this._qCItemStockDetailBusiness = qCItemStockDetailBusiness;
             this._tempQRCodeTraceBusiness = tempQRCodeTraceBusiness;
-            this._qCPassTransferDetailRepository = qCPassTransferDetailRepository;
+            this._qCPassTransferDetailRepository = new QCPassTransferDetailRepository(this._productionDb);
             this._assemblyLineStockDetailBusiness = assemblyLineStockDetailBusiness;
+            this._qualityControlBusiness = qualityControlBusiness;
         }
         public IEnumerable<QCPassTransferInformation> GetQCPassTransferInformation(long orgId)
         {
@@ -184,7 +187,10 @@ namespace ERPBLL.Production
         public async Task<bool> SaveQCPassTransferToMiniStockByQRCodeAsync(QCPassTransferInformationDTO qcPassInfo, string qrCode, long userId, long orgId)
         {
             // Previous Pending QCPass Info
-            var qcPassInfoInDb = await GetQCPassTransferInformationByFloorAssemblyQcModelItemTypeItem(qcPassInfo.ProductionFloorId, qcPassInfo.AssemblyLineId, qcPassInfo.QCLineId, qcPassInfo.DescriptionId, qcPassInfo.ItemTypeId, qcPassInfo.ItemId, RequisitionStatus.Approved, orgId);
+            var qcPassInfoInDb = await GetQCPassTransferInformationByFloorAssemblyQcModelItemTypeItem(qcPassInfo.ProductionFloorId, qcPassInfo.AssemblyLineId, qcPassInfo.QCLineId, qcPassInfo.DescriptionId, qcPassInfo.ItemTypeId, qcPassInfo.ItemId, "Send By QC", orgId);
+
+            // QC Line //
+            var qcLine = _qualityControlBusiness.GetQualityControlById(qcPassInfo.QCLineId, orgId);
 
             // Item Preparation Info //
             var itemPreparationInfo = await _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndTypeAsync(ItemPreparationType.Production, qcPassInfo.DescriptionId, qcPassInfo.ItemId, orgId);
@@ -194,8 +200,19 @@ namespace ERPBLL.Production
 
             string code = string.Empty;
 
-            List<QCPassTransferDetail> qCPassTransferDetail = new List<QCPassTransferDetail>() {
-                new QCPassTransferDetail(){
+            List<QCPassTransferDetail> qCPassTransferDetails = new List<QCPassTransferDetail>() {
+            };
+            if (qcPassInfoInDb != null)
+            {
+                code = qcPassInfoInDb.QCPassCode;
+                // Exist
+                qcPassInfoInDb.Quantity += 1;
+                qcPassInfoInDb.UpdateDate = DateTime.Now;
+                qcPassInfoInDb.UpUserId = userId;
+                
+
+                QCPassTransferDetail qCPassTransferDetail = new QCPassTransferDetail()
+                {
                     ProductionFloorId = qcPassInfo.ProductionFloorId,
                     ProductionFloorName = qcPassInfo.ProductionFloorName,
                     AssemblyLineId = qcPassInfo.AssemblyLineId,
@@ -211,20 +228,10 @@ namespace ERPBLL.Production
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     QRCode = qrCode,
-                    Remarks ="Item In By QRCode Scaning"
-                }
-            };
-            if (qcPassInfoInDb != null)
-            {
-                code = qcPassInfoInDb.QCPassCode;
-                // Exist
-                qcPassInfoInDb.Quantity += 1;
-                qcPassInfoInDb.UpdateDate = DateTime.Now;
-                qcPassInfoInDb.UpUserId = userId;
-                foreach (var item in qCPassTransferDetail)
-                {
-                    item.QPassId = qcPassInfoInDb.QPassId;
-                }
+                    Remarks = code,
+                    QPassId = qcPassInfoInDb.QPassId
+                };
+                qCPassTransferDetails.Add(qCPassTransferDetail);
             }
             else
             {
@@ -251,7 +258,29 @@ namespace ERPBLL.Production
                     QCPassCode = code,
                     UnitId= unitInDb.UnitId
                 };
-                qcPassInfoInDb.QCPassTransferDetails = qCPassTransferDetail;
+
+                QCPassTransferDetail qCPassTransferDetail = new QCPassTransferDetail()
+                {
+                    ProductionFloorId = qcPassInfo.ProductionFloorId,
+                    ProductionFloorName = qcPassInfo.ProductionFloorName,
+                    AssemblyLineId = qcPassInfo.AssemblyLineId,
+                    AssemblyLineName = qcPassInfo.AssemblyLineName,
+                    QCLineId = qcPassInfo.QCLineId,
+                    QCLineName = qcPassInfo.QCLineName,
+                    DescriptionId = qcPassInfo.DescriptionId,
+                    Quantity = 1,
+                    WarehouseId = qcPassInfo.WarehouseId,
+                    ItemTypeId = qcPassInfo.ItemTypeId,
+                    ItemId = qcPassInfo.ItemId,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    EntryDate = DateTime.Now,
+                    QRCode = qrCode,
+                    Remarks = code,
+                    QPassId = qcPassInfoInDb.QPassId
+                };
+                qCPassTransferDetails.Add(qCPassTransferDetail);
+                qcPassInfoInDb.QCPassTransferDetails = qCPassTransferDetails;
             }
 
             // QC Item //
@@ -307,12 +336,11 @@ namespace ERPBLL.Production
             else
             {
                 _qCPassTransferInformationRepository.Update(qcPassInfoInDb);
-                _qCPassTransferDetailRepository.InsertAll(qCPassTransferDetail);
-                //_qCPassTransferDetailRepository.Insert(qcPassInfoInDb);
+                _qCPassTransferDetailRepository.InsertAll(qCPassTransferDetails);
             }
             if(await _qCPassTransferInformationRepository.SaveAsync())
             {
-                if (await _tempQRCodeTraceBusiness.UpdateQRCodeStatusAsync(qrCode, QRCodeStatus.MiniStock, orgId))
+                if (await _tempQRCodeTraceBusiness.UpdateQRCodeStatusWithQCAsync(qrCode, QRCodeStatus.MiniStock, qcPassInfo.QCLineId, qcLine.QCName, orgId))
                 {
                     if(await _qCItemStockDetailBusiness.SaveQCItemStockOutAsync(qCItemStockDetails, userId, orgId))
                     {

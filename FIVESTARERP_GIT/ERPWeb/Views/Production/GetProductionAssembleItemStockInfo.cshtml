@@ -4,167 +4,244 @@
     ViewBag.Title = "Production Assemble Item Stock & Receive QC Items";
 }
 <div class="row">
-    <div class="card card-primary card-outline card-outline-tabs">
-        <div class="card-header p-0 border-bottom-0">
-            <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-three-paStock-tab" data-toggle="pill" href="#custom-tabs-three-paStock" role="tab" aria-controls="custom-tabs-three-paStock" aria-selected="true">Mini Stock</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-qcPass" role="tab" aria-controls="custom-tabs-three-qcPass" aria-selected="false">QC Pass List</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body text-sm">
-            @Html.AntiForgeryToken()
-            <div class="tab-content" id="custom-tabs-three-tabContent">
+    <div class="col-md-12 text-sm">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-three-paStock-tab" data-toggle="pill" href="#custom-tabs-three-paStock" role="tab" aria-controls="custom-tabs-three-paStock" aria-selected="true">Mini Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-transferList-tab" data-toggle="pill" href="#custom-tabs-three-transferList" role="tab" aria-controls="custom-tabs-three-transferList" aria-selected="true">Mini Stock Transfer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-qcPass" role="tab" aria-controls="custom-tabs-three-qcPass" aria-selected="false">QC Pass List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body text-sm">
+                @Html.AntiForgeryToken()
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-three-paStock" role="tabpanel" aria-labelledby="custom-tabs-three-paStock-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                               
+                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                        <div class="tab-pane fade show active" id="custom-tabs-three-paStock" role="tabpanel" aria-labelledby="custom-tabs-three-paStock-tab">
+                            <div class="row" style="margin-top:-15px">
+                                <div class="col-md-12">
+                                    <div class="card card-gray-dark">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-center text-bold">Mini Stock Item</h5>
+                                                </div>
+                                                <div class="col-md-3">
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">Production Assemble Item Stock</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card card-navy">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Search By</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-top:-15px">
+                                                <div class="col-md-2">
+                                                    <label for="ddlProductionFloor" class="control-label font-weight-bold">Floor</label>
+                                                    @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select FLoor--", new { @class = "form-control form-control-sm" })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                                                    @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="ddlItemsStock" class="control-label font-weight-bold">Item-Color</label>
+                                                    @Html.DropDownList("ddlItemsStock", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">Qty(Less/Eq)</label>
+                                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                                </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <a href="/Production/CreateProductinAssembleStockTransfer" class="float-right btn btn-sm btn-outline-primary">Add Transfer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12" id="dataContainer1">
+                                                    @{Html.RenderAction("GetProductionAssembleItemStockInfo", new { @flag = "View" });}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card card-navy">
-                                    <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row" style="margin-top:-15px">
-                                            <div class="col-md-2">
-                                                <label for="ddlProductionFloor" class="control-label font-weight-bold">Floor</label>
-                                                @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse</label>
-                                                @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Line--", new { @class = "form-control form-control-sm" })
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
-                                                <select id="ddlItemType" class="form-control form-control-sm">
-                                                    <option value="">--Select Item Type--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
-                                                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
-                                                    <option value="">--Select Item--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">Qty(Less/Eq)</label>
-                                                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                        <div class="tab-pane fade" id="custom-tabs-three-transferList" role="tabpanel" aria-labelledby="custom-tabs-three-transferList-tab">
+                            <div class="row" style="margin-top:-15px">
+                                <div class="col-md-12">
+                                    <div class="card card-gray-dark">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-center text-bold">Mini Stock Transfer List</h5>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <a href="/Production/CreateMiniStockTransfer" class="float-right btn btn-sm btn-outline-primary">Add Transfer</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card">
-                                    <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card card-navy">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Search By</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-top:-15px">
+                                                <div class="col-md-2">
+                                                    <label for="txtMSTCode" class="control-label font-weight-bold">Transfer Code</label>
+                                                    <input type="text" id="txtMSTCode" class="form-control form-control-sm" placeholder="Search By REQ Code" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlLineNumberTL" class="control-label font-weight-bold">Floor</label>
+                                                    @Html.DropDownList("ddlLineNumberTL", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlPackagingTL" class="control-label font-weight-bold">Packaging Line</label>
+                                                    <select id="ddlPackagingTL" class="form-control form-control-sm">
+                                                        <option value="0">--Select Packaging--</option>
+                                                    </select>
+                                                    <span class="error hide req-packaging">Packaging Line is required</span>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">From Date</label>
+                                                    <div class="input-group input-group-sm ">
+                                                        <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptFromDateTransferItem" />
+                                                        <div class="input-group-prepend cursor-pointer remove-date-transferItem dptFromDate" style="cursor:pointer">
+                                                            <span class="input-group-text">&#10008;</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">To Date</label>
+                                                    <div class="input-group input-group-sm ">
+                                                        <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptToDateTransferItem" />
+                                                        <div class="input-group-prepend remove-date-transferItem dptToDate" style="cursor:pointer">
+                                                            <span class="input-group-text">&#10008;</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlStateStatusTL" class="control-label font-weight-bold">State Status</label>
+                                                    <select class="form-control form-control-sm" id="ddlStateStatusTL">
+                                                        <option value="">Select Status</option>
+                                                        <option value="Send">Send</option>
+                                                        <option value="Received">Received</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card">
                                         <div class="row">
-                                            <div class="col-md-12" id="dataContainer1">
-                                                @{Html.RenderAction("GetProductionAssembleItemStockInfo", new { @flag = "View" });}
+                                            <div class="card-body">
+                                                <div class="col-md-12" id="dataContainer3">
+                                                    @{Html.RenderAction("GetMiniStockTransferInfos", new { @flag = "View" });}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-three-qcPass" role="tabpanel" aria-labelledby="custom-tabs-three-qcPass-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">QC Pass List</h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                               
+                        <div class="tab-pane fade" id="custom-tabs-three-qcPass" role="tabpanel" aria-labelledby="custom-tabs-three-qcPass-tab">
+                            <div class="row" style="margin-top:-15px">
+                                <div class="col-md-12">
+                                    <div class="card card-gray-dark">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-center text-bold">QC Pass List</h5>
+                                                </div>
+                                                <div class="col-md-3">
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card card-navy text-sm">
-                                    <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row" style="margin-top:-15px">
-                                            <div class="col-md-3">
-                                                <label for="ddlLineNumber2" class="control-label font-weight-bold">Floor</label>
-                                                @Html.DropDownList("ddlLineNumber2", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlModelName2" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlModelName2", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlQCLine2" class="control-label font-weight-bold">QC Line</label>
-                                                <select id="ddlQCLine2" class="form-control form-control-sm">
-                                                    <option value="0">--Select QC Line--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlWarehouse2" class="control-label font-weight-bold">Warehouse Name</label>
-                                                @Html.DropDownList("ddlWarehouse2", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
-                                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card card-navy text-sm">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Search By</h6>
                                         </div>
-                                        @*<div class="row">
-                                            <div class="col-md-3">
-                                                <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
-                                                <select id="ddlItemType" class="form-control form-control-sm">
-                                                    <option value="">--Select Item Type--</option>
-                                                </select>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-top:-15px">
+                                                <div class="col-md-3">
+                                                    <label for="ddlLineNumber2" class="control-label font-weight-bold">Floor</label>
+                                                    @Html.DropDownList("ddlLineNumber2", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Line--", new { @class = "form-control form-control-sm" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="ddlModelName2" class="control-label font-weight-bold">Model</label>
+                                                    @Html.DropDownList("ddlModelName2", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="ddlQCLine2" class="control-label font-weight-bold">QC Line</label>
+                                                    <select id="ddlQCLine2" class="form-control form-control-sm">
+                                                        <option value="0">--Select QC Line--</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="ddlWarehouse2" class="control-label font-weight-bold">Warehouse Name</label>
+                                                    @Html.DropDownList("ddlWarehouse2", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                                </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
-                                                <select id="ddlItem" class="form-control form-control-sm ctrl-change">
-                                                    <option value="">--Select Item--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
-                                                <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
-                                            </div>
-                                        </div>*@
+                                            @*<div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
+                                                        <select id="ddlItemType" class="form-control form-control-sm">
+                                                            <option value="">--Select Item Type--</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="ddlItem" class="control-label font-weight-bold">Item Name</label>
+                                                        <select id="ddlItem" class="form-control form-control-sm ctrl-change">
+                                                            <option value="">--Select Item--</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="control-label font-weight-bold">Stock Qty (Less then / Equal)</label>
+                                                        <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                                    </div>
+                                                </div>*@
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("GetQCPassList", new { @flag = "Search" });}
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12" id="dataContainer2">
+                                                    @{Html.RenderAction("GetQCPassList", new { @flag = "Search" });}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -193,18 +270,14 @@
                             <table class="table table-sm table-bordered text-bold text-sm" id="tblQcPass">
                                 <tbody>
                                     <tr>
-                                        <td class="alert-secondary" style="width:20%">From</td>
-                                        <td style="width:30%; background-color:#e1dada"></td>
-                                        <td class="alert-secondary" style="width:20%">To</td>
-                                        <td style="width:35%; background-color:#e1dada"></td>
+                                        <td class="alert-secondary" style="width:20%">Belt</td>
+                                        <td style="background-color:#e1dada" colspan="3"></td>
                                     </tr>
                                     <tr>
                                         <td class="alert-secondary" style="width:20%">Model</td>
                                         <td style="width:30%; background-color:#e1dada"></td>
                                         <td class="alert-secondary" style="width:20%">Qty</td>
-                                        <td style="width:35%; background-color:#e1dada">
-                                            
-                                        </td>
+                                        <td style="width:35%; background-color:#e1dada"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -213,9 +286,6 @@
                 </form>
             </div>
             <div class="modal-footer">
-                @*<button class="btn btn-danger btn-sm btn-flat" data-dismiss="modal">
-                    Cancel <i>X</i>
-                </button>*@
                 <button class="btn btn-success btn-sm btn-flat" id="btnSubmitQCPass">
                     Receive <i class="fas fa-download"></i>
                 </button>
@@ -223,15 +293,45 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdTransferInfoId" />
+                <input type="hidden" id="hdfRowIndex" />
+                <h4 id="modalHeading" class="modal-title">Mini Stock Transfer Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script type="text/javascript">
+        var hdTransferInfoId = $("#hdTransferInfoId");
+        var hdfRowIndex = $("#hdfRowIndex");
         var ddlProductionFloor = $("#ddlProductionFloor");
         var ddlModelName = $("#ddlModelName");
-        var ddlWarehouse = $("#ddlWarehouse");
-        var ddlItemType = $("#ddlItemType");
-        var ddlItem = $("#ddlItem");
+        var ddlItem = $("#ddlItemsStock");
         var txtLessOrEq = $("#txtLessOrEq");
-       
+
+        // QC Pass
+        var ddlLineNumber2 = $("#ddlLineNumber2");
+        var ddlModelName2 = $("#ddlModelName2");
+        var ddlQCLine2 = $("#ddlQCLine2");
+        var ddlWarehouse2 = $("#ddlWarehouse2");
+        var hdfQCPassId = $("#hdfQCPassId");
+
+        // Transfer List
+        var ddlLineNumberTL = $("#ddlLineNumberTL");
+        var ddlPackagingTL = $("#ddlPackagingTL");
+        var ddlStateStatusTL = $("#ddlStateStatusTL");
+        var txtMSTCode = $("#txtMSTCode");
+        var dptFromDateTransferItem = $("#dptFromDateTransferItem");
+        var dptToDateTransferItem = $("#dptToDateTransferItem");
+
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -240,6 +340,21 @@
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
+            });
+
+            dptFromDateTransferItem.prop('readonly', true);
+            dptToDateTransferItem.prop('readonly', true);
+            dptFromDateTransferItem.css("background-color", "#fff");
+            dptToDateTransferItem.css("background-color", "#fff");
+            $('#dptFromDateTransferItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDateTransferItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
             });
         })
 
@@ -251,23 +366,6 @@
             LoadDataTable();
         })
 
-        ddlWarehouse.change(function () {
-            clearDropdown("ddlItemType");
-            clearDropdown("ddlItem");
-            if (ddlWarehouse.val() != "") {
-                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
-            }
-            LoadDataTable();
-        })
-
-        ddlItemType.change(function () {
-            clearDropdown("ddlItem");
-            if (ddlItemType.val() != "") {
-                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
-            }
-            LoadDataTable();
-        })
-
         txtLessOrEq.keyup(function () {
             LoadDataTable();
         })
@@ -276,9 +374,9 @@
             LoadDataTable();
         })
 
-        function LoadDataTable()
-        {
-            var data = { flag: "search", floorId: ddlProductionFloor.val(), modelId: ddlModelName.val(), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), lessOrEq: txtLessOrEq.val()};
+        function LoadDataTable() {
+            var item = ddlItem.val() != "" ? ddlItem.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "search", floorId: ddlProductionFloor.val(), modelId: ddlModelName.val(), warehouseId: TryParseInt(item[2], 0), itemTypeId: TryParseInt(item[1], 0), itemId: TryParseInt(item[0], 0), lessOrEq: txtLessOrEq.val() };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetProductionAssembleItemStockInfo', data)).then(function (res, status) {
                 console.log(status);
@@ -294,27 +392,23 @@
             pageNo = 1;
         }
 
-        var ddlLineNumber2 = $("#ddlLineNumber2");
-        var ddlModelName2 = $("#ddlModelName2");
-        var ddlQCLine2 = $("#ddlQCLine2");
-        var ddlWarehouse2 = $("#ddlWarehouse2");
-        var hdfQCPassId = $("#hdfQCPassId");
+        // QC Pass //
 
         ddlLineNumber2.change(function () {
-            clearDropdown("ddlQCLine2");
-            if (ddlLineNumber2.val() != "") {
-                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine2, JSON.stringify({ lineId: ddlLineNumber2.val() }));
-            }
             LoadDataTable2();
+            //clearDropdown("ddlQCLine2");
+            //if (ddlLineNumber2.val() != "") {
+            //    LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLine2, JSON.stringify({ lineId: ddlLineNumber2.val() }));
+            //}
         })
 
         ddlModelName2.change(function () {
             LoadDataTable2();
         })
 
-        ddlQCLine2.change(function () {
-            LoadDataTable2();
-        })
+        //ddlQCLine2.change(function () {
+        //    LoadDataTable2();
+        //})
 
         ddlWarehouse2.change(function () {
             LoadDataTable2();
@@ -337,27 +431,37 @@
             });
         }
 
-        $(document).on('click', 'a.data-item-receive', function (e) {
+        $(document).on('click', 'a.data-qcPass-item-detail', function (e) {
             e.preventDefault();
             hdfQCPassId.val('0');
-            var id = $(this).attr('data-item-val');
+            var id = $(this).attr('data-qcPass-item-detail');
             $("#modalQCPass").modal("show");
             hdfQCPassId.val(id);
 
-            var row = $(this).parent().parents('tr');            
+            var row = $(this).parent().parents('tr');
 
             var tblQcPass = $('#tblQcPass tbody');
             var qcPassRows = tblQcPass.children('tr');
-            
+
 
             var qcPassRow1 = qcPassRows.eq('0');
             console.log(qcPassRow1);
-            var row1Cell2 = qcPassRow1.children('td').eq(1).html(row.children('td').eq(2).html());
-            var row1Cell4 = qcPassRow1.children('td').eq(3).html(row.children('td').eq(3).html());
+            var row1Cell2 = qcPassRow1.children('td').eq(1).html(row.children('td').eq(1).html());
+            //var row1Cell4 = qcPassRow1.children('td').eq(3).html();
 
             var qcPassRow2 = qcPassRows.eq('1');
-            var row2Cell2 = qcPassRow2.children('td').eq(1).html(row.children('td').eq(4).html());
-            var row2Cell2 = qcPassRow2.children('td').eq(3).html(row.children('td').eq(8).html());
+            var row2Cell2 = qcPassRow2.children('td').eq(1).html(row.children('td').eq(2).html());
+            var row2Cell2 = qcPassRow2.children('td').eq(3).html(row.children('td').eq(4).html());
+
+            var rowStatus = row.children('td').eq(5).attr("data-val");
+            if (rowStatus == "Received By Production") {
+                $("#btnSubmitQCPass").addClass('hide');
+            }
+            else {
+                $("#btnSubmitQCPass").removeClass('hide');
+            }
+
+            //
         })
 
         $("#btnSubmitQCPass").click(function (e) {
@@ -368,8 +472,7 @@
                         disable("#btnSubmitQCPass");
                         var data = JSON.stringify({ qcPassId: TryParseInt(hdfQCPassId.val(), 0), status: "Received By Production" });
 
-                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQCPassItemReceive', data, getToken())).then(function (res, status)
-                        {
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQCPassItemReceive', data, getToken())).then(function (res, status) {
                             if (res === true && status === "success") {
                                 $('.toastrDefaultSuccess').trigger('click');
                                 $("#modalQCPass").modal("toggle");
@@ -389,6 +492,131 @@
                 })
             }
         })
+
+        // Transfer List //
+        ddlLineNumberTL.change(function () {
+            LoadTransferListDataTable();
+            clearDropdown("ddlPackagingTL");
+            if (ddlLineNumberTL.val() != "") {
+                LoadDropDown('/Common/GetPackagingLineByLine', 'POST', ddlPackagingTL, JSON.stringify({ lineId: ddlLineNumberTL.val() }));
+            }
+        })
+
+        ddlPackagingTL.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date-transferItem', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateTransferItem.val() !== '') {
+                    dptToDateTransferItem.val('');
+                    LoadTransferListDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateTransferItem.val() !== '') {
+                    dptFromDateTransferItem.val('');
+                    LoadTransferListDataTable();
+                }
+            }
+        })
+        dptFromDateTransferItem.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        dptToDateTransferItem.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        txtMSTCode.keyup(function () {
+            LoadTransferListDataTable();
+        })
+
+        ddlStateStatusTL.change(function () {
+            LoadTransferListDataTable();
+        })
+
+        function LoadTransferListDataTable() {
+            //string flag,long? floorId,long? packagingLineId, string status, string fromDate, string toDate, string transferCode, long? transferId
+            var data = { flag: "view", floorId: TryParseInt(ddlLineNumberTL.val(), 0), packagingLineId: TryParseInt(ddlPackagingTL.val(), 0), status: ddlStateStatusTL.val(), fromDate: dptFromDateTransferItem.val(), toDate: dptToDateTransferItem.val(), transferCode: txtMSTCode.val(),transferInfoId: 0 };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetMiniStockTransferInfos', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                        //$(".cell-action").addClass('hide');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        $(document).on('click', 'a.data-item-transfer', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            hdTransferInfoId.val('0')
+            var idx = $(this).parent().parents('tbody tr').index();
+            //alert(id);
+            //return;
+            if (TryParseInt(id, 0) > 0) {
+                hdTransferInfoId.val(id)
+                hdfRowIndex.val(idx);
+                LoadDetails(id);
+            }
+        })
+
+        function LoadDetails(id) {
+
+            var data = { flag: "detail", floorId: 0, packagingLineId: 0, modelId: 0, itemTypeId: 0, itemId: 0, status: 0, transferId: id,fromDate:"",toDate:"" };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetMiniStockTransferInfos', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#modalDetails").modal("show");
+                    $("#modelDataContainer").empty();
+                    $("#modelDataContainer").append(res);
+                    $(".btnReceiveMiniStock").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+
+        $(document).on("click", ".btnSendMiniStock", function (e) {
+            e.preventDefault();
+            var id = TryParseInt(hdTransferInfoId.val(), 0);
+            if (id > 0) {
+                fnMiniStockStateChange(id, 'Send');
+            }
+        })
+
+        function fnMiniStockStateChange(id, status) {
+            disable(".btnSendMiniStock")
+            var data = JSON.stringify({ transferId: id, status: status });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveMiniTrasferStatus', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    toastrSuccessAlert(execuStatus.successSave);
+                    $("#modalDetails").modal('toggle').toggle('fast');
+                    $("#modalContainer").empty();
+                    fnRemoveARowFromTbody(".tblMSTInfo", hdfRowIndex.val());
+                    hdfRowIndex.val('');
+                    hdTransferInfoId.val('');
+                    setTimeout(function () {
+                        LoadTransferListDataTable();
+                        LoadDataTable();
+                    }, 1300);
+                    enable(".btnSendMiniStock");
+                }
+            }).fail(function (error) {
+                console.log(error);
+                enable(".btnSendMiniStock");
+            })
+        }
     </script>
 }
 

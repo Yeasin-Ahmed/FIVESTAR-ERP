@@ -66,7 +66,7 @@ namespace ERPBLL.Production
             }
 
             query = string.Format(@"Select rsi.RSFIRInfoId,rsi.TransferCode,rsd.ProductionFloorName,rsd.RepairLineName,rsi.StateStatus,rsd.ModelName,rsd.WarehouseName,
-rsd.ItemTypeName,rsd.ItemName ,rsd.FaultyQty,rsi.StateStatus,rsi.EntryDate,app.UserName 'EntryUser'
+rsd.ItemTypeName,rsd.ItemName ,rsd.FaultyQty,rsd.UnitName,rsi.StateStatus,rsi.EntryDate,app.UserName 'EntryUser'
 From [Production].dbo.tblRepairSectionFaultyItemTransferDetail rsd
 Inner Join [Production].dbo.tblRepairSectionFaultyItemTransferInfo rsi on rsd.RSFIRInfoId = rsi.RSFIRInfoId
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on rsi.EUserId = app.UserId

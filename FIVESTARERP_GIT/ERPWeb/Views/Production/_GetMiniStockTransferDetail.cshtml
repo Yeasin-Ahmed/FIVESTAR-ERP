@@ -1,0 +1,77 @@
+﻿@model ERPBO.Production.ViewModels.MiniStockTransferInfoViewModel
+@{
+    int sl = 0;
+    string packagingLine = Model.PackagingLineName + " [" + Model.FloorName + "]";
+    string badge = Model.StateStatus == "Send" ? "badge badge-success" : "badge badge-primary";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-responsive-lg text-bold text-sm tblMSTInfo" id="tblMSTInfo">
+            <tbody>
+                <tr>
+                    <td class="alert-secondary" style="width:10%">Code</td>
+                    <td style="width:20%; background-color:#e1dada">@Model.TransferCode</td>
+                    <td class="alert-secondary" style="width:15%">Packaging Line</td>
+                    <td style="width:25%; background-color:#e1dada">@packagingLine</td>
+                    <td class="alert-secondary" style="width:15%">Status</td>
+                    <td style="width:15%; background-color:#e1dada">
+                        <span class="@badge">@Model.StateStatus</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="alert-secondary" style="width:10%">Entry Date</td>
+                    <td style="width:20%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                    <td class="alert-secondary" style="width:15%">Entry User</td>
+                    <td style="width:25%; background-color:#e1dada">@Model.EntryUser</td>
+                    <td class="alert-secondary" style="width:15%">Update Date</td>
+                    <td style="width:15%; background-color:#e1dada"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-sm table-responsive-lg text-sm tblMSTDetail" id="tblMSTDetail">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="width:10%">#SL</th>
+                    <th style="width:15%">Model</th>
+                    <th style="width:50%">Item-Color</th>
+                    <th style="width:10%">Quantity</th>
+                    <th style="width:15%">Type Of Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MiniStockTransferDetails)
+                {
+                    sl++;
+                    string itemName = item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td>@item.ModelName</td>
+                        <td>@itemName</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-center">@item.UnitName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.StateStatus == "Pending")
+{
+    <div class="modal-footer">
+        <button class="btn btn-sm btn-warning btnSendMiniStock">
+            <i class="fas fa-paper-plane"> Send</i>
+        </button>
+    </div>
+}
+
+@if (Model.StateStatus == "Send")
+{
+    <div class="modal-footer">
+        <button class="btn btn-sm btn-secondary btnReceiveMiniStock">
+            <i class="fas fa-ship"> Receive</i>
+        </button>
+    </div>
+}
+

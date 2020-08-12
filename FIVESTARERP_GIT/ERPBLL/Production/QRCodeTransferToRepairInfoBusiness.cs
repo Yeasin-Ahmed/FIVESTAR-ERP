@@ -124,7 +124,28 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                 transferInfo.ForQty += 1;
                 code = transferInfo.TransferCode;
                 transferId = transferInfo.TFQInfoId;
-                //transferDetails = (List<TransferFromQCDetail>)(await _transferFromQCDetailBusiness.GetTransferFromQCDetailByInfoAsync(transferInfo.TFQInfoId, orgId));
+                //transferDetails = (List<TransferFromQCDetail>)(await _transferFromQCDetailBusiness.GetTransferFromQCDetailByInfoAsync(transferInfo.TFQInfoId, orgId));\
+
+                foreach (var item in itemPreparationDetail)
+                {
+                    AssemblyLineStockDetailDTO assemblyStock = new AssemblyLineStockDetailDTO
+                    {
+                        ProductionLineId = dto.FloorId,
+                        AssemblyLineId = dto.AssemblyLineId,
+                        DescriptionId = dto.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        OrganizationId = orgId,
+                        EUserId = orgId,
+                        Quantity = item.Quantity,
+                        EntryDate = DateTime.Now,
+                        UnitId = item.UnitId,
+                        RefferenceNumber = code,
+                        StockStatus = StockStatus.StockOut
+                    };
+                    stockDetailDTOs.Add(assemblyStock);
+                }
             }
             else
             {
@@ -380,7 +401,8 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                         ReferenceNumber = qrCodeInfo.QRCode,
                         TransferCode = qrCodeInfo.TransferCode,
                         TransferId = qrCodeInfo.TransferId,
-                        UnitId = itemInfo.UnitId
+                        UnitId = itemInfo.UnitId,
+                        IsChinaFaulty =item.IsChinaFaulty
                     };
 
                     faultyItemStocks.Add(faultyItemStock);
