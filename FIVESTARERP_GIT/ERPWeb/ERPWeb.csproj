@@ -647,6 +647,10 @@
     <Content Include="Views\Inventory\GetIQCReturnDataInfoListForWarehouse.cshtml" />
     <Content Include="Views\Inventory\Index.cshtml" />
     <Content Include="Views\Inventory\ReturnIQCItemReqData.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobTransferList.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionListReport.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobTransferList.cshtml" />
+    <Content Include="Views\FrontDesk\_SellsDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
