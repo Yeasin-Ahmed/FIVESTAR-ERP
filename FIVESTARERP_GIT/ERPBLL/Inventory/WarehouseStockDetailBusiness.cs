@@ -8,7 +8,10 @@ using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -85,6 +88,7 @@ namespace ERPBLL.Inventory
                 {
                     warehouseInfo.StockInQty += item.Quantity;
                     warehouseInfo.UpUserId = userId;
+                    warehouseInfo.UpdateDate = DateTime.Now;
                     warehouseStockInfoRepository.Update(warehouseInfo);
                 }
                 else
@@ -345,5 +349,6 @@ Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
 
+        
     }
 }

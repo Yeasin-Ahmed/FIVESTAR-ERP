@@ -176,5 +176,107 @@ namespace ERPBLL.Production
             }
             return IsSuccess;
         }
+
+        public async Task<bool> SavePackagingItemStockOutAsync(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            List<PackagingItemStockDetail> list = new List<PackagingItemStockDetail>();
+            foreach (var item in stockDetails)
+            {
+                PackagingItemStockDetail stock = new PackagingItemStockDetail
+                {
+                    ProductionFloorId = item.ProductionFloorId,
+                    QCId = item.QCId,
+                    PackagingLineId = item.PackagingLineId,
+                    DescriptionId = item.DescriptionId,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    PackagingLineToId = item.PackagingLineToId,
+                    Quantity = item.Quantity,
+                    ReferenceNumber = item.ReferenceNumber,
+                    StockStatus = StockStatus.StockOut,
+                    Remarks = item.Remarks,
+                    EntryDate = DateTime.Now,
+                    UnitId = item.UnitId,
+                };
+
+                var packagingStockInDb = _packagingItemStockInfoBusiness.GetPackagingItemStockInfoByPackagingId(item.PackagingLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                packagingStockInDb.TransferQty += item.Quantity;
+                packagingStockInDb.UpdateDate = DateTime.Now;
+                this._packagingItemStockInfoRepository.Update(packagingStockInDb);
+                list.Add(stock);
+            }
+            if (list.Count > 0)
+            {
+                _packagingItemStockDetailRepository.InsertAll(list);
+            }
+
+            return await _packagingItemStockDetailRepository.SaveAsync();
+        }
+
+        public async Task<bool> SavePackagingItemStockInAsync(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId)
+        {
+            bool IsSuccess = false;
+            List<PackagingItemStockDetail> list = new List<PackagingItemStockDetail>();
+            foreach (var item in stockDetails)
+            {
+                PackagingItemStockDetail stock = new PackagingItemStockDetail
+                {
+                    ProductionFloorId = item.ProductionFloorId,
+                    QCId = item.QCId,
+                    PackagingLineId = item.PackagingLineId,
+                    DescriptionId = item.DescriptionId,
+                    WarehouseId = item.WarehouseId,
+                    ItemTypeId = item.ItemTypeId,
+                    ItemId = item.ItemId,
+                    OrganizationId = orgId,
+                    EUserId = userId,
+                    PackagingLineToId = item.PackagingLineToId,
+                    Quantity = item.Quantity,
+                    ReferenceNumber = item.ReferenceNumber,
+                    StockStatus = StockStatus.StockIn,
+                    Remarks = item.Remarks,
+                    EntryDate = DateTime.Now,
+                    UnitId = item.UnitId,
+                };
+
+                var packagingStockInDb = _packagingItemStockInfoBusiness.GetPackagingItemStockInfoByPackagingId(item.PackagingLineId.Value, item.DescriptionId.Value, item.ItemId.Value, orgId);
+                if (packagingStockInDb != null)
+                {
+                    packagingStockInDb.Quantity += item.Quantity;
+                    packagingStockInDb.UpdateDate = DateTime.Now;
+                    this._packagingItemStockInfoRepository.Update(packagingStockInDb);
+                }
+                else
+                {
+                    PackagingItemStockInfo stockInfo = new PackagingItemStockInfo
+                    {
+                        ProductionFloorId = item.ProductionFloorId,
+                        DescriptionId = item.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        UnitId = item.UnitId,
+                        PackagingLineId = item.PackagingLineId,
+                        EUserId = userId,
+                        EntryDate = DateTime.Now,
+                        OrganizationId = orgId,
+                        Quantity = item.Quantity,
+                        TransferQty = 0,
+                        Remarks = ""
+                    };
+                    this._packagingItemStockInfoRepository.Insert(stockInfo);
+                };
+                list.Add(stock);
+            }
+            if (list.Count > 0)
+            {
+                _packagingItemStockDetailRepository.InsertAll(list);
+            }
+            return await _packagingItemStockDetailRepository.SaveAsync();
+        }
     }
 }

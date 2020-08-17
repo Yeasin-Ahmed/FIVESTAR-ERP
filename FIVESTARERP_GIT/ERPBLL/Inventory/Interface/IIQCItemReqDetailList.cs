@@ -10,6 +10,7 @@ namespace ERPBLL.Inventory.Interface
 {
     public interface IIQCItemReqDetailList
     {
+        int? GetIssueQty(long? modelId, long? itemTypeId, long? itemId, long orgId);
         IEnumerable<IQCItemReqDetailList> GetIQCItemReqInfoListByOrgId(long orgId);
         IEnumerable<IQCItemReqDetailList> GetIQCItemReqInfoListByInfo(long infoId,long orgId);
         bool SaveIQCItemReq(List<IQCItemReqDetailListDTO> iQCItemReqDetailListDTO, long userId, long orgId);

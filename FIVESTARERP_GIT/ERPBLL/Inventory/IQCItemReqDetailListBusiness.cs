@@ -133,29 +133,27 @@ namespace ERPBLL.Inventory
         public bool SaveIQCItemRequestStatus(long reqId, string status, long orgId, long userId)
         {
             var reqInfo = GetIQCItemReqInfoById(reqId, orgId);
-            //if(status == RequisitionStatus.Approved)
-            //{
-            //    reqInfo.UpdateDate = DateTime.Now;
-            //    reqInfo.UpUserId = userId;
-            //    reqInfo.StateStatus = status;
-            //    iQCItemReqInfoListRepository.Update(reqInfo);
-            //}
 
+            if(status == "Return")
+            {
+                reqInfo.ReturnUserDate = DateTime.Now;
+                reqInfo.ReturnUserId = userId;
+                reqInfo.StateStatus = status;
+                iQCItemReqInfoListRepository.Update(reqInfo);
+            }
+            if (status == "Receive-Return")
+            {
+                reqInfo.ReturnReaciveUserDate = DateTime.Now;
+                reqInfo.ReturnReaciveUserId = userId;
+                reqInfo.StateStatus = status;
+                iQCItemReqInfoListRepository.Update(reqInfo);
+            }
             if (status == RequisitionStatus.Rechecked || status == RequisitionStatus.Rejected || status == RequisitionStatus.Approved || status == RequisitionStatus.Accepted)
             {
                 reqInfo.UpdateDate = DateTime.Now;
                 reqInfo.UpUserId = userId;
                 reqInfo.StateStatus = status;
                 iQCItemReqInfoListRepository.Update(reqInfo);
-
-                //var reqDetail = GetIQCItemReqDetailById(detId, reqId, orgId);
-                //if (reqDetail != null)
-                //{
-                //    reqDetail.IssueQty = qty;
-                //    reqDetail.UpdateDate = DateTime.Now;
-                //    reqDetail.UpUserId = userId;
-                //    iQCItemReqDetailListRepository.Update(reqDetail);
-                //}
             }
            
             return iQCItemReqInfoListRepository.Save();
@@ -235,6 +233,13 @@ Left Join tblUnits u on ird.UnitId= u.UnitId
 Left Join [ControlPanel].dbo.tblApplicationUsers au on ird.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
+        }
+
+        public int? GetIssueQty(long? modelId, long? itemTypeId, long? itemId, long orgId)
+        {
+            var data = iQCItemReqDetailListRepository.GetOneByOrg(s => s.ItemTypeId == itemTypeId && s.ItemId == itemId && s.IQCItemReqInfoList.DescriptionId == modelId && s.OrganizationId == orgId);
+            int? qty = data != null ? Convert.ToInt32(data.IssueQty) : 0; // Current Stock
+            return qty;
         }
     }
 }

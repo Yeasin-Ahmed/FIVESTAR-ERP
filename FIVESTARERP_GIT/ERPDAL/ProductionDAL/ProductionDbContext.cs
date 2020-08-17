@@ -6,7 +6,7 @@ namespace ERPDAL.ProductionDAL
 {
     public class ProductionDbContext : DbContext
     {
-        public ProductionDbContext():base("Production")
+        public ProductionDbContext() : base("Production")
         {
 
         }
@@ -76,5 +76,14 @@ namespace ERPDAL.ProductionDAL
         public DbSet<TempQRCodeTrace> tblTempQRCodeTrace { get; set; }
         public DbSet<MiniStockTransferInfo> tblMiniStockTransferInfo { get; set; }
         public DbSet<MiniStockTransferDetail> tblMiniStockTransferDetail { get; set; }
+        public DbSet<IMEITransferToRepairInfo> tblIMEITransferToRepairInfo { get; set; }
+        public DbSet<IMEITransferToRepairDetail> tblIMEITransferToRepairDetail { get; set; }
+        public DbSet<TransferToPackagingRepairInfo> tblTransferToPackagingRepairInfo { get; set; }
+        public DbSet<TransferToPackagingRepairDetail> tblTransferToPackagingRepairDetail { get; set; }
+        public DbSet<PackagingRepairItemStockInfo> tblPackagingRepairItemStockInfo { get; set; }
+        public DbSet<PackagingRepairItemStockDetail> tblPackagingRepairItemStockDetail { get; set; }
+
+        public DbSet<PackagingRepairRawStockInfo> tblPackagingRepairRawStockInfo { get; set; }
+        public DbSet<PackagingRepairRawStockDetail> tblPackagingRepairRawStockDetail { get; set; }
     }
 }

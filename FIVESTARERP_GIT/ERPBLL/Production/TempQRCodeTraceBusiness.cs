@@ -42,6 +42,11 @@ namespace ERPBLL.Production
                 //_tempQRCodeTraceRepository.GetOneByOrgAsync(s => s.CodeNo == code && s.ProductionFloorId == floorId && s.OrganizationId == orgId);
         }
 
+        public TempQRCodeTrace GetTempQRCodeTraceByIMEI(string imei, long orgId)
+        {
+            return _tempQRCodeTraceRepository.GetOneByOrg(s => s.IMEI.Contains(imei) && s.OrganizationId == orgId);
+        }
+
         public IEnumerable<TempQRCodeTrace> GetTempQRCodeTraceByOrg(long orgId)
         {
             return _tempQRCodeTraceRepository.GetAll(q => q.OrganizationId == orgId);
@@ -50,6 +55,11 @@ namespace ERPBLL.Production
         public async Task<IEnumerable<TempQRCodeTrace>> GetTempQRCodeTracesByQRCodesAsync(List<string> qrCodes, long orgId)
         {
             return await _tempQRCodeTraceRepository.GetAllAsync(s => qrCodes.Contains(s.CodeNo) && s.OrganizationId == orgId);
+        }
+
+        public bool IsExistIMEIWithStatus(string imei, string status, long orgId)
+        {
+            return this._tempQRCodeTraceRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.IMEI.Contains(imei) && s.StateStatus == status) != null;
         }
 
         public bool IsExistQRCodeWithStatus(string qrCode, string status, long orgId)

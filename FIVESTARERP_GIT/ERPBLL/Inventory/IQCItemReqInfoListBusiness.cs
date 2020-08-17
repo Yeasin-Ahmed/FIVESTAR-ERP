@@ -79,10 +79,10 @@ Where 1=1 and iri.OrganizationId={0} and iri.IQCItemReqInfoId={1}", orgId, reqId
             }
             if (!string.IsNullOrEmpty(status) && status.Trim() != "")
             {
-                param += string.Format(@" and iri.StateStatus = '{0}'", status);
+                param += string.Format(@" and iri.StateStatus In({0})", status);
             }
 
-            query = string.Format(@"Select iri.IQCItemReqInfoId, wh.WarehouseName 'Warehouse', de.DescriptionName 'ModelName', iq.IQCName, iri.StateStatus,iri.Remarks, sup.SupplierName 'Supplier'
+            query = string.Format(@"Select iri.IQCItemReqInfoId, wh.WarehouseName 'Warehouse', de.DescriptionName 'ModelName', iq.IQCName, iri.StateStatus,iri.Remarks, sup.SupplierName 'Supplier',au.UserName 'ReturnUser',au.UserName 'ReturnReaciveUser',iri.ReturnUserDate,iri.ReturnReaciveUserDate
 From tblIQCItemReqInfoList iri
 Left Join tblWarehouses wh on iri.WarehouseId = wh.Id
 Left Join tblDescriptions de on iri.DescriptionId =de.DescriptionId

@@ -91,12 +91,18 @@
     </div>
 </div>
 <div class="row float-right">
-    @if (Model.StateStatus == "Approved")
+    @if (Model.StateStatus == "Approved" && Model.StateStatus == "Return")
     {
         <div class="col-md-12" style="float:right">
             <button type="button" class="btn-outline-primary btn-sm btnReacive" id="btnReacive"><i class="fas fa-paper-plane"></i>Receive</button>
         </div>
 
+    }
+    @if (Model.StateStatus == "Return")
+    {
+        <div class="col-md-12" style="float:right">
+            <button type="button" class="btn-outline-primary btn-sm btnReacive-Return" id="btnReacive-Return"><i class="fas fa-paper-plane"></i>Receive-Return</button>
+        </div>
     }
 </div>
 

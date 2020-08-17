@@ -16,6 +16,9 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-IQCStockList-tab" data-toggle="pill" href="#custom-tabs-two-IQCStockList" role="tab" aria-controls="custom-tabs-two-IQCStockList" aria-selected="true">IQC Stock List</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-IQCItemReturnList-tab" data-toggle="pill" href="#custom-tabs-two-IQCItemReturnList" role="tab" aria-controls="custom-tabs-two-IQCItemReturnList" aria-selected="true">IQC Item Return</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -83,9 +86,9 @@
                                                 @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
                                             </div>
                                             @*<div class="col-md-2">
-                                    <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
-                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
-                                </div>*@
+                                                    <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                                </div>*@
                                         </div>
 
                                     </div>
@@ -111,10 +114,10 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 @*@if (privilege.Detail)
-                                                {*@
-                                                    <a href="/Inventory/GetAllIQCStockDetailList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                                        <i class="fas fa-eye"></i> Go To Details View
-                                                    </a>
+                                                    {*@
+                                                <a href="/Inventory/GetAllIQCStockDetailList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                    <i class="fas fa-eye"></i> Go To Details View
+                                                </a>
                                                 @*}*@
                                             </div>
                                             <div class="col-md-6">
@@ -188,6 +191,92 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tab-pane fade show " id="custom-tabs-two-IQCItemReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCItemReturnList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @*@if (privilege.Detail)
+                                                    {
+                                                        <a href="/Inventory/GetIQCItemReqDetailInfoList" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                            <i class="fas fa-eye"></i> Go To Details View
+                                                        </a>
+                                                    }*@
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IQC Item Return Info List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @if (privilege.Add)
+                                                {
+                                                    <a href="/Inventory/CreateIQCItemReturn" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNewForIQCReturn"><i class="fa fa-plus"></i> IQC Item Return</a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnResetForIQCItemReqInfo" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseForIQCReturn" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseForIQCReturn", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameForIQCReturn" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelNameForIQCReturn", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">State Status</label>
+                                                <select class="form-control form-control-sm ctrl-changed" id="ddlStateStatusForIQCReturn">
+                                                    <option value="">--Select Status--</option>
+                                                    <option value="Return">Return</option>
+                                                    <option value="Receive-Return">Reacive-Return</option>
+                                                </select>
+                                                @*@Html.DropDownList("ddlStateStatusForIQCReturn", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })*@
+                                            </div>
+                                            @*<div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                                </div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @{Html.RenderAction("GetIQCReturnDataInfoList");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -205,7 +294,7 @@
             </div>
             <div class="modal-body" id="modelContainer1">
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -232,8 +321,11 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
-            if ('@tab' != null && '@tab' != '') {
+            if ('@tab' == "IQCStock") {
                 $("#custom-tabs-two-IQCStockList-tab").trigger('click');
+            }
+            if ('@tab' == "IQCStockReturn") {
+                $("#custom-tabs-two-IQCItemReturnList-tab").trigger('click');
             }
         })
 
@@ -270,6 +362,7 @@
                     hdfRowIndex.val(idx)
                     $("#modelContainer1").empty();
                     $("#modelContainer1").append(res);
+                    $(".btnReacive-Return").addClass('hide');
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -481,5 +574,120 @@
             txtLessOrEq.val("");
         })
 
+    </script>
+
+    <script type="text/javascript">
+        var ddlWarehouseForIQCReturn = $("#ddlWarehouseForIQCReturn");
+        var ddlStateStatusForIQCReturn = $("#ddlStateStatusForIQCReturn");
+        var ddlModelNameForIQCReturn = $("#ddlModelNameForIQCReturn");
+        var pageNoForIQCReturn = 1;
+
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+            $("#btnReacive").hide();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        $(document).on('change', '.date-datePicker', function (e) {
+            var dateval = $(this).val();
+            console.log(dateval);
+        })
+
+        //Modal
+        var hdfRowIndex = $("#hdfRowIndex");
+        var hdfInfoId = $("#hdfInfoId");
+
+        function OpenModal() {
+            $("#modelDataContainer").empty();
+            hdfInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalIQCReqDetails").modal("show");
+
+        }
+
+        $(document).on("click", ".data-details", function (e) {
+
+            e.preventDefault();
+            var id = $(this).attr("data-details");
+
+            var data = {
+                reqInfoId: TryParseInt(id, 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+
+            console.log(data);
+            //return;
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCItemReqDetailList', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfInfoId.val(data.reqInfoId);
+                    hdfRowIndex.val(idx);
+                    $("#modelContainer1").empty();
+                    $("#modelContainer1").append(res);
+                    $(".btnReacive-Return").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        ddlWarehouseForIQCReturn.change(function () {
+
+            LoadDataTableForIQCReturn();
+        })
+
+        ddlModelNameForIQCReturn.change(function () {
+            LoadDataTableForIQCReturn();
+        })
+
+        ddlStateStatusForIQCReturn.change(function () { LoadDataTableForIQCReturn(); })
+
+        function LoadDataTableForIQCReturn() {
+            var data = { WarehouseId: TryParseInt(ddlWarehouseForIQCReturn.val(), 0), modelId: TryParseInt(ddlModelNameForIQCReturn.val(), 0), stateStatus: ddlStateStatusForIQCReturn.val(), page: pageNoForIQCReturn };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCReturnDataInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNoForIQCReturn = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                if ($(this).parent().parents('div').hasClass('IQCItemReturnInfo')) {
+                    //alert('Page Found');
+                    pageNoForIQCReturn = $(this).attr('data-page-no');
+                    LoadDataTableForIQCReturn();
+                }
+
+            }
+        })
+
+        $("#btnResetForIQCReturn").click(function (e) {
+            e.preventDefault();
+            ddlItem.val('');
+            ddlItem.trigger("change");
+            ddlWarehouseForIQCReturn.val("");
+            ddlWarehouseForIQCReturn.trigger("change");
+            ddlModelNameForIQCReturn.val('');
+            ddlModelNameForIQCReturn.trigger("change");
+            ddlStateStatusForIQCReturn.val('');
+            ddlStateStatusForIQCReturn.trigger("change");
+            $("#tblIQCItemReqInfoData tbody").empty();
+        })
     </script>
 }

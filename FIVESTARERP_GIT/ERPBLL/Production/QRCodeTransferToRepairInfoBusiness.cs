@@ -247,7 +247,6 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                     if (await _assemblyLineStockDetailBusiness.SaveAssemblyLineStockOutAsync(stockDetailDTOs, userId, orgId,string.Empty))
                     {
                         // QR Code //
-
                         if(_tempQRCodeTraceBusiness.UpdateQRCodeStatus(dto.QRCode, QRCodeStatus.AssemblyRepair, orgId)){
                             QRCodeTransferToRepairInfo qRCodeTransferToRepairInfo = new QRCodeTransferToRepairInfo
                             {

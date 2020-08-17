@@ -14,5 +14,7 @@ namespace ERPBLL.Production.Interface
         bool SavePackagingItemStockOut(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId);
         bool SavePackagingItemStockIn(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId);
         bool SavePackagingItemStockInByMiniStockTransfer(long transferId, string status, long userId, long orgId);
+        Task<bool> SavePackagingItemStockOutAsync(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId);
+        Task<bool> SavePackagingItemStockInAsync(List<PackagingItemStockDetailDTO> stockDetails, long userId, long orgId);
     }
 }

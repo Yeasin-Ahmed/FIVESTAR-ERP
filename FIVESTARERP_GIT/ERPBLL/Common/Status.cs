@@ -20,6 +20,7 @@ namespace ERPBLL.Common
         public static readonly string Waiting = "Waiting";
         public static readonly string Current = "Current";
         public static readonly string Void = "Void";
+        public static readonly string Return = "Return";
     }
     public class StockType
     {
@@ -143,7 +144,9 @@ namespace ERPBLL.Common
         public static readonly string Assembly = "Assembly";
         public static readonly string AssemblyRepair = "Assembly-Repair";
         public static readonly string MiniStock = "MiniStock";
-        public static readonly string Packaging = "Packaging";
+        public static readonly string Packaging = "PackagingLine";
+        public static readonly string PackagingRepair = "Packaging-Repair";
+        public static readonly string Finish = "Finish";
     }
     public class CustomerType
     {

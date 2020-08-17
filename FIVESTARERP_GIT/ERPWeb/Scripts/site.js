@@ -27,7 +27,8 @@ var reqStatus = {
     accepted: "Accepted",
     canceled: "Canceled",
     checked: "Checked",
-    handOver: "HandOver"
+    handOver: "HandOver",
+    receive_return:"Receive-Return",
 };
 
 var flag = {
@@ -77,6 +78,14 @@ function toastrErrorAlert(msg) {
 
 function toastrSuccessAlert(msg) {
     toastr.success(msg).fadeOut(1000);
+}
+
+function toastrWarningAlert(msg) {
+    toastr.warning(msg).fadeOut(1000);
+}
+
+function toastrInfoAlert(msg) {
+    toastr.info(msg).fadeOut(1000);
 }
 
 
