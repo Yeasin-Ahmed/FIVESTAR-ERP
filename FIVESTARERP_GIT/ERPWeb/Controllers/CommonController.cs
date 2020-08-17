@@ -725,6 +725,13 @@ namespace ERPWeb.Controllers
             var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, QRCodeStatus.AssemblyRepair, User.OrgId);
             return Json(IsExist);
         }
+
+        [HttpPost]
+        public ActionResult IsExistInPackagingLine(string imei)
+        {
+            var IsExist = _tempQRCodeTraceBusiness.IsExistIMEIWithStatus(imei, QRCodeStatus.Packaging, User.OrgId);
+            return Json(IsExist);
+        }
         #endregion
 
 

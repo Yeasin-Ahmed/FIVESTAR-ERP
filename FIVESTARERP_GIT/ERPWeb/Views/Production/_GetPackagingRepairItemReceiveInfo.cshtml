@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.TransferToPackagingRepairInfoViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-responsive-lg table-striped tblReceiveRepairableItems" id="tblReceiveRepairableItems">
+            <thead class="btn-dark text-center">
+                <tr>
+                    <th>#SL</th>
+                    <th>Floor</th>
+                    <th>Packaging Line</th>
+                    <th>Model</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                    <th>Update User</th>
+                    <th>Update Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl++;
+                    string itemName = item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]";
+                    string updateDate = item.UpdateDate.HasValue ? item.UpdateDate.Value.ToString("dd-MMM-yyyy hh:mm tt") : "";
+                    string badge = item.StateStatus == "Approved" ? "badge badge-success" : "badge badge-primary";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td>@item.ProductionFloorName</td>
+                        <td>@item.PackagingLineName</td>
+                        <td class="text-center">@item.ModelName</td>
+                        <td>@itemName</td>
+                        <td class="text-center text-bold">@item.Quantity</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span> 
+                        </td>
+                        <td>@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                        <td>@item.UpdateUser</td>
+                        <td>@updateDate</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-flat btn-secondary data-repairable-item" data-item-val="@item.TPRInfoId" title="View Detail">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                @if(Model.Count() == 0)
+                {
+                    <tr class="empty-row">
+                        <td class="text-center text-bold empty-row" colspan="12">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12"></div>
+</div>
+

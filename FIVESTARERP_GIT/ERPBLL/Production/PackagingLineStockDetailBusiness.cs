@@ -85,6 +85,61 @@ namespace ERPBLL.Production
             return _packagingLineStockDetailRepository.Save();
         }
 
+        public async Task<bool> SavePackagingLineStockInAsync(List<PackagingLineStockDetailDTO> packagingLineStockDetailDTO, long userId, long orgId)
+        {
+            List<PackagingLineStockDetail> packagingLineStockDetails = new List<PackagingLineStockDetail>();
+            foreach (var item in packagingLineStockDetailDTO)
+            {
+                PackagingLineStockDetail stockDetail = new PackagingLineStockDetail();
+                stockDetail.PackagingLineId = item.PackagingLineId;
+                stockDetail.QCLineId = item.QCLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfoByPackagingAndItemAndModelId(item.ProductionLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+                if (packagingStockInfo != null)
+                {
+                    packagingStockInfo.StockInQty += item.Quantity;
+                    _packagingLineStockInfoRepository.Update(packagingStockInfo);
+                }
+                else
+                {
+                    PackagingLineStockInfo info = new PackagingLineStockInfo();
+                    info.PackagingLineId = item.PackagingLineId;
+                    info.QCLineId = item.QCLineId;
+                    info.ProductionLineId = item.ProductionLineId;
+                    info.WarehouseId = item.WarehouseId;
+                    info.DescriptionId = item.DescriptionId;
+
+                    info.ItemTypeId = item.ItemTypeId;
+                    info.ItemId = item.ItemId;
+                    info.UnitId = stockDetail.UnitId;
+                    info.StockInQty = item.Quantity;
+                    info.StockOutQty = 0;
+                    info.OrganizationId = orgId;
+                    info.EUserId = userId;
+                    info.EntryDate = DateTime.Now;
+
+                    _packagingLineStockInfoRepository.Insert(info);
+                }
+                packagingLineStockDetails.Add(stockDetail);
+            }
+            _packagingLineStockDetailRepository.InsertAll(packagingLineStockDetails);
+            return await _packagingLineStockDetailRepository.SaveAsync();
+        }
+
         public bool SavePackagingLineStockInByQCLine(long transferId, string status, long orgId, long userId)
         {
             throw new NotImplementedException();
@@ -109,7 +164,7 @@ namespace ERPBLL.Production
                 stockDetail.Remarks = item.Remarks;
                 stockDetail.UnitId = item.UnitId;
                 stockDetail.EntryDate = DateTime.Now;
-                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.StockStatus = StockStatus.StockOut;
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
                 var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfoByPackagingAndItemAndModelId(item.ProductionLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
@@ -120,6 +175,38 @@ namespace ERPBLL.Production
             }
             _packagingLineStockDetailRepository.InsertAll(packagingLineStockDetails);
             return _packagingLineStockDetailRepository.Save();
+        }
+
+        public async Task<bool> SavePackagingLineStockOutAsync(List<PackagingLineStockDetailDTO> packagingLineStockDetailDTO, long userId, long orgId, string flag)
+        {
+            List<PackagingLineStockDetail> packagingLineStockDetails = new List<PackagingLineStockDetail>();
+            foreach (var item in packagingLineStockDetailDTO)
+            {
+                PackagingLineStockDetail stockDetail = new PackagingLineStockDetail();
+                stockDetail.PackagingLineId = item.PackagingLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockOut;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfoByPackagingAndItemAndModelId(item.ProductionLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
+                packagingStockInfo.StockOutQty += item.Quantity;
+                _packagingLineStockInfoRepository.Update(packagingStockInfo);
+                packagingLineStockDetails.Add(stockDetail);
+            }
+            _packagingLineStockDetailRepository.InsertAll(packagingLineStockDetails);
+            return await _packagingLineStockDetailRepository.SaveAsync();
         }
     }
 }

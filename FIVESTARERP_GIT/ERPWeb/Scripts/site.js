@@ -80,6 +80,14 @@ function toastrSuccessAlert(msg) {
     toastr.success(msg).fadeOut(1000);
 }
 
+function toastrWarningAlert(msg) {
+    toastr.warning(msg).fadeOut(1000);
+}
+
+function toastrInfoAlert(msg) {
+    toastr.info(msg).fadeOut(1000);
+}
+
 
 // Loading dropdown using ajax..
 // All the Parameters are required accept contextKey

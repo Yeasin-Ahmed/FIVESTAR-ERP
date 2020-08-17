@@ -527,6 +527,26 @@
     <Compile Include="ProductionContextMigrations\202008111121230_Production_AddPackagingLineNameAndQCInQRCode.Designer.cs">
       <DependentUpon>202008111121230_Production_AddPackagingLineNameAndQCInQRCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202008131210396_Production_AddPackagingIMEIRepairTransfer.cs" />
+    <Compile Include="ProductionContextMigrations\202008131210396_Production_AddPackagingIMEIRepairTransfer.Designer.cs">
+      <DependentUpon>202008131210396_Production_AddPackagingIMEIRepairTransfer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008151205372_Production_AddPakagingRepairTransferCode.cs" />
+    <Compile Include="ProductionContextMigrations\202008151205372_Production_AddPakagingRepairTransferCode.Designer.cs">
+      <DependentUpon>202008151205372_Production_AddPakagingRepairTransferCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008160400222_Production_AddTransferCodeInPackagingRepairTransfer.cs" />
+    <Compile Include="ProductionContextMigrations\202008160400222_Production_AddTransferCodeInPackagingRepairTransfer.Designer.cs">
+      <DependentUpon>202008160400222_Production_AddTransferCodeInPackagingRepairTransfer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008160820481_Production_AddFKInImeiTransferToRepairInfo.cs" />
+    <Compile Include="ProductionContextMigrations\202008160820481_Production_AddFKInImeiTransferToRepairInfo.Designer.cs">
+      <DependentUpon>202008160820481_Production_AddFKInImeiTransferToRepairInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008170526140_Production_PackagingRepairStock.cs" />
+    <Compile Include="ProductionContextMigrations\202008170526140_Production_PackagingRepairStock.Designer.cs">
+      <DependentUpon>202008170526140_Production_PackagingRepairStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -867,6 +887,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202008111121230_Production_AddPackagingLineNameAndQCInQRCode.resx">
       <DependentUpon>202008111121230_Production_AddPackagingLineNameAndQCInQRCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008131210396_Production_AddPackagingIMEIRepairTransfer.resx">
+      <DependentUpon>202008131210396_Production_AddPackagingIMEIRepairTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008151205372_Production_AddPakagingRepairTransferCode.resx">
+      <DependentUpon>202008151205372_Production_AddPakagingRepairTransferCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008160400222_Production_AddTransferCodeInPackagingRepairTransfer.resx">
+      <DependentUpon>202008160400222_Production_AddTransferCodeInPackagingRepairTransfer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008160820481_Production_AddFKInImeiTransferToRepairInfo.resx">
+      <DependentUpon>202008160820481_Production_AddFKInImeiTransferToRepairInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008170526140_Production_PackagingRepairStock.resx">
+      <DependentUpon>202008170526140_Production_PackagingRepairStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
