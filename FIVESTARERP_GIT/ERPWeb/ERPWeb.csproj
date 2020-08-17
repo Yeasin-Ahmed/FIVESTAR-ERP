@@ -622,6 +622,13 @@
     <Content Include="Views\FrontDesk\_ReturnParts.cshtml" />
     <Content Include="Views\Configuration\GetCurrentStockReport.cshtml" />
     <Content Include="Views\Configuration\_GetCurrentStockList.cshtml" />
+    <Content Include="Views\Production\GetPackagingLineQC.cshtml" />
+    <Content Include="Views\Production\GetPackagingRepairProcess.cshtml" />
+    <Content Include="Views\Production\_GetPackagingRepairItemReceiveInfo.cshtml" />
+    <Content Include="Views\Production\_GetPackagingRepairItemReceiveDetail.cshtml" />
+    <Content Include="Views\Production\GetPackagingQCProcess.cshtml" />
+    <Content Include="Views\Production\_GetPackagingRepairItemStockInfo.cshtml" />
+    <Content Include="Views\Production\_GetPackagingRepairRawStockInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

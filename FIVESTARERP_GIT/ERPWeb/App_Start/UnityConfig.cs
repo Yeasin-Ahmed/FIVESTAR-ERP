@@ -31,7 +31,6 @@ namespace ERPWeb
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();
-
             // Inventory Database
             #region Inventory
             container.RegisterType<IIQCStockDetailBusiness, IQCStockDetailBusiness>();
@@ -122,6 +121,13 @@ namespace ERPWeb
             container.RegisterType<IQCPassTransferDetailBusiness, QCPassTransferDetailBusiness>();
             container.RegisterType<IMiniStockTransferInfoBusiness, MiniStockTransferInfoBusiness>();
             container.RegisterType<IMiniStockTransferDetailBusiness, MiniStockTransferDetailBusiness>();
+            container.RegisterType<IIMEITransferToRepairInfoBusiness, IMEITransferToRepairInfoBusiness>();
+            container.RegisterType<ITransferToPackagingRepairInfoBusiness, TransferToPackagingRepairInfoBusiness>();
+            container.RegisterType<ITransferToPackagingRepairDetailBusiness, TransferToPackagingRepairDetailBusiness>();
+            container.RegisterType<IPackagingRepairRawStockInfoBusiness, PackagingRepairRawStockInfoBusiness>();
+            container.RegisterType<IPackagingRepairRawStockDetailBusiness, PackagingRepairRawStockDetailBusiness>();
+            container.RegisterType<IPackagingRepairItemStockInfoBusiness, PackagingRepairItemStockInfoBusiness>();
+            container.RegisterType<IPackagingRepairItemStockDetailBusiness, PackagingRepairItemStockDetailBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 

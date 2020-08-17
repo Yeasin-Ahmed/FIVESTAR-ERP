@@ -24,5 +24,7 @@ namespace ERPBLL.Production.Interface
         Task<bool> SaveQRCodeIEMIAsync(IMEIWriteDTO dto, long userId, long orgId);
         Task<TempQRCodeTrace> GetIMEIinQRCode(string imei, string status, long floorId, long packagingId, long orgId);
         Task<bool> SaveBatteryCodeAsync(BatteryWriteDTO dto, long userId, long orgId);
+        bool IsExistIMEIWithStatus(string imei, string status, long orgId);
+        TempQRCodeTrace GetTempQRCodeTraceByIMEI(string imei, long orgId);
     }
 }

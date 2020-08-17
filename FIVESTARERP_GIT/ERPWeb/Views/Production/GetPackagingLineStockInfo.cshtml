@@ -9,84 +9,23 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Packaging Stock</a>
+                        <a class="nav-link active" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive Requisition Item</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive Requisition Item</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-itemStock-tab" data-toggle="pill" href="#custom-tabs-two-itemStock" role="tab" aria-controls="custom-tabs-two-itemStock" aria-selected="true">Item Stock</a>
+                        <a class="nav-link" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Packaging Stock</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-receiveItem-tab" data-toggle="pill" href="#custom-tabs-two-receiveItem" role="tab" aria-controls="custom-tabs-two-receiveItem" aria-selected="true">Receive Item</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-itemStock-tab" data-toggle="pill" href="#custom-tabs-two-itemStock" role="tab" aria-controls="custom-tabs-two-itemStock" aria-selected="true">Item Stock</a>
+                    </li>
+
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content" id="custom-tabs-two-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-two-stockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-stockInfo-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                                    <i class="fas fa-eye"></i> Go To Details View
-                                                </a>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">
-                                                    Packaging Stock
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card card-navy">
-                                    <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row" style="margin-top:-15px">
-                                            <div class="col-md-3">
-                                                <label for="ddlPackagingLineStock" class="control-label font-weight-bold">Packaging Line</label>
-                                                @Html.DropDownList("ddlPackagingLineStock", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlModelNameStock" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlModelNameStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlItemsStock" class="control-label font-weight-bold">Item</label>
-                                                @Html.DropDownList("ddlItemsStock", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold" for="txtLessOrEqStock">Qty(Le/Eq)</label>
-                                                <input type="number" id="txtLessOrEqStock" class="form-control form-control-sm" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("GetPackagingLineStockInfo", new { @flag = "View" });}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-receiveStock" role="tabpanel" aria-labelledby="custom-tabs-two-receiveStock-tab">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-receiveStock" role="tabpanel" aria-labelledby="custom-tabs-two-receiveStock-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -159,7 +98,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("ReceiveSparePartsFromProductionRequisitionInPackaging", new { @flag = "Info"});}
+                                                @{Html.RenderAction("ReceiveSparePartsFromProductionRequisitionInPackaging", new { @flag = "Info" });}
                                             </div>
                                         </div>
                                     </div>
@@ -167,7 +106,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show " id="custom-tabs-two-itemStock" role="tabpanel" aria-labelledby="custom-tabs-two-itemStock-tab">
+                    <div class="tab-pane fade show" id="custom-tabs-two-stockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-stockInfo-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -180,7 +119,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    Packaging Item Stock
+                                                    Packaging Stock
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -199,20 +138,20 @@
                                     <div class="card-body">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-3">
-                                                <label for="ddlPackagingLineItemStock" class="control-label font-weight-bold">Packaging Line</label>
-                                                @Html.DropDownList("ddlPackagingLineItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
+                                                <label for="ddlPackagingLineStock" class="control-label font-weight-bold">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingLineStock", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="ddlModelNameItemStock" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlModelNameItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                                <label for="ddlModelNameStock" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="ddlItemsItemStock" class="control-label font-weight-bold">Item</label>
-                                                @Html.DropDownList("ddlItemsItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlHandSetItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                                <label for="ddlItemsStock" class="control-label font-weight-bold">Item</label>
+                                                @Html.DropDownList("ddlItemsStock", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold" for="txtLessOrEqItemStock">Qty(Le/Eq)</label>
-                                                <input type="number" id="txtLessOrEqItemStock" class="form-control form-control-sm" />
+                                                <label class="control-label font-weight-bold" for="txtLessOrEqStock">Qty(Le/Eq)</label>
+                                                <input type="number" id="txtLessOrEqStock" class="form-control form-control-sm" />
                                             </div>
                                         </div>
                                     </div>
@@ -221,8 +160,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer3">
-                                            @{Html.RenderAction("GetPackagingItemStockList", new { @flag = "View" });}
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @{Html.RenderAction("GetPackagingLineStockInfo", new { @flag = "View" });}
                                         </div>
                                     </div>
                                 </div>
@@ -306,6 +245,69 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-itemStock" role="tabpanel" aria-labelledby="custom-tabs-two-itemStock-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                    <i class="fas fa-eye"></i> Go To Details View
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Packaging Item Stock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="ddlPackagingLineItemStock" class="control-label font-weight-bold">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingLineItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLineWithProduction, "--Select Packaging--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameItemStock" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlItemsItemStock" class="control-label font-weight-bold">Item</label>
+                                                @Html.DropDownList("ddlItemsItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlHandSetItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="txtLessOrEqItemStock">Qty(Le/Eq)</label>
+                                                <input type="number" id="txtLessOrEqItemStock" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @{Html.RenderAction("GetPackagingItemStockList", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -392,7 +394,7 @@
             $('#dptFromDateReceiveItem').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
-                todayHighlight: true
+                todayHighlight: true,
             });
             $('#dptToDateReceiveItem').datepicker({
                 format: "dd MM yyyy",

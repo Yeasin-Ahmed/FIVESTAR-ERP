@@ -1,0 +1,93 @@
+﻿@model ERPBO.Production.ViewModels.TransferToPackagingRepairInfoViewModel
+@{
+    string packagingLine = Model.PackagingLineName + " -[" + Model.ProductionFloorName + "]";
+    string itemName = Model.ItemName + " [" + Model.ItemTypeName + "-" + Model.WarehouseName + "]";
+    string badge = Model.StateStatus == "Approved" ? "badge badge-success" : "badge badge-primary";
+    int sl1 = 0;
+    int sl2 = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg text-sm">
+            <tbody>
+                <tr>
+                    <td class="alert-secondary" style="width:15%">Code</td>
+                    <td style="width:20%; background-color:#e1dada">
+                        @Model.TransferCode
+                    </td>
+                    <td class="alert-secondary" style="width:15%">Packaging Line</td>
+                    <td style="width:25%; background-color:#e1dada">@packagingLine</td>
+                    <td class="alert-secondary" style="width:10%">Model</td>
+                    <td style="width:15%; background-color:#e1dada">@Model.ModelName</td>
+
+                </tr>
+                <tr>
+                    <td class="alert-secondary" style="width:15%">Item-Color</td>
+                    <td style="background-color:#e1dada" colspan="3">
+                        @itemName <span class="badge badge-warning">Qty:@Model.Quantity</span>
+                    </td>
+                    <td class="alert-secondary" style="width:10%">Status</td>
+                    <td style="width:15%; background-color:#e1dada">
+                        <span class="@badge">@Model.StateStatus</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-sm text-sm">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="width:10%">#SL</th>
+                    <th style="width:25%">QRCode</th>
+                    <th style="width:65%">IMEI</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.IMEITransferToRepairInfos)
+                {
+                    sl1++;
+                    <tr>
+                        <td class="text-center text-bold" style="width:10%">@sl1</td>
+                        <td style="width:25%">@item.QRCode</td>
+                        <td style="width:65%">@item.IMEI</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-sm text-sm">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="width:10%">#SL</th>
+                    <th style="width:80%">Item Name</th>
+                    <th style="width:10%">Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TransferToPackagingRepairDetails)
+                {
+                    sl2++;
+                    itemName = item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]";
+                    <tr>
+                        <td style="width:10%" class="text-center text-bold">@sl2</td>
+                        <td style="width:80%">@itemName</td>
+                        <td style="width:10%" class="text-center text-bold">@item.Quantity</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@if (Model.StateStatus == "Approved")
+{
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-sm btn-flat btn-success btnPackagingRepairReceive" id="btnPackagingRepairReceive">
+            <i class="fas fa-ship"> Receive</i>
+        </button>
+    </div>
+}
+
+

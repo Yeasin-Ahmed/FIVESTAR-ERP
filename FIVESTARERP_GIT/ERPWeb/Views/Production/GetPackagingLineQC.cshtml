@@ -1,0 +1,316 @@
+﻿
+@{
+    ViewBag.Title = "Packaging Line QC";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @Html.AntiForgeryToken()
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-QCScanning-tab" data-toggle="pill" href="#custom-tabs-two-QCScanning" role="tab" aria-controls="custom-tabs-two-QCScanning" aria-selected="true">QC Scanning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-problems-tab" data-toggle="pill" href="#custom-tabs-two-problems" role="tab" aria-controls="custom-tabs-two-problems" aria-selected="true">Problems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Tab 3</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-QCScanning" role="tabpanel" aria-labelledby="custom-tabs-two-QCScanning-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    QC Scanning
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    @*<div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>*@
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4" style="border-right:2px solid #f6eaaa">
+                                                <h5 style="border-bottom:2px solid #46824d ">                                           QC  Pass</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <input type="text" id="txtQCPassIMEI" class="form-control text-bold" placeholder="Enter IMEI Here" style="border-radius:0" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h5 style="border-bottom:2px solid #e03c3c">QC Fail</h5>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="txtQCFailIMEI" class="form-control text-bold" placeholder="Enter IMEI Here" style="border-radius:0"/>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="txtProblem" class="form-control text-bold" placeholder="Enter Problem Here" style="border-radius:0"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 mt-2">
+                                                        <table class="table table-sm text-sm table-bordered table-striped table-responsive-lg" id="tblProb">
+                                                            <thead class="btn-dark">
+                                                                <tr class="text-center">
+                                                                    <th style="width:15%">#SL</th>
+                                                                    <th style="width:70%">Problem</th>
+                                                                    <th style="width:15%">Action</th>
+                                                                    <th class="hide">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 mt-2">
+                                                        <ul>
+                                                            <li class="error hide invalid">This IMEI may has been transfered/Invalid</li>
+                                                            <li class="error hide prob-notFound">This IMEI may has been transfered/Invalid</li>
+                                                            <li class="error hide req-imei">Input IMEI!</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-sm btn-primary btn-flat float-right" id="btnSubmitQCFail">
+                                            Submit <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-problems" role="tabpanel" aria-labelledby="custom-tabs-two-problems-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Problem List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer1">
+                                                @{Html.RenderAction("GetPackagingLineQC", new { @flag = "Problems" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var problemsObj = []; // data obj
+        var imeiDataObj = {};
+        var txtQCPassIMEI = $("#txtQCPassIMEI");
+        var txtQCFailIMEI = $("#txtQCFailIMEI");
+        var txtProblem = $("#txtProblem");
+
+        $(document).ready(function () {
+            txtQCPassIMEI.focus();
+            fnProblemsData();
+        })
+
+        function validateIMEI(imei) {
+            return ajaxBooleanChecker(JSON.stringify({ imei: $.trim(imei) }), '/Common/IsExistInPackagingLine', getToken()) == true;
+        }
+
+        // QC pass //
+        function fnProblemsData() {
+            problemsObj.length = 0;
+            $.when(postReqWithToken(null, dataType.json, type.post, '/Common/GetFaultyCasesListAsync', null, getToken())).then(function (res, status) {
+                if (status === "success" && res.length > 0) {
+                    problemsObj = res;
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        txtQCPassIMEI.change(function myfunction() {
+            if ($.trim(txtQCPassIMEI.val()).length >= 15) {
+                //IsExistInPackagingLine
+                // QC Pass & Finish Goods //
+            }
+            else {
+                txtQCPassIMEI.val('');
+                txtQCPassIMEI.focus();
+            }
+        })
+
+        function fnFinishGoods(imei) {
+            if (validateIMEIFinishGoods(imei)) {
+                var data = JSON.stringify({ imei: imei })
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFinishGoodsByIMEI',data,getToken())).then(function (res, status) {
+                    console.log(res);
+                    if (res.isSuccess) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        txtQCPassIMEI.val('');
+                        txtQCPassIMEI.focus();
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    toastrErrorAlert(execuStatus.fail);
+                })
+            }
+            else {
+                toastrInfoAlert('This IEMI may has been transfered');
+            }
+        }
+
+        // QC Fail //
+
+        txtQCFailIMEI.change(function () {
+            if ($.trim(txtQCFailIMEI.val()).length >=15) {
+                txtProblem.val('');
+                txtProblem.focus();
+            }
+            else {
+                txtQCFailIMEI.val('');
+                txtQCFailIMEI.focus();
+            }
+        })
+
+        txtProblem.change(function () {
+            if ($.trim(txtProblem.val()) !== "") {
+                var prob = jQuery.grep(problemsObj, function (item) {
+                    return item.ProblemDescription === $.trim(txtProblem.val());
+                })
+                if (prob.length > 0) {
+                    if (!fnIsProbExist(prob)) {
+                        fnProblemTblBind(prob);
+                    }
+                }
+            }
+            txtProblem.val('');
+            txtProblem.focus();
+        })
+
+        function fnIsProbExist(prob) {
+            var isExist = false;
+            if ($("#tblProb tbody tr").length > 0) {
+                $.each($("#tblProb tbody tr"), function (index, item) {
+                    var probCode = $(this).children('td').eq(3).html();
+                    if (prob[0].CaseId == probCode) {
+                        isExist = true;
+                    }
+                })
+            }
+            return isExist;
+        }
+
+        function fnProblemTblBind(p) {
+            if (!$.isEmptyObject(p)) {
+                var cellNo = $("#tblProb tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (cellNo + 1) + "</td>";
+                var td2 = "<td>" + p[0].ProblemDescription + "</td>";
+                var td3 = "<td class='text-center'><a href='#' class='btn btn-sm btn-flat btn-danger data-del-onfly'><i class='fas fa-trash'></i></a></td>";
+                var td4 = "<td class='hide'>" + p[0].CaseId + "</td>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + "</tr>";
+                $("#tblProb tbody").append(tr);
+            }
+        }
+
+        function vaildateQCFail() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($("#tblProb tbody tr").length == 0) {
+                $(".prob-notFound").removeClass('hide');
+                isValid = false;
+            }
+            if ($.trim(txtQCFailIMEI.val()) == '') {
+                $(".req-imei").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                isValid = validateIMEI($.trim(txtQCFailIMEI.val()));
+            }
+            return isValid;
+        }
+
+        $(document).on('click', 'a.data-del-onfly', function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            removeTableRow("#tblProb tbody", index);
+            fnFixTheTbodyRowSerial("#tblProb", index);
+        })
+
+        $("#btnSubmitQCFail").click(function (e) {
+            e.preventDefault();
+            if (vaildateQCFail()) {
+                var problems = []; problems.length = 0;
+                $.each($("#tblProb tbody tr"), function (index, item) {
+                    var tds = $(this).children('td');
+                    problems.push({
+                        ProblemId: TryParseInt(tds.eq(3).html(), 0),
+                        ProblemName: tds.eq(1).html()
+                    })
+                })
+                var data = JSON.stringify({ imei: $.trim(txtQCFailIMEI.val()), problems: problems });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveIMEITransferByPackagingQC', data, getToken())).then(function (res,status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res.isSuccess) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        txtQCPassIMEI.val('');
+                        txtQCFailIMEI.val('');
+                        txtProblem.val('');
+                        $("#tblProb tbody").empty();
+                    }
+                    else {
+                        toastrErrorAlert(res.text);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    toastrErrorAlert(execuStatus.fail);
+                })
+            }
+        })
+    </script>    
+}

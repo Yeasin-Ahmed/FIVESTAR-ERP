@@ -316,7 +316,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class QRCodeTransferToRepairInfoRepository : ProductionBaseRepository<QRCodeTransferToRepairInfo>
     {
         public QRCodeTransferToRepairInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -324,7 +323,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class QRCodeProblemRepository:ProductionBaseRepository<QRCodeProblem>
     {
         public QRCodeProblemRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -339,7 +337,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class RequisitionItemDetailRepository : ProductionBaseRepository<RequisitionItemDetail>
     {
         public RequisitionItemDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -347,7 +344,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class TempQRCodeTraceRepository : ProductionBaseRepository<TempQRCodeTrace>
     {
         public TempQRCodeTraceRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -355,7 +351,6 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-
     public class MiniStockTransferInfoRepository: ProductionBaseRepository<MiniStockTransferInfo>
     {
         public MiniStockTransferInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
@@ -370,4 +365,61 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class IMEITransferToRepairInfoRepository : ProductionBaseRepository<IMEITransferToRepairInfo>
+    {
+        public IMEITransferToRepairInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class IMEITransferToRepairDetailRepository : ProductionBaseRepository<IMEITransferToRepairDetail>
+    {
+        public IMEITransferToRepairDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class TransferToPackagingRepairInfoRepository : ProductionBaseRepository<TransferToPackagingRepairInfo>
+    {
+        public TransferToPackagingRepairInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class TransferToPackagingRepairDetailRepository : ProductionBaseRepository<TransferToPackagingRepairDetail>
+    {
+        public TransferToPackagingRepairDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }    
+    public class PackagingRepairItemStockInfoRepository : ProductionBaseRepository<PackagingRepairItemStockInfo>
+    {
+        public PackagingRepairItemStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class PackagingRepairItemStockDetailRepository : ProductionBaseRepository<PackagingRepairItemStockDetail>
+    {
+        public PackagingRepairItemStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class PackagingRepairRawStockInfoRepository : ProductionBaseRepository<PackagingRepairRawStockInfo>
+    {
+        public PackagingRepairRawStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class PackagingRepairRawStockDetailRepository : ProductionBaseRepository<PackagingRepairRawStockDetail>
+    {
+        public PackagingRepairRawStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
 }

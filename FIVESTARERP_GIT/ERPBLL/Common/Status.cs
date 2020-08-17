@@ -143,7 +143,9 @@ namespace ERPBLL.Common
         public static readonly string Assembly = "Assembly";
         public static readonly string AssemblyRepair = "Assembly-Repair";
         public static readonly string MiniStock = "MiniStock";
-        public static readonly string Packaging = "Packaging";
+        public static readonly string Packaging = "PackagingLine";
+        public static readonly string PackagingRepair = "Packaging-Repair";
+        public static readonly string Finish = "Finish";
     }
     public class CustomerType
     {

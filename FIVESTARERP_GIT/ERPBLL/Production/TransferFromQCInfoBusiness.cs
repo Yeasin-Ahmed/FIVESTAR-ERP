@@ -311,7 +311,7 @@ namespace ERPBLL.Production
             }
             if (modelId != null && modelId > 0)
             {
-                param += string.Format(@" and info.DescriptionId={0}", repairLineId);
+                param += string.Format(@" and info.DescriptionId={0}", modelId);
             }
             if (warehouseId != null && warehouseId > 0)
             {
@@ -356,13 +356,13 @@ info.QCLineId,qc.QCName 'QCLineName',info.RepairLineId,rl.RepairLineName,info.Wa
 info.UpdateDate,(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId= info.UpUserId) 'UpdateUser',info.TransferFor,
 (Select Count(*) From [Production].dbo.tblQRCodeTransferToRepairInfo Where TransferId = info.TFQInfoId) 'ItemCount'
 From [Production].dbo.tblTransferFromQCInfo info
-Inner Join [Production].dbo.tblProductionLines pl on info.LineId = pl.LineId
-Inner Join [Production].dbo.tblQualityControl qc on info.QCLineId = qc.QCId
-Inner Join [Production].dbo.tblRepairLine rl on info.RepairLineId = rl.RepairLineId
-Inner Join [Inventory].dbo.tblDescriptions de on info.DescriptionId = de.DescriptionId
-Inner Join [Inventory].dbo.tblWarehouses wa on info.WarehouseId = wa.Id
-Inner Join [Inventory].dbo.tblItemTypes it on info.ItemTypeId = it.ItemId
-Inner Join [Inventory].dbo.tblItems i on info.ItemId = i.ItemId
+Left Join [Production].dbo.tblProductionLines pl on info.LineId = pl.LineId
+Left Join [Production].dbo.tblQualityControl qc on info.QCLineId = qc.QCId
+Left Join [Production].dbo.tblRepairLine rl on info.RepairLineId = rl.RepairLineId
+Left Join [Inventory].dbo.tblDescriptions de on info.DescriptionId = de.DescriptionId
+Left Join [Inventory].dbo.tblWarehouses wa on info.WarehouseId = wa.Id
+Left Join [Inventory].dbo.tblItemTypes it on info.ItemTypeId = it.ItemId
+Left Join [Inventory].dbo.tblItems i on info.ItemId = i.ItemId
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on info.EUserId = app.UserId
 Where 1=1 {0}", param);
 

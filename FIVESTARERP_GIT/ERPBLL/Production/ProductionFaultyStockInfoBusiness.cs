@@ -81,12 +81,12 @@ namespace ERPBLL.Production
             query = string.Format(@"Select pl.LineNumber 'ProductionFloorName',de.DescriptionName 'ModelName',w.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName,stock.StockInQty,stock.StockOutQty,U.UnitSymbol 'UnitName',stock.Remarks
 From [Production].dbo.tblProductionFaultyStockInfo stock
 Inner Join [Production].dbo.tblProductionLines pl on stock.ProductionFloorId = pl.LineId
-Inner Join [Inventory].dbo.tblWarehouses w on stock.WarehouseId = w.Id
-Inner Join [Inventory].dbo.tblItemTypes it on stock.ItemTypeId = it.ItemId
-Inner Join [Inventory].dbo.tblItems i on stock.ItemId = i.ItemId
-Inner Join [Inventory].dbo.tblUnits u on stock.UnitId = u.UnitId
-Inner Join [Inventory].dbo.tblDescriptions de on stock.DescriptionId = de.DescriptionId
-Where 1=1 {0}",Utility.ParamChecker(param));
+Left Join [Inventory].dbo.tblWarehouses w on stock.WarehouseId = w.Id
+Left Join [Inventory].dbo.tblItemTypes it on stock.ItemTypeId = it.ItemId
+Left Join [Inventory].dbo.tblItems i on stock.ItemId = i.ItemId
+Left Join [Inventory].dbo.tblUnits u on stock.UnitId = u.UnitId
+Left Join [Inventory].dbo.tblDescriptions de on stock.DescriptionId = de.DescriptionId
+Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
         }
