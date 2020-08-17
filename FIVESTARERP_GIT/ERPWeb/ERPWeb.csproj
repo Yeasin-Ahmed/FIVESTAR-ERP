@@ -641,6 +641,12 @@
     <Content Include="Views\Production\GetPackagingQCProcess.cshtml" />
     <Content Include="Views\Production\_GetPackagingRepairItemStockInfo.cshtml" />
     <Content Include="Views\Production\_GetPackagingRepairRawStockInfo.cshtml" />
+    <Content Include="Views\Inventory\CreateExcel.cshtml" />
+    <Content Include="Views\Inventory\CreateIQCItemReturn.cshtml" />
+    <Content Include="Views\Inventory\GetIQCReturnDataInfoList.cshtml" />
+    <Content Include="Views\Inventory\GetIQCReturnDataInfoListForWarehouse.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\ReturnIQCItemReqData.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
