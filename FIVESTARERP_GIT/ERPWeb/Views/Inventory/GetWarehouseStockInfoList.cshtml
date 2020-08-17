@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Warehouse Stock Info";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-    string tab = (string)ViewBag.tab == null ? "": ViewBag.tab;
+    string tab = (string)ViewBag.tab == null ? "" : ViewBag.tab;
 }
 
 <div class="row">
@@ -15,6 +15,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-IQCItemReqInfoList-tab" data-toggle="pill" href="#custom-tabs-two-IQCItemReqInfoList" role="tab" aria-controls="custom-tabs-two-IQCItemReqInfoList" aria-selected="true">IQC REQ List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-IQCItemReturnList-tab" data-toggle="pill" href="#custom-tabs-two-IQCItemReturnList" role="tab" aria-controls="custom-tabs-two-IQCItemReturnList" aria-selected="true">IQC Item Return List</a>
                     </li>
                 </ul>
             </div>
@@ -56,7 +59,17 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-primary btn-sm float-lg-right" id="btnExcelImport" title="IMPORT"><i class="fas fa-plus"></i> IMPORT EXCEL</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
@@ -172,6 +185,82 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-IQCItemReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCItemReturnList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    IQC Item Return List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        @*<h6 class="card-title">Search By</h6>*@
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnResetForIQCReturn" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseForIQCReturn" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseForIQCReturn", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameForIQCReturn" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelNameForIQCReturn", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">State Status</label>
+                                                <select class="form-control form-control-sm ctrl-changed" id="ddlStateStatusForIQCReturn">
+                                                    <option value="">--Select Status--</option>
+                                                    <option value="Return">Return</option>
+                                                    <option value="Receive-Return">Reacive-Return</option>
+                                                </select>
+                                                @*@Html.DropDownList("ddlStateStatusForIQCReturn", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })*@
+                                            </div>
+                                            @*<div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                    <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
+                                                </div>*@
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @{Html.RenderAction("GetIQCReturnDataInfoListForWarehouse");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,7 +283,22 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalExcelImport" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">IMPORT EXCEL</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modelContainer2">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
+
     <script type="text/javascript">
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlItemType = $("#ddlItemType");
@@ -215,8 +319,11 @@
                 theme: 'bootstrap4'
             });
 
-            if ('@tab' != null && '@tab' != '') {
+            if ('@tab' =="IQC") {
                 $("#custom-tabs-two-IQCItemReqInfoList-tab").trigger('click');
+            }
+            if ('@tab' == "IQCReturn") {
+                $("#custom-tabs-two-IQCItemReturnList-tab").trigger('click');
             }
         })
 
@@ -286,11 +393,54 @@
                     LoadDataTable();
                 }
             }
+    })
+
+    function OpenModalExcel() {
+        $("#modelDataContainer").empty();
+        $("#modalExcelImport").modal("show");
+    }
+
+    $("#btnExcelImport").click(function (e) {
+        e.preventDefault();
+        $.when(getReqWithData('html', 'GET', '/Inventory/CreateExcel', null)).then(function (res, status) {
+            if (status == "success") {
+                OpenModalExcel();
+                $("#modelContainer2").empty();
+                $("#modelContainer2").append(res);
+            }
+        }).fail(function (error) {
+            console.log(error);
         })
+    })
 
-      
+    var FileUpload = $(".FileUpload");
 
-    </script>
+        $(document).on('click', '.btnExcelSubmit', function (e) {
+            e.preventDefault();
+            var excelFile = $(".FileUpload").prop('files')[0];
+            var formData = new FormData();
+            formData.append("FileUpload", excelFile);
+            $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res,status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res === true && status ==='success') {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalExcelImport").modal("toggle").toggle("fast");
+                        //removeTableRow("#tblWarehouseStockInfo tbody", index);
+                        setTimeout(function () {
+                        LoadDataTable();
+                        @*redirectPage('@Url.Action("GetWarehouseStockInfoList")');*@
+                        }, 1500);
+                }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+            })
+        })
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+</script> 
 
     <script type="text/javascript">
         var ddlWarehouseForIQCReq = $("#ddlWarehouseForIQCReq");
@@ -323,14 +473,14 @@
             hdfInfoId.val('0');
             hdfRowIndex.val("");
             $("#modalIQCReqDetails").modal("show");
-            
+
         }
 
         $(document).on("click", ".data-details", function (e) {
-            
+
             e.preventDefault();
             var id = $(this).attr("data-details");
-            
+
             var data = {
                 reqInfoId: TryParseInt(id, 0)
             };
@@ -395,7 +545,7 @@
                     //console.log(!isNaN(pageNo));
                     LoadDataTableForIQCReq();
                 }
-               
+
             }
         })
 
@@ -411,5 +561,149 @@
             ddlStateStatus.trigger("change");
             $("#tblIQCReq tbody").empty();
         })
+
+    </script>
+
+    <script type="text/javascript">
+        var ddlWarehouseForIQCReturn = $("#ddlWarehouseForIQCReturn");
+        var ddlStateStatusForIQCReturn = $("#ddlStateStatusForIQCReturn");
+        var ddlModelNameForIQCReturn = $("#ddlModelNameForIQCReturn");
+        var pageNoForIQCReturn = 1;
+
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+            $("#btnReacive").hide();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        $(document).on('change', '.date-datePicker', function (e) {
+            var dateval = $(this).val();
+            console.log(dateval);
+        })
+
+        //Modal
+        var hdfRowIndex = $("#hdfRowIndex");
+        var hdfInfoId = $("#hdfInfoId");
+
+        function OpenModal() {
+            $("#modelDataContainer").empty();
+            hdfInfoId.val('0');
+            hdfRowIndex.val("");
+            $("#modalIQCReqDetails").modal("show");
+
+        }
+
+        $(document).on("click", ".data-details", function (e) {
+
+            e.preventDefault();
+            var id = $(this).attr("data-details");
+
+            var data = {
+                reqInfoId: TryParseInt(id, 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+
+            console.log(data);
+            //return;
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCItemReqDetailList', data)).then(function (res, status) {
+                if (status == "success") {
+                    OpenModal();
+                    hdfInfoId.val(data.reqInfoId);
+                    hdfRowIndex.val(idx);
+                    $("#modelContainer1").empty();
+                    $("#modelContainer1").append(res);
+                    $(".btnReacive").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        ddlWarehouseForIQCReturn.change(function () {
+
+            LoadDataTableForIQCReturn();
+        })
+
+        ddlModelNameForIQCReturn.change(function () {
+            LoadDataTableForIQCReturn();
+        })
+
+        ddlStateStatusForIQCReturn.change(function () { LoadDataTableForIQCReturn(); })
+
+        function LoadDataTableForIQCReturn() {
+            var data = { WarehouseId: TryParseInt(ddlWarehouseForIQCReturn.val(), 0), modelId: TryParseInt(ddlModelNameForIQCReturn.val(), 0),stateStatus: ddlStateStatusForIQCReturn.val(), page: pageNoForIQCReturn };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetIQCReturnDataInfoListForWarehouse', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNoForIQCReturn = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Page Clicked');
+                if ($(this).parent().parents('div').hasClass('IQCItemReturnInfoForWarehouse')) {
+                    //alert('Page Found');
+                    pageNoForIQCReturn = $(this).attr('data-page-no');
+                    LoadDataTableForIQCReturn();
+                }
+
+            }
+        })
+
+        $("#btnResetForIQCReturn").click(function (e) {
+            e.preventDefault();
+            ddlItem.val('');
+            ddlItem.trigger("change");
+            ddlWarehouseForIQCReturn.val("");
+            ddlWarehouseForIQCReturn.trigger("change");
+            ddlModelNameForIQCReturn.val('');
+            ddlModelNameForIQCReturn.trigger("change");
+            ddlStateStatusForIQCReturn.val('');
+            ddlStateStatusForIQCReturn.trigger("change");
+            $("#tblIQCItemReqInfoData tbody").empty();
+        })
+
+        $(document).on('click', ".btnReacive-Return", function (e) {
+            e.preventDefault();
+            fnIQCStockChange(hdfInfoId.val(), hdfRowIndex.val(), reqStatus.receive_return);
+        })
+
+        function fnIQCStockChange(id, index, status) {
+            if (id > 0) {
+
+                var data = JSON.stringify({ reqId: id, status: status });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveWarehouseStockInByIQCReturn', data, getToken())).then(function (res, status) {
+                    if (status == "success" && res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalIQCReqDetails").modal("toggle").toggle("fast");
+                        hdfInfoId.val('0');
+                        hdfRowIndex.val("");
+                        removeTableRow("#tblIQCItemReqInfoData tbody", index);
+                        setTimeout(function () {
+                            LoadDataTableForIQCReturn();
+                            redirectPage('@Url.Action("GetWarehouseStockInfoList",new {tab="IQCReturn" })');
+                        }, 1500);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    $(".toastrDefaultError").trigger('click');
+                })
+            }
+        }
     </script>
 }

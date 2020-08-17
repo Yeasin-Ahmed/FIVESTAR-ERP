@@ -25,6 +25,10 @@ namespace ERPBO.Inventory.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? ReturnUserId { get; set; }
+        public Nullable<DateTime> ReturnUserDate { get; set; }
+        public long? ReturnReaciveUserId { get; set; }
+        public Nullable<DateTime> ReturnReaciveUserDate { get; set; }
         public ICollection<IQCItemReqDetailList> IQCItemReqDetailLists { get; set; }
     }
 }

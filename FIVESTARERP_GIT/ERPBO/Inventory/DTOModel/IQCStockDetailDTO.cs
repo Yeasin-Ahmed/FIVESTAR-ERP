@@ -17,6 +17,7 @@ namespace ERPBO.Inventory.DTOModel
         public long? UnitId { get; set; }
         public int Quantity { get; set; }
         public string StockType { get; set; }
+        public string StockStatus { get; set; }
         public string ReferenceNumber { get; set; }
         public string IQCReqCode { get; set; }
         public long? SupplierId { get; set; }

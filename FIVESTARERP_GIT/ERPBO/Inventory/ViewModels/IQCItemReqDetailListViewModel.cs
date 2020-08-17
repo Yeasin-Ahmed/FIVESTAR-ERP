@@ -14,6 +14,8 @@ namespace ERPBO.Inventory.ViewModels
         public long? UnitId { get; set; }
         public decimal Quantity { get; set; }
         public decimal IssueQty { get; set; }
+        public int? WellGoodsQty { get; set; }
+        public int? FaultyGoodsQty { get; set; }
         public long OrganizationId { get; set; }
         public long IQCItemReqInfoId { get; set; }
         public long? IQCId { get; set; }

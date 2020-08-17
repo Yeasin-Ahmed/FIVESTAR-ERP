@@ -26,7 +26,13 @@ namespace ERPBO.Inventory.ViewModels
         public string IQCName { get; set; }
         public string Supplier { get; set; }
         public int? AvailableQty { get; set; }
+        public string ReturnUser { get; set; }
+        public string ReturnReaciveUser { get; set; }
         public string EntryUser { get; set; }
+        public long? ReturnUserId { get; set; }
+        public Nullable<DateTime> ReturnUserDate { get; set; }
+        public long? ReturnReaciveUserId { get; set; }
+        public Nullable<DateTime> ReturnReaciveUserDate { get; set; }
         public List<IQCItemReqDetailListViewModel> IQCItemReqDetails { get; set; }
     }
 }

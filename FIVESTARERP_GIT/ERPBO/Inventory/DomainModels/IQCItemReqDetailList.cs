@@ -18,6 +18,8 @@ namespace ERPBO.Inventory.DomainModels
         public long? UnitId { get; set; }
         public decimal Quantity { get; set; }
         public decimal IssueQty { get; set; }
+        public int? WellGoodsQty { get; set; }
+        public int? FaultyGoodsQty { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }

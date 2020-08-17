@@ -27,7 +27,8 @@ var reqStatus = {
     accepted: "Accepted",
     canceled: "Canceled",
     checked: "Checked",
-    handOver: "HandOver"
+    handOver: "HandOver",
+    receive_return:"Receive-Return",
 };
 
 var flag = {

@@ -21,14 +21,27 @@ using PagedList;
 using ERPBO.ControlPanel.ViewModels;
 using ERPBO.Inventory.DomainModel;
 using ERPWeb.Infrastructure;
+using System.Threading.Tasks;
+using System.IO;
+using ExcelDataReader;
+using System.Data;
+using System.Data.SqlClient;
+using System.Reflection;
+using ERPDAL.InventoryDAL;
+using System.Configuration;
+using System.Data.OleDb;
+using LinqToExcel;
+using System.Data.Entity.Validation;
 
 namespace ERPWeb.Controllers
 {
+    
     [CustomAuthorize]
     public class InventoryController : BaseController
     {
         // GET: Inventory
         #region Inventory
+        private readonly IInventoryUnitOfWork _inventoryDb;
         private readonly IWarehouseBusiness _warehouseBusiness;
         private readonly IItemTypeBusiness _itemTypeBusiness;
         private readonly IUnitBusiness _unitBusiness;
@@ -53,6 +66,8 @@ namespace ERPWeb.Controllers
         private readonly IIQCItemReqInfoList _iQCItemReqInfoList;
         private readonly IIQCStockDetailBusiness _iQCStockDetailBusiness;
         private readonly IIQCStockInfoBusiness _iQCStockInfoBusiness;
+        private readonly WarehouseStockInfoRepository warehouseStockInfoRepository;
+        private readonly WarehouseStockDetailRepository warehouseStockDetailRepository;
         #endregion
 
         #region Production
@@ -62,8 +77,9 @@ namespace ERPWeb.Controllers
         #endregion
 
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb)
         {
+            this._inventoryDb = inventoryDb;
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
             this._unitBusiness = unitBusiness;
@@ -88,7 +104,8 @@ namespace ERPWeb.Controllers
             this._iQCItemReqInfoList = iQCItemReqInfoList;
             this._iQCStockDetailBusiness = iQCStockDetailBusiness;
             this._iQCStockInfoBusiness = iQCStockInfoBusiness;
-
+            warehouseStockInfoRepository = new WarehouseStockInfoRepository(this._inventoryDb);
+            warehouseStockDetailRepository =new WarehouseStockDetailRepository(this._inventoryDb);
             #region Production
             this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
             this._repairLineBusiness = repairLineBusiness;
@@ -1794,7 +1811,7 @@ namespace ERPWeb.Controllers
             return PartialView(viewModels);
         }
 
-        public ActionResult GetAllIQCStockDetailList(string flag, string refNum, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate, int page = 1)
+        public ActionResult GetAllIQCStockDetailList(string flag, string refNum, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string stockStatus, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -1808,12 +1825,17 @@ namespace ERPWeb.Controllers
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+                ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
+                {
+                    Text = s.text,
+                    Value = s.value
+                }).ToList();
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
                 ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
             }
             else
             {
-                var dto = _iQCStockDetailBusiness.GetAllIQCStockDetailList(refNum, warehouseId, modelId, itemTypeId, itemId, status, fromDate, toDate, User.OrgId).ToList();
+                var dto = _iQCStockDetailBusiness.GetAllIQCStockDetailList(refNum, warehouseId, modelId, itemTypeId, itemId, status, stockStatus, fromDate, toDate, User.OrgId).ToList();
                 //Pagination 
                 ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
                 dto = dto.Skip((page - 1) * 15).Take(15).ToList();
@@ -1825,6 +1847,331 @@ namespace ERPWeb.Controllers
             return View();
         }
         #endregion
+        #region IQC Return
+        public ActionResult CreateIQCItemReturn()
+        {
+            ViewBag.ddlIQCReqCode = _iQCItemReqInfoList.GetIQCItemReqInfoListByOrgId(User.OrgId).Where(s=> s.StateStatus == "Accepted").Select(reqCode => new SelectListItem { Text = reqCode.IQCReqCode, Value = reqCode.IQCItemReqInfoId.ToString() });
+            return View();
+        }
+
+        public ActionResult ReturnIQCItemReqData(long reqId)
+        {
+            var req = _iQCItemReqInfoList.GetIQCItemReqById(reqId, User.OrgId);
+                IQCItemReqInfoListDTO dto = _iQCItemReqInfoList.GetIQCItemReqDataById(reqId, User.OrgId);
+                dto.IQCItemReqDetails = _iQCItemReqDetailList.GetIQCItemReqDetails(reqId, User.OrgId).ToList();
+
+                IQCItemReqInfoListViewModel viewModel = new IQCItemReqInfoListViewModel();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return PartialView(viewModel);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveIQCStockReturnInStatus(IQCItemReqInfoListViewModel models)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                IQCItemReqInfoListDTO dto = new IQCItemReqInfoListDTO();
+                AutoMapper.Mapper.Map(models, dto);
+                IsSuccess = _iQCStockDetailBusiness.SaveIQCStockOutByIQCReturn(dto, User.OrgId, User.UserId);
+            }
+            return Json(IsSuccess);
+        }
+
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveWarehouseStockInByIQCReturn(long reqId, string status)
+        {
+            bool IsSuccess = false;
+            if (reqId > 0)
+            {
+                if (reqId > 0 && !string.IsNullOrEmpty(status) && status == "Receive-Return")
+                {
+                    IsSuccess = _iQCStockDetailBusiness.SaveWarehouseStockInByIQCReturnReacive(reqId, status, User.OrgId, User.UserId);
+                }
+                else
+                {
+                    IsSuccess = _iQCStockDetailBusiness.SaveWarehouseStockInByIQCReturnReacive(reqId, status, User.OrgId, User.UserId);
+                }
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpGet]
+        public ActionResult GetIQCReturnDataInfoList(long? WarehouseId, long? modelId, string stateStatus, int page = 1)
+        {
+            stateStatus = string.IsNullOrEmpty(stateStatus) ? string.Format(@"'Return','Receive-Return'") : string.Format(@"'{0}'",stateStatus) ;
+            var dto = _iQCItemReqInfoList.GetIQCItemReqInfoLists(WarehouseId, modelId, stateStatus, User.OrgId).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+            
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+            dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+
+            List<IQCItemReqInfoListViewModel> iQCItemReqInfoListViewModels = new List<IQCItemReqInfoListViewModel>();
+            AutoMapper.Mapper.Map(dto, iQCItemReqInfoListViewModels);
+            return PartialView(iQCItemReqInfoListViewModels);
+        }
+
+        [HttpGet]
+        public ActionResult GetIQCReturnDataInfoListForWarehouse(long? WarehouseId, long? modelId, string stateStatus, int page = 1)
+        {
+            stateStatus = string.IsNullOrEmpty(stateStatus) ? string.Format(@"'Return','Receive-Return'") : string.Format(@"'{0}'", stateStatus);
+
+            var dto = _iQCItemReqInfoList.GetIQCItemReqInfoLists(WarehouseId, modelId, stateStatus, User.OrgId).OrderByDescending(s => s.IQCItemReqInfoId).ToList();
+
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+            dto = dto.Skip((page - 1) * 15).Take(15).ToList();
+
+            List<IQCItemReqInfoListViewModel> iQCItemReqInfoListViewModels = new List<IQCItemReqInfoListViewModel>();
+            AutoMapper.Mapper.Map(dto, iQCItemReqInfoListViewModels);
+            return PartialView(iQCItemReqInfoListViewModels);
+        }
+        #endregion
+        #endregion
+
+        #region EXCEL DATA IMPORT
+
+        #region Comment OLD For Practise
+        //SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["Inventory"].ConnectionString);
+
+        //OleDbConnection Econ;
+
+        //private void ExcelConn(string filepath)
+        //{
+        //    string constr = string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=""Excel 12.0 Xml;HDR=YES;""", filepath);
+
+        //    Econ = new OleDbConnection(constr);
+
+        //}
+
+        //private void InsertExceldata(string filepath, string filename)
+        //{
+
+        //    string fullpath = Server.MapPath("/ExcelFile/") + filename;
+
+        //    ExcelConn(fullpath);
+
+        //    string query = string.Format("Select * from [{0}]", "Sheet1$");
+
+        //    OleDbCommand Ecom = new OleDbCommand(query, Econ);
+
+        //    Econ.Open();
+
+        //    DataSet ds = new DataSet();
+
+        //    OleDbDataAdapter oda = new OleDbDataAdapter(query, Econ);
+
+        //    Econ.Close();
+
+        //    oda.Fill(ds);
+
+        //    DataTable dt = ds.Tables[0];
+
+        //    SqlBulkCopy objbulk = new SqlBulkCopy(con);
+
+        //    objbulk.DestinationTableName = "tblIQCList";
+
+        //    objbulk.ColumnMappings.Add("IQCName", "IQCName");
+
+        //    objbulk.ColumnMappings.Add("Remarks", "Remarks");
+
+        //    objbulk.ColumnMappings.Add("IsActive", "IsActive");
+
+        //    objbulk.ColumnMappings.Add("OrganizationId", "OrganizationId");
+
+        //    objbulk.ColumnMappings.Add("EUserId", "EUserId");
+
+        //    objbulk.ColumnMappings.Add("EntryDate", "EntryDate");
+
+        //    objbulk.ColumnMappings.Add("UpUserId", "UpUserId");
+
+        //    objbulk.ColumnMappings.Add("UpdateDate", "UpdateDate");
+
+        //    con.Open();
+
+        //    objbulk.WriteToServer(dt);
+
+        //    con.Close();
+
+        //}
+        // GET:  
+        //public ActionResult Index()
+        //{
+        //    return PartialView();
+        //}
+        //[HttpPost]
+        //public ActionResult Index(HttpPostedFileBase file)
+
+        //{
+
+        //    string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
+
+        //    string filepath = "/ExcelFile/" + filename;
+
+        //    file.SaveAs(Path.Combine(Server.MapPath("/ExcelFile"), filename));
+
+        //    InsertExceldata(filepath, filename);
+
+        //    if (System.IO.File.Exists(filepath))
+        //    {
+        //        System.IO.File.Delete(filepath);
+        //    }
+
+        //    return View();
+
+        //}
+        #endregion
+
+        public ActionResult CreateExcel()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult UploadExcel(WarehouseStockDetailDTO models, HttpPostedFileBase FileUpload)
+        {
+            bool isSuccess = false;
+            List<WarehouseStockDetail> warehouseStockDetails = new List<WarehouseStockDetail>();
+            List<string> data = new List<string>();
+            if (FileUpload != null)
+            {
+                if (FileUpload.ContentType == "application/vnd.ms-excel" || FileUpload.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                {
+                    string filename = FileUpload.FileName;
+                    string targetpath = Server.MapPath("~/ExcelFile/");
+                    FileUpload.SaveAs(targetpath + filename);
+                    string pathToExcelFile = targetpath + filename;
+                    var connectionString = "";
+                    if (filename.EndsWith(".xls"))
+                    {
+                        connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", pathToExcelFile);
+                    }
+                    else if (filename.EndsWith(".xlsx"))
+                    {
+                        connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=1\";", pathToExcelFile);
+                    }
+
+                    var adapter = new OleDbDataAdapter("SELECT * FROM [Sheet1$]", connectionString);
+                    var ds = new DataSet();
+
+                    adapter.Fill(ds, "ExcelTable");
+
+                    DataTable dtable = ds.Tables["ExcelTable"];
+
+                    string sheetName = "Sheet1";
+
+                    var excelFile = new ExcelQueryFactory(pathToExcelFile);
+                    var linqToExcel = from a in excelFile.Worksheet<WarehouseStockDetailDTO>(sheetName) select a;
+
+                    foreach (var item in linqToExcel)
+                    {
+                        try
+                        {
+                            if (item.WarehouseId >0 && item.ItemTypeId > 0 && item.ItemId > 0 && item.EUserId > 0 &&  item.SupplierId >0 && item.DescriptionId > 0 && item.Quantity >= 0 && item.OrderQty >= 0 )
+                            {
+                                WarehouseStockDetail stockDetail = new WarehouseStockDetail();
+                                stockDetail.WarehouseId = item.WarehouseId;
+                                stockDetail.ItemTypeId = item.ItemTypeId;
+                                stockDetail.ItemId = item.ItemId;
+                                stockDetail.Quantity = item.Quantity;
+                                stockDetail.OrganizationId = item.OrganizationId;
+                                stockDetail.EUserId = item.EUserId;
+                                stockDetail.Remarks = item.Remarks;
+                                stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, item.OrganizationId).UnitId;
+                                if (item.EntryDate != null)
+                                {
+                                    stockDetail.EntryDate = item.EntryDate;
+                                }
+                                else
+                                {
+                                    stockDetail.EntryDate = DateTime.Now;
+                                }
+                                stockDetail.StockStatus = StockStatus.StockIn;
+                                stockDetail.RefferenceNumber = item.RefferenceNumber;
+                                stockDetail.DescriptionId = item.DescriptionId;
+                                stockDetail.OrderQty = item.OrderQty;
+                                stockDetail.SupplierId = item.SupplierId;
+
+                                var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(item.OrganizationId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
+                                if (warehouseInfo != null)
+                                {
+                                    warehouseInfo.StockInQty += item.Quantity;
+                                    warehouseInfo.UpUserId = item.EUserId;
+                                    warehouseInfo.UpdateDate = DateTime.Now;
+                                    warehouseStockInfoRepository.Update(warehouseInfo);
+                                }
+                                else
+                                {
+                                    WarehouseStockInfo warehouseStockInfo = new WarehouseStockInfo();
+                                    warehouseStockInfo.WarehouseId = item.WarehouseId;
+                                    warehouseStockInfo.DescriptionId = item.DescriptionId;
+                                    warehouseStockInfo.ItemTypeId = item.ItemTypeId;
+                                    warehouseStockInfo.ItemId = item.ItemId;
+                                    warehouseStockInfo.UnitId = stockDetail.UnitId;
+                                    warehouseStockInfo.StockInQty = item.Quantity;
+                                    warehouseStockInfo.StockOutQty = 0;
+                                    warehouseStockInfo.OrganizationId = item.OrganizationId;
+                                    warehouseStockInfo.EUserId = item.EUserId;
+                                    warehouseStockInfo.Remarks = item.Remarks;
+                                    if (item.EntryDate != null)
+                                    {
+                                        warehouseStockInfo.EntryDate = item.EntryDate;
+                                    }
+                                    else
+                                    {
+                                        warehouseStockInfo.EntryDate = DateTime.Now;
+                                    }
+
+                                    warehouseStockInfoRepository.Insert(warehouseStockInfo);
+                                }
+                                warehouseStockDetails.Add(stockDetail);
+                            }
+                        }
+
+                        catch (DbEntityValidationException ex)
+                        {
+                            foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                            {
+
+                                foreach (var validationError in entityValidationErrors.ValidationErrors)
+                                {
+
+                                    Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+
+                                }
+
+                            }
+                        }
+                    }
+                    warehouseStockDetailRepository.InsertAll(warehouseStockDetails);
+                    isSuccess = warehouseStockDetailRepository.Save();
+                    //deleting excel file from folder  
+                    if ((System.IO.File.Exists(pathToExcelFile)))
+                    {
+                        System.IO.File.Delete(pathToExcelFile);
+                    }
+                    return Json(isSuccess);
+                }
+                else
+                {
+                    //alert message for invalid file format  
+                    data.Add("<ul>");
+                    data.Add("<li>Only Excel file format is allowed</li>");
+                    data.Add("</ul>");
+                    data.ToArray();
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                data.Add("<ul>");
+                if (FileUpload == null) data.Add("<li>Please choose Excel file</li>");
+                data.Add("</ul>");
+                data.ToArray();
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
         #endregion
 
         protected override void Dispose(bool disposing)

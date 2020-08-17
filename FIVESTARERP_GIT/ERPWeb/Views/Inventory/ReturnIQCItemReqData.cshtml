@@ -1,0 +1,91 @@
+﻿
+@model ERPBO.Inventory.ViewModels.IQCItemReqInfoListViewModel
+
+@{
+    var sl = 0;
+}
+<div class="col-md-12">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="hdfRequisitionId" value="@Model.IQCItemReqInfoId" />
+    <input type="hidden" id="hdfRequisitionCode" value="@Model.IQCReqCode" />
+    <input type="hidden" id="hdfModel" value="@Model.DescriptionId" />
+    <input type="hidden" id="hdfWarehouse" value="@Model.WarehouseId" />
+    <input type="hidden" id="hdfIQC" value="@Model.IQCId" />
+    <input type="hidden" id="hdfSupplier" value="@Model.SupplierId" />
+    <input type="hidden" id="hdfStateStatus" value="@Model.StateStatus" />
+    <input type="hidden" id="hdfRemarks" value="@Model.Remarks" />
+    <table class="table table-bordered table-sm table-responsive-lg text-bold text-sm tblInfo" id="tblInfo">
+        <tbody>
+            <tr>
+                <td class="alert-secondary" style="width:10%">Req Code</td>
+                <td style="width:15%; background-color:#e1dada">@Model.IQCReqCode</td>
+                <td class="alert-secondary" style="width:10%">IQC Name</td>
+                <td style="width:15%; background-color:#e1dada">@Model.IQCName</td>
+                <td class="alert-secondary" style="width:12%">Warehouse Name</td>
+                <td style="width:16%; background-color:#e1dada">@Model.Warehouse</td>
+                <td class="hide">@Model.DescriptionId</td>
+                <td class="alert-secondary" style="width:10%">Model Name</td>
+                <td style="width:12%; background-color:#e1dada">@Model.ModelName</td>
+            </tr>
+            <tr>
+                <td class="alert-secondary" style="width:10%">Status</td>
+                <td style="width:15%; background-color:#e1dada">
+                    <span class="badge badge-primary">
+                        @Model.StateStatus
+                    </span>
+                </td>
+                <td class="alert-secondary" style="width:10%">Request By</td>
+                <td style="width:15%; background-color:#e1dada">@Model.EntryUser</td>
+                <td class="alert-secondary" style="width:12%">Entry Date</td>
+                <td style="width:16%; background-color:#e1dada">@Model.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                <td class="alert-secondary" style="width:10%"></td>
+                <td style="width:12%; background-color:#e1dada"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-12">
+    <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblDataDetail" id="tblDataDetail">
+        <thead class="btn-dark">
+            <tr class="text-center text-sm">
+                <th>#SL</th>
+                <th class="hide id"></th>
+                <th class="hide itemType"></th>
+                <th class="hide item"></th>
+                <th class="hide unit"></th>
+                <th>ItemType Name</th>
+                <th>Item Name</th>
+                <th>Request Qty</th>
+                <th>Issue Qty</th>
+                <th>Type of Unit</th>
+                <th>Well Goods</th>
+                <th>Faulty Goods</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.IQCItemReqDetails)
+            {
+                sl = sl + 1;
+            <tr class="text-sm text-bold">
+                <td class="text-center text-bold" style="width:5%">@sl</td>
+                <td class="hide">@item.IQCItemReqDetailId</td>
+                <td class="hide">@item.ItemTypeId</td>
+                <td class="hide">@item.ItemId</td>
+                <td class="hide">@item.UnitId</td>
+                <td>@item.ItemType</td>
+                <td>@item.Item</td>
+                <td class="text-center" style="width:10%">@item.Quantity</td>
+                <td class="text-center" style="width:10%">@item.IssueQty</td>
+                <td class="text-center" style="width:10%">@item.Unit</td>
+                <td style="width:10%">
+                    <input type="number" class="txtWellGoods form-control form-control-sm" id="txtWellGoods" required />
+                </td>
+                <td style="width:10%">
+                    <input type="number" class="txtFaulty form-control form-control-sm" id="txtFaulty" required />
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -30,6 +30,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -37,10 +55,17 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -286,6 +311,14 @@
     <Compile Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.cs" />
     <Compile Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.Designer.cs">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202008130540525_Inventory_Add_Column_StockStatus_In_tblIQCReqDetailList.cs" />
+    <Compile Include="InventoryContextMigrations\202008130540525_Inventory_Add_Column_StockStatus_In_tblIQCReqDetailList.Designer.cs">
+      <DependentUpon>202008130540525_Inventory_Add_Column_StockStatus_In_tblIQCReqDetailList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs" />
+    <Compile Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.Designer.cs">
+      <DependentUpon>202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
@@ -675,6 +708,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202008130540525_Inventory_Add_Column_StockStatus_In_tblIQCReqDetailList.resx">
+      <DependentUpon>202008130540525_Inventory_Add_Column_StockStatus_In_tblIQCReqDetailList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.resx">
+      <DependentUpon>202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>

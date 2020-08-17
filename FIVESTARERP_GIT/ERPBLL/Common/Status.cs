@@ -20,6 +20,7 @@ namespace ERPBLL.Common
         public static readonly string Waiting = "Waiting";
         public static readonly string Current = "Current";
         public static readonly string Void = "Void";
+        public static readonly string Return = "Return";
     }
     public class StockType
     {

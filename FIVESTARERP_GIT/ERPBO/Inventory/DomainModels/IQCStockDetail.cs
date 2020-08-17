@@ -23,6 +23,8 @@ namespace ERPBO.Inventory.DomainModels
         [StringLength(150)]
         public string StockType { get; set; }
         [StringLength(150)]
+        public string StockStatus { get; set; }
+        [StringLength(150)]
         public string ReferenceNumber { get; set; }
         public long? SupplierId { get; set; }
         [StringLength(150)]

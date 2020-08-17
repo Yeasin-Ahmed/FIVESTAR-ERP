@@ -11,6 +11,8 @@ namespace ERPBLL.Inventory.Interface
     {
         bool SaveIQCStockIn(List<IQCStockDetailDTO> warehouseStockDetailDTOs, long userId, long orgId);
         bool SaveIQCStockInByIQCRequest(long reqId, string status, long orgId, long userId);
-        IEnumerable<IQCStockDetailDTO> GetAllIQCStockDetailList(string refNum, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string formDate, string toDate, long orgId);
+        IEnumerable<IQCStockDetailDTO> GetAllIQCStockDetailList(string refNum, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string status, string stockStatus, string formDate, string toDate, long orgId);
+        bool SaveWarehouseStockInByIQCReturnReacive(long reqId, string status, long orgId, long userId);
+        bool SaveIQCStockOutByIQCReturn(IQCItemReqInfoListDTO model, long orgId, long userId);
     }
 }
