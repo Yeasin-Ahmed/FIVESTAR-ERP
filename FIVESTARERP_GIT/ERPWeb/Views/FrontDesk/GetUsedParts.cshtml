@@ -17,46 +17,64 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
-                @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">From Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+    @using (Html.BeginForm("UsedPartsReport", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
+    {
+        <div class="col-md-12">
+            <h5 class="text-cyan"><b>Search By</b></h5>
+            <form method="get">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
+                        @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ddlTechnicalServicesName" class="control-label font-weight-bold">TSName</label>
+                        @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select TSName--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="rptType">Type</label>
+                        <select name="rptType" id="rptType" class="form-control form-control-sm">
+                            <option value="PDF">PDF</option>
+                            <option value="EXCEL">EXCEL</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="Download" style="visibility:hidden">Download </label>
+                        <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> </button>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">To Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <label for="ddlMobileParts" style="visibility:hidden">MobileParts Name</label>
-                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" id="btnReport" title="Pdf Report"><i class="fas fa-file-pdf"> Download</i></a>
-            </div>
+            </form>
         </div>
-    </div>
-    <div class="col-md-12 mt-2" id="dataContainer">
-        @{Html.RenderAction("GetUsedParts", new { flag = "view" });}
-    </div>
+        <div class="col-md-12 mt-2" id="dataContainer">
+            @{Html.RenderAction("GetUsedParts", new { flag = "view" });}
+        </div>
+    }
 </div>
 @section scripts{
     <script type="text/javascript">
         var ddlMobileParts = $("#ddlMobileParts");
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
+        var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+        var pageNo = 1;
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -99,8 +117,11 @@
         ddlMobileParts.change(function () {
             LoadDataTable();
         })
+        ddlTechnicalServicesName.change(function () {
+            LoadDataTable();
+        })
         function LoadDataTable() {
-            var data = { flag: "search", partsId: TryParseInt(ddlMobileParts.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { flag: "search", partsId: TryParseInt(ddlMobileParts.val(), 0), tsId: TryParseInt(ddlTechnicalServicesName.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetUsedParts', data)).then(function (res, status) {
@@ -113,24 +134,33 @@
                 }
             }).fail(function (error) {
                 console.log(error);
-            })
+                })
+            pageNo = 1;
         }
-
-        $("#btnReport").click(function (e) {
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
-            var data = JSON.stringify({ flag: "search", partsId: TryParseInt(ddlMobileParts.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() });
-            //return console.log(data)
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/UsedPartsReport', data, getToken())).then(function (res, status) {
-                console.log(res.IsSuccess);
-                if (res.IsSuccess === true) {
-                    var pdfWindow = window.open("", "_blank")
-                    console.log(res.File);
-                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
-                    download(res.File, res.FileName, "application/pdf"); // Download
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
         })
+
+        //$("#btnReport").click(function (e) {
+        //    e.preventDefault();
+        //    var data = JSON.stringify({ flag: "search", partsId: TryParseInt(ddlMobileParts.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val() });
+        //    //return console.log(data)
+        //    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/UsedPartsReport', data, getToken())).then(function (res, status) {
+        //        console.log(res.IsSuccess);
+        //        if (res.IsSuccess === true) {
+        //            var pdfWindow = window.open("", "_blank")
+        //            console.log(res.File);
+        //            pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
+        //            download(res.File, res.FileName, "application/pdf"); // Download
+        //        }
+        //    }).fail(function (error) {
+        //        console.log(error);
+        //    })
+        //})
     </script>
 }

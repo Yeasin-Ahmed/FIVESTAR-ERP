@@ -1,0 +1,31 @@
+﻿@using ERPBO.FrontDesk.ViewModels
+@{ 
+    Layout = null;
+    var invc = (ERPBO.FrontDesk.ViewModels.InvoiceInfoViewModel)ViewBag.Sells;
+}
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>SpareParts</td>
+        <td>@invc.TotalSPAmount.ToString("0.00")</td>
+    </tr>
+    <tr>
+        <td>LabourCharge</td>
+        <td>@invc.LabourCharge.ToString("0.00")</td>
+    </tr>
+    <tr>
+        <td>VAT</td>
+        <td>@invc.VAT.ToString("0.00")</td>
+    </tr>
+    <tr>
+        <td>TAX</td>
+        <td>@invc.Tax.ToString("0.00")</td>
+    </tr>
+    <tr>
+        <td>DisCount</td>
+        <td>@invc.Discount.ToString("0.00")</td>
+    </tr>
+    <tr>
+        <td class="text-bold">Total</td>
+        <td class="text-bold">@invc.NetAmount.ToString("0.00")</td>
+    </tr>
+</table>

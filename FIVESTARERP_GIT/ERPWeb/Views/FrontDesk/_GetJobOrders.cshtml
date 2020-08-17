@@ -51,7 +51,7 @@
                 @foreach (var item in Model)
                 {
                     badge1 = item.JobOrderType == "Billing" ? "badge bg-danger" : "badge bg-success";
-                    badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Customer-Approved" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
+                    badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Job-Initiated" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
                     sl = sl + 1;
                     isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
                     isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
@@ -111,7 +111,7 @@
                             <i class="fas fa-eye"></i>
                         </a>
 
-                        @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.CustomerApproved)
+                        @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated)
                         {
                             <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit"><i class="fas fa-edit"></i> </a>
                         }

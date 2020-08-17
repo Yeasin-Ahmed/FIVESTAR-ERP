@@ -1,7 +1,8 @@
 ﻿@model  IEnumerable<ERPBO.FrontDesk.ViewModels.RequsitionDetailForJobOrderViewModel>
 @using ERPBO.FrontDesk.ViewModels;
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     Layout = null;
     RequsitionInfoForJobOrderViewModel info = ((RequsitionInfoForJobOrderViewModel)ViewBag.ReqInfoJobOrder);
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;

@@ -90,7 +90,7 @@ namespace ERPBLL.Common
     public class JobOrderStatus
     {
         public static readonly string PendingJobOrder = "Pending-JobOrder";
-        public static readonly string CustomerApproved = "Customer-Approved";
+        public static readonly string JobInitiated = "Job-Initiated";
         public static readonly string CustomerDisapproved = "Customer-Disapproved";
         public static readonly string AssignToTS = "TS-Assigned";
         public static readonly string RepairDone = "Repair-Done";

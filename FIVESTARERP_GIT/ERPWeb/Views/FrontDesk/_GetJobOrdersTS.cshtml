@@ -1,7 +1,7 @@
 ﻿@model  IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderViewModel>
 @{
-    int sl = 0;
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string isWarrantyAvailable = string.Empty;
     string isWarrantyPaperEnclosed = string.Empty;
     string badge = string.Empty;
@@ -31,7 +31,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            badge = item.StateStatus == "TS-Assigned" ? "badge bg-primary" : "badge bg-success";
+            badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Job-Initiated" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
             sl = sl + 1;
             isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
             isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
@@ -75,3 +75,6 @@
         }
     </tbody>
 </table>
+<div class="col-md-12">
+    @Html.Partial("_Pagination", pagerData)
+</div>

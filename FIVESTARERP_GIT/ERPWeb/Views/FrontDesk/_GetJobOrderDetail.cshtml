@@ -110,7 +110,7 @@
     }
 </table>
 <div class="modal-footer">
-    @if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.CustomerApproved && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone))
+    @if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone))
     {
         <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
     }

@@ -15,5 +15,6 @@ namespace ERPBLL.FrontDesk.Interface
         bool UpdateJobOrderInvoice(long jobOrderId, long userId, long orgId, long branchId);
         IEnumerable<InvoiceInfo> InvoiceInfoReport(long infoId,long orgId, long branchId);
         IEnumerable<InvoiceInfoDTO> GetSellsReport(long orgId, long branchId, string fromDate, string toDate);
+        InvoiceInfo GetAllInvoiceByOrgId(long invoiceId, long orgId, long branchId);
     }
 }

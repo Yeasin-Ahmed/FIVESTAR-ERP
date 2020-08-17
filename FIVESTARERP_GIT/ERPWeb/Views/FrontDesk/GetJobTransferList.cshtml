@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Job Order Transfer";
+}
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray">
+            <div class="card-header">
+                <h4>Transfer Job Orders</h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                        <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-5">
+                        <button type="submit" id="btnSubmit" class="btn float-right btn-outline-primary"> Transfer <i class="fas fa-arrow-down"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mt-2" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("GetJobTransferList", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var count = 0;
+
+        $(document).on('change', 'input[name="allJobOrder"]', function () {
+            var isChecked = $('input[name="allJobOrder"]').is(":checked");
+            $('input[name="jobOrderName"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblJobOrderTransferList tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+
+        $(document).on('change', 'input[name="jobOrderName"]', function () {
+            count = 0;
+            $.each($(".tblJobOrderTransferList tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="jobOrderName"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblJobOrderTransferList tbody tr").length == count;
+            $('input[name="allJobOrder"]').prop("checked", allChecked);
+        })
+    </script>
+}

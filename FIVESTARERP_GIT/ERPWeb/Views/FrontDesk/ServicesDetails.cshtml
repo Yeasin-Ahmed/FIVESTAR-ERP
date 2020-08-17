@@ -149,7 +149,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <b>Servicve: </b>
+                                <b>Service: </b>
                                 @foreach (var item in services)
                                 {
                                     service += item.ServiceName + ",";
@@ -445,7 +445,7 @@
                             <label for="ddlServiceName" class="control-label font-weight-bold">Service Name</label>
                             @Html.DropDownList("ddlServiceName", (IEnumerable<SelectListItem>)ViewBag.ddlServiceName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-ServiceName font-weight-bold">Input Service!</span>
-                            <span class="error hide duplicate-servicesName font-weight-bold">Alrady Services Exist!</span>
+                            <span class="error hide duplicate-servicesName font-weight-bold">Alrady Service Exist!</span>
                         </div>
                     </div>
                     @*<div class="form-row">
@@ -485,7 +485,7 @@
                     <input type="hidden" name="Id" id="hdfRepairId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="ddlRepairName" class="control-label font-weight-bold">Service Name</label>
+                            <label for="ddlRepairName" class="control-label font-weight-bold">Repair Name</label>
                             @Html.DropDownList("ddlRepairName", (IEnumerable<SelectListItem>)ViewBag.ddlRepairName, "--Select Repair--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide required-Repair font-weight-bold">Input Repair!</span>
                         </div>
@@ -684,7 +684,7 @@
 
             $("#ddlSymptomName").attr("data-placeholder", "Select Symptom");
             $("#ddlFaultName").attr("data-placeholder", "Select Fault");
-            $("#ddlServiceName").attr("data-placeholder", "Select Services");
+            $("#ddlServiceName").attr("data-placeholder", "Select Service");
             $("#ddlMobilePart").attr("data-placeholder", "Select Parts");
             //Initialize Select2 Elements
             $('.select2').select2();

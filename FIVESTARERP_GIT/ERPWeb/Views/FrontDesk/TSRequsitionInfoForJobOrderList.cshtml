@@ -20,7 +20,7 @@
         <h5 class="text-cyan"><b>Search By</b></h5>
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
                 <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
             </div>
@@ -29,11 +29,15 @@
                 @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouseName, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
                 <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <label for="ddlTechnicalServicesName" class="control-label font-weight-bold">TSName</label>
+                @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select TSName--", new { @class = "form-control form-control-sm" })
+            </div>
+            <div class="col-md-2">
                 <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
                 @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="control-label font-weight-bold">From Date</label>
                 <div class="input-group input-group-sm ">
                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -43,7 +47,7 @@
                 </div>
 
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="control-label font-weight-bold">To Date</label>
                 <div class="input-group input-group-sm ">
                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
@@ -91,6 +95,8 @@
         var hdfJobCodeId = $("#hdfJobCodeId");
         var hdfRequsitionDetailId = $("#hdfRequsitionDetailId");
         var hdfRowIndex = $("#hdfRowIndex");
+        var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+        var pageNo = 1;
 
         $(document).ready(function () {
 
@@ -139,9 +145,12 @@
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
+        ddlTechnicalServicesName.change(function () {
+            LoadDataTable();
+        })
 
         function LoadDataTable() {
-            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), status: ddlStateStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val()};
+            var data = { reqCode: txtReqCode.val().trim(), warehouseId: TryParseInt(ddlWarehouseName.val(), 0), tsId: TryParseInt(ddlTechnicalServicesName.val(), 0), status: ddlStateStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page:pageNo };
 
             $.when(getReqWithData('html', 'GET', '/FrontDesk/TSRequsitionInfoForJobOrderPartialListList', data)).then(function (res, status) {
                 if (status === "success") {
@@ -152,8 +161,17 @@
                 }
             }).fail(function (error) {
                 console.log(error);
-            })
+                })
+            pageNo = 1;
         }
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
 
         function OpenModalDetails() {
             clearCtr()

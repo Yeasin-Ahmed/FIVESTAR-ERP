@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.TsStockReturnDetailViewModel>
 @{ 
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
 }
 <div class="col-md-12">
     <table class="table table-bordered table-sm table-striped" id="tblPartsReturnList">
@@ -12,6 +13,8 @@
                 <th>Parts Name</th>
                 <th>Parts Code</th>
                 <th>Quantity</th>
+                <th class="hide"></th>
+                <th>TSName</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +28,8 @@
                     <td>@part.PartsName</td>
                     <td class="text-center">@part.PartsCode</td>
                     <td class="text-center">@part.Quantity</td>
+                    <td class="hide">@part.EUserId</td>
+                    <td>@part.EntryUser</td>
                 </tr>
             }
             @if (Model.Count() == 0)
@@ -37,4 +42,7 @@
             }
         </tbody>
     </table>
+</div>
+<div class="col-md-12">
+    @Html.Partial("_Pagination", pagerData)
 </div>

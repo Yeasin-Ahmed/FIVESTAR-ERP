@@ -65,7 +65,7 @@ namespace ERPBLL.FrontDesk
                 string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
                 param += string.Format(@" and Cast(EntryDate as date)='{0}'", tDate);
             }
-            query = string.Format(@"select InvoiceCode,CustomerName,NetAmount,EntryDate,OrganizationId,BranchId from tblInvoiceInfo
+            query = string.Format(@"select InvoiceInfoId,InvoiceCode,CustomerName,NetAmount,EntryDate,OrganizationId,BranchId,(select top 1 sum(NetAmount)'Total' from tblInvoiceInfo)'Total' from tblInvoiceInfo
 where 1=1{0}
 
 ", Utility.ParamChecker(param));
@@ -159,6 +159,11 @@ where 1=1{0}
                 _jobOrderRepository.Update(jobOrder);
             }
             return _jobOrderRepository.Save();
+        }
+
+        public InvoiceInfo GetAllInvoiceByOrgId(long invoiceId, long orgId, long branchId)
+        {
+            return _invoiceInfoRepository.GetOneByOrg(inv => inv.InvoiceInfoId == invoiceId && inv.OrganizationId == orgId && inv.BranchId == branchId);
         }
     }
 }

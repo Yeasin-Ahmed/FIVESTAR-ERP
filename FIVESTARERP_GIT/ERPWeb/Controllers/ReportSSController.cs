@@ -25,8 +25,10 @@ namespace ERPWeb.Controllers
         private readonly IMobilePartBusiness _mobilePartBusiness;
         private readonly ITsStockReturnDetailsBusiness _tsStockReturnDetailsBusiness;
         private readonly ITechnicalServicesStockBusiness _technicalServicesStockBusiness;
+        private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
+        private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         // GET: ReportSS
-        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness)
+        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness)
         {
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
@@ -36,6 +38,8 @@ namespace ERPWeb.Controllers
             this._mobilePartBusiness = mobilePartBusiness;
             this._tsStockReturnDetailsBusiness = tsStockReturnDetailsBusiness;
             this._technicalServicesStockBusiness = technicalServicesStockBusiness;
+            this._requsitionInfoForJobOrderBusiness = requsitionInfoForJobOrderBusiness;
+            this._servicesWarehouseBusiness = servicesWarehouseBusiness;
         }
 
         #region JobOrderList
@@ -291,7 +295,7 @@ namespace ERPWeb.Controllers
 
         #region PartsReturnReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult PartsReturnReport(long? ddlMobileParts, string fromDate, string toDate,string rptType)
+        public ActionResult PartsReturnReport(long? ddlMobileParts,long? ddlTechnicalServicesName, string fromDate, string toDate,string rptType)
         {
             bool IsSuccess = false;
             IEnumerable<TsStockReturnDetailDTO> dto = _tsStockReturnDetailsBusiness.GetAllTsStockReturn(User.OrgId, User.BranchId).Select(ret => new TsStockReturnDetailDTO
@@ -301,9 +305,11 @@ namespace ERPWeb.Controllers
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartName),
                 PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartCode),
                 Quantity = ret.Quantity,
-                EntryDate = ret.EntryDate
+                EntryDate = ret.EntryDate,
+                EUserId=ret.EUserId,
+                EntryUser = UserForEachRecord(ret.EUserId.Value).UserName,
             }).AsEnumerable();
-            dto = dto.Where(f => 1 == 1 && (ddlMobileParts == null || ddlMobileParts <= 0 || f.PartsId == ddlMobileParts) &&
+            dto = dto.Where(f => 1 == 1 && (ddlMobileParts == null || ddlMobileParts <= 0 || f.PartsId == ddlMobileParts) && (ddlTechnicalServicesName == null || ddlTechnicalServicesName <= 0 || f.EUserId == ddlTechnicalServicesName) &&
                          (
                              (fromDate == null && toDate == null)
                              ||
@@ -364,12 +370,12 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region UsedPartsReport
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult UsedPartsReport(long? partsId, string fromDate, string toDate)
+        //[HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult UsedPartsReport(long? ddlMobileParts,long? ddlTechnicalServicesName, string fromDate, string toDate,string rptType)
         {
             bool IsSuccess = false;
 
-            IEnumerable<TechnicalServicesStockDTO> dto = _technicalServicesStockBusiness.GetUsedParts(partsId, User.OrgId, User.BranchId, fromDate, toDate);
+            IEnumerable<TechnicalServicesStockDTO> dto = _technicalServicesStockBusiness.GetUsedParts(ddlMobileParts, ddlTechnicalServicesName, User.OrgId, User.BranchId, fromDate, toDate);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -391,31 +397,33 @@ namespace ERPWeb.Controllers
 
                 string mimeType;
                 string encoding;
-                string fileNameExtension = ".pdf";
+                string fileNameExtension;
                 Warning[] warnings;
                 string[] streams;
                 byte[] renderedBytes;
 
                 renderedBytes = localReport.Render(
-                    "Pdf",
+                    rptType,
                     "",
                     out mimeType,
                     out encoding,
                     out fileNameExtension,
                     out streams,
                     out warnings);
-                var base64 = Convert.ToBase64String(renderedBytes);
-                var fs = String.Format("data:application/pdf;base64,{0}", base64);
-                IsSuccess = true;
-                return Json(new { IsSuccess = IsSuccess, File = fs, FileName = "Used_" + localReport.DisplayName });
+                return File(renderedBytes, mimeType);
+                //var base64 = Convert.ToBase64String(renderedBytes);
+                //var fs = String.Format("data:application/pdf;base64,{0}", base64);
+                //IsSuccess = true;
+                //return Json(new { IsSuccess = IsSuccess, File = fs, FileName = "Used_" + localReport.DisplayName });
             }
-            return Json(new { IsSuccess = IsSuccess, Id = 0 });
+            //return Json(new { IsSuccess = IsSuccess, Id = 0 });
+            return new EmptyResult();
         }
         #endregion
 
         #region SellsReport
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SellsReport(string fromDate, string toDate)
+        //[HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SellsReport(string fromDate, string toDate,string rptType)
         {
             bool IsSuccess = false;
 
@@ -441,25 +449,107 @@ namespace ERPWeb.Controllers
 
                 string mimeType;
                 string encoding;
-                string fileNameExtension = ".pdf";
+                string fileNameExtension;
                 Warning[] warnings;
                 string[] streams;
                 byte[] renderedBytes;
 
                 renderedBytes = localReport.Render(
-                    "Pdf",
+                    rptType,
                     "",
                     out mimeType,
                     out encoding,
                     out fileNameExtension,
                     out streams,
                     out warnings);
-                var base64 = Convert.ToBase64String(renderedBytes);
-                var fs = String.Format("data:application/pdf;base64,{0}", base64);
-                IsSuccess = true;
-                return Json(new { IsSuccess = IsSuccess, File = fs, FileName = "Sells_" + localReport.DisplayName });
+                return File(renderedBytes, mimeType);
+                //var base64 = Convert.ToBase64String(renderedBytes);
+                //var fs = String.Format("data:application/pdf;base64,{0}", base64);
+                //IsSuccess = true;
+                //return Json(new { IsSuccess = IsSuccess, File = fs, FileName = "Sells_" + localReport.DisplayName });
             }
-            return Json(new { IsSuccess = IsSuccess, Id = 0 });
+            //return Json(new { IsSuccess = IsSuccess, Id = 0 });
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region TSRequsitionReport
+        public ActionResult TSRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType)
+        {
+            IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
+                (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
+                &&
+                (ddlWarehouseName == null || ddlWarehouseName <= 0 || req.SWarehouseId == ddlWarehouseName)
+                &&
+                (ddlTechnicalServicesName == null || ddlTechnicalServicesName <= 0 || req.EUserId == ddlTechnicalServicesName)
+                &&
+                (reqStatus == null || reqStatus.Trim() == "" || req.StateStatus == reqStatus.Trim())
+                &&
+                (
+                    (fromDate == null && toDate == null)
+                    ||
+                     (fromDate == "" && toDate == "")
+                    ||
+                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+                        req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+                        req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+                    ||
+                    (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+                    ||
+                    (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+                )).Select(info => new RequsitionInfoForJobOrderDTO
+                {
+                    RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
+                    RequsitionCode = info.RequsitionCode,
+                    SWarehouseId = info.SWarehouseId,
+                    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+                    StateStatus = info.StateStatus,
+                    JobOrderId = info.JobOrderId,
+                    JobOrderCode = info.JobOrderCode,
+                    Remarks = info.Remarks,
+                    BranchId = info.BranchId,
+                    OrganizationId = info.OrganizationId,
+                    EUserId = info.EUserId,
+                    Requestby = UserForEachRecord(info.EUserId.Value).UserName,
+                    EntryDate = info.EntryDate
+                }).ToList();
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptTSRequsitionReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("TSRequsition", requsitionInfoForJobOrderDTO);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
         }
         #endregion
     }

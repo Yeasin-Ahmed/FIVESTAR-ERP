@@ -165,6 +165,8 @@
               <xs:element name="PartsName" msprop:Generator_ColumnVarNameInTable="columnPartsName" msprop:Generator_ColumnPropNameInRow="PartsName" msprop:Generator_ColumnPropNameInTable="PartsNameColumn" msprop:Generator_UserColumnName="PartsName" type="xs:string" minOccurs="0" />
               <xs:element name="Quantity" msprop:Generator_ColumnVarNameInTable="columnQuantity" msprop:Generator_ColumnPropNameInRow="Quantity" msprop:Generator_ColumnPropNameInTable="QuantityColumn" msprop:Generator_UserColumnName="Quantity" type="xs:int" minOccurs="0" />
               <xs:element name="PartsCode" msprop:Generator_ColumnVarNameInTable="columnPartsCode" msprop:Generator_ColumnPropNameInRow="PartsCode" msprop:Generator_ColumnPropNameInTable="PartsCodeColumn" msprop:Generator_UserColumnName="PartsCode" type="xs:string" minOccurs="0" />
+              <xs:element name="EntryUser" msprop:Generator_ColumnVarNameInTable="columnEntryUser" msprop:Generator_ColumnPropNameInRow="EntryUser" msprop:Generator_ColumnPropNameInTable="EntryUserColumn" msprop:Generator_UserColumnName="EntryUser" type="xs:string" minOccurs="0" />
+              <xs:element name="EUserId" msprop:Generator_ColumnVarNameInTable="columnEUserId" msprop:Generator_ColumnPropNameInRow="EUserId" msprop:Generator_ColumnPropNameInTable="EUserIdColumn" msprop:Generator_UserColumnName="EUserId" type="xs:long" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -176,6 +178,8 @@
               <xs:element name="PartsName" msprop:Generator_ColumnVarNameInTable="columnPartsName" msprop:Generator_ColumnPropNameInRow="PartsName" msprop:Generator_ColumnPropNameInTable="PartsNameColumn" msprop:Generator_UserColumnName="PartsName" type="xs:string" minOccurs="0" />
               <xs:element name="UsedQty" msprop:Generator_ColumnVarNameInTable="columnUsedQty" msprop:Generator_ColumnPropNameInRow="UsedQty" msprop:Generator_ColumnPropNameInTable="UsedQtyColumn" msprop:Generator_UserColumnName="UsedQty" type="xs:string" minOccurs="0" />
               <xs:element name="MobilePartCode" msprop:Generator_ColumnVarNameInTable="columnMobilePartCode" msprop:Generator_ColumnPropNameInRow="MobilePartCode" msprop:Generator_ColumnPropNameInTable="MobilePartCodeColumn" msprop:Generator_UserColumnName="MobilePartCode" type="xs:string" minOccurs="0" />
+              <xs:element name="UpUserId" msprop:Generator_ColumnVarNameInTable="columnUpUserId" msprop:Generator_ColumnPropNameInRow="UpUserId" msprop:Generator_ColumnPropNameInTable="UpUserIdColumn" msprop:Generator_UserColumnName="UpUserId" type="xs:long" minOccurs="0" />
+              <xs:element name="UserName" msprop:Generator_ColumnVarNameInTable="columnUserName" msprop:Generator_ColumnPropNameInRow="UserName" msprop:Generator_ColumnPropNameInTable="UserNameColumn" msprop:Generator_UserColumnName="UserName" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -186,6 +190,18 @@
               <xs:element name="CustomerName" msprop:Generator_ColumnVarNameInTable="columnCustomerName" msprop:Generator_ColumnPropNameInRow="CustomerName" msprop:Generator_ColumnPropNameInTable="CustomerNameColumn" msprop:Generator_UserColumnName="CustomerName" type="xs:string" minOccurs="0" />
               <xs:element name="NetAmount" msprop:Generator_ColumnVarNameInTable="columnNetAmount" msprop:Generator_ColumnPropNameInRow="NetAmount" msprop:Generator_ColumnPropNameInTable="NetAmountColumn" msprop:Generator_UserColumnName="NetAmount" type="xs:int" minOccurs="0" />
               <xs:element name="EntryDate" msprop:Generator_ColumnVarNameInTable="columnEntryDate" msprop:Generator_ColumnPropNameInRow="EntryDate" msprop:Generator_ColumnPropNameInTable="EntryDateColumn" msprop:Generator_UserColumnName="EntryDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Total" msprop:Generator_ColumnVarNameInTable="columnTotal" msprop:Generator_ColumnPropNameInRow="Total" msprop:Generator_ColumnPropNameInTable="TotalColumn" msprop:Generator_UserColumnName="Total" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TSRequsition" msprop:Generator_TableClassName="TSRequsitionDataTable" msprop:Generator_TableVarName="tableTSRequsition" msprop:Generator_RowChangedName="TSRequsitionRowChanged" msprop:Generator_TablePropName="TSRequsition" msprop:Generator_RowDeletingName="TSRequsitionRowDeleting" msprop:Generator_RowChangingName="TSRequsitionRowChanging" msprop:Generator_RowEvHandlerName="TSRequsitionRowChangeEventHandler" msprop:Generator_RowDeletedName="TSRequsitionRowDeleted" msprop:Generator_RowClassName="TSRequsitionRow" msprop:Generator_UserTableName="TSRequsition" msprop:Generator_RowEvArgName="TSRequsitionRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RequsitionCode" msprop:Generator_ColumnVarNameInTable="columnRequsitionCode" msprop:Generator_ColumnPropNameInRow="RequsitionCode" msprop:Generator_ColumnPropNameInTable="RequsitionCodeColumn" msprop:Generator_UserColumnName="RequsitionCode" type="xs:string" minOccurs="0" />
+              <xs:element name="StateStatus" msprop:Generator_ColumnVarNameInTable="columnStateStatus" msprop:Generator_ColumnPropNameInRow="StateStatus" msprop:Generator_ColumnPropNameInTable="StateStatusColumn" msprop:Generator_UserColumnName="StateStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="EntryDate" msprop:Generator_ColumnVarNameInTable="columnEntryDate" msprop:Generator_ColumnPropNameInRow="EntryDate" msprop:Generator_ColumnPropNameInTable="EntryDateColumn" msprop:Generator_UserColumnName="EntryDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="EUserId" msprop:Generator_ColumnVarNameInTable="columnEUserId" msprop:Generator_ColumnPropNameInRow="EUserId" msprop:Generator_ColumnPropNameInTable="EUserIdColumn" msprop:Generator_UserColumnName="EUserId" type="xs:long" minOccurs="0" />
+              <xs:element name="Requestby" msprop:Generator_ColumnVarNameInTable="columnRequestby" msprop:Generator_ColumnPropNameInRow="Requestby" msprop:Generator_ColumnPropNameInTable="RequestbyColumn" msprop:Generator_UserColumnName="Requestby" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

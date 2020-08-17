@@ -34,5 +34,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public double Total { get; set; }
     }
 }

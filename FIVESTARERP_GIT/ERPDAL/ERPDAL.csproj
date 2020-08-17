@@ -277,6 +277,14 @@
     <Compile Include="FrontDeskContextMigrations\202008101006208_FrontDesk_CourierAndApproxBill.designer.cs">
       <DependentUpon>202008101006208_FrontDesk_CourierAndApproxBill.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008170933383_FrontDesk_JobTransferId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008170933383_FrontDesk_JobTransferId.Designer.cs">
+      <DependentUpon>202008170933383_FrontDesk_JobTransferId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008170942350_FrontDesk_JobTransferBranchId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008170942350_FrontDesk_JobTransferBranchId.Designer.cs">
+      <DependentUpon>202008170942350_FrontDesk_JobTransferBranchId.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -672,6 +680,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202008101006208_FrontDesk_CourierAndApproxBill.resx">
       <DependentUpon>202008101006208_FrontDesk_CourierAndApproxBill.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008170933383_FrontDesk_JobTransferId.resx">
+      <DependentUpon>202008170933383_FrontDesk_JobTransferId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008170942350_FrontDesk_JobTransferBranchId.resx">
+      <DependentUpon>202008170942350_FrontDesk_JobTransferBranchId.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

@@ -115,8 +115,8 @@ namespace ERPWeb.Controllers
                 var repairDone = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.RepairDone);
                 ViewBag.RepairDone = (repairDone == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.RepairDone, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = repairDone.StateStatus, TotalCount = repairDone.TotalCount };
 
-                var jobOrderApproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.CustomerApproved);
-                ViewBag.JobOrderApproved = (jobOrderApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.CustomerApproved, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderApproved.StateStatus, TotalCount = jobOrderApproved.TotalCount };
+                var jobOrderApproved = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.JobInitiated);
+                ViewBag.JobOrderApproved = (jobOrderApproved == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.JobInitiated, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = jobOrderApproved.StateStatus, TotalCount = jobOrderApproved.TotalCount };
 
                 var deliveryDone = dto.FirstOrDefault(req => req.StateStatus == JobOrderStatus.DeliveryDone);
                 ViewBag.DeliveryDone = (deliveryDone == null) ? new DashboardRequisitionSummeryViewModel { StateStatus = JobOrderStatus.DeliveryDone, TotalCount = 0 } : new DashboardRequisitionSummeryViewModel { StateStatus = deliveryDone.StateStatus, TotalCount = deliveryDone.TotalCount };

@@ -24,6 +24,7 @@ namespace ERPBO.FrontDesk.ViewModels
         //c
         public string PartsName { get; set; }
         public string PartsCode { get; set; }
+        public string EntryUser { get; set; }
 
     }
 }

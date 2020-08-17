@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
+using ERPBLL.ControlPanel.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.ReportSS.Interface;
 using ERPBO.Common;
@@ -24,8 +25,9 @@ namespace ERPBLL.FrontDesk
         private readonly IJobOrderAccessoriesBusiness _jobOrderAccessoriesBusiness;
         private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
         private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
+        private readonly IBranchBusiness _branchBusiness;
 
-        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness)
+        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IBranchBusiness branchBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._jobOrderRepository = new JobOrderRepository(this._frontDeskUnitOfWork);
@@ -34,6 +36,7 @@ namespace ERPBLL.FrontDesk
             this._jobOrderProblemBusiness = jobOrderProblemBusiness;
             this._jobOrderProblemRepository = new JobOrderProblemRepository(this._frontDeskUnitOfWork);
             this._jobOrderReportBusiness = jobOrderReportBusiness;
+            this._branchBusiness = branchBusiness;
 
         }
 
@@ -191,7 +194,7 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
                     EntryDate = jobOrderDto.EntryDate,
                     EUserId = userId,
                     OrganizationId = orgId,
-                    StateStatus = JobOrderStatus.CustomerApproved,
+                    StateStatus = JobOrderStatus.JobInitiated,
                     JobOrderCode = ("JOB-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
                     BranchId = branchId
                 };
@@ -370,6 +373,8 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
 
         public ExecutionStateWithText SaveJobOrderWithReport(JobOrderDTO jobOrderDto, List<JobOrderAccessoriesDTO> jobOrderAccessoriesDto, List<JobOrderProblemDTO> jobOrderProblemsDto, long userId, long orgId, long branchId)
         {
+            var branchShortName = _branchBusiness.GetBranchOneByOrgId(branchId, orgId).ShortName;
+
             ExecutionStateWithText execution = new ExecutionStateWithText();
             JobOrder jobOrder = null;
             if (jobOrderDto.JodOrderId == 0)
@@ -398,8 +403,8 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
                     EntryDate = jobOrderDto.EntryDate,
                     EUserId = userId,
                     OrganizationId = orgId,
-                    StateStatus = JobOrderStatus.CustomerApproved,
-                    JobOrderCode = ("JOB-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")),
+                    StateStatus = JobOrderStatus.JobInitiated,
+                    
                     BranchId = branchId
                 };
                 if (jobOrder.JobOrderType == "Warrenty")
@@ -440,6 +445,8 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
                 }
                 jobOrder.JobOrderProblems = listjobOrderProblems;
 
+                string jobOrderCode = branchShortName+"-" +GetJobOrderSerial(orgId,branchId).PadLeft(7,'0'); // 0000001
+                jobOrder.JobOrderCode = jobOrderCode;
                 _jobOrderRepository.Insert(jobOrder);
             }
             else
@@ -581,6 +588,14 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
             return execution;
         }
 
+        public string GetJobOrderSerial(long orgId,long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<string>(string.Format(@"Select Cast( ISNULL(MAX(Cast(SUBSTRING(JobOrderCode,5,LEN(JobOrderCode)) as bigint)),0)+1 as Nvarchar(20)) 'Value'  from [FrontDesk].dbo.tblJobOrders 
+Where  JobOrderCode not like 'JOB%' and 
+OrganizationId= {0} and BranchId={1}
+",orgId,branchId)).FirstOrDefault();
+        }
+
         public bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
@@ -598,7 +613,7 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
         public bool AssignTSForJobOrder(long jobOrderId, long tsId, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
-            if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.CustomerApproved)
+            if (jobOrder != null && jobOrder.StateStatus == JobOrderStatus.JobInitiated)
             {
                 jobOrder.TSId = tsId;
                 jobOrder.StateStatus = JobOrderStatus.AssignToTS;
@@ -657,8 +672,8 @@ Where 1 = 1{0}) tbl Order By EntryDate desc
             }
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
-SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,UserName,
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,BranchId
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,UserName,jo.BranchId,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -677,7 +692,7 @@ Order By j.EUserId desc) 'EntryUser'
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.TSId = ap.UserId 
-Where 1 = 1  and jo.StateStatus='TS-Assigned' or jo.StateStatus='Repair-Done'{0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Where 1 = 1  and (jo.StateStatus='TS-Assigned' or jo.StateStatus='Repair-Done' or jo.StateStatus='Delivery-Done'){0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -727,7 +742,7 @@ Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCo
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
-Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.StateStatus='Customer-Approved' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.StateStatus='Job-Initiated' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -737,7 +752,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             foreach (var job in jobOrders)
             {
                 var jobOrderInDb = GetJobOrdersByIdWithBranch(job, branchId, orgId);
-                if (jobOrderInDb != null && jobOrderInDb.StateStatus == JobOrderStatus.CustomerApproved)
+                if (jobOrderInDb != null && jobOrderInDb.StateStatus == JobOrderStatus.JobInitiated)
                 {
                     jobOrderInDb.StateStatus = JobOrderStatus.AssignToTS;
                     jobOrderInDb.TSId = ts;
@@ -759,7 +774,6 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                             Remarks="Pushing"
                         }
                     };
-
                     _jobOrderRepository.Update(jobOrderInDb);
                 }
             }
@@ -779,7 +793,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
         public bool SaveJobOrderPulling(long jobOrderId, long userId, long orgId, long branchId)
         {
             var jobOrderInDb = GetJobOrdersByIdWithBranch(jobOrderId, branchId, orgId);
-            if (jobOrderInDb != null && jobOrderInDb.StateStatus == JobOrderStatus.CustomerApproved)
+            if (jobOrderInDb != null && jobOrderInDb.StateStatus == JobOrderStatus.JobInitiated)
             {
                 jobOrderInDb.StateStatus = JobOrderStatus.AssignToTS;
                 jobOrderInDb.TSId = userId;
@@ -887,7 +901,7 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public bool UpdateJobSingOutStatus(long jobOrderId, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
-            var jobStatus = jobOrder.TsRepairStatus == "REPAIR AND RETURN" ? JobOrderStatus.RepairDone : JobOrderStatus.CustomerApproved;
+            var jobStatus = jobOrder.TsRepairStatus == "REPAIR AND RETURN" ? JobOrderStatus.RepairDone : JobOrderStatus.JobInitiated;
             if (jobOrder != null)
             {
                 jobOrder.JodOrderId = jobOrderId;
@@ -1023,6 +1037,46 @@ Where jo.JodOrderId={0} and  jo.OrganizationId={1} and jo.BranchId={2}) tbl Orde
                 }
             }
             return IsExist;
+        }
+
+        public IEnumerable<JobOrderDTO> JobOrderTransfer(long orgId, long branchId)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderTransfer(orgId, branchId)).ToList();
+        }
+        private string QueryForJobOrderTransfer(long orgId, long branchId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+           
+            if (orgId > 0)
+            {
+                param += string.Format(@"and jo.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and jo.BranchId={0}", branchId);
+            }
+
+            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
+
+Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
+Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
+Where joa.JobOrderId = jo.JodOrderId
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
+
+Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
+Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
+Where jop.JobOrderId = jo.JodOrderId
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName'
+
+from tblJobOrders jo
+Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.IsTransfer is null and jo.StateStatus='Job-Initiated' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+            return query;
         }
     }
 }

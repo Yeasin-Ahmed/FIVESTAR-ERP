@@ -47,14 +47,18 @@ namespace ERPBLL.FrontDesk
             return _frontDeskUnitOfWork.Db.Database.SqlQuery<TSStockByRequsitionDTO>(QueryForStock(jobOrderId,tsId,orgId,branchId,roleName)).ToList();
         }
 
-        public IEnumerable<TechnicalServicesStockDTO> GetUsedParts(long? partsId,long orgId, long branchId, string fromDate, string toDate)
+        public IEnumerable<TechnicalServicesStockDTO> GetUsedParts(long? partsId,long? tsId,long orgId, long branchId, string fromDate, string toDate)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<TechnicalServicesStockDTO>(QueryForUsedParts(partsId,orgId, branchId, fromDate, toDate)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<TechnicalServicesStockDTO>(QueryForUsedParts(partsId,tsId,orgId, branchId, fromDate, toDate)).ToList();
         }
-        private string QueryForUsedParts(long? partsId, long orgId, long branchId, string fromDate, string toDate)
+        private string QueryForUsedParts(long? partsId,long? tsId, long orgId, long branchId, string fromDate, string toDate)
         {
             string query = string.Empty;
             string param = string.Empty;
+            if (tsId != null && tsId > 0)
+            {
+                param += string.Format(@"and ts.UpUserId={0}", tsId);
+            }
             if (partsId !=null && partsId > 0)
             {
                 param += string.Format(@"and ts.PartsId={0}", partsId);
@@ -83,12 +87,14 @@ namespace ERPBLL.FrontDesk
                 string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
                 param += string.Format(@" and Cast(ts.EntryDate as date)='{0}'", tDate);
             }
-            query = string.Format(@"select ts.PartsId,rq.RequsitionCode,ps.MobilePartName 'PartsName',ps.MobilePartCode,ts.UsedQty ,ts.EntryDate
+            query = string.Format(@"select ts.PartsId,rq.RequsitionCode,ps.MobilePartName 'PartsName',ps.MobilePartCode,ts.UsedQty,ts.EntryDate,app.UserName 'UserName',ts.UpUserId
 from tblTechnicalServicesStock ts
 left join [Configuration].dbo.tblMobileParts ps
 on ts.PartsId=ps.MobilePartId
 left join tblRequsitionInfoForJobOrders rq
 on ts.RequsitionInfoForJobOrderId=rq.RequsitionInfoForJobOrderId
+left join [ControlPanel].dbo.tblApplicationUsers app
+on ts.UpUserId=app.UserId
 where ts.UsedQty>0 and 1=1{0}
 
 ", Utility.ParamChecker(param));
@@ -114,6 +120,8 @@ where ts.UsedQty>0 and 1=1{0}
                         servicesInfo.UsedQty = item.UsedQty;
                         servicesInfo.ReturnQty = item.Quantity - item.UsedQty;
                         servicesInfo.StateStatus = "Stock-Closed";
+                        servicesInfo.UpUserId = userId;
+                        servicesInfo.UpdateDate = DateTime.Now;
 
                         technicalServicesStockRepository.Update(servicesInfo);
                         if (servicesInfo.ReturnQty > 0)

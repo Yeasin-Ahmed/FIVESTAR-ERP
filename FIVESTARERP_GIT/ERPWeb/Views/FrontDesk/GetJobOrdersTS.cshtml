@@ -59,6 +59,7 @@
         var ddlStateStatus = $("#ddlStateStatus");
         var txtJobCode = $("#txtJobCode");
         var hdfJobOrderId = $("#hdfJobOrderId");
+        var pageNo = 1;
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -84,7 +85,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), jobCode: txtJobCode.val(), page: 1 };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), jobCode: txtJobCode.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrdersTS', data)).then(function (res, status) {
@@ -97,9 +98,18 @@
                 }
             }).fail(function (error) {
                 console.log(error);
-            });
-
+                });
+            pageNo = 1;
         }
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+
         //Ts Work Details
         $(document).on('click', 'a.data-item-tsWork', function (e) {
             e.preventDefault();

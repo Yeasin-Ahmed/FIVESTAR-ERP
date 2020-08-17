@@ -622,6 +622,10 @@
     <Content Include="Views\FrontDesk\_ReturnParts.cshtml" />
     <Content Include="Views\Configuration\GetCurrentStockReport.cshtml" />
     <Content Include="Views\Configuration\_GetCurrentStockList.cshtml" />
+    <Content Include="Views\FrontDesk\_SellsDetails.cshtml" />
+    <Content Include="Views\FrontDesk\TSRequsitionListReport.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobTransferList.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobTransferList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -646,14 +650,33 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\ERPRpt\rptQRCodesByRef.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptSellsReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc" />
+    <Content Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrder.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptSellsReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptTSRequsitionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">

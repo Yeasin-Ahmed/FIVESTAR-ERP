@@ -302,6 +302,24 @@ namespace ERPWeb.Controllers
 
         #endregion
 
+        #region JobTransfer
+        public ActionResult GetJobTransferList(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderBusiness.JobOrderTransfer(User.OrgId, User.BranchId);
+                List<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetJobTransferList",viewModels);
+            }
+        }
+        #endregion
+
         #region JobOrderTS
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult AssignTSForJobOrder(long jobOrderId, long tsId)
@@ -314,7 +332,7 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
         [HttpGet]
-        public ActionResult GetJobOrdersTS(string flag, long? modelId, long? jobOrderId, string mobileNo = "", string jobCode = "")
+        public ActionResult GetJobOrdersTS(string flag, long? modelId, long? jobOrderId, string mobileNo = "", string jobCode = "",int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -327,6 +345,10 @@ namespace ERPWeb.Controllers
                 var dto = _jobOrderBusiness.GetJobOrdersTS(User.RoleName, mobileNo.Trim(), modelId, jobOrderId, jobCode, User.UserId, User.OrgId, User.BranchId);
 
                 IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetJobOrdersTS", viewModels);
             }
@@ -494,14 +516,17 @@ namespace ERPWeb.Controllers
                 Text = st.text,
                 Value = st.value
             }).ToList();
+            ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
             return View();
         }
-        public ActionResult TSRequsitionInfoForJobOrderPartialListList(string reqCode, long? warehouseId, string status, string fromDate, string toDate)
+        public ActionResult TSRequsitionInfoForJobOrderPartialListList(string reqCode, long? warehouseId,long? tsId, string status, string fromDate, string toDate,int page=1)
         {
             IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
                 (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
                 &&
                 (warehouseId == null || warehouseId <= 0 || req.SWarehouseId == warehouseId)
+                &&
+                (tsId == null || tsId <= 0 || req.EUserId == tsId)
                 &&
                 (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
                 &&
@@ -531,9 +556,14 @@ namespace ERPWeb.Controllers
                 BranchId = info.BranchId,
                 OrganizationId = info.OrganizationId,
                 EUserId = info.EUserId,
+                Requestby = UserForEachRecord(info.EUserId.Value).UserName,
                 EntryDate = info.EntryDate
             }).ToList();
             List<RequsitionInfoForJobOrderViewModel> requsitionInfoForJobs = new List<RequsitionInfoForJobOrderViewModel>();
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(requsitionInfoForJobOrderDTO.Count(), 10, page);
+            requsitionInfoForJobOrderDTO = requsitionInfoForJobOrderDTO.Skip((page - 1) * 10).Take(10).ToList();
+            //-----------------//
             AutoMapper.Mapper.Map(requsitionInfoForJobOrderDTO, requsitionInfoForJobs);
 
             return PartialView("TSRequsitionInfoForJobOrderPartialListList", requsitionInfoForJobs);
@@ -1003,13 +1033,28 @@ namespace ERPWeb.Controllers
             ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
             return View();
         }
+        public ActionResult TSRequsitionListReport()
+        {
+            ViewBag.ddlWarehouseName = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Void).Select(st => new SelectListItem
+            {
+                Text = st.text,
+                Value = st.value
+            }).ToList();
+
+            ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+            return View();
+        }
 
         [HttpGet]
-        public ActionResult ReturnParts(string flag, long? mobilePartId, string fromDate, string toDate)
+        public ActionResult ReturnParts(string flag, long? mobilePartId,long? tsId, string fromDate, string toDate,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+                ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
                 return View();
             }
             else
@@ -1021,9 +1066,11 @@ namespace ERPWeb.Controllers
                     PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartName),
                     PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartCode),
                     Quantity = ret.Quantity,
-                    EntryDate = ret.EntryDate
+                    EntryDate = ret.EntryDate,
+                    EUserId=ret.EUserId,
+                   EntryUser= UserForEachRecord(ret.EUserId.Value).UserName,
                 }).AsEnumerable();
-                dto = dto.Where(f => 1 == 1 && (mobilePartId == null || mobilePartId <= 0 || f.PartsId == mobilePartId) &&
+                dto = dto.Where(f => 1 == 1 && (mobilePartId == null || mobilePartId <= 0 || f.PartsId == mobilePartId) && (tsId == null || tsId <= 0 || f.EUserId == tsId) &&
                              (
                                  (fromDate == null && toDate == null)
                                  ||
@@ -1040,28 +1087,38 @@ namespace ERPWeb.Controllers
                              )
                          );
                 List<TsStockReturnDetailViewModel> viewModel = new List<TsStockReturnDetailViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModel);
                 return PartialView("_ReturnParts", viewModel);
             }
         }
         [HttpGet]
-        public ActionResult GetUsedParts(string flag, long? partsId, string fromDate, string toDate)
+        public ActionResult GetUsedParts(string flag, long? partsId,long? tsId, string fromDate, string toDate,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+                ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
                 return View();
             }
             else
             {
-                var dto = _technicalServicesStockBusiness.GetUsedParts(partsId, User.OrgId, User.BranchId, fromDate, toDate);
+                var dto = _technicalServicesStockBusiness.GetUsedParts(partsId,tsId, User.OrgId, User.BranchId, fromDate, toDate);
                 List<TechnicalServicesStockViewModel> viewModels = new List<TechnicalServicesStockViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetUsedParts", viewModels);
             }
         }
 
-        public ActionResult GetSellsReport(string flag, string fromDate, string toDate)
+        public ActionResult GetSellsReport(string flag, string fromDate, string toDate,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -1071,9 +1128,27 @@ namespace ERPWeb.Controllers
             {
                 var dto = _invoiceInfoBusiness.GetSellsReport(User.OrgId, User.BranchId, fromDate, toDate);
                 List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetSellsReport", viewModels);
             }
+        }
+        public ActionResult SellsDetails(long invoiceId)
+        {
+            var sells = _invoiceInfoBusiness.GetAllInvoiceByOrgId(invoiceId, User.OrgId, User.BranchId);
+            ViewBag.Sells = new InvoiceInfoViewModel
+            {
+                TotalSPAmount=sells.TotalSPAmount,
+                LabourCharge=sells.LabourCharge,
+                VAT=sells.VAT,
+                Tax=sells.Tax,
+                Discount=sells.Discount,
+                NetAmount=sells.NetAmount,
+            };
+            return PartialView("_SellsDetails");
         }
         #endregion
 
