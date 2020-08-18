@@ -1051,6 +1051,8 @@ namespace ERPWeb.Controllers
 
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
 
+                ViewBag.ddlItemTgt = _itemBusiness.GetItemDetails(User.OrgId).Where(s => s.ItemName.Contains("Warehouse 3")).Select(d => new SelectListItem { Text = d.ItemName, Value = d.ItemId.ToString() }).ToList();
+
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
                 {
                     Text = ware.WarehouseName,
@@ -1089,8 +1091,8 @@ namespace ERPWeb.Controllers
                 }).ToList();
 
                 // Pagination //
-                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
-                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
+                dto = dto.Skip((page - 1) * 15).Take(15).ToList();
                 //-----------------//
 
                 List<ItemPreparationInfoViewModel> viewModels = new List<ItemPreparationInfoViewModel>();
@@ -1153,9 +1155,11 @@ namespace ERPWeb.Controllers
         {
             ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
 
-            ViewBag.ddlItemTgt = _itemBusiness.GetItemDetails(User.OrgId).Select(d => new SelectListItem { Text = d.ItemName, Value = d.ItemId.ToString() }).ToList();
+            var allItemsInDb = _itemBusiness.GetItemDetails(User.OrgId);
+            //
+            ViewBag.ddlItemTgt = allItemsInDb.Where(s=> s.ItemName.Contains("Warehouse 3")).Select(d => new SelectListItem { Text = d.ItemName, Value = d.ItemId.ToString() }).ToList();
 
-            ViewBag.ddlWarehouseSource = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            ViewBag.ddlWarehouseSource = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Where(s => s.WarehouseName == "Warehouse 1" || s.WarehouseName == "Warehouse 2").Select(ware => new SelectListItem
             {
                 Text = ware.WarehouseName,
                 Value = ware.Id.ToString()
@@ -2030,8 +2034,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult UploadExcel(WarehouseStockDetailDTO models, HttpPostedFileBase FileUpload)
         {
-            bool isSuccess = false;
-            List<WarehouseStockDetail> warehouseStockDetails = new List<WarehouseStockDetail>();
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
             List<string> data = new List<string>();
             if (FileUpload != null)
             {
@@ -2061,115 +2064,46 @@ namespace ERPWeb.Controllers
                     string sheetName = "Sheet1";
 
                     var excelFile = new ExcelQueryFactory(pathToExcelFile);
-                    var linqToExcel = from a in excelFile.Worksheet<WarehouseStockDetailDTO>(sheetName) select a;
+                    var linqToExcel = (from a in excelFile.Worksheet<WarehouseStockDetailDTO>(sheetName) select a).ToList();
+
+                    List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
+                    
+                    //    catch (DbEntityValidationException ex)
+                    //    {
+                    //        foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    //        {
+
+                    //            foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    //            {
+
+                    //                Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+
+                    //            }
+
+                    //        }
+                    //    }
 
                     foreach (var item in linqToExcel)
                     {
-                        try
-                        {
-                            if (item.WarehouseId >0 && item.ItemTypeId > 0 && item.ItemId > 0 && item.EUserId > 0 &&  item.SupplierId >0 && item.DescriptionId > 0 && item.Quantity >= 0 && item.OrderQty >= 0 )
-                            {
-                                WarehouseStockDetail stockDetail = new WarehouseStockDetail();
-                                stockDetail.WarehouseId = item.WarehouseId;
-                                stockDetail.ItemTypeId = item.ItemTypeId;
-                                stockDetail.ItemId = item.ItemId;
-                                stockDetail.Quantity = item.Quantity;
-                                stockDetail.OrganizationId = item.OrganizationId;
-                                stockDetail.EUserId = item.EUserId;
-                                stockDetail.Remarks = item.Remarks;
-                                stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, item.OrganizationId).UnitId;
-                                if (item.EntryDate != null)
-                                {
-                                    stockDetail.EntryDate = item.EntryDate;
-                                }
-                                else
-                                {
-                                    stockDetail.EntryDate = DateTime.Now;
-                                }
-                                stockDetail.StockStatus = StockStatus.StockIn;
-                                stockDetail.RefferenceNumber = item.RefferenceNumber;
-                                stockDetail.DescriptionId = item.DescriptionId;
-                                stockDetail.OrderQty = item.OrderQty;
-                                stockDetail.SupplierId = item.SupplierId;
-
-                                var warehouseInfo = _warehouseStockInfoBusiness.GetAllWarehouseStockInfoByOrgId(item.OrganizationId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
-                                if (warehouseInfo != null)
-                                {
-                                    warehouseInfo.StockInQty += item.Quantity;
-                                    warehouseInfo.UpUserId = item.EUserId;
-                                    warehouseInfo.UpdateDate = DateTime.Now;
-                                    warehouseStockInfoRepository.Update(warehouseInfo);
-                                }
-                                else
-                                {
-                                    WarehouseStockInfo warehouseStockInfo = new WarehouseStockInfo();
-                                    warehouseStockInfo.WarehouseId = item.WarehouseId;
-                                    warehouseStockInfo.DescriptionId = item.DescriptionId;
-                                    warehouseStockInfo.ItemTypeId = item.ItemTypeId;
-                                    warehouseStockInfo.ItemId = item.ItemId;
-                                    warehouseStockInfo.UnitId = stockDetail.UnitId;
-                                    warehouseStockInfo.StockInQty = item.Quantity;
-                                    warehouseStockInfo.StockOutQty = 0;
-                                    warehouseStockInfo.OrganizationId = item.OrganizationId;
-                                    warehouseStockInfo.EUserId = item.EUserId;
-                                    warehouseStockInfo.Remarks = item.Remarks;
-                                    if (item.EntryDate != null)
-                                    {
-                                        warehouseStockInfo.EntryDate = item.EntryDate;
-                                    }
-                                    else
-                                    {
-                                        warehouseStockInfo.EntryDate = DateTime.Now;
-                                    }
-
-                                    warehouseStockInfoRepository.Insert(warehouseStockInfo);
-                                }
-                                warehouseStockDetails.Add(stockDetail);
-                            }
+                        if (item.WarehouseId > 0 && item.ItemTypeId > 0 && item.ItemId > 0 && item.EUserId > 0 && item.SupplierId > 0 && item.DescriptionId > 0 && item.Quantity >= 0 && item.OrderQty >= 0) {
+                            warehouseStocks.Add(item);
                         }
-
-                        catch (DbEntityValidationException ex)
+                        else
                         {
-                            foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                            {
-
-                                foreach (var validationError in entityValidationErrors.ValidationErrors)
-                                {
-
-                                    Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-
-                                }
-
-                            }
+                            executionState.text += item.ItemId + " has error" + "</br>";
                         }
                     }
-                    warehouseStockDetailRepository.InsertAll(warehouseStockDetails);
-                    isSuccess = warehouseStockDetailRepository.Save();
+                                              
+                    executionState.isSuccess =  (warehouseStocks.Count() > 0 ? _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, User.UserId, User.OrgId) : executionState.isSuccess);
+                    
                     //deleting excel file from folder  
                     if ((System.IO.File.Exists(pathToExcelFile)))
                     {
                         System.IO.File.Delete(pathToExcelFile);
                     }
-                    return Json(isSuccess);
-                }
-                else
-                {
-                    //alert message for invalid file format  
-                    data.Add("<ul>");
-                    data.Add("<li>Only Excel file format is allowed</li>");
-                    data.Add("</ul>");
-                    data.ToArray();
-                    return Json(data, JsonRequestBehavior.AllowGet);
                 }
             }
-            else
-            {
-                data.Add("<ul>");
-                if (FileUpload == null) data.Add("<li>Please choose Excel file</li>");
-                data.Add("</ul>");
-                data.ToArray();
-                return Json(data, JsonRequestBehavior.AllowGet);
-            }
+            return Json(executionState);
         }
         #endregion
 

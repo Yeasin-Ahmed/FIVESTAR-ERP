@@ -211,7 +211,6 @@ Where 1=1 and ri.OrganizationId={0} and ri.RSRInfoId={1}", orgId, reqId)).Single
                         Remarks = "Repair Section Requisition has been issued"
                     };
                     warehouseStocks.Add(warehouse);
-
                     // Requisition Detail Issue Qty Update
                     var reqDetail = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailById(item.RSRDetailId, reqInfo.RSRInfoId, orgId);
                     if (reqDetail != null)
@@ -224,10 +223,7 @@ Where 1=1 and ri.OrganizationId={0} and ri.RSRInfoId={1}", orgId, reqId)).Single
                 }
                 if (SaveRepairSectionRequisitionStatus(model.RequistionId, model.Status, orgId, userId))
                 {
-                    if (_repairSectionRequisitionDetailRepository.Save())
-                    {
-                        return _warehouseStockDetailBusiness.SaveWarehouseStockOut(warehouseStocks, userId, orgId, string.Empty);
-                    }
+                    return _warehouseStockDetailBusiness.SaveWarehouseStockOut(warehouseStocks, userId, orgId, string.Empty);
                 }
             }
             return false;

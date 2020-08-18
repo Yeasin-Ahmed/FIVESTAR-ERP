@@ -48,5 +48,8 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long IMEITRInfoId { get; set; }
+        public long TransferId { get; set; }
+        [StringLength(100)]
+        public string TransferCode { get; set; }
     }
 }

@@ -349,6 +349,8 @@
     <Compile Include="Production\DomainModels\RequisitionItemDetail.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemInfo.cs" />
     <Compile Include="Production\DomainModels\TempQRCodeTrace.cs" />
+    <Compile Include="Production\DomainModels\TransferPackagingRepairItemToQcDetail.cs" />
+    <Compile Include="Production\DomainModels\TransferPackagingRepairItemToQcInfo.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcDetail.cs" />
     <Compile Include="Production\DomainModels\TransferRepairItemToQcInfo.cs" />
     <Compile Include="Production\DomainModels\TransferStockToAssemblyDetail.cs" />
@@ -446,6 +448,9 @@
     <Compile Include="Inventory\ViewModels\ItemViewModel.cs" />
     <Compile Include="Production\DTOModel\ProductionStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\ProductionStockInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferPackagigRepairItemByIEMIScanningDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferPackagingRepairItemToQcDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\TransferPackagingRepairItemToQcInfoDTO.cs" />
     <Compile Include="Production\DTOModel\TransferRepairItemByQRCodeScanningDTO.cs" />
     <Compile Include="Production\DTOModel\TransferRepairItemToQcDetailDTO.cs" />
     <Compile Include="Production\DTOModel\TransferFromQCDetailDTO.cs" />
@@ -538,6 +543,9 @@
     <Compile Include="Inventory\ViewModels\WarehouseViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferFromQCDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferFromQCInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferPackagigRepairItemByIEMIScanningViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferPackagingRepairItemToQcDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\TransferPackagingRepairItemToQcInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferRepairItemByQRCodeScanningViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferRepairItemToQcDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\TransferRepairItemToQcInfoViewModel.cs" />

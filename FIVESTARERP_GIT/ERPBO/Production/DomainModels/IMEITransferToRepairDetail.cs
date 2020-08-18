@@ -49,7 +49,10 @@ namespace ERPBO.Production.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        
+        public long TransferId { get; set; }
+        [StringLength(100)]
+        public string TransferCode { get; set; }
+
         [ForeignKey("IMEITransferToRepairInfo")]
         public long IMEITRInfoId { get; set; }
         public IMEITransferToRepairInfo IMEITransferToRepairInfo { get; set; }

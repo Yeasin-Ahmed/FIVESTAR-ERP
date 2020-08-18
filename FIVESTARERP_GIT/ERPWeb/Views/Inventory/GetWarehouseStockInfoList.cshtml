@@ -423,17 +423,25 @@
             $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res,status) {
                     console.log(res);
                     console.log(status);
-                    if (res === true && status ==='success') {
+                    if (res.isSuccess === true && status ==='success') {
                         toastrSuccessAlert(execuStatus.successSave);
                         $("#modalExcelImport").modal("toggle").toggle("fast");
+                        if (res.text != '' && res.text != null) {
+                            toastr.info(res.text).fadeOut(10000);    
+                        }
+                       
                         //removeTableRow("#tblWarehouseStockInfo tbody", index);
                         setTimeout(function () {
                         LoadDataTable();
                         @*redirectPage('@Url.Action("GetWarehouseStockInfoList")');*@
                         }, 1500);
-                }
+                    }
+
                     else {
                         toastrErrorAlert(execuStatus.fail);
+                        if (res.text != '' && res.text != null) {
+                            toastr.info(res.text).fadeOut(10000);
+                        }
                     }
             })
         })

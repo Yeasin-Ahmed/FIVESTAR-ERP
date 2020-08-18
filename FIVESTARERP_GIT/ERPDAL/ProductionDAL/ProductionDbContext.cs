@@ -82,8 +82,9 @@ namespace ERPDAL.ProductionDAL
         public DbSet<TransferToPackagingRepairDetail> tblTransferToPackagingRepairDetail { get; set; }
         public DbSet<PackagingRepairItemStockInfo> tblPackagingRepairItemStockInfo { get; set; }
         public DbSet<PackagingRepairItemStockDetail> tblPackagingRepairItemStockDetail { get; set; }
-
         public DbSet<PackagingRepairRawStockInfo> tblPackagingRepairRawStockInfo { get; set; }
         public DbSet<PackagingRepairRawStockDetail> tblPackagingRepairRawStockDetail { get; set; }
+        public DbSet<TransferPackagingRepairItemToQcInfo> tblTransferPackagingRepairItemToQcInfo { get; set; }
+        public DbSet<TransferPackagingRepairItemToQcDetail> tblTransferPackagingRepairItemToQcDetail { get; set; }
     }
 }

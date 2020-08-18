@@ -4,28 +4,59 @@
 }
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <h4><b style="color:darkblue">List Of Item Preparation</b></h4>
-            </div>
-            <div class="col-md-3">
-                @if (privilege != null && privilege.Add)
-                {
-                    <a href="/Inventory/CreateItemPreparation2" class="btn btn-outline-primary btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Item Preparation</a>
-                }
-            </div>
-        </div>
-        <hr />
-    </div>
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlModelName" class="col-form-label">Model Name</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs"  id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-itemPreparetionList-tab" data-toggle="pill" href="#custom-tabs-two-itemPreparetionList" role="tab" aria-controls="custom-tabs-two-itemPreparetionList" aria-selected="true">Item Preparetion List</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-2">
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-two-itemPreparetionList" role="tabpanel" aria-labelledby="custom-tabs-two-itemPreparetionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Item Preparation
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @if (privilege != null && privilege.Add)
+                                                {
+                                                    <a href="/Inventory/CreateItemPreparation2" class="btn btn-outline-primary btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Item Preparation</a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="ddlModelName" class="col-form-label">Model Name</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select ModelName--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="ddlItemTgt" class="col-form-label">Item/Color Name</label>
+                                                @Html.DropDownList("ddlItemTgt", (IEnumerable<SelectListItem>)ViewBag.ddlItemTgt, "--Select Item--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>
+                                                @*<div class="col-md-2">
                 <label for="ddlWarehouseName" class="col-form-label">Warehouse Name</label>
                 @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
                 <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
@@ -41,23 +72,37 @@
                 <select id="ddlItem" class="form-control form-control-sm ctrl-changed">
                     <option value="">--Select Item--</option>
                 </select>
-            </div>
-            <div class="col-md-3">
-                <label for="ddlItemPreparationType" class="col-form-label">Preparation Type</label>
-                @Html.DropDownList("ddlItemPreparationType", (IEnumerable<SelectListItem>)ViewBag.ddlItemPreparationType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+            </div>*@
+                                                <div class="col-md-3">
+                                                    <label for="ddlItemPreparationType" class="col-form-label">Preparation Type</label>
+                                                    @Html.DropDownList("ddlItemPreparationType", (IEnumerable<SelectListItem>)ViewBag.ddlItemPreparationType, "--Select Type--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetItemPreparation", "Inventory", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <br />
-    </div>
-    <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("GetItemPreparation", "Inventory", new { @flag = "View" });}
     </div>
 </div>
 
 <div class="modal fade" id="itemPreparationDetails" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title">Item Preparation Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -75,7 +120,13 @@
         var ddlItem = $("#ddlItem");
         var ddlModelName = $("#ddlModelName");
         var ddlItemPreparationType = $("#ddlItemPreparationType");
+        var ddlItemTgt = $("#ddlItemTgt");
         var pageNo = 1;
+
+
+        var itemTgt = '';
+        var itemTypeTgt = '';
+        var warehouseTgt = '';
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -87,22 +138,39 @@
             });
         })
 
-        ddlWarehouse.change(function () {
-            clearDropdown("ddlItemType");
-            clearDropdown("ddlItem");
-            if (ddlWarehouse.val() != "") {
-                LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+        function getTargetItemAndItemTypeAndWarehouse() {
+            itemTgt = '';
+            itemTypeTgt = '';
+            warehouseTgt = '';
+
+            if (ddlItemTgt.val() != '') {
+                itemTgt = ddlItemTgt.val().substring(0, ddlItemTgt.val().indexOf("#"));
+                itemTypeTgt = ddlItemTgt.val().substring(ddlItemTgt.val().indexOf("#") + 1, ddlItemTgt.val().lastIndexOf("#"));
+                warehouseTgt = ddlItemTgt.val().substring(ddlItemTgt.val().lastIndexOf("#") + 1);
             }
+        }
+
+        ddlItemTgt.change(function () {
+            getTargetItemAndItemTypeAndWarehouse();
             LoadDataTable();
         })
 
-        ddlItemType.change(function () {
-            clearDropdown("ddlItem");
-            if (ddlItemType.val() != "") {
-                LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
-            }
-            LoadDataTable();
-        })
+        //ddlWarehouse.change(function () {
+        //    clearDropdown("ddlItemType");
+        //    clearDropdown("ddlItem");
+        //    if (ddlWarehouse.val() != "") {
+        //        LoadDropDown('/Common/GetItemTypeForDDL', 'POST', ddlItemType, JSON.stringify({ warehouseId: ddlWarehouse.val() }));
+        //    }
+        //    LoadDataTable();
+        //})
+
+        //ddlItemType.change(function () {
+        //    clearDropdown("ddlItem");
+        //    if (ddlItemType.val() != "") {
+        //        LoadDropDown('/Common/GetItemForDDL', 'POST', ddlItem, JSON.stringify({ itemTypeId: ddlItemType.val() }));
+        //    }
+        //    LoadDataTable();
+        //})
 
         ddlModelName.change(function () {
             LoadDataTable();
@@ -117,7 +185,8 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "View", modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), itemTypeId: TryParseInt(ddlItemType.val(), 0), itemId: TryParseInt(ddlItem.val(), 0), id: 0, page: pageNo, type:ddlItemPreparationType.val() };
+            getTargetItemAndItemTypeAndWarehouse();
+            var data = { flag: "View", modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(warehouseTgt, 0), itemTypeId: TryParseInt(itemTypeTgt, 0), itemId: TryParseInt(itemTgt, 0), id: 0, page: pageNo, type: ddlItemPreparationType.val() };
             $.when(getReqWithData('html', 'GET', '/Inventory/GetItemPreparation', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {

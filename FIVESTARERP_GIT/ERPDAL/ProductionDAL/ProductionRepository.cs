@@ -421,5 +421,18 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class TransferPackagingRepairItemToQcInfoRepository : ProductionBaseRepository<TransferPackagingRepairItemToQcInfo>
+    {
+        public TransferPackagingRepairItemToQcInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
 
+        }
+    }
+    public class TransferPackagingRepairItemToQcDetailRepository : ProductionBaseRepository<TransferPackagingRepairItemToQcDetail>
+    {
+        public TransferPackagingRepairItemToQcDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

@@ -49,7 +49,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="ddlItemTgt" class="col-form-label">Item/Item-Color Name</label>
+                                <label for="ddlItemTgt" class="col-form-label">Item/Color Name</label>
                                 @Html.DropDownList("ddlItemTgt", (IEnumerable<SelectListItem>)ViewBag.ddlItemTgt, "--Select Item--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
                                 <span class="error hide req-tgt-item-type-ware text-bold">Item/ItemType/Warehouse is not found !</span>
                                 <span class="error hide req-tgt-item text-bold">Item Name is require</span>
@@ -67,7 +67,7 @@
                                 <span class="error hide same-warehouse font-weight-bold">Target & Source warehouse cannot be same!</span>
                             </div>
                             <div class="col-md-7">
-                                <label class="col-form-label" for="ddlItemSrc">Item/Item-Color Name</label>
+                                <label class="col-form-label" for="ddlItemSrc">Item</label>
                                 <select id="ddlItemSrc" class="form-control form-control-sm ctrl-changed select2 select2-danger">
                                     <option value="">--Select Item--</option>
                                 </select>

@@ -3,7 +3,7 @@
     ViewBag.Title = "Repair Section Requisition Checking";
 }
 
-<div class="row" style="margin-top:-15px">
+<div class="row text-sm" style="margin-top:-15px">
     <div class="col-md-12">
         <div class="card card-gray-dark">
             <div class="card-header">
@@ -23,7 +23,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row text-sm">
     <div class="col-md-12" style="margin-top:-10px">
         <div class="card card-navy">
             <div class="card-header">
@@ -34,28 +34,28 @@
             <div class="card-body">
                 <div class="row" style="margin-top:-15px">
                     <div class="col-md-3">
+                        <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                        <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" />
+                    </div>
+                    <div class="col-md-2">
                         <label for="ddlRepairLine" class="control-label">Repair Line</label>
                         @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair Line--", new { @class = "form-control form-control-sm ctrl-changed" })
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
                         @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                         @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
                         @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
-                        <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" />
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="control-label font-weight-bold">From Date</label>
                         <div class="input-group input-group-sm ">
                             <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="control-label font-weight-bold">To Date</label>
                         <div class="input-group input-group-sm ">
                             <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
@@ -79,10 +79,12 @@
     </div>
     <div class="col-md-12" style="margin-top:-10px">
         <div class="card">
-            <div class="row">
-                @Html.AntiForgeryToken()
-                <div class="col-md-12" id="dataContainer" style="min-height:50px">
-                    @{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View" });}
+            <div class="card-body">
+                <div class="row">
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-12" id="dataContainer" style="min-height:50px">
+                        @{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View" });}
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,7 +94,7 @@
 <div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <input type="hidden" id="hdfReqInfoId" />
                 <h4 id="modalHeading" class="modal-title">Requisition Info & Detail</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>

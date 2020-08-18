@@ -12,5 +12,7 @@ namespace ERPBLL.Production.Interface
     {
         PackagingRepairRawStockInfo GetPackagingRepairRawStockInfoByPackagingLineAndModelAndItem(long floorId, long packagingLine, long itemId, long modelId,long orgId);
         IEnumerable<PackagingRepairRawStockInfoDTO> GetPackagingRepairRawStockInfosByQuery(long ?floorId, long ?packagingLine,  long ? modelId,long ? warehouseId,long? itemTypeId,long? itemId,string lessOrEq, long orgId);
+
+        PackagingRepairRawStockInfo GetPackagingRepairRawStockInfoByPackagingLineAndModelAndItem(long packagingLine, long itemId, long modelId, long orgId);
     }
 }
