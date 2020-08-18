@@ -85,7 +85,7 @@ namespace ERPBLL.Production
                     code = transferInfo.TransferCode;
                     transferId = transferInfo.TPRQInfoId;
 
-                    foreach (var item in transferRepairItemDetails)
+                    foreach (var item in transferPackagingRepairItemDetails)
                     {
                         item.TPRQInfoId = transferInfo.TPRQInfoId;
                     }
