@@ -50,5 +50,7 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<JobOrderDTO> GetJobCreateReceipt(long jobOrderId, long orgId, long branchId);
         ExecutionStateWithText SaveJobOrderWithReport(JobOrderDTO jobOrder, List<JobOrderAccessoriesDTO> jobOrderAccessories, List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId, long branchId);
         IEnumerable<JobOrderDTO> JobOrderTransfer(long orgId, long branchId);
+        bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId);
+        JobOrder GetJobOrdersByIdWithTransferBranch(long jobOrderId, long transferId, long orgId);
     }
 }

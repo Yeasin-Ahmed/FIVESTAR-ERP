@@ -93,7 +93,7 @@ namespace ERPBLL.FrontDesk
             }
             if (branchId > 0)
             {
-                param += string.Format(@"and jo.BranchId={0}", branchId);
+                param += string.Format(@"and (jo.BranchId={0} OR (jo.TransferBranchId={0} and IsTransfer ='True')) ", branchId);
             }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
@@ -117,8 +117,8 @@ CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -664,7 +664,8 @@ OrganizationId= {0} and BranchId={1}
             }
             if (branchId > 0)
             {
-                param += string.Format(@" and jo.BranchId={0}", branchId);
+                param += string.Format(@" and ((jo.BranchId= {0} 
+and (IsTransfer is null or IsTransfer = 'False')) OR (IsTransfer = 'True' and TransferBranchId={0}))", branchId);
             }
             if (roleName== "Technical Services")
             {
@@ -721,7 +722,8 @@ Where 1 = 1  and (jo.StateStatus='TS-Assigned' or jo.StateStatus='Repair-Done' o
             }
             if (branchId > 0)
             {
-                param += string.Format(@"and jo.BranchId={0}", branchId);
+                param += string.Format(@"and ((jo.BranchId= {0} 
+and (IsTransfer is null or IsTransfer = 'False')) OR (IsTransfer = 'True' and TransferBranchId={0}))", branchId);
             }
 
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
@@ -742,7 +744,8 @@ Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCo
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
-Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.StateStatus='Job-Initiated' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.StateStatus='Job-Initiated'{0}
+) tbl ", Utility.ParamChecker(param));
             return query;
         }
 
@@ -751,7 +754,10 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             //bool IsSuccess = false;
             foreach (var job in jobOrders)
             {
+                //var jobTransderInDb = 
                 var jobOrderInDb = GetJobOrdersByIdWithBranch(job, branchId, orgId);
+                jobOrderInDb = jobOrderInDb == null ? GetJobOrdersByIdWithTransferBranch(job, branchId, orgId) : jobOrderInDb;
+
                 if (jobOrderInDb != null && jobOrderInDb.StateStatus == JobOrderStatus.JobInitiated)
                 {
                     jobOrderInDb.StateStatus = JobOrderStatus.AssignToTS;
@@ -1077,6 +1083,28 @@ Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.Descripti
 Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.IsTransfer is null and jo.StateStatus='Job-Initiated' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
+        }
+
+        public bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId)
+        {
+            foreach(var job in jobOrders)
+            {
+                var jobOrderInDb = GetJobOrdersByIdWithBranch(job, branchId, orgId);
+                if (jobOrderInDb != null )
+                {
+                    jobOrderInDb.TransferBranchId = transferId;
+                    jobOrderInDb.IsTransfer = true;
+                    jobOrderInDb.UpUserId = userId;
+                    jobOrderInDb.UpdateDate = DateTime.Now;
+                    _jobOrderRepository.Update(jobOrderInDb);
+                }
+            }
+            return _jobOrderRepository.Save();
+        }
+
+        public JobOrder GetJobOrdersByIdWithTransferBranch(long jobOrderId, long transferId, long orgId)
+        {
+            return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.TransferBranchId == transferId && j.OrganizationId == orgId);
         }
     }
 }

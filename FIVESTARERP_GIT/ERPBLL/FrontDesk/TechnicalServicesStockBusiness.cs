@@ -340,7 +340,7 @@ where ts.UsedQty>0 and 1=1{0}
             }
             if (branchId > 0)
             {
-                param += string.Format(@" and jo.BranchId={0}", branchId);
+                param += string.Format(@" and (jo.BranchId={0} OR (jo.TransferBranchId={0} and IsTransfer ='True'))", branchId);
             }
             if (roleName == "Technical Services")
             {

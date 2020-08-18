@@ -46,6 +46,7 @@
 </div>
 @section scripts{
     <script type="text/javascript">
+        var ddlBranchName = $("#ddlBranchName");
         var count = 0;
 
         $(document).on('change', 'input[name="allJobOrder"]', function () {
@@ -69,5 +70,62 @@
             var allChecked = $(".tblJobOrderTransferList tbody tr").length == count;
             $('input[name="allJobOrder"]').prop("checked", allChecked);
         })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit()) {
+                bootbox.confirm("Are you sure you want to Transfer these Job Orders", function (result) {
+                    if (result) {
+                        disable("#btnSubmit");
+                        var transferId = TryParseInt(ddlBranchName.val(), 0);
+                        var jobOrders = []; jobOrders.length = 0;
+                        $.each($(".tblJobOrderTransferList tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
+                            if (checkBox.is(":checked")) {
+                                jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                            }
+                        });
+                        //console.log("JobOrders");
+                        //console.log(jobOrders);
+
+                        var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders });
+                        //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobTransfer', data, getToken())).then(function (res, status) {
+                            if (res === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                count = 0;
+                                setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobTransferList")');
+                        }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmit");
+                        });
+                    }
+                })
+            }
+        })
+
+        function ValidateSubmit() {
+            var isValid = true;
+            if (ddlBranchName.val() === "") {
+                isValid = false;
+                bootbox.alert("Select a Branch");
+            }
+            if (count == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one JobOrder");
+            }
+            return isValid;
+        }
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
     </script>
 }

@@ -318,6 +318,16 @@ namespace ERPWeb.Controllers
                 return PartialView("_GetJobTransferList",viewModels);
             }
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveJobTransfer(long transferId, long[] jobOrders)
+        {
+            bool IsSuccess = false;
+            if (transferId > 0 && jobOrders.Count() > 0)
+            {
+                IsSuccess = _jobOrderBusiness.SaveJobOrderTransfer(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         #region JobOrderTS
@@ -488,11 +498,12 @@ namespace ERPWeb.Controllers
 
             var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
             var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
+            jobOrderInfo = jobOrderInfo == null ? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(info.JobOrderId.Value, User.BranchId, User.OrgId) : jobOrderInfo;
             ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
             {
                 RequsitionCode = info.RequsitionCode,
                 JobOrderCode = (jobOrderInfo.JobOrderCode),
-                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId).Type),
+                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
                 ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
                 EntryDate = info.EntryDate,
                 SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
@@ -571,12 +582,15 @@ namespace ERPWeb.Controllers
         public ActionResult TSRequsitionForJobOrderDetails(long? requsitionInfoId)
         {
             var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
+
             var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
+            jobOrderInfo= jobOrderInfo==null? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(info.JobOrderId.Value, User.BranchId, User.OrgId) : jobOrderInfo;
+
             ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
             {
                 RequsitionCode = info.RequsitionCode,
                 JobOrderCode = (jobOrderInfo.JobOrderCode),
-                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId).Type),
+                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
                 ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
                 ModelColor=jobOrderInfo.ModelColor,
                 Requestby = UserForEachRecord(info.EUserId.Value).UserName,
@@ -944,6 +958,7 @@ namespace ERPWeb.Controllers
         public ActionResult JobOrderTsStock(long jobOrderId)
         {
             var jobOrder = _jobOrderBusiness.GetJobOrdersByIdWithBranch(jobOrderId, User.BranchId, User.OrgId);
+            jobOrder = jobOrder == null ? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(jobOrderId, User.BranchId, User.OrgId) : jobOrder;
             if (jobOrder != null)
             {
 
@@ -963,7 +978,7 @@ namespace ERPWeb.Controllers
                 //    Quantity = s.Quantity
                 //});
 
-                var JobOrderTsStock = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrder.JodOrderId, User.UserId, User.OrgId, User.BranchId, User.RoleName).Select(s => new TechnicalServicesStockViewModel
+                var JobOrderTsStock = _technicalServicesStockBusiness.GetStockByJobOrder(jobOrder.JodOrderId, User.UserId, User.OrgId,User.BranchId, User.RoleName).Select(s => new TechnicalServicesStockViewModel
                 {
                     PartsId = s.PartsId,
                     PartsName = _mobilePartBusiness.GetMobilePartOneByOrgId(s.PartsId, User.OrgId).MobilePartName,
