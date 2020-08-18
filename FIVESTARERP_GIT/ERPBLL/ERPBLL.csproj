@@ -211,7 +211,9 @@
     <Compile Include="Production\FaultyCaseBusiness.cs" />
     <Compile Include="Production\FaultyItemStockDetailBusiness.cs" />
     <Compile Include="Production\FaultyItemStockInfoBusiness.cs" />
+    <Compile Include="Production\IMEITransferToRepairDetailBusiness.cs" />
     <Compile Include="Production\IMEITransferToRepairInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IIMEITransferToRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\IIMEITransferToRepairInfoBusiness.cs" />
     <Compile Include="Production\Interface\IMiniStockTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IMiniStockTransferInfoBusiness.cs" />
@@ -233,6 +235,7 @@
     <Compile Include="Production\Interface\IRequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITempQRCodeTraceBusiness.cs" />
+    <Compile Include="Production\Interface\ITransferPackagingRepairItemToQcInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITransferToPackagingRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferToPackagingRepairInfoBusiness.cs" />
     <Compile Include="Production\MiniStockTransferDetailBusiness.cs" />
@@ -347,6 +350,7 @@
     <Compile Include="Inventory\UnitBusiness.cs" />
     <Compile Include="Inventory\WarehouseBusiness.cs" />
     <Compile Include="Production\TempQRCodeTraceBusiness.cs" />
+    <Compile Include="Production\TransferPackagingRepairItemToQcInfoBusiness.cs" />
     <Compile Include="Production\TransferRepairItemToQcDetailBusiness.cs" />
     <Compile Include="Production\TransferRepairItemToQcInfoBusiness.cs" />
     <Compile Include="Production\TransferFromQCInfoBusiness.cs" />

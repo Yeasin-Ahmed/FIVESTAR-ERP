@@ -555,6 +555,14 @@
     <Compile Include="ProductionContextMigrations\202008170526140_Production_PackagingRepairStock.Designer.cs">
       <DependentUpon>202008170526140_Production_PackagingRepairStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202008180914043_Production_TransferIdInIMEIProblemDetailTable.cs" />
+    <Compile Include="ProductionContextMigrations\202008180914043_Production_TransferIdInIMEIProblemDetailTable.Designer.cs">
+      <DependentUpon>202008180914043_Production_TransferIdInIMEIProblemDetailTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008181039545_Production_TransferPackagingRepairItemToPackagingQC.cs" />
+    <Compile Include="ProductionContextMigrations\202008181039545_Production_TransferPackagingRepairItemToPackagingQC.Designer.cs">
+      <DependentUpon>202008181039545_Production_TransferPackagingRepairItemToPackagingQC.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -916,6 +924,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202008170526140_Production_PackagingRepairStock.resx">
       <DependentUpon>202008170526140_Production_PackagingRepairStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008180914043_Production_TransferIdInIMEIProblemDetailTable.resx">
+      <DependentUpon>202008180914043_Production_TransferIdInIMEIProblemDetailTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008181039545_Production_TransferPackagingRepairItemToPackagingQC.resx">
+      <DependentUpon>202008181039545_Production_TransferPackagingRepairItemToPackagingQC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

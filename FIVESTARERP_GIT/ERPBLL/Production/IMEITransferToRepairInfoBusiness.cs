@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
+using ERPBO.Common;
 using ERPBO.Inventory.DomainModels;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
@@ -21,13 +22,14 @@ namespace ERPBLL.Production
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
         private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
         private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
+        private readonly IPackagingRepairRawStockInfoBusiness _packagingRepairRawStockInfoBusiness;
         private readonly ITransferToPackagingRepairInfoBusiness _transferToPackagingRepairInfoBusiness;
         private readonly IItemBusiness _itemBusiness;
 
         // Repository //
         private readonly IMEITransferToRepairInfoRepository _iMEITransferToRepairInfoRepository;
         private readonly TransferToPackagingRepairInfoRepository _transferToPackagingRepairInfoRepository;
-        public IMEITransferToRepairInfoBusiness(IProductionUnitOfWork productionDb, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferToPackagingRepairInfoBusiness transferToPackagingRepairInfoBusiness, IItemBusiness itemBusiness)
+        public IMEITransferToRepairInfoBusiness(IProductionUnitOfWork productionDb, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferToPackagingRepairInfoBusiness transferToPackagingRepairInfoBusiness, IItemBusiness itemBusiness, IPackagingRepairRawStockInfoBusiness packagingRepairRawStockInfoBusiness)
         {
             // Database //
             this._productionDb = productionDb;
@@ -39,6 +41,7 @@ namespace ERPBLL.Production
             this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
             this._transferToPackagingRepairInfoBusiness = transferToPackagingRepairInfoBusiness;
             this._itemBusiness = itemBusiness;
+            this._packagingRepairRawStockInfoBusiness = packagingRepairRawStockInfoBusiness;
             // Repository //
             this._iMEITransferToRepairInfoRepository = new IMEITransferToRepairInfoRepository(this._productionDb);
             this._transferToPackagingRepairInfoRepository = new TransferToPackagingRepairInfoRepository(this._productionDb);
@@ -259,31 +262,6 @@ Where 1= 1 and imei.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
             };
             List<IMEITransferToRepairDetail> iMEITransferToRepairDetails = new List<IMEITransferToRepairDetail>();
 
-            foreach (var item in problems)
-            {
-                IMEITransferToRepairDetail iMEITransferToRepairDetail = new IMEITransferToRepairDetail()
-                {
-                    ProductionFloorId = imeiItem.ProductionFloorId.Value,
-                    PackagingLineId = imeiItem.PackagingLineId.Value,
-                    DescriptionId = imeiItem.DescriptionId.Value,
-                    WarehouseId = imeiItem.WarehouseId.Value,
-                    ItemTypeId = imeiItem.ItemTypeId.Value,
-                    ItemId= imeiItem.ItemId.Value,
-                    UnitId = allItemsInDb.FirstOrDefault(s => s.ItemId == imeiItem.ItemId).UnitId,
-                    IMEI = imeiItem.IMEI,
-                    QRCode = imeiItem.CodeNo,
-                    OrganizationId = orgId,
-                    EUserId = userId,
-                    EntryDate = DateTime.Now,
-                    Quantity = 1,
-                    Remarks="",
-                    ProblemId = item.ProblemId,
-                    ProblemName = item.ProblemName
-                };
-                iMEITransferToRepairDetails.Add(iMEITransferToRepairDetail);
-            }
-            iMEITransferToRepairInfo.IMEITransferToRepairDetails = iMEITransferToRepairDetails;
-
             if(transferInfo.TPRInfoId == 0)
             {
                 _transferToPackagingRepairInfoRepository.Insert(transferInfo);
@@ -303,6 +281,32 @@ Where 1= 1 and imei.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
                         {
                             transferId = transferInfo.TPRInfoId;
                             iMEITransferToRepairInfo.TransferId = transferId;
+                            foreach (var item in problems)
+                            {
+                                IMEITransferToRepairDetail iMEITransferToRepairDetail = new IMEITransferToRepairDetail()
+                                {
+                                    ProductionFloorId = imeiItem.ProductionFloorId.Value,
+                                    PackagingLineId = imeiItem.PackagingLineId.Value,
+                                    DescriptionId = imeiItem.DescriptionId.Value,
+                                    WarehouseId = imeiItem.WarehouseId.Value,
+                                    ItemTypeId = imeiItem.ItemTypeId.Value,
+                                    ItemId = imeiItem.ItemId.Value,
+                                    UnitId = allItemsInDb.FirstOrDefault(s => s.ItemId == imeiItem.ItemId).UnitId,
+                                    IMEI = imeiItem.IMEI,
+                                    QRCode = imeiItem.CodeNo,
+                                    OrganizationId = orgId,
+                                    EUserId = userId,
+                                    EntryDate = DateTime.Now,
+                                    Quantity = 1,
+                                    Remarks = "",
+                                    ProblemId = item.ProblemId,
+                                    ProblemName = item.ProblemName,
+                                    TransferCode = code,
+                                    TransferId = transferId
+                                };
+                                iMEITransferToRepairDetails.Add(iMEITransferToRepairDetail);
+                            }
+                            iMEITransferToRepairInfo.IMEITransferToRepairDetails = iMEITransferToRepairDetails;
                             _iMEITransferToRepairInfoRepository.Insert(iMEITransferToRepairInfo);
                             await _iMEITransferToRepairInfoRepository.SaveAsync();
                         }
@@ -331,6 +335,74 @@ Where 1= 1 and imei.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
                 }
             }
             return _iMEITransferToRepairInfoRepository.Save();
+        }
+
+        public bool IsIMEIExistInTransferWithStatus(string imei, string status, long orgId)
+        {
+            return this.GetIMEIWiseItemInfo(imei,string.Empty, status, orgId) != null;
+        }
+
+        public IMEITransferToRepairInfoDTO GetIMEIWiseItemInfo(string imei, string qrCode, string status, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (!string.IsNullOrEmpty(imei) && imei.Trim() !="")
+            {
+                param += string.Format(@" and imei.IMEI LIKE '%{0}%'", imei);
+            }
+            if (!string.IsNullOrEmpty(qrCode) && qrCode.Trim() != "")
+            {
+                param += string.Format(@" and imei.QRCode ='{0}'", qrCode);
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                param += string.Format(@" and imei.StateStatus IN({0})", status);
+            }
+
+            query = string.Format(@"Select imei.IMEITRInfoId,imei.TransferId,imei.QRCode,imei.IMEI,imei.TransferCode,imei.ProductionFloorId,
+imei.DescriptionId,imei.WarehouseId,imei.ItemTypeId,imei.ItemId,imei.StateStatus,imei.OrganizationId,pl.LineNumber 'ProductionFloorName',de.DescriptionName 'ModelName',w.WarehouseName,it.ItemName 'ItemTypeName',i.ItemName ,imei.PackagingLineId,pac.PackagingLineName
+From [Production].dbo.tblIMEITransferToRepairInfo imei
+Inner Join [Production].dbo.tblProductionLines pl on imei.ProductionFloorId = pl.LineId
+Inner Join [Production].dbo.tblPackagingLine pac on imei.PackagingLineId = pac.PackagingLineId
+Inner Join [Inventory].dbo.tblDescriptions de on imei.DescriptionId = de.DescriptionId
+Inner Join [Inventory].dbo.tblWarehouses w on imei.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on imei.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on imei.ItemId = i.ItemId
+Where 1=1 and imei.OrganizationId='{0}' {1}  Order By imei.IMEITRInfoId desc", orgId, Utility.ParamChecker(param));
+
+            var data = this._productionDb.Db.Database.SqlQuery<IMEITransferToRepairInfoDTO >(query).FirstOrDefault();
+
+            return data;
+        }
+
+        public ExecutionStateWithText CheckingAvailabilityOfPackagingRepairRawStock(long modelId, long itemId, long packagingLineId, long orgId)
+        {
+            var itemPreparationInfo = _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndType(ItemPreparationType.Packaging, modelId, itemId, orgId);
+            var itemPreparationDetail = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(itemPreparationInfo.PreparationInfoId, orgId);
+            var allItemsInDb = _itemBusiness.GetAllItemByOrgId(orgId);
+            ExecutionStateWithText execution = new ExecutionStateWithText();
+            execution.isSuccess = true;
+            foreach (var item in itemPreparationDetail)
+            {
+                var packagingRepairStock = _packagingRepairRawStockInfoBusiness.GetPackagingRepairRawStockInfoByPackagingLineAndModelAndItem(packagingLineId, item.ItemId, modelId, orgId);
+                var itemName = allItemsInDb.FirstOrDefault(s => s.ItemId == item.ItemId).ItemName;
+                if (packagingRepairStock != null)
+                {
+                    if (item.Quantity > (packagingRepairStock.StockInQty - packagingRepairStock.StockOutQty).Value)
+                    {
+                        execution.text += itemName + " does not have enough qty </br>";
+                        execution.isSuccess = false;
+                    }
+                }
+                else
+                {
+                    execution.text += itemName + " does not have enough qty </br>";
+                    execution.isSuccess = false;
+                }
+            }
+
+            return execution;
         }
     }
 }
