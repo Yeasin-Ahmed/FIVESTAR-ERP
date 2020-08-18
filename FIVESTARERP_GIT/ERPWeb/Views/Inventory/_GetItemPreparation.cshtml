@@ -5,7 +5,7 @@
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
-<table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblItemPreparationList">
+<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblItemPreparationList">
     <thead class="btn-dark">
         <tr class="text-center text-bold">
             <th>#SL</th>
@@ -41,19 +41,19 @@
                 <td class="text-center">
                     @if (privilege != null && privilege.Detail)
                     {
-                        <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Detail" data-item-detail="@item.PreparationInfoId">
+                        <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Detail" data-item-detail="@item.PreparationInfoId" style="line-height:1">
                             <i class="fas fa-eye"></i>
                         </a>
                     }
                     @if (privilege != null && privilege.Edit)
                     {
-                        <a href="#" class="btn btn-sm btn-outline-warning data-item-edit hide" title="Edit" data-edit-item="@item.PreparationInfoId">
+                        <a href="#" class="btn btn-sm btn-outline-warning data-item-edit hide" title="Edit" data-edit-item="@item.PreparationInfoId" style="line-height:1">
                             <i class="fas fa-pen"></i>
                         </a>
                     }
                     @if (privilege != null && privilege.Delete)
                     {
-                        <a href="#" class="btn btn-sm btn-outline-danger data-item-del" title="Delete" data-del-item="@item.PreparationInfoId">
+                        <a href="#" class="btn btn-sm btn-outline-danger data-item-del" title="Delete" data-del-item="@item.PreparationInfoId" style="line-height:1">
                             <i class="fas fa-trash"></i>
                         </a>
                     }
