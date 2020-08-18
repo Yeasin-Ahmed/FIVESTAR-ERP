@@ -651,6 +651,7 @@
     <Content Include="Views\FrontDesk\TSRequsitionListReport.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobTransferList.cshtml" />
     <Content Include="Views\FrontDesk\_SellsDetails.cshtml" />
+    <Content Include="Views\Production\CreatePackagingRepairIMEIScanning.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -663,6 +664,7 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common2\" />
+    <Folder Include="Views\Production2\" />
     <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>

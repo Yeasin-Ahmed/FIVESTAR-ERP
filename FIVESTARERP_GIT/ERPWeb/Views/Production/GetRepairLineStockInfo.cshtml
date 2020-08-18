@@ -9,11 +9,12 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-ItemStockInfo-tab" data-toggle="pill" href="#custom-tabs-two-ItemStockInfo" role="tab" aria-controls="custom-tabs-two-ItemStockInfo" aria-selected="true">Repair Item Stock</a>
+                        <a class="nav-link active" id="custom-tabs-two-receiveQCStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveQCStock" role="tab" aria-controls="custom-tabs-two-receiveQCStock" aria-selected="true">Receive QC Item</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-receiveQCStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveQCStock" role="tab" aria-controls="custom-tabs-two-receiveQCStock" aria-selected="true">Receive QC Item</a>
+                        <a class="nav-link" id="custom-tabs-two-ItemStockInfo-tab" data-toggle="pill" href="#custom-tabs-two-ItemStockInfo" role="tab" aria-controls="custom-tabs-two-ItemStockInfo" aria-selected="true">Repair Item Stock</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer To QC</a>
                     </li>
@@ -43,86 +44,7 @@
             <div class="card-body">
                 @Html.AntiForgeryToken()
                 <div class="tab-content" id="custom-tabs-two-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-two-ItemStockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-ItemStockInfo-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                                    <i class="fas fa-eye"></i> Go To Details View
-                                                </a>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">
-                                                    Repair Item Stock
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row text-sm">
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card card-navy">
-                                    @Html.AntiForgeryToken()
-                                    <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row" style="margin-top:-15px">
-                                            <div class="col-md-2">
-                                                <label for="ddlFloorItemStock" class="control-label font-weight-bold">Floor</label>
-                                                @Html.DropDownList("ddlFloorItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlQCLineItemStock" class="control-label font-weight-bold">QC</label>
-                                                <select id="ddlQCLineItemStock" class="form-control form-control-sm">
-                                                    <option value="0">--Select QC--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlRepairLineItemStock" class="control-label font-weight-bold">Repair</label>
-                                                <select id="ddlRepairLineItemStock" class="form-control form-control-sm">
-                                                    <option value="0">--Select Repair--</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="ddlModelNameItemStock" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlModelNameItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="ddlItemsItemStock" class="control-label font-weight-bold">Item/Item-Color</label>
-                                                @Html.DropDownList("ddlItemsItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlMobileItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
-                                            </div>
-                                            <div class="col-md-1">
-                                                <label class="control-label font-weight-bold" for="txtLessOrEqItemStock">Qty(L/E)</label>
-                                                <input type="number" id="txtLessOrEqItemStock" class="form-control form-control-sm" />
-                                            </div>
-                                        </div>
-                                        @*<div class="row">
-
-
-                            </div>*@
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer5">
-                                            @{Html.RenderAction("GetRepairItemStockList", new { @flag = "View" });}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-receiveQCStock" role="tabpanel" aria-labelledby="custom-tabs-two-receiveQCStock-tab">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-receiveQCStock" role="tabpanel" aria-labelledby="custom-tabs-two-receiveQCStock-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -207,6 +129,85 @@
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer2">
                                             @{Html.RenderAction("GetReceiveStockForRepairFromQC", new { @flag = "View" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-ItemStockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-ItemStockInfo-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                    <i class="fas fa-eye"></i> Go To Details View
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Repair Item Stock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    @Html.AntiForgeryToken()
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlFloorItemStock" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlFloorItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlQCLineItemStock" class="control-label font-weight-bold">QC</label>
+                                                <select id="ddlQCLineItemStock" class="form-control form-control-sm">
+                                                    <option value="0">--Select QC--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlRepairLineItemStock" class="control-label font-weight-bold">Repair</label>
+                                                <select id="ddlRepairLineItemStock" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameItemStock" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlItemsItemStock" class="control-label font-weight-bold">Item/Item-Color</label>
+                                                @Html.DropDownList("ddlItemsItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlMobileItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="control-label font-weight-bold" for="txtLessOrEqItemStock">Qty(L/E)</label>
+                                                <input type="number" id="txtLessOrEqItemStock" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+                                        @*<div class="row">
+
+
+                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+                                            @{Html.RenderAction("GetRepairItemStockList", new { @flag = "View" });}
                                         </div>
                                     </div>
                                 </div>
