@@ -2,6 +2,7 @@
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
 using ERPBO.Inventory.DomainModels;
+using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DomainModels;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
@@ -40,6 +41,20 @@ namespace ERPBLL.Inventory
         public Description GetDescriptionOneByOrdId(long id, long orgId)
         {
             return descriptionRepository.GetOneByOrg(des => des.DescriptionId == id && des.OrganizationId == orgId);
+        }
+
+        public bool UpdateDescriptionTAC(DescriptionDTO model, long userId, long orgId)
+        {
+            var descriptionInDb = GetDescriptionOneByOrdId(model.DescriptionId,orgId);
+            if(descriptionInDb != null)
+            {
+                descriptionInDb.TAC = model.TAC;
+                descriptionInDb.EndPoint = model.EndPoint;
+                descriptionInDb.UpUserId = userId;
+                descriptionInDb.UpdateDate = DateTime.Now;
+                descriptionRepository.Update(descriptionInDb);
+            }
+            return descriptionRepository.Save();
         }
     }
 }

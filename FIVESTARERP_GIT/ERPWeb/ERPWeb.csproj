@@ -185,6 +185,7 @@
     <Content Include="Content\dist\img\credit\paypal2.png" />
     <Content Include="Content\dist\img\credit\visa.png" />
     <Content Include="Content\dist\img\default-150x150.png" />
+    <Content Include="Content\dist\img\demo.png" />
     <Content Include="Content\dist\img\icons.png" />
     <Content Include="Content\dist\img\fivestar.png" />
     <Content Include="Content\dist\img\appuser.jpg" />
@@ -652,6 +653,15 @@
     <Content Include="Views\FrontDesk\_GetJobTransferList.cshtml" />
     <Content Include="Views\FrontDesk\_SellsDetails.cshtml" />
     <Content Include="Views\Production\CreatePackagingRepairIMEIScanning.cshtml" />
+    <Content Include="Views\Production\_GetPackagingRepairItemTransferToQCList.cshtml" />
+    <Content Include="Views\Production\_GetPackagingRepairItemTransferToQCDetail.cshtml" />
+    <Content Include="Views\Production\GetPackagingFinishGoodsProcess.cshtml" />
+    <Content Include="Views\Production\_GetPackagingFinishGoodsStock.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsTransferInfo.cshtml" />
+    <Content Include="Views\Production\_GetFinishGoodsTransferDetail.cshtml" />
+    <Content Include="Views\Production\_GetPackagingFaultyStockInfo.cshtml" />
+    <Content Include="Views\Inventory\_GetRepairSectionRequisitionDetailList.cshtml" />
+    <Content Include="Views\Production\_GetGeneratedIMEIList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -664,7 +674,6 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common2\" />
-    <Folder Include="Views\Production2\" />
     <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,9 @@ namespace ERPBLL.Production
 {
     public class IMEITransferToRepairInfoBusiness : IIMEITransferToRepairInfoBusiness
     {
+        // Database
         private readonly IProductionUnitOfWork _productionDb;
+        // Business
         private readonly ITempQRCodeTraceBusiness _tempQRCodeTraceBusiness;
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
@@ -25,11 +27,14 @@ namespace ERPBLL.Production
         private readonly IPackagingRepairRawStockInfoBusiness _packagingRepairRawStockInfoBusiness;
         private readonly ITransferToPackagingRepairInfoBusiness _transferToPackagingRepairInfoBusiness;
         private readonly IItemBusiness _itemBusiness;
+        private readonly IPackagingFaultyStockInfoBusiness _packagingFaultyStockInfoBusiness;
+        private readonly IPackagingFaultyStockDetailBusiness _packagingFaultyStockDetailBusiness;
+        private readonly IPackagingRepairRawStockDetailBusiness _packagingRepairRawStockDetailBusiness;
 
         // Repository //
         private readonly IMEITransferToRepairInfoRepository _iMEITransferToRepairInfoRepository;
         private readonly TransferToPackagingRepairInfoRepository _transferToPackagingRepairInfoRepository;
-        public IMEITransferToRepairInfoBusiness(IProductionUnitOfWork productionDb, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferToPackagingRepairInfoBusiness transferToPackagingRepairInfoBusiness, IItemBusiness itemBusiness, IPackagingRepairRawStockInfoBusiness packagingRepairRawStockInfoBusiness)
+        public IMEITransferToRepairInfoBusiness(IProductionUnitOfWork productionDb, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferToPackagingRepairInfoBusiness transferToPackagingRepairInfoBusiness, IItemBusiness itemBusiness, IPackagingRepairRawStockInfoBusiness packagingRepairRawStockInfoBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness, IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness, IPackagingRepairRawStockDetailBusiness packagingRepairRawStockDetailBusiness)
         {
             // Database //
             this._productionDb = productionDb;
@@ -42,6 +47,9 @@ namespace ERPBLL.Production
             this._transferToPackagingRepairInfoBusiness = transferToPackagingRepairInfoBusiness;
             this._itemBusiness = itemBusiness;
             this._packagingRepairRawStockInfoBusiness = packagingRepairRawStockInfoBusiness;
+            this._packagingFaultyStockInfoBusiness = packagingFaultyStockInfoBusiness;
+            this._packagingFaultyStockDetailBusiness = packagingFaultyStockDetailBusiness;
+            this._packagingRepairRawStockDetailBusiness = packagingRepairRawStockDetailBusiness;
             // Repository //
             this._iMEITransferToRepairInfoRepository = new IMEITransferToRepairInfoRepository(this._productionDb);
             this._transferToPackagingRepairInfoRepository = new TransferToPackagingRepairInfoRepository(this._productionDb);
@@ -308,7 +316,7 @@ Where 1= 1 and imei.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
                             }
                             iMEITransferToRepairInfo.IMEITransferToRepairDetails = iMEITransferToRepairDetails;
                             _iMEITransferToRepairInfoRepository.Insert(iMEITransferToRepairInfo);
-                            await _iMEITransferToRepairInfoRepository.SaveAsync();
+                            return await _iMEITransferToRepairInfoRepository.SaveAsync();
                         }
                     }
                 }
@@ -403,6 +411,73 @@ Where 1=1 and imei.OrganizationId='{0}' {1}  Order By imei.IMEITRInfoId desc", o
             }
 
             return execution;
+        }
+
+        public async Task<IMEITransferToRepairInfo> GetIMEITransferToRepairInfosByTransferIdAsync(long transferId, long orgId)
+        {
+            return await _iMEITransferToRepairInfoRepository.GetOneByOrgAsync(s => s.IMEITRInfoId == transferId && s.OrganizationId == orgId);
+        }
+
+        public bool PackagingRepairAddingFaultyWithQRCode(FaultyInfoByQRCodeDTO model, long userId, long orgId)
+        {
+            //Check if the QRCode is exist with the status Received
+            var qrCodeInfo = GetIMEIWiseItemInfo(string.Empty,model.QRCode, string.Format(@"'Received'"), orgId);
+            if (qrCodeInfo != null && qrCodeInfo.TransferId == model.TransferId && qrCodeInfo.DescriptionId == model.ModelId)
+            {
+                var allItemsInDb = _itemBusiness.GetAllItemByOrgId(orgId).ToList();
+                List<PackagingRepairRawStockDetailDTO> repairRawStocks = new List<PackagingRepairRawStockDetailDTO>();
+                List<PackagingFaultyStockDetailDTO> faultyItemStocks = new List<PackagingFaultyStockDetailDTO>();
+                foreach (var item in model.FaultyItems)
+                {
+                    var itemInfo = allItemsInDb.FirstOrDefault(i => i.ItemId == item.ItemId);
+                    PackagingRepairRawStockDetailDTO repairLineStock = new PackagingRepairRawStockDetailDTO()
+                    {
+                        FloorId = qrCodeInfo.ProductionFloorId,
+                        PackagingLineId = qrCodeInfo.PackagingLineId,
+                        DescriptionId = qrCodeInfo.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        StockStatus = StockStatus.StockOut,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        Remarks = "Stock Out By QRCode Scanning",
+                        EntryDate = DateTime.Now,
+                        RefferenceNumber = qrCodeInfo.QRCode + "#" + qrCodeInfo.TransferCode + "#" + qrCodeInfo.TransferId.ToString(),
+                        UnitId = itemInfo.UnitId
+                    };
+                    repairRawStocks.Add(repairLineStock);
+
+                    PackagingFaultyStockDetailDTO faultyItemStock = new PackagingFaultyStockDetailDTO()
+                    {
+                        ProductionFloorId = qrCodeInfo.ProductionFloorId,
+                        PackagingLineId = qrCodeInfo.PackagingLineId,
+                        DescriptionId = qrCodeInfo.DescriptionId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        StockStatus = StockStatus.StockIn,
+                        OrganizationId = orgId,
+                        EUserId = userId,
+                        Remarks = "Stock In By QRCode Scanning With IMEI="+qrCodeInfo.IMEI,
+                        EntryDate = DateTime.Now,
+                        ReferenceNumber = qrCodeInfo.QRCode,
+                        TransferCode = qrCodeInfo.TransferCode,
+                        TransferId = qrCodeInfo.TransferId,
+                        UnitId = itemInfo.UnitId,
+                        IsChinaFaulty = item.IsChinaFaulty
+                    };
+                    faultyItemStocks.Add(faultyItemStock);
+                }
+
+                if (repairRawStocks.Count > 0 && _packagingRepairRawStockDetailBusiness.SavePackagingRepairRawStockOut(repairRawStocks, userId, orgId))
+                {
+                    return _packagingFaultyStockDetailBusiness.SavePackagingFaultyItemStockIn(faultyItemStocks, userId, orgId);
+                }
+            }
+            return false;
         }
     }
 }

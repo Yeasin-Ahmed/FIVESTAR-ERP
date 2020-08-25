@@ -176,6 +176,7 @@
     <Compile Include="ControlPanel\ViewModels\UserLogInViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
+    <Compile Include="CustomValidationAttribute\Production\RequisitionForInRepairRequisitionAttr.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceInfo.cs" />
@@ -254,6 +255,9 @@
     <Compile Include="Inventory\ViewModels\IQCViewModel.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
+    <Compile Include="Production\DomainModels\GeneratedIMEI.cs" />
+    <Compile Include="Production\DomainModels\PackagingFaultyStockDetail.cs" />
+    <Compile Include="Production\DomainModels\PackagingFaultyStockInfo.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairRawStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairRawStockInfo.cs" />
@@ -369,11 +373,14 @@
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemPreparationDetailWithInfoDTO.cs" />
     <Compile Include="Production\DTOModel\BatteryWriteDTO.cs" />
+    <Compile Include="Production\DTOModel\GeneratedIMEIDTO.cs" />
     <Compile Include="Production\DTOModel\IMEITransferToRepairDetailDTO.cs" />
     <Compile Include="Production\DTOModel\IMEITransferToRepairInfoDTO.cs" />
     <Compile Include="Production\DTOModel\IMEIWriteDTO.cs" />
     <Compile Include="Production\DTOModel\MiniStockTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\MiniStockTransferInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\PackagingFaultyStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\PackagingFaultyStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingRepairItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingRepairItemStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingRepairRawStockDetailDTO.cs" />
@@ -486,6 +493,7 @@
     <Compile Include="Production\ViewModels\FinishGoodsStockInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\ItemPreparationDetailWithInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\BatteryWriteViewModel.cs" />
+    <Compile Include="Production\ViewModels\GeneratedIMEIViewModel.cs" />
     <Compile Include="Production\ViewModels\IMEITransferToRepairDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\IMEITransferToRepairInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\IMEIWriteViewModel.cs" />
@@ -494,6 +502,8 @@
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\MiniStockTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\MiniStockTransferInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\PackagingFaultyStockDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\PackagingFaultyStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingItemStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingItemStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineStockDetailViewModel.cs" />

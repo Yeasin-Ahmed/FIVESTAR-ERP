@@ -1,4 +1,5 @@
-﻿using ERPBLL.Production.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Production.Interface;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -22,7 +23,17 @@ namespace ERPBLL.Production
 
         public async Task<TempQRCodeTrace> GetIMEIinQRCode(string imei, string status, long floorId, long packagingId, long orgId)
         {
-            return await _productionDb.Db.Database.SqlQuery<TempQRCodeTrace>(string.Format(@"Select * From tblTempQRCodeTrace Where  IMEI LIKE'%{0}%' and StateStatus IN({1}) and ProductionFloorId ={2} and PackagingLineId ={3} and OrganizationId = {4}", imei, status, floorId, packagingId, orgId)).FirstOrDefaultAsync();
+            return await _productionDb.Db.Database.SqlQuery<TempQRCodeTrace>(string.Format(@"Select * From tblTempQRCodeTrace Where  IMEI LIKE'%{0}%' and StateStatus IN({1}) and ProductionFloorId ={2} and PackagingLineId ={3} and OrganizationId = {4}", Utility.ParamChecker(imei), Utility.ParamChecker(status), floorId, packagingId, orgId)).FirstOrDefaultAsync();
+        }
+
+        public async Task<TempQRCodeTrace> GetIMEIWithOutThisQRCode(string imei, long codeId, long orgId)
+        {
+            return await _tempQRCodeTraceRepository.GetOneByOrgAsync(s => s.IMEI.Contains(imei) && s.CodeId != codeId && s.OrganizationId == orgId);
+        }
+
+        public async Task<TempQRCodeTrace> GetIMEIWithThisQRCode(string imei, long codeId, long orgId)
+        {
+            return await _tempQRCodeTraceRepository.GetOneByOrgAsync(s => s.IMEI.Contains(imei) && s.CodeId == codeId && s.OrganizationId == orgId);
         }
 
         public TempQRCodeTrace GetTempQRCodeTraceByCode(string code, long orgId)
@@ -157,6 +168,7 @@ namespace ERPBLL.Production
         {
             var qrCodeInDb = GetTempQRCodeTraceByCode(qrCode, orgId);
             qrCodeInDb.StateStatus = status;
+            qrCodeInDb.UpdateDate = DateTime.Now;
             _tempQRCodeTraceRepository.Update(qrCodeInDb);
             return await _tempQRCodeTraceRepository.SaveAsync();
         }

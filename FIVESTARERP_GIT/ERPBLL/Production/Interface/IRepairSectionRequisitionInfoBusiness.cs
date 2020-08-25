@@ -12,7 +12,7 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<RepairSectionRequisitionInfo> GetRepairSectionRequisitionInfos(long orgId);
         bool SaveRepairSectionRequisition(RepairSectionRequisitionInfoDTO model, long userId, long orgId );
-        IEnumerable<RepairSectionRequisitionInfoDTO> GetRepairSectionRequisitionInfoList(long ?repairLineId, long? modelId, long? warehouseId,string status, string requisitionCode, string fromDate, string toDate, string queryFor, long orgId);
+        IEnumerable<RepairSectionRequisitionInfoDTO> GetRepairSectionRequisitionInfoList(long ?repairLineId, long? packagingLineId, long? modelId, long? warehouseId,string status, string requisitionCode, string fromDate, string toDate, string queryFor, string reqFor, long orgId);
         RepairSectionRequisitionInfo GetRepairSectionRequisitionById(long reqId, long orgId);
         RepairSectionRequisitionInfoDTO GetRepairSectionRequisitionDataById(long reqId, long orgId);
         bool SaveRepairSectionRequisitionIssueByWarehouse(RepairRequisitionInfoStateDTO model, long orgId, long userId);

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.FinishGoodsSendToWarehouseDetailViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-striped table-bordered table-responsive-lg text-sm">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>Item Name</th>
+                    <th>IMEI</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl++;
+                    string itemName = item.ItemName + " [" + item.ItemTypeName + "]";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td>@itemName</td>
+                        <td>@item.IMEI</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-sm btn-flat btn-primary" type="button">
+        <i class="fas fa-ship"> Receive</i>
+    </button>
+</div>

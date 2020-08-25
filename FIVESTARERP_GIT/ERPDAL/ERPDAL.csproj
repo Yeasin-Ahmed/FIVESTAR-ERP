@@ -328,6 +328,10 @@
     <Compile Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.Designer.cs">
       <DependentUpon>202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.cs" />
+    <Compile Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.Designer.cs">
+      <DependentUpon>202008240549493_Inventory_AddTACInDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -563,6 +567,26 @@
     <Compile Include="ProductionContextMigrations\202008181039545_Production_TransferPackagingRepairItemToPackagingQC.Designer.cs">
       <DependentUpon>202008181039545_Production_TransferPackagingRepairItemToPackagingQC.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202008191126236_Production_AddFinishGoodsCartonColumns.cs" />
+    <Compile Include="ProductionContextMigrations\202008191126236_Production_AddFinishGoodsCartonColumns.Designer.cs">
+      <DependentUpon>202008191126236_Production_AddFinishGoodsCartonColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008200408345_Production_AddCartonNoInFinishGoodsPackaging.cs" />
+    <Compile Include="ProductionContextMigrations\202008200408345_Production_AddCartonNoInFinishGoodsPackaging.Designer.cs">
+      <DependentUpon>202008200408345_Production_AddCartonNoInFinishGoodsPackaging.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008220401040_Production_AddPackagingSectionFinishGoodsStock.cs" />
+    <Compile Include="ProductionContextMigrations\202008220401040_Production_AddPackagingSectionFinishGoodsStock.Designer.cs">
+      <DependentUpon>202008220401040_Production_AddPackagingSectionFinishGoodsStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008220806356_Production_AddPackagingLineInRepairRequisition.cs" />
+    <Compile Include="ProductionContextMigrations\202008220806356_Production_AddPackagingLineInRepairRequisition.Designer.cs">
+      <DependentUpon>202008220806356_Production_AddPackagingLineInRepairRequisition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202008241047044_Production_AddGeneratedIMEITable.cs" />
+    <Compile Include="ProductionContextMigrations\202008241047044_Production_AddGeneratedIMEITable.Designer.cs">
+      <DependentUpon>202008241047044_Production_AddGeneratedIMEITable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -757,6 +781,9 @@
     <EmbeddedResource Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.resx">
       <DependentUpon>202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.resx">
+      <DependentUpon>202008240549493_Inventory_AddTACInDescription.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -930,6 +957,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202008181039545_Production_TransferPackagingRepairItemToPackagingQC.resx">
       <DependentUpon>202008181039545_Production_TransferPackagingRepairItemToPackagingQC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008191126236_Production_AddFinishGoodsCartonColumns.resx">
+      <DependentUpon>202008191126236_Production_AddFinishGoodsCartonColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008200408345_Production_AddCartonNoInFinishGoodsPackaging.resx">
+      <DependentUpon>202008200408345_Production_AddCartonNoInFinishGoodsPackaging.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008220401040_Production_AddPackagingSectionFinishGoodsStock.resx">
+      <DependentUpon>202008220401040_Production_AddPackagingSectionFinishGoodsStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008220806356_Production_AddPackagingLineInRepairRequisition.resx">
+      <DependentUpon>202008220806356_Production_AddPackagingLineInRepairRequisition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008241047044_Production_AddGeneratedIMEITable.resx">
+      <DependentUpon>202008241047044_Production_AddGeneratedIMEITable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -365,8 +365,8 @@
                                                     Repair Section Requisition Info List
                                                 </h5>
                                             </div>
-                                            <div class="col-md-3">
-                                                <a href="/Production/CreateRepairSectionRequisition" class="btn btn-sm btn-outline-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
+                                            <div class="col-md-3">                                                
+                                                <a href="@Url.Action("CreateRepairSectionRequisition","Production",new {@reqFor="Repair" })" class="btn btn-sm btn-outline-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
                                             </div>
                                         </div>
                                     </div>
@@ -433,7 +433,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12" id="dataContainer3" style="min-height:50px">
-                                                @{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View" });}
+                                                @{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View", reqFor="Repair" });}
                                             </div>
                                         </div>
                                     </div>
@@ -1508,9 +1508,9 @@
         }
 
         function LoadDataTableFaultyStock() {
-            var repairId = ddlRepairLineFaultyStock.val() !== "" ? ddlRepairLineFaultyStock.val().substring(0, ddlRepairLineFaultyStock.val().indexOf("#")) : 0;
+            var repair = ddlRepairLineFaultyStock.val() !== "" ? ddlRepairLineFaultyStock.val().split("#") : ["0", "0"];
             getItemDetailsByFaultyStock();
-            var data = { flag: "search", lineId: 0, repairId: TryParseInt(repairId, 0), modelId: TryParseInt(ddlModelNameFaultyStock.val(), 0), qcId: 0, warehouseId: TryParseInt(warehouseFaultyStock, 0), itemTypeId: TryParseInt(itemTypeFaultyStock, 0), itemId: TryParseInt(itemFaultyStock, 0), lessOrEq: txtLessOrEqFaulty.val(), page: pageNo };
+            var data = { flag: "search", lineId: TryParseInt(repair[1], 0), repairId: TryParseInt(repair[0],0), modelId: TryParseInt(ddlModelNameFaultyStock.val(), 0), qcId: 0, warehouseId: TryParseInt(warehouseFaultyStock, 0), itemTypeId: TryParseInt(itemTypeFaultyStock, 0), itemId: TryParseInt(itemFaultyStock, 0), lessOrEq: txtLessOrEqFaulty.val(), reqFor:"Repair", page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetFaultyItemStockInfo', data)).then(function (res, status) {
                 console.log(status);

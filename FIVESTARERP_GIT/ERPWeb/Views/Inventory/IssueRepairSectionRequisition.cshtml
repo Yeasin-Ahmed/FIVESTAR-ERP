@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Issue Pending Requisition";
     string status = Model.StateStatus + " By PFM";
+    string sectionName = Model.ReqFor == "Repair" ? Model.RepairLineName : Model.PackagingLineName;
 }
 
 
@@ -64,8 +65,8 @@
                                 <tr>
                                     <td class="alert-secondary" style="width:10%">Req Code</td>
                                     <td style="width:15%; background-color:#e1dada">@Model.RequisitionCode</td>
-                                    <td class="alert-secondary" style="width:10%">Repair Line</td>
-                                    <td style="width:15%; background-color:#e1dada">@Model.RepairLineName</td>
+                                    <td class="alert-secondary" style="width:10%">Section</td>
+                                    <td style="width:15%; background-color:#e1dada">@sectionName</td>
                                     <td class="alert-secondary" style="width:12%">Warehouse Name</td>
                                     <td style="width:16%; background-color:#e1dada">@Model.WarehouseName</td>
                                     <td class="alert-secondary" style="width:10%">Model Name</td>

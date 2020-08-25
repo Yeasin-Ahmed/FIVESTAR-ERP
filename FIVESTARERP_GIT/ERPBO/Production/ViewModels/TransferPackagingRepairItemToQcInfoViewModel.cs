@@ -43,5 +43,9 @@ namespace ERPBO.Production.ViewModels
         public string ItemTypeName { get; set; }
         [StringLength(100)]
         public string ItemName { get; set; }
+        [StringLength(100)]
+        public string EntryUser { get; set; }
+        [StringLength(100)]
+        public string UpdateUser { get; set; }
     }
 }

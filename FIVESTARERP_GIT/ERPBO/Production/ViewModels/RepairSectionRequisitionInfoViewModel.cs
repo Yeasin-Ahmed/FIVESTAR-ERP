@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBO.CustomValidationAttribute.Production;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ERPBO.Production.ViewModels
         public long? ProductionFloorId { get; set; }
         [StringLength(100)]
         public string ProductionFloorName { get; set; }
-        [Range(1, long.MaxValue)]
+        [RequisitionForInRepairRequisitionAttr]
         public long? RepairLineId { get; set; }
         [StringLength(100)]
         public string RepairLineName { get; set; }
@@ -51,7 +52,14 @@ namespace ERPBO.Production.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public long? HandOverId { get; set; }
         public Nullable<DateTime> HandOverDate { get; set; }
-        public ICollection<RepairSectionRequisitionDetailViewModel> RepairSectionRequisitionDetails { get; set; }
+        public List<RepairSectionRequisitionDetailViewModel> RepairSectionRequisitionDetails { get; set; }
+        // Newly Added //
+        [StringLength(50)]
+        public string ReqFor { get; set; }
+        //[Range(1, long.MaxValue)]
+        public long? PackagingLineId { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
 
         // Custom Properties
         [StringLength(100)]

@@ -38,5 +38,20 @@ namespace ERPBO.Production.DTOModel
         public int? ItemCount { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public List<FinishGoodsSendToWarehouseDetailDTO> FinishGoodsSendToWarehouseDetails { get; set; }
+
+        // Cartoon Info //
+        [StringLength(100)]
+        public string CartoonNo { get; set; }
+        [StringLength(100)]
+        public string Width { get; set; }
+        [StringLength(100)]
+        public string Height { get; set; }
+        [StringLength(150)]
+        public string GrossWeight { get; set; }
+        [StringLength(150)]
+        public string NetWeight { get; set; }
+        public int TotalQty { get; set; }
+
     }
 }

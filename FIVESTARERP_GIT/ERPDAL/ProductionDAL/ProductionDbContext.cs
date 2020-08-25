@@ -86,5 +86,8 @@ namespace ERPDAL.ProductionDAL
         public DbSet<PackagingRepairRawStockDetail> tblPackagingRepairRawStockDetail { get; set; }
         public DbSet<TransferPackagingRepairItemToQcInfo> tblTransferPackagingRepairItemToQcInfo { get; set; }
         public DbSet<TransferPackagingRepairItemToQcDetail> tblTransferPackagingRepairItemToQcDetail { get; set; }
+        public DbSet<PackagingFaultyStockInfo> tblPackagingFaultyStockInfo { get; set; }
+        public DbSet<PackagingFaultyStockDetail> tblPackagingFaultyStockDetail { get; set; }
+        public DbSet<GeneratedIMEI> tblGeneratedIMEI { get; set; }
     }
 }

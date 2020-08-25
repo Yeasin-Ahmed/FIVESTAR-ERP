@@ -435,4 +435,26 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class PackagingFaultyStockInfoRepository : ProductionBaseRepository<PackagingFaultyStockInfo>
+    {
+        public PackagingFaultyStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    public class PackagingFaultyStockDetailRepository : ProductionBaseRepository<PackagingFaultyStockDetail>
+    {
+        public PackagingFaultyStockDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+    //GeneratedIMEI
+    public class GeneratedIMEIRepository : ProductionBaseRepository<GeneratedIMEI>
+    {
+        public GeneratedIMEIRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

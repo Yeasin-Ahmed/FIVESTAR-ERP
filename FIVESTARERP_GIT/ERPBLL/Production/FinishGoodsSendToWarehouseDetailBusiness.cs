@@ -33,12 +33,12 @@ namespace ERPBLL.Production
             return finishGoodsSendDetailListDTO;
         }
 
-        private string QueryForFinishGoodsSendDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate, string refNum,long orgId)
+        private string QueryForFinishGoodsSendDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string status, string fromDate, string toDate, string refNum, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
 
-            param += string.Format(@" and d.OrganizationId={0}",orgId);
+            param += string.Format(@" and d.OrganizationId={0}", orgId);
             if (lineId != null && lineId > 0)
             {
                 param += string.Format(@" and l.LineId={0}", lineId);
@@ -100,5 +100,56 @@ Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
         }
+
+        public IEnumerable<FinishGoodsSendToWarehouseDetailDTO> GetFinishGoodsSendToWarehouseDetailsByQuery(long? warehouseId, long? itemTypeId, long? itemId, string imei,string qrCode,long? transferId, string refNum, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<FinishGoodsSendToWarehouseDetailDTO>(QueryForFinishGoodsSendToWarehouseDetails(warehouseId,itemTypeId,itemId,imei,qrCode,transferId,refNum,orgId)).ToList();
+        }
+
+        private string QueryForFinishGoodsSendToWarehouseDetails(long? warehouseId, long? itemTypeId, long? itemId, string imei, string qrCode, long? transferId, string refNum, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if(warehouseId != null && warehouseId > 0)
+            {
+                param += string.Format(@" and fgd.WarehouseId={0}", warehouseId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and fgd.ItemTypeId={0}", itemTypeId);
+            }
+            if (itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and fgd.ItemId={0}", itemId);
+            }
+            if (!string.IsNullOrEmpty(imei) && imei.Trim() !="")
+            {
+                param += string.Format(@" and fgd.AllIMEI LIKE '%{0}%'",imei);
+            }
+            if (!string.IsNullOrEmpty(qrCode) && qrCode.Trim() != "")
+            {
+                param += string.Format(@" and fgd.QRCode ='{0}'",qrCode);
+            }
+            if(transferId != null && transferId > 0)
+            {
+                param += string.Format(@" and fgd.SendId ={0}",transferId);
+            }
+            if (!string.IsNullOrEmpty(refNum) && refNum.Trim() != "")
+            {
+                param += string.Format(@" and fgd.RefferenceNumber LIKE '%{0}%'",refNum);
+            }
+
+
+            query = string.Format(@"Select fgd.*,w.WarehouseName,de.DescriptionName 'ModelName',it.ItemName 'ItemTypeName',i.ItemName,fgd.QRCode,fgd.IMEI,fgd.AllIMEI From [Production].dbo.tblFinishGoodsSendToWarehouseDetail fgd
+Inner Join [Inventory].dbo.tblWarehouses w on fgd.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblDescriptions de on fgd.DescriptionId = de.DescriptionId
+Inner Join [Inventory].dbo.tblItemTypes it on fgd.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on fgd.ItemId = i.ItemId
+Where 1=1 and fgd.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
+            return query;
+        }
+
+
     }
 }

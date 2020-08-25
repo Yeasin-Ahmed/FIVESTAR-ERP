@@ -42,5 +42,20 @@ namespace ERPBO.Production.ViewModels
         public int? ItemCount { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+
+        public List<FinishGoodsSendToWarehouseDetailViewModel> FinishGoodsSendToWarehouseDetails { get; set; }
+        // Cartoon Info //
+        [Required,StringLength(100)]
+        public string CartoonNo { get; set; }
+        [StringLength(100)]
+        public string Width { get; set; }
+        [StringLength(100)]
+        public string Height { get; set; }
+        [StringLength(150)]
+        public string GrossWeight { get; set; }
+        [StringLength(150)]
+        public string NetWeight { get; set; }
+        [Range(1,int.MaxValue)]
+        public int TotalQty { get; set; }
     }
 }

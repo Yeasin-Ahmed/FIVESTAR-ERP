@@ -14,5 +14,7 @@ namespace ERPBLL.Production.Interface
         FinishGoodsSendToWarehouseInfo GetFinishGoodsSendToWarehouseById(long id,long orgId);
         bool SaveFinishGoodsSendToWarehouse(FinishGoodsSendToWarehouseInfoDTO info, List<FinishGoodsSendToWarehouseDetailDTO> detail, long userId, long orgId );
         bool SaveFinishGoodsStatus(long sendId, long userId, long orgId);
+        Task<bool> SaveFinishGoodsCartonAsync(FinishGoodsSendToWarehouseInfoDTO dto, long userId, long orgId);
+        IEnumerable<FinishGoodsSendToWarehouseInfoDTO> GetFinishGoodsSendToWarehouseInfosByQuery(long? floorId, long? packagingLineId, long? warehouseId, long? modelId, string status, string transferCode, string fromDate, string toDate, long? transferId, long orgId);
     }
 }

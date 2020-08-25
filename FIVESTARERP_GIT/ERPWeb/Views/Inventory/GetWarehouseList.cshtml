@@ -121,7 +121,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDescriptionData tbody tr',this)" />
+                                                @*<input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDescriptionData tbody tr',this)" />*@
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
@@ -639,6 +639,49 @@
 </div>
 
 
+<div class="modal fade" id="modalDescription" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDescription">Update Description</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmDesctiption">
+                    <input type="hidden" name="description" id="hdfDescriptionId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtTACNo" class="control-label font-weight-bold">Model</label>
+                            <input type="text" name="Model" value="" id="txtModel" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="txtTACNo" class="control-label font-weight-bold">TAC No</label>
+                            <input type="number" name="TACNo" value="" id="txtTACNo" class="form-control form-control-sm" />
+                            <span class="error hide req-tac">Input TAC!</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="txtEndPoint" class="control-label font-weight-bold">End Point</label>
+                            <input type="number" name="EndPoint" value="" id="txtEndPoint" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-default">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitDescription"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextDescription">Update</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
 
     <script type="text/javascript">
@@ -771,9 +814,15 @@
     </script>
 
     <script type="text/javascript">
+
+        var hdfDescriptionId = $("#hdfDescriptionId");
+        var txtModel = $("#txtModel");
+        var txtTACNo = $("#txtTACNo");
+        var txtEndPoint = $("#txtEndPoint");
+
         $(document).ready(function () {
             $('#tblDescriptionData').DataTable({
-                "paging": true,
+                "paging": false,
                 "lengthChange": false,
                 "searching": false,
                 "ordering": false,
@@ -782,6 +831,86 @@
                 "pageLength": 10,
             });
         })
+
+        function OpenDescriptionModel() {
+            txtModel.val('');
+            hdfDescriptionId.val('0');
+            txtTACNo.val('');
+            txtEndPoint.val('');
+            $(".error").addClass('hide');
+            $("#modalDescription").modal("show");
+        }
+
+        $(document).on('click', 'a.data-item-description', function (e) {
+            e.preventDefault();
+            OpenDescriptionModel();
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfDescriptionId.val(tds.eq(1).html());
+            txtModel.val(tds.eq(3).html());
+            txtTACNo.val(tds.eq(4).html());
+        })
+
+        function validateDescriptionTAC() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (txtTACNo.val() == '') {
+                $(".req-tac").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(hdfDescriptionId.val(), 0) <= 0) {
+                bootbox.alert("Maodel Not found");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitDescription").click(function (e) {
+            e.preventDefault();
+            if (validateDescriptionTAC()) {
+                disable("#btnSubmitDescription");
+                var data = JSON.stringify({ DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), TAC: txtTACNo.val(), EndPoint: TryParseInt(txtEndPoint.val(),0) })
+                console.log(data);
+                //return;
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveDescriptionTAC', data, getToken())).then(function (res,status) {
+                    console.log(res);
+                    if (res === true) {
+                        txtModel.val('');
+                        hdfDescriptionId.val('0');
+                        txtTACNo.val('');
+                        txtEndPoint.val('');
+                        $("#modalDescription").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadDescriptionDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitDescription");
+                }).fail(function (error) {
+                    console.log(error);
+                    toastrErrorAlert(execuStatus.fail);
+                    enable("#btnSubmitDescription");
+                })
+            }
+        })
+
+        //dataContainer2
+
+        function LoadDescriptionDataTable() {
+
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetDescriptionPartialList', null)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
     </script>
 
     <script type="text/javascript">

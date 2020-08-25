@@ -71,13 +71,15 @@ namespace ERPWeb.Controllers
 
         #region Production
         private readonly IRepairLineBusiness _repairLineBusiness;
+        private readonly IPackagingLineBusiness _packagingLineBusiness;
         private readonly IRepairSectionRequisitionInfoBusiness _repairSectionRequisitionInfoBusiness;
         private readonly IRepairSectionRequisitionDetailBusiness _repairSectionRequisitionDetailBusiness;
         #endregion
 
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb, IPackagingLineBusiness packagingLineBusiness)
         {
+            #region Inventory
             this._inventoryDb = inventoryDb;
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
@@ -104,11 +106,14 @@ namespace ERPWeb.Controllers
             this._iQCStockDetailBusiness = iQCStockDetailBusiness;
             this._iQCStockInfoBusiness = iQCStockInfoBusiness;
             warehouseStockInfoRepository = new WarehouseStockInfoRepository(this._inventoryDb);
-            warehouseStockDetailRepository =new WarehouseStockDetailRepository(this._inventoryDb);
+            warehouseStockDetailRepository = new WarehouseStockDetailRepository(this._inventoryDb); 
+            #endregion
+
             #region Production
             this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
             this._repairLineBusiness = repairLineBusiness;
             this._repairSectionRequisitionDetailBusiness = repairSectionRequisitionDetailBusiness;
+            this._packagingLineBusiness = packagingLineBusiness;
             #endregion
 
         }
@@ -1259,7 +1264,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Repair Section Requisition
-        public ActionResult GetRepairSectionRequisitionInfoList(string flag, long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, int page = 1)
+        public ActionResult GetRepairSectionRequisitionInfoList(string flag, long? repairLineId, long? packagingLineId, long? modelId, long? warehouseId, long? reqInfoId, string status, string requisitionCode, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -1275,18 +1280,54 @@ namespace ERPWeb.Controllers
                     Value = st.value
                 }).ToList();
 
+                ViewBag.ddlPackagingLine = _packagingLineBusiness.GetPackagingLinesWithProduction(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value.ToString() }).ToList();
                 return View();
             }
-            else
+            else if (!string.IsNullOrEmpty(flag) && (flag.Trim().ToLower() == Flag.Search.ToLower() || flag.Trim().ToLower() == Flag.View.ToLower()))
             {
-                var dto = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionInfoList(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, "Warehouse", User.OrgId);
+                var dto = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionInfoList(repairLineId, packagingLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, "Warehouse",string.Empty, User.OrgId);
                 // Pagination //
-                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
-                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                //ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                //dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 //-----------------//
                 List<RepairSectionRequisitionInfoViewModel> viewModels = new List<RepairSectionRequisitionInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetRepairSectionRequisitionInfoList", viewModels);
+            }
+            else
+            {
+                var info = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(reqInfoId.Value, User.OrgId);
+
+                var detailDto = _repairSectionRequisitionDetailBusiness.GetRepairSectionRequisitionDetailByInfoId(reqInfoId.Value, User.OrgId).Select(d => new RepairSectionRequisitionDetailDTO
+                {
+                    RSRDetailId = d.RSRDetailId,
+                    ItemName = d.ItemName,
+                    ItemTypeName = d.ItemTypeName,
+                    RequestQty = d.RequestQty,
+                    IssueQty = d.IssueQty,
+                    UnitName = d.UnitName
+                }).ToList();
+
+                var infoDTO = new RepairSectionRequisitionInfoDTO
+                {
+                    RSRInfoId = info.RSRInfoId,
+                    RequisitionCode = info.RequisitionCode,
+                    RepairLineName = info.RepairLineName + " [" + info.ProductionFloorName + "]",
+                    PackagingLineName = info.PackagingLineName + " [" + info.ProductionFloorName + "]",
+                    ModelName = info.ModelName,
+                    WarehouseName = info.WarehouseName,
+                    StateStatus = info.StateStatus,
+                    ReqFor = info.ReqFor
+                };
+
+                IEnumerable<RepairSectionRequisitionDetailViewModel> detailViewModels = new List<RepairSectionRequisitionDetailViewModel>();
+                RepairSectionRequisitionInfoViewModel infoViewModel = new RepairSectionRequisitionInfoViewModel();
+                AutoMapper.Mapper.Map(detailDto, detailViewModels);
+                AutoMapper.Mapper.Map(infoDTO, infoViewModel);
+
+                ViewBag.Info = infoViewModel;
+
+                return PartialView("_GetRepairSectionRequisitionDetailList", detailViewModels);
             }
         }
 
@@ -1371,7 +1412,9 @@ namespace ERPWeb.Controllers
                 UpUserId = des.UpUserId,
                 UpdateDate = des.UpdateDate,
                 EntryUser = UserForEachRecord(des.EUserId.Value).UserName,
-                UpdateUser = (des.UpUserId == null || des.UpUserId == 0) ? "" : UserForEachRecord(des.UpUserId.Value).UserName
+                UpdateUser = (des.UpUserId == null || des.UpUserId == 0) ? "" : UserForEachRecord(des.UpUserId.Value).UserName,
+                TAC = des.TAC,
+                EndPoint = des.EndPoint
 
             }).OrderBy(des => des.DescriptionId).ToList();
 
@@ -1381,6 +1424,18 @@ namespace ERPWeb.Controllers
             return PartialView(viewModel);
         }
 
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDescriptionTAC(DescriptionViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                DescriptionDTO dto = new DescriptionDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _descriptionBusiness.UpdateDescriptionTAC(dto,User.UserId,User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         public ActionResult _GetItemTypePartialList(int? page)
         {
             ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
@@ -1404,7 +1459,6 @@ namespace ERPWeb.Controllers
             //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemTypeList");
             return PartialView(viewModels);
         }
-
         public ActionResult _GetAllUnitPartialList()
         {
             //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetAllUnitList");
@@ -1422,7 +1476,6 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(unitDomains, unitViewModels);
             return PartialView(unitViewModels);
         }
-
         public ActionResult _GetItemPartialList()
         {
             //ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetItemList");

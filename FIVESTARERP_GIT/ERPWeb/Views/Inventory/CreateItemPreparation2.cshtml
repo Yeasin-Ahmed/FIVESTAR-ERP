@@ -267,6 +267,10 @@
                 $(".req-src-qty").removeClass('hide');
                 isValid = false;
             }
+            if (ddlItemPreparationType.val() == "") {
+                $(".req-preparation").removeClass('hide');
+                isValid = false;
+            }
             getTargetItemAndItemTypeAndWarehouse();
             if (warehouseTgt !== "" && ddlWarehouseSource.val() !== "") {
                 if (warehouseTgt === ddlWarehouseSource.val()) {
@@ -274,8 +278,8 @@
                     isValid = false;
                 }
             }
-            if (ddlModelName.val() !== "" && ddlItemTgt.val() !== "") {
-                if (ajaxBooleanChecker(JSON.stringify({ itemId: itemTgt, modelId: ddlModelName.val() }), '/Common/IsDuplicationItemPreparation', getToken()) === true) {
+            if (ddlModelName.val() !== "" && ddlItemTgt.val() !== "" && ddlItemPreparationType.val() !="") {
+                if (ajaxBooleanChecker(JSON.stringify({type: ddlItemPreparationType.val() ,itemId: itemTgt, modelId: ddlModelName.val() }), '/Common/IsDuplicationItemPreparation', getToken()) === true) {
                     $('.duplicate-item').removeClass('hide');
                     isValid = false;
                 }

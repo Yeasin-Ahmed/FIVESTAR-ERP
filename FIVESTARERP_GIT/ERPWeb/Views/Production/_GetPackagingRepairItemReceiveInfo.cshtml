@@ -9,6 +9,7 @@
             <thead class="btn-dark text-center">
                 <tr>
                     <th>#SL</th>
+                    <th>Transfer_Code</th>
                     <th>Floor</th>
                     <th>Packaging Line</th>
                     <th>Model</th>
@@ -31,13 +32,14 @@
                     string badge = item.StateStatus == "Approved" ? "badge badge-success" : "badge badge-primary";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
+                        <td class="text-center text-bold">@item.TransferCode</td>
                         <td>@item.ProductionFloorName</td>
                         <td>@item.PackagingLineName</td>
                         <td class="text-center">@item.ModelName</td>
                         <td>@itemName</td>
                         <td class="text-center text-bold">@item.Quantity</td>
                         <td class="text-center" data-val="@item.StateStatus">
-                            <span class="@badge">@item.StateStatus</span> 
+                            <span class="@badge">@item.StateStatus</span>
                         </td>
                         <td>@item.EntryUser</td>
                         <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
@@ -50,10 +52,10 @@
                         </td>
                     </tr>
                 }
-                @if(Model.Count() == 0)
+                @if (Model.Count() == 0)
                 {
                     <tr class="empty-row">
-                        <td class="text-center text-bold empty-row" colspan="12">
+                        <td class="text-center text-bold empty-row" colspan="13">
                             No data found in the table
                         </td>
                     </tr>

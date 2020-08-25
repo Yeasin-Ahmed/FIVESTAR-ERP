@@ -49,6 +49,13 @@ namespace ERPBO.Production.DTOModel
         public Nullable<DateTime> HandOverDate { get; set; }
         public ICollection<RepairSectionRequisitionDetailDTO> RepairSectionRequisitionDetails { get; set; }
 
+        // Newly Added //
+        [StringLength(50)]
+        public string ReqFor { get; set; }
+        public long? PackagingLineId { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
+
         // Custom Properties
         [StringLength(100)]
         public string EntryUser { get; set; }

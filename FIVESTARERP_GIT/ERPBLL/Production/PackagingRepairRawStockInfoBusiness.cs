@@ -30,6 +30,11 @@ namespace ERPBLL.Production
             return this._packagingRepairRawStockInfoRepository.GetOneByOrg(s =>  s.PackagingLineId == packagingLine && s.ItemId == itemId && s.DescriptionId == modelId && s.OrganizationId == orgId);
         }
 
+        public async Task<PackagingRepairRawStockInfo> GetPackagingRepairRawStockInfoByPackagingLineAndModelAndItemAsync(long floorId, long packagingLine, long itemId, long modelId, long orgId)
+        {
+            return await this._packagingRepairRawStockInfoRepository.GetOneByOrgAsync(s => s.PackagingLineId == packagingLine && s.ItemId == itemId && s.DescriptionId == modelId && s.OrganizationId == orgId);
+        }
+
         public IEnumerable<PackagingRepairRawStockInfoDTO> GetPackagingRepairRawStockInfosByQuery(long? floorId, long? packagingLine, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<PackagingRepairRawStockInfoDTO>(QueryForPackagingRepairRawStockInfos(floorId, packagingLine, modelId, warehouseId, itemTypeId, itemId, lessOrEq, orgId)).ToList();

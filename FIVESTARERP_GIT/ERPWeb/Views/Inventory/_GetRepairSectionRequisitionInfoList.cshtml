@@ -1,121 +1,127 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionRequisitionInfoViewModel>
 @{
     Layout = null;
-    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
-    int sl = pagerData.Serial;
+    //var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = 0;//pagerData.Serial;
     string badge = string.Empty;
     //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    string sectionName = string.Empty;
 }
 
-<div class="card-body">
-    <div class="row">
-        <div class="col-md-12" style="overflow-y:scroll">
-            <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblData">
-                <thead class="btn-dark">
-                    <tr class="text-center">
-                        <th style="vertical-align:middle;white-space: nowrap">#SL</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Requisition Code</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Repair Line</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Model</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Warehouse</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Total Unit Qty</th>
-                        <th style="vertical-align:middle;white-space: nowrap">State Status</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Entry User</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Entry Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Checked By</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Checked Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Approved By</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Approved Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap">HandOver By</th>
-                        <th style="vertical-align:middle;white-space: nowrap">HandOver Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Received By</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Received Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Update By</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Update Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Rechecked By</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Rechecked Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Canceled by</th>
-                        <th style="vertical-align:middle;white-space: nowrap" class="hide">Canceled Date</th>
-                        <th style="vertical-align:middle;white-space: nowrap">Action</th>
+@*<div class="card-body">
+
+    </div>*@
+<div class="row">
+
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblDataInfo">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="vertical-align:middle;white-space: nowrap">#SL</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Requisition Code</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Section</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Model</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Warehouse</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Total Unit Qty</th>
+                    <th style="vertical-align:middle;white-space: nowrap">State Status</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Entry User</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Entry Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Checked By</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Checked Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Approved By</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Approved Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">HandOver By</th>
+                    <th style="vertical-align:middle;white-space: nowrap">HandOver Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Received By</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Received Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Update By</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Update Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Rechecked By</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Rechecked Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Canceled by</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Canceled Date</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var info in Model)
+                {
+                    sectionName = info.ReqFor == "Repair" ? info.RepairLineName : info.PackagingLineName;
+                    sl = sl + 1;
+                    badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
+                    var checkedDate = info.CheckedDate.HasValue ? info.CheckedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    var approvedDate = info.ApprovedDate.HasValue ? info.ApprovedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    var handOverDate = info.HandOverDate.HasValue ? info.HandOverDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    var recheckedDate = info.ReceivedDate.HasValue ? info.ReceivedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    var canceledDate = info.CanceledDate.HasValue ? info.CanceledDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    var receivedDate = info.ReceivedDate.HasValue ? info.ReceivedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    var updateDate = info.UpdateDate.HasValue ? info.UpdateDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td>@info.RequisitionCode</td>
+                        <td>@sectionName</td>
+                        <td>@info.ModelName</td>
+                        <td>@info.WarehouseName</td>
+                        <td class="text-center text-bold">@info.TotalUnitQty</td>
+                        <td class="text-center" data-val="@info.StateStatus">
+                            <span class="@badge">@info.StateStatus</span>
+                        </td>
+                        <td class="text-center text-sm">@info.EntryUser</td>
+                        <td class="text-center text-sm">
+                            @info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")
+                        </td>
+                        <td class="text-center text-sm">@info.CheckUser</td>
+                        <td class="text-center text-sm">
+                            @checkedDate
+                        </td>
+                        <td class="text-center text-sm">@info.ApproveUser</td>
+                        <td class="text-center text-sm">
+                            @approvedDate
+                        </td>
+                        <td class="text-center text-sm">@info.HandOverUser</td>
+                        <td class="text-center text-sm">
+                            @handOverDate
+                        </td>
+                        <td class="text-center text-sm">@info.ReceiveUser</td>
+                        <td class="text-center text-sm">
+                            @receivedDate
+                        </td>
+                        <td class="text-center text-sm">@info.UpdateUser</td>
+                        <td class="text-center text-sm">
+                            @updateDate
+                        </td>
+                        <td class="text-center text-sm">@info.RecheckUser</td>
+                        <td class="text-center text-sm">
+                            @recheckedDate
+                        </td>
+                        <td class="text-center text-sm">@info.CancelUser</td>
+                        <td class="text-center text-sm">
+                            @canceledDate
+                        </td>
+                        <td class="text-center">
+                            @if (info.StateStatus == "Checked")
+                            {
+                                <a href="@Url.Action("IssueRepairSectionRequisition",new {requisitionId= info.RSRInfoId})" class="btn btn-sm btn-outline-warning data-item-issue" title="Issue" data-item-issue="@info.RSRInfoId"><i class="fas fa-pen"></i></a>
+                            }
+                            <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Details" data-item-detail="@info.RSRInfoId"><i class="fas fa-eye"></i></a>
+                            <a href="#" class="btn btn-sm btn-outline-danger data-report-item" title="Pdf Report" data-report-item="@info.RSRInfoId"><i class="fas fa-file-pdf"></i></a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var info in Model)
-                    {
-                        sl = sl + 1;
-                        badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
-                        var checkedDate = info.CheckedDate.HasValue ? info.CheckedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        var approvedDate = info.ApprovedDate.HasValue ? info.ApprovedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        var handOverDate = info.HandOverDate.HasValue ? info.HandOverDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        var recheckedDate = info.ReceivedDate.HasValue ? info.ReceivedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        var canceledDate = info.CanceledDate.HasValue ? info.CanceledDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        var receivedDate = info.ReceivedDate.HasValue ? info.ReceivedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        var updateDate = info.UpdateDate.HasValue ? info.UpdateDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
-                        <tr>
-                            <td class="text-center text-bold">@sl</td>
-                            <td>@info.RequisitionCode</td>
-                            <td>@info.RepairLineName</td>
-                            <td>@info.ModelName</td>
-                            <td>@info.WarehouseName</td>
-                            <td class="text-center text-bold">@info.TotalUnitQty</td>
-                            <td class="text-center" data-val="@info.StateStatus">
-                                <span class="@badge">@info.StateStatus</span>
-                            </td>
-                            <td class="text-center text-sm">@info.EntryUser</td>
-                            <td class="text-center text-sm">
-                                @info.EntryDate.Value.ToString("dd MMM yyyy hh:mm tt")
-                            </td>
-                            <td class="text-center text-sm">@info.CheckUser</td>
-                            <td class="text-center text-sm">
-                                @checkedDate
-                            </td>
-                            <td class="text-center text-sm">@info.ApproveUser</td>
-                            <td class="text-center text-sm">
-                                @approvedDate
-                            </td>
-                            <td class="text-center text-sm">@info.HandOverUser</td>
-                            <td class="text-center text-sm">
-                                @handOverDate
-                            </td>
-                            <td class="text-center text-sm hide">@info.ReceiveUser</td>
-                            <td class="text-center text-sm hide">
-                                @receivedDate
-                            </td>
-                            <td class="text-center text-sm hide">@info.UpdateUser</td>
-                            <td class="text-center text-sm hide">
-                                @updateDate
-                            </td>
-                            <td class="text-center text-sm hide">@info.RecheckUser</td>
-                            <td class="text-center text-sm hide">
-                                @recheckedDate
-                            </td>
-                            <td class="text-center text-sm hide">@info.CancelUser</td>
-                            <td class="text-center text-sm hide">
-                                @canceledDate
-                            </td>
-                            <td class="text-center">
-                                @if (info.StateStatus == "Checked")
-                                {
-                                    <a href="@Url.Action("IssueRepairSectionRequisition",new {requisitionId= info.RSRInfoId})" class="btn btn-sm btn-outline-warning data-item-issue" title="Issue" data-item-issue="@info.RSRInfoId"><i class="fas fa-pen"></i></a>
-                                }
-                                <a href="#" class="btn btn-sm btn-outline-secondary data-item-detail" title="View Details" data-item-detail="@info.RSRInfoId"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" title="Pdf Report" data-report-item="@info.RSRInfoId"><i class="fas fa-file-pdf"></i></a>
-                            </td>
-                        </tr>
-                    }
-                    @if (Model.Count() == 0)
-                    {
-                        <tr class="text-center empty-row">
-                            <td colspan="18">
-                                No data found in table
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-12 mt-1">
-            @Html.Partial("_Pagination", pagerData)
-        </div>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="18">
+                            No data found in table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
+    <div class="col-md-12 mt-1">
+        @*@Html.Partial("_Pagination", pagerData)*@
+    </div>
+
+
 </div>

@@ -147,6 +147,7 @@ namespace ERPBLL.Common
         public static readonly string Packaging = "PackagingLine";
         public static readonly string PackagingRepair = "Packaging-Repair";
         public static readonly string Finish = "Finish";
+        public static readonly string Carton = "Carton";
     }
     public class CustomerType
     {

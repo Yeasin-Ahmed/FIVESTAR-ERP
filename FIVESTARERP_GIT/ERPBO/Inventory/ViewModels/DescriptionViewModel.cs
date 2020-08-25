@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace ERPBO.Inventory.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        // Newly Added //
+        [StringLength(10)]
+        public string TAC { get; set; }
+        public long EndPoint { get; set; }
         //custom
         public string StateStatus { get; set; }
         public string EntryUser { get; set; }

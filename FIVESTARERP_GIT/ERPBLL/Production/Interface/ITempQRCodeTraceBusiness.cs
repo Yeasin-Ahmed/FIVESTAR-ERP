@@ -26,5 +26,8 @@ namespace ERPBLL.Production.Interface
         Task<bool> SaveBatteryCodeAsync(BatteryWriteDTO dto, long userId, long orgId);
         bool IsExistIMEIWithStatus(string imei, string status, long orgId);
         TempQRCodeTrace GetTempQRCodeTraceByIMEI(string imei, long orgId);
+        Task<TempQRCodeTrace> GetIMEIWithThisQRCode(string imei, long codeId, long orgId);
+
+        Task<TempQRCodeTrace> GetIMEIWithOutThisQRCode(string imei, long codeId, long orgId);
     }
 }

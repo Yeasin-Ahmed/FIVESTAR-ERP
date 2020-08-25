@@ -30,21 +30,20 @@ namespace ERPBLL.Production
             this._repairSectionRequisitionDetailRepository = new RepairSectionRequisitionDetailRepository(this._productionDb);
         }
 
-        public IEnumerable<RepairSectionRequisitionInfoDTO> GetRepairSectionRequisitionInfoList(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, string queryFor, long orgId)
+        public IEnumerable<RepairSectionRequisitionInfoDTO> GetRepairSectionRequisitionInfoList(long? repairLineId, long? packagingLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, string queryFor,string reqFor, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(QueryForRepairSectionRequisitionInfo(repairLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, queryFor, orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(QueryForRepairSectionRequisitionInfo(repairLineId, packagingLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate, queryFor, reqFor, orgId)).ToList();
         }
 
-        private string QueryForRepairSectionRequisitionInfo(long? repairLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, string queryFor, long orgId)
+        private string QueryForRepairSectionRequisitionInfo(long? repairLineId, long? packagingLineId, long? modelId, long? warehouseId, string status, string requisitionCode, string fromDate, string toDate, string queryFor, string reqFor, long orgId)
         {
             string query = string.Empty;
             string param = string.Empty;
 
-            param += string.Format(@" and req.OrganizationId={0}", orgId);
 
             if (!string.IsNullOrEmpty(queryFor))
             {
-                if (queryFor == "Production" || queryFor == "Repair")
+                if (queryFor == "Production" || queryFor == "Repair" || queryFor == "Packaging")
                 {
                     param += string.Format(@" and req.StateStatus IN('Pending','Checked','Rechecked','Rejected','Approved','HandOver','Accepted')");
                 }
@@ -53,11 +52,18 @@ namespace ERPBLL.Production
                     param += string.Format(@" and req.StateStatus IN('Checked','Approved','HandOver','Accepted')");
                 }
             }
-
+            if(!string.IsNullOrEmpty(reqFor) && reqFor.Trim() != "")
+            {
+                param += string.Format(@" and req.ReqFor='{0}'", reqFor);
+            }
 
             if (repairLineId != null && repairLineId > 0)
             {
                 param += string.Format(@" and req.RepairLineId={0}", repairLineId);
+            }
+            if (packagingLineId != null && packagingLineId > 0)
+            {
+                param += string.Format(@" and req.PackagingLineId={0}", packagingLineId);
             }
             if (modelId != null && modelId > 0)
             {
@@ -92,7 +98,8 @@ namespace ERPBLL.Production
                 param += string.Format(@" and Cast(req.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select req.RSRInfoId,req.RequisitionCode,(rl.RepairLineName +' ['+pl.LineNumber+']') As 'RepairLineName',req.ModelName,w.WarehouseName,req.TotalUnitQty,req.StateStatus,appUser.UserName 'EntryUser', req.EntryDate,
+            query = string.Format(@"Select req.RSRInfoId,req.RequisitionCode,(rl.RepairLineName +' ['+pl.LineNumber+']') As 'RepairLineName',
+(pac.PackagingLineName+' ['+pl.LineNumber+']') 'PackagingLineName',req.ModelName,w.WarehouseName,req.TotalUnitQty,req.StateStatus,appUser.UserName 'EntryUser', req.EntryDate,req.ReqFor,
 (Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.ApprovedBy) 'ApproveUser',
 req.ApprovedDate, 
 (Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.ReceivedBy) 'RecheckUser',
@@ -110,11 +117,12 @@ req.CheckedDate,
 (Select UserName From  [ControlPanel].dbo.tblApplicationUsers Where UserId = req.HandOverId) 'HandOverUser',
 req.HandOverDate
 From tblRepairSectionRequisitionInfo req
-Inner Join tblRepairLine rl on req.RepairLineId = rl.RepairLineId
+Left Join tblRepairLine rl on req.RepairLineId = rl.RepairLineId
+Left Join tblPackagingLine pac on req.PackagingLineId = pac.PackagingLineId
 Inner Join tblProductionLines pl on req.ProductionFloorId = pl.LineId
 Inner Join [Inventory].dbo.tblWarehouses w on req.WarehouseId = w.Id
 Inner Join [ControlPanel].dbo.tblApplicationUsers appUser on appUser.OrganizationId={1} and req.EUserId = appUser.UserId
-Where 1=1 {0}", Utility.ParamChecker(param), orgId);
+Where 1=1 and req.OrganizationId={1} {0} Order By req.RSRInfoId desc", Utility.ParamChecker(param), orgId);
             return query;
         }
 
@@ -132,6 +140,9 @@ Where 1=1 {0}", Utility.ParamChecker(param), orgId);
                 ProductionFloorName = model.ProductionFloorName,
                 RepairLineId = model.RepairLineId,
                 RepairLineName = model.RepairLineName,
+                PackagingLineId = model.PackagingLineId,
+                PackagingLineName = model.PackagingLineName,
+                ReqFor = (model.RepairLineId != null && model.RepairLineId > 0)? "Repair" : "Packaging",
                 WarehouseId = model.WarehouseId,
                 WarehouseName = model.WarehouseName,
                 DescriptionId = model.DescriptionId,
@@ -150,6 +161,9 @@ Where 1=1 {0}", Utility.ParamChecker(param), orgId);
                 {
                     RepairLineId = model.RepairLineId,
                     RepairLineName = model.RepairLineName,
+                    PackagingLineId = model.PackagingLineId,
+                    PackagingLineName = model.PackagingLineName,
+                    ReqFor = (model.RepairLineId != null && model.RepairLineId > 0) ? "Repair" : "Packaging",
                     ItemTypeId = item.ItemTypeId,
                     ItemTypeName = item.ItemTypeName,
                     ItemId = item.ItemId,
@@ -180,7 +194,7 @@ Where 1=1 {0}", Utility.ParamChecker(param), orgId);
         public RepairSectionRequisitionInfoDTO GetRepairSectionRequisitionDataById(long reqId, long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<RepairSectionRequisitionInfoDTO>(string.Format(@"Select ri.RSRInfoId,ri.RequisitionCode,ri.RepairLineName+' ['+ri.ProductionFloorName+']' 'RepairLineName'
-,ri.StateStatus,ri.WarehouseName,ri.ModelName,app.UserName 'EntryUser',ri.EntryDate
+,ri.StateStatus,ri.WarehouseName,ri.ModelName,app.UserName 'EntryUser',ri.EntryDate,ri.ReqFor,ri.PackagingLineName+' ['+ri.ProductionFloorName+']' 'PackagingLineName'
 From tblRepairSectionRequisitionInfo ri
 Inner Join [ControlPanel].dbo.[tblApplicationUsers] app on ri.EUserId = app.UserId
 Where 1=1 and ri.OrganizationId={0} and ri.RSRInfoId={1}", orgId, reqId)).Single();

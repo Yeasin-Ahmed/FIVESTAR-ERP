@@ -1,9 +1,12 @@
 ﻿
 @{
     ViewBag.Title = "Create Repair Section Requisition";
+    var reqFor = Request.QueryString["ReqFor"].ToString();
+    var repairShow = reqFor == "Repair" ? "" : "hide";
+    var packagingShow = reqFor == "Packaging" ? "" : "hide";
 }
 
-<div class="row">
+<div class="row text-sm">
     <div class="col-md-12">
         <div class="card card-gray-dark">
             <div class="card-header">
@@ -24,10 +27,15 @@
                 <input type="hidden" id="hdfReqDetailsId" value="0" />
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-3 repair-req @repairShow">
                             <label for="ddlRepairLine" class="control-label">Repair Line</label>
                             @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair Line--", new { @class = "form-control form-control-sm" })
                             <span class="error hide req-line">Repair line is required</span>
+                        </div>
+                        <div class="col-md-3 packaging-req @packagingShow">
+                            <label for="ddlPackagingLine" class="control-label">Packaging Line</label>
+                            @Html.DropDownList("ddlPackagingLine", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging Line--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide req-pack">Packaging line is required</span>
                         </div>
                         <div class="col-md-2">
                             <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
@@ -47,7 +55,7 @@
                             <span class="error hide req-item">Select an Item</span>
                             <span class="error hide duplicate-itemName">Duplicate Item!</span>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label for="txtQuantity" class="control-label font-weight-bold">
                                 Quantity<span id="unitName" class="font-weight-bold mt-2" style="color:darkblue"></span>
                             </label>
@@ -107,6 +115,7 @@
         var hdfReqDetailsId = $("#hdfReqDetailsId");
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlRepairLine = $("#ddlRepairLine");
+        var ddlPackagingLine = $("#ddlPackagingLine");
         var ddlItem = $("#ddlItem");
         var unitName = $("#unitName");
         var txtRemarks = $("#txtRemarks");
@@ -137,9 +146,11 @@
             enable("#ddlWarehouse");
             enable("#ddlRepairLine");
             enable("#ddlModelName");
+            enable("#ddlPackagingLine");
             ddlWarehouse.val('');
             ddlWarehouse.trigger('change');
             ddlRepairLine.val('');
+            ddlPackagingLine.val('');
             ddlModelName.val('');
             ddlItem.val('');
             txtQuantity.val('0');
@@ -177,9 +188,10 @@
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
             if (validateInput() === true) {
-                disable("#ddlRepairLine");
+                //disable("#ddlRepairLine");
                 disable("#ddlWarehouse");
                 disable("#ddlModelName");
+                //disable("#ddlPackagingLine");
 
                 var itemVal = ddlItem.val();
 
@@ -222,14 +234,21 @@
 
         function validateTable() {
             var isValid = true;
-
             if ($("#tblData tbody tr").length === 0) {
                 bootbox.alert("Please add data into the table");
                 isValid = false;
             }
-            if (ddlRepairLine.val() =="") {
-                isValid = false;
-                $(".req-line").removeClass("hide");
+            if ('@reqFor' == "Repair") {
+                if (ddlRepairLine.val() == "") {
+                    isValid = false;
+                    $(".req-line").removeClass("hide");
+                }
+            }
+            else {
+                if (ddlPackagingLine.val() == "") {
+                    isValid = false;
+                    $(".req-pack").removeClass("hide");
+                }
             }
             if (TryParseInt(ddlWarehouse.val(), 0) <= 0) {
                 isValid = false;
@@ -276,10 +295,10 @@
                     }
                 })
             }
-            if (ddlRepairLine.val() =="") {
-                $(".req-line").removeClass("hide");
-                isValid = false;
-            }
+            //if (ddlRepairLine.val() =="") {
+            //    $(".req-line").removeClass("hide");
+            //    isValid = false;
+            //}
             if (TryParseInt(ddlWarehouse.val(), 0) <= 0) {
                 $(".req-warehouse").removeClass("hide");
                 isValid = false;
@@ -305,26 +324,36 @@
             if (validateTable() === true) {
                 bootbox.confirm("Are you sure you want to save the data", function (result) {
                     if (result) {
+                        //disable("#btnSubmit");
 
-                        disable("#btnSubmit");
-                        var repairVal = ddlRepairLine.val();
-                        var repairLineName = dropDownSelectedText("ddlRepairLine")
-                        var repairId = repairVal.substring(0, repairVal.indexOf("#"));
-                        var repairName = repairLineName.substring(0, repairLineName.lastIndexOf("["));
-                        var productionId = repairVal.substring(repairVal.indexOf("#")+1);
-                        var productionName = repairLineName.substring(repairLineName.lastIndexOf("[") + 1, repairLineName.lastIndexOf("]"));
+                        // Repair
+                        var repairLineName = dropDownSelectedText("ddlRepairLine");
+                        var repairId = ddlRepairLine.val() != "" ? ddlRepairLine.val().split("#") : ["0","0"] // repairVal.substring(0, repairVal.indexOf("#"));
+                        var repairName = repairLineName != null ? repairLineName.substring(0, repairLineName.lastIndexOf("[")) : "";
+
+                        // Packaging
+                        var packagingId = ddlPackagingLine.val() != "" ? ddlPackagingLine.val().split("#") : ["0", "0"];
+                        var packagingLineName = dropDownSelectedText("ddlPackagingLine");
+                        var packagingName = packagingLineName != null ? packagingLineName.substring(0, packagingLineName.lastIndexOf("[")) : "";
+
+                        // Floor
+                        var productionId = ('@reqFor' == "Repair") ? repairId[1] : packagingId[1];   //repairVal.substring(repairVal.indexOf("#")+1);
+                        var productionName = ('@reqFor' == "Repair") ? repairLineName.substring(repairLineName.lastIndexOf("[") + 1, repairLineName.lastIndexOf("]")) : packagingLineName.substring(packagingLineName.lastIndexOf("[") + 1, packagingLineName.lastIndexOf("]"));
 
                         console.log("repairId=" + repairId + ",repairName=" + repairName + ",productionId=" + productionId + ",productionName=" + productionName);
 
                         var info = {
-                            RepairLineId: repairId ,
+                            RepairLineId: TryParseInt(repairId[0],0) ,
                             RepairLineName: repairName,
                             ProductionFloorId: productionId,
                             ProductionFloorName: productionName,
                             DescriptionId: ddlModelName.val(),
                             ModelName: dropDownSelectedText("ddlModelName"),
                             WarehouseId: ddlWarehouse.val(),
-                            WarehouseName: dropDownSelectedText("ddlWarehouse")
+                            WarehouseName: dropDownSelectedText("ddlWarehouse"),
+                            PackagingLineId: TryParseInt(packagingId[0],0),
+                            PackagingLineName: packagingName,
+                            ReqFor: '@reqFor'
                         };
 
                         console.log("Info");
@@ -353,6 +382,7 @@
 
                         var data = JSON.stringify({ model: info });
 
+                        //return;
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairSectionRequisition', data, getToken())).then(function (res, status)
                         {
                             console.log('Response');
@@ -363,7 +393,12 @@
                                 $('.toastrDefaultSuccess').trigger('click');
                                 clearAll();
                                 setTimeout(function () {
-                                    redirectPage('@Url.Action("GetRepairLineStockInfo","Production")')
+                                    if ('@reqFor' == 'Repair') {
+                                        redirectPage('@Url.Action("GetRepairLineStockInfo","Production")')
+                                    }
+                                    else {
+                                         redirectPage('@Url.Action("GetPackagingRepairProcess", "Production")')
+                                    }
                                 })
                             }
                             else {

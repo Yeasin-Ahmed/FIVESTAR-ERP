@@ -30,5 +30,8 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long TPRQInfoId { get; set; }
+        public string  EntryUser { get; set; }
+        public string UpdateUser { get; set; }
+        public string StateStatus { get; set; }
     }
 }

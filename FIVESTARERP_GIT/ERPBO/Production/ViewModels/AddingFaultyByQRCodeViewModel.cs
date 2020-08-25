@@ -17,6 +17,8 @@ namespace ERPBO.Production.ViewModels
         [Range(1, long.MaxValue)]
         public long ModelId { get; set; }
         public List<FaultyItemsByQRCodeViewModel> FaultyItems { get; set; }
+        // Optional
+        public string IMEI { get; set; }
     }
 
     public class FaultyItemsByQRCodeViewModel

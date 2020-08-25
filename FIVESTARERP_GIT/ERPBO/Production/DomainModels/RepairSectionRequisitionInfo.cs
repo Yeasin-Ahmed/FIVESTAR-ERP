@@ -51,6 +51,12 @@ namespace ERPBO.Production.DomainModels
         public long? HandOverId { get; set; }
         public Nullable<DateTime> HandOverDate { get; set; }
         public ICollection<RepairSectionRequisitionDetail> RepairSectionRequisitionDetails { get; set; }
+        // Newly Added //
+        [StringLength(50)]
+        public string ReqFor { get; set; }
+        public long? PackagingLineId  { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
 
     }
 }

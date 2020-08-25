@@ -49,12 +49,12 @@ namespace ERPBLL.Production
             return this._faultyItemStockInfoRepository.GetAll(f => f.OrganizationId == orgId);
         }
 
-        public IEnumerable<FaultyItemStockInfoDTO> GetFaultyItemStockInfosByQuery(long? floorId, long? repairId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
+        public IEnumerable<FaultyItemStockInfoDTO> GetFaultyItemStockInfosByQuery(long? floorId, long? repairId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,string reqFor, long orgId)
         {
-            return this._productionDb.Db.Database.SqlQuery<FaultyItemStockInfoDTO>(QueryForFaultyItemStockInfos(floorId,repairId,modelId,warehouseId,itemTypeId,itemId,lessOrEq,orgId)).ToList();
+            return this._productionDb.Db.Database.SqlQuery<FaultyItemStockInfoDTO>(QueryForFaultyItemStockInfos(floorId,repairId,modelId,warehouseId,itemTypeId,itemId,lessOrEq,reqFor,orgId)).ToList();
         }
 
-        private string QueryForFaultyItemStockInfos(long? floorId, long? repairId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
+        private string QueryForFaultyItemStockInfos(long? floorId, long? repairId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, string reqFor, long orgId)
         {
             string param = string.Empty;
             string query = string.Empty;
