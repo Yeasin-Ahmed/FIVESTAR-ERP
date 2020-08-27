@@ -662,6 +662,12 @@
     <Content Include="Views\Production\_GetPackagingFaultyStockInfo.cshtml" />
     <Content Include="Views\Inventory\_GetRepairSectionRequisitionDetailList.cshtml" />
     <Content Include="Views\Production\_GetGeneratedIMEIList.cshtml" />
+    <Content Include="Views\Inventory\GetIMEIGenerator.cshtml" />
+    <Content Include="Views\Production\CreateAssemblyStockReturn.cshtml" />
+    <Content Include="Views\Production\GetAssemblyStockItemsForReturn.cshtml" />
+    <Content Include="Views\Production\_GetStockReturnList.cshtml" />
+    <Content Include="Views\Production\CreateRepairStockReturn.cshtml" />
+    <Content Include="Views\Production\GetRepairStockItemsForReturn.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -685,7 +691,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reports\ERPRpt\rptQRCodesByRef.rdlc" />
+    <Content Include="Reports\ERPRpt\rptQRCodesByRef.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc" />

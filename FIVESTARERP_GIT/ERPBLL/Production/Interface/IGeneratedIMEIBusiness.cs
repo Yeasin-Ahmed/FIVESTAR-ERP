@@ -1,4 +1,5 @@
-﻿using ERPBO.Production.DTOModel;
+﻿using ERPBO.Inventory.DTOModel;
+using ERPBO.Production.DTOModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace ERPBLL.Production.Interface
     {
         IEnumerable<GeneratedIMEIDTO> GetGeneratedIMEIDTOs(long userId, long orgId);
         bool SaveGeneratedIMEI(List<GeneratedIMEIDTO> model, long userId, long orgId);
+
+        bool SaveGeneratedIMEIByUser(CommitGeneratedIMEIDTO model, long userId, long orgId);
     }
 }

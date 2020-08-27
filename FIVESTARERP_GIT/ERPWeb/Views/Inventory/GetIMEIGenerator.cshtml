@@ -1,0 +1,357 @@
+﻿
+@{
+    ViewBag.Title = "IMEI Generator";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-IMEIGenerator-tab" data-toggle="pill" href="#custom-tabs-two-IMEIGenerator" role="tab" aria-controls="custom-tabs-two-IMEIGenerator" aria-selected="true">IMEI Generator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-generatedIMIEList-tab" data-toggle="pill" href="#custom-tabs-two-generatedIMIEList" role="tab" aria-controls="custom-tabs-two-generatedIMIEList" aria-selected="true">Generated IMEI List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-IMEIGenerator" role="tabpanel" aria-labelledby="custom-tabs-two-IMEIGenerator-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                   IMEI Generator
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="#" class="btn btn-sm btn-danger float-right" id="resetUI"><i class="fas fa-refresh">Reset UI</i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="ddlModel" class="control-label font-weight-bold">Model</label>
+                                                        @Html.DropDownList("ddlModel", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="control-label font-weight-bold" for="txtTAC">TAC</label>
+                                                                <input type="number" id="txtTAC" class="form-control form-control-sm" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="control-label font-weight-bold" for="txtSerial">Last Serial</label>
+                                                                <input type="number" id="txtSerial" class="form-control form-control-sm" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label for="ddlNumberOfSim" class="control-label font-weight-bold">No Of Sim</label>
+                                                                <select class="form-control form-control-sm" id="ddlNumberOfSim">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="control-label font-weight-bold" for="txtSerial">No Of HandSet</label>
+                                                                <input type="number" id="txtHandsetQty" class="form-control form-control-sm" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="Generate" class="control-label font-weight-bold" style="visibility:hidden">
+                                                                    Generate
+                                                                </label>
+                                                                <div class="clearfix">
+                                                                    <button class="btn btn-primary" id="btnSubmitIMEI">Generate</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-striped table-bordered table-sm text-sm table-responsive-lg" id="tblNewIMEI">
+                                                            <thead class="btn-dark">
+                                                                <tr>
+                                                                    <th colspan="7">
+                                                                        <button class="btn btn-sm btn-success float-right" id="btnSubmit">Save</button>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="text-center">
+                                                                    <th>SL</th>
+                                                                    <th>Model</th>
+                                                                    <th>TAC</th>
+                                                                    <th>IMEI1</th>
+                                                                    <th>IMEI2</th>
+                                                                    <th>IMEI3</th>
+                                                                    <th>IMEI4</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-generatedIMIEList" role="tabpanel" aria-labelledby="custom-tabs-two-generatedIMIEList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Generate IEMI List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer1" style="min-height:50px">
+                                                @{Html.RenderAction("GetGeneratedIMEIList","Production");}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var ddlModel = $("#ddlModel");
+        var txtTAC = $("#txtTAC");
+        var txtSerial = $('#txtSerial');
+        var ddlNumberOfSim = $("#ddlNumberOfSim");
+        var txtHandsetQty = $("#txtHandsetQty");
+        var serial = 0;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        ddlModel.change(function () {
+            txtTAC.val('0');
+            txtSerial.val('0');
+            if (ddlModel.val() != "") {
+                var data = ajaxValueReturnable(JSON.stringify({ id: TryParseInt(ddlModel.val(), 0) }), '/Common/GetDescriptiolnById', getToken());
+                console.log(data);
+                txtTAC.val(data.TAC);
+                txtSerial.val(data.EndPoint);
+            }
+        })
+
+        function validateField() {
+            var isValid = true;
+            var error = "Error Message: </br>";
+            if (ddlModel.val() == '') {
+                console.log('model');
+                isValid = false;
+                error += "Input Model </br>";
+            }
+            if (TryParseInt($.trim(txtTAC.val()), 0) <= 0) {
+                console.log('tac');
+                isValid = false;
+                error += "Input TAC </br>";
+            }
+            else {
+                if ($.trim(txtTAC.val()).length > 8) {
+                    isValid = false;
+                    error += "TAC Max length 8 </br>";
+                }
+            }
+            if (TryParseInt(txtSerial.val(), 0) <= 0) {
+                console.log('serial');
+                //isValid = false;
+                error += "Input Serial </br>";
+            }
+            if (TryParseInt($.trim(txtHandsetQty.val()), 0) <= 0) {
+                console.log('handset');
+                isValid = false;
+                error += "Input Qty </br>";
+            }
+            if (isValid == false) {
+                toggleAlert(error)
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitIMEI").click(function (e) {
+            e.preventDefault();
+            if (validateField()) {
+                serial = 0;
+                var data = JSON.stringify({ modelId: ddlModel.val(), tac: TryParseInt($.trim(txtTAC.val()), 0), serial: TryParseInt(txtSerial.val(), 0), noOfSim: TryParseInt(ddlNumberOfSim.val(), 0), noOfHandset: TryParseInt(txtHandsetQty.val(), 0) });
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/GenerateIMEI', data, getToken())).then(function (res, status) {
+                    console.log("IMEI data");
+                    console.log(res);
+                    console.log(status);
+                    serial = res.Serial;
+                    bindIMEITable(res.HandSetIMEIs);
+                }).fail(function (res) {
+
+                })
+            }
+            else {
+                // 
+            }
+        })
+
+        function bindIMEITable(obj) {            
+            $("#tblNewIMEI tbody").empty();
+            if (!$.isEmptyObject(obj)) {
+                $.each(obj, function (index, item) {
+                    console.log(item);
+                    console.log(item[0]);
+                    $.each(item, function (idx,itm) {
+                        var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
+                        var td2 = "<td>" + dropDownSelectedText("ddlModel") + "</td>"
+                        var td3 = "<td>" + txtTAC.val() + "</td>";
+                        var td4 = "<td>" + (itm[0] == undefined ? '' : itm[0]) + "</td>";
+                        var td5 = "<td>" + (itm[1] == undefined ? '' : itm[1]) + "</td>";
+                        var td6 = "<td>" + (itm[2] == undefined ? '' : itm[2]) + "</td>";
+                        var td7 = "<td>" + (itm[3] == undefined ? '' : itm[3]) + "</td>";
+                        var tr = '<tr>' + td1 + td2 + td3 + td4 + td5 + td6 + td7 + '</tr>';
+                        $("#tblNewIMEI tbody").append(tr);
+                    })
+                   
+                })
+            }
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateField() && $("#tblNewIMEI tbody").length > 0) {
+                var info = { DescriptionName: dropDownSelectedText("ddlModel"), DescriptionId: ddlModel.val(), Serial: serial, TAC: TryParseInt(txtTAC.val(), 0) };
+
+                disable("#btnSubmit");
+                var imeiList = []; imeiList.length = 0;
+                $.each($("#tblNewIMEI tbody tr"), function (index, item) {
+                    var tds = $(this).children('td');
+                    var imei = '';
+                    if (tds.eq(3).html() != '') {
+                        imei = tds.eq(3).html();
+                    }
+                    if (tds.eq(4).html() != '') {
+                        imei += ',' + tds.eq(4).html();
+                    }
+                    if (tds.eq(5).html() != '') {
+                        imei += ',' + tds.eq(5).html();
+                    }
+                    if (tds.eq(6).html() != '') {
+                        imei += ',' + tds.eq(6).html();
+                    }
+                    imeiList.push(imei);
+                })
+                info.IMEIs = imeiList
+                console.log(info);
+                var data = JSON.stringify({ info: info })
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveGeneratedIMEI', data, getToken())).then(function (res, status) {
+
+                    console.log(res);
+                    console.log(status);
+
+                    if (res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        resetUI();
+                        LoadGeneratedIMEIList();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (res) {
+                    toastrErrorAlert(execuStatus.fail);
+                    enable("#btnSubmit");
+                })
+            }
+            
+        })
+
+
+        $("#resetUI").click(function (e) {
+            e.preventDefault();
+            resetUI();
+            ddlModel.val('');
+            ddlModel.trigger('change');
+            txtSerial.val('0');
+            ddlNumberOfSim.val('1');
+        })
+
+        function resetUI() {
+            txtSerial.val(serial);
+            txtHandsetQty.val('0');
+            $("#tblNewIMEI tbody").empty();
+        }
+
+        function LoadGeneratedIMEIList() {
+            $.when(getReqWithData('html', 'GET', '/Production/GetGeneratedIMEIList', null)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            //pageNo = 1;
+        }
+    </script>
+}
+

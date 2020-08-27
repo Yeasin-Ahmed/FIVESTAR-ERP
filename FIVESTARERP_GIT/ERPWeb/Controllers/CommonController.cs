@@ -31,6 +31,7 @@ namespace ERPWeb.Controllers
         private readonly ISupplierBusiness _supplierBusiness;
         private readonly IIQCBusiness _iQCBusiness;
         private readonly IIQCItemReqDetailList _iQCItemReqDetailList;
+        private readonly IDescriptionBusiness _descriptionBusiness;
         #endregion
 
         #region Production
@@ -69,7 +70,7 @@ namespace ERPWeb.Controllers
         private readonly IUserAuthorizationBusiness _userAuthorizationBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIMEITransferToRepairInfoBusiness iMEITransferToRepairInfoBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness,IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIMEITransferToRepairInfoBusiness iMEITransferToRepairInfoBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness,IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness, IDescriptionBusiness descriptionBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -82,6 +83,7 @@ namespace ERPWeb.Controllers
             this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
             this._iQCBusiness = iQCBusiness;
             this._iQCItemReqDetailList = iQCItemReqDetailList;
+            this._descriptionBusiness = descriptionBusiness;
             #endregion
 
             #region Production Module
@@ -992,6 +994,12 @@ namespace ERPWeb.Controllers
             var faultyItemsDto = _packagingFaultyStockDetailBusiness.GetPackagingFaultyItemStockDetailsByQrCode(qrCode, string.Empty,transferId, User.OrgId);
             AutoMapper.Mapper.Map(faultyItemsDto, faultyItemsViewModel);
             return Json(new { faultyItems = faultyItemsViewModel });
+        }
+        [HttpPost]
+        public ActionResult GetDescriptiolnById(long id)
+        {
+            var data = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).FirstOrDefault(s => s.DescriptionId == id);
+            return Json(data);
         }
         #endregion
         protected override void Dispose(bool disposing)

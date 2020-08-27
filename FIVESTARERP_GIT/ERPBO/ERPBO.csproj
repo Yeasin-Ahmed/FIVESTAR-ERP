@@ -242,12 +242,15 @@
     <Compile Include="Inventory\DomainModels\IQCItemReqInfoList.cs" />
     <Compile Include="Inventory\DomainModels\IQCStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\IQCStockInfo.cs" />
+    <Compile Include="Inventory\DTOModel\CommitGeneratedIMEIDTO.cs" />
+    <Compile Include="Inventory\DTOModel\HandSetIMEI.cs" />
     <Compile Include="Inventory\DTOModel\IQCDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCItemReqDetailListDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCItemReqInfoListDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\ViewModels\CommitGeneratedIMEIViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqInfoListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCStockDetailViewModel.cs" />
@@ -352,6 +355,8 @@
     <Compile Include="Production\DomainModels\RepairSectionRequisitionInfo.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemDetail.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemInfo.cs" />
+    <Compile Include="Production\DomainModels\StockItemReturnDetail.cs" />
+    <Compile Include="Production\DomainModels\StockItemReturnInfo.cs" />
     <Compile Include="Production\DomainModels\TempQRCodeTrace.cs" />
     <Compile Include="Production\DomainModels\TransferPackagingRepairItemToQcDetail.cs" />
     <Compile Include="Production\DomainModels\TransferPackagingRepairItemToQcInfo.cs" />
@@ -398,6 +403,8 @@
     <Compile Include="Production\DTOModel\QCPassTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCPassTransferInformationDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeProblemDTO.cs" />
+    <Compile Include="Production\DTOModel\StockItemReturnDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\StockItemReturnInfoDTO.cs" />
     <Compile Include="Production\DTOModel\TempQRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockDetailDTO.cs" />
@@ -522,6 +529,8 @@
     <Compile Include="Production\ViewModels\QCPassTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QCPassTransferInformationViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeProblemViewModel.cs" />
+    <Compile Include="Production\ViewModels\StockItemReturnDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\StockItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TempQRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />

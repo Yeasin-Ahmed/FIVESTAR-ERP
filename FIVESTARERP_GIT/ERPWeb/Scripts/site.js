@@ -66,6 +66,14 @@ var execuStatus = {
     reqStatusFail: "Requisition status has been failed to change"
 };
 
+var stockReturnFlag = {
+    assemblyLine : "AssemblyLine",
+    assemblyRepair : "Assembly-Repair",
+    packagingLine : "PackagingLine",
+    packagingRepair : "Packaging-Repair"
+};
+
+
 function toggleAlert(msg) {
     var al = bootbox.alert(msg);
     al.show();

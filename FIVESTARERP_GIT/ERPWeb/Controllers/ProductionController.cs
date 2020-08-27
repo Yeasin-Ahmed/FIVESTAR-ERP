@@ -107,6 +107,7 @@ namespace ERPWeb.Controllers
         private readonly IPackagingFaultyStockDetailBusiness _packagingFaultyStockDetailBusiness;
         private readonly IIMEIGenerator _iMEIGenerator;
         private readonly IGeneratedIMEIBusiness _generatedIMEIBusiness;
+        private readonly IStockItemReturnInfoBusiness _stockItemReturnInfoBusiness;
         #endregion
 
         #region Inventory Business Classes
@@ -119,7 +120,7 @@ namespace ERPWeb.Controllers
         private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
         #endregion
 
-        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, ITransferFromQCInfoBusiness transferFromQCInfoBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferStockToPackagingLine2InfoBusiness transferStockToPackagingLine2InfoBusiness, ITransferStockToPackagingLine2DetailBusiness transferStockToPackagingLine2DetailBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, ITransferRepairItemToQcInfoBusiness transferRepairItemToQcInfoBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IPackagingItemStockInfoBusiness packagingItemStockInfoBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IRepairItemBusiness repairItemBusiness, IRepairSectionFaultyItemTransferInfoBusiness repairSectionFaultyItemTransferInfoBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IProductionFaultyStockDetailBusiness productionFaultyStockDetailBusiness, IProductionFaultyStockInfoBusiness productionFaultyStockInfoBusiness, IRepairSectionFaultyItemTransferDetailBusiness repairSectionFaultyItemTransferDetailBusiness, IQCPassTransferInformationBusiness qCPassTransferInformationBusiness, IProductionAssembleStockDetailBusiness productionAssembleStockDetailBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IProductionToPackagingStockTransferInfoBusiness productionToPackagingStockTransferInfoBusiness, IProductionToPackagingStockTransferDetailBusiness productionToPackagingStockTransferDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, IQRCodeProblemBusiness qRCodeProblemBusiness, IRequisitionItemInfoBusiness requisitionItemInfoBusiness, IRequisitionItemDetailBusiness requisitionItemDetailBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IQCPassTransferDetailBusiness qCPassTransferDetailBusiness, IMiniStockTransferInfoBusiness miniStockTransferInfoBusiness, IMiniStockTransferDetailBusiness miniStockTransferDetailBusiness, IIMEITransferToRepairInfoBusiness iMEITransferToRepairInfoBusiness, ITransferToPackagingRepairInfoBusiness transferToPackagingRepairInfoBusiness, ITransferToPackagingRepairDetailBusiness transferToPackagingRepairDetailBusiness, IPackagingRepairRawStockInfoBusiness packagingRepairRawStockInfoBusiness, IPackagingRepairRawStockDetailBusiness packagingRepairRawStockDetailBusiness, IPackagingRepairItemStockInfoBusiness packagingRepairItemStockInfoBusiness, IPackagingRepairItemStockDetailBusiness packagingRepairItemStockDetailBusiness, IIMEITransferToRepairDetailBusiness iMEITransferToRepairDetailBusiness, ITransferPackagingRepairItemToQcInfoBusiness transferPackagingRepairItemToQcInfoBusiness, ITransferPackagingRepairItemToQcDetailBusiness transferPackagingRepairItemToQcDetailBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness, IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness)
+        public ProductionController(IRequsitionInfoBusiness requsitionInfoBusiness, IWarehouseBusiness warehouseBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IItemBusiness itemBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IProductionStockDetailBusiness productionStockDetailBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsInfoBusiness finishGoodsInfoBusiness, IFinishGoodsRowMaterialBusiness finishGoodsRowMaterialBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAssemblyLineBusiness assemblyLineBusiness, ITransferStockToAssemblyInfoBusiness transferStockToAssemblyInfoBusiness, ITransferStockToAssemblyDetailBusiness transferStockToAssemblyDetailBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IQualityControlBusiness qualityControlBusiness, ITransferStockToQCInfoBusiness transferStockToQCInfoBusiness, ITransferStockToQCDetailBusiness transferStockToQCDetailBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IQCLineStockDetailBusiness qCLineStockDetailBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, ITransferFromQCInfoBusiness transferFromQCInfoBusiness, ITransferFromQCDetailBusiness transferFromQCDetailBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, ITransferStockToPackagingLine2InfoBusiness transferStockToPackagingLine2InfoBusiness, ITransferStockToPackagingLine2DetailBusiness transferStockToPackagingLine2DetailBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, ITransferRepairItemToQcInfoBusiness transferRepairItemToQcInfoBusiness, ITransferRepairItemToQcDetailBusiness transferRepairItemToQcDetailBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IQCItemStockDetailBusiness qCItemStockDetailBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IRepairItemStockDetailBusiness repairItemStockDetailBusiness, IPackagingItemStockInfoBusiness packagingItemStockInfoBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IRepairItemBusiness repairItemBusiness, IRepairSectionFaultyItemTransferInfoBusiness repairSectionFaultyItemTransferInfoBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IProductionFaultyStockDetailBusiness productionFaultyStockDetailBusiness, IProductionFaultyStockInfoBusiness productionFaultyStockInfoBusiness, IRepairSectionFaultyItemTransferDetailBusiness repairSectionFaultyItemTransferDetailBusiness, IQCPassTransferInformationBusiness qCPassTransferInformationBusiness, IProductionAssembleStockDetailBusiness productionAssembleStockDetailBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IProductionToPackagingStockTransferInfoBusiness productionToPackagingStockTransferInfoBusiness, IProductionToPackagingStockTransferDetailBusiness productionToPackagingStockTransferDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, IQRCodeProblemBusiness qRCodeProblemBusiness, IRequisitionItemInfoBusiness requisitionItemInfoBusiness, IRequisitionItemDetailBusiness requisitionItemDetailBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IQCPassTransferDetailBusiness qCPassTransferDetailBusiness, IMiniStockTransferInfoBusiness miniStockTransferInfoBusiness, IMiniStockTransferDetailBusiness miniStockTransferDetailBusiness, IIMEITransferToRepairInfoBusiness iMEITransferToRepairInfoBusiness, ITransferToPackagingRepairInfoBusiness transferToPackagingRepairInfoBusiness, ITransferToPackagingRepairDetailBusiness transferToPackagingRepairDetailBusiness, IPackagingRepairRawStockInfoBusiness packagingRepairRawStockInfoBusiness, IPackagingRepairRawStockDetailBusiness packagingRepairRawStockDetailBusiness, IPackagingRepairItemStockInfoBusiness packagingRepairItemStockInfoBusiness, IPackagingRepairItemStockDetailBusiness packagingRepairItemStockDetailBusiness, IIMEITransferToRepairDetailBusiness iMEITransferToRepairDetailBusiness, ITransferPackagingRepairItemToQcInfoBusiness transferPackagingRepairItemToQcInfoBusiness, ITransferPackagingRepairItemToQcDetailBusiness transferPackagingRepairItemToQcDetailBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness, IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness)
         {
             #region Production
             this._requsitionInfoBusiness = requsitionInfoBusiness;
@@ -202,6 +203,7 @@ namespace ERPWeb.Controllers
             this._packagingFaultyStockDetailBusiness = packagingFaultyStockDetailBusiness;
             this._iMEIGenerator = iMEIGenerator;
             this._generatedIMEIBusiness = generatedIMEIBusiness;
+            this._stockItemReturnInfoBusiness = stockItemReturnInfoBusiness;
             #endregion
 
             #region Inventory
@@ -3406,9 +3408,8 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Repair Spare parts group
-        public ActionResult GetRepairLineStockInfo(string flag, long? lineId, long? repairId, long? qcId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, int page = 1)
+        public ActionResult GetRepairLineStockInfo(string flag, long? lineId, long? repairId, long? qcId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq,long? returnId, string status,string returnCode, string fromDate,string toDate, int page = 1)
         {
-            //ViewBag.UserPrivilege = UserPrivilege("Production", "GetRepairLineStockInfo");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
@@ -3435,10 +3436,9 @@ namespace ERPWeb.Controllers
 
                 return View();
             }
-            else
+            else if(!string.IsNullOrEmpty(flag) && flag=="search")
             {
                 IEnumerable<RepairLineStockInfoDTO> dto = _repairLineStockInfoBusiness.GetRepairLineStockInfosQuery(lineId, modelId, qcId, repairId, warehouseId, itemTypeId, itemId, lessOrEq, User.OrgId);
-
                 // Pagination //
                 //ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
                 //dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -3447,8 +3447,41 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetRepairLineStockInfo", viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag == "StockReturnList")
+            {
+                var dto = _stockItemReturnInfoBusiness.GetStockItemReturnInfosByQuery(modelId, lineId, repairId, null, null, warehouseId, returnId, returnCode, StockRetunFlag.AssemblyRepair, status, fromDate, toDate, User.OrgId);
+
+                List<StockItemReturnInfoViewModel> viewModels = new List<StockItemReturnInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+
+                return PartialView("_GetStockReturnList", viewModels);
+            }
+            return View();
         }
 
+        public ActionResult CreateRepairStockReturn()
+        {
+            ViewBag.ddlRepairLineWithProduction = _repairLineBusiness.GetRepairLineWithFloor(User.OrgId).Select(s => new SelectListItem
+            {
+                Text = s.text,
+                Value = s.value
+            }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(s => new SelectListItem
+            {
+                Text = s.DescriptionName,
+                Value = s.DescriptionId.ToString()
+            }).ToList();
+            return View();
+        }
+        
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetRepairStockItemsForReturn(long repairLinesId, long floorId, long modelId)
+        {
+            var data = _repairLineStockInfoBusiness.GetRepairLineStocksForReturnStock(repairLinesId, floorId, modelId, User.OrgId);
+            IEnumerable<RepairLineStockInfoViewModel> viewModels = new List<RepairLineStockInfoViewModel>();
+            AutoMapper.Mapper.Map(data, viewModels);
+            return PartialView(viewModels);
+        }
 
         #endregion
 
@@ -4190,7 +4223,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Assembly-QC
-        public ActionResult GetAssemblyLineStockInfoFS(string flag, long? lineId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long? reqInfoId, int page = 1)
+        public ActionResult GetAssemblyLineStockInfoFS(string flag, long? lineId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long? reqInfoId,long? returnId,string returnCode,string status,string fromDate,string toDate, int page = 1)
         {
             //ViewBag.UserPrivilege = UserPrivilege("Production", "GetAssemblyLineStockInfo");
             if (string.IsNullOrEmpty(flag))
@@ -4228,6 +4261,15 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetAssemblyLineStockInfoFS", viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() !="" && flag == "StockReturnList")
+            {
+               var dto = _stockItemReturnInfoBusiness.GetStockItemReturnInfosByQuery(modelId, lineId, assemblyId, null, null, warehouseId, returnId, returnCode, StockRetunFlag.AssemblyLine, status, fromDate, toDate, User.OrgId);
+
+                List<StockItemReturnInfoViewModel> viewModels = new List<StockItemReturnInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+
+                return PartialView("_GetStockReturnList",viewModels);
+            }
             return View();
         }
 
@@ -4255,6 +4297,41 @@ namespace ERPWeb.Controllers
             return new EmptyResult();
         }
 
+        public ActionResult CreateAssemblyStockReturn()
+        {
+            ViewBag.ddlAssemblyLineWithProduction = _assemblyLineBusiness.GetAssemblyLinesWithProduction(User.OrgId).Select(s => new SelectListItem
+            {
+                Text = s.text,
+                Value = s.value
+            }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(s => new SelectListItem
+            {
+                Text = s.DescriptionName,
+                Value = s.DescriptionId.ToString()
+            }).ToList();
+            return View();
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GetAssemblyStockItemsForReturn(long assemblyId, long floorId, long modelId)
+        {
+            var data = _assemblyLineStockInfoBusiness.GetAssemblyLineStocksForReturnStock(assemblyId, floorId, modelId, User.OrgId);
+            IEnumerable<AssemblyLineStockInfoViewModel> viewModels = new List<AssemblyLineStockInfoViewModel>();
+            AutoMapper.Mapper.Map(data, viewModels);
+            return PartialView(viewModels);
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveStockReturnItems(List<StockItemReturnDetailViewModel> model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid && model.Count > 0)
+            {
+                List<StockItemReturnDetailDTO> dto = new List<StockItemReturnDetailDTO>();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess =_stockItemReturnInfoBusiness.SaveStockItemReturn(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         #region IMEI Write/Update against *QRCODE* In Packaging Section
@@ -4266,6 +4343,19 @@ namespace ERPWeb.Controllers
                 Value = s.value
             }).ToList();
             return View();
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public async Task<ActionResult> SaveQRCodeIEMIAsync(IMEIWriteViewModel model)
+        {
+            var IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                IMEIWriteDTO dto = new IMEIWriteDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = await _tempQRCodeTraceBusiness.SaveQRCodeIEMIAsync(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
         }
 
         [HttpPost,ValidateJsonAntiForgeryToken]
@@ -4298,18 +4388,8 @@ namespace ERPWeb.Controllers
             }
             return Json(data);
         }
-        [HttpPost, ValidateJsonAntiForgeryToken]
-        public async Task<ActionResult> SaveQRCodeIEMIAsync(IMEIWriteViewModel model)
-        {
-            var IsSuccess = false;
-            if (ModelState.IsValid)
-            {
-                IMEIWriteDTO dto = new IMEIWriteDTO();
-                AutoMapper.Mapper.Map(model, dto);
-                IsSuccess = await _tempQRCodeTraceBusiness.SaveQRCodeIEMIAsync(dto, User.UserId, User.OrgId);
-            }
-            return Json(IsSuccess);
-        }
+
+        
         #endregion
 
         #region Battery Code //
@@ -4813,7 +4893,6 @@ namespace ERPWeb.Controllers
                 var dto = _finishGoodsSendToWarehouseDetailBusiness.GetFinishGoodsSendToWarehouseDetailsByQuery(null, null,null,string.Empty,string.Empty,transferId,string.Empty, User.OrgId);
                 List<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
-
                 return PartialView("_GetFinishGoodsTransferDetail", viewModels);
             }
             return View();

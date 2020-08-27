@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairLineStockInfoViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg tblRepairReturnItems" id="tblRepairReturnItems">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th style="vertical-align:middle">
+                        <input type="checkbox" id="chkAll" class="chkAll" name="allItem"/>
+                    </th>
+                    <th>#SL</th>
+                    <th>Item Name</th>
+                    <th>Current Stock</th>
+                    <th>Return Qty</th>
+                    <th>Type Of Unit</th>
+                    <th class="warehouse hide"></th>
+                    <th class="itemType hide"></th>
+                    <th class="item hide"></th>
+                    <th class="unit hide"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl++;
+                    string itemName = item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]";
+                    int currentStock = (item.StockInQty - item.StockOutQty).Value;
+                    <tr data-item-row="notSelected">
+                        <td class="btn-dark text-center" style="vertical-align:middle;width:5%">
+                            <input type="checkbox" class="chkItem" name="item"/>
+                        </td>
+                        <td class="text-center text-bold" style="vertical-align:middle;width:5%">@sl</td>
+                        <td style="vertical-align:middle;width:60%">@itemName</td>
+                        <td style="width:10%" class="text-center text-bold">@currentStock</td>
+                        <td style="width:10%">
+                            <input type="number" class="form-control form-control-sm" value="0" />
+                        </td>
+                        <td class="text-center text-bold" style="width:10%">@item.UnitName</td>
+                        <td class="warehouse hide">@item.WarehouseId</td>
+                        <td class="itemType hide">@item.ItemTypeId</td>
+                        <td class="item hide">@item.ItemId</td>
+                        <td class="unit hide">@item.UnitId</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

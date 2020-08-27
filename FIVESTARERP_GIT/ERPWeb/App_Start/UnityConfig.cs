@@ -27,7 +27,7 @@ namespace ERPWeb
     {
         public static void RegisterComponents()
         {
-			var container = new UnityContainer();
+            var container = new UnityContainer();
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();
@@ -48,7 +48,7 @@ namespace ERPWeb
             container.RegisterType<IRepairStockDetailBusiness, RepairStockDetailBusiness>();
             container.RegisterType<IItemPreparationInfoBusiness, ItemPreparationInfoBusiness>();
             container.RegisterType<IItemPreparationDetailBusiness, ItemPreparationDetailBusiness>();
-            container.RegisterType<ISupplierBusiness,SupplierBusiness>();
+            container.RegisterType<ISupplierBusiness, SupplierBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
 
@@ -102,7 +102,7 @@ namespace ERPWeb
             container.RegisterType<IFaultyItemStockDetailBusiness, FaultyItemStockDetailBusiness>();
             container.RegisterType<IFaultyCaseBusiness, FaultyCaseBusiness>();
             container.RegisterType<IRepairItemBusiness, RepairItemBusiness>();
-            container.RegisterType<IRepairSectionFaultyItemTransferInfoBusiness, RepairSectionFaultyItemTransferInfoBusiness>();            
+            container.RegisterType<IRepairSectionFaultyItemTransferInfoBusiness, RepairSectionFaultyItemTransferInfoBusiness>();
             container.RegisterType<IRepairSectionRequisitionInfoBusiness, RepairSectionRequisitionInfoBusiness>();
             container.RegisterType<IRepairSectionRequisitionDetailBusiness, RepairSectionRequisitionDetailBusiness>();
             container.RegisterType<IProductionFaultyStockDetailBusiness, ProductionFaultyStockDetailBusiness>();
@@ -115,7 +115,7 @@ namespace ERPWeb
             container.RegisterType<IProductionToPackagingStockTransferDetailBusiness, ProductionToPackagingStockTransferDetailBusiness>();
             container.RegisterType<IQRCodeTransferToRepairInfoBusiness, QRCodeTransferToRepairInfoBusiness>();
             container.RegisterType<IQRCodeProblemBusiness, QRCodeProblemBusiness>();
-            container.RegisterType<IRequisitionItemInfoBusiness, RequisitionItemInfoBusiness>();            
+            container.RegisterType<IRequisitionItemInfoBusiness, RequisitionItemInfoBusiness>();
             container.RegisterType<IRequisitionItemDetailBusiness, RequisitionItemDetailBusiness>();
             container.RegisterType<ITempQRCodeTraceBusiness, TempQRCodeTraceBusiness>();
             container.RegisterType<IQCPassTransferDetailBusiness, QCPassTransferDetailBusiness>();
@@ -135,6 +135,7 @@ namespace ERPWeb
             container.RegisterType<IPackagingFaultyStockDetailBusiness, PackagingFaultyStockDetailBusiness>();
             container.RegisterType<IIMEIGenerator, IMEIGenerator>();
             container.RegisterType<IGeneratedIMEIBusiness, GeneratedIMEIBusiness>();
+            container.RegisterType<IStockItemReturnInfoBusiness, StockItemReturnInfoBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 

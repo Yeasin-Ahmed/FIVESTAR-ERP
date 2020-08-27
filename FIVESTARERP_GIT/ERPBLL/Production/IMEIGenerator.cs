@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
+using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DTOModel;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
@@ -41,10 +42,49 @@ namespace ERPBLL.Production
             this._tempQRCodeTraceRepository = new TempQRCodeTraceRepository(this._productionDb);
         }
 
+        // Demon //
+        public IMEIListWithSerial IMEIGeneratedList(long modelId, long tac, long serial, int noOfSim, int noOfHandset,long userId, long orgId)
+        {
+            IMEIListWithSerial iMEIListWithSerial = new IMEIListWithSerial();
+            List<HandSetIMEI> IMEIs = new List<HandSetIMEI>();
+
+            long startingNumber = 0;
+            string allNewImei = string.Empty;
+            long newSl = serial;
+            startingNumber = serial; //+ 1;
+            
+            long s5 = serial;
+            long stser = 0;
+            for (int k = 0; k < noOfHandset; k++)
+            {
+                string value1 = "";
+                HandSetIMEI handSet = new HandSetIMEI();
+                handSet.SetIMEI = new List<string>();
+                for (int m = 0; m < noOfSim * 1; m++)
+                {
+                    stser = s5 + m;
+                    value1 = tac + "" + stser.ToString().PadLeft(6, '0');
+
+                    if (value1.Length == 14)
+                    {
+                        string newImei = IMEIGenerate(value1);
+                        handSet.SetIMEI.Add(newImei);
+                        newSl++;
+                        allNewImei += newImei + ",";
+                    }
+                }
+                s5 = stser;
+                IMEIs.Add(handSet);
+                s5++;
+            }
+            iMEIListWithSerial.HandSetIMEIs = IMEIs;
+            iMEIListWithSerial.Serial = newSl;
+            return iMEIListWithSerial;
+        }
+        // Main //
         public List<string> IMEIGenerateByQRCode(string qrCode, int noOfSim, long userId, long orgId)
         {
             List<string> IMEIs = new List<string>();
-           
             long startingNumber = 0;
             var qrCodeInfo = _tempQRCodeTraceBusiness.GetTempQRCodeTraceByCode(qrCode, orgId);
             if(qrCodeInfo != null)
@@ -54,15 +94,18 @@ namespace ERPBLL.Production
                 long newSl = Utility.TryParseInt(model.EndPoint.ToString());
                 if(model != null && !string.IsNullOrEmpty(model.TAC) && model.TAC.Trim() != "")
                 {
-                    startingNumber = Utility.TryParseInt(model.EndPoint.ToString()) +1;
+                    startingNumber = Utility.TryParseInt(model.EndPoint.ToString()) ;
+                    long s5 = startingNumber;
                     long stser = 0;
                     for (int k = 0; k < 1; k++)
                     {
                         string value1 = "";
                         for (int m = 0; m < noOfSim*1; m++)
                         {
-                            stser = startingNumber + m;
+
+                            stser = s5 + m;
                             value1 = model.TAC + "" + stser.ToString().PadLeft(6, '0');
+
                             if(value1.Length == 14)
                             {
                                 string newImei = IMEIGenerate(value1);
@@ -71,6 +114,8 @@ namespace ERPBLL.Production
                                 allNewImei += newImei + ",";
                             }
                         }
+                        s5 = stser;
+                        s5++;
                     }
                     if (IMEIs.Count > 0)
                     {
@@ -82,7 +127,7 @@ namespace ERPBLL.Production
                             new GeneratedIMEIDTO(){
                               FloorId=qrCodeInfo.ProductionFloorId,ProductionFloorName=qrCodeInfo.ProductionFloorName,AssemblyLineId=qrCodeInfo.AssemblyId,AssemblyLineName=qrCodeInfo.AssemblyLineName,QRCode=qrCodeInfo.CodeNo,DescriptionId=qrCodeInfo.DescriptionId.Value,CodeId=qrCodeInfo.CodeId,DescriptionName=qrCodeInfo.ModelName,IMEI=allNewImei,OrganizationId=orgId,EUserId=userId }
                         };
-                        
+
                         _generatedIMEIBusiness.SaveGeneratedIMEI(imeiList, userId, orgId);
                         qrCodeInfo.IMEI = allNewImei;
                         _tempQRCodeTraceRepository.Update(qrCodeInfo);
@@ -93,6 +138,7 @@ namespace ERPBLL.Production
             return IMEIs;
         }
 
+        // Generator Main Method//
         private string IMEIGenerate(string value1)
         {
             string imei;
@@ -234,6 +280,11 @@ namespace ERPBLL.Production
             a14 = mod;
             imei = value1.ToString() + a14;
             return imei;
+        }
+
+        List<string> IIMEIGenerator.IMEIGenerate(long modelId, long tac, long serial, int noOfSim, int noOfHandset, long userId, long orgId)
+        {
+            throw new NotImplementedException();
         }
     }
 

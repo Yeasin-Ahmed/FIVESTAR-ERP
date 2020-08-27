@@ -154,4 +154,12 @@ namespace ERPBLL.Common
         public static readonly string WalkInCustomer = "Walk In Customer";
         public static readonly string Dealer = "Dealer";
     }
+
+    public class StockRetunFlag
+    {
+        public static readonly string AssemblyLine = "AssemblyLine";
+        public static readonly string AssemblyRepair = "Assembly-Repair";
+        public static readonly string PackagingLine = "PackagingLine";
+        public static readonly string PackagingRepair = "Packaging-Repair";
+    }
 }

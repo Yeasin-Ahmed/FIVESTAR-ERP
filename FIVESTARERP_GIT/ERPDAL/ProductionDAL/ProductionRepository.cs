@@ -449,10 +449,25 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
-    //GeneratedIMEI
     public class GeneratedIMEIRepository : ProductionBaseRepository<GeneratedIMEI>
     {
         public GeneratedIMEIRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class StockItemReturnInfoRepository : ProductionBaseRepository<StockItemReturnInfo>
+    {
+        public StockItemReturnInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
+
+    public class StockItemReturnDetailRepository : ProductionBaseRepository<StockItemReturnDetail>
+    {
+        public StockItemReturnDetailRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
         {
 
         }

@@ -167,6 +167,37 @@ namespace ERPBLL.Production
             return _packagingRepairRawStockDetailRepository.Save();
         }
 
+        public bool SavePackagingRepairRawStockReturn(List<PackagingRepairRawStockDetailDTO> stockDetailDTOs, long userId, long orgId)
+        {
+            List<PackagingRepairRawStockDetail> packagingRepairRawStockDetails = new List<PackagingRepairRawStockDetail>();
+            foreach (var item in stockDetailDTOs)
+            {
+                PackagingRepairRawStockDetail stockDetail = new PackagingRepairRawStockDetail();
+                stockDetail.PackagingLineId = item.PackagingLineId;
+                stockDetail.FloorId = item.FloorId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockReturn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var packagingStockInfo = _packagingRepairRawStockInfoBusiness.GetPackagingRepairRawStockInfoByPackagingLineAndModelAndItem(item.FloorId.Value, item.PackagingLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
+                packagingStockInfo.StockOutQty += item.Quantity;
+                _packagingRepairRawStockInfoRepository.Update(packagingStockInfo);
+                packagingRepairRawStockDetails.Add(stockDetail);
+            }
+            _packagingRepairRawStockDetailRepository.InsertAll(packagingRepairRawStockDetails);
+            return _packagingRepairRawStockDetailRepository.Save();
+        }
+
         public async Task<bool> SavePackagingRepairRawStockOutAsync(List<PackagingRepairRawStockDetailDTO> stockDetailDTOs, long userId, long orgId)
         {
             List<PackagingRepairRawStockDetail> packagingRepairRawStockDetails = new List<PackagingRepairRawStockDetail>();

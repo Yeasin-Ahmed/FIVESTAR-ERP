@@ -14,10 +14,7 @@
                         <a class="nav-link" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Spare Parts Stock</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Item Transfer List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Transfer Item</a>
+                        <a class="nav-link" id="custom-tabs-two-stockReturnList-tab" data-toggle="pill" href="#custom-tabs-two-stockReturnList" role="tab" aria-controls="custom-tabs-two-stockReturnList" aria-selected="true">Stock Return List</a>
                     </li>
                 </ul>
             </div>
@@ -96,8 +93,12 @@
                                 <div class="card card-navy">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("ReceiveSparePartsFromProductionRequisitionInAssembly", new { @flag = "Info" });}
+                                            <div class="col-md-12">
+                                                <div class="text-center text-bold hide" id="loader1">
+                                                    <h6>Loading....</h6>
+                                                </div>
+                                                <div class="col-md-12" id="dataContainer2">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -163,17 +164,20 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-
-                                        </div>
-                                        <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("GetAssemblyLineStockInfo", new { flag = "View" });}
+                                            <div class="col-md-12">
+                                                <div class="text-center text-bold hide" id="loader2">
+                                                    <h6>Loading....</h6>
+                                                </div>
+                                                <div class="col-md-12" id="dataContainer1">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-transferList" role="tabpanel" aria-labelledby="custom-tabs-two-transferList-tab">
+                    <div class="tab-pane fade show" id="custom-tabs-two-stockReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-stockReturnList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -183,10 +187,13 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    Transfer List
+                                                    Stock Return List
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
+                                                <a href="@Url.Action("CreateAssemblyStockReturn","Production")" class="btn btn-flat btn-secondary btn-sm float-right">
+                                                    <i class="fas fa-minus"> Stock Return</i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -216,37 +223,11 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer3">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
+                                        <div class="col-md-12">
+                                            <div class="text-center text-bold" id="loader3">
+                                                <h6>Loading....</h6>
                                             </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-bold  text-center">
-                                                    Stock Transfer To Assembly
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 mt-2">
+                                            <div class="col-md-12" id="dataContainer3">
 
                                             </div>
                                         </div>
@@ -255,6 +236,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -311,8 +293,6 @@
                 theme: 'bootstrap4'
             });
 
-            
-
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
@@ -330,7 +310,15 @@
 
             $(".transferFor").addClass('hide');
             $(".repairLine").addClass('hide');
+
+            LoadInitialize();
         })
+
+        function LoadInitialize() {
+            LoadDataTableReceiveList();
+            LoadDataTableStockInfo();
+            LoadStockReturnData();
+        }
 
         // Stock Info
 
@@ -370,6 +358,7 @@
         })
 
         function LoadDataTableStockInfo() {
+            $("#loader2").removeClass("hide");
             getItemDetailsByStock();
             var data = { flag: "search", lineId: ddlLineNumberStockInfo.val(), assemblyId: ddlAssemblyStockInfo.val(), modelId: ddlModelNameStockInfo.val(), warehouseId: warehouseStock, itemTypeId: itemTypeStock, itemId: itemStock, lessOrEq: txtLessOrEq.val(), page: pageNo };
 
@@ -381,8 +370,10 @@
                         $("#dataContainer1").append(res).fadeIn('500');
                     });
                 }
+                $("#loader2").addClass("hide");
             }).fail(function (error) {
                 console.log(error);
+                $("#loader2").addClass("hide");
             });
             pageNo = 1;
         }
@@ -440,9 +431,10 @@
         })
 
         function LoadDataTableReceiveList() {
+            $("#loader1").removeClass("hide");
             getProductionFloorAndAssembly();
             //reqInfoId
-            var data = { flag: "info", floorId: floorList, transferFor: "Assembly", repairLineId: 0, assemblyId: assmblyList, modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, reqFlag:"Direct" };
+            var data = { flag: "info", floorId: floorList, transferFor: "Assembly", repairLineId: 0, assemblyId: assmblyList, modelId: TryParseInt(ddlModelNameReceiveList.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReceiveList.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, reqFlag: "Direct" };
 
             $.when(getReqWithData('html', 'GET', '/Production/ReceiveSparePartsFromProductionRequisitionInAssembly', data)).then(function (res, status) {
                 console.log(status);
@@ -454,9 +446,12 @@
                         //$(".repairLine").addClass('hide');
                     });
                 }
+                $("#loader1").addClass("hide");
             }).fail(function (error) {
                 console.log(error);
+                $("#loader1").addClass("hide");
             });
+
             //pageNo = 1;
         }
 
@@ -474,7 +469,7 @@
                 reqInfoId: TryParseInt($(this).attr("data-details"), 0)
             };
             var idx = $(this).parent().parents('tr').index();
-           
+
             $.when(getReqWithData('html', 'GET', '/Production/ReceiveSparePartsFromProductionRequisitionInAssembly', data)).then(function (res, status) {
                 if (status == "success") {
                     OpenModal();
@@ -500,7 +495,7 @@
                 if (res === true && status === "success") {
                     $("#modalReqDetails").modal("toggle").toggle("fast");
                     hdfInfoId.val('0');
-                    fnRemoveARowFromTbody(".tblReqInfo",hdfRowIndex.val())
+                    fnRemoveARowFromTbody(".tblReqInfo", hdfRowIndex.val())
                     $('.toastrDefaultSuccess').trigger('click');
 
                     setTimeout(function () {
@@ -513,6 +508,26 @@
             })
         }
 
-       
+
+        // Stock Return List //
+        function LoadStockReturnData() {
+            $("#loader3").removeClass("hide");
+            var data = { flag: "StockReturnList" }
+            $.when(getReqWithData('html', 'GET', '/Production/GetAssemblyLineStockInfoFS', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                        $(".flag").addClass('hide');
+                    });
+                }
+                $("#loader3").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader3").addClass("hide");
+            });
+        }
+
     </script>
 }

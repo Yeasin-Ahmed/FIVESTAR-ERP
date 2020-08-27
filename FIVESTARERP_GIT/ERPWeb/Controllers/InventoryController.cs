@@ -74,10 +74,12 @@ namespace ERPWeb.Controllers
         private readonly IPackagingLineBusiness _packagingLineBusiness;
         private readonly IRepairSectionRequisitionInfoBusiness _repairSectionRequisitionInfoBusiness;
         private readonly IRepairSectionRequisitionDetailBusiness _repairSectionRequisitionDetailBusiness;
+        private readonly IGeneratedIMEIBusiness _generatedIMEIBusiness;
+        private readonly IIMEIGenerator _iMEIGenerator;
         #endregion
 
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb, IPackagingLineBusiness packagingLineBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness)
         {
             #region Inventory
             this._inventoryDb = inventoryDb;
@@ -114,9 +116,40 @@ namespace ERPWeb.Controllers
             this._repairLineBusiness = repairLineBusiness;
             this._repairSectionRequisitionDetailBusiness = repairSectionRequisitionDetailBusiness;
             this._packagingLineBusiness = packagingLineBusiness;
+            this._iMEIGenerator = iMEIGenerator;
+            this._generatedIMEIBusiness = generatedIMEIBusiness;
             #endregion
-
         }
+        #region IMEI Generate
+        public ActionResult GetIMEIGenerator()
+        {
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Where(s=> s.DescriptionName == "Mi10").Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+            return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult GenerateIMEI(long modelId, long tac, long serial, int noOfSim, int noOfHandset)
+        {
+            IMEIListWithSerial iMEIListWithSerial = new IMEIListWithSerial();
+            if (modelId > 0 && tac> 0 && serial >= 0 && noOfSim > 0 && noOfHandset > 0 )
+            {
+                iMEIListWithSerial = _iMEIGenerator.IMEIGeneratedList(modelId, tac, serial, noOfSim, noOfHandset,User.UserId,User.OrgId);
+            }
+            return Json(iMEIListWithSerial);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveGeneratedIMEI(CommitGeneratedIMEIViewModel info)
+        {
+            bool IsSuccess = false;
+            if(info.IMEIs.Count > 0)
+            {
+                CommitGeneratedIMEIDTO dto = new CommitGeneratedIMEIDTO();
+                AutoMapper.Mapper.Map(info, dto);
+                IsSuccess= _generatedIMEIBusiness.SaveGeneratedIMEIByUser(dto,User.UserId,User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
 
         // GET: Account
         #region Description
@@ -1381,7 +1414,7 @@ namespace ERPWeb.Controllers
 
         public ActionResult _GetWarehousePartialList()
         {
-            IEnumerable<WarehouseDTO> dto = _warehouseBusiness.GetAllWarehouseByOrgId(1).Select(ware => new WarehouseDTO
+            IEnumerable<WarehouseDTO> dto = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new WarehouseDTO
             {
                 Id = ware.Id,
                 WarehouseName = ware.WarehouseName,
@@ -1483,7 +1516,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
 
-            var allData = _itemBusiness.GetAllItemByOrgId(1);
+            var allData = _itemBusiness.GetAllItemByOrgId(User.OrgId);
             IEnumerable<ItemDomainDTO> dto = allData.Select(item => new ItemDomainDTO
             {
                 ItemId = item.ItemId,
@@ -1510,7 +1543,7 @@ namespace ERPWeb.Controllers
         [HttpGet]
         public ActionResult GetIQCList()
         {
-            IEnumerable<IQCDTO> dto = _iQCBusiness.GetAllIQCByOrgId(1).Select(iqc => new IQCDTO
+            IEnumerable<IQCDTO> dto = _iQCBusiness.GetAllIQCByOrgId(User.OrgId).Select(iqc => new IQCDTO
             {
                 Id = iqc.Id,
                 IQCName = iqc.IQCName,

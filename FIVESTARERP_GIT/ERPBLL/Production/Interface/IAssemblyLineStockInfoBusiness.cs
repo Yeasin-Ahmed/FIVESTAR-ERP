@@ -15,5 +15,7 @@ namespace ERPBLL.Production.Interface
         AssemblyLineStockInfo GetAssemblyLineStockInfoByAssemblyAndItemAndModelId(long assemblyId, long itemId,long modelId ,long orgId);
         Task<AssemblyLineStockInfo> GetAssemblyLineStockInfoByAssemblyAndItemAndModelIdAsync(long assemblyId, long itemId, long modelId, long orgId);
         IEnumerable<AssemblyLineStockInfoDTO> GetAssemblyLineStockInfosByQuery(long? floorId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId);
+
+        IEnumerable<AssemblyLineStockInfoDTO> GetAssemblyLineStocksForReturnStock(long assemblyId, long floorId, long modelId, long orgId);
     }
 }

@@ -14,5 +14,6 @@ namespace ERPBLL.Production.Interface
         bool SaveAssemblyLineStockOut(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId,string flag);
         Task<bool> SaveAssemblyLineStockInAsync(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId);
         Task<bool> SaveAssemblyLineStockOutAsync(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId, string flag);
+        bool SaveAssemblyLineStockReturn(List<AssemblyLineStockDetailDTO> assemblyLineStockDetailDTO, long userId, long orgId, string flag);
     }
 }

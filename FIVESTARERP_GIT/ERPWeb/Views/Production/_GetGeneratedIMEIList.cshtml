@@ -11,9 +11,9 @@
                     <th>#SL</th>
                     <th>Model</th>
                     <th>IMEI</th>
-                    <th>QR Code</th>
-                    <th>Floor</th>
-                    <th>Assembly Line</th>
+                    <th class="hide">QR Code</th>
+                    <th class="hide">Floor</th>
+                    <th class="hide">Assembly Line</th>
                     <th>Entry User</th>
                     <th>Entry Date</th>
                 </tr>
@@ -26,9 +26,9 @@
                         <td class="text-center text-bold">@sl</td>
                         <td class="text-center text-bold">@item.DescriptionName</td>
                         <td>@item.IMEI</td>
-                        <td>@item.QRCode</td>
-                        <td>@item.ProductionFloorName</td>
-                        <td>@item.AssemblyLineName</td>
+                        <td class="hide">@item.QRCode</td>
+                        <td class="hide">@item.ProductionFloorName</td>
+                        <td class="hide">@item.AssemblyLineName</td>
                         <td>@item.EntryUser</td>
                         <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
                     </tr>

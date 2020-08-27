@@ -587,6 +587,10 @@
     <Compile Include="ProductionContextMigrations\202008241047044_Production_AddGeneratedIMEITable.Designer.cs">
       <DependentUpon>202008241047044_Production_AddGeneratedIMEITable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202008270544236_Production_AddStockItemReturn.cs" />
+    <Compile Include="ProductionContextMigrations\202008270544236_Production_AddStockItemReturn.Designer.cs">
+      <DependentUpon>202008270544236_Production_AddStockItemReturn.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -972,6 +976,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202008241047044_Production_AddGeneratedIMEITable.resx">
       <DependentUpon>202008241047044_Production_AddGeneratedIMEITable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202008270544236_Production_AddStockItemReturn.resx">
+      <DependentUpon>202008270544236_Production_AddStockItemReturn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
