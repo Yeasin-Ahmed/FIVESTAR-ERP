@@ -15,7 +15,6 @@ namespace ERPBLL.Inventory.Interface
         bool SaveWarehouseStockOutByProductionRequistion(long reqId,string status , long orgId, long userId);
         bool SaveWarehouseStockOut(List<WarehouseStockDetailDTO> warehouseStockDetailDTOs, long userId, long orgId, string flag);
         bool SaveWarehouseStockInByProductionItemReturn(long irInfoId, string status, long orgId, long userId);
-
         IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long? supplierId,long orgId);
     }
 }

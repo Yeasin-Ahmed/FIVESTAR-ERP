@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<ERPBO.Inventory.ViewModels.DescriptionViewModel>
 @{
     ViewBag.Title = "Description List";
-    int sl = 0;
     string badge = string.Empty;
-
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
 }
 
 <div class="row text-sm">
@@ -58,8 +58,7 @@
             </tbody>
         </table>
     </div>
+    <div class="col-md-12 description">
+        @Html.Partial("_Pagination", pagerData)
+    </div>
 </div>
-
-
-
-

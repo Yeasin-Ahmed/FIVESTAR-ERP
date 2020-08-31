@@ -136,6 +136,7 @@ namespace ERPWeb
             container.RegisterType<IIMEIGenerator, IMEIGenerator>();
             container.RegisterType<IGeneratedIMEIBusiness, GeneratedIMEIBusiness>();
             container.RegisterType<IStockItemReturnInfoBusiness, StockItemReturnInfoBusiness>();
+            container.RegisterType<IStockItemReturnDetailBusiness, StockItemReturnDetailBusiness>();
             container.RegisterType<IProductionUnitOfWork, ProductionUnitOfWork>();
             #endregion
 

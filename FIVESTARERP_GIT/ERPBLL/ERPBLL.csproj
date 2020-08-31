@@ -239,6 +239,7 @@
     <Compile Include="Production\Interface\IProductionAssembleStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IStockItemReturnDetailBusiness.cs" />
     <Compile Include="Production\Interface\IStockItemReturnInfoBusiness.cs" />
     <Compile Include="Production\Interface\ITempQRCodeTraceBusiness.cs" />
     <Compile Include="Production\Interface\ITransferPackagingRepairItemToQcDetailBusiness.cs" />
@@ -359,6 +360,7 @@
     <Compile Include="Production\RequsitionInfoBusiness.cs" />
     <Compile Include="Inventory\UnitBusiness.cs" />
     <Compile Include="Inventory\WarehouseBusiness.cs" />
+    <Compile Include="Production\StockItemReturnDetailBusiness.cs" />
     <Compile Include="Production\StockItemReturnInfoBusiness.cs" />
     <Compile Include="Production\TempQRCodeTraceBusiness.cs" />
     <Compile Include="Production\TransferPackagingRepairItemToQcDetailBusiness.cs" />

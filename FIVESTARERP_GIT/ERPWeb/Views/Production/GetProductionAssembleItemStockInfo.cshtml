@@ -449,7 +449,7 @@
 
         $(document).on('click', 'a.data-qcPass-item-detail', function (e) {
             e.preventDefault();
-            var id = $(this).attr("data-qcPass-item-detail");
+            var id = $(this).attr("data-item-val");
             if (id > 0) {
                 var data = { flag: "detail", floorId: 0, assemblyId: 0, modelId: 0, qcId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, status: '', qcPassCode: '', qcPassId: TryParseInt(id, 0), fromDate: '', toDate: '' };
                 $.when(getReqWithData('html', 'GET', '/Production/GetQCPassList', data)).then(function (res, status) {
@@ -468,7 +468,7 @@
         $(document).on('click', 'a.data-item-receive', function (e) {
             e.preventDefault();
             hdfQCPassId.val('0');
-            var id = $(this).attr('data-qcPass-item-detail');
+            var id = $(this).attr('data-item-val');
             $("#modalQCPass").modal("show");
             hdfQCPassId.val(id);
 

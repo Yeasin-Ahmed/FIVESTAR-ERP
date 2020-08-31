@@ -668,6 +668,13 @@
     <Content Include="Views\Production\_GetStockReturnList.cshtml" />
     <Content Include="Views\Production\CreateRepairStockReturn.cshtml" />
     <Content Include="Views\Production\GetRepairStockItemsForReturn.cshtml" />
+    <Content Include="Views\Production\CreatePackagingStockReturn.cshtml" />
+    <Content Include="Views\Production\GetPackagingStockItemsForReturn.cshtml" />
+    <Content Include="Views\Production\CreatePackagingRepairStockReturn.cshtml" />
+    <Content Include="Views\Production\GetPackagingRepairStockItemsForReturn.cshtml" />
+    <Content Include="Views\Production\GetStockReturnItemsDetail.cshtml" />
+    <Content Include="Views\Inventory\_GetStockReturnList.cshtml" />
+    <Content Include="Views\Inventory\GetStockReturnItemsDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

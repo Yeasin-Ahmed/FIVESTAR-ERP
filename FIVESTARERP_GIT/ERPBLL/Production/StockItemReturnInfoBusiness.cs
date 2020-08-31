@@ -1,5 +1,7 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
+using ERPBO.Inventory.DTOModel;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -20,10 +22,13 @@ namespace ERPBLL.Production
         private readonly IRepairLineStockDetailBusiness _repairLineStockDetailBusiness;
         private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
         private readonly IPackagingRepairRawStockDetailBusiness _repairRawStockDetailBusiness;
+        private readonly IStockItemReturnDetailBusiness _stockItemReturnDetailBusiness;
+        private readonly IWarehouseStockDetailBusiness _warehouseStockDetailBusiness;
         // Repository //
         private readonly StockItemReturnInfoRepository _stockItemReturnInfoRepository;
 
-        public StockItemReturnInfoBusiness(IProductionUnitOfWork productionDb, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, IPackagingRepairRawStockDetailBusiness repairRawStockDetailBusiness)
+
+        public StockItemReturnInfoBusiness(IProductionUnitOfWork productionDb, IAssemblyLineStockDetailBusiness assemblyLineStockDetailBusiness, IRepairLineStockDetailBusiness repairLineStockDetailBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, IPackagingRepairRawStockDetailBusiness repairRawStockDetailBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness)
         {
             // Database
             this._productionDb = productionDb;
@@ -32,7 +37,10 @@ namespace ERPBLL.Production
             this._repairLineStockDetailBusiness = repairLineStockDetailBusiness;
             this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
             this._repairRawStockDetailBusiness = repairRawStockDetailBusiness;
+            this._stockItemReturnDetailBusiness = stockItemReturnDetailBusiness;
+            this._warehouseStockDetailBusiness = warehouseStockDetailBusiness;
             // Repository 
+
             this._stockItemReturnInfoRepository = new StockItemReturnInfoRepository(this._productionDb);
         }
 
@@ -310,6 +318,42 @@ Where 1=1 and sr.OrganizationId={0} {1}",orgId, Utility.ParamChecker(param));
                 this._stockItemReturnInfoRepository.Update(stockItem);
             }
             return this._stockItemReturnInfoRepository.Save();
+        }
+
+        public bool SaveReturnItemsInWarehouseStockByStoreStockReturn(long returnId, string status, long userId, long orgId)
+        {
+            var returnInfo = this.GetStockItemReturnInfoById(returnId, orgId);
+            if (returnInfo != null && returnInfo.StateStatus == FinishGoodsSendStatus.Send && status == FinishGoodsSendStatus.Received)
+            {
+                var returnDetail = _stockItemReturnDetailBusiness.GetStockItemReturnDetailsByInfo(returnInfo.SIRInfoId, orgId);
+                List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
+                foreach (var item in returnDetail)
+                {
+                    WarehouseStockDetailDTO warehouseStock = new WarehouseStockDetailDTO
+                    {
+                        WarehouseId = item.WarehouseId,
+                        DescriptionId = item.DescriptionId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        UnitId = item.UnitId,
+                        Quantity = item.Quantity,
+                        OrganizationId = orgId,
+                        RefferenceNumber = returnInfo.ReturnCode,
+                        EUserId = userId,
+                        OrderQty = 0,
+                        StockStatus = StockStatus.StockIn,
+                        EntryDate = DateTime.Now,
+                        Remarks = "Warehouse Stock In By Production Stock Return"
+                    };
+                    warehouseStocks.Add(warehouseStock);
+                }
+                if (this.UpdateStockItemReturnStatus(returnId, status, userId, orgId))
+                {
+                    return _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, userId, orgId);
+                }
+            }
+
+            return false;
         }
     }
 }

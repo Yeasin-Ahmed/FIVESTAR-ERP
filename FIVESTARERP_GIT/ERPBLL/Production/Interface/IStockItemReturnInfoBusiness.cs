@@ -16,5 +16,6 @@ namespace ERPBLL.Production.Interface
         bool SaveStockItemReturn(List<StockItemReturnDetailDTO> items, long userId, long orgId);
         bool UpdateStockItemReturnStatus(long id, string status, long userId, long orgId);
         IEnumerable<StockItemReturnInfoDTO> GetStockItemReturnInfosByQuery(long? modelId,long? floorId, long? assemblyId, long? repairId, long? packagingId, long? warehouse, long? transferId, string transferCode, string returnFlag, string status, string fromDate, string toDate, long orgId);
+        bool SaveReturnItemsInWarehouseStockByStoreStockReturn(long returnId, string status, long userId, long orgId);
     }
 }

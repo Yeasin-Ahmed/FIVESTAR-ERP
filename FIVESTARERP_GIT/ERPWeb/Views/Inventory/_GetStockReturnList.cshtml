@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.StockItemReturnInfoViewModel>
+@{
+    int sl = 0;
+    string badge = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-striped table-responsive-lg table-sm tblStockReturnList">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th class="vertialHeader">#SL</th>
+                    <th class="vertialHeader">Return Code</th>
+                    <th class="vertialHeader">Model</th>
+                    <th class="vertialHeader">Floor</th>
+                    <th class="vertialHeader">Section</th>
+                    <th class="vertialHeader flag">Flag</th>
+                    <th class="vertialHeader">StateStatus</th>
+                    <th class="vertialHeader">Remarks</th>
+                    <th class="vertialHeader">Entry User</th>
+                    <th class="vertialHeader">Entry Date</th>
+                    <th class="vertialHeader">Action</th>
+                    <th class="hide"></th>
+                    <th class="hide"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl++;
+                    badge = item.StateStatus == "Send" ? "badge badge-success" : "badge badge-primary";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td>@item.ReturnCode</td>
+                        <td>@item.ModelName</td>
+                        <td>@item.ProductionFloorName</td>
+                        <td>@item.Section</td>
+                        <td class="text-center flag">@item.Flag</td>
+                        <td class="text-center" data-val="item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td>@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-flat btn-secondary data-item-return" data-item-val="@item.SIRInfoId">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                        <td class="hide"></td>
+                        <td class="hide"></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

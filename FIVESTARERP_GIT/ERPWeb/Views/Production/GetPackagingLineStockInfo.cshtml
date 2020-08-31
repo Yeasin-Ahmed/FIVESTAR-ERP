@@ -20,7 +20,9 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-itemStock-tab" data-toggle="pill" href="#custom-tabs-two-itemStock" role="tab" aria-controls="custom-tabs-two-itemStock" aria-selected="true">Item Stock</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-stockReturnList-tab" data-toggle="pill" href="#custom-tabs-two-stockReturnList" role="tab" aria-controls="custom-tabs-two-stockReturnList" aria-selected="true">Stock Return List</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -97,8 +99,13 @@
                                 <div class="card card-navy">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("ReceiveSparePartsFromProductionRequisitionInPackaging", new { @flag = "Info" });}
+                                            <div class="col-md-12">
+                                                <div class="text-center hide" id="loader1">
+                                                    <h6 class="text-bold">Loading...</h6>
+                                                </div>
+                                                <div class="col-md-12" id="dataContainer1">
+                                                    @*@{Html.RenderAction("ReceiveSparePartsFromProductionRequisitionInPackaging", new { @flag = "Info" });}*@
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -160,8 +167,13 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("GetPackagingLineStockInfo", new { @flag = "View" });}
+                                        <div class="col-md-12">
+                                            <div class="text-center hide" id="loader2">
+                                                <h6 class="text-bold">Loading...</h6>
+                                            </div>
+                                            <div class="col-md-12" id="dataContainer2">
+                                                @*@{Html.RenderAction("GetPackagingLineStockInfo", new { @flag = "View" });}*@
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -237,9 +249,17 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer4">
-                                            @{Html.RenderAction("GetMiniStockTransferInfos", new { @flag = "View" });}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="text-center hide" id="loader3">
+                                                    <h6 class="text-bold">Loading...</h6>
+                                                </div>
+                                                <div class="col-md-12" id="dataContainer3">
+                                                    @*@{Html.RenderAction("GetMiniStockTransferInfos", new { @flag = "View" });}*@
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -299,15 +319,94 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer3">
-                                            @{Html.RenderAction("GetPackagingItemStockList", new { @flag = "View" });}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="text-center hide" id="loader4">
+                                                    <h6 class="text-bold">Loading...</h6>
+                                                </div>
+                                                <div class="col-md-12" id="dataContainer4">
+                                                    @*@{Html.RenderAction("GetPackagingItemStockList", new { @flag = "View" });}*@
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-stockReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-stockReturnList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Stock Return List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="@Url.Action("CreatePackagingStockReturn","Production")" class="btn btn-flat btn-secondary btn-sm float-right">
+                                                    <i class="fas fa-minus"> Stock Return</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">
+                                            Search By
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="margin-top:-10px">
+                                            <div class="row">
+                                                <div class="col-md-12"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="text-center hide" id="loader5">
+                                                <h6 class="text-bold">Loading....</h6>
+                                            </div>
+                                            <div class="col-md-12" id="dataContainer5">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+<div class="modal fade" id="returnDetail" role="dialog" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header alert-secondary">
+                                    <h4 id="modalHeading" class="modal-title">Stock Return Detail</h4>
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                                </div>
+                                <div class="modal-body" id="modalDataContainer3">
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -329,15 +428,23 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="returnDetail" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">Stock Return Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modalDataContainer3">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
-
-        // Stock //
-        var ddlPackagingLineStock = $("#ddlPackagingLineStock");
-        var ddlModelNameStock = $("#ddlModelNameStock");
-        var ddlItemsStock = $("#ddlItemsStock");
-        var txtLessOrEqStock = $("#txtLessOrEqStock");
-        var pageNo = 1;
 
         // Receive Stock From Requisition //
         var ddlPackagingLineReqReceive = $("#ddlPackagingLineReqReceive");
@@ -349,6 +456,14 @@
         var hdfRowIndex = $("#hdfRowIndex");
         var hdfInfoId = $("#hdfInfoId");
 
+        // Stock //
+        var ddlPackagingLineStock = $("#ddlPackagingLineStock");
+        var ddlModelNameStock = $("#ddlModelNameStock");
+        var ddlItemsStock = $("#ddlItemsStock");
+        var txtLessOrEqStock = $("#txtLessOrEqStock");
+        var pageNo = 1;
+
+        
         // Item Stock //
         var ddlPackagingLineItemStock = $("#ddlPackagingLineItemStock");
         var ddlModelNameItemStock = $("#ddlModelNameItemStock");
@@ -401,55 +516,16 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
+            loadDataInitializer();
         })
 
-        ddlPackagingLineStock.change(function () {
+        function loadDataInitializer() {
+            LoadDataTableReqReceiveList();
             LoadDataTableStockInfo();
-        })
-
-        ddlItemsStock.change(function () {
-            LoadDataTableStockInfo();
-        })
-
-        $(document).on('change', '.ctrl-change', function () {
-            LoadDataTableStockInfo();
-        })
-
-        txtLessOrEqStock.keyup(function () {
-            LoadDataTableStockInfo();
-        })
-
-        function LoadDataTableStockInfo() {
-
-            //string flag, long ? lineId, long ? packagingId, long ? qcId, long ? modelId, long ? warehouseId, long ? itemTypeId, long ? itemId, string lessOrEq, int page = 1
-            var packagingId = ddlPackagingLineStock.val() != "" ? ddlPackagingLineStock.val().split("#") : ["0", "0"];
-            var itemId = ddlItemsStock.val() != "" ? ddlItemsStock.val().split("#") : ["0", "0", "0"];
-            //console.log("Packing Split");
-            //console.log(packagingId);
-            var data = { flag: "search", lineId: TryParseInt(packagingId[1], 0), packagingId: TryParseInt(packagingId[0], 0), modelId: TryParseInt(ddlModelNameStock.val(), 0), qcId: 0, warehouseId: TryParseInt(itemId[2], 0), itemTypeId: TryParseInt(itemId[1], 0), itemId: TryParseInt(itemId[0], 0), lessOrEq: txtLessOrEqStock.val(), page: pageNo };
-
-            $.when(getReqWithData('html', 'GET', '/Production/GetPackagingLineStockInfo', data)).then(function (res, status) {
-                console.log(status);
-                if (status === "success") {
-                    $("#dataContainer1").fadeOut('500', function () {
-                        $("#dataContainer1").empty();
-                        $("#dataContainer1").append(res).fadeIn('500');
-                    });
-                }
-            }).fail(function (error) {
-                console.log(error);
-            });
-            //pageNo = 1;
+            LoadDataTablePackagingItemStock();
+            LoadDataTableMiniStockTransferList();
+            LoadDataTableStockReturn();
         }
-
-        // Pagination
-        $(document).on('click', 'a.page-link', function (e) {
-            e.preventDefault();
-            if (!$(this).hasClass('current-page')) {
-                pageNo = $(this).attr('data-page-no');
-                LoadDataTableStockInfo();
-            }
-        })
 
         // Receive Stock From Requisition //
         $(document).on('click', 'div.remove-date', function () {
@@ -484,20 +560,23 @@
         })
 
         function LoadDataTableReqReceiveList() {
-            
+            $("#loader1").removeClass("hide");
+            $("#dataContainer1").empty();
             var packagingId = ddlPackagingLineReqReceive.val() != "" ? ddlPackagingLineReqReceive.val().split("#") : ["0", "0"];
             var data = { flag: "info", floorId: TryParseInt(packagingId[1], 0), transferFor: "Packaging", packagingId: TryParseInt(packagingId[0], 0), modelId: TryParseInt(ddlModelNameReqReceive.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, status: ddlStateStatusReqReceive.val(), transferCode: txtTSACode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferInfoId: 0, page: pageNo, reqFlag: "Direct" };
 
             $.when(getReqWithData('html', 'GET', '/Production/ReceiveSparePartsFromProductionRequisitionInPackaging', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
                     });
                 }
+                $("#loader1").addClass("hide");
             }).fail(function (error) {
                 console.log(error);
+                $("#loader1").addClass("hide");
             });
             //pageNo = 1;
         }
@@ -559,40 +638,60 @@
         }
         // ============================== //
 
-        // ===============Item Stock ===============//
+        // ===============Stock Raw Item=============== //
 
-        ddlPackagingLineItemStock.change(function () {
-            LoadPackagingItemStockDataTable();
-        })
-        ddlModelNameItemStock.change(function () {
-            LoadPackagingItemStockDataTable();
-        })
-        ddlItemsItemStock.change(function () {
-            LoadPackagingItemStockDataTable();
-        })
-        txtLessOrEqItemStock.keyup(function () {
-            LoadPackagingItemStockDataTable();
+        ddlPackagingLineStock.change(function () {
+            LoadDataTableStockInfo();
         })
 
-        function LoadPackagingItemStockDataTable() {
-            var packagingId = ddlPackagingLineItemStock.val() != "" ? ddlPackagingLineItemStock.val().split("#") : ["0", "0"];
-            var itemId = ddlItemsItemStock.val() != "" ? ddlItemsItemStock.val().split("#") : ["0","0","0"];
-            var data = { flag: "view", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameItemStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqItemStock.val() };
+        ddlItemsStock.change(function () {
+            LoadDataTableStockInfo();
+        })
 
-            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingItemStockList', data)).then(function (res,status) {
+        $(document).on('change', '.ctrl-change', function () {
+            LoadDataTableStockInfo();
+        })
+
+        txtLessOrEqStock.keyup(function () {
+            LoadDataTableStockInfo();
+        })
+
+        function LoadDataTableStockInfo() {
+            $("#loader2").removeClass("hide");
+            $("#dataContainer2").empty();
+            //string flag, long ? lineId, long ? packagingId, long ? qcId, long ? modelId, long ? warehouseId, long ? itemTypeId, long ? itemId, string lessOrEq, int page = 1
+            var packagingId = ddlPackagingLineStock.val() != "" ? ddlPackagingLineStock.val().split("#") : ["0", "0"];
+            var itemId = ddlItemsStock.val() != "" ? ddlItemsStock.val().split("#") : ["0", "0", "0"];
+            //console.log("Packing Split");
+            //console.log(packagingId);
+            var data = { flag: "view", lineId: TryParseInt(packagingId[1], 0), packagingId: TryParseInt(packagingId[0], 0), modelId: TryParseInt(ddlModelNameStock.val(), 0), qcId: 0, warehouseId: TryParseInt(itemId[2], 0), itemTypeId: TryParseInt(itemId[1], 0), itemId: TryParseInt(itemId[0], 0), lessOrEq: txtLessOrEqStock.val(), page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetPackagingLineStockInfo', data)).then(function (res, status) {
+                console.log(status);
                 if (status === "success") {
-                    $("#dataContainer3").fadeOut('500', function () {
-                        $("#dataContainer3").empty();
-                        $("#dataContainer3").append(res).fadeIn('500');
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
                     });
                 }
+                $("#loader2").addClass("hide");
             }).fail(function (error) {
                 console.log(error);
-            })
-
+                $("#loader2").addClass("hide");
+            });
+            //pageNo = 1;
         }
 
-        //Receive Mini Stock Items //
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTableStockInfo();
+            }
+        })
+
+        //===========Receive Mini Stock Items==============//
 
         $(document).on('click', 'div.remove-date-receiveItem', function () {
             if ($(this).hasClass("dptToDate")) {
@@ -610,40 +709,44 @@
         })
 
         ddlPackagingLineReceiveItem.change(function () {
-            LoadMiniStockTransferListDataTable();
+            LoadDataTableMiniStockTransferList();
         })
 
         ddlStateStatusReceiveItem.change(function () {
-            LoadMiniStockTransferListDataTable();
+            LoadDataTableMiniStockTransferList();
         })
 
         txtMSTCode.keyup(function () {
-            LoadMiniStockTransferListDataTable();
+            LoadDataTableMiniStockTransferList();
         })
 
         dptFromDateReceiveItem.change(function () {
-            LoadMiniStockTransferListDataTable();
+            LoadDataTableMiniStockTransferList();
         })
 
         dptToDateReceiveItem.change(function () {
-            LoadMiniStockTransferListDataTable();
+            LoadDataTableMiniStockTransferList();
         })
 
-        function LoadMiniStockTransferListDataTable() {
+        function LoadDataTableMiniStockTransferList() {
+            $("#loader3").removeClass("hide");
+            $("#dataContainer3").empty();
             var packagingId = ddlPackagingLineReceiveItem.val() != "" ? ddlPackagingLineReceiveItem.val().split("#") : ["0", "0"];
-            var data = { flag: "view", floorId: packagingId[1], status: ddlStateStatusReceiveItem.val(), fromDate: dptFromDateReceiveItem.val(), toDate: dptToDateReceiveItem.val(), transferInfoId: 0, transferCode: txtMSTCode.val(), transferId:0 };
+            var data = { flag: "view", floorId: packagingId[1], status: ddlStateStatusReceiveItem.val(), fromDate: dptFromDateReceiveItem.val(), toDate: dptToDateReceiveItem.val(), transferInfoId: 0, transferCode: txtMSTCode.val(), transferId: 0 };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetMiniStockTransferInfos', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer4").fadeOut('500', function () {
-                        $("#dataContainer4").empty();
-                        $("#dataContainer4").append(res).fadeIn('500');
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
                         //$(".cell-action").addClass('hide');
                     });
                 }
+                $("#loader3").addClass("hide");
             }).fail(function (error) {
                 console.log(error);
+                $("#loader3").addClass("hide");
             });
             pageNo = 1;
         }
@@ -700,6 +803,83 @@
                 enable(".btnReceiveMiniStock");
             })
         }
-       
+
+        // ===============Item Stock ===============//
+
+        ddlPackagingLineItemStock.change(function () {
+            LoadDataTablePackagingItemStock();
+        })
+        ddlModelNameItemStock.change(function () {
+            LoadDataTablePackagingItemStock();
+        })
+        ddlItemsItemStock.change(function () {
+            LoadDataTablePackagingItemStock();
+        })
+        txtLessOrEqItemStock.keyup(function () {
+            LoadDataTablePackagingItemStock();
+        })
+
+        function LoadDataTablePackagingItemStock() {
+            $("#loader4").removeClass("hide");
+            $("#dataContainer4").empty();
+            var packagingId = ddlPackagingLineItemStock.val() != "" ? ddlPackagingLineItemStock.val().split("#") : ["0", "0"];
+            var itemId = ddlItemsItemStock.val() != "" ? ddlItemsItemStock.val().split("#") : ["0","0","0"];
+            var data = { flag: "view", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameItemStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqItemStock.val() };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingItemStockList', data)).then(function (res,status) {
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+                $("#loader4").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader4").addClass("hide");
+            })
+        }
+
+        //===================================//
+
+        // Stock Return List //
+        function LoadDataTableStockReturn() {
+            $("#loader5").removeClass("hide");
+            var data = { flag: "StockReturnList" }
+            $.when(getReqWithData('html', 'GET', '/Production/GetPackagingLineStockInfo', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+                        $(".flag").addClass('hide');
+                    });
+                }
+                $("#loader5").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader5").addClass("hide");
+            });
+        }
+
+        // Stock Return Detail //
+        $(document).on('click', '.data-item-return', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            if (TryParseInt(id, 0) > 0) {
+                $("#modalDataContainer3").empty();
+                var data = { returnId: id };
+                $.when(getReqWithData('html', 'GET', '/Production/GetStockReturnItemsDetail', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalDataContainer3").append(res);
+                        $("#returnDetail").modal("show");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+
+                });
+            }
+        })
     </script>
 }

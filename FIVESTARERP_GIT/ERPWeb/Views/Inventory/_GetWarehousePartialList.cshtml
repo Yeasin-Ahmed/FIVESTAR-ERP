@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<ERPBO.Inventory.ViewModels.WarehouseViewModel>
 @{
     ViewBag.Title = "List Of Warehouse";
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string badge = string.Empty;
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+
 }
 
 <div class="row">
@@ -27,7 +28,7 @@
                     sl = sl + 1;
                     badge = item.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
                     <tr>
-                        <td class="text-center">@sl</td>
+                        <td class="text-center text-bold">@sl</td>
                         <td class="hide">@item.Id</td>
                         <td>@item.WarehouseName</td>
 
@@ -39,16 +40,16 @@
                         </td>
                         <td>@item.Remarks</td>
                         <td class="text-center">
-                            @if (privilege.Edit)
-                            {
-                                <a href="#" class="btn btn-warning btn-sm data-edit-item" style="line-height:1" data-edit-item="@item.Id"><i class="fa fa-sm fa-pen"></i> Edit</a>
-                            }
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item" style="line-height:1" data-edit-item="@item.Id"><i class="fa fa-sm fa-pen"></i> Edit</a>
                         </td>
                     </tr>
                 }
 
             </tbody>
         </table>
+    </div>
+    <div class="col-md-12 warehouse">
+        @Html.Partial("_Pagination", pagerData)
     </div>
 </div>
 

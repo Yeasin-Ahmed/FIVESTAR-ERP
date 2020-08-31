@@ -1,6 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "Stock-IN";
+                /**/
+
+                ViewBag.Title = "Stock-IN";
 }
 
 <div class="row">
@@ -104,41 +106,40 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
-                                <div class="col-md-12" style="margin-top:-10px">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="col-md-12" style="margin-top:-20px" id="dataContainer">
-                                                @*@{Html.RenderAction("GetWarehouseStockInfoPartialList");}*@
-                                                <div class="row">
-                                                    <div class="col-md-12 mt-2" style="overflow-y:scroll">
-                                                        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblWarehouseStock">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th colspan="9">
-                                                                        <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
-                                                                    </th>
-                                                                </tr>
-                                                                <tr class="btn-dark text-center">
-                                                                    <th>#SL</th>
-                                                                    <th class="hide"></th>
-                                                                    @*<th>Item Type Name</th>*@
-                                                                    <th class="hide"></th>
-                                                                    <th>Item Name</th>
-                                                                    <th>Stock-In Qty.</th>
-                                                                    <th>Order Qty</th>
-                                                                    <th>Unit</th>
-                                                                    <th class="hide"></th>
-                                                                    <th>Supplier Name</th>
-                                                                    <th>Remarks</th>
-                                                                    <th>Action</th>
-                                                                    <th class="hide itemType"></th>
-                                                                    <th class="hide warehouse"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody></tbody>
-                                                        </table>
-                                                    </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="margin-top:-20px" id="dataContainer">
+                                            @*@{Html.RenderAction("GetWarehouseStockInfoPartialList");}*@
+                                            <div class="row">
+                                                <div class="col-md-12 mt-2" style="overflow-y:scroll">
+                                                    <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblWarehouseStock">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="9">
+                                                                    <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                                                                </th>
+                                                            </tr>
+                                                            <tr class="btn-dark text-center">
+                                                                <th>#SL</th>
+                                                                <th class="hide"></th>
+                                                                @*<th>Item Type Name</th>*@
+                                                                <th class="hide"></th>
+                                                                <th>Item Name</th>
+                                                                <th>Stock-In Qty.</th>
+                                                                <th>Order Qty</th>
+                                                                <th>Unit</th>
+                                                                <th class="hide"></th>
+                                                                <th>Supplier Name</th>
+                                                                <th>Remarks</th>
+                                                                <th>Action</th>
+                                                                <th class="hide itemType"></th>
+                                                                <th class="hide warehouse"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,6 +152,7 @@
             </div>
         </div>
     </div>
+</div>
 
 <div class="modal fade" id="modalItemForStock" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -214,7 +216,7 @@
 
 
 @section scripts{
-<script type="text/javascript">
+    <script type="text/javascript">
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlItemType = $("#ddlItemType");
         var ddlItems = $("#ddlItems");
@@ -385,7 +387,12 @@
                 else {
                     $("#tblWarehouseStock tbody tr").eq(0).before(tr);
                 }
-                clearCtrl();
+                ddlItems.val('');
+                ddlItems.trigger('change');
+                txtStockInQty.val('');
+                unitName.text('');
+                txtRemarks.val('');
+                txtOrderQty.val('');
             }
         });
 
@@ -515,7 +522,7 @@
         $("#unitName").text('');
         clearDropdown("ddlItems");
         LoadDropDown('/Common/GetItemDetailsForDDL', 'POST', ddlItems, null);
-       
+
     }
         $("#btnSubmitItemForStock").click(function (e) {
             e.preventDefault();
@@ -580,5 +587,5 @@
             return isValid;
         }
 
-</script>
+    </script>
 }

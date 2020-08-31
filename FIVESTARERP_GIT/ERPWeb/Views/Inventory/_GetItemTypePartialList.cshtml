@@ -2,12 +2,11 @@
 @model IEnumerable<ERPBO.Inventory.ViewModels.ItemTypeViewModel>
 @{
     ViewBag.Title = "List Of ItemTypes";
-    int sl = 0;
     string badge = string.Empty;
-    //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
 }
 <div class="row">
-
     <div class="col-md-12 mt-2 " style="overflow-y:scroll">
         <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblItemTypeData" id="tblItemTypeData">
             <thead class="btn-dark">
@@ -45,8 +44,8 @@
                         <td class="text-center">@item.UpdateUser</td>
                         <td class="text-center">
                             @*@if (privilege.Edit)
-                            {*@
-                                <a href="#" class="btn btn-warning btn-sm data-edit-item-type" style="line-height:1" data-edit-item-type="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                                {*@
+                            <a href="#" class="btn btn-warning btn-sm data-edit-item-type" style="line-height:1" data-edit-item-type="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
                             @* } *@
                         </td>
                     </tr>
@@ -61,6 +60,9 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="col-md-12 itemType">
+        @Html.Partial("_Pagination", pagerData)
     </div>
 </div>
 

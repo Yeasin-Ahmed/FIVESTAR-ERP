@@ -271,7 +271,7 @@
         txtProblemQRCode.change(function () {
             if ($.trim(txtProblemQRCode.val()) !== "") {
                 var prob = jQuery.grep(problemsObj, function (item) {
-                    return item.ProblemDescription === $.trim(txtProblemQRCode.val());
+                    return item.CaseId == $.trim(txtProblemQRCode.val());
                 })
                 if (prob.length > 0) {
                     if (!fnIsProbExist(prob)) {

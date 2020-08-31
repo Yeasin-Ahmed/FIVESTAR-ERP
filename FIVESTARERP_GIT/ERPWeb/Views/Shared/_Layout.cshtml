@@ -18,7 +18,7 @@
     <link href="~/Content/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/Site.css">
-
+    @RenderSection("styles", false)
 
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -26,19 +26,21 @@
         .qtySize {
             width: 70ex !important;
         }
+
         .aside-bg {
             background-image: url('../../Content/dist/img/aside-bg-new.jpg');
             background-size: cover;
         }
-        #dvnoscript{
-            z-index:99990;
-            position:absolute;
-            padding:10px;
+
+        #dvnoscript {
+            z-index: 99990;
+            position: absolute;
+            padding: 10px;
         }
         /* width */
         ::-webkit-scrollbar {
             width: 5px;
-            height:5px;
+            height: 5px;
         }
 
         /* Track */
@@ -51,10 +53,10 @@
             background: #888;
         }
 
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
