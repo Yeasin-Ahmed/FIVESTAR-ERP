@@ -675,6 +675,17 @@
     <Content Include="Views\Production\GetStockReturnItemsDetail.cshtml" />
     <Content Include="Views\Inventory\_GetStockReturnList.cshtml" />
     <Content Include="Views\Inventory\GetStockReturnItemsDetail.cshtml" />
+    <Content Include="Views\FrontDesk\AnotherBranchRequsition.cshtml" />
+    <Content Include="Views\FrontDesk\AnotherBranchRequsitionDetails.cshtml" />
+    <Content Include="Views\FrontDesk\AnotherBranchRequsitionPartialList.cshtml" />
+    <Content Include="Views\FrontDesk\JobRepairOtherBranch.cshtml" />
+    <Content Include="Views\FrontDesk\ReceiveJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\ReceiveReturnJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\TransferReceiveJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\_JobRepairOtherBranch.cshtml" />
+    <Content Include="Views\FrontDesk\_ReceiveJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\_ReceiveReturnJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\_TransferReceiveJobOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
