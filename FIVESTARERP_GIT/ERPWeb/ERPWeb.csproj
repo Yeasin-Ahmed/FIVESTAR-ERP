@@ -717,8 +717,12 @@
     <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptJobReturnDeliveryChalan.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptJobTransferDeliveryChalan.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptOtherBranchRepairJob.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptSellsReport.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\rptTSRequsitionReport.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc" />
   </ItemGroup>
   <ItemGroup>
