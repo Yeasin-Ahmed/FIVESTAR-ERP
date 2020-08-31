@@ -31,5 +31,18 @@ namespace ERPBO.Production.DomainModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<FinishGoodsSendToWarehouseDetail> FinishGoodsSendToWarehouseDetails { get; set; }
+
+        // Cartoon Info //
+        [StringLength(100)]
+        public string CartoonNo { get; set; }
+        [StringLength(100)]
+        public string Width { get; set; }
+        [StringLength(100)]
+        public string Height { get; set; }
+        [StringLength(150)]
+        public string GrossWeight { get; set; }
+        [StringLength(150)]
+        public string NetWeight { get; set; }
+        public int TotalQty { get; set; }
     }
 }

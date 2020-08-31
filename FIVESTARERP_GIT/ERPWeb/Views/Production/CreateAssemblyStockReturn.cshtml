@@ -1,0 +1,253 @@
+﻿
+@{
+    ViewBag.Title = "Assembly Stock Return";
+}
+
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="@Url.Action("GetAssemblyLineStockInfoFS","Production")" class="btn btn-sm btn-primary float-left" title="Back To List">
+                            <i class="fas fa-arrow-circle-left"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">
+                            Assembly Stock Return
+                        </h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row box-shadow">
+    <div class="col-md-12 text-sm" style="margin-top:-10px">
+        <div class="card shadow card-navy">
+            @Html.AntiForgeryToken()
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl ctrl-model select2 select2-danger" })
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-sm" >
+                            @Html.DropDownList("ddlAssemblyLineWithProduction", (IEnumerable<SelectListItem>)ViewBag.ddlAssemblyLineWithProduction, "--Select Assembly--", new { @class = "form-control form-control-sm ctrl ctrl-assembly" })
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-block btn-info btn-flat" id="btnSearch"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-sm btn-outline-primary btn-flat float-right" title="Save Your Data" id="btnSave">
+                            <i class="fas fa-paper-plane"></i> Save...
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="margin-top:-15px">
+                    <div class="col-md-12" >
+                        <div class="text-center text-bold hide" id="loader">
+                            <h6>Loading....</h6>
+                        </div>
+                        <div class="col-md-12" id="dataContainer1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlAssemblyLineWithProduction = $("#ddlAssemblyLineWithProduction")
+        var ddlModelName = $("#ddlModelName");
+        var count = 0;
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+
+        $(document).on("change", '.ctrl', function () {
+            $("#dataContainer1").empty();
+        })
+
+        function validateSearch() {
+            var isValid = true;
+            //$(".ctrl").removeClass("error-border");
+            if (ddlAssemblyLineWithProduction.val() == "") {
+                isValid = false;
+                toastr.error("Assembly line is required", null, { timeOut: 1000 });
+                //$(".ctrl-assembly").addClass("error-border");
+            }
+            if (ddlModelName.val() == "") {
+                isValid = false;
+                //$(".ctrl-model").addClass("error-border");
+                toastr.error("Model is required", null, { timeOut: 1000 });
+            }
+            return isValid;
+        }
+
+        $("#btnSearch").click(function (e) {
+            e.preventDefault();
+            if (validateSearch()) {
+                $("#loader").removeClass("hide");
+                var assembly = ddlAssemblyLineWithProduction.val().split("#");
+                var data = JSON.stringify({ assemblyId: assembly[0], floorId: assembly[1], modelId: TryParseInt(ddlModelName.val(),0) });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.html, type.post, '/Production/GetAssemblyStockItemsForReturn', data, getToken())).then(function (res,status) {
+                    console.log(res);
+                    console.log(status);
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                    $("#loader").addClass("hide");
+                }).fail(function (error) {
+                    $("#loader").addClass("hide");
+                    console.log(error);
+                })
+            }
+        })
+
+        $(document).on('change', 'input[name="allItem"]', function () {
+            var isChecked = $('input[name="allItem"]').is(":checked");
+            $('input[name="item"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblAssemblyReturnItems tbody tr").length;
+                $(".tblAssemblyReturnItems tbody tr").attr("data-item-row","selected")
+            }
+            else {
+                count = 0;
+                $("input[type='number']").removeClass("error-border");
+                $(".tblAssemblyReturnItems tbody tr").attr("data-item-row", "notSelected")
+            }
+        })
+
+        $(document).on('change', 'input[name="item"]', function () {
+            count = 0;
+            $.each($(".tblAssemblyReturnItems tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(0).children('input[name="item"]').is(":checked")) {
+                    count++;
+                    $(this).attr("data-item-row", "selected");
+                }
+                else {
+                    $(this).children('td').eq(4).children('input[type="number"]').removeClass("error-border");
+                    $(this).attr("data-item-row", "notSelected");
+                }
+            });
+            var allChecked = $(".tblAssemblyReturnItems tbody tr").length == count;
+            $('input[name="allItem"]').prop("checked", allChecked);
+        })
+
+        function validateSubmit() {
+            var isValid = true;
+            if (!validateSearch()) {
+                isValid = false;
+            }
+            var totalCheckedItems = 0;
+            var invalidValue = 0;
+            if ($(".tblAssemblyReturnItems tbody").length > 0) {
+                $.each($(".tblAssemblyReturnItems tbody tr"), function (index, item) {
+                    if ($(this).children('td').eq(0).children('input[name="item"]').is(":checked")) {
+                        totalCheckedItems++;
+                        var returnQty = $(this).children('td').eq(4).children('input[type="number"]').val();
+                        var availableStockQty = $(this).children('td').eq(3).html();
+                        if (TryParseInt(returnQty, 0) <= 0) {
+                            $(this).children('td').eq(4).children('input[type="number"]').addClass("error-border");
+                            isValid = false;
+                            invalidValue++;
+                        }
+                        else {
+                            if (TryParseInt(returnQty, 0) > TryParseInt(availableStockQty, 0)) {
+                                $(this).children('td').eq(4).children('input[type="number"]').addClass("error-border");
+                                isValid = false;
+                                invalidValue++;
+                            }
+                            else {
+                                $(this).children('td').eq(4).children('input[type="number"]').removeClass("error-border");
+                            }
+                        }
+                    }
+                });
+                if (totalCheckedItems == 0) {
+                    isValid = false;
+                    toastr.error("Please checked at least one item", null, {timeOut:1000});
+                }
+                if (invalidValue > 0) {
+                    toastr.error("One/More return qty is invalid", null, { timeOut: 1000 });
+                }
+            }
+            else {
+                toastr.error("Item Not Found", null, { timeOut: 1000 });
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSave").click(function (e) {
+            e.preventDefault();
+            if (validateSubmit()) {
+                bootbox.confirm("Are you sure you want to return stock", function (result) {
+                    if (result) {
+                        disable("#btnSave");
+                        var selectedRows = $(".tblAssemblyReturnItems tbody tr[data-item-row='selected']");
+                        var items = []; items.length = 0;
+
+                        $.each(selectedRows, function (index, item) {
+                            var tds = $(this).children('td');
+                            var assembly = ddlAssemblyLineWithProduction.val().split("#");
+                            items.push({
+                                DescriptionId: TryParseInt(ddlModelName.val()),
+                                AssemblyLineId: assembly[0],
+                                ProductionFloorId: assembly[1],
+                                WarehouseId: tds.eq('6').html(),
+                                ItemTypeId: tds.eq('7').html(),
+                                ItemId: tds.eq('8').html(),
+                                UnitId: tds.eq('9').html(),
+                                Quantity: tds.eq('4').children('input[type="number"]').val(),
+                                Flag: stockReturnFlag.assemblyLine,
+                                Remarks: "Stock Item Return By Assembly Line"
+                            })
+                        })
+
+                        var data = JSON.stringify({ model: items });
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveStockReturnItems', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            if (res == true && status === "success") {
+                                toastrSuccessAlert(execuStatus.successSave);
+                                setTimeout(function () {
+                                    redirectPage("@Url.Action("GetAssemblyLineStockInfoFS","Production")")
+                                }, 1000);
+                            }
+                            else {
+                                toastrErrorAlert(execuStatus.fail);
+                            }
+                            enable("#btnSave");
+                        }).fail(function (error) {
+                            console.log(error);
+                            toastrErrorAlert(execuStatus.fail);
+                            enable("#btnSave");
+                        })
+                    } // result
+                }) // bootbox
+            }// validate
+        })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+
+    </script>
+}
+

@@ -9,7 +9,7 @@
             <div class="card-header p-0 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-qcPass" role="tab" aria-controls="custom-tabs-three-qcPass" aria-selected="false">QC Pass List</a>
+                        <a class="nav-link active" id="custom-tabs-three-qcPass-tab" data-toggle="pill" href="#custom-tabs-three-qcPass" role="tab" aria-controls="custom-tabs-three-qcPass" aria-selected="false">QC Pass List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-three-paStock-tab" data-toggle="pill" href="#custom-tabs-three-paStock" role="tab" aria-controls="custom-tabs-three-paStock" aria-selected="true">Mini Stock</a>
@@ -23,93 +23,7 @@
                 @Html.AntiForgeryToken()
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
-                        <div class="tab-pane fade show active" id="custom-tabs-three-transferList" role="tabpanel" aria-labelledby="custom-tabs-three-transferList-tab">
-                            <div class="row" style="margin-top:-15px">
-                                <div class="col-md-12">
-                                    <div class="card card-gray-dark">
-                                        <div class="card-header">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <h5 class="text-center text-bold">Mini Stock Transfer List</h5>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <a href="/Production/CreateMiniStockTransfer" class="float-right btn btn-sm btn-outline-primary">Add Transfer</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12" style="margin-top:-10px">
-                                    <div class="card card-navy">
-                                        <div class="card-header">
-                                            <h6 class="card-title">Search By</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row" style="margin-top:-15px">
-                                                <div class="col-md-2">
-                                                    <label for="txtMSTCode" class="control-label font-weight-bold">Transfer Code</label>
-                                                    <input type="text" id="txtMSTCode" class="form-control form-control-sm" placeholder="Search By REQ Code" />
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="ddlLineNumberTL" class="control-label font-weight-bold">Floor</label>
-                                                    @Html.DropDownList("ddlLineNumberTL", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="ddlPackagingTL" class="control-label font-weight-bold">Packaging Line</label>
-                                                    <select id="ddlPackagingTL" class="form-control form-control-sm">
-                                                        <option value="0">--Select Packaging--</option>
-                                                    </select>
-                                                    <span class="error hide req-packaging">Packaging Line is required</span>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label class="control-label font-weight-bold">From Date</label>
-                                                    <div class="input-group input-group-sm ">
-                                                        <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptFromDateTransferItem" />
-                                                        <div class="input-group-prepend cursor-pointer remove-date-transferItem dptFromDate" style="cursor:pointer">
-                                                            <span class="input-group-text">&#10008;</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label class="control-label font-weight-bold">To Date</label>
-                                                    <div class="input-group input-group-sm ">
-                                                        <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptToDateTransferItem" />
-                                                        <div class="input-group-prepend remove-date-transferItem dptToDate" style="cursor:pointer">
-                                                            <span class="input-group-text">&#10008;</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label for="ddlStateStatusTL" class="control-label font-weight-bold">State Status</label>
-                                                    <select class="form-control form-control-sm" id="ddlStateStatusTL">
-                                                        <option value="">Select Status</option>
-                                                        <option value="Send">Send</option>
-                                                        <option value="Received">Received</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12" style="margin-top:-10px">
-                                    <div class="card">
-                                        <div class="row">
-                                            <div class="card-body">
-                                                <div class="col-md-12" id="dataContainer3">
-                                                    @{Html.RenderAction("GetMiniStockTransferInfos", new { @flag = "View" });}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-three-qcPass" role="tabpanel" aria-labelledby="custom-tabs-three-qcPass-tab">
+                        <div class="tab-pane fade show active" id="custom-tabs-three-qcPass" role="tabpanel" aria-labelledby="custom-tabs-three-qcPass-tab">
                             <div class="row" style="margin-top:-15px">
                                 <div class="col-md-12">
                                     <div class="card card-gray-dark">
@@ -248,6 +162,93 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade show" id="custom-tabs-three-transferList" role="tabpanel" aria-labelledby="custom-tabs-three-transferList-tab">
+                            <div class="row" style="margin-top:-15px">
+                                <div class="col-md-12">
+                                    <div class="card card-gray-dark">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-center text-bold">Mini Stock Transfer List</h5>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <a href="/Production/CreateMiniStockTransfer" class="float-right btn btn-sm btn-outline-primary">Add Transfer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card card-navy">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Search By</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-top:-15px">
+                                                <div class="col-md-2">
+                                                    <label for="txtMSTCode" class="control-label font-weight-bold">Transfer Code</label>
+                                                    <input type="text" id="txtMSTCode" class="form-control form-control-sm" placeholder="Search By REQ Code" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlLineNumberTL" class="control-label font-weight-bold">Floor</label>
+                                                    @Html.DropDownList("ddlLineNumberTL", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlPackagingTL" class="control-label font-weight-bold">Packaging Line</label>
+                                                    <select id="ddlPackagingTL" class="form-control form-control-sm">
+                                                        <option value="0">--Select Packaging--</option>
+                                                    </select>
+                                                    <span class="error hide req-packaging">Packaging Line is required</span>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">From Date</label>
+                                                    <div class="input-group input-group-sm ">
+                                                        <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptFromDateTransferItem" />
+                                                        <div class="input-group-prepend cursor-pointer remove-date-transferItem dptFromDate" style="cursor:pointer">
+                                                            <span class="input-group-text">&#10008;</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label font-weight-bold">To Date</label>
+                                                    <div class="input-group input-group-sm ">
+                                                        <input type="text" class="form-control form-control-sm date-datePicker-transferItem ctrl-changed" id="dptToDateTransferItem" />
+                                                        <div class="input-group-prepend remove-date-transferItem dptToDate" style="cursor:pointer">
+                                                            <span class="input-group-text">&#10008;</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlStateStatusTL" class="control-label font-weight-bold">State Status</label>
+                                                    <select class="form-control form-control-sm" id="ddlStateStatusTL">
+                                                        <option value="">Select Status</option>
+                                                        <option value="Send">Send</option>
+                                                        <option value="Received">Received</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card">
+                                        <div class="row">
+                                            <div class="card-body">
+                                                <div class="col-md-12" id="dataContainer3">
+                                                    @{Html.RenderAction("GetMiniStockTransferInfos", new { @flag = "View" });}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -303,6 +304,20 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="modelDataContainer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden"/>
+                <h4 id="modalHeading" class="modal-title">QC Pass Items</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modalContainer1">
 
             </div>
         </div>
@@ -431,10 +446,29 @@
             });
         }
 
+
         $(document).on('click', 'a.data-qcPass-item-detail', function (e) {
             e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            if (id > 0) {
+                var data = { flag: "detail", floorId: 0, assemblyId: 0, modelId: 0, qcId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, status: '', qcPassCode: '', qcPassId: TryParseInt(id, 0), fromDate: '', toDate: '' };
+                $.when(getReqWithData('html', 'GET', '/Production/GetQCPassList', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalContainer1").empty();
+                        $("#modalContainer1").append(res);
+                        $("#modalTransferDetails").modal("toggle");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
+            }
+        })
+
+        $(document).on('click', 'a.data-item-receive', function (e) {
+            e.preventDefault();
             hdfQCPassId.val('0');
-            var id = $(this).attr('data-qcPass-item-detail');
+            var id = $(this).attr('data-item-val');
             $("#modalQCPass").modal("show");
             hdfQCPassId.val(id);
 
@@ -460,9 +494,9 @@
             else {
                 $("#btnSubmitQCPass").removeClass('hide');
             }
-
-            //
         })
+
+
 
         $("#btnSubmitQCPass").click(function (e) {
             e.preventDefault();

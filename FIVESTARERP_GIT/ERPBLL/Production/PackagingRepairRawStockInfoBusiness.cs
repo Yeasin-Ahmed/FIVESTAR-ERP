@@ -30,9 +30,24 @@ namespace ERPBLL.Production
             return this._packagingRepairRawStockInfoRepository.GetOneByOrg(s =>  s.PackagingLineId == packagingLine && s.ItemId == itemId && s.DescriptionId == modelId && s.OrganizationId == orgId);
         }
 
+        public async Task<PackagingRepairRawStockInfo> GetPackagingRepairRawStockInfoByPackagingLineAndModelAndItemAsync(long floorId, long packagingLine, long itemId, long modelId, long orgId)
+        {
+            return await this._packagingRepairRawStockInfoRepository.GetOneByOrgAsync(s => s.PackagingLineId == packagingLine && s.ItemId == itemId && s.DescriptionId == modelId && s.OrganizationId == orgId);
+        }
+
         public IEnumerable<PackagingRepairRawStockInfoDTO> GetPackagingRepairRawStockInfosByQuery(long? floorId, long? packagingLine, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<PackagingRepairRawStockInfoDTO>(QueryForPackagingRepairRawStockInfos(floorId, packagingLine, modelId, warehouseId, itemTypeId, itemId, lessOrEq, orgId)).ToList();
+        }
+
+        public IEnumerable<PackagingRepairRawStockInfoDTO> GetPackagingRepairStocksForReturnStock(long packagingLine, long floorId, long modelId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<PackagingRepairRawStockInfoDTO>(string.Format(@"Select prs.PRRStockInfoId,prs.WarehouseId,w.WarehouseName,prs.ItemTypeId,it.ItemName'ItemTypeName',prs.ItemId,i.ItemName,prs.UnitId ,u.UnitSymbol 'UnitName',prs.StockInQty,prs.StockOutQty From tblPackagingRepairRawStockInfo prs
+Inner Join [Inventory].dbo.tblWarehouses w on prs.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on prs.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on prs.ItemId = i.ItemId
+Inner Join [Inventory].dbo.tblUnits u on prs.UnitId = u.UnitId
+Where 1=1 and prs.OrganizationId={0} and prs.FloorId={1} and prs.PackagingLineId={2} and prs.DescriptionId= {3}  and (prs.StockInQty-prs.StockOutQty) > 00", orgId, floorId, packagingLine, modelId)).ToList();
         }
 
         private string QueryForPackagingRepairRawStockInfos(long? floorId, long? packagingLine, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)

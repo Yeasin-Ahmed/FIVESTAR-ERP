@@ -37,15 +37,21 @@
                         <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
                         <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="ddlRepairLine" class="control-label">Repair Line</label>
-                        @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair Line--", new { @class = "form-control form-control-sm ctrl-changed" })
+                        @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair Line--", new { @class = "form-control form-control-sm" })
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
+                        <label for="ddlPackagingLine" class="control-label">Packaging Line</label>
+                        @Html.DropDownList("ddlPackagingLine", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging Line--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-3">
                         <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
                         @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
                     </div>
-                    <div class="col-md-2">
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                         @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
                     </div>
@@ -53,8 +59,6 @@
                         <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
                         @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-2">
                         <label class="control-label font-weight-bold">From Date</label>
                         <div class="input-group input-group-sm ">
@@ -110,6 +114,7 @@
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var ddlRepairLine = $("#ddlRepairLine");
+        var ddlPackagingLine = $("#ddlPackagingLine");
         var ddlModelName = $("#ddlModelName");
         var ddlWarehouse = $("#ddlWarehouse");
         var ddlStateStatus = $("#ddlStateStatus");
@@ -175,13 +180,26 @@
             }
         })
 
+        ddlPackagingLine.change(function () {
+            ddlRepairLine.val('');
+            LoadDataTable();
+
+        })
+
+        ddlRepairLine.change(function () {
+            ddlPackagingLine.val('');
+            LoadDataTable();
+        })
+
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var repairId = ddlRepairLine.val() !== "" ? ddlRepairLine.val().substring(0, ddlRepairLine.val().indexOf("#")) : 0;
-            var data = { flag: "view", reqCode: txtReqCode.val().trim(), repairLineId: TryParseInt(repairId, 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), requisitionCode: txtReqCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+            var repairId = ddlRepairLine.val() !== "" ? ddlRepairLine.val().split("#") : ["0", "0"];
+            var packagingId = ddlPackagingLine.val() !== "" ? ddlPackagingLine.val().split("#") : ["0", "0"];
+            
+            var data = { flag: "view", reqCode: txtReqCode.val().trim(), repairLineId: TryParseInt(repairId[0], 0), packagingLineId: TryParseInt(packagingId[0], 0), modelId: TryParseInt(ddlModelName.val(), 0), warehouseId: TryParseInt(ddlWarehouse.val(), 0), status: ddlStateStatus.val(), requisitionCode: txtReqCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionRequisitionChecking', data)).then(function (res, status) {
                 if (status === "success") {

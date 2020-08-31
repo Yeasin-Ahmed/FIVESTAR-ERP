@@ -271,7 +271,7 @@
         txtProblemQRCode.change(function () {
             if ($.trim(txtProblemQRCode.val()) !== "") {
                 var prob = jQuery.grep(problemsObj, function (item) {
-                    return item.ProblemDescription === $.trim(txtProblemQRCode.val());
+                    return item.CaseId == $.trim(txtProblemQRCode.val());
                 })
                 if (prob.length > 0) {
                     if (!fnIsProbExist(prob)) {
@@ -415,6 +415,14 @@
                         toastrSuccessAlert('Successful');
                         $("#tblProb tbody").empty();
                         txtItemQRCode.val('');
+                        if (problems.length > 0) {
+                            LoadQCFailData();
+                        }
+                        else {
+                            LoadQCPassData();
+                        }
+                        
+                        
                     }
                     else {
                         bootbox.alert("This QrCode already has been transfered to Repair/MiniStock");
@@ -425,5 +433,35 @@
                 })
             }
         })
+
+        // QC Pass //
+        function LoadQCPassData() {
+            var data = { flag: "QCPass"};
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetQRCodeScanningInQC', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        // QC Fail //
+        function LoadQCFailData() {
+            var data = { flag: "QRCodes" };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetQRCodeScanningInQC', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
     </script>
 }

@@ -36,8 +36,8 @@
                     <li class="nav-item hide">
                         <a class="nav-link" id="custom-tabs-two-receiveStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveStock" role="tab" aria-controls="custom-tabs-two-receiveStock" aria-selected="true">Receive Parts From Floor</a>
                     </li>
-                    <li class="nav-item hide">
-                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-returnStockList-tab" data-toggle="pill" href="#custom-tabs-two-returnStockList" role="tab" aria-controls="custom-tabs-two-returnStockList" aria-selected="false">Stock Return List</a>
                     </li>
                 </ul>
             </div>
@@ -127,8 +127,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer2">
-                                            @{Html.RenderAction("GetReceiveStockForRepairFromQC", new { @flag = "View" });}
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @*@{Html.RenderAction("GetReceiveStockForRepairFromQC", new { @flag = "View" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -206,8 +206,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer5">
-                                            @{Html.RenderAction("GetRepairItemStockList", new { @flag = "View" });}
+                                        <div class="col-md-12" id="dataContainer2">
+                                            @*@{Html.RenderAction("GetRepairItemStockList", new { @flag = "View" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -278,8 +278,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer6">
-                                            @{Html.RenderAction("GetRepairItemTransferInfoAndDetailByQRCode", new { @flag = "View" });}
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @*@{Html.RenderAction("GetRepairItemTransferInfoAndDetailByQRCode", new { @flag = "View" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -343,8 +343,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12 text-sm" id="dataContainer1">
-                                            @{Html.RenderAction("GetRepairLineStockInfo", new { @flag = "View" });}
+                                        <div class="col-md-12 text-sm" id="dataContainer4">
+                                            @*@{Html.RenderAction("GetRepairLineStockInfo", new { @flag = "View" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -365,8 +365,8 @@
                                                     Repair Section Requisition Info List
                                                 </h5>
                                             </div>
-                                            <div class="col-md-3">
-                                                <a href="/Production/CreateRepairSectionRequisition" class="btn btn-sm btn-outline-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
+                                            <div class="col-md-3">                                                
+                                                <a href="@Url.Action("CreateRepairSectionRequisition","Production",new {@reqFor="Repair" })" class="btn btn-sm btn-outline-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
                                             </div>
                                         </div>
                                     </div>
@@ -432,8 +432,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-12" id="dataContainer3" style="min-height:50px">
-                                                @{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View" });}
+                                            <div class="col-md-12" id="dataContainer5" style="min-height:50px">
+                                                @*@{Html.RenderAction("GetRepairSectionRequisitionInfoList", new { @flag = "View", reqFor="Repair" });}*@
                                             </div>
                                         </div>
                                     </div>
@@ -593,8 +593,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer4">
-                                            @{Html.RenderAction("GetFaultyItemStockInfo", new { @flag = "View" });}
+                                        <div class="col-md-12" id="dataContainer6">
+                                            @*@{Html.RenderAction("GetFaultyItemStockInfo", new { @flag = "View" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -674,8 +674,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer2">
-                                            @{Html.RenderAction("GetRepairSectionFaultyItemTransferList", new { @flag = "View" });}
+                                        <div class="col-md-12" id="dataContainer7">
+                                            @*@{Html.RenderAction("GetRepairSectionFaultyItemTransferList", new { @flag = "View" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -762,8 +762,8 @@
                                 <div class="card card-navy">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-12" id="dataContainer2">
-                                                @{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View", @transferFor = "Repair" });}
+                                            <div class="col-md-12" id="dataContainer8">
+                                                @*@{Html.RenderAction("GetFloorStockTransferList", new { @flag = "View", @transferFor = "Repair" });}*@
                                             </div>
                                         </div>
                                     </div>
@@ -771,12 +771,97 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
+                    <div class="tab-pane fade show " id="custom-tabs-two-returnStockList" role="tabpanel" aria-labelledby="custom-tabs-two-returnStockList-tab">
                         <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Assembly-Repair Section Return List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="@Url.Action("CreateRepairStockReturn","Production")" class="btn btn-outline-secondary btn-sm btn-flat float-right">
+                                                    <i class="fas fa-minus"> Stock Return</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                             
+                                            </div>
+                                            <div class="col-md-3">
+                                               
+                                            </div>
+                                            <div class="col-md-3">
+                                             
+                                            </div>
+                                            <div class="col-md-3">
+                                              
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                              
+                                            </div>
+                                            <div class="col-md-3">
+                                              
+                                            </div>
+                                            <div class="col-md-3">
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="text-center text-bold hide" id="loader9">
+                                                    <h6>Loading...</h6>
+                                                </div>
+                                                <div class="col-md-12" id="dataContainer9">
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="returnDetail" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">Stock Return Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modalDataContainer3">
+
             </div>
         </div>
     </div>
@@ -796,6 +881,21 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="returnDetail" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div
+ class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">Stock Return Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modalDataContainer3">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
 
@@ -897,6 +997,8 @@
                 theme: 'bootstrap4'
             });
 
+            loadDataTableInitializer();
+
             $(".transferFor").addClass('hide');
             $(".assemblyLine").addClass('hide');
 
@@ -964,7 +1066,20 @@
                 orientation: "bottom auto",
                 todayHighlight: true
             });
+            
         })
+
+        function loadDataTableInitializer() {
+            LoadDataTableReceiveItems();
+            LoadDataTableReceiveList();
+            LoadDataTableItemStock();
+            LoadDataTableTransferQCItem();            
+            LoadDataTableStock();
+            LoadDataTableReqList();
+            LoadDataTableFaultyStock();
+            LoadDataTableFaultyTransferList();
+            LoadDataTableStockReturn();
+        }
 
         // Repair Line Spare Parts Stock //
 
@@ -1011,9 +1126,9 @@
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairLineStockInfo', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer1").fadeOut('500', function () {
-                        $("#dataContainer1").empty();
-                        $("#dataContainer1").append(res).fadeIn('500');
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1076,9 +1191,9 @@
             $.when(getReqWithData('html', 'GET', '/Production/GetFloorStockTransferList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
+                    $("#dataContainer8").fadeOut('500', function () {
+                        $("#dataContainer8").empty();
+                        $("#dataContainer8").append(res).fadeIn('500');
                         $(".transferFor").addClass('hide');
                         $(".assemblyLine").addClass('hide');
                     });
@@ -1157,9 +1272,9 @@
 
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionRequisitionInfoList', data)).then(function (res, status) {
                 if (status === "success") {
-                    $("#dataContainer3").fadeOut('500', function () {
-                        $("#dataContainer3").empty();
-                        $("#dataContainer3").append(res).fadeIn('500');
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1508,16 +1623,16 @@
         }
 
         function LoadDataTableFaultyStock() {
-            var repairId = ddlRepairLineFaultyStock.val() !== "" ? ddlRepairLineFaultyStock.val().substring(0, ddlRepairLineFaultyStock.val().indexOf("#")) : 0;
+            var repair = ddlRepairLineFaultyStock.val() !== "" ? ddlRepairLineFaultyStock.val().split("#") : ["0", "0"];
             getItemDetailsByFaultyStock();
-            var data = { flag: "search", lineId: 0, repairId: TryParseInt(repairId, 0), modelId: TryParseInt(ddlModelNameFaultyStock.val(), 0), qcId: 0, warehouseId: TryParseInt(warehouseFaultyStock, 0), itemTypeId: TryParseInt(itemTypeFaultyStock, 0), itemId: TryParseInt(itemFaultyStock, 0), lessOrEq: txtLessOrEqFaulty.val(), page: pageNo };
+            var data = { flag: "search", lineId: TryParseInt(repair[1], 0), repairId: TryParseInt(repair[0],0), modelId: TryParseInt(ddlModelNameFaultyStock.val(), 0), qcId: 0, warehouseId: TryParseInt(warehouseFaultyStock, 0), itemTypeId: TryParseInt(itemTypeFaultyStock, 0), itemId: TryParseInt(itemFaultyStock, 0), lessOrEq: txtLessOrEqFaulty.val(), reqFor:"Repair", page: pageNo };
 
             $.when(getReqWithData('html', 'GET', '/Production/GetFaultyItemStockInfo', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer4").fadeOut('500', function () {
-                        $("#dataContainer4").empty();
-                        $("#dataContainer4").append(res).fadeIn('500');
+                    $("#dataContainer6").fadeOut('500', function () {
+                        $("#dataContainer6").empty();
+                        $("#dataContainer6").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1576,9 +1691,9 @@
 
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionFaultyItemTransferList', data)).then(function (res, status) {
                 if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
+                    $("#dataContainer7").fadeOut('500', function () {
+                        $("#dataContainer7").empty();
+                        $("#dataContainer7").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1655,9 +1770,9 @@
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairItemStockList', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer5").fadeOut('500', function () {
-                        $("#dataContainer5").empty();
-                        $("#dataContainer5").append(res).fadeIn('500');
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1723,9 +1838,9 @@
             $.when(getReqWithData('html', 'GET', '/Production/GetReceiveStockForRepairFromQC', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1841,9 +1956,9 @@
             $.when(getReqWithData('html', 'GET', '/Production/GetRepairItemTransferInfoAndDetailByQRCode', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
-                    $("#dataContainer6").fadeOut('500', function () {
-                        $("#dataContainer6").empty();
-                        $("#dataContainer6").append(res).fadeIn('500');
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {
@@ -1880,6 +1995,67 @@
         function redirectPage(page) {
             window.location.replace(page);
         }
-        
+
+        // Repair Stock Return List //
+        // Stock Return List //
+
+        function LoadDataTableStockReturn() {
+            $("#loader9").removeClass("hide");
+            var data = { flag: "StockReturnList" }
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairLineStockInfo', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer9").fadeOut('500', function () {
+                        $("#dataContainer9").empty();
+                        $("#dataContainer9").append(res).fadeIn('500');
+                        $(".flag").addClass('hide');
+                    });
+                }
+                $("#loader9").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader9").addClass("hide");
+            });
+        }
+
+        // Stock Return Detail //
+        $(document).on('click', '.data-item-return', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            if (TryParseInt(id, 0) > 0) {
+                $("#modalDataContainer3").empty();
+                var data = { returnId: id };
+                $.when(getReqWithData('html', 'GET', '/Production/GetStockReturnItemsDetail', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalDataContainer3").append(res);
+                        $("#returnDetail").modal("show");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+
+                });
+            }
+        })
+
+        // Stock Return Detail //
+        $(document).on('click', '.data-item-return', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            if (TryParseInt(id, 0) > 0) {
+                $("#modalDataContainer3").empty();
+                var data = { returnId: id };
+                $.when(getReqWithData('html', 'GET', '/Production/GetStockReturnItemsDetail', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalDataContainer3").append(res);
+                        $("#returnDetail").modal("show");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+
+                });
+            }
+        })
     </script>
 }

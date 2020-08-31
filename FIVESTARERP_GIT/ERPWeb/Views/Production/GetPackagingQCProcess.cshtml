@@ -9,19 +9,17 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-receiveRepairItem-tab" data-toggle="pill" href="#custom-tabs-two-receiveRepairItem" role="tab" aria-controls="custom-tabs-two-receiveRepairItem" aria-selected="true">QC Transfer List</a>
+                        <a class="nav-link active" id="custom-tabs-two-transferItem-tab" data-toggle="pill" href="#custom-tabs-two-transferItem" role="tab" aria-controls="custom-tabs-two-transferItem" aria-selected="true">QC Transfer List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                        <a class="nav-link" id="custom-tabs-two-receiveList-tab" data-toggle="pill" href="#custom-tabs-two-receiveList" role="tab" aria-controls="custom-tabs-two-receiveList" aria-selected="true">Receive From Repair</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
+                @Html.AntiForgeryToken()
                 <div class="tab-content" id="custom-tabs-two-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-two-receiveRepairItem" role="tabpanel" aria-labelledby="custom-tabs-two-receiveRepairItem-tab">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-transferItem" role="tabpanel" aria-labelledby="custom-tabs-two-transferItem-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -29,12 +27,12 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 @*<a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                                    <i class="fas fa-eye"></i> Go To Details View
-                                                </a>*@
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>*@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                   QC Transfer List
+                                                    QC Transfer List
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -57,16 +55,16 @@
                                                 <input type="text" id="txtTPRCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="ddlPackagingLineReceiveImei" class="control-label font-weight-bold">Packaging Line</label>
-                                                @Html.DropDownList("ddlPackagingLineReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging--", new { @class = "form-control form-control-sm ctrl-change" })
+                                                <label for="ddlPackagingLineTransferImei" class="control-label font-weight-bold">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingLineTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging--", new { @class = "form-control form-control-sm ctrl-change" })
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="ddlModelReceiveImei" class="control-label font-weight-bold">Model</label>
-                                                @Html.DropDownList("ddlModelReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <label for="ddlModelTransferImei" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="ddlHandsetItemsReceiveImei" class="control-label font-weight-bold">Item-Color</label>
-                                                @Html.DropDownList("ddlHandsetItemsReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlHandsetItems, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <label for="ddlHandsetItemsTransferImei" class="control-label font-weight-bold">Item-Color</label>
+                                                @Html.DropDownList("ddlHandsetItemsTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlHandsetItems, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="ddlStateStatusReceiveItem" class="control-label font-weight-bold">Status</label>
@@ -107,14 +105,87 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-transferList" role="tabpanel" aria-labelledby="custom-tabs-two-transferList-tab">
+                    <div class="tab-pane fade show" id="custom-tabs-two-receiveList" role="tabpanel" aria-labelledby="custom-tabs-two-receiveList-tab">
                         <div class="row" style="margin-top:-15px">
-
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Receive Items From Repair
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
-                        <div class="row" style="margin-top:-15px">
-
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="txtTPRQCode" class="control-label font-weight-bold">Code</label>
+                                                <input type="text" id="txtTPRQCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlPackagingLineReceiveImei" class="control-label font-weight-bold">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingLineReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelReceiveImei" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlHandsetItemsReceiveImei" class="control-label font-weight-bold">Item-Color</label>
+                                                @Html.DropDownList("ddlHandsetItemsReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlHandsetItems, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatusReceiveImei" class="control-label font-weight-bold">Status</label>
+                                                @Html.DropDownList("ddlStateStatusReceiveImei", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptFromDateTI">From Date</label>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-2" id="dptFromDateTI" />
+                                                    <div class="input-group-prepend cursor-pointer remove-dateTI dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptToDateTI">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-2" id="dptToDateTI" />
+                                                    <div class="input-group-prepend remove-dateTI dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                            @{Html.RenderAction("GetPackagingRepairProcess", new { @flag = "TransferList" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,7 +193,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="modalDetails" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -140,130 +210,280 @@
 </div>
 
 @section scripts{
-   <script type="text/javascript">
+    <script type="text/javascript">
 
-       // Modal element //
-       var hdfInfoId = $("#hdfInfoId");
-       var hdfRowIndex = $('#hdfRowIndex');
-       // Receive Repairable items //
-       var txtTPRCode = $('#txtTPRCode');
-       var ddlPackagingLineReceiveImei = $("#ddlPackagingLineReceiveImei");
-       var ddlModelReceiveImei = $('#ddlModelReceiveImei');
-       var ddlHandsetItemsReceiveImei = $("#ddlHandsetItemsReceiveImei");
-       var ddlStateStatusReceiveItem = $('#ddlStateStatusReceiveItem');
-       var dptFromDate = $("#dptFromDate");
-       var dptToDate = $("#dptToDate");
+        // Modal element //
+        var hdfInfoId = $("#hdfInfoId");
+        var hdfRowIndex = $('#hdfRowIndex');
+        // Receive Repairable items //
+        var txtTPRCode = $('#txtTPRCode');
+        var ddlPackagingLineTransferImei = $("#ddlPackagingLineTransferImei");
+        var ddlModelTransferImei = $('#ddlModelTransferImei');
+        var ddlHandsetItemsTransferImei = $("#ddlHandsetItemsTransferImei");
+        var ddlStateStatusReceiveItem = $('#ddlStateStatusReceiveItem');
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
 
-       $(document).ready(function () {
-           $('.select2').select2();
-           //Initialize Select2 Elements
-           $('.select2bs4').select2({
-               theme: 'bootstrap4'
-           });
-
-           dptFromDate.prop('readonly', true);
-           dptToDate.prop('readonly', true);
-           dptFromDate.css("background-color", "#fff");
-           dptToDate.css("background-color", "#fff");
-           $('#dptFromDate').datepicker({
-               format: "dd MM yyyy",
-               orientation: "bottom auto",
-               todayHighlight: true,
-               
-           });
-           $('#dptToDate').datepicker({
-               format: "dd MM yyyy",
-               orientation: "bottom auto",
-               todayHighlight: true
-           });
-       })
-
-       // QC Transfer List //
-       txtTPRCode.keyup(function () {
-           LoadRepairableItemsDataTable();
-       })
-
-       ddlPackagingLineReceiveImei.change(function () {
-           LoadRepairableItemsDataTable();
-       })
-
-       ddlModelReceiveImei.change(function () {
-           LoadRepairableItemsDataTable();
-       })
-
-       ddlStateStatusReceiveItem.change(function () {
-           LoadRepairableItemsDataTable();
-       })
-
-       ddlHandsetItemsReceiveImei.change(function () {
-           LoadRepairableItemsDataTable();
-       })
-
-       $(document).on('change', '.ctrl-changed', function () {
-           LoadRepairableItemsDataTable();
-       })
-
-       $(document).on('click', 'div.remove-date', function () {
-           if ($(this).hasClass("dptToDate")) {
-               if (dptToDate.val() !== '') {
-                   dptToDate.val('');
-                   LoadDataTable();
-               }
-           }
-           if ($(this).hasClass("dptFromDate")) {
-               if (dptFromDate.val() !== '') {
-                   dptFromDate.val('');
-                   LoadDataTable();
-               }
-           }
-       })
-
-       function LoadRepairableItemsDataTable() {
-           
-           var packagingId = ddlPackagingLineReceiveImei.val() != "" ? ddlPackagingLineReceiveImei.val().split("#") : ["0", "0"];
-           var items = ddlHandsetItemsReceiveImei.val() != '' ? ddlHandsetItemsReceiveImei.val().split("#") : ["0", "0","0"];
-           var data = { flag: "ReceiveRepairableItems", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelReceiveImei.val(), warehouseId: items[2], itemTypeId: items[1], itemId: items[2], status: ddlStateStatusReceiveItem.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferCode: txtTPRCode.val(), transferId: 0, qrCode: '', imei: '' };
-
-           $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res,status) {
-               console.log(res);
-               console.log(status);
-               if (status === "success") {
-                   $("#dataContainer1").fadeOut('500', function () {
-                       $("#dataContainer1").empty();
-                       $("#dataContainer1").append(res).fadeIn('500');
-                   });
-               }
-           }).fail(function (error) {
-               console.log(error);
-           })
-       }
+        // Receive List  //
+        var txtTPRQCode = $('#txtTPRQCode');
+        var ddlPackagingLineReceiveImei = $("#ddlPackagingLineReceiveImei");
+        var ddlModelReceiveImei = $('#ddlModelReceiveImei');
+        var ddlHandsetItemsReceiveImei = $("#ddlHandsetItemsReceiveImei");
+        var ddlStateStatusReceiveImei = $('#ddlStateStatusReceiveImei');
+        var dptFromDateTI = $("#dptFromDateTI");
+        var dptToDateTI = $("#dptToDateTI");
 
 
-       $(document).on("click", 'a.data-repairable-item', function (e) {
-           e.preventDefault();
-           var id = $(this).attr('data-item-val');
-           var idx = $(this).parent().parents('tr').index();
-           if (TryParseInt(id, 0) > 0) {
-               LoadRepairableItemDetail(id);
-               hdfRowIndex.val(idx);
-           }
-       })
 
-       function LoadRepairableItemDetail(id) {
-           var data = { flag: "ReceiveRepairableItemDetail", transferId: id };
-           $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
-               if (status === 'success') {
-                   hdfInfoId.val(data.transferId);
-                   $("#modalDetails").modal('show');
-                   $("#modalDataContainer1").empty();
-                   $("#modalDataContainer1").append(res);
-                   $('.btnPackagingRepairReceive').addClass('hide');
-               }
-           }).fail(function (error) {
-               console.log(error);
-           })
-       }
 
-       //======================= End of QC Transfer List======================== //
-    </script>    
+        $(document).ready(function () {
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
+            dptFromDateTI.prop('readonly', true);
+            dptToDateTI.prop('readonly', true);
+            dptFromDateTI.css("background-color", "#fff");
+            dptToDateTI.css("background-color", "#fff");
+            $('#dptFromDateTI').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+
+            });
+            $('#dptToDateTI').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+        })
+
+        // QC Transfer List //
+        txtTPRCode.keyup(function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        ddlPackagingLineTransferImei.change(function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        ddlModelTransferImei.change(function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        ddlStateStatusReceiveItem.change(function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        ddlHandsetItemsTransferImei.change(function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+
+        function LoadRepairableItemsDataTable() {
+
+            var packagingId = ddlPackagingLineTransferImei.val() != "" ? ddlPackagingLineTransferImei.val().split("#") : ["0", "0"];
+            var items = ddlHandsetItemsTransferImei.val() != '' ? ddlHandsetItemsTransferImei.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "ReceiveRepairableItems", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelTransferImei.val(), warehouseId: items[2], itemTypeId: items[1], itemId: items[2], status: ddlStateStatusReceiveItem.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferCode: txtTPRCode.val(), transferId: 0, qrCode: '', imei: '' };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+
+        $(document).on("click", 'a.data-repairable-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-item-val');
+            var idx = $(this).parent().parents('tr').index();
+            if (TryParseInt(id, 0) > 0) {
+                LoadRepairableItemDetail(id);
+                hdfRowIndex.val(idx);
+            }
+        })
+
+        function LoadRepairableItemDetail(id) {
+            var data = { flag: "ReceiveRepairableItemDetail", transferId: id };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === 'success') {
+                    hdfInfoId.val(data.transferId);
+                    $("#modalDetails").modal('show');
+                    $("#modalDataContainer1").empty();
+                    $("#modalDataContainer1").append(res);
+                    $('.btnPackagingRepairReceive').addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        //======================= End of QC Transfer List======================== //
+
+        //=========================== Transfer To QC ===============================//
+        txtTPRQCode.keyup(function () {
+            LoadReceiveRepairItemsDataTable();
+        })
+
+        ddlPackagingLineReceiveImei.change(function () {
+            LoadReceiveRepairItemsDataTable();
+        })
+
+        ddlModelReceiveImei.change(function () {
+            LoadReceiveRepairItemsDataTable();
+        })
+
+        ddlStateStatusReceiveImei.change(function () {
+            LoadReceiveRepairItemsDataTable();
+        })
+
+        ddlHandsetItemsReceiveImei.change(function () {
+            LoadReceiveRepairItemsDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed-2', function () {
+            LoadReceiveRepairItemsDataTable();
+        })
+
+        $(document).on('click', 'div.remove-dateTI', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateTI.val() !== '') {
+                    dptToDateTI.val('');
+                    LoadReceiveRepairItemsDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateTI.val() !== '') {
+                    dptFromDateTI.val('');
+                    LoadReceiveRepairItemsDataTable();
+                }
+            }
+        })
+
+        function LoadReceiveRepairItemsDataTable() {
+
+            var packagingId = ddlPackagingLineReceiveImei.val() != "" ? ddlPackagingLineReceiveImei.val().split("#") : ["0", "0"];
+            var items = ddlHandsetItemsReceiveImei.val() != '' ? ddlHandsetItemsReceiveImei.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "TransferFromRepairList", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelReceiveImei.val(), warehouseId: items[2], itemTypeId: items[1], itemId: items[0], status: ddlStateStatusReceiveImei.val(), fromDate: dptFromDateTI.val(), toDate: dptToDateTI.val(), transferCode: txtTPRQCode.val(), transferId: 0, qrCode: '', imei: '' };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingQCProcess', data)).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on("click", 'a.data-repairTranfer-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-item-val');
+            var idx = $(this).parent().parents('tr').index();
+            if (TryParseInt(id, 0) > 0) {
+                LoadRepairTransferItemDetail(id);
+                hdfRowIndex.val(idx);
+            }
+        })
+
+        function LoadRepairTransferItemDetail(id) {
+            var data = { flag: "TransferFromRepairDetail", transferId: id };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingQCProcess', data)).then(function (res, status) {
+                if (status === 'success') {
+                    hdfInfoId.val(data.transferId);
+                    $("#modalDetails").modal('show');
+                    $("#modalDataContainer1").empty();
+                    $("#modalDataContainer1").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        ////
+        $(document).on('click', '.btnAcceptPackRepairTransfer', function (e) {
+            e.preventDefault();
+            if (TryParseInt(hdfInfoId.val(), 0) > 0) {
+                fnReceiveItemFromRepairTransfer(TryParseInt(hdfInfoId.val(), 0), reqStatus.accepted);
+            }
+        })
+
+        function fnReceiveItemFromRepairTransfer(id, status) {
+            var data = JSON.stringify({ transferId: id, status: status });
+            disable(".btnAcceptPackRepairTransfer");
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackagingRapairToQCTransferInfoStateStatus', data, getToken())).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (res === true && status === "success") {
+                    toastrSuccessAlert(execuStatus.successSave);
+                    $("#modalDetails").modal('toggle').toggle('fast');
+                    $("#modalDataContainer1").empty();
+                    fnRemoveARowFromTbody(".tblReceiveRepairTransferItems", hdfRowIndex.val());
+                    hdfInfoId.val('0')
+                    hdfRowIndex.val('')
+                    setTimeout(function () {
+                        LoadReceiveRepairItemsDataTable();
+                    }, 1000);
+                    enable(".btnAcceptPackRepairTransfer");
+                }
+                else {
+                    toastrErrorAlert(execuStatus.fail);
+                }
+                enable(".btnAcceptPackRepairTransfer");
+            }).fail(function (error) {
+                console.log(error);
+                enable(".btnAcceptPackRepairTransfer");
+                toastrErrorAlert(execuStatus.fail);
+            })
+        }
+                //=========================== End of Transfer To QC ===============================//
+    </script>
 }

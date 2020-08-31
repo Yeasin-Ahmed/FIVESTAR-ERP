@@ -17,6 +17,8 @@ namespace ERPBO.Production.DTOModel
         [Range(1, long.MaxValue)]
         public long ModelId { get; set; }
         public List<FaultyItemsByQRCodeDTO> FaultyItems { get; set; }
+        // Optional
+        public string IMEI { get; set; }
     }
 
     public class FaultyItemsByQRCodeDTO

@@ -33,6 +33,14 @@ textarea {
     font-weight: bold;
 }
 
+.error-border {
+    border: 1px solid red !important;
+}
+
+.vertialHeader {
+    vertical-align: middle !important;
+}
+
 .field-validation-error {
     text-align: left !important;
     font-size: small;

@@ -25,5 +25,9 @@ namespace ERPBO.Inventory.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        // Newly Added //
+        [StringLength(10)]
+        public string TAC { get; set; }
+        public long EndPoint { get; set; }
     }
 }

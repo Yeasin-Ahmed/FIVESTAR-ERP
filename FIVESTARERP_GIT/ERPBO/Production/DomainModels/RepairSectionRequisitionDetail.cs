@@ -43,5 +43,12 @@ namespace ERPBO.Production.DomainModels
         [ForeignKey("RepairSectionRequisitionInfo")]
         public long RSRInfoId { get; set; }
         public RepairSectionRequisitionInfo RepairSectionRequisitionInfo { get; set; }
+
+        // Newly Added //
+        [StringLength(50)]
+        public string ReqFor { get; set; }
+        public long? PackagingLineId { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
     }
 }

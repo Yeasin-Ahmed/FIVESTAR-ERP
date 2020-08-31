@@ -14,5 +14,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<PackagingLineStockInfo> GetPackagingLineStockInfoByPackagingAndItemId(long packagingId, long itemId, long orgId);
         PackagingLineStockInfo GetPackagingLineStockInfoByPackagingAndItemAndModelId(long packagingId, long itemId, long modelId, long orgId);
         IEnumerable<PackagingLineStockInfoDTO> GetPackagingLineStockInfosQuery(long? floorId, long? modelId, long? packagingId,long? warehouseId,long? itemTypeId, long? itemId,string lessOrEq,long orgId);
+        IEnumerable<PackagingLineStockInfoDTO> GetPackagingLineStocksForReturnStock(long packagingLine, long floorId, long modelId, long orgId);
     }
 }

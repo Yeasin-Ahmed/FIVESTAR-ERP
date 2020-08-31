@@ -1,7 +1,6 @@
-﻿@model IEnumerable<ERPBO.Inventory.ViewModels.WarehouseViewModel>
+﻿
 @{
     ViewBag.Title = "List Of Warehouse";
-    int sl = 0;
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
@@ -16,7 +15,7 @@
                         <a class="nav-link active" id="custom-tabs-two-warehouseList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseList" role="tab" aria-controls="custom-tabs-two-warehouseList" aria-selected="true">Warehouse List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="false">Description List</a>
+                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="false">Model List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-itemTypeList-tab" data-toggle="pill" href="#custom-tabs-two-itemTypeList" role="tab" aria-controls="custom-tabs-two-itemTypeList" aria-selected="false">Item Type List</a>
@@ -69,7 +68,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblWarehouseData tbody tr',this)" />
+                                                <input type="text" name="search" id="searchByWarehouse" class="form-control form-control-sm" placeholder="Search By Warehouse Name"/>
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
@@ -83,8 +82,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="col-md-12" id="dataContainer">
-                                            @{Html.RenderAction("_GetWarehousePartialList");}
+                                        <div class="col-md-12" id="dataContainer1">
+                                          
                                         </div>
                                     </div>
                                 </div>
@@ -121,7 +120,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDescriptionData tbody tr',this)" />
+                                                <input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Model Name" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
@@ -134,7 +133,6 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer2">
-                                            @{Html.RenderAction("_GetDescriptionPartialList");}
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +173,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchitemType" id="searchByitemType" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblItemTypeData tbody tr',this)" />
+                                                <input type="text" name="searchitemType" id="searchByitemType" class="form-control form-control-sm" placeholder="Search By Item Type" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
@@ -189,7 +187,6 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer3">
-                                            @{Html.RenderAction("_GetItemTypePartialList");}
                                         </div>
                                     </div>
                                 </div>
@@ -230,7 +227,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchUnit" id="searchByUnit" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblUnitData tbody tr',this)" />
+                                                <input type="text" name="searchUnit" id="searchByUnit" class="form-control form-control-sm" placeholder="Search By Unit Name" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4 text-right">
@@ -244,7 +241,6 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer4">
-                                            @{Html.RenderAction("_GetAllUnitPartialList");}
                                         </div>
                                     </div>
                                 </div>
@@ -285,7 +281,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchItem" id="searchByItem" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblItemData tbody tr',this)" />
+                                                <input type="text" name="searchItem" id="searchByItem" class="form-control form-control-sm" placeholder="Search By Item Name"/>
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4 text-right">
@@ -299,7 +295,6 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer5">
-                                            @{Html.RenderAction("_GetItemPartialList");}
                                         </div>
                                     </div>
                                 </div>
@@ -340,7 +335,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchIQC" id="searchByIQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblIQCData tbody tr',this)" />
+                                                <input type="text" name="searchIQC" id="searchByIQC" class="form-control form-control-sm" placeholder="Search By IQC"/>
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
@@ -355,7 +350,6 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer6">
-                                            @{Html.RenderAction("GetIQCList");}
                                         </div>
                                     </div>
                                 </div>
@@ -367,7 +361,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="modalWarehouse" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -638,38 +631,126 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalDescription" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDescription">Update Description</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmDesctiption">
+                    <input type="hidden" name="description" id="hdfDescriptionId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtTACNo" class="control-label font-weight-bold">Model</label>
+                            <input type="text" name="Model" value="" id="txtModel" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="txtTACNo" class="control-label font-weight-bold">TAC No</label>
+                            <input type="number" name="TACNo" value="" id="txtTACNo" class="form-control form-control-sm" />
+                            <span class="error hide req-tac">Input TAC!</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="txtEndPoint" class="control-label font-weight-bold">End Point</label>
+                            <input type="number" name="EndPoint" value="" id="txtEndPoint" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-default">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitDescription"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextDescription">Update</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts{
 
     <script type="text/javascript">
 
+        var pageNo = 1;
+        // Warehouse 
+        var searchByWarehouse = $("#searchByWarehouse");
         var txtWarehouseName = $("#txtWarehousename");
         var txtRemarks = $("#txtRemarks");
         var chkStatestatus = $("#chkStatestatus");
         var hdfWarehouseId = $("#hdfWarehouseId");
 
+        // Description
+        var searchByDescription = $("#searchByDescription");
+        var hdfDescriptionId = $("#hdfDescriptionId");
+        var txtModel = $("#txtModel");
+        var txtTACNo = $("#txtTACNo");
+        var txtEndPoint = $("#txtEndPoint");
+
+        // ItemType
+        var searchByitemType = $("#searchByitemType");
+        var hdfItemTypeId = $("#hdfItemTypeId");
+        var ddlWarehouseName = $("#ddlWarehouseName");
+        var txtitemTypeName = $("#txtitemTypeName");
+        var txtRemarksitemType = $("#txtRemarksitemType");
+        var chkStatestatusitemType = $("#chkStatestatusitemType");
+        var txtShortName = $("#txtShortName");
+
+        // Unit
+        var searchByUnit = $("#searchByUnit");
+        var hdfUnitId = $("#hdfUnitId");
+        var txtUnitName = $("#txtUnitName");
+        var txtUnitSymbol = $("#txtUnitSymbol");
+        var txtRemarksUnit = $("#txtRemarksUnit");
+
+        // Item
+        var searchByItem = $("#searchByItem");
+        var hdfItemId = $("#hdfItemId");
+        var txtItemName = $("#txtItemName");
+        var ddlItemTypeName = $("#ddlItemTypeName");
+        var ddlUnitName = $("#ddlUnitName");
+        var txtRemarksItem = $("#txtRemarksItem");
+        var chkStatestatusItem = $("#chkStatestatusItem");
+
+        // IQC
+        var searchByIQC = $("#searchByIQC");
+        var txtIQCName = $("#txtIQCName");
+        var txtRemarksIQC = $("#txtRemarksIQC");
+        var chkStatestatusIQC = $("#chkStatestatusIQC");
+        var hdfIQCId = $("#hdfIQCId");
+
         $(document).ready(function () {
-            tableInitializeForWarehouse();
+            LoadDataInitializer();
         })
 
-        function tableInitializeForWarehouse() {
-            $('#tblWarehouseData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-            });
+        function LoadDataInitializer() {
+            LoadWarehouseDataTable();
+            LoadDescriptionDataTable();
+            LoadItemTypeDataTable();
+            LoadUnitDataTable();
+            LoadItemDataTable();
+            LoadIQCDataTable();
         }
 
+        //#region Warehouse
+        
+        searchByWarehouse.keyup(function () {
+            LoadWarehouseDataTable()
+        })
+
         function LoadWarehouseDataTable() {
-            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetWarehousePartialList', null)).then(function (res, status) {
+            var data = { flag: "warehouse", name: $.trim(searchByWarehouse.val()), page:pageNo}
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
-                    $("#dataContainer").empty();
-                    $("#dataContainer").append(res);
-                    tableInitializeForWarehouse();
+                    $("#dataContainer1").empty();
+                    $("#dataContainer1").append(res);
                 }
             }).fail(function (err) { console.log(err) })
         }
@@ -736,6 +817,7 @@
             $("#spanModalHead").text('Update Warehouse')
             $("#spanSaveText").text('Update');
         })
+
         function clearCtrl() {
             hdfWarehouseId.val('0');
             txtWarehouseName.val('');
@@ -743,14 +825,7 @@
             chkStatestatus.prop("checked", false);
 
         }
-        //$(".data-edit-item").click(function (e) {
-        //    e.preventDefault()
-        //    OpenModal()
-        //    $("#spanModalHead").text('Update Warehouse')
-        //    $("#spanSaveText").text('Update');
-        //});
-
-
+      
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
@@ -768,49 +843,97 @@
             return isValid;
         }
 
-    </script>
+        //#endregion
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#tblDescriptionData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "pageLength": 10,
-            });
-        })
-    </script>
-
-    <script type="text/javascript">
-
-        var hdfItemTypeId = $("#hdfItemTypeId");
-        var ddlWarehouseName = $("#ddlWarehouseName");
-        var txtitemTypeName = $("#txtitemTypeName");
-        var txtRemarksitemType = $("#txtRemarksitemType");
-        var chkStatestatusitemType = $("#chkStatestatusitemType");
-        var txtShortName = $("#txtShortName");
-
-        $(document).ready(function () {
-            tableInitializeForItemType();
-        })
-
-        function tableInitializeForItemType() {
-            $('#tblItemTypeData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "pageLength": 10,
-            });
+        //#region Description
+        function OpenDescriptionModel() {
+            txtModel.val('');
+            hdfDescriptionId.val('0');
+            txtTACNo.val('');
+            txtEndPoint.val('');
+            $(".error").addClass('hide');
+            $("#modalDescription").modal("show");
         }
 
+        searchByDescription.keyup(function () {
+            LoadDescriptionDataTable();
+        })
+
+        $(document).on('click', 'a.data-item-description', function (e) {
+            e.preventDefault();
+            OpenDescriptionModel();
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfDescriptionId.val(tds.eq(1).html());
+            txtModel.val(tds.eq(3).html());
+            txtTACNo.val(tds.eq(4).html());
+        })
+        function validateDescriptionTAC() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (txtTACNo.val() == '') {
+                $(".req-tac").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(hdfDescriptionId.val(), 0) <= 0) {
+                bootbox.alert("Maodel Not found");
+                isValid = false;
+            }
+            return isValid;
+        }
+        $("#btnSubmitDescription").click(function (e) {
+            e.preventDefault();
+            if (validateDescriptionTAC()) {
+                disable("#btnSubmitDescription");
+                var data = JSON.stringify({ DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), TAC: txtTACNo.val(), EndPoint: TryParseInt(txtEndPoint.val(), 0) })
+                console.log(data);
+                //return;
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveDescriptionTAC', data, getToken())).then(function (res, status) {
+                    console.log(res);
+                    if (res === true) {
+                        txtModel.val('');
+                        hdfDescriptionId.val('0');
+                        txtTACNo.val('');
+                        txtEndPoint.val('');
+                        $("#modalDescription").modal("toggle");
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadDescriptionDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitDescription");
+                }).fail(function (error) {
+                    console.log(error);
+                    toastrErrorAlert(execuStatus.fail);
+                    enable("#btnSubmitDescription");
+                })
+            }
+        })
+        function LoadDescriptionDataTable() {
+            var data = { flag: "description", name: $.trim(searchByDescription.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //#endregion Description
+
+        //#region ItemType
+
+        searchByitemType.keyup(function () {
+            LoadItemTypeDataTable();
+        })
+
         function LoadItemTypeDataTable() {
-            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetItemTypePartialList', null)).then(function (res, status) {
+            var data = { flag: "itemType", name: $.trim(searchByitemType.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
                     $("#dataContainer3").empty();
@@ -822,6 +945,7 @@
             })
         }
 
+        
         function OpenModalitemType() {
             $("#spanModalHeadItemType").text('Add New ItemType');
             $("#spanSaveTextItemType").text('Save');
@@ -834,7 +958,6 @@
             clearCtrlItemType();
             OpenModalitemType();
         })
-
 
         function validateFormitemType() {
             $(".error").addClass("hide");
@@ -868,7 +991,6 @@
             return isValid;
         }
 
-
         $("#btnSubmititemType").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");
@@ -896,13 +1018,6 @@
             }
 
         })
-
-        //$(".data-edit-item-type").click(function (e) {
-        //    e.preventDefault()
-        //    OpenModalitemType()
-        //    $("#spanModalHeadItemType").text('Update ItemType');
-        //    $("#spanSaveTextItemType").text('Update');
-        //});
 
         $(document).on("click", "a.data-edit-item-type", function (e) {
             e.preventDefault()
@@ -938,31 +1053,18 @@
             txtShortName.val('');
             chkStatestatusitemType.prop("checked", false);
         }
-    </script>
+        //#endregion
 
-    <script type="text/javascript">
-        var hdfUnitId = $("#hdfUnitId");
-        var txtUnitName = $("#txtUnitName");
-        var txtUnitSymbol = $("#txtUnitSymbol");
-        var txtRemarksUnit = $("#txtRemarksUnit");
+        //#region Unit
 
-        $(document).ready(function () {
-            tableInitializeForUnit()
+        searchByUnit.keyup(function () {
+            LoadUnitDataTable();
         })
 
-        function tableInitializeForUnit() {
-            $('#tblUnitData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-            });
-        }
-
         function LoadUnitDataTable() {
-            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetAllUnitPartialList', null)).then(function (res, status) {
+
+            var data = { flag: "unit", name: $.trim(searchByUnit.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
                     $("#dataContainer4").empty();
@@ -1029,11 +1131,9 @@
                     $(".duplicate-unitName").removeClass("hide");
                     isValid = false;
                 }
-
             }
             return isValid;
         }
-
 
         $(document).on("click", "a.data-edit-item-unit", function (e) {
             e.preventDefault()
@@ -1059,40 +1159,13 @@
             txtUnitName.val('');
             txtUnitSymbol.val('');
             txtRemarksUnit.val('');
-
         }
-        //$(".data-edit-item-unit").click(function (e) {
-        //    e.preventDefault()
-        //    OpenModalUnit()
-        //    $("#spanModalHead").text('Update Unit');
-        //    $("#spanSaveTextUnit").text('Update');
-        //});
-    </script>
+        //#endregion
 
-    <script type="text/javascript">
-        var hdfItemId = $("#hdfItemId");
-        var txtItemName = $("#txtItemName");
-        var ddlItemTypeName = $("#ddlItemTypeName");
-        var ddlUnitName = $("#ddlUnitName");
-        var txtRemarksItem = $("#txtRemarksItem");
-        var chkStatestatusItem = $("#chkStatestatusItem");
-
-        $(document).ready(function () {
-            tableInitializeForItem();
+        //#region Item
+        searchByItem.keyup(function () {
+            LoadItemDataTable();
         })
-
-        function tableInitializeForItem() {
-            $('#tblItemData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "pageLength": 10,
-
-            });
-        }
 
         function OpenModalItem() {
 
@@ -1110,13 +1183,12 @@
         })
 
         function LoadItemDataTable() {
-            $.when(getReqWithData(dataType.html, type.get, '/Inventory/_GetItemPartialList', null)).then(function (res, status) {
+            var data = { flag: "item", name: $.trim(searchByItem.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
                     $("#dataContainer5").empty();
                     $("#dataContainer5").append(res);
-                    tableInitializeForItem();
-
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -1203,12 +1275,7 @@
             $("#spanSaveTextItem").text('Update');
 
         })
-        //$(".data-edit-item-Item").click(function (e) {
-        //    e.preventDefault()
 
-        //    $("#spanModalHeadItem").text('Update Item');
-        //    $("#spanSaveTextItem").text('Update');
-        //});
         function clearCtrlItem() {
             hdfItemId.val('0');
             txtItemName.val('');
@@ -1217,37 +1284,21 @@
             txtRemarksItem.val('');
             chkStatestatusItem.prop("checked", false);
         }
-    </script>
+        //#endregion
 
-    <script type="text/javascript">
+        //#region IQC
 
-        var txtIQCName = $("#txtIQCName");
-        var txtRemarksIQC = $("#txtRemarksIQC");
-        var chkStatestatusIQC = $("#chkStatestatusIQC");
-        var hdfIQCId = $("#hdfIQCId");
-
-        $(document).ready(function () {
-            tableInitializeForIQC();
+        searchByIQC.keyup(function () {
+            LoadIQCDataTable();
         })
 
-        function tableInitializeForIQC() {
-            $('#tblIQCData').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-            });
-        }
-
         function LoadIQCDataTable() {
-            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetIQCList', null)).then(function (res, status) {
+            var data = { flag: "iqc", name: $.trim(searchByIQC.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
                     $("#dataContainer6").empty();
                     $("#dataContainer6").append(res);
-                    tableInitializeForIQC();
                 }
             }).fail(function (err) { console.log(err) })
         }
@@ -1313,12 +1364,12 @@
             $("#spanModalHeadIQC").text('Update IQC')
             $("#spanSaveTextIQC").text('Update');
         })
+
         function clearCtrlIQC() {
             hdfIQCId.val('0');
             txtIQCName.val('');
             txtRemarksIQC.val('');
             chkStatestatusIQC.prop("checked", false);
-
         }
 
         function validateFormIQC() {
@@ -1337,7 +1388,38 @@
             }
             return isValid;
         }
+        //#endregion
 
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                //alert('Warehouse');
+                if ($(this).parent().parents('div').hasClass('warehouse')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadWarehouseDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('description')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDescriptionDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('itemType')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadItemTypeDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('unit')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadUnitDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('item')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadItemDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('iqc')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadIQCDataTable();
+                }
+            }
+        })
     </script>
 }
 

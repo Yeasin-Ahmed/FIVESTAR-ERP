@@ -12,7 +12,7 @@ namespace ERPWeb.Controllers
 {
     public class BaseController : Controller
     {
-        public const int pageSize = 15;
+        public int pageSize = 15;
         protected virtual new CustomPrincipal User
         {
             get { return HttpContext.User as CustomPrincipal; }

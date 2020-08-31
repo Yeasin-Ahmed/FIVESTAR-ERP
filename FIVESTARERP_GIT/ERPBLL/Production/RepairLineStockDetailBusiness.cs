@@ -139,6 +139,38 @@ namespace ERPBLL.Production
             return _repairLineStockDetailRepository.Save();
         }
 
+        public bool SaveRepairLineStockReturn(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId, string flag)
+        {
+            List<RepairLineStockDetail> repairLineStockDetails = new List<RepairLineStockDetail>();
+            foreach (var item in repairLineStockDetailDTO)
+            {
+                RepairLineStockDetail stockDetail = new RepairLineStockDetail();
+                stockDetail.RepairLineId = item.RepairLineId;
+                stockDetail.QCLineId = item.QCLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockReturn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+                //&& o.QCLineId == item.QCLineId // 30-Jun-2020
+                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.RepairLineId == item.RepairLineId).FirstOrDefault();
+                repairStockInfo.StockOutQty += item.Quantity;
+                _repairLineStockInfoRepository.Update(repairStockInfo);
+                repairLineStockDetails.Add(stockDetail);
+            }
+            _repairLineStockDetailRepository.InsertAll(repairLineStockDetails);
+            return _repairLineStockDetailRepository.Save();
+        }
+
         public bool StockInByRepairSectionRequisition(long reqId, string status, long userId, long orgId)
         {
             var reqInfo = _repairSectionRequisitionInfoBusiness.GetRepairSectionRequisitionById(reqId, orgId);

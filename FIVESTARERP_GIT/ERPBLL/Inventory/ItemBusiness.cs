@@ -1,4 +1,5 @@
-﻿using ERPBLL.Inventory.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
 using ERPBO.Inventory.DomainModels;
@@ -100,6 +101,44 @@ Inner Join tblWarehouses w on it.WarehouseId = w.Id
 Where 1=1 and i.OrganizationId={0} and ipi.DescriptionId={1} and ipi.ItemId={2} and ipi.PreparationType='{3}'
 Order By w.WarehouseName,i.ItemName", orgId, modelId, itemId, type)).ToList();
             return details;
+        }
+
+        public IEnumerable<ItemDomainDTO> GetItemsByQuery(long? itemId, long? itemTypeId, long? warehouseId, long? unitId, string itemName, string itemCode, long orgId)
+        {
+            string param = string.Empty;
+            if(itemId != null && itemId > 0)
+            {
+                param += string.Format(@" and i.ItemId={0}",itemId);
+            }
+            if (itemTypeId != null && itemTypeId > 0)
+            {
+                param += string.Format(@" and i.ItemTypeId={0}", itemId);
+            }
+            if (warehouseId != null && warehouseId > 0)
+            {
+                //param += string.Format(@" and i.ItemId={0}", itemId);
+            }
+            if (unitId != null && unitId > 0)
+            {
+                param += string.Format(@" and i.UnitId={0}", unitId);
+            }
+            if (!string.IsNullOrEmpty(itemName) && itemName.Trim() != "")
+            {
+                param += string.Format(@" and i.ItemName LIKE'%{0}%'", itemName.Trim());
+            }
+            if (!string.IsNullOrEmpty(itemCode) && itemCode.Trim() != "")
+            {
+                param += string.Format(@" and i.ItemCode LIKE'%{0}%'", itemCode.Trim());
+            }
+
+            return this._inventoryDb.Db.Database.SqlQuery<ItemDomainDTO>(string.Format(@"SELECT i.ItemId,i.ItemName,i.ItemTypeId 'ItemTypeId', it.ItemName 'ItemTypeName',i.IsActive,u.UnitId,u.UnitSymbol 'UnitName',i.ItemCode,app.UserName 'EntryUser',i.EntryDate,
+(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId = i.UpUserId)'UpdateUser', i.UpdateDate,
+(Case When i.IsActive = 'True' then 'Active' else 'Inactive' end) 'StateStatus'  
+From tblItems i
+Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
+Left Join tblUnits u on i.UnitId = u.UnitId
+Left Join [ControlPanel].dbo.tblApplicationUsers app on i.EUserId = app.UserId
+Where 1=1 and i.OrganizationId = {0} {1} Order By i.ItemId", orgId,Utility.ParamChecker(param))).ToList();
         }
 
         public IEnumerable<Dropdown> GetItemsByWarehouseId(long warehouseId, long orgId)

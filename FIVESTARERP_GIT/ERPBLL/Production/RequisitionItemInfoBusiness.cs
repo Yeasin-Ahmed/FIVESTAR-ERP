@@ -232,11 +232,17 @@ Inner Join [Inventory].dbo.tblWarehouses w on rii.WarehouseId=w.Id
 Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToList();
 
             string tCode = reqItemDto.FirstOrDefault().ReqInfoCode.Substring(4);
+            var query = string.Format(@"Select Count(*) From tblTempQRCodeTrace Where AssemblyId={0} and Cast(EntryDate as date) = Cast(GetDate() as date) and OrganizationId={1}", reqItemDto.FirstOrDefault().AssemblyLineId, orgId);
+
+            var itemCount = this._productionDb.Db.Database.SqlQuery<int>(query).FirstOrDefault();
+
+            string prefix = reqItemDto.FirstOrDefault().AssemblyLineId.ToString() + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd");
             int sl = 1;
             for (int i = 0; i < reqItemDto.Count; i++)
             {
                 for (int j = 0; j < reqItemDto[i].Quantity; j++)
                 {
+                    itemCount++;
                     QRCodeTraceDTO qRCode = new QRCodeTraceDTO
                     {
                         ProductionFloorId = reqItemDto[i].FloorId,
@@ -257,7 +263,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
                         ItemTypeName = reqItemDto[i].ItemTypeName,
                         ItemName = reqItemDto[i].ItemName,
                         ProductionFloorName = reqItemDto[i].FloorName,
-                        CodeNo = reqItemDto[i].ModelName + "-" + tCode + "-" + sl.ToString(),
+                        CodeNo = (prefix + itemCount.ToString()),//reqItemDto[i].ModelName + "-" + tCode + "-" + sl.ToString(),
                         AssemblyId = reqItemDto[i].AssemblyLineId,
                         AssemblyLineName = reqItemDto[i].AssemblyLineName
                     };

@@ -34,7 +34,8 @@
                             <input type="hidden" id="hdfRepairLineId" />
                             <input type="hidden" id="hdfQCLineId" />
                             <input type="hidden" id="hdfPackagingLineId" />
-                            <input type="text" class="form-control" placeholder="Search Repair Item By QRCode" id="txtSearchIMEICode" />
+                            <input type="hidden" id="hdfFloorId" />
+                            <input type="text" class="form-control" placeholder="Search Repair Item By IMEI" id="txtSearchIMEICode" />
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -47,7 +48,7 @@
                         <table class="table table-bordered table-sm table-responsive-lg text-sm" id="tblIMEIDetails">
                             <thead class="btn-dark">
                                 <tr>
-                                    <th colspan="4">QRCode Details</th>
+                                    <th colspan="4">IMEI Details</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -58,7 +59,7 @@
                     <div class="col-md-5">
                         <div class="card card-navy">
                             <div class="card-header">
-                                <h5>QRCode Problems</h5>
+                                <h5>IMEI Problems</h5>
                             </div>
                             <div class="card-body">
                                 <div class="col-md-12">
@@ -164,6 +165,7 @@
         var hdfAssemblyLineId = $("#hdfAssemblyLineId");
         var hdfPackagingLineId = $("#hdfPackagingLineId");
         var hdfIMEI = $("#hdfIMEI");
+        var hdfFloorId = $("#hdfFloorId");
         var warehouse = '';
         var itemType = '';
         var item = '';
@@ -213,7 +215,8 @@
                             //alert("foo")
                             bindIMEIDetails(res.info);
                             bindIMEIProblems(res.problems, res.info.TransferId);
-                            //bindIMEIFaultyItems(res.faultyItems);
+                            bindIMEIFaultyItems(res.faultyItems);
+                            hdfFloorId.val(res.info.ProductionFloorId);
                             hdfTransferId.val(res.info.TransferId);
                             hdfModelId.val(res.info.DescriptionId);
                             hdfItem.val(res.info.ItemId);
@@ -421,7 +424,7 @@
 
         $(document).on('click', '.btn-Action', function (e) {
             e.preventDefault();
-            //disable('.btn-Action');
+            disable('.btn-Action');
             var id = $(this).attr("id");
             //alert(id);
             //btnFaulty,btnRepairDone
@@ -456,7 +459,7 @@
                 console.log('FaultyItems');
                 console.log(data);
                 //return;
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFaultyItemByQRCodeScaning', data, getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackagingRepairAddingFaultyWithQRCode', data, getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (res === true || status === "success") {
@@ -514,7 +517,7 @@
 
         function fnGetFaultyItemsAfterSubmit(qrCode, transferId) {
             var data = JSON.stringify({ qrCode: qrCode, transferId: transferId })
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetFaultyItemsByQRCode', data, getToken())).then(function (res,status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetPackagingRepairFaultyItemsByQRCode', data, getToken())).then(function (res,status) {
                 console.log(res);
                 console.log(status);
                 if (res.faultyItems !== null && status === "success") {
@@ -528,10 +531,11 @@
         function fnRepairDone() {
             if (validateRepairDone())
             {
-                var data = JSON.stringify({ QRCode: hdfQRCode.val(), AssemblyLineId: TryParseInt(hdfAssemblyLineId.val(), 0), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) });
+                //QRCode,PackagingLineId,FloorId,ModelId,ItemId
+                var data = JSON.stringify({ QRCode: hdfQRCode.val(), PackagingLineId: TryParseInt(hdfPackagingLineId.val(), 0), FloorId: TryParseInt(hdfFloorId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) });
                 console.log("Repair Done");
                 console.log(data);
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairItemByQRCodeScaning', data, getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackgingRepairItemTransferByIMEIScaning', data, getToken())).then(function (res, status) {
                     console.log(res.IsSuccess);
                     console.log(res.Msg);
                     console.log(status);

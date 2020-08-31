@@ -15,7 +15,19 @@
                         <a class="nav-link" id="custom-tabs-two-itemStockInfo-tab" data-toggle="pill" href="#custom-tabs-two-itemStockInfo" role="tab" aria-controls="custom-tabs-two-itemStockInfo" aria-selected="true">Repair Item Stock</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-reqList-tab" data-toggle="pill" href="#custom-tabs-two-reqList" role="tab" aria-controls="custom-tabs-two-reqList" aria-selected="true">Requisition List</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-rawStockInfo-tab" data-toggle="pill" href="#custom-tabs-two-rawStockInfo" role="tab" aria-controls="custom-tabs-two-rawStockInfo" aria-selected="false">Repair Raw Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-faultyStockInfo-tab" data-toggle="pill" href="#custom-tabs-two-faultyStockInfo" role="tab" aria-controls="custom-tabs-two-faultyStockInfo" aria-selected="false">Faulty Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-transferToQC-tab" data-toggle="pill" href="#custom-tabs-two-transferToQC" role="tab" aria-controls="custom-tabs-two-transferToQC" aria-selected="false">Transfer List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-stockReturnList-tab" data-toggle="pill" href="#custom-tabs-two-stockReturnList" role="tab" aria-controls="custom-tabs-two-stockReturnList" aria-selected="true">Stock Return List</a>
                     </li>
                 </ul>
             </div>
@@ -30,8 +42,8 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 @*<a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                                    <i class="fas fa-eye"></i> Go To Details View
-                                                </a>*@
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>*@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
@@ -116,8 +128,8 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 @*<a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                                    <i class="fas fa-eye"></i> Go To Details View
-                                                </a>*@
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>*@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
@@ -170,6 +182,96 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-reqList" role="tabpanel" aria-labelledby="custom-tabs-two-reqList-tab">
+                        <div class="row text-sm" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Repair Section Requisition Info List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="@Url.Action("CreateRepairSectionRequisition","Production",new {@reqFor="Packaging" })" class="btn btn-sm btn-outline-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">
+                                            Search By
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                                                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlPackagingReqList" class="control-label">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingReqList", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging Line--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameReqList" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameReqList", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseReqList" class="control-label font-weight-bold">Warehouse</label>
+                                                @Html.DropDownList("ddlWarehouseReqList", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatusReqList" class="control-label font-weight-bold">StateStatus</label>
+                                                @Html.DropDownList("ddlStateStatusReqList", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus2, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateReqList" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date-reqList dptFromDateReqList" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateReqList" />
+                                                    <div class="input-group-prepend remove-date-reqList dptToDateReqList" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer6" style="min-height:50px">
+                                                @{Html.RenderAction("GetPackagingRepairProcess", new { @flag = "RequisitionList" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-pane fade show" id="custom-tabs-two-rawStockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-rawStockInfo-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -178,8 +280,8 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 @*<a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
-                                    <i class="fas fa-eye"></i> Go To Details View
-                                </a>*@
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>*@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
@@ -232,6 +334,213 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-faultyStockInfo" role="tabpanel" aria-labelledby="custom-tabs-two-faultyStockInfo-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @*<a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>*@
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Packaging Repair Faulty Stock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="ddlPackagingRepairFaultyStock" class="control-label font-weight-bold">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingRepairFaultyStock", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameFaultyStock" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelNameFaultyStock", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlItemsFaultyStock" class="control-label font-weight-bold">Item</label>
+                                                @Html.DropDownList("ddlItemsFaultyStock", (IEnumerable<SelectListItem>)ViewBag.ddlPartsItems, "--Select Item--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="txtLessOrEqFaultyStock">Qty(Le/Eq)</label>
+                                                <input type="number" id="txtLessOrEqFaultyStock" class="form-control form-control-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+                                            @{Html.RenderAction("GetPackagingRepairProcess", new { @flag = "FaultyStock" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-transferToQC" role="tabpanel" aria-labelledby="custom-tabs-two-transferToQC-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                @*<a href="#" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>*@
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Packaging Repair Items
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="txtTPRQCode" class="control-label font-weight-bold">Code</label>
+                                                <input type="text" id="txtTPRQCode" class="form-control form-control-sm" placeholder="Enter Code Here" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlPackagingLineTransferImei" class="control-label font-weight-bold">Packaging Line</label>
+                                                @Html.DropDownList("ddlPackagingLineTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlPackagingLine, "--Select Packaging--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelTransferImei" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="ddlHandsetItemsTransferImei" class="control-label font-weight-bold">Item-Color</label>
+                                                @Html.DropDownList("ddlHandsetItemsTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlHandsetItems, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatusTransferImei" class="control-label font-weight-bold">Status</label>
+                                                @Html.DropDownList("ddlStateStatusTransferImei", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptFromDateTI">From Date</label>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-2" id="dptFromDateTI" />
+                                                    <div class="input-group-prepend cursor-pointer remove-dateTI dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptToDateTI">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-2" id="dptToDateTI" />
+                                                    <div class="input-group-prepend remove-dateTI dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                            @{Html.RenderAction("GetPackagingRepairProcess", new { @flag = "TransferList" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-stockReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-stockReturnList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Stock Return List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a href="@Url.Action("CreatePackagingRepairStockReturn","Production")" class="btn btn-flat btn-secondary btn-sm float-right">
+                                                    <i class="fas fa-minus"> Stock Return</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">
+                                            Search By
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="margin-top:-10px">
+                                            <div class="row">
+                                                <div class="col-md-12"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="text-center hide" id="loader7">
+                                                <h6 class="text-bold">Loading....</h6>
+                                            </div>
+                                            <div class="col-md-12" id="dataContainer7">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -254,240 +563,601 @@
     </div>
 </div>
 
+<div class="modal fade" id="reqDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdfReqInfoId" />
+                <h4 id="modalHeading" class="modal-title">Requisition Info & Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modalDataContainer2">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="returnDetail" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title">Stock Return Detail</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modalDataContainer3">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section scripts{
-   <script type="text/javascript">
+    <script type="text/javascript">
 
-       // Modal element //
-       var hdfInfoId = $("#hdfInfoId");
-       var hdfRowIndex = $('#hdfRowIndex');
-       // Receive Repairable items //
-       var txtTPRCode = $('#txtTPRCode');
-       var ddlPackagingLineReceiveImei = $("#ddlPackagingLineReceiveImei");
-       var ddlModelReceiveImei = $('#ddlModelReceiveImei');
-       var ddlHandsetItemsReceiveImei = $("#ddlHandsetItemsReceiveImei");
-       var ddlStateStatusReceiveItem = $('#ddlStateStatusReceiveItem');
-       var dptFromDate = $("#dptFromDate");
-       var dptToDate = $("#dptToDate");
+        // Modal element //
+        var hdfInfoId = $("#hdfInfoId");
+        var hdfRowIndex = $('#hdfRowIndex');
+        var hdfReqInfoId = $("#hdfReqInfoId");
+        // Receive Repairable items //
+        var txtTPRCode = $('#txtTPRCode');
+        var ddlPackagingLineReceiveImei = $("#ddlPackagingLineReceiveImei");
+        var ddlModelReceiveImei = $('#ddlModelReceiveImei');
+        var ddlHandsetItemsReceiveImei = $("#ddlHandsetItemsReceiveImei");
+        var ddlStateStatusReceiveItem = $('#ddlStateStatusReceiveItem');
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
 
-       // Item Stock //
-       var ddlPackagingRepairItemStock = $("#ddlPackagingRepairItemStock");
-       var ddlModelNameItemStock = $('#ddlModelNameItemStock');
-       var ddlItemsItemStock = $("#ddlItemsItemStock");
-       var txtLessOrEqItemStock = $("#txtLessOrEqItemStock");
+        // Item Stock //
+        var ddlPackagingRepairItemStock = $("#ddlPackagingRepairItemStock");
+        var ddlModelNameItemStock = $('#ddlModelNameItemStock');
+        var ddlItemsItemStock = $("#ddlItemsItemStock");
+        var txtLessOrEqItemStock = $("#txtLessOrEqItemStock");
 
-       // Raw Stock //
-       var ddlPackagingRepairRawStock = $("#ddlPackagingRepairRawStock");
-       var ddlModelNameRawStock = $('#ddlModelNameRawStock');
-       var ddlItemsRawStock = $("#ddlItemsRawStock");
-       var txtLessOrEqRawStock = $("#txtLessOrEqRawStock");
+        // Raw Stock //
+        var ddlPackagingRepairRawStock = $("#ddlPackagingRepairRawStock");
+        var ddlModelNameRawStock = $('#ddlModelNameRawStock');
+        var ddlItemsRawStock = $("#ddlItemsRawStock");
+        var txtLessOrEqRawStock = $("#txtLessOrEqRawStock");
 
-       $(document).ready(function () {
-           $('.select2').select2();
-           //Initialize Select2 Elements
-           $('.select2bs4').select2({
-               theme: 'bootstrap4'
-           });
+        // Transfer List  //
+        var txtTPRQCode = $('#txtTPRQCode');
+        var ddlPackagingLineTransferImei = $("#ddlPackagingLineTransferImei");
+        var ddlModelTransferImei = $('#ddlModelTransferImei');
+        var ddlHandsetItemsTransferImei = $("#ddlHandsetItemsTransferImei");
+        var ddlStateStatusTransferImei = $('#ddlStateStatusTransferImei');
+        var dptFromDateTI = $("#dptFromDateTI");
+        var dptToDateTI = $("#dptToDateTI");
 
-           dptFromDate.prop('readonly', true);
-           dptToDate.prop('readonly', true);
-           dptFromDate.css("background-color", "#fff");
-           dptToDate.css("background-color", "#fff");
-           $('#dptFromDate').datepicker({
-               format: "dd MM yyyy",
-               orientation: "bottom auto",
-               todayHighlight: true,
-               
-           });
-           $('#dptToDate').datepicker({
-               format: "dd MM yyyy",
-               orientation: "bottom auto",
-               todayHighlight: true
-           });
-       })
+        // Faulty Stock //
+        var ddlPackagingRepairFaultyStock = $("#ddlPackagingRepairFaultyStock");
+        var ddlModelNameFaultyStock = $("#ddlModelNameFaultyStock");
+        var ddlItemsFaultyStock = $("#ddlItemsFaultyStock");
+        var txtLessOrEqFaultyStock = $('#txtLessOrEqFaultyStock');
 
-       //================ Receive Repairable items ====================//
+        // Requistion List //
+        var txtReqCode = $("#txtReqCode");
+        var ddlPackagingReqList = $("#ddlPackagingReqList");
+        var ddlModelNameReqList = $("#ddlModelNameReqList");
+        var ddlWarehouseReqList = $("#ddlWarehouseReqList");
+        var ddlStateStatusReqList = $("#ddlStateStatusReqList");
+        var dptFromDateReqList = $("#dptFromDateReqList");
+        var dptToDateReqList = $("#dptToDateReqList");
 
-       txtTPRCode.keyup(function () {
-           LoadRepairableItemsDataTable();
-       })
+        $(document).ready(function () {
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
 
-       ddlPackagingLineReceiveImei.change(function () {
-           LoadRepairableItemsDataTable();
-       })
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
 
-       ddlModelReceiveImei.change(function () {
-           LoadRepairableItemsDataTable();
-       })
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
 
-       ddlStateStatusReceiveItem.change(function () {
-           LoadRepairableItemsDataTable();
-       })
 
-       ddlHandsetItemsReceiveImei.change(function () {
-           LoadRepairableItemsDataTable();
-       })
+            dptFromDateTI.prop('readonly', true);
+            dptToDateTI.prop('readonly', true);
+            dptFromDateTI.css("background-color", "#fff");
+            dptToDateTI.css("background-color", "#fff");
+            $('#dptFromDateTI').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
 
-       $(document).on('change', '.ctrl-changed', function () {
-           LoadRepairableItemsDataTable();
-       })
+            });
+            $('#dptToDateTI').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
 
-       $(document).on('click', 'div.remove-date', function () {
-           if ($(this).hasClass("dptToDate")) {
-               if (dptToDate.val() !== '') {
-                   dptToDate.val('');
-                   LoadDataTable();
-               }
-           }
-           if ($(this).hasClass("dptFromDate")) {
-               if (dptFromDate.val() !== '') {
-                   dptFromDate.val('');
-                   LoadDataTable();
-               }
-           }
-       })
 
-       function LoadRepairableItemsDataTable() {
-           
-           var packagingId = ddlPackagingLineReceiveImei.val() != "" ? ddlPackagingLineReceiveImei.val().split("#") : ["0", "0"];
-           var items = ddlHandsetItemsReceiveImei.val() != '' ? ddlHandsetItemsReceiveImei.val().split("#") : ["0", "0","0"];
-           var data = { flag: "ReceiveRepairableItems", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelReceiveImei.val(), warehouseId: items[2], itemTypeId: items[1], itemId: items[2], status: ddlStateStatusReceiveItem.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferCode: txtTPRCode.val(), transferId: 0, qrCode: '', imei: '' };
+            dptFromDateReqList.prop('readonly', true);
+            dptToDateReqList.prop('readonly', true);
+            dptFromDateReqList.css("background-color", "#fff");
+            dptToDateReqList.css("background-color", "#fff");
+            $('#dptFromDateReqList').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
 
-           $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res,status) {
-               console.log(res);
-               console.log(status);
-               if (status === "success") {
-                   $("#dataContainer1").fadeOut('500', function () {
-                       $("#dataContainer1").empty();
-                       $("#dataContainer1").append(res).fadeIn('500');
-                   });
-               }
-           }).fail(function (error) {
-               console.log(error);
-           })
-       }
+            });
+            $('#dptToDateReqList').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
 
-       $(document).on("click", 'a.data-repairable-item', function (e) {
-           e.preventDefault();
-           var id = $(this).attr('data-item-val');
-           var idx = $(this).parent().parents('tr').index();
-           if (TryParseInt(id, 0) > 0) {
-               LoadRepairableItemDetail(id);
-               hdfRowIndex.val(idx);
-           }
-       })
+            loadDataInitializer();
+        })
 
-       function LoadRepairableItemDetail(id) {
-           var data = { flag: "ReceiveRepairableItemDetail", transferId: id };
-           $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
-               if (status === 'success') {
-                   hdfInfoId.val(data.transferId);
-                   $("#modalDetails").modal('show');
-                   $("#modalDataContainer1").empty();
-                   $("#modalDataContainer1").append(res);
-               }
-           }).fail(function (error) {
-               console.log(error);
-           })
-       }
+        function loadDataInitializer() {
+            LoadDataTableStockReturn();
+        }
 
-       $(document).on('click', '.btnPackagingRepairReceive', function (e) {
-           e.preventDefault();
-           var id = TryParseInt(hdfInfoId.val(),0);
-           if (id > 0) {
-               disable(".btnPackagingRepairReceive");
-               fnPackagingRepairReceive(id, reqStatus.accepted);
-           }
-       })
+        //================ Receive Repairable items ====================//
 
-       function fnPackagingRepairReceive(id,status) {
-           var data = JSON.stringify({ transferId: id, status: status });
-           $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackagingQCTransferItemInRepair', data, getToken())).then(function (res,status) {
-               console.log(res);
-               console.log(status);
-               if (res === true && status === "success") {
-                   toastrSuccessAlert(execuStatus.successSave);
-                   fnRemoveARowFromTbody(".tblReceiveRepairableItems", hdfRowIndex.val());
-                   $("#modalDetails").modal('toggle').toggle('fast');
-                   $("#modalDataContainer1").empty();
-                   setTimeout(function () {
-                       LoadRepairableItemsDataTable();
-                       LoadPackagingRepairItemStockDataTable();
-                       LoadPackagingRepairRawStockDataTable();
-                   }, 1000);
-                   enable(".btnPackagingRepairReceive");
-               }
-               else {
-                   toastrErrorAlert(execuStatus.fail);
-               }
-               enable(".btnPackagingRepairReceive");
-           }).fail(function (error) {
-               console.log(error);
-               enable(".btnPackagingRepairReceive");
-               toastrErrorAlert(execuStatus.fail);
-           })
-       }
-       //===========================End of Receive Repairable Items==========================//
+        txtTPRCode.keyup(function () {
+            LoadRepairableItemsDataTable();
+        })
 
-       //=========================== Item Stock ===============================//
-       ddlPackagingRepairItemStock.change(function () {
-           LoadPackagingRepairItemStockDataTable();
-       })
-       ddlModelNameItemStock.change(function () {
-           LoadPackagingRepairItemStockDataTable();
-       })
-       ddlItemsItemStock.change(function () {
-           LoadPackagingRepairItemStockDataTable();
-       })
-       txtLessOrEqItemStock.keyup(function () {
-           LoadPackagingRepairItemStockDataTable();
-       })
-       function LoadPackagingRepairItemStockDataTable() {
-           var packagingId = ddlPackagingRepairItemStock.val() != "" ? ddlPackagingRepairItemStock.val().split("#") : ["0", "0"];
-           var itemId = ddlItemsItemStock.val() != "" ? ddlItemsItemStock.val().split("#") : ["0", "0", "0"];
-           var data = { flag: "ItemStock", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameItemStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqItemStock.val() };
+        ddlPackagingLineReceiveImei.change(function () {
+            LoadRepairableItemsDataTable();
+        })
 
-           $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
-               if (status === "success") {
-                   $("#dataContainer2").fadeOut('500', function () {
-                       $("#dataContainer2").empty();
-                       $("#dataContainer2").append(res).fadeIn('500');
-                   });
-               }
-           }).fail(function (error) {
-               console.log(error);
-           })
-       }
-       //=========================== End Of Item Stock ===============================//
+        ddlModelReceiveImei.change(function () {
+            LoadRepairableItemsDataTable();
+        })
 
-       //=========================== Raw Stock ===============================//
-       ddlPackagingRepairRawStock.change(function () {
-           LoadPackagingRepairRawStockDataTable();
-       })
-       ddlModelNameRawStock.change(function () {
-           LoadPackagingRepairRawStockDataTable();
-       })
-       ddlItemsRawStock.change(function () {
-           LoadPackagingRepairRawStockDataTable();
-       })
-       txtLessOrEqRawStock.keyup(function () {
-           LoadPackagingRepairRawStockDataTable();
-       })
-       function LoadPackagingRepairRawStockDataTable() {
-           var packagingId = ddlPackagingRepairRawStock.val() != "" ? ddlPackagingRepairRawStock.val().split("#") : ["0", "0"];
-           var itemId = ddlItemsRawStock.val() != "" ? ddlItemsRawStock.val().split("#") : ["0", "0", "0"];
-           var data = { flag: "RawStock", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameItemStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqItemStock.val() };
+        ddlStateStatusReceiveItem.change(function () {
+            LoadRepairableItemsDataTable();
+        })
 
-           $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
-               if (status === "success") {
-                   $("#dataContainer3").fadeOut('500', function () {
-                       $("#dataContainer3").empty();
-                       $("#dataContainer3").append(res).fadeIn('500');
-                   });
-               }
-           }).fail(function (error) {
-               console.log(error);
-           })
-       }
-       //=========================== End Of Raw Stock ===============================//
-    </script>    
+        ddlHandsetItemsReceiveImei.change(function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadRepairableItemsDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadRepairableItemsDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadRepairableItemsDataTable();
+                }
+            }
+        })
+
+        function LoadRepairableItemsDataTable() {
+
+            var packagingId = ddlPackagingLineReceiveImei.val() != "" ? ddlPackagingLineReceiveImei.val().split("#") : ["0", "0"];
+            var items = ddlHandsetItemsReceiveImei.val() != '' ? ddlHandsetItemsReceiveImei.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "ReceiveRepairableItems", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelReceiveImei.val(), warehouseId: items[2], itemTypeId: items[1], itemId: items[2], status: ddlStateStatusReceiveItem.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), transferCode: txtTPRCode.val(), transferId: 0, qrCode: '', imei: '' };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on("click", 'a.data-repairable-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-item-val');
+            var idx = $(this).parent().parents('tr').index();
+            if (TryParseInt(id, 0) > 0) {
+                LoadRepairableItemDetail(id);
+                hdfRowIndex.val(idx);
+            }
+        })
+
+        function LoadRepairableItemDetail(id) {
+            var data = { flag: "ReceiveRepairableItemDetail", transferId: id };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === 'success') {
+                    hdfInfoId.val(data.transferId);
+                    $("#modalDetails").modal('show');
+                    $("#modalDataContainer1").empty();
+                    $("#modalDataContainer1").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on('click', '.btnPackagingRepairReceive', function (e) {
+            e.preventDefault();
+            var id = TryParseInt(hdfInfoId.val(), 0);
+            if (id > 0) {
+                disable(".btnPackagingRepairReceive");
+                fnPackagingRepairReceive(id, reqStatus.accepted);
+            }
+        })
+
+        function fnPackagingRepairReceive(id, status) {
+            var data = JSON.stringify({ transferId: id, status: status });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackagingQCTransferItemInRepair', data, getToken())).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (res === true && status === "success") {
+                    toastrSuccessAlert(execuStatus.successSave);
+                    fnRemoveARowFromTbody(".tblReceiveRepairableItems", hdfRowIndex.val());
+                    $("#modalDetails").modal('toggle').toggle('fast');
+                    $("#modalDataContainer1").empty();
+                    setTimeout(function () {
+                        LoadRepairableItemsDataTable();
+                        LoadPackagingRepairItemStockDataTable();
+                        LoadPackagingRepairRawStockDataTable();
+                    }, 1000);
+                    enable(".btnPackagingRepairReceive");
+                }
+                else {
+                    toastrErrorAlert(execuStatus.fail);
+                }
+                enable(".btnPackagingRepairReceive");
+            }).fail(function (error) {
+                console.log(error);
+                enable(".btnPackagingRepairReceive");
+                toastrErrorAlert(execuStatus.fail);
+            })
+        }
+        //===========================End of Receive Repairable Items==========================//
+
+        //=========================== Item Stock ===============================//
+        ddlPackagingRepairItemStock.change(function () {
+            LoadPackagingRepairItemStockDataTable();
+        })
+        ddlModelNameItemStock.change(function () {
+            LoadPackagingRepairItemStockDataTable();
+        })
+        ddlItemsItemStock.change(function () {
+            LoadPackagingRepairItemStockDataTable();
+        })
+        txtLessOrEqItemStock.keyup(function () {
+            LoadPackagingRepairItemStockDataTable();
+        })
+        function LoadPackagingRepairItemStockDataTable() {
+            var packagingId = ddlPackagingRepairItemStock.val() != "" ? ddlPackagingRepairItemStock.val().split("#") : ["0", "0"];
+            var itemId = ddlItemsItemStock.val() != "" ? ddlItemsItemStock.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "ItemStock", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameItemStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqItemStock.val() };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //=========================== End Of Item Stock ===============================//
+
+        //=========================== Raw Stock ===============================//
+        ddlPackagingRepairRawStock.change(function () {
+            LoadPackagingRepairRawStockDataTable();
+        })
+        ddlModelNameRawStock.change(function () {
+            LoadPackagingRepairRawStockDataTable();
+        })
+        ddlItemsRawStock.change(function () {
+            LoadPackagingRepairRawStockDataTable();
+        })
+        txtLessOrEqRawStock.keyup(function () {
+            LoadPackagingRepairRawStockDataTable();
+        })
+        function LoadPackagingRepairRawStockDataTable() {
+            var packagingId = ddlPackagingRepairRawStock.val() != "" ? ddlPackagingRepairRawStock.val().split("#") : ["0", "0"];
+            var itemId = ddlItemsRawStock.val() != "" ? ddlItemsRawStock.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "RawStock", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameRawStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqRawStock.val() };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //=========================== End Of Raw Stock ===============================//
+
+        //=========================== Transfer To QC ===============================//
+        txtTPRQCode.keyup(function () {
+            LoadRepairTransferItemsDataTable();
+        })
+
+        ddlPackagingLineTransferImei.change(function () {
+            LoadRepairTransferItemsDataTable();
+        })
+
+        ddlModelTransferImei.change(function () {
+            LoadRepairTransferItemsDataTable();
+        })
+
+        ddlStateStatusTransferImei.change(function () {
+            LoadRepairTransferItemsDataTable();
+        })
+
+        ddlHandsetItemsTransferImei.change(function () {
+            LoadRepairTransferItemsDataTable();
+        })
+
+        $(document).on('change', '.ctrl-changed-2', function () {
+            LoadRepairTransferItemsDataTable();
+        })
+
+        $(document).on('click', 'div.remove-dateTI', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateTI.val() !== '') {
+                    dptToDateTI.val('');
+                    LoadRepairTransferItemsDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateTI.val() !== '') {
+                    dptFromDateTI.val('');
+                    LoadRepairTransferItemsDataTable();
+                }
+            }
+        })
+
+        function LoadRepairTransferItemsDataTable() {
+
+            var packagingId = ddlPackagingLineTransferImei.val() != "" ? ddlPackagingLineTransferImei.val().split("#") : ["0", "0"];
+            var items = ddlHandsetItemsTransferImei.val() != '' ? ddlHandsetItemsTransferImei.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "TransferList", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelTransferImei.val(), warehouseId: items[2], itemTypeId: items[1], itemId: items[0], status: ddlStateStatusTransferImei.val(), fromDate: dptFromDateTI.val(), toDate: dptToDateTI.val(), transferCode: txtTPRQCode.val(), transferId: 0, qrCode: '', imei: '' };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                console.log(res);
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on("click", 'a.data-repairTranfer-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-item-val');
+            var idx = $(this).parent().parents('tr').index();
+            if (TryParseInt(id, 0) > 0) {
+                LoadRepairTransferItemDetail(id);
+                hdfRowIndex.val(idx);
+            }
+        })
+
+        function LoadRepairTransferItemDetail(id) {
+            var data = { flag: "TransferDetail", transferId: id };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === 'success') {
+                    hdfInfoId.val(data.transferId);
+                    $("#modalDetails").modal('show');
+                    $("#modalDataContainer1").empty();
+                    $("#modalDataContainer1").append(res);
+                    $(".btnAcceptPackRepairTransfer").addClass('hide');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        //=========================== End of Transfer To QC ===============================//
+
+        //=========================== Faulty Stock ===============================//
+        ddlPackagingRepairFaultyStock.change(function () {
+            LoadPackagingRepairFaultyStockDataTable();
+        })
+        ddlModelNameFaultyStock.change(function () {
+            LoadPackagingRepairFaultyStockDataTable();
+        })
+        ddlItemsFaultyStock.change(function () {
+            LoadPackagingRepairFaultyStockDataTable();
+        })
+        txtLessOrEqFaultyStock.keyup(function () {
+            LoadPackagingRepairFaultyStockDataTable();
+        })
+        function LoadPackagingRepairFaultyStockDataTable() {
+            var packagingId = ddlPackagingRepairFaultyStock.val() != "" ? ddlPackagingRepairFaultyStock.val().split("#") : ["0", "0"];
+            var itemId = ddlItemsFaultyStock.val() != "" ? ddlItemsFaultyStock.val().split("#") : ["0", "0", "0"];
+            var data = { flag: "FaultyStock", floorId: packagingId[1], packagingLineId: packagingId[0], modelId: ddlModelNameFaultyStock.val(), warehouseId: itemId[2], itemTypeId: itemId[1], itemId: itemId[0], lessOrEq: txtLessOrEqFaultyStock.val() };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //=========================== End Of Faulty Stock ===============================//
+
+        //=========================== Requisition List ==============================//
+        txtReqCode.keyup(function () {
+            LoadPackagingRequisitionList();
+        })
+        ddlPackagingReqList.change(function () {
+            LoadPackagingRequisitionList();
+        })
+        ddlModelNameReqList.change(function () {
+            LoadPackagingRequisitionList();
+        })
+        ddlWarehouseReqList.change(function () {
+            LoadPackagingRequisitionList();
+        })
+        ddlStateStatusReqList.change(function () {
+            LoadPackagingRequisitionList();
+        })
+        dptFromDateReqList.change(function () {
+            LoadPackagingRequisitionList();
+        })
+        dptToDateReqList.change(function () {
+            LoadPackagingRequisitionList();
+        })
+
+        $(document).on('click', 'div.remove-date-reqList', function () {
+            if ($(this).hasClass("dptToDateReqList")) {
+                if (dptToDateReqList.val() !== '') {
+                    dptToDateReqList.val('');
+                    LoadPackagingRequisitionList();
+                }
+            }
+            if ($(this).hasClass("dptFromDateReqList")) {
+                if (dptFromDateReqList.val() !== '') {
+                    dptFromDateReqList.val('');
+                    LoadPackagingRequisitionList();
+                }
+            }
+        })
+
+        function LoadPackagingRequisitionList() {
+            var packagingLine = ddlPackagingReqList.val() != "" ? ddlPackagingReqList.val().split("#") : ["0", "0"];
+            //null,packagingLineId, modelId, warehouseId, status, requisitionCode, fromDate, toDate
+            var data = { flag: "RequisitionList", packagingLineId: packagingLine[0], modelId: TryParseInt(ddlModelNameReqList.val(), 0), warehouseId: TryParseInt(ddlWarehouseReqList.val(), 0), status: ddlStateStatusReqList.val(), requisitionCode: txtReqCode.val(), fromDate: dptFromDateReqList.val(), toDate: dptToDateReqList.val() };
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer6").fadeOut('500', function () {
+                        $("#dataContainer6").empty();
+                        $("#dataContainer6").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        // Requisition Details Modal //
+        $(document).on('click', 'a.data-item-detail', function (e) {
+            e.preventDefault();
+            hdfReqInfoId.val("0");
+            var id = $(this).attr('data-item-detail');
+            hdfReqInfoId.val(id);
+
+            $.when(getReqWithData(dataType.html, type.get, '/Production/GetPackagingRepairProcess', { flag: "RequisitionDetail", reqInfoId: hdfReqInfoId.val() })).then(function (res, status) {
+                if (status === "success") {
+                    $("#modalDataContainer2").empty();
+                    $("#modalDataContainer2").append(res);
+                    $("#reqDetails").modal('show');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+
+        $(document).on('click', '.btnAccept', function (e) {
+            e.preventDefault();
+            var id = TryParseInt(hdfReqInfoId.val(), 0);
+            if (id > 0) {
+                bootbox.confirm("Are you sure you want to Accept this requisition", function (result) {
+                    if (result) {
+                        fnSaveRequisitionState(reqStatus.accepted, id)
+                    }
+                })
+            }
+        })
+
+        function fnSaveRequisitionState(status, id) {
+            var data = JSON.stringify({ status: status, requisitionId: id });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairSectionRequisitionState', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    $("#reqDetails").modal("toggle").fadeOut(500);
+                    setTimeout(function () {
+                        LoadDataTable();
+                        LoadPackagingRepairRawStockDataTable();
+                    }, 1000);
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+            })
+        }
+        //=========================== End of Requisition List ==============================//
+
+        // Stock Return List //
+        function LoadDataTableStockReturn() {
+            $("#loader7").removeClass("hide");
+            var data = { flag: "StockReturnList" }
+            $.when(getReqWithData('html', 'GET', '/Production/GetPackagingRepairProcess', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer7").fadeOut('500', function () {
+                        $("#dataContainer7").empty();
+                        $("#dataContainer7").append(res).fadeIn('500');
+                        $(".flag").addClass('hide');
+                    });
+                }
+                $("#loader7").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader7").addClass("hide");
+            });
+        }
+
+        // Stock Return Detail //
+        $(document).on('click', '.data-item-return', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-val");
+            if (TryParseInt(id, 0) > 0) {
+                $("#modalDataContainer3").empty();
+                var data = { returnId: TryParseInt(id,0) };
+                $.when(getReqWithData('html', 'GET', '/Production/GetStockReturnItemsDetail', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalDataContainer3").append(res);
+                        $("#returnDetail").modal("show");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                   
+                });
+            }
+        })
+        
+    </script>
 }

@@ -41,6 +41,16 @@ namespace ERPBLL.Production
             return this._productionDb.Db.Database.SqlQuery<PackagingLineStockInfoDTO>(QueryForPackagingLineStockInfos(floorId, modelId, packagingId, warehouseId, itemTypeId, itemId, lessOrEq, orgId)).ToList();
         }
 
+        public IEnumerable<PackagingLineStockInfoDTO> GetPackagingLineStocksForReturnStock(long packagingLine, long floorId, long modelId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<PackagingLineStockInfoDTO>(string.Format(@"Select ps.PLStockInfoId,ps.WarehouseId,w.WarehouseName,ps.ItemTypeId,it.ItemName'ItemTypeName',ps.ItemId,i.ItemName,ps.UnitId ,u.UnitSymbol 'UnitName',ps.StockInQty,ps.StockOutQty From tblPackagingLineStockInfo ps
+Inner Join [Inventory].dbo.tblWarehouses w on ps.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on ps.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on ps.ItemId = i.ItemId
+Inner Join [Inventory].dbo.tblUnits u on ps.UnitId = u.UnitId
+Where 1=1 and ps.OrganizationId={0} and ps.ProductionLineId={1} and ps.PackagingLineId={2} and ps.DescriptionId= {3}  and (ps.StockInQty-ps.StockOutQty) > 0", orgId, floorId, packagingLine, modelId)).ToList();
+        }
+
         private string QueryForPackagingLineStockInfos(long? floorId, long? modelId, long? packagingId, long? warehouseId, long? itemTypeId, long? itemId,string lessOrEq, long orgId)
         {
             string param = string.Empty;

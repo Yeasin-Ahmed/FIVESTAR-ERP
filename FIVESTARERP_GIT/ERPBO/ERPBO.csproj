@@ -176,6 +176,7 @@
     <Compile Include="ControlPanel\ViewModels\UserLogInViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\UserMenuViewModel.cs" />
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
+    <Compile Include="CustomValidationAttribute\Production\RequisitionForInRepairRequisitionAttr.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceInfo.cs" />
@@ -247,12 +248,15 @@
     <Compile Include="Inventory\DomainModels\IQCItemReqInfoList.cs" />
     <Compile Include="Inventory\DomainModels\IQCStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\IQCStockInfo.cs" />
+    <Compile Include="Inventory\DTOModel\CommitGeneratedIMEIDTO.cs" />
+    <Compile Include="Inventory\DTOModel\HandSetIMEI.cs" />
     <Compile Include="Inventory\DTOModel\IQCDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCItemReqDetailListDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCItemReqInfoListDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\ViewModels\CommitGeneratedIMEIViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqInfoListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCStockDetailViewModel.cs" />
@@ -260,6 +264,9 @@
     <Compile Include="Inventory\ViewModels\IQCViewModel.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
+    <Compile Include="Production\DomainModels\GeneratedIMEI.cs" />
+    <Compile Include="Production\DomainModels\PackagingFaultyStockDetail.cs" />
+    <Compile Include="Production\DomainModels\PackagingFaultyStockInfo.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairRawStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairItemStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairRawStockInfo.cs" />
@@ -354,6 +361,8 @@
     <Compile Include="Production\DomainModels\RepairSectionRequisitionInfo.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemDetail.cs" />
     <Compile Include="Production\DomainModels\RequisitionItemInfo.cs" />
+    <Compile Include="Production\DomainModels\StockItemReturnDetail.cs" />
+    <Compile Include="Production\DomainModels\StockItemReturnInfo.cs" />
     <Compile Include="Production\DomainModels\TempQRCodeTrace.cs" />
     <Compile Include="Production\DomainModels\TransferPackagingRepairItemToQcDetail.cs" />
     <Compile Include="Production\DomainModels\TransferPackagingRepairItemToQcInfo.cs" />
@@ -375,11 +384,14 @@
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemPreparationDetailWithInfoDTO.cs" />
     <Compile Include="Production\DTOModel\BatteryWriteDTO.cs" />
+    <Compile Include="Production\DTOModel\GeneratedIMEIDTO.cs" />
     <Compile Include="Production\DTOModel\IMEITransferToRepairDetailDTO.cs" />
     <Compile Include="Production\DTOModel\IMEITransferToRepairInfoDTO.cs" />
     <Compile Include="Production\DTOModel\IMEIWriteDTO.cs" />
     <Compile Include="Production\DTOModel\MiniStockTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\MiniStockTransferInfoDTO.cs" />
+    <Compile Include="Production\DTOModel\PackagingFaultyStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\PackagingFaultyStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingRepairItemStockDetailDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingRepairItemStockInfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingRepairRawStockDetailDTO.cs" />
@@ -397,6 +409,8 @@
     <Compile Include="Production\DTOModel\QCPassTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\QCPassTransferInformationDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeProblemDTO.cs" />
+    <Compile Include="Production\DTOModel\StockItemReturnDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\StockItemReturnInfoDTO.cs" />
     <Compile Include="Production\DTOModel\TempQRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QRCodeTraceDTO.cs" />
     <Compile Include="Production\DTOModel\QCItemStockDetailDTO.cs" />
@@ -492,6 +506,7 @@
     <Compile Include="Production\ViewModels\FinishGoodsStockInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\ItemPreparationDetailWithInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\BatteryWriteViewModel.cs" />
+    <Compile Include="Production\ViewModels\GeneratedIMEIViewModel.cs" />
     <Compile Include="Production\ViewModels\IMEITransferToRepairDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\IMEITransferToRepairInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\IMEIWriteViewModel.cs" />
@@ -500,6 +515,8 @@
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\MiniStockTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\MiniStockTransferInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\PackagingFaultyStockDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\PackagingFaultyStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingItemStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingItemStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingLineStockDetailViewModel.cs" />
@@ -518,6 +535,8 @@
     <Compile Include="Production\ViewModels\QCPassTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QCPassTransferInformationViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeProblemViewModel.cs" />
+    <Compile Include="Production\ViewModels\StockItemReturnDetailViewModel.cs" />
+    <Compile Include="Production\ViewModels\StockItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TempQRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeTraceViewModel.cs" />
     <Compile Include="Production\ViewModels\ProductionLineViewModel.cs" />

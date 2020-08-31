@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Packaging Line QC";
+    ViewBag.Title = "Packaging Line QC IMEI Scanning";
 }
 
 <div class="row">
@@ -46,8 +46,8 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     @*<div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>*@
+                                            <h6 class="card-title">Search By</h6>
+                                        </div>*@
                                     <div class="card-body">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-4" style="border-right:2px solid #f6eaaa">
@@ -62,10 +62,10 @@
                                                 <h5 style="border-bottom:2px solid #e03c3c">QC Fail</h5>
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" id="txtQCFailIMEI" class="form-control text-bold" placeholder="Enter IMEI Here" style="border-radius:0"/>
+                                                        <input type="text" id="txtQCFailIMEI" class="form-control text-bold" placeholder="Enter IMEI Here" style="border-radius:0" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="text" id="txtProblem" class="form-control text-bold" placeholder="Enter Problem Here" style="border-radius:0"/>
+                                                        <input type="text" id="txtProblem" class="form-control text-bold" placeholder="Enter Problem Here" style="border-radius:0" />
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -79,8 +79,7 @@
                                                                     <th class="hide">Action</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-                                                            </tbody>
+                                                            <tbody></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -155,6 +154,7 @@
         $(document).ready(function () {
             txtQCPassIMEI.focus();
             fnProblemsData();
+
         })
 
         function validateIMEI(imei) {
@@ -162,6 +162,42 @@
         }
 
         // QC pass //
+
+        txtQCPassIMEI.change(function myfunction() {
+            if ($.trim(txtQCPassIMEI.val()).length >= 15) {
+                fnFinishGoods($.trim(txtQCPassIMEI.val()));
+            }
+            else {
+                txtQCPassIMEI.val('');
+                txtQCPassIMEI.focus();
+            }
+        })
+
+        function fnFinishGoods(imei) {
+            if (validateIMEI(imei)) {
+                var data = JSON.stringify({ imei: imei })
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFinishGoodsByIMEI', data, getToken())).then(function (res, status) {
+                    console.log(res);
+                    if (res.isSuccess) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        txtQCPassIMEI.val('');
+                        txtQCPassIMEI.focus();
+                    }
+                    else {
+                        toastrErrorAlert(res.text);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                    toastrErrorAlert(execuStatus.fail);
+                })
+            }
+            else {
+                toastr.error("This IEMI may has been transfered / In Repair", null, { timeOut: 2000 })
+            }
+        }
+
+        // QC Fail //
+
         function fnProblemsData() {
             problemsObj.length = 0;
             $.when(postReqWithToken(null, dataType.json, type.post, '/Common/GetFaultyCasesListAsync', null, getToken())).then(function (res, status) {
@@ -173,43 +209,18 @@
             })
         }
 
-        txtQCPassIMEI.change(function myfunction() {
-            if ($.trim(txtQCPassIMEI.val()).length >= 15) {
-                //IsExistInPackagingLine
-                // QC Pass & Finish Goods //
-            }
-            else {
-                txtQCPassIMEI.val('');
-                txtQCPassIMEI.focus();
-            }
-        })
-
-        function fnFinishGoods(imei) {
-            if (validateIMEIFinishGoods(imei)) {
-                var data = JSON.stringify({ imei: imei })
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveFinishGoodsByIMEI',data,getToken())).then(function (res, status) {
-                    console.log(res);
-                    if (res.isSuccess) {
-                        toastrSuccessAlert(execuStatus.successSave);
-                        txtQCPassIMEI.val('');
-                        txtQCPassIMEI.focus();
-                    }
-                }).fail(function (error) {
-                    console.log(error);
-                    toastrErrorAlert(execuStatus.fail);
-                })
-            }
-            else {
-                toastrInfoAlert('This IEMI may has been transfered');
-            }
-        }
-
-        // QC Fail //
-
         txtQCFailIMEI.change(function () {
-            if ($.trim(txtQCFailIMEI.val()).length >=15) {
-                txtProblem.val('');
-                txtProblem.focus();
+            if ($.trim(txtQCFailIMEI.val()).length >= 15) {
+                if (validateIMEI($.trim(txtQCFailIMEI.val()))) {
+                    txtProblem.val('');
+                    txtProblem.focus();
+                }
+                else {
+                    toastr.error("This IEMI may has been transfered / In Repair", null, { timeOut: 2000 })
+                    txtProblem.val('')
+                    txtQCFailIMEI.val('');
+                    txtQCFailIMEI.focus();
+                }
             }
             else {
                 txtQCFailIMEI.val('');
@@ -284,7 +295,9 @@
         $("#btnSubmitQCFail").click(function (e) {
             e.preventDefault();
             if (vaildateQCFail()) {
+                disable("#btnSubmitQCFail");
                 var problems = []; problems.length = 0;
+
                 $.each($("#tblProb tbody tr"), function (index, item) {
                     var tds = $(this).children('td');
                     problems.push({
@@ -292,25 +305,36 @@
                         ProblemName: tds.eq(1).html()
                     })
                 })
+
                 var data = JSON.stringify({ imei: $.trim(txtQCFailIMEI.val()), problems: problems });
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveIMEITransferByPackagingQC', data, getToken())).then(function (res,status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveIMEITransferByPackagingQC', data, getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (res.isSuccess) {
                         toastrSuccessAlert(execuStatus.successSave);
-                        txtQCPassIMEI.val('');
-                        txtQCFailIMEI.val('');
-                        txtProblem.val('');
-                        $("#tblProb tbody").empty();
+                        resetQCFail();
                     }
                     else {
                         toastrErrorAlert(res.text);
                     }
+                    enable("#btnSubmitQCFail");
                 }).fail(function (error) {
                     console.log(error);
                     toastrErrorAlert(execuStatus.fail);
+                    enable("#btnSubmitQCFail");
                 })
             }
+            else {
+                toastr.error("This IEMI may has been transfered / In Repair", null, { timeOut: 2000 })
+            }
         })
-    </script>    
+
+        function resetQCFail() {
+            txtQCPassIMEI.val('');
+            txtQCFailIMEI.val('');
+            txtQCFailIMEI.focus();
+            txtProblem.val('');
+            $("#tblProb tbody").empty();
+        }
+    </script>
 }

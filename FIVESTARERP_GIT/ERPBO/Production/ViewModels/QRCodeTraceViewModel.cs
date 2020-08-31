@@ -63,5 +63,7 @@ namespace ERPBO.Production.ViewModels
         public long? QCLineId { get; set; }
         public string QCLineName { get; set; }
         public string PackagingLineName { get; set; }
+        [StringLength(100)]
+        public string CartonNo { get; set; }
     }
 }

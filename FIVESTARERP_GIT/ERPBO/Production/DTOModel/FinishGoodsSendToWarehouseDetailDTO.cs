@@ -11,6 +11,8 @@ namespace ERPBO.Production.DTOModel
     public class FinishGoodsSendToWarehouseDetailDTO
     {
         public long SendDetailId { get; set; }
+        public long DescriptionId { get; set; }
+        public long WarehouseId { get; set; }
         public long ItemTypeId { get; set; }
         public long ItemId { get; set; }
         public int Quantity { get; set; }
@@ -30,5 +32,12 @@ namespace ERPBO.Production.DTOModel
         public string ItemTypeName { get; set; }
         public string ItemName { get; set; }
         public string UnitName { get; set; }
+        // Cartoon  Detail//
+        [StringLength(100)]
+        public string QRCode { get; set; }
+        [StringLength(100)]
+        public string IMEI { get; set; }
+        [StringLength(100)]
+        public string AllIMEI { get; set; }
     }
 }

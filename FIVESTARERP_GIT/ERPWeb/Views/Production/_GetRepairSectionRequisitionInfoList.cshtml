@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionRequisitionInfoViewModel>
 @{
     Layout = null;
-    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
-    int sl = pagerData.Serial;
+    //var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = 0;//pagerData.Serial;
     string badge = string.Empty;
     //var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    string sectionName = string.Empty;
 }
 
 @*<div class="card-body">
@@ -17,7 +18,7 @@
                 <tr class="text-center">
                     <th style="vertical-align:middle;white-space: nowrap">#SL</th>
                     <th style="vertical-align:middle;white-space: nowrap">Requisition Code</th>
-                    <th style="vertical-align:middle;white-space: nowrap">Repair Line</th>
+                    <th style="vertical-align:middle;white-space: nowrap">Section</th>
                     <th style="vertical-align:middle;white-space: nowrap">Model</th>
                     <th style="vertical-align:middle;white-space: nowrap">Warehouse</th>
                     <th style="vertical-align:middle;white-space: nowrap">Total Unit Qty</th>
@@ -44,6 +45,7 @@
             <tbody>
                 @foreach (var info in Model)
                 {
+                    sectionName = info.ReqFor == "Repair" ? info.RepairLineName : info.PackagingLineName;
                     sl = sl + 1;
                     badge = info.StateStatus == "Pending" ? "badge bg-warning" : (info.StateStatus == "Accepted" ? "badge bg-primary" : info.StateStatus == "Approved" ? "badge bg-success" : (info.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-secondary"));
                     var checkedDate = info.CheckedDate.HasValue ? info.CheckedDate.Value.ToString("dd MMM yyyy hh:mm tt") : "";
@@ -56,7 +58,7 @@
                     <tr>
                         <td class="text-center text-bold">@sl</td>
                         <td>@info.RequisitionCode</td>
-                        <td>@info.RepairLineName</td>
+                        <td>@sectionName</td>
                         <td>@info.ModelName</td>
                         <td>@info.WarehouseName</td>
                         <td class="text-center text-bold">@info.TotalUnitQty</td>
@@ -113,6 +115,6 @@
         </table>
     </div>
     <div class="col-md-12 mt-1">
-        @Html.Partial("_Pagination", pagerData)
+        @*@Html.Partial("_Pagination", pagerData)*@
     </div>
 </div>

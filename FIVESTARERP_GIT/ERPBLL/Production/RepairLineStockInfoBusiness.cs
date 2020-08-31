@@ -51,6 +51,16 @@ namespace ERPBLL.Production
             return this._productionDb.Db.Database.SqlQuery<RepairLineStockInfoDTO>(QueryForRepairLineStockInfos(floorId, modelId, qcId, repairId, warehouseId, itemTypeId, itemId, lessOrEq, orgId)).ToList();
         }
 
+        public IEnumerable<RepairLineStockInfoDTO> GetRepairLineStocksForReturnStock(long repairLineId, long floorId, long modelId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<RepairLineStockInfoDTO>(string.Format(@"Select rsi.RLStockInfoId,rsi.WarehouseId,w.WarehouseName,rsi.ItemTypeId,it.ItemName'ItemTypeName',rsi.ItemId,i.ItemName,rsi.UnitId ,u.UnitSymbol 'UnitName',rsi.StockInQty,rsi.StockOutQty From tblRepairLineStockInfo rsi
+Inner Join [Inventory].dbo.tblWarehouses w on rsi.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on rsi.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on rsi.ItemId = i.ItemId
+Inner Join [Inventory].dbo.tblUnits u on rsi.UnitId = u.UnitId
+Where 1=1 and rsi.OrganizationId={0} and rsi.ProductionLineId={1} and rsi.RepairLineId={2} and rsi.DescriptionId= {3}  and (rsi.StockInQty-rsi.StockOutQty) > 0", orgId, floorId, repairLineId, modelId)).ToList();
+        }
+
         private string QueryForRepairLineStockInfos(long? floorId, long? modelId, long? qcId, long? repairId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
         {
             string query = string.Empty;

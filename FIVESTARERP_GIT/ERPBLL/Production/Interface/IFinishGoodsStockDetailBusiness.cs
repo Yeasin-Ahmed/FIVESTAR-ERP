@@ -19,5 +19,8 @@ namespace ERPBLL.Production.Interface
         IEnumerable<DashboardLineWiseProductionDTO> DashboardLineWiseOverAllProduction(long orgId);
         IEnumerable<DaysAndLineWiseProductionChart> GetDayAndLineProductionChartsData(long orgId);
         IEnumerable<DayAndModelWiseProductionChart> GetDayAndModelWiseProductionChart(long orgId);
+        Task<bool> SaveFinishGoodsByIMEIAsync(string imei, long userId, long orgId);
+        Task<bool> SaveFinishGoodsStockOutAsync(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId);
+
     }
 }

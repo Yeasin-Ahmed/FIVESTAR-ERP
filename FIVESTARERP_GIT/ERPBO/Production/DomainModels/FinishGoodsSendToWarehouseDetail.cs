@@ -13,6 +13,8 @@ namespace ERPBO.Production.DomainModels
     {
         [Key]
         public long SendDetailId { get; set; }
+        public long DescriptionId { get; set; }
+        public long WarehouseId { get; set; }
         public long ItemTypeId { get; set; }
         public long ItemId { get; set; }
         public int Quantity { get; set; }
@@ -31,5 +33,12 @@ namespace ERPBO.Production.DomainModels
         [ForeignKey("FinishGoodsSendToWarehouseInfo")]
         public long SendId { get; set; }
         public FinishGoodsSendToWarehouseInfo FinishGoodsSendToWarehouseInfo { get; set; }
+        // Cartoon //
+        [StringLength(100)]
+        public string QRCode { get; set; }
+        [StringLength(100)]
+        public string IMEI { get; set; }
+        [StringLength(100)]
+        public string AllIMEI { get; set; }
     }
 }

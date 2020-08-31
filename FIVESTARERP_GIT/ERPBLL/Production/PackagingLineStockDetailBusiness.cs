@@ -208,5 +208,37 @@ namespace ERPBLL.Production
             _packagingLineStockDetailRepository.InsertAll(packagingLineStockDetails);
             return await _packagingLineStockDetailRepository.SaveAsync();
         }
+
+        public bool SavePackagingLineStockReturn(List<PackagingLineStockDetailDTO> packagingLineStockDetailDTO, long userId, long orgId, string flag)
+        {
+            List<PackagingLineStockDetail> packagingLineStockDetails = new List<PackagingLineStockDetail>();
+            foreach (var item in packagingLineStockDetailDTO)
+            {
+                PackagingLineStockDetail stockDetail = new PackagingLineStockDetail();
+                stockDetail.PackagingLineId = item.PackagingLineId;
+                stockDetail.ProductionLineId = item.ProductionLineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.WarehouseId = item.WarehouseId;
+
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = item.UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockReturn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+
+                var packagingStockInfo = _packagingLineStockInfoBusiness.GetPackagingLineStockInfoByPackagingAndItemAndModelId(item.ProductionLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
+                packagingStockInfo.StockOutQty += item.Quantity;
+                _packagingLineStockInfoRepository.Update(packagingStockInfo);
+                packagingLineStockDetails.Add(stockDetail);
+            }
+            _packagingLineStockDetailRepository.InsertAll(packagingLineStockDetails);
+            return _packagingLineStockDetailRepository.Save();
+        }
     }
 }

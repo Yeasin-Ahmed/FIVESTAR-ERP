@@ -46,7 +46,6 @@ namespace ERPBLL.Production
         {
             return this._productionDb.Db.Database.SqlQuery<AssemblyLineStockInfoDTO>(QueryForAssemblyLineStockInfos(floorId, assemblyId,modelId,warehouseId,itemTypeId,itemId,lessOrEq,orgId)).ToList();
         }
-
         private string QueryForAssemblyLineStockInfos(long? floorId, long? assemblyId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string lessOrEq, long orgId)
         {
             string query = string.Empty;
@@ -96,5 +95,16 @@ Left Join [Inventory].dbo.tblUnits u on ai.UnitId= u.UnitId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
+
+        public IEnumerable<AssemblyLineStockInfoDTO> GetAssemblyLineStocksForReturnStock(long assemblyId, long floorId, long modelId, long orgId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<AssemblyLineStockInfoDTO>(string.Format(@"Select assm.ALSInfo,assm.WarehouseId,w.WarehouseName,assm.ItemTypeId,it.ItemName'ItemTypeName',assm.ItemId,i.ItemName,assm.UnitId ,u.UnitSymbol 'UnitName',assm.StockInQty,assm.StockOutQty From tblAssemblyLineStockInfo assm
+Inner Join [Inventory].dbo.tblWarehouses w on assm.WarehouseId = w.Id
+Inner Join [Inventory].dbo.tblItemTypes it on assm.ItemTypeId = it.ItemId
+Inner Join [Inventory].dbo.tblItems i on assm.ItemId = i.ItemId
+Inner Join [Inventory].dbo.tblUnits u on assm.UnitId = u.UnitId
+Where 1=1 and assm.OrganizationId={0} and assm.ProductionLineId={1} and assm.AssemblyLineId={2} and assm.DescriptionId= {3}  and (assm.StockInQty-assm.StockOutQty) > 0",orgId,floorId,assemblyId,modelId)).ToList();
+        }
+
     }
 }

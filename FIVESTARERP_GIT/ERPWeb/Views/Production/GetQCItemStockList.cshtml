@@ -10,6 +10,9 @@
                     <a class="nav-link active" id="custom-tabs-three-receiveItems-tab" data-toggle="pill" href="#custom-tabs-three-receiveItems" role="tab" aria-controls="custom-tabs-three-receiveItems" aria-selected="true">Receive Repair Items</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-qcFail-tab" data-toggle="pill" href="#custom-tabs-three-qcFail" role="tab" aria-controls="custom-tabs-three-qcFail" aria-selected="true">QC Transfer List</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-three-qcStock-tab" data-toggle="pill" href="#custom-tabs-three-qcStock" role="tab" aria-controls="custom-tabs-three-qcStock" aria-selected="true">QC Item Stock</a>
                 </li>
                 <li class="nav-item">
@@ -111,6 +114,97 @@
                                         <div class="col-md-12" id="dataContainer2">
                                             @{Html.RenderAction("GetRepairItemTransferInfoAndDetailByQRCode", new { @flag = "View" });}
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="custom-tabs-three-qcFail" role="tabpanel" aria-labelledby="custom-tabs-three-qcFail-tab">
+                    <div class="row" style="margin-top:-15px">
+                        <div class="col-md-12">
+                            <div class="card card-gray-dark">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="text-center text-bold">
+                                               QC Fail List
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <div class="card card-navy">
+                                <div class="card-header">
+                                    <h6 class="card-title">Search By</h6>
+                                </div>
+                                <div class="card-body text-sm">
+                                    <div class="row" style="margin-top:-15px">
+                                        <div class="col-md-3">
+                                            <label for="ddlFloorQCFail" class="control-label font-weight-bold">Floor</label>
+                                            @Html.DropDownList("ddlFloorQCFail", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlQCLineQCFail" class="control-label font-weight-bold">QC</label>
+                                            <select id="ddlQCLineQCFail" class="form-control form-control-sm">
+                                                <option value="0">--Select QC Line--</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlRepairLineQCFail" class="control-label font-weight-bold">Repair</label>
+                                            <select id="ddlRepairLineQCFail" class="form-control form-control-sm">
+                                                <option value="0">--Select Repair Line--</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlModelNameQCFail" class="control-label font-weight-bold">Model</label>
+                                            @Html.DropDownList("ddlModelNameQCFail", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm ctrl-change select2 select2-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="txtTSQCode" class="control-label font-weight-bold">Transfer Code</label>
+                                            <input type="text" id="txtTSQCode" class="form-control form-control-sm" placeholder="Search By Transfer Code" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="ddlStateStatusQCFail" class="control-label font-weight-bold">StateStatus</label>
+                                            @Html.DropDownList("ddlStateStatusQCFail", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label font-weight-bold">From Date</label>
+                                            <div class="input-group input-group-sm ">
+                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-receive" id="dptFromDateQCFail" />
+                                                <div class="input-group-prepend cursor-pointer remove-date-ReceiveQC dptFromDateQCFail" style="cursor:pointer">
+                                                    <span class="input-group-text">&#10008;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label font-weight-bold">To Date</label>
+                                            <div class="input-group input-group-sm ">
+                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed-receive" id="dptToDateQCFail" />
+                                                <div class="input-group-prepend remove-date-ReceiveQC dptToDateQCFail" style="cursor:pointer">
+                                                    <span class="input-group-text">&#10008;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:-10px">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="col-md-12" id="dataContainer2">
+                                        @{Html.RenderAction("GetReceiveStockForRepairFromQC", new { @flag = "View" });}
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +435,40 @@
         var itemTypeStock = '';
         var itemStock = '';
 
+        // Receive Repair Items //
+
+        var ddlFloorReceItem = $('#ddlFloorReceItem');
+        var ddlAssemblyReceItem = $("#ddlAssemblyReceItem");
+        var ddlQCLineReceItem = $("#ddlQCLineReceItem");
+        var ddlRepairLineReceItem = $("#ddlRepairLineReceItem");
+        var ddlModelReceItem = $("#ddlModelReceItem");
+        var ddlStatusReceItem = $("#ddlStatusReceItem");
+        var txtTRQCode = $("#txtTRQCode");
+        var dptFromDateReceItem = $("#dptFromDateReceItem");
+        var dptToDateReceItem = $("#dptToDateReceItem");
+
+        // QC Pass
+        var hdfProductionFloorQP = $("#hdfProductionFloorQP");
+        var hdfQCLineQP = $("#hdfQCLineQP");
+        var hdfModelQP = $("#hdfModelQP");
+        var hdfWarehouseQP = $("#hdfWarehouseQP");
+        var hdfItemTypeQP = $("#hdfItemTypeQP");
+        var hdfItemQP = $("#hdfItemQP");
+        var txtQcPassQty = $("#txtQcPassQty");
+
+        // QC Fail Items //
+        var ddlFloorQCFail = $('#ddlFloorQCFail');
+        var ddlQCLineQCFail = $("#ddlQCLineQCFail");
+        var ddlRepairLineQCFail = $("#ddlRepairLineQCFail");
+        var ddlModelNameQCFail = $("#ddlModelNameQCFail");
+        var dptFromDateQCFail = $("#dptFromDateQCFail");
+        var dptToDateQCFail = $("#dptToDateQCFail");
+        var txtTSQCode = $("#txtTSQCode");
+        var ddlStateStatusQCFail = $("#ddlStateStatusQCFail");
+
         $(document).ready(function () {
+
+            $(".btnReceive").addClass('hide');
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -349,6 +476,39 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
+            // Receive QC Items //
+            dptFromDateReceItem.prop('readonly', true);
+            dptToDateReceItem.prop('readonly', true);
+            dptFromDateReceItem.css("background-color", "#fff");
+            dptToDateReceItem.css("background-color", "#fff");
+            $('#dptFromDateReceItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDateReceItem').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
+            // QC Fail //
+            dptFromDateQCFail.prop('readonly', true);
+            dptToDateQCFail.prop('readonly', true);
+            dptFromDateQCFail.css("background-color", "#fff");
+            dptToDateQCFail.css("background-color", "#fff");
+            $('#dptFromDateQCFail').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+            $('#dptToDateQCFail').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            });
+
         })
 
         function getItemsStock() {
@@ -410,42 +570,6 @@
                 pageNo = $(this).attr('data-page-no');
                 LoadDataTable();
             }
-        })
-
-        // QC Pass
-        var hdfProductionFloorQP = $("#hdfProductionFloorQP");
-        var hdfQCLineQP = $("#hdfQCLineQP");
-        var hdfModelQP = $("#hdfModelQP");
-        var hdfWarehouseQP = $("#hdfWarehouseQP");
-        var hdfItemTypeQP = $("#hdfItemTypeQP");
-        var hdfItemQP = $("#hdfItemQP");
-        var txtQcPassQty = $("#txtQcPassQty");
-
-        $(document).ready(function () {
-            //$(".cell-action").addClass('hide');
-            $(".btnReceive").addClass('hide');
-            $('.select2').select2();
-
-            //Initialize Select2 Elements
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            });
-
-            // Receive QC Items //
-            dptFromDateReceItem.prop('readonly', true);
-            dptToDateReceItem.prop('readonly', true);
-            dptFromDateReceItem.css("background-color", "#fff");
-            dptToDateReceItem.css("background-color", "#fff");
-            $('#dptFromDateReceItem').datepicker({
-                format: "dd MM yyyy",
-                orientation: "bottom auto",
-                todayHighlight: true
-            });
-            $('#dptToDateReceItem').datepicker({
-                format: "dd MM yyyy",
-                orientation: "bottom auto",
-                todayHighlight: true
-            });
         })
 
         function clearQCPass() {
@@ -644,17 +768,25 @@
             });
         }
 
-        // Receive Repair Items //
+        $(document).on('click', '.data-qcPass-item-detail', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-qcPass-item-detail");
+            if (id > 0) {
+                var data = { flag: "detail", floorId: 0, assemblyId: 0, modelId: 0, qcId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, status: '', qcPassCode: '', qcPassId: TryParseInt(id, 0), fromDate: '', toDate: '' };
+                $.when(getReqWithData('html', 'GET', '/Production/GetQCPassList', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#modalContainer1").empty();
+                        $("#modalContainer1").append(res);
+                        $("#modalTransferDetails").modal("toggle");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
+            }
+        })
 
-        var ddlFloorReceItem = $('#ddlFloorReceItem');
-        var ddlAssemblyReceItem = $("#ddlAssemblyReceItem");
-        var ddlQCLineReceItem = $("#ddlQCLineReceItem");
-        var ddlRepairLineReceItem = $("#ddlRepairLineReceItem");
-        var ddlModelReceItem = $("#ddlModelReceItem");
-        var ddlStatusReceItem = $("#ddlStatusReceItem");
-        var txtTRQCode = $("#txtTRQCode");
-        var dptFromDateReceItem = $("#dptFromDateReceItem");
-        var dptToDateReceItem = $("#dptToDateReceItem");
+        
 
 
         ddlFloorReceItem.change(function () {
@@ -756,7 +888,6 @@
 
         $(document).on("click", '.btnAcceptRepairTransfer', function (e) {
             e.preventDefault();
-           
         })
 
         $(document).on("click", ".btnAcceptRepairTransfer", function (e) {
@@ -784,23 +915,91 @@
             })
         }
 
-        $(document).on('click', '.data-qcPass-item-detail', function (e) {
-            e.preventDefault();
-            var id = $(this).attr("data-qcPass-item-detail");
-            if (id > 0) {
-                var data = { flag: "detail", floorId: 0, assemblyId: 0, modelId: 0, qcId: 0, warehouseId: 0, itemTypeId: 0, itemId: 0, status: '', qcPassCode: '', qcPassId: TryParseInt(id,0), fromDate: '', toDate: ''};
-                $.when(getReqWithData('html', 'GET', '/Production/GetQCPassList', data)).then(function (res, status) {
-                    console.log(status);
-                    if (status === "success") {
-                        $("#modalContainer1").empty();
-                        $("#modalContainer1").append(res);
-                        $("#modalTransferDetails").modal("toggle");
-                    }
-                }).fail(function (error) {
-                    console.log(error);
-                });
 
+        // QC Fail  List//
+        ddlFloorQCFail.change(function () {
+            LoadDataTableQCFailList();
+            clearDropdown("ddlQCLineQCFail");
+            clearDropdown("ddlRepairLineQCFail");
+            if (ddlFloorReceiveQCItem.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlQCLineQCFail, JSON.stringify({ lineId: ddlFloorQCFail.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineQCFail, JSON.stringify({ lineId: ddlFloorQCFail.val() }));
             }
         })
+
+        ddlRepairLineQCFail.change(function () {
+            LoadDataTableQCFailList();
+        })
+
+        ddlQCLineQCFail.change(function () {
+            LoadDataTableQCFailList();
+        })
+
+        ddlModelNameQCFail.change(function () {
+            LoadDataTableQCFailList();
+        })
+
+        $(document).on('click', 'div.remove-date-ReceiveQC', function () {
+            if ($(this).hasClass("dptToDateQCFail")) {
+                if (dptToDateQCFail.val() !== '') {
+                    dptToDateReceiveQCItem.val('');
+                    LoadDataTableQCFailList();
+                }
+            }
+            if ($(this).hasClass("dptFromDateQCFail")) {
+                if (dptFromDateQCFail.val() !== '') {
+                    dptFromDateQCFail.val('');
+                    LoadDataTableQCFailList();
+                }
+            }
+        })
+
+        txtTSQCode.keyup(function () {
+            LoadDataTableQCFailList();
+        })
+
+        ddlStateStatusQCFail.change(function () {
+            LoadDataTableQCFailList();
+        })
+
+        $(document).on('change', '.ctrl-changed-receive', function () {
+            LoadDataTableQCFailList();
+        })
+
+        function LoadDataTableQCFailList() {
+
+            var data = { flag: "search", lineId: TryParseInt(ddlFloorQCFail.val(), 0), qcId: TryParseInt(ddlQCLineQCFail.val(), 0), repairLineId: TryParseInt(ddlRepairLineQCFail.val(), 0), modelId: TryParseInt(ddlModelNameQCFail.val(), 0), warehouseId: 0, status: ddlStateStatusQCFail.val(), transferCode: txtTSQCode.val(), fromDate: dptFromDateQCFail.val(), toDate: dptToDateQCFail.val(), transferInfoId: 0, page: pageNo, transferReason: null };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetReceiveStockForRepairFromQC', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            pageNo = 1;
+        }
+
+        $(document).on('click', 'a.data-item-detail-RFQ', function (e) {
+            e.preventDefault();
+            //hdfInfoId.val("0")
+            var id = $(this).attr("data-item-detail-RFQ");
+            //hdfInfoId.val(id);
+            $.when(getReqWithData('html', type.get, '/Production/GetReceiveStockForRepairFromQC', { flag: "detail", transferInfoId: id })).then(function (res, status) {
+                if (status === "success") {
+                    $("#modalContainer1").empty();
+                    $("#modalContainer1").append(res);
+                    $("#modalTransferDetails").modal("toggle");
+                    $("#modalHeading").text('Receive QC Item');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+        
     </script>
 }

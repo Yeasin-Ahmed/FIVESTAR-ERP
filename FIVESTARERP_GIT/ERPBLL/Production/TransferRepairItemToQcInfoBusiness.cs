@@ -531,10 +531,9 @@ Where 1= 1 {0}", param);
                     item.StateStatus = QRCodeStatus.Assembly;
                     item.UpdateDate = DateTime.Now;
                     item.UpUserId = userId;
-                }   
-
+                }
                 _transferRepairItemToQcInfoRepository.Update(transferInDb);
-                if(await _transferRepairItemToQcInfoRepository.SaveAsync())
+                if (await _transferRepairItemToQcInfoRepository.SaveAsync())
                 {
                     if(await _assemblyLineStockDetailBusiness.SaveAssemblyLineStockInAsync(assemblyLineStocks, userId, orgId))
                     {

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.StockItemReturnDetailViewModel>
+
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th class="vertialHeader">#SL</th>
+                    <th class="vertialHeader">Item</th>
+                    <th class="vertialHeader">Quantity</th>
+                    <th class="vertialHeader">Type Of Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl++;
+                    string itemName = item.ItemName + " [" + item.ItemTypeName + "-" + item.WarehouseName + "]";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td>@itemName</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td>@item.UnitName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

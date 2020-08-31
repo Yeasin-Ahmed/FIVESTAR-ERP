@@ -38,6 +38,12 @@ namespace ERPBO.Production.DTOModel
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public long RSRInfoId { get; set; }
+        // Newly Added //
+        [StringLength(50)]
+        public string ReqFor { get; set; }
+        public long? PackagingLineId { get; set; }
+        [StringLength(100)]
+        public string PackagingLineName { get; set; }
         // Custom Properties
         [StringLength(100)]
         public string EntryUser { get; set; }

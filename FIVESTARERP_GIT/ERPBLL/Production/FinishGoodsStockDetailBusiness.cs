@@ -2,6 +2,7 @@
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Common;
+using ERPBO.Inventory.DomainModels;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -16,18 +17,39 @@ namespace ERPBLL.Production
     public class FinishGoodsStockDetailBusiness : IFinishGoodsStockDetailBusiness
     {
         private readonly IProductionUnitOfWork _productionDb; // database
+       
+        // Business 
+        private readonly IFinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
+        private readonly IItemBusiness _itemBusiness;  // BC
+        private readonly IPackagingLineStockDetailBusiness _packagingLineStockDetailBusiness;
+        private readonly IPackagingItemStockDetailBusiness _packagingItemStockDetailBusiness;
+        private readonly ITempQRCodeTraceBusiness _tempQRCodeTraceBusiness;
+        private readonly IQRCodeTraceBusiness _qRCodeTraceBusiness;
+        private readonly IItemPreparationInfoBusiness _itemPreparationInfoBusiness;
+        private readonly IItemPreparationDetailBusiness _itemPreparationDetailBusiness;
+
+        // Repository
         private readonly FinishGoodsStockDetailRepository _finishGoodsStockDetailRepository; // repo
         private readonly FinishGoodsStockInfoRepository _finishGoodsStockInfoRepository; // repo
-        private readonly FinishGoodsStockInfoBusiness _finishGoodsStockInfoBusiness;
-        private readonly IItemBusiness _itemBusiness;  // BC
+        private readonly TempQRCodeTraceRepository _tempQRCodeTraceRepository;
 
-        public FinishGoodsStockDetailBusiness(IProductionUnitOfWork productionDb, IItemBusiness itemBusiness, FinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness)
+        public FinishGoodsStockDetailBusiness(IProductionUnitOfWork productionDb, IItemBusiness itemBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IPackagingLineStockDetailBusiness packagingLineStockDetailBusiness, IPackagingItemStockDetailBusiness packagingItemStockDetailBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, TempQRCodeTraceRepository tempQRCodeTraceRepository)
         {
+            // Database
             this._productionDb = productionDb;
-            this._finishGoodsStockDetailRepository = new FinishGoodsStockDetailRepository(this._productionDb);
-            this._finishGoodsStockInfoRepository = new FinishGoodsStockInfoRepository(this._productionDb);
+            // Business
             this._itemBusiness = itemBusiness;
             this._finishGoodsStockInfoBusiness = finishGoodsStockInfoBusiness;
+            this._packagingItemStockDetailBusiness = packagingItemStockDetailBusiness;
+            this._packagingLineStockDetailBusiness = packagingLineStockDetailBusiness;
+            this._tempQRCodeTraceBusiness = tempQRCodeTraceBusiness;
+            this._qRCodeTraceBusiness = qRCodeTraceBusiness;
+            this._itemPreparationInfoBusiness = itemPreparationInfoBusiness;
+            this._itemPreparationDetailBusiness = itemPreparationDetailBusiness;
+            // Repository
+            this._finishGoodsStockDetailRepository = new FinishGoodsStockDetailRepository(this._productionDb);
+            this._finishGoodsStockInfoRepository = new FinishGoodsStockInfoRepository(this._productionDb);
+            this._tempQRCodeTraceRepository = new TempQRCodeTraceRepository(this._productionDb);
         }
 
         public IEnumerable<FinishGoodsStockDetail> GelAllFinishGoodsStockDetailByOrgId(long orgId)
@@ -83,6 +105,56 @@ namespace ERPBLL.Production
             }
             _finishGoodsStockDetailRepository.InsertAll(finishGoodsStockDetail);
             return _finishGoodsStockDetailRepository.Save();
+        }
+
+        public async Task<bool> SaveFinishGoodsStockInAsync(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
+        {
+            List<FinishGoodsStockDetail> finishGoodsStockDetail = new List<FinishGoodsStockDetail>();
+            foreach (var item in finishGoodsStockDetailDTOs)
+            {
+                FinishGoodsStockDetail stockDetail = new FinishGoodsStockDetail();
+                stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockIn;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+                stockDetail.LineId = item.LineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.PackagingLineId = item.PackagingLineId;
+
+                var finishGoodsStockInfoInDb =await _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByLineAndModelIdAsync(orgId,item.ItemId.Value,item.LineId.Value, item.PackagingLineId.Value, item.DescriptionId.Value);
+                if (finishGoodsStockInfoInDb != null)
+                {
+                    finishGoodsStockInfoInDb.StockInQty += item.Quantity;
+                    _finishGoodsStockInfoRepository.Update(finishGoodsStockInfoInDb);
+                }
+                else
+                {
+                    FinishGoodsStockInfo finishGoodsStockInfo = new FinishGoodsStockInfo();
+                    finishGoodsStockInfo.LineId = item.LineId;
+                    finishGoodsStockInfo.PackagingLineId = item.PackagingLineId;
+                    finishGoodsStockInfo.WarehouseId = item.WarehouseId;
+                    finishGoodsStockInfo.ItemTypeId = item.ItemTypeId;
+                    finishGoodsStockInfo.ItemId = item.ItemId;
+                    finishGoodsStockInfo.UnitId = stockDetail.UnitId;
+                    finishGoodsStockInfo.StockInQty = item.Quantity;
+                    finishGoodsStockInfo.StockOutQty = 0;
+                    finishGoodsStockInfo.OrganizationId = orgId;
+                    finishGoodsStockInfo.EUserId = userId;
+                    finishGoodsStockInfo.EntryDate = DateTime.Now;
+                    finishGoodsStockInfo.DescriptionId = item.DescriptionId;
+                    _finishGoodsStockInfoRepository.Insert(finishGoodsStockInfo);
+                }
+                finishGoodsStockDetail.Add(stockDetail);
+            }
+            _finishGoodsStockDetailRepository.InsertAll(finishGoodsStockDetail);
+            return await _finishGoodsStockDetailRepository.SaveAsync();
         }
 
         public IEnumerable<FinishGoodsStockDetailInfoListDTO> GetFinishGoodsStockDetailInfoList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum)
@@ -207,6 +279,37 @@ Where 1=1 {0}", Utility.ParamChecker(param));
             return _finishGoodsStockDetailRepository.Save();
         }
 
+        public async Task<bool> SaveFinishGoodsStockOutAsync(List<FinishGoodsStockDetailDTO> finishGoodsStockDetailDTOs, long userId, long orgId)
+        {
+            List<FinishGoodsStockDetail> finishGoodsStockDetail = new List<FinishGoodsStockDetail>();
+            foreach (var item in finishGoodsStockDetailDTOs)
+            {
+                FinishGoodsStockDetail stockDetail = new FinishGoodsStockDetail();
+                stockDetail.WarehouseId = item.WarehouseId;
+                stockDetail.ItemTypeId = item.ItemTypeId;
+                stockDetail.ItemId = item.ItemId;
+                stockDetail.Quantity = item.Quantity;
+                stockDetail.OrganizationId = orgId;
+                stockDetail.EUserId = userId;
+                stockDetail.Remarks = item.Remarks;
+                stockDetail.UnitId = _itemBusiness.GetItemById(item.ItemId.Value, orgId).UnitId;
+                stockDetail.EntryDate = DateTime.Now;
+                stockDetail.StockStatus = StockStatus.StockOut;
+                stockDetail.RefferenceNumber = item.RefferenceNumber;
+                stockDetail.LineId = item.LineId;
+                stockDetail.DescriptionId = item.DescriptionId;
+                stockDetail.PackagingLineId = item.PackagingLineId;
+
+                var finishGoodsStockInfoInDb = await _finishGoodsStockInfoBusiness.GetAllFinishGoodsStockInfoByLineAndModelIdAsync(orgId, item.ItemId.Value, item.LineId.Value, item.PackagingLineId.Value, item.DescriptionId.Value);
+
+                finishGoodsStockInfoInDb.StockOutQty += item.Quantity;
+                _finishGoodsStockInfoRepository.Update(finishGoodsStockInfoInDb);
+                finishGoodsStockDetail.Add(stockDetail);
+            }
+            _finishGoodsStockDetailRepository.InsertAll(finishGoodsStockDetail);
+            return await _finishGoodsStockDetailRepository.SaveAsync();
+        }
+
         public IEnumerable<DaysAndLineWiseProductionChart> GetDayAndLineProductionChartsData(long orgId)
         {
             IEnumerable<DaysAndLineWiseProductionChart> data = new List<DaysAndLineWiseProductionChart>();
@@ -225,6 +328,106 @@ Where 1=1 {0}", Utility.ParamChecker(param));
                 data = this._productionDb.Db.Database.SqlQuery<DayAndModelWiseProductionChart>(string.Format(@"Exec [spDaysAndModelWiseProductionChart] {0}", orgId)).ToList();
             }
             return data;
+        }
+
+        // Finish Goods By IMEI Scanning //
+        public async Task<bool> SaveFinishGoodsByIMEIAsync(string imei, long userId, long orgId)
+        {
+            var imeiInDb = _tempQRCodeTraceBusiness.GetTempQRCodeTraceByIMEI(imei, orgId);
+            if(imeiInDb != null && imeiInDb.StateStatus == QRCodeStatus.Packaging)
+            {
+                // Item Preparation Info //
+                var itemPreparationInfo = await _itemPreparationInfoBusiness.GetPreparationInfoByModelAndItemAndTypeAsync(ItemPreparationType.Packaging, imeiInDb.DescriptionId.Value, imeiInDb.ItemId.Value, orgId);
+
+                // Item Preparation Detail //
+                var itemPreparationDetail = (List<ItemPreparationDetail>)await _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoIdAsync(itemPreparationInfo.PreparationInfoId, orgId);
+
+                // All items in Db
+                var allItemsInDb = _itemBusiness.GetAllItemByOrgId(orgId);
+
+                // Packaging Line Stock //
+                List<PackagingLineStockDetailDTO> packagingRawStocks = new List<PackagingLineStockDetailDTO>();
+                
+                foreach (var item in itemPreparationDetail)
+                {
+                    PackagingLineStockDetailDTO packagingRawStock = new PackagingLineStockDetailDTO()
+                    {
+                        ProductionLineId = imeiInDb.PackagingLineId,
+                        PackagingLineId = imeiInDb.PackagingLineId,
+                        WarehouseId = item.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        Quantity = item.Quantity,
+                        DescriptionId = imeiInDb.DescriptionId,
+                        UnitId = item.UnitId,
+                        OrganizationId = orgId,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        StockStatus = StockStatus.StockOut,
+                        RefferenceNumber = imeiInDb.IMEI,
+                        Remarks = imeiInDb.CodeNo
+                    };
+                    packagingRawStocks.Add(packagingRawStock);
+                }
+
+                // Packaging Item Stock //
+                List<PackagingItemStockDetailDTO> packagingItemStocks = new List<PackagingItemStockDetailDTO>() {
+                    new PackagingItemStockDetailDTO (){
+                        ProductionFloorId = imeiInDb.PackagingLineId,
+                        PackagingLineId = imeiInDb.PackagingLineId,
+                        WarehouseId = imeiInDb.WarehouseId,
+                        ItemTypeId = imeiInDb.ItemTypeId,
+                        ItemId = imeiInDb.ItemId,
+                        Quantity  = 1,
+                        DescriptionId = imeiInDb.DescriptionId,
+                        UnitId = allItemsInDb.FirstOrDefault(s=> s.ItemId == imeiInDb.ItemId).UnitId,
+                        OrganizationId = orgId,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        StockStatus = StockStatus.StockOut,
+                        ReferenceNumber = imeiInDb.IMEI,
+                        Remarks = imeiInDb.CodeNo
+                    }
+                };
+
+                // Add Finish Goods Stock
+                List<FinishGoodsStockDetailDTO> finishGoodsStocks = new List<FinishGoodsStockDetailDTO>() {
+                    new FinishGoodsStockDetailDTO()
+                {
+                    LineId = imeiInDb.PackagingLineId,
+                    PackagingLineId = imeiInDb.PackagingLineId,
+                    WarehouseId = imeiInDb.WarehouseId,
+                    ItemTypeId = imeiInDb.ItemTypeId,
+                    ItemId = imeiInDb.ItemId,
+                    Quantity = 1,
+                    DescriptionId = imeiInDb.DescriptionId,
+                    UnitId = allItemsInDb.FirstOrDefault(s=> s.ItemId == imeiInDb.ItemId).UnitId,
+                    OrganizationId = orgId,
+                    EntryDate = DateTime.Now,
+                    EUserId = userId,
+                    StockStatus = StockStatus.StockIn,
+                    RefferenceNumber = imeiInDb.IMEI,
+                    Remarks = imeiInDb.CodeNo
+                }};
+
+                // Temp QRCode
+                imeiInDb.StateStatus = QRCodeStatus.Finish;
+                imeiInDb.UpdateDate = DateTime.Now;
+                imeiInDb.UpUserId = userId;
+                _tempQRCodeTraceRepository.Update(imeiInDb);
+                if (await _tempQRCodeTraceRepository.SaveAsync())
+                {
+                    if(await _packagingLineStockDetailBusiness.SavePackagingLineStockOutAsync(packagingRawStocks, userId, orgId, string.Empty))
+                    {
+                        if (await _packagingItemStockDetailBusiness.SavePackagingItemStockOutAsync(packagingItemStocks, userId, orgId))
+                        {
+                            return await this.SaveFinishGoodsStockInAsync(finishGoodsStocks, userId, orgId);
+                        }
+                    }
+                }
+                
+            }
+            return false;
         }
     }
 }
