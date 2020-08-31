@@ -14,9 +14,6 @@ namespace ERPBO.Inventory.DomainModels
         [Key]
         public long DescriptionId { get; set; }
         public string DescriptionName { get; set; }
-        [StringLength(10)]
-        public string TAC { get; set; }
-        public long EndPoint { get; set; }
         public long? SubCategoryId { get; set; }
         public string Remarks { get; set; }
         public bool IsActive { get; set; }

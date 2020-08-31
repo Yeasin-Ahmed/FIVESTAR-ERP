@@ -388,19 +388,18 @@
     <Compile Include="Report\ProductionReportBusiness.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ERPBO\ERPBO.csproj">
       <Project>{83de419f-8912-4254-a909-5f63a35eb2ec}</Project>
       <Name>ERPBO</Name>
     </ProjectReference>
     <ProjectReference Include="..\ERPDAL\ERPDAL.csproj">
-      <Project>{C075DEF3-A65B-4B86-90FA-DD698B139DB4}</Project>
+      <Project>{c075def3-a65b-4b86-90fa-dd698b139db4}</Project>
       <Name>ERPDAL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
