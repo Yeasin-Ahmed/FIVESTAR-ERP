@@ -2,63 +2,77 @@
 @{
     ViewBag.Title = "Parts Details List";
 }
-
 <div class="row">
     <div class="col-md-12 text-center">
-        <div class="row">
-            <div class="col-md-3">
-                <a href="/Configuration/MobilePartStockInfoList" class="btn btn-sm btn-outline-primary float-left" title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></a>
-            </div>
-            <div class="col-md-6 text-center">
-                <h4 style="color:darkblue"><b>Parts Stock Details</b></h4>
-            </div>
-            <div class="col-md-3">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="/Configuration/MobilePartStockInfoList" class="btn btn-sm btn-outline-primary float-left" title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <h4><b>Parts Stock Details</b></h4>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
             </div>
         </div>
-        <hr />
     </div>
+</div>
+<div class="row">
     <div class="col-md-12">
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        <div class="row">
-            <div class="col-md-4 hide">
-                <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
-                @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select S.Warehouse--", new { @class = "form-control form-control-sm" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
-                @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
-            </div>
-            <div class="col-md-3">
-                <label for="ddlStockStatus" class="control-label font-weight-bold">Stock Status</label>
-                @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">From Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-4 hide">
+                        <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
+                        @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select S.Warehouse--", new { @class = "form-control form-control-sm" })
                     </div>
-                </div>
+                    <div class="col-md-2">
+                        <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
+                        @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ddlStockStatus" class="control-label font-weight-bold">Stock Status</label>
+                        @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "Select Status", new { @class = "form-control form-control-sm ctrl-changed" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
 
-            </div>
-            <div class="col-md-3">
-                <label class="control-label font-weight-bold">To Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            
-            <div class="col-md-3"></div>
         </div>
     </div>
-    <div class="col-md-12 mt-2" id="dataContainer">
-        @{Html.RenderAction("MobilePartStockDetailList",new {flag="view" });}
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mt-2 text-sm" id="dataContainer">
+                        @{Html.RenderAction("MobilePartStockDetailList", new { flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -124,7 +138,7 @@
 
     function LoadDataTable() {
         //string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate
-        var data = { flag: "search", swarehouseId: TryParseInt(ddlServicesWarehouse.val(), 0), mobilePartId: TryParseInt(ddlMobileParts.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val()};
+        var data = { flag: "search", swarehouseId: TryParseInt(ddlServicesWarehouse.val(), 0), mobilePartId: TryParseInt(ddlMobileParts.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
         console.log(data);
         $.when(getReqWithData('html', 'GET', '/Configuration/MobilePartStockDetailList', data)).then(function (res, status) {
@@ -140,6 +154,14 @@
         })
         pageNo = 1;
     }
+    // Pagination
+    $(document).on('click', 'a.page-link', function (e) {
+        e.preventDefault();
+        if (!$(this).hasClass('current-page')) {
+            pageNo = $(this).attr('data-page-no');
+            LoadDataTable();
+        }
+    })
 
     </script>    
 }

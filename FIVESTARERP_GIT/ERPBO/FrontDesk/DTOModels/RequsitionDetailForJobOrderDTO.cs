@@ -29,5 +29,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public double SellPrice { get; set; }
         public int AvailableQty { get; set; }
         public string MobilePartCode { get; set; }
+        public long? UserBranchId { get; set; }
     }
 }

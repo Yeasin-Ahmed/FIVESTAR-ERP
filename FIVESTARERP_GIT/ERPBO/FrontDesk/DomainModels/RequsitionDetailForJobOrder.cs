@@ -32,7 +32,6 @@ namespace ERPBO.FrontDesk.DomainModels
         [ForeignKey("RequsitionInfoForJobOrder")]
         public long RequsitionInfoForJobOrderId { get; set; }
         public RequsitionInfoForJobOrder RequsitionInfoForJobOrder { get; set; }
-
-
-    }
+        public long? UserBranchId { get; set; }
+   }
 }

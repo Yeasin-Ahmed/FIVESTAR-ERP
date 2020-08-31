@@ -622,13 +622,18 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>2.60417in</Height>
-    <Style />
+    <Height>2.11458in</Height>
+    <Style>
+      <Border>
+        <Style>None</Style>
+        <Width>0.5pt</Width>
+      </Border>
+    </Style>
   </Body>
   <Width>7.27in</Width>
   <Page>
     <PageFooter>
-      <Height>0.35417in</Height>
+      <Height>0.32292in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

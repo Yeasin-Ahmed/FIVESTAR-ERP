@@ -11,13 +11,11 @@ using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPBO.FrontDesk.ReportModels;
 using ERPBO.FrontDesk.ViewModels;
-using ERPDAL.FrontDeskDAL;
 using ERPWeb.Filters;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ERPWeb.Controllers
@@ -58,8 +56,10 @@ namespace ERPWeb.Controllers
         private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
         private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
         private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
+        private readonly IJobOrderTransferDetailBusiness _jobOrderTransferDetailBusiness;
+        private readonly IJobOrderReturnDetailBusiness _jobOrderReturnDetailBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -89,6 +89,8 @@ namespace ERPWeb.Controllers
             this._invoiceInfoBusiness = invoiceInfoBusiness;
             this._invoiceDetailBusiness = invoiceDetailBusiness;
             this._jobOrderReportBusiness = jobOrderReportBusiness;
+            this._jobOrderTransferDetailBusiness = jobOrderTransferDetailBusiness;
+            this._jobOrderReturnDetailBusiness = jobOrderReturnDetailBusiness;
         }
 
         #region JobOrder
@@ -137,6 +139,13 @@ namespace ERPWeb.Controllers
                 }
             }
             return View();
+        }
+        public ActionResult GetJobOrderDetails(long jobOrderId)
+        {
+            var dto = _jobOrderBusiness.GetJobOrderDetails(jobOrderId, User.OrgId);
+            JobOrderViewModel viewModels = new JobOrderViewModel();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return PartialView("_GetJobOrderDetail", viewModels);
         }
         [HttpGet]
         public ActionResult GetTsWorksDetails(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", int page = 1)
@@ -302,7 +311,7 @@ namespace ERPWeb.Controllers
 
         #endregion
 
-        #region JobTransfer
+        #region JobTransfer And Receive
         public ActionResult GetJobTransferList(string flag)
         {
             if (string.IsNullOrEmpty(flag))
@@ -321,10 +330,195 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveJobTransfer(long transferId, long[] jobOrders)
         {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            if (transferId > 0 && jobOrders.Count() > 0)
+            {
+                executionState = _jobOrderTransferDetailBusiness.SaveJobOrderTransferWithReport(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+                if (executionState.isSuccess)
+                {
+                    // Report ..
+                    executionState.text =  GetTransferDeliveryChalan(executionState.text);
+                }
+            }
+            return Json(executionState);
+        }
+        private string GetTransferDeliveryChalan(string transferCode)
+        {
+            string file = string.Empty;
+            IEnumerable<JobOrderDTO> jobOrderDetails = _jobOrderTransferDetailBusiness.GetTransferDeliveryChalan(transferCode, User.OrgId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptJobTransferDeliveryChalan.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("JobTransfer", jobOrderDetails);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Receipt";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
+        }
+        public ActionResult ReceiveJobOrder(string flag,long? branchName,string jobCode="",string transferCode="")
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderTransferDetailBusiness.GetReceiveJob(User.OrgId, User.BranchId,branchName,jobCode,transferCode);
+                List<JobOrderTransferDetailViewModel> viewModels = new List<JobOrderTransferDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_ReceiveJobOrder", viewModels);
+            }
+        }
+        public ActionResult UpdateReceiveJob(long transferId, long jobOrderId)
+        {
+            bool IsSuccess = false;
+            if (transferId > 0 && jobOrderId > 0)
+            {
+                IsSuccess = _jobOrderTransferDetailBusiness.UpdateReceiveJobOrder(transferId, jobOrderId, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+        public ActionResult TransferReceiveJobOrder(string flag,long? branchName)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderBusiness.TransferReceiveJobOrder(User.OrgId, User.BranchId,branchName);
+                List<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_TransferReceiveJobOrder", viewModels);
+            }
+            
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveTransferReceiveJob(long transferId, long[] jobOrders)
+        {
             bool IsSuccess = false;
             if (transferId > 0 && jobOrders.Count() > 0)
             {
-                IsSuccess = _jobOrderBusiness.SaveJobOrderTransfer(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+                IsSuccess = _jobOrderBusiness.SaveTransferReceiveJob(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveJobReturn(long transferId, long[] jobOrders)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            if (transferId > 0 && jobOrders.Count() > 0)
+            {
+                executionState = _jobOrderReturnDetailBusiness.SaveJobOrderReturnWithReport(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+                if (executionState.isSuccess)
+                {
+                    executionState.text = GetReturnDeliveryChalan(executionState.text);
+                }
+            }
+            return Json(executionState);
+        }
+        private string GetReturnDeliveryChalan(string transferCode)
+        {
+            string file = string.Empty;
+            IEnumerable<JobOrderDTO> jobOrderDetails = _jobOrderReturnDetailBusiness.GetReturnDeliveryChalan(transferCode, User.OrgId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptJobReturnDeliveryChalan.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("JobReturn", jobOrderDetails);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Receipt";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
+        }
+        public ActionResult ReceiveReturnJobOrder(string flag, long? branchName, string jobCode = "", string transferCode = "")
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, branchName, jobCode, transferCode);
+                List<JobOrderReturnDetailViewModel> viewModels = new List<JobOrderReturnDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_ReceiveReturnJobOrder", viewModels);
+            }
+        }
+        public ActionResult UpdateReturnJob(long receiveId,long jobOrderId)
+        {
+            bool IsSuccess = false;
+            if (receiveId > 0 )
+            {
+                IsSuccess = _jobOrderReturnDetailBusiness.UpdateReturnJobOrder(receiveId, jobOrderId, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
         }
@@ -447,23 +641,24 @@ namespace ERPWeb.Controllers
 
         public ActionResult RequsitionInfoForJobOrderPartialListList(long jobOrderId)
         {
-            IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrder(jobOrderId, User.OrgId, User.BranchId).Select(info => new RequsitionInfoForJobOrderDTO
-            {
-                RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
-                RequsitionCode = info.RequsitionCode,
-                SWarehouseId = info.SWarehouseId,
-                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
-                StateStatus = info.StateStatus,
-                JobOrderId = info.JobOrderId,
-                JobOrderCode = info.JobOrderCode,
-                Remarks = info.Remarks,
-                BranchId = info.BranchId,
-                OrganizationId = info.OrganizationId,
-                EUserId = info.EUserId,
-                EntryDate = DateTime.Now,
-            }).ToList();
+            //IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrder(jobOrderId, User.OrgId, User.BranchId).Select(info => new RequsitionInfoForJobOrderDTO
+            //{
+            //    RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
+            //    RequsitionCode = info.RequsitionCode,
+            //    SWarehouseId = info.SWarehouseId,
+            //    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+            //    StateStatus = info.StateStatus,
+            //    JobOrderId = info.JobOrderId,
+            //    JobOrderCode = info.JobOrderCode,
+            //    Remarks = info.Remarks,
+            //    BranchId = info.BranchId,
+            //    OrganizationId = info.OrganizationId,
+            //    EUserId = info.EUserId,
+            //    EntryDate = DateTime.Now,
+            //}).ToList();
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoTSData(jobOrderId);
             List<RequsitionInfoForJobOrderViewModel> requsitionInfoForJobs = new List<RequsitionInfoForJobOrderViewModel>();
-            AutoMapper.Mapper.Map(requsitionInfoForJobOrderDTO, requsitionInfoForJobs);
+            AutoMapper.Mapper.Map(dto, requsitionInfoForJobs);
 
             return PartialView("RequsitionInfoForJobOrderPartialListList", requsitionInfoForJobs);
         }
@@ -484,7 +679,21 @@ namespace ERPWeb.Controllers
 
         public ActionResult RequsitionForJobOrderDetails(long? requsitionInfoId)
         {
-            IEnumerable<RequsitionDetailForJobOrderDTO> requsitionDetailsDto = _requsitionDetailForJobOrderBusiness.GetAllRequsitionDetailForJobOrderId(requsitionInfoId.Value, User.OrgId,User.BranchId).Select(s => new RequsitionDetailForJobOrderDTO
+            var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
+            var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
+            jobOrderInfo = jobOrderInfo == null ? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(info.JobOrderId.Value, User.BranchId, User.OrgId) : jobOrderInfo;
+
+            ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
+            {
+                RequsitionCode = info.RequsitionCode,
+                JobOrderCode = (jobOrderInfo.JobOrderCode),
+                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                EntryDate = info.EntryDate,
+                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, jobOrderInfo.BranchId.Value).ServicesWarehouseName),
+            };
+
+            IEnumerable<RequsitionDetailForJobOrderDTO> requsitionDetailsDto = _requsitionDetailForJobOrderBusiness.GetAllRequsitionDetailForJobOrderId(requsitionInfoId.Value, User.OrgId, jobOrderInfo.BranchId.Value).Select(s => new RequsitionDetailForJobOrderDTO
             {
                 RequsitionDetailForJobOrderId = s.RequsitionDetailForJobOrderId,
                 PartsId=s.PartsId,
@@ -496,18 +705,7 @@ namespace ERPWeb.Controllers
                 Remarks = s.Remarks
             }).ToList();
 
-            var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
-            var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
-            jobOrderInfo = jobOrderInfo == null ? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(info.JobOrderId.Value, User.BranchId, User.OrgId) : jobOrderInfo;
-            ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
-            {
-                RequsitionCode = info.RequsitionCode,
-                JobOrderCode = (jobOrderInfo.JobOrderCode),
-                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
-                EntryDate = info.EntryDate,
-                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
-            };
+            
             IEnumerable<RequsitionDetailForJobOrderViewModel> itemReturnDetailViews = new List<RequsitionDetailForJobOrderViewModel>();
             ViewBag.RequisitionStatus = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId).StateStatus;
             ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "RequsitionForJobOrderDetails");
@@ -532,57 +730,57 @@ namespace ERPWeb.Controllers
         }
         public ActionResult TSRequsitionInfoForJobOrderPartialListList(string reqCode, long? warehouseId,long? tsId, string status, string fromDate, string toDate,int page=1)
         {
-            IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
-                (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
-                &&
-                (warehouseId == null || warehouseId <= 0 || req.SWarehouseId == warehouseId)
-                &&
-                (tsId == null || tsId <= 0 || req.EUserId == tsId)
-                &&
-                (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
-                &&
-                (
-                    (fromDate == null && toDate == null)
-                    ||
-                     (fromDate == "" && toDate == "")
-                    ||
-                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+            //IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
+            //    (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
+            //    &&
+            //    (warehouseId == null || warehouseId <= 0 || req.SWarehouseId == warehouseId)
+            //    &&
+            //    (tsId == null || tsId <= 0 || req.EUserId == tsId)
+            //    &&
+            //    (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
+            //    &&
+            //    (
+            //        (fromDate == null && toDate == null)
+            //        ||
+            //         (fromDate == "" && toDate == "")
+            //        ||
+            //        (fromDate.Trim() != "" && toDate.Trim() != "" &&
 
-                        req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
-                        req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
-                    ||
-                    (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
-                    ||
-                    (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
-                )).Select(info => new RequsitionInfoForJobOrderDTO
-            {
-                RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
-                RequsitionCode = info.RequsitionCode,
-                SWarehouseId = info.SWarehouseId,
-                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
-                StateStatus = info.StateStatus,
-                JobOrderId = info.JobOrderId,
-                JobOrderCode = info.JobOrderCode,
-                Remarks = info.Remarks,
-                BranchId = info.BranchId,
-                OrganizationId = info.OrganizationId,
-                EUserId = info.EUserId,
-                Requestby = UserForEachRecord(info.EUserId.Value).UserName,
-                EntryDate = info.EntryDate
-            }).ToList();
+            //            req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+            //            req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+            //        ||
+            //        (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+            //        ||
+            //        (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+            //    )).Select(info => new RequsitionInfoForJobOrderDTO
+            //{
+            //    RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
+            //    RequsitionCode = info.RequsitionCode,
+            //    SWarehouseId = info.SWarehouseId,
+            //    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+            //    StateStatus = info.StateStatus,
+            //    JobOrderId = info.JobOrderId,
+            //    JobOrderCode = info.JobOrderCode,
+            //    Remarks = info.Remarks,
+            //    BranchId = info.BranchId,
+            //    OrganizationId = info.OrganizationId,
+            //    EUserId = info.EUserId,
+            //    Requestby = UserForEachRecord(info.EUserId.Value).UserName,
+            //    EntryDate = info.EntryDate
+            //}).ToList();
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoData(reqCode, warehouseId, tsId, status, fromDate, toDate, User.OrgId, User.BranchId);
             List<RequsitionInfoForJobOrderViewModel> requsitionInfoForJobs = new List<RequsitionInfoForJobOrderViewModel>();
             // Pagination //
-            ViewBag.PagerData = GetPagerData(requsitionInfoForJobOrderDTO.Count(), 10, page);
-            requsitionInfoForJobOrderDTO = requsitionInfoForJobOrderDTO.Skip((page - 1) * 10).Take(10).ToList();
+            ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+            dto = dto.Skip((page - 1) * 10).Take(10).ToList();
             //-----------------//
-            AutoMapper.Mapper.Map(requsitionInfoForJobOrderDTO, requsitionInfoForJobs);
+            AutoMapper.Mapper.Map(dto, requsitionInfoForJobs);
 
             return PartialView("TSRequsitionInfoForJobOrderPartialListList", requsitionInfoForJobs);
         }
         public ActionResult TSRequsitionForJobOrderDetails(long? requsitionInfoId)
         {
             var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
-
             var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
             jobOrderInfo= jobOrderInfo==null? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(info.JobOrderId.Value, User.BranchId, User.OrgId) : jobOrderInfo;
 
@@ -677,6 +875,96 @@ namespace ERPWeb.Controllers
                 }
             }
             return stateWithText;
+        }
+        //AnotherBranchRequsition
+        public ActionResult AnotherBranchRequsition()
+        {
+            ViewBag.ddlWarehouseName = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Void).Select(st => new SelectListItem
+            {
+                Text = st.text,
+                Value = st.value
+            }).ToList();
+            ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+            return View();
+        }
+        public ActionResult AnotherBranchRequsitionPartialList(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, int page = 1)
+        {
+            //IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
+            //    (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
+            //    &&
+            //    (warehouseId == null || warehouseId <= 0 || req.SWarehouseId == warehouseId)
+            //    &&
+            //    (tsId == null || tsId <= 0 || req.EUserId == tsId)
+            //    &&
+            //    (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
+            //    &&
+            //    (
+            //        (fromDate == null && toDate == null)
+            //        ||
+            //         (fromDate == "" && toDate == "")
+            //        ||
+            //        (fromDate.Trim() != "" && toDate.Trim() != "" &&
+
+            //            req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
+            //            req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
+            //        ||
+            //        (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
+            //        ||
+            //        (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
+            //    )).Select(info => new RequsitionInfoForJobOrderDTO
+            //{
+            //    RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
+            //    RequsitionCode = info.RequsitionCode,
+            //    SWarehouseId = info.SWarehouseId,
+            //    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+            //    StateStatus = info.StateStatus,
+            //    JobOrderId = info.JobOrderId,
+            //    JobOrderCode = info.JobOrderCode,
+            //    Remarks = info.Remarks,
+            //    BranchId = info.BranchId,
+            //    OrganizationId = info.OrganizationId,
+            //    EUserId = info.EUserId,
+            //    Requestby = UserForEachRecord(info.EUserId.Value).UserName,
+            //    EntryDate = info.EntryDate
+            //}).ToList();
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode, warehouseId, tsId, status, fromDate, toDate, User.OrgId, User.BranchId);
+            List<RequsitionInfoForJobOrderViewModel> requsitionInfoForJobs = new List<RequsitionInfoForJobOrderViewModel>();
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+            dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+            //-----------------//
+            AutoMapper.Mapper.Map(dto, requsitionInfoForJobs);
+
+            return PartialView("AnotherBranchRequsitionPartialList", requsitionInfoForJobs);
+        }
+        public ActionResult AnotherBranchRequsitionDetails(long? requsitionInfoId)
+        {
+            var info = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId);
+            var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, User.BranchId, User.OrgId);
+            jobOrderInfo = jobOrderInfo == null ? _jobOrderBusiness.GetJobOrdersByIdWithTransferBranch(info.JobOrderId.Value, User.BranchId, User.OrgId) : jobOrderInfo;
+
+            ViewBag.ReqInfoJobOrder = new RequsitionInfoForJobOrderViewModel
+            {
+                RequsitionCode = info.RequsitionCode,
+                JobOrderCode = (jobOrderInfo.JobOrderCode),
+                Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
+                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                ModelColor = jobOrderInfo.ModelColor,
+                Requestby = UserForEachRecord(info.EUserId.Value).UserName,
+                EntryDate = info.EntryDate,
+                //SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, jobOrderInfo.BranchId.Value).ServicesWarehouseName),
+            };
+
+            ViewBag.RequisitionStatus = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId).StateStatus;
+            ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "AnotherBranchRequsition");
+
+            IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, jobOrderInfo.BranchId.Value);
+            IEnumerable<RequsitionDetailForJobOrderViewModel> returnViewModels = new List<RequsitionDetailForJobOrderViewModel>();
+            AutoMapper.Mapper.Map(returnDTO, returnViewModels);
+            ViewBag.AvailableQtyByRequsition = returnViewModels;
+            return View();
         }
         #endregion
 
@@ -826,9 +1114,9 @@ namespace ERPWeb.Controllers
                 TsStockId = stock.TsStockId,
                 JobOrderId = stock.JobOrderId,
                 RequsitionInfoForJobOrderId = stock.RequsitionInfoForJobOrderId,
-                RequsitionCode = (_requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoOneByOrgId(stock.RequsitionInfoForJobOrderId, User.OrgId, User.BranchId).RequsitionCode),
+                RequsitionCode = (_requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoOneByOrgId(stock.RequsitionInfoForJobOrderId, User.OrgId, jobOrder.BranchId.Value).RequsitionCode),
                 SWarehouseId = stock.SWarehouseId,
-                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(stock.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+                SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(stock.SWarehouseId.Value, User.OrgId, jobOrder.BranchId.Value).ServicesWarehouseName),
                 PartsId = stock.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(stock.PartsId.Value, User.OrgId).MobilePartName),
                 MobilePartCode= (_mobilePartBusiness.GetMobilePartOneByOrgId(stock.PartsId.Value, User.OrgId).MobilePartCode),
@@ -1011,7 +1299,7 @@ namespace ERPWeb.Controllers
         #region Invoice
         public ActionResult GetPartsUsedStock(long jobOrderId)
         {
-            IEnumerable<InvoiceUsedPartsDTO> dto = _invoiceDetailBusiness.GetUsedPartsDetails(jobOrderId, User.OrgId, User.BranchId).Select(qty => new InvoiceUsedPartsDTO
+            IEnumerable<InvoiceUsedPartsDTO> dto = _invoiceDetailBusiness.GetUsedPartsDetails(jobOrderId, User.OrgId).Select(qty => new InvoiceUsedPartsDTO
             {
                 PartsId = qty.PartsId,
                 MobilePartName = qty.MobilePartName,
@@ -1164,6 +1452,22 @@ namespace ERPWeb.Controllers
                 NetAmount=sells.NetAmount,
             };
             return PartialView("_SellsDetails");
+        }
+
+        public ActionResult JobRepairOtherBranch(string flag, long? branchName, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderReturnDetailBusiness.RepairOtherBranchJob(User.BranchId, branchName, User.OrgId, fromDate, toDate);
+                List<JobOrderReturnDetailViewModel> viewModels = new List<JobOrderReturnDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_JobRepairOtherBranch", viewModels);
+            }
         }
         #endregion
 

@@ -18,7 +18,7 @@
     <div class="row">
         @Html.AntiForgeryToken()
         <div class="col-md-12">
-            <div class="card card-gray">
+            <div class="card shadow card-gray">
                 <div class="card-header border-transparent">
                     <h3 class="card-title text-bold text-white"><i class="fas fa-gavel"></i> Job Order Status Summery</h3>
                     <div class="card-tools">
@@ -86,7 +86,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-sm-4 col-6">
-            <div class="card card-cyan">
+            <div class="card shadow card-cyan">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Today Receive Job Orders</h3>
                     <div class="card-tools">
@@ -131,7 +131,7 @@
         </div>
 
         <div class="col-sm-4 col-6">
-            <div class="card card-cyan">
+            <div class="card shadow card-cyan">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Today Bill & Warranty Job</h3>
                     <div class="card-tools">
@@ -183,7 +183,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-sm-4 col-6">
-            <div class="card card-blue">
+            <div class="card shadow card-blue">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Today SingIn & SingOut</h3>
                     <div class="card-tools">
@@ -230,7 +230,7 @@
         </div>
 
         <div class="col-sm-4 col-6">
-            <div class="card card-blue">
+            <div class="card shadow card-blue">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Spare Parts Request</h3>
                     <div class="card-tools">
@@ -283,7 +283,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-sm-4 col-6">
-            <div class="card card-blue">
+            <div class="card shadow card-blue">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Today SingIn & SingOut</h3>
                     <div class="card-tools">
@@ -330,7 +330,7 @@
         </div>
 
         <div class="col-sm-4 col-6">
-            <div class="card card-blue">
+            <div class="card shadow card-blue">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Spare Parts Request</h3>
                     <div class="card-tools">
@@ -385,7 +385,7 @@
     <div class="row">
 
         <div class="col-md-6 col-6">
-            <div class="card card-gray-dark">
+            <div class="card shadow card-gray-dark">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Current Requsition</h3>
                     <div class="card-tools">
@@ -400,7 +400,7 @@
                 <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
                     @if (((IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardCurrentViewModel).Count() > 0)
                     {
-                        <table class="table table-valign-middle text-sm">
+                        <table class="table table-sm table-valign-middle text-sm">
                             <thead>
                                 <tr>
                                     <th class="hide"></th>
@@ -413,13 +413,13 @@
                             <tbody>
                                 @foreach (var app in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardCurrentViewModel)
                                 {
-                                <tr>
-                                    <td class="hide">@app.JodOrderId</td>
-                                    <td class="hide">@app.RequsitionInfoForJobOrderId</td>
-                                    <td class="text-center">@app.JobOrderCode</td>
-                                    <td class="text-center"><a href="#" class="text-bold btnStockOut" data-item-current="@app.RequsitionInfoForJobOrderId">@app.RequsitionCode</a></td>
-                                    <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                                </tr>
+                                    <tr>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="hide">@app.RequsitionInfoForJobOrderId</td>
+                                        <td class="text-center">@app.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnStockOut" data-item-current="@app.RequsitionInfoForJobOrderId">@app.RequsitionCode</a></td>
+                                        <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -438,7 +438,7 @@
         </div>
 
         <div class="col-md-6 col-6">
-            <div class="card card-gray-dark">
+            <div class="card shadow card-gray-dark">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Pending Requsition</h3>
                     <div class="card-tools">
@@ -453,7 +453,7 @@
                 <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
                     @if (((IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardPendingViewModel).Count() > 0)
                     {
-                        <table class="table table-valign-middle text-sm">
+                        <table class="table table-sm table-valign-middle text-sm">
                             <thead>
                                 <tr>
                                     <td class="hide"></td>
@@ -466,13 +466,13 @@
                             <tbody>
                                 @foreach (var app in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardPendingViewModel)
                                 {
-                                <tr>
-                                    <td class="hide">@app.JodOrderId</td>
-                                    <td class="hide">@app.RequsitionInfoForJobOrderId</td>
-                                    <td class="text-center">@app.JobOrderCode</td>
-                                    <td class="text-center"><a href="#" class="text-bold btnStockOutPending" data-item-pending="@app.RequsitionInfoForJobOrderId">@app.RequsitionCode</a></td>
-                                    <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                                </tr>
+                                    <tr>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="hide">@app.RequsitionInfoForJobOrderId</td>
+                                        <td class="text-center">@app.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnStockOutPending" data-item-pending="@app.RequsitionInfoForJobOrderId">@app.RequsitionCode</a></td>
+                                        <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -492,8 +492,67 @@
 
     </div>
     <div class="row">
+
         <div class="col-md-6 col-6">
-            <div class="card card-gray-dark">
+            <div class="card shadow card-gray-dark">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Other Branch Requsition</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.AnotherBranchRequsition).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="hide"></th>
+                                    <th class="text-center">JobOrder</th>
+                                    <th class="text-center">ReqisitionCode</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">ReqisitionDate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var another in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.AnotherBranchRequsition)
+                                {
+                                    badge = another.StateStatus == "Pending" ? "badge bg-warning" : (another.StateStatus == "Approved" ? "badge bg-success" : "badge bg-primary");
+                                    <tr>
+                                        <td class="hide">@another.JodOrderId</td>
+                                        <td class="hide">@another.RequsitionInfoForJobOrderId</td>
+                                        <td class="text-center">@another.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnStockOutOther" data-item-other="@another.RequsitionInfoForJobOrderId">@another.RequsitionCode</a></td>
+                                        <td class="text-center" data-val="@another.StateStatus">
+                                            <span class="@badge">@another.StateStatus</span>
+                                        </td>
+                                        <td class="text-center">@another.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-fuchsia" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-heart-broken fa-5x"></i>
+                                <p class="text-dark text-bold">No Other Branch Requsition</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark">
                 <div class="card-header border-transparent">
                     <h3 class="card-title">Parts Return(TS end)</h3>
                     <div class="card-tools">
@@ -508,7 +567,7 @@
                 <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
                     @if (((IEnumerable<DashbordTsPartsReturnViewModel>)ViewBag.ReturnPartsViewModel).Count() > 0)
                     {
-                        <table class="table table-valign-middle text-sm">
+                        <table class="table table-sm table-valign-middle text-sm">
                             <thead>
                                 <tr>
                                     <th class="hide"></th>
@@ -536,7 +595,7 @@
                     {
                         <div class="text-center text-fuchsia" style="width:200px;height:200px">
                             <div style="position:absolute;top:40%;left:35%">
-                                <i class="fas fa-heart-broken fa-5x"></i>
+                                <i class="fas fa-atom fa-5x"></i>
                                 <p class="text-dark text-bold">No Parts Return</p>
                             </div>
                         </div>
@@ -544,6 +603,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 }
 
@@ -551,7 +611,7 @@
 <div class="modal fade" id="modalTsStockReturn" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Return Stock</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -578,13 +638,13 @@
 <div class="modal fade" id="modalRequsitionJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="Id" id="hdfReqInfoId" />
                 <input type="hidden" name="Id" id="hdfRequsitionDetailId" />
                 <input type="hidden" id="hdfRowIndex" />
                 <h4 id="modalHeading" class="modal-title">
-                    Requsition For Job Order Details
+                    <span id="spanModalHead1">Requsition For Job Order Details</span>
                 </h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -676,6 +736,7 @@
         $(document).on("click", ".btnStockOut", function (e) {
             e.preventDefault();
             OpenModalReqDetails()
+            $("#spanModalHead1").text('Current Requsition Details');
             var id = TryParseInt($(this).attr("data-item-current"));
             hdfRequsitionDetailId.val(id);
             var data = { requsitionInfoId: id };
@@ -696,6 +757,7 @@
         $(document).on("click", ".btnStockOutPending", function (e) {
             e.preventDefault();
             OpenModalReqDetails2()
+            $("#spanModalHead1").text('Pending Requsition Details');
             var reqId = TryParseInt($(this).attr("data-item-pending"));
             hdfRequsitionDetailId.val(reqId);
             var data = { requsitionInfoId: reqId };
@@ -712,6 +774,31 @@
             })
         })
 
+
+        function OpenModalReqDetails3() {
+            $("#modalRequsitionJobOrderDetails").modal("show");
+            $("#spanModalHead1").text('Other Branch Requsition Details');
+        }
+
+        $(document).on("click", ".btnStockOutOther", function (e) {
+            e.preventDefault();
+            OpenModalReqDetails3()
+            $("#spanModalHead1").text('Other Branch Requsition Details');
+            var reqId = TryParseInt($(this).attr("data-item-other"));
+            hdfRequsitionDetailId.val(reqId);
+            var data = { requsitionInfoId: reqId };
+            //alert(reqId);
+            //console.log(data);
+            // return;
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/AnotherBranchRequsitionDetails', data)).then(function (res, status) {
+                if (status == "success") {
+                    $("#dataContainer2").empty();
+                    $("#dataContainer2").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
         //////////Warehouse Stock Out
         $(document).on('click', ".btnPending", function (e) {
             e.preventDefault();

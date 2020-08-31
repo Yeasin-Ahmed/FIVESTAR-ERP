@@ -68,5 +68,8 @@ namespace ERPBO.FrontDesk.DTOModels
         public string ApproxBill { get; set; }
         public bool? IsTransfer { get; set; }
         public long? TransferBranchId { get; set; }
+        public string BranchName { get; set; }
+        public bool? IsReturn { get; set; }
+        public string TransferCode { get; set; }
     }
 }

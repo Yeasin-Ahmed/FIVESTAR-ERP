@@ -31,5 +31,6 @@ namespace ERPBO.FrontDesk.DTOModels
 
         public Nullable<DateTime> Date { get; set; }
         public string ModelColor { get; set; }
+        public long? UserBranchId { get; set; }
     }
 }

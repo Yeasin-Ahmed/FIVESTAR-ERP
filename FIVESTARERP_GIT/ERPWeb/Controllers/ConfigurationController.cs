@@ -480,7 +480,7 @@ namespace ERPWeb.Controllers
 
             return View();
         }
-        public ActionResult MobilePartStockInfoPartialList(long? SwerehouseId, long? MobilePartId, string lessOrEq)
+        public ActionResult MobilePartStockInfoPartialList(long? SwerehouseId, long? MobilePartId, string lessOrEq,int page=1)
         {
             IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(info => new MobilePartStockInfoDTO
             {
@@ -500,6 +500,10 @@ namespace ERPWeb.Controllers
             partStockInfoDTO = partStockInfoDTO.Where(s => (SwerehouseId == null || SwerehouseId == 0 || s.SWarehouseId == SwerehouseId) && (MobilePartId == null || MobilePartId == 0 || s.MobilePartId == MobilePartId) && (string.IsNullOrEmpty(lessOrEq) || (s.StockInQty - s.StockOutQty) <= Convert.ToInt32(lessOrEq))).ToList();
 
             List<MobilePartStockInfoViewModel> warehouseStockInfoViews = new List<MobilePartStockInfoViewModel>();
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(partStockInfoDTO.Count(), 10, page);
+            partStockInfoDTO = partStockInfoDTO.Skip((page - 1) * 10).Take(10).ToList();
+            //-----------------//
             AutoMapper.Mapper.Map(partStockInfoDTO, warehouseStockInfoViews);
             return PartialView("_MobilePartStockInfoList", warehouseStockInfoViews);
         }
@@ -525,7 +529,7 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
 
-        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate)
+        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -580,6 +584,10 @@ namespace ERPWeb.Controllers
                          )
                      );
                 List<MobilePartStockDetailViewModel> mobilePartStockDetailViewModels = new List<MobilePartStockDetailViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(partStockDetailDTO.Count(), 10, page);
+                partStockDetailDTO = partStockDetailDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(partStockDetailDTO, mobilePartStockDetailViewModels);
                 return PartialView("_MobilePartStockDetailList", mobilePartStockDetailViewModels);
             }

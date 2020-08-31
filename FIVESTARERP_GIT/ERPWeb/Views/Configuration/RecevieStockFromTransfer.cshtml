@@ -4,34 +4,47 @@
 }
 <div class="row">
     <div class="col-md-12 text-center">
-        <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6">
-                <h4><b style="color:darkblue">Receives Stock From Transfer</b></h4>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <h5 class="text-cyan"><b>Search By</b></h5>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
-                @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <h4>Receives Stock</h4>
             </div>
         </div>
     </div>
-    <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("RecevieStockFromTransferInfoPartialList");}
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-3">
+                        <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
+                        @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm" id="dataContainer">
+                        @{Html.RenderAction("RecevieStockFromTransferInfoPartialList");}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="modal fade" id="modalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header alert-primary">
+                <div class="modal-header alert-secondary">
                     <input type="hidden" id="hdfTransferInfoId" />
                     <input type="hidden" id="hdfRowIndex" />
                     <h4 id="modalHeading" class="modal-title">Transfer Details</h4>
@@ -40,7 +53,6 @@
                 <div class="modal-body" id="dataContainer1">
 
                 </div>
-
             </div>
         </div>
     </div>
@@ -55,7 +67,7 @@
             LoadDataTable();
         })
         function LoadDataTable() {
-            var data = { sWerehouseId: TryParseInt(ddlServicesWarehouse.val(), 0)};
+            var data = { sWerehouseId: TryParseInt(ddlServicesWarehouse.val(), 0) };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Configuration/RecevieStockFromTransferInfoPartialList', data)).then(function (res, status) {
@@ -102,7 +114,7 @@
             //
         })
 
-        function fnTransferStateChange(id,swarehouse, status) {
+        function fnTransferStateChange(id, swarehouse, status) {
             var data = JSON.stringify({ transferId: id, swarehouse: swarehouse, status: status });
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveTranferStockStatus', data, getToken())).then(function (res, status) {
                 if (res === true && status === "success") {

@@ -40,8 +40,9 @@ namespace ERPWeb.Controllers
         private readonly IDescriptionBusiness _descriptionBusiness;
         private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
         private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
+        private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -60,6 +61,7 @@ namespace ERPWeb.Controllers
             this._descriptionBusiness = descriptionBusiness;
             this._invoiceInfoBusiness = invoiceInfoBusiness;
             this._invoiceDetailBusiness = invoiceDetailBusiness;
+            this._servicesWarehouseBusiness = servicesWarehouseBusiness;
         }
 
         #region Configuration Module
@@ -257,9 +259,11 @@ namespace ERPWeb.Controllers
 
         #region Front-Desk Module
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetPartsStockByParts(long warehouseId, long partsId)
+        public ActionResult GetPartsStockByParts(long partsId,long jobOrderId)
         {
-            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouseId, partsId, User.OrgId, User.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            var jobOrder = _jobOrderBusiness.GetJobOrderById(jobOrderId,User.OrgId);
+            var warehouse = _servicesWarehouseBusiness.GetWarehouseOneByOrgId(User.OrgId, jobOrder.BranchId.Value);
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
             if (stock == null)
             {
                 stock = 0;

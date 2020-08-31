@@ -52,5 +52,13 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<JobOrderDTO> JobOrderTransfer(long orgId, long branchId);
         bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId);
         JobOrder GetJobOrdersByIdWithTransferBranch(long jobOrderId, long transferId, long orgId);
+        IEnumerable<JobOrderDTO> TransferReceiveJobOrder(long orgId, long branchId,long? branchName);
+        bool SaveTransferReceiveJob(long transferId, long[] jobOrders, long userId, long orgId, long branchId);
+        bool UpdateTransferJob(long jobOrderId, long userId, long orgId, long branchId);
+        JobOrder GetAllJobOrderByOrgId(long orgId);
+        bool SaveJobOrderReturnAndUpdateJobOrder(long transferId, long[] jobOrders, long userId, long orgId, long branchId);
+        bool UpdateReturnJob(long jobOrderId, long userId,long orgId);
+        JobOrderDTO GetJobOrderDetails(long jobOrderId, long orgId);
+        IEnumerable<DashboardApprovedRequsitionDTO> DashboardAnotherBranchRequsition(long orgId, long branchId);
     }
 }

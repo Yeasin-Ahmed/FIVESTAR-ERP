@@ -21,7 +21,7 @@ namespace ERPBLL.FrontDesk
             this._invoiceDetailRepository = new InvoiceDetailRepository(this._frontDeskUnitOfWork);
         }
 
-        public IEnumerable<InvoiceUsedPartsDTO> GetUsedPartsDetails(long jobOrderId, long orgId, long branchId)
+        public IEnumerable<InvoiceUsedPartsDTO> GetUsedPartsDetails(long jobOrderId, long orgId)
         {
             var data= this._frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceUsedPartsDTO>(
                 string.Format(@"Select *,UsedQty*Price 'Total' From(select tstock.PartsId,parts.MobilePartName,tstock.UsedQty,
@@ -30,7 +30,7 @@ where info.MobilePartId=tstock.PartsId) 'Price'
 from [FrontDesk].dbo.tblTechnicalServicesStock tstock
 inner join [Configuration].dbo.tblMobileParts parts
 on tstock.PartsId=parts.MobilePartId
-where tstock.UsedQty>0 and tstock.JobOrderId={0} ) tbl ", jobOrderId, orgId, branchId)).ToList();
+where tstock.UsedQty>0 and tstock.JobOrderId={0} ) tbl ", jobOrderId, orgId)).ToList();
             return data;
         }
 

@@ -310,6 +310,22 @@
     <Compile Include="FrontDeskContextMigrations\202008170942350_FrontDesk_JobTransferBranchId.Designer.cs">
       <DependentUpon>202008170942350_FrontDesk_JobTransferBranchId.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008230540117_FrontDesk_JobTransferDetail.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008230540117_FrontDesk_JobTransferDetail.Designer.cs">
+      <DependentUpon>202008230540117_FrontDesk_JobTransferDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008240517283_FrontDesk_RequsitionUserBranchId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008240517283_FrontDesk_RequsitionUserBranchId.Designer.cs">
+      <DependentUpon>202008240517283_FrontDesk_RequsitionUserBranchId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008250346200_FrontDesk_JobOrderReturnDetail.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008250346200_FrontDesk_JobOrderReturnDetail.Designer.cs">
+      <DependentUpon>202008250346200_FrontDesk_JobOrderReturnDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202008250811266_FrontDesk_JobOrder_IsReturn.cs" />
+    <Compile Include="FrontDeskContextMigrations\202008250811266_FrontDesk_JobOrder_IsReturn.Designer.cs">
+      <DependentUpon>202008250811266_FrontDesk_JobOrder_IsReturn.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -327,6 +343,10 @@
     <Compile Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs" />
     <Compile Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.Designer.cs">
       <DependentUpon>202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.cs" />
+    <Compile Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.designer.cs">
+      <DependentUpon>202008240549493_Inventory_AddTACInDescription.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
@@ -748,6 +768,18 @@
     <EmbeddedResource Include="FrontDeskContextMigrations\202008170942350_FrontDesk_JobTransferBranchId.resx">
       <DependentUpon>202008170942350_FrontDesk_JobTransferBranchId.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008230540117_FrontDesk_JobTransferDetail.resx">
+      <DependentUpon>202008230540117_FrontDesk_JobTransferDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008240517283_FrontDesk_RequsitionUserBranchId.resx">
+      <DependentUpon>202008240517283_FrontDesk_RequsitionUserBranchId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008250346200_FrontDesk_JobOrderReturnDetail.resx">
+      <DependentUpon>202008250346200_FrontDesk_JobOrderReturnDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202008250811266_FrontDesk_JobOrder_IsReturn.resx">
+      <DependentUpon>202008250811266_FrontDesk_JobOrder_IsReturn.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -756,6 +788,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.resx">
       <DependentUpon>202008131307164_Inventory_Add_Column_SomeColumn_In_tblIQCReqDetailList_tblIQCReqInfoList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.resx">
+      <DependentUpon>202008240549493_Inventory_AddTACInDescription.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>

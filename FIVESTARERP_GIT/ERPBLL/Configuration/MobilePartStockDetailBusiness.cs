@@ -163,14 +163,14 @@ namespace ERPBLL.Configuration
         {
             bool IsSuccess = false;
             var reqInfo = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(reqId, orgId);
-            var reqDetails = _requsitionDetailForJobOrderBusiness.GetAllRequsitionDetailForJobOrderId(reqId, orgId, branchId);
+            var reqDetails = _requsitionDetailForJobOrderBusiness.GetAllRequsitionDetailForJobOrderId(reqId, orgId, reqInfo.BranchId.Value);
             List<MobilePartStockDetail> stockDetails = new List<MobilePartStockDetail>();
             List<TechnicalServicesStockDTO> servicesStockDTOs = new List<TechnicalServicesStockDTO>();
 
             foreach (var item in reqDetails)
             {
                 var reqQty = item.Quantity;
-                var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(i => i.MobilePartId == item.PartsId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
+                var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, reqInfo.BranchId.Value).Where(i => i.MobilePartId == item.PartsId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
 
                 if (partsInStock.Count() > 0)
                 {
@@ -203,7 +203,7 @@ namespace ERPBLL.Configuration
                             Quantity = stockOutQty,
                             Remarks = item.Remarks,
                             OrganizationId = orgId,
-                            BranchId = branchId,
+                            BranchId = reqInfo.BranchId.Value,
                             EUserId = userId,
                             EntryDate = DateTime.Now,
                             StockStatus = StockStatus.StockOut,
@@ -243,7 +243,7 @@ namespace ERPBLL.Configuration
                 IsSuccess = _technicalServicesStockBusiness.SaveTechnicalServicesStockIn(servicesStockDTOs, userId, orgId, branchId);
                 if (IsSuccess == true)
                 {
-                    return _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(reqId, status, userId, orgId, branchId);
+                    return _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(reqId, status, userId, orgId, reqInfo.BranchId.Value);
                 }
             }
             return IsSuccess;

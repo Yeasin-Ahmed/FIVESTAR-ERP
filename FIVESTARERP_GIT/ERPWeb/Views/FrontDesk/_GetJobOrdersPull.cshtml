@@ -21,6 +21,7 @@
             @*<th style="vertical-align:middle">Warrenty Available</th>*@
             <th style="vertical-align:middle">Warrenty Paper</th>
             <th style="vertical-align:middle">JobStatus</th>
+            <th style="vertical-align:middle">FromBranch</th>
             <th style="vertical-align:middle">Issued by</th>
             <th style="vertical-align:middle">CreateDate</th>
             <th style="vertical-align:middle">Action</th>
@@ -33,29 +34,30 @@
             sl = sl + 1;
             isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
             isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-            <tr>
-                <td class="hide">@item.JodOrderId</td>
-                <td style="vertical-align:middle" class="text-center text-bold">@sl</td>
-                <td class="text-center text-bold">@item.JobOrderCode</td>
-                <td>@item.CustomerName</td>
-                <td>@item.MobileNo</td>
-                <td>@item.Address</td>
-                <td>@item.ModelName</td>
-                <td>@item.Problems</td>
-                <td>@item.AccessoriesNames</td>
-                @*<td class="text-center">@isWarrantyAvailable</td>*@
-                <td class="text-center">@isWarrantyPaperEnclosed</td>
-                <td class="text-center" data-val="@item.StateStatus">
-                    <span class="@badge">@item.StateStatus</span>
-                </td>
-                <td class="text-center text-bold">@item.EntryUser</td>
-                <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                <td style="vertical-align:middle">
-                    <button href="#" class="btn btn-sm btn-info data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
-                        <i class="fas fa-download"> Pull</i>
-                    </button>
-                </td>
-            </tr>
+        <tr>
+            <td class="hide">@item.JodOrderId</td>
+            <td style="vertical-align:middle" class="text-center text-bold">@sl</td>
+            <td class="text-center text-bold">@item.JobOrderCode</td>
+            <td>@item.CustomerName</td>
+            <td>@item.MobileNo</td>
+            <td>@item.Address</td>
+            <td>@item.ModelName</td>
+            <td>@item.Problems</td>
+            <td>@item.AccessoriesNames</td>
+            @*<td class="text-center">@isWarrantyAvailable</td>*@
+            <td class="text-center">@isWarrantyPaperEnclosed</td>
+            <td class="text-center" data-val="@item.StateStatus">
+                <span class="@badge">@item.StateStatus</span>
+            </td>
+            <td class="text-center text-bold">@item.BranchName</td>
+            <td class="text-center text-bold">@item.EntryUser</td>
+            <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+            <td style="vertical-align:middle">
+                <button href="#" class="btn btn-sm btn-info data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
+                    <i class="fas fa-download"> Pull</i>
+                </button>
+            </td>
+        </tr>
         }
         @if (Model.Count() == 0)
         {

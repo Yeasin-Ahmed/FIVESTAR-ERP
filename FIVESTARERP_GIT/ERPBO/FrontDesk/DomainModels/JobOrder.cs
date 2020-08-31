@@ -63,5 +63,6 @@ namespace ERPBO.FrontDesk.DomainModels
         public string ApproxBill { get; set; }
         public bool? IsTransfer { get; set; }
         public long? TransferBranchId { get; set; }
+        public bool? IsReturn { get; set; }
     }
 }

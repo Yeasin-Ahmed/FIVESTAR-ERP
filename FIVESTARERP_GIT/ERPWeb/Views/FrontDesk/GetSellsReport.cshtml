@@ -2,82 +2,82 @@
 @{
     ViewBag.Title = "Sells Report";
 }
-
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Sells Report</b></h4>
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <h4>Sells Report</h4>
             </div>
         </div>
     </div>
-    @using (Html.BeginForm("SellsReport", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
-    {
-        <div class="col-md-12">
-            <form method="get">
-                <h5 class="text-cyan"><b>Search By</b></h5>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label class="control-label font-weight-bold">From Date</label>
-                        <div class="input-group input-group-sm ">
-                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
-                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                                <span class="input-group-text">&#10008;</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="control-label font-weight-bold">To Date</label>
-                        <div class="input-group input-group-sm ">
-                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
-                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                                <span class="input-group-text">&#10008;</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="rptType">Report Type</label>
-                        <select name="rptType" id="rptType" class="form-control form-control-sm">
-                            <option value="PDF">PDF</option>
-                            <option value="EXCEL">EXCEL</option>
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <label for="Download" style="visibility:hidden">Download</label>
-                        <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-12 mt-2" id="dataContainer">
-            @{Html.RenderAction("GetSellsReport", new { flag = "view" });}
-        </div>
-        <div class="modal fade" id="modalSellsDetails" role="dialog" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header alert-success" style="height:60px">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" id="hdfSellsDetailId" />
-                        <h4 id="modalHeading" class="modal-title">
-                            Invoice Details
-                        </h4>
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body" id="dataContainer1">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                @using (Html.BeginForm("SellsReport", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
+                {
+                    <div class="col-md-12">
+                        <form method="get">
+                            <div class="row text-sm">
+                                <div class="col-md-2">
+                                    <label class="control-label font-weight-bold">From Date</label>
+                                    <div class="input-group input-group-sm ">
+                                        <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
+                                        <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                            <span class="input-group-text">&#10008;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label font-weight-bold">To Date</label>
+                                    <div class="input-group input-group-sm ">
+                                        <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
+                                        <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                            <span class="input-group-text">&#10008;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="rptType">Report Type</label>
+                                    <select name="rptType" id="rptType" class="form-control form-control-sm">
+                                        <option value="PDF">PDF</option>
+                                        <option value="EXCEL">EXCEL</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="Download" style="visibility:hidden">Download</label>
+                                    <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-12 mt-3 text-sm" id="dataContainer">
+                        @{Html.RenderAction("GetSellsReport", new { flag = "view" });}
+                    </div>
+                    <div class="modal fade" id="modalSellsDetails" role="dialog" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header alert-success" style="height:60px">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" id="hdfSellsDetailId" />
+                                    <h4 id="modalHeading" class="modal-title">
+                                        Invoice Details
+                                    </h4>
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                                </div>
+                                <div class="modal-body" id="dataContainer1">
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script type="text/javascript">
         var dptFromDate = $("#dptFromDate");

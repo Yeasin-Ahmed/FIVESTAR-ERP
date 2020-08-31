@@ -160,7 +160,9 @@
     <Compile Include="FrontDesk\Interface\IJobOrderFaultBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderProblemBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderRepairBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IJobOrderReturnDetailBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderServiceBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IJobOrderTransferDetailBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderTSBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IRequsitionDetailForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IRequsitionInfoForJobOrderBusiness.cs" />
@@ -173,7 +175,9 @@
     <Compile Include="FrontDesk\JobOrderFaultBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderProblemBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderRepairBusiness.cs" />
+    <Compile Include="FrontDesk\JobOrderReturnDetailBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderServiceBusiness.cs" />
+    <Compile Include="FrontDesk\JobOrderTransferDetailBusiness.cs" />
     <Compile Include="FrontDesk\JobOrderTSBusiness.cs" />
     <Compile Include="FrontDesk\RequsitionDetailForJobOrderBusiness.cs" />
     <Compile Include="FrontDesk\RequsitionInfoForJobOrderBusiness.cs" />

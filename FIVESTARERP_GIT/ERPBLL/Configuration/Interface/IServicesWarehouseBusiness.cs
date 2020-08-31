@@ -15,5 +15,6 @@ namespace ERPBLL.Configuration.Interface
         bool IsDuplicateServicesWarehouseName(string sWName, long id, long orgId, long branchId);
         ServiceWarehouse GetServiceWarehouseOneByOrgId(long id, long orgId, long branchId);
         bool DeleteServicesWarehouse(long id, long orgId, long branchId);
+        ServiceWarehouse GetWarehouseOneByOrgId(long orgId, long branchId);
     }
 }

@@ -104,7 +104,7 @@
                     <td>@repairDate</td>
                     <td>@closeDate</td>
                     <td class="action">
-                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2 " style="color:blue" id="btnReport" title="Download Invoice">@item.InvoiceCode</a>
+                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn text-bold" style="color:blue" title="Download Invoice">@item.InvoiceCode</a>
                     </td>
                     <td class="text-center action">
                         <a href="#" class="btn btn-sm btn-info data-item-details" data-item-details="@item.JodOrderId" title="View Job Order">
@@ -115,10 +115,6 @@
                         {
                             <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit"><i class="fas fa-edit"></i> </a>
                         }
-                        @*@if (item.InvoiceCode != null)
-            {
-                <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn btn-sm btn-outline-danger data-report-item2" id="btnReport" title="Invoice Report"><i class="fas fa-file-pdf"></i></a>
-            }*@
                     </td>
                 </tr>
                 }

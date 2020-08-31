@@ -4,27 +4,35 @@
     long jobOrderId = (long)ViewBag.JobOrderId;
     string toDay = DateTime.Now.ToString("dd MMM yyyy");
 }
+
 <div class="row">
-    <div class="col-md-12">
-        <div class="card card-secondary">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4 text-left">
                         <a href="/FrontDesk/GetJobOrders" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h4 class="text-center">Create Job Order</h4>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <a href="/FrontDesk/GetJobOrders" class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i></a>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-sm">
+    <div class="col-md-12">
+        <div class="card card-secondary shadow">
             <form id="frmJobOrder">
                 @Html.AntiForgeryToken()
                 @Html.Hidden("customerId")
                 @Html.Hidden("jobOrderId")
-                <div class="card-body">
+                <div class="card-body shadow">
                     <div class="row" style="border-bottom:1px solid #cecece">
                         <div class="col-md-3">
                             <div class="input-group mb-3">
@@ -190,7 +198,7 @@
 <div class="modal fade" id="modalCustomer" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Customer</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -237,8 +245,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitCustomer"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitCustomer"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>
@@ -820,7 +828,7 @@
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrder', data, getToken())).then(function (res, status) {
                     if (res.IsSuccess === true && status === "success") {
-                        toastrSuccessAlert(execuStatus.successSave);
+                        $('.toastrDefaultSuccess').trigger('click');
                         download(res.file, res.FileName, "application/pdf"); // Download
                         var pdfWindow = window.open("", "_blank")
                         console.log(res.File);

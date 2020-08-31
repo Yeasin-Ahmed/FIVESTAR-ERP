@@ -64,4 +64,12 @@ namespace ERPDAL.FrontDeskDAL
     {
         public InvoiceDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
     }
+    public class JobOrderTransferDetailRepository : FrontDeskBaseRepository<JobOrderTransferDetail>
+    {
+        public JobOrderTransferDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
+    public class JobOrderReturnDetailRepository : FrontDeskBaseRepository<JobOrderReturnDetail>
+    {
+        public JobOrderReturnDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
 }

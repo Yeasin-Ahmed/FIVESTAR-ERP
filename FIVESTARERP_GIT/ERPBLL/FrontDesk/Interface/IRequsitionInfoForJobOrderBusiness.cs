@@ -19,5 +19,9 @@ namespace ERPBLL.FrontDesk.Interface
 
         IEnumerable<DashboardRequestSparePartsDTO> DashboardRequestSpareParts(long orgId, long branchId);
         bool UpdatePendingCurrentRequisitionStatus(long jobOrderId,string tsRepairStatus,long userId, long orgId, long branchId);
+        IEnumerable<RequsitionInfoForJobOrderDTO> GetRequsitionInfoData(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, long orgId, long branchId);
+        IEnumerable<RequsitionInfoForJobOrderDTO> GetRequsitionInfoOtherBranchData(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, long orgId, long branchId);
+        IEnumerable<RequsitionInfoForJobOrderDTO> GetRequsitionInfoTSData(long jobOrderId);
+
     }
 }

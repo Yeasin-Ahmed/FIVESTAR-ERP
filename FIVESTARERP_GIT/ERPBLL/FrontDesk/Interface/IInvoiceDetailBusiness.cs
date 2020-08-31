@@ -10,7 +10,7 @@ namespace ERPBLL.FrontDesk.Interface
 {
    public interface IInvoiceDetailBusiness
     {
-        IEnumerable<InvoiceUsedPartsDTO> GetUsedPartsDetails(long jobOrderId,long orgId, long branchId);
+        IEnumerable<InvoiceUsedPartsDTO> GetUsedPartsDetails(long jobOrderId,long orgId);
         IEnumerable<InvoiceDetailDTO> InvoiceDetailsReport(long infoId, long orgId, long branchId);
     }
 }

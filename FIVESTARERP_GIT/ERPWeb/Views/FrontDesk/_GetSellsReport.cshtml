@@ -3,11 +3,11 @@
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
 }
-<div class="col-md-12">
+<div class="col-md-12 text-sm">
     <table class="table table-bordered table-sm table-striped" id="tblPartsUsed">
         <thead class="btn-dark">
             <tr class="text-center">
-                <th>SL No.</th>
+                <th>#SL</th>
                 <th class="hide"></th>
                 <th>InvoiceCode</th>
                 <th>CustomerName</th>
@@ -15,19 +15,19 @@
                 <th>EntryDate</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody >
             @foreach (var part in Model)
             {
                 sl = sl + 1;
-                string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy") : "";
-                <tr>
+                string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy hh:mm tt") : "";
+                <tr class="text-sm">
                     <td class="text-center" width="10%">@sl</td>
                     <td class="hide">@part.InvoiceInfoId</td>
                     @*<td>
                             <a href="#" class="data-item-details" title="View Details" data-item-details="@part.InvoiceInfoId">@part.InvoiceCode</a>
                         </td>*@
                     <td class="action">
-                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= part.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2 " style="color:blue" id="btnReport" title="Download Invoice">@part.InvoiceCode</a>
+                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= part.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2 " style="color:blue;line-height:5px" id="btnReport" title="Download Invoice">@part.InvoiceCode</a>
                     </td>
                     <td>@part.CustomerName</td>
                     <td class="text-center">@part.NetAmount.ToString("0.00 Tk")</td>

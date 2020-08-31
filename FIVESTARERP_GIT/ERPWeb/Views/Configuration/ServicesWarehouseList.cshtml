@@ -6,64 +6,83 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">ServicesWarehouse List</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblServicesWarehouseData tbody tr',this)" />
-            </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4 text-right">
-                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New S.W</button>
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <h4>ServicesWarehouse</h4>
             </div>
         </div>
     </div>
+</div>
+<div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered table-sm table-striped" id="tblServicesWarehouseData">
-            <thead class="btn-dark">
-                <tr class="text-center">
-                    <th>SL No.</th>
-                    <th class="hide"></th>
-                    <th>ServicesWarehouseName</th>
-                    <th>Remarks</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var ware in Model)
-                {
-                    sl = sl + 1;
-                    <tr>
-                        <td class="text-center" width="10%">@sl</td>
-                        <td class="hide">@ware.SWarehouseId</td>
-                        <td>@ware.ServicesWarehouseName</td>
-                        <td class="text-center">@ware.Remarks</td>
-                        <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@ware.SWarehouseId"><i class="fa fa-pen"></i> Edit</a>
-                            <a href="#" class="btn btn-danger btn-sm data-del-item" data-del-item="@ware.SWarehouseId"><i class="fa fa-pen"></i> Delete</a>
-                        </td>
-                    </tr>
-                }
-                @if (Model.Count() == 0)
-                {
-                    <tr class="text-center empty-row">
-                        <td colspan="5">
-                            No Rows Found
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-4">
+                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblServicesWarehouseData tbody tr',this)" />
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-right">
+                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New S.W</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm">
+                        <table class="table table-bordered table-sm table-striped" id="tblServicesWarehouseData">
+                            <thead class="btn-dark">
+                                <tr class="text-center">
+                                    <th>#SL</th>
+                                    <th class="hide"></th>
+                                    <th>ServicesWarehouseName</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ware in Model)
+                                {
+                                    sl = sl + 1;
+                                    <tr>
+                                        <td class="text-center" width="10%">@sl</td>
+                                        <td class="hide">@ware.SWarehouseId</td>
+                                        <td>@ware.ServicesWarehouseName</td>
+                                        <td class="text-center">@ware.Remarks</td>
+                                        <td class="text-center">
+                                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@ware.SWarehouseId"><i class="fa fa-pen"></i> Edit</a>
+                                            <a href="#" class="btn btn-danger btn-sm data-del-item" data-del-item="@ware.SWarehouseId"><i class="fa fa-pen"></i> Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Count() == 0)
+                                {
+                                    <tr class="text-center empty-row">
+                                        <td colspan="5">
+                                            No Rows Found
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="modal fade" id="modalServicesWarehouse" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New S.Warehouse</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -96,8 +115,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>

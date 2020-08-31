@@ -27,8 +27,9 @@ namespace ERPWeb.Controllers
         private readonly ITechnicalServicesStockBusiness _technicalServicesStockBusiness;
         private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
+        private readonly IJobOrderReturnDetailBusiness _jobOrderReturnDetailBusiness;
         // GET: ReportSS
-        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness)
+        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness)
         {
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
@@ -40,6 +41,7 @@ namespace ERPWeb.Controllers
             this._technicalServicesStockBusiness = technicalServicesStockBusiness;
             this._requsitionInfoForJobOrderBusiness = requsitionInfoForJobOrderBusiness;
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
+            this._jobOrderReturnDetailBusiness = jobOrderReturnDetailBusiness;
         }
 
         #region JobOrderList
@@ -531,6 +533,52 @@ namespace ERPWeb.Controllers
                 localReport.DataSources.Add(dataSource2);
                 localReport.Refresh();
                 localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region OtherBranch Repair Job
+        //[HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult OtherBranchRepairJob(long? ddlBranchName, string fromDate, string toDate, string rptType)
+        {
+
+            IEnumerable<JobOrderReturnDetailDTO> dto = _jobOrderReturnDetailBusiness.RepairOtherBranchJob(User.BranchId,ddlBranchName, User.OrgId, fromDate, toDate);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptOtherBranchRepairJob.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("OtherBranchJob", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Parts";
 
                 string mimeType;
                 string encoding;

@@ -2,30 +2,35 @@
 @{
     ViewBag.Title = "Current Stock";
 }
-
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4 text-left">
+                        <a href="@Url.Action("GetCurrentStock","ReportSS",new {rptType="PDF" })" class="btn btn-sm btn-outline-danger data-report-item" title="Download Pdf Report">PDF</a>
+                        <a href="@Url.Action("GetCurrentStock","ReportSS",new {rptType="EXCEL" })" class="btn btn-sm btn-outline-success data-report-item" title="Download Excel Report">EXCEL</a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h4><b>Current Stock Report</b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3">
-                <a href="@Url.Action("GetCurrentStock","ReportSS",new {rptType="PDF" })" class="btn btn-sm btn-outline-danger data-report-item"  title="Pdf Report"><i class="fas fa-file-pdf"> </i></a>
-                <a href="@Url.Action("GetCurrentStock","ReportSS",new {rptType="EXCEL" })" class="btn btn-sm btn-outline-success data-report-item"  title="Excel Report"><i class="fas fa-file-excel"> </i></a>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("GetCurrentStockList");}
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 text-center">
-                <h4><b style="color:darkblue">Current Stock Report</b></h4>
-            </div>
-            @*<div class="col-md-3">
-            <a href="/Configuration/CreateMobilePartStock" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Parts Stock-In</a>
-        </div>*@
         </div>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-        </div>
-    </div>
-    <div class="col-md-12" id="dataContainer">
-        @{Html.RenderAction("GetCurrentStockList");}
     </div>
 </div>
 

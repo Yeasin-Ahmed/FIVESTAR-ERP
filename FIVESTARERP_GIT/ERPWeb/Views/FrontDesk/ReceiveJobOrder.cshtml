@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "Receive Job";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-center">
+                        <h4><b>Receive JobOrder</b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-2">
+                        <label class="col-form-label">BranchName</label>
+                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                        <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">TransferCode</label>
+                        <input type="text" id="txtTransferCode" class="form-control form-control-sm" placeholder="Search By Code" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">JobCode</label>
+                        <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm text-sm" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("ReceiveJobOrder", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlBranchName = $("#ddlBranchName");
+        var txtTransferCode = $("#txtTransferCode");
+        var txtJobCode = $("#txtJobCode");
+
+        txtJobCode.keyup(function () {
+            LoadDataTable();
+        })
+        txtTransferCode.keyup(function () {
+            LoadDataTable();
+        })
+        ddlBranchName.change(function () {
+            LoadDataTable();
+        })
+        function LoadDataTable() {
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0), jobCode: txtJobCode.val(), transferCode: txtTransferCode.val() };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/ReceiveJobOrder', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+
+        $(document).on('click', '.data-item-received', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-received");
+            var jobId = $(this).parent().parent('tr').find('td:eq(3)').html();
+            //alert(jobId);joborderId
+            bootbox.confirm("Are you sure you want to Received This Job", function (result) {
+                if (result) {
+                    receivedJobOrder(id, jobId);
+                }
+            });
+        })
+
+        function receivedJobOrder(id, jobId) {
+            var data = JSON.stringify({ transferId: id, jobOrderId: jobId });
+            //return console.log(data);
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateReceiveJob', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    setTimeout(function () {
+                            redirectPage('@Url.Action("ReceiveJobOrder")');
+                    }, 1000);
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+            });
+        }
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+    </script>
+    }

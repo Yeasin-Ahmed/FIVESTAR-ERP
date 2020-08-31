@@ -24,6 +24,7 @@
             @*<th style="vertical-align:middle">Warrenty Available</th>*@
             <th style="vertical-align:middle">Warrenty Paper</th>
             <th style="vertical-align:middle">JobStatus</th>
+            <th style="vertical-align:middle">FromBranch</th>
             <th style="vertical-align:middle">Issued by</th>
             <th style="vertical-align:middle">CreateDate</th>
         </tr>
@@ -53,6 +54,7 @@
             <td class="text-center" data-val="@item.StateStatus">
                 <span class="@badge">@item.StateStatus</span>
             </td>
+            <td class="text-center text-bold">@item.BranchName</td>
             <td class="text-center text-bold">@item.EntryUser</td>
             <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
         </tr>

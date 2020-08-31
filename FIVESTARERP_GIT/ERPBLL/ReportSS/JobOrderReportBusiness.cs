@@ -73,7 +73,11 @@ namespace ERPBLL.ReportSS
             }
             if (branchId > 0)
             {
-                param += string.Format(@"and jo.BranchId={0}", branchId);
+                param += string.Format(@"and (jo.BranchId={0} and jo.IsTransfer is null)
+OR 
+(jo.TransferBranchId={0} and jo.IsTransfer= 'true')
+OR
+(jo.IsReturn='True' and jo.BranchId={0} and jo.IsTransfer='False')", branchId);
             }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
@@ -93,21 +97,38 @@ namespace ERPBLL.ReportSS
             }
 
             query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
-CloseDate,
-SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
+CloseDate,TSRemarks,
+SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,
+
+Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
+Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
+Where jof.JobOrderId = jo.JodOrderId
+Order BY FaultName For XML PATH('')) as nvarchar(MAX))  'FaultName',
+
+Cast((Select ServiceName+',' From [Configuration].dbo.tblServices ser
+Inner Join tblJobOrderServices jos on ser.ServiceId = jos.ServiceId
+Where jos.JobOrderId = jo.JodOrderId
+Order BY ServiceName For XML PATH('')) as nvarchar(MAX))  'ServiceName',
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
 Where joa.JobOrderId = jo.JodOrderId
 Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
 
+Cast((Select  (parts.MobilePartName+' (Qty-' + Cast(tstock.UsedQty as nvarchar(20)))+')'+',' from [FrontDesk].dbo.tblTechnicalServicesStock tstock
+inner join [Configuration].dbo.tblMobileParts parts
+on tstock.PartsId=parts.MobilePartId
+Where tstock.UsedQty>0 and tstock.JobOrderId = jo.JodOrderId
+Order BY (parts.MobilePartName+'#' + Cast(tstock.UsedQty as nvarchar(20))) For XML PATH('')) as nvarchar(MAX)) 'PartsName',
+
 Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
 Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
-Where jop.JobOrderId = jo.JodOrderId
-Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,
+Where jop.JobOrderId = jo.JodOrderId 
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,jo.TSRemarks,
 --ts.Name ,
 jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus,
 (Select UserName  from tblJobOrders job
@@ -126,7 +147,8 @@ from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
-Where 1 = 1 {0}) tbl Order By EntryDate desc
+Where 1 = 1{0}
+) tbl Order By EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
         }

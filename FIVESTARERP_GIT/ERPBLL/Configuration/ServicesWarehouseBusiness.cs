@@ -35,6 +35,11 @@ namespace ERPBLL.Configuration
             return servicesWarehouseRepository.GetOneByOrg(ware => ware.SWarehouseId == id && ware.OrganizationId == orgId && ware.BranchId == branchId);
         }
 
+        public ServiceWarehouse GetWarehouseOneByOrgId(long orgId, long branchId)
+        {
+            return servicesWarehouseRepository.GetOneByOrg(ware => ware.OrganizationId == orgId && ware.BranchId == branchId);
+        }
+
         public bool IsDuplicateServicesWarehouseName(string sWName, long id, long orgId, long branchId)
         {
             return servicesWarehouseRepository.GetOneByOrg(ware => ware.ServicesWarehouseName == sWName && ware.SWarehouseId != id && ware.OrganizationId == orgId && ware.BranchId == branchId) != null ? true : false;

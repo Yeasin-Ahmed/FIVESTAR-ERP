@@ -1,353 +1,366 @@
 ﻿@using ERPBO.Configuration.ViewModels;
 @{
-                /**/
+    /**/
 
-                /**/
+    /**/
 
-                ViewBag.Title = "T.S Services Details";
-                int sl = 0;
-                int sl2 = 0;
-                var jobOrder = (ERPBO.FrontDesk.ViewModels.JobOrderViewModel)ViewBag.JobOrder;
-                var repair = (ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel)ViewBag.jobrepair;
-                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel> Problems = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel>)ViewBag.Problem;
-                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel> Faulty = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel>)ViewBag.faulty;
-                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel> services = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel>)ViewBag.services;
-                IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel> Repair = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel>)ViewBag.repair;
-                IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel> WareStock = (IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel>)ViewBag.warehouseStock;
-                IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel> availableQty = (IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel>)ViewBag.SparePartsAvailableAndReqQty;
-                IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel> tsStock = (IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel>)ViewBag.TechnicalServicesStock;
-                string faulty = string.Empty;
-                string service = string.Empty;
-                // string repair = string.Empty;
-                string problem = string.Empty;
+    /**/
+
+    ViewBag.Title = "T.S Services Details";
+    int sl = 0;
+    int sl2 = 0;
+    var jobOrder = (ERPBO.FrontDesk.ViewModels.JobOrderViewModel)ViewBag.JobOrder;
+    var repair = (ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel)ViewBag.jobrepair;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel> Problems = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderProblemViewModel>)ViewBag.Problem;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel> Faulty = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderFaultViewModel>)ViewBag.faulty;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel> services = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderServiceViewModel>)ViewBag.services;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel> Repair = (IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderRepairViewModel>)ViewBag.repair;
+    IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel> WareStock = (IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel>)ViewBag.warehouseStock;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel> availableQty = (IEnumerable<ERPBO.FrontDesk.ViewModels.SparePartsAvailableAndReqQtyViewModel>)ViewBag.SparePartsAvailableAndReqQty;
+    IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel> tsStock = (IEnumerable<ERPBO.FrontDesk.ViewModels.TechnicalServicesStockViewModel>)ViewBag.TechnicalServicesStock;
+    string faulty = string.Empty;
+    string service = string.Empty;
+    // string repair = string.Empty;
+    string problem = string.Empty;
 }
-<div class="row text-sm" style="overflow-y:scroll">
-    <div class="col-md-6">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="Id" id="hdfJobOrderId" value="@jobOrder.JodOrderId" />
-        <div class="row">
-            <div class="col-md-1">
-                <a href="/FrontDesk/GetJobOrdersTS" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 text-center">
-                <b style="color:darkblue">JobOrder : @jobOrder.JobOrderCode</b>
-            </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <b>@jobOrder.EntryDate.Value.ToString("dd-MMM-yyyy")</b>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <b style="color:darkblue">Customer Details</b>
-            </div>
-            <div class="col-md-12">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody style="background-color:lightcyan">
-                        <tr>
-                            <td>Name: <b>@jobOrder.CustomerName</b></td>
-                            <td>Address: <b>@jobOrder.Address</b></td>
-                            <td>MobileNo: <b>@jobOrder.MobileNo</b></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <b style="color:darkblue">Handset Details</b>
-            </div>
-            <div class="col-md-12">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody style="background-color: lightsteelblue">
-                        <tr>
-                            <td>Model: <b>@jobOrder.ModelName</b></td>
-                            <td>Type: <b>@jobOrder.Type</b></td>
-                            <td>Color: <b>@jobOrder.ModelColor</b></td>
-                            <td>IMEI1: <b>@jobOrder.IMEI</b></td>
-                            <td>IMEI2: <b>@jobOrder.IMEI2</b></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>F.DeskRemarks:</b> @jobOrder.Remarks
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-11">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>Symptom:</b>
-                                @foreach (var item in Problems)
-                                {
-                                    problem += item.ProblemName + ",";
-                                }
-                                @{
-                                    if (Problems.Count() > 0)
-                                    {
-                                        problem = problem.Substring(0, problem.Length - 1);
-                                    }
-
-                                }
-                                @problem
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-1">
-                <button type="button" id="btnSymptom" class="btn btn-sm btn-primary" title="Add New Symptom"><i class="fas fa-plus"> </i> </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-11">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblFault">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>Fault:</b>
-                                @foreach (var item in Faulty)
-                                {
-                                    faulty += item.FaultName + ",";
-                                }
-                                @{
-                                    if (Faulty.Count() > 0)
-                                    {
-                                        faulty = faulty.Substring(0, faulty.Length - 1);
-                                    }
-
-                                }
-                                @faulty
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-1">
-                <button type="button" id="btnFault" class="btn btn-sm btn-primary" title="Add New Fault"><i class="fas fa-plus"> </i> </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-11">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>Service: </b>
-                                @foreach (var item in services)
-                                {
-                                    service += item.ServiceName + ",";
-                                }
-                                @{
-                                    if (services.Count() > 0)
-                                    {
-                                        service = service.Substring(0, service.Length - 1);
-                                    }
-
-                                }
-                                @service
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-1">
-                <button type="button" id="btnService" class="btn btn-sm btn-primary" title="Add New Service"><i class="fas fa-plus"> </i> </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-11">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>Repair: </b>@repair.RepairName
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-1">
-                <button type="button" id="btnRepair" class="btn btn-sm btn-primary" title="Add New Repair"><i class="fas fa-plus"> </i> </button>
-            </div>
-        </div>
-        @*<div class="row">
-                <div class="col-md-11">
-                    <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <b>TSRemarks: </b>@jobOrder.TSRemarks
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
-                </div>
-            </div>*@
-        <div class="row">
-            <div class="col-md-9">
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <input type="text" name="remarks" value="@jobOrder.TSRemarks" placeholder="TSRemarks" id="txtTSRemarks" class="form-control form-control-sm" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-12">
-                <b class="text-center" style="visibility:hidden">Parts Requsition</b>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-9">
-                        <b style="color:darkblue">Parts Requsition </b>
-                    </div>
-                    <div class="col-md-3">
-                        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
-                    </div>
-                </div>
-                <hr />
-            </div>
-            <div class="col-md-12" id="dataContainer">
-                @{Html.RenderAction("RequsitionInfoForJobOrderPartialListList", new { @jobOrderId = jobOrder.JodOrderId });}
-            </div>
-            <div class="modal fade" id="modalRequsitionJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header alert-primary">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" id="hdfRequsitionDetailId" />
-                            <input type="hidden" id="hdfRowIndex" />
-                            <h4 id="modalHeading" class="modal-title">
-                                Requsition For Job Order Details
-                            </h4>
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm" style="overflow-y:scroll">
+                    <div class="col-md-6">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" id="hdfJobOrderId" value="@jobOrder.JodOrderId" />
+                        <div class="row">
+                            <div class="col-md-1">
+                                <a href="/FrontDesk/GetJobOrdersTS" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                            </div>
                         </div>
-                        <div class="modal-body" id="dataContainer1" style="overflow-y:scroll">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <b style="color:darkblue">JobOrder : @jobOrder.JobOrderCode</b>
+                            </div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <b>@jobOrder.EntryDate.Value.ToString("dd-MMM-yyyy")</b>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b style="color:darkblue">Customer Details</b>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody style="background-color:lightcyan">
+                                        <tr>
+                                            <td>Name: <b>@jobOrder.CustomerName</b></td>
+                                            <td>Address: <b>@jobOrder.Address</b></td>
+                                            <td>MobileNo: <b>@jobOrder.MobileNo</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b style="color:darkblue">Handset Details</b>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody style="background-color: lightsteelblue">
+                                        <tr>
+                                            <td>Model: <b>@jobOrder.ModelName</b></td>
+                                            <td>Type: <b>@jobOrder.Type</b></td>
+                                            <td>Color: <b>@jobOrder.ModelColor</b></td>
+                                            <td>IMEI1: <b>@jobOrder.IMEI</b></td>
+                                            <td>IMEI2: <b>@jobOrder.IMEI2</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>F.DeskRemarks:</b> @jobOrder.Remarks
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Symptom:</b>
+                                                @foreach (var item in Problems)
+                                                {
+                                                    problem += item.ProblemName + ",";
+                                                }
+                                                @{
+                                                    if (Problems.Count() > 0)
+                                                    {
+                                                        problem = problem.Substring(0, problem.Length - 1);
+                                                    }
 
+                                                }
+                                                @problem
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" id="btnSymptom" class="btn btn-sm btn-primary" title="Add New Symptom"><i class="fas fa-plus"> </i> </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblFault">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Fault:</b>
+                                                @foreach (var item in Faulty)
+                                                {
+                                                    faulty += item.FaultName + ",";
+                                                }
+                                                @{
+                                                    if (Faulty.Count() > 0)
+                                                    {
+                                                        faulty = faulty.Substring(0, faulty.Length - 1);
+                                                    }
+
+                                                }
+                                                @faulty
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" id="btnFault" class="btn btn-sm btn-primary" title="Add New Fault"><i class="fas fa-plus"> </i> </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Service: </b>
+                                                @foreach (var item in services)
+                                                {
+                                                    service += item.ServiceName + ",";
+                                                }
+                                                @{
+                                                    if (services.Count() > 0)
+                                                    {
+                                                        service = service.Substring(0, service.Length - 1);
+                                                    }
+
+                                                }
+                                                @service
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" id="btnService" class="btn btn-sm btn-primary" title="Add New Service"><i class="fas fa-plus"> </i> </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Repair: </b>@repair.RepairName
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" id="btnRepair" class="btn btn-sm btn-primary" title="Add New Repair"><i class="fas fa-plus"> </i> </button>
+                            </div>
+                        </div>
+                        @*<div class="row">
+                                <div class="col-md-11">
+                                    <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <b>TSRemarks: </b>@jobOrder.TSRemarks
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
+                                </div>
+                            </div>*@
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <input type="text" name="remarks" value="@jobOrder.TSRemarks" placeholder="TSRemarks" id="txtTSRemarks" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b class="text-center" style="visibility:hidden">Parts Requsition</b>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <b style="color:darkblue">Parts Requsition </b>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                            <div class="col-md-12" id="dataContainer">
+                                @{Html.RenderAction("RequsitionInfoForJobOrderPartialListList", new { @jobOrderId = jobOrder.JodOrderId });}
+                            </div>
+                            <div class="modal fade" id="modalRequsitionJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header alert-secondary">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="hdfRequsitionDetailId" />
+                                            <input type="hidden" id="hdfRowIndex" />
+                                            <h4 id="modalHeading" class="modal-title">
+                                                Requsition For Job Order Details
+                                            </h4>
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body" id="dataContainer1" style="overflow-y:scroll">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row hide">
+                            <div class="col-md-4">
+                                <b>Spare Parts</b>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <thead style="background-color: lightblue">
+                                        <tr class="text-center">
+                                            <th>#SL No.</th>
+                                            <th>Parts Name</th>
+                                            <th>Available Qty.</th>
+                                            <th>Requsition Qty.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var stock in availableQty)
+                                        {
+                                            sl = sl + 1;
+                                            <tr>
+                                                <td class="text-center">@sl</td>
+                                                <td>@stock.MobilePartName</td>
+                                                <td class="text-center">@stock.AvailableQty</td>
+                                                <td class="text-center">@stock.RequistionQty</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b style="color:darkblue">Spare Parts</b>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-sm table-striped" id="tblTechnicalServicesStockData">
+                                    <thead class="btn-dark">
+                                        <tr class="text-center">
+                                            <th>#SL</th>
+                                            <th class="hide"></th>
+                                            <th class="hide"></th>
+                                            <th class="hide">SWarehouseName</th>
+                                            <th class="hide"></th>
+                                            <th>RequsitionCode</th>
+                                            <th class="hide"></th>
+                                            <th>PartsName</th>
+                                            <th>PartsCode</th>
+                                            <th>Qty.</th>
+                                            <th class="hide">UsedQty</th>
+                                            <th class="hide">TotalQty</th>
+                                            <th class="hide">ReturnQty</th>
+                                            <th class="hide">Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var stock in tsStock)
+                                        {
+                                            sl2 = sl2 + 1;
+                                            <tr>
+                                                <td class="text-center text-bold" width="10%">@sl2</td>
+                                                <td class="hide">@stock.TsStockId</td>
+                                                <td class="hide">@stock.SWarehouseId</td>
+                                                <td class="hide">@stock.SWarehouseName</td>
+                                                <td class="hide">@stock.RequsitionInfoForJobOrderId</td>
+                                                <td>@stock.RequsitionCode</td>
+                                                <td class="hide">@stock.PartsId</td>
+                                                <td>@stock.PartsName</td>
+                                                <td>@stock.MobilePartCode</td>
+                                                <td class="text-center">@stock.Quantity</td>
+                                                <td class="text-center hide">@stock.UsedQty</td>
+                                                <td class="text-center hide">@stock.TotalQty</td>
+                                                <td class="text-center hide">@stock.ReturnQty</td>
+                                                <td class="text-center hide">@stock.Remarks</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <input class="btn btn-outline-primary btn-sm float-lg-right" value="Save" type="button" id="btnSave" onclick="window.close()" />
+                        @*<a href="#" class="btn btn-outline-primary btn-sm float-lg-right" id="btnJobSave"><i></i> Save</a>*@
+                    </div>
+                    <a href="#" class="btn btn-outline-danger btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
                 </div>
             </div>
         </div>
-
-        <div class="row hide">
-            <div class="col-md-4">
-                <b>Spare Parts</b>
-            </div>
-            <div class="col-md-12">
-                <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                    <thead style="background-color: lightblue">
-                        <tr class="text-center">
-                            <th>#SL No.</th>
-                            <th>Parts Name</th>
-                            <th>Available Qty.</th>
-                            <th>Requsition Qty.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var stock in availableQty)
-                        {
-                            sl = sl + 1;
-                            <tr>
-                                <td class="text-center">@sl</td>
-                                <td>@stock.MobilePartName</td>
-                                <td class="text-center">@stock.AvailableQty</td>
-                                <td class="text-center">@stock.RequistionQty</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <b style="color:darkblue">Spare Parts</b>
-            </div>
-            <div class="col-md-12">
-                <table class="table table-bordered table-sm table-striped" id="tblTechnicalServicesStockData">
-                    <thead class="btn-dark">
-                        <tr class="text-center">
-                            <th>#SL</th>
-                            <th class="hide"></th>
-                            <th class="hide"></th>
-                            <th class="hide">SWarehouseName</th>
-                            <th class="hide"></th>
-                            <th>RequsitionCode</th>
-                            <th class="hide"></th>
-                            <th>PartsName</th>
-                            <th>PartsCode</th>
-                            <th>Qty.</th>
-                            <th class="hide">UsedQty</th>
-                            <th class="hide">TotalQty</th>
-                            <th class="hide">ReturnQty</th>
-                            <th class="hide">Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var stock in tsStock)
-                        {
-                            sl2 = sl2 + 1;
-                            <tr>
-                                <td class="text-center text-bold" width="10%">@sl2</td>
-                                <td class="hide">@stock.TsStockId</td>
-                                <td class="hide">@stock.SWarehouseId</td>
-                                <td class="hide">@stock.SWarehouseName</td>
-                                <td class="hide">@stock.RequsitionInfoForJobOrderId</td>
-                                <td>@stock.RequsitionCode</td>
-                                <td class="hide">@stock.PartsId</td>
-                                <td>@stock.PartsName</td>
-                                <td>@stock.MobilePartCode</td>
-                                <td class="text-center">@stock.Quantity</td>
-                                <td class="text-center hide">@stock.UsedQty</td>
-                                <td class="text-center hide">@stock.TotalQty</td>
-                                <td class="text-center hide">@stock.ReturnQty</td>
-                                <td class="text-center hide">@stock.Remarks</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-
-    <div class="col-md-1">
-        <input class="btn btn-outline-primary btn-sm float-lg-right" value="Save" type="button" id="btnSave" onclick="window.close()" />
-        @*<a href="#" class="btn btn-outline-primary btn-sm float-lg-right" id="btnJobSave"><i></i> Save</a>*@
-    </div>
-    <a href="#" class="btn btn-outline-danger btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
 </div>
+
+
 
 <div class="modal fade" id="modalSymptom" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Symptom</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -380,8 +393,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitSymptom"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitSymptom"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>
@@ -390,7 +403,7 @@
 <div class="modal fade" id="modalFault" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Fault</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -423,8 +436,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitFault"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitFault"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>
@@ -433,7 +446,7 @@
 <div class="modal fade" id="modalServices" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Service</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -466,8 +479,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitService"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitService"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>
@@ -476,7 +489,7 @@
 <div class="modal fade" id="modalRepair" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Repair</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -508,8 +521,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitRepair"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitRepair"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>
@@ -518,7 +531,7 @@
 <div class="modal fade" id="modalTsRemarks" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add TS Remarks</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -542,8 +555,8 @@
                         Data has been failed to save!
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success float-right" id="btnSubmitTSRemarks"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitTSRemarks"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
             </div>
         </div>
     </div>
@@ -552,7 +565,7 @@
 <div class="modal fade" id="modalRequstionDetailForJobOrder" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Spare Parts Requsition</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -571,7 +584,7 @@
                             @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm" })
                             <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="ddlMobilePart" class="control-label font-weight-bold">Parts Name</label>
                             @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-parts font-weight-bold">Parts is required !</span>
@@ -587,18 +600,19 @@
                             </div>
                             <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-2">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
                             <div class="clearfix">
                                 <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-row">
+
                     </div>
                     <div class="col-md-12">
                         <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblRequsitionDetailForJobOrders">
@@ -629,7 +643,7 @@
 <div class="modal fade" id="modalTSStock" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header modal-lg alert-primary">
+            <div class="modal-header modal-lg alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">TS Spare Parts</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -668,18 +682,17 @@
 
 @section scripts{
     <script type="text/javascript">
-        //Fault
+        //#region Faulty
         var hdfFaultId = $("#hdfFaultId");
-                                        var ddlFaultName = $("#ddlFaultName");
-                                        var txtFaultRemarks = $("#txtFaultRemarks");
-                                        var hdfJobOrderId = $("#hdfJobOrderId");
-        //Stock text
+        var ddlFaultName = $("#ddlFaultName");
+        var txtFaultRemarks = $("#txtFaultRemarks");
+        var hdfJobOrderId = $("#hdfJobOrderId");
         $(document).ready(function () {
             $('.select2').select2();
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
-                                            theme: 'bootstrap4'
+                theme: 'bootstrap4'
             });
 
             $("#ddlSymptomName").attr("data-placeholder", "Select Symptom");
@@ -691,132 +704,125 @@
 
             //Initialize Select2 Elements
             $('.select2bs4').select2({
-                                            theme: 'bootstrap4'
+                theme: 'bootstrap4'
             });
-                                        });
-
-                                        function OpenFaultModal() {
-                                            clearCtrlFault();
+        });
+        function OpenFaultModal() {
+            clearCtrlFault();
             $("#modalFault").modal("show");
             $(".error").addClass("hide");
-                                        }
-
-        $("#btnFault").click(function (e) {
-                                            e.preventDefault();
-                                            clearCtrlFault();
-                                            OpenFaultModal();
-                                        })
-        function clearCtrlFault() {
-                                            hdfFaultId.val('0');
-                                            ddlFaultName.val('');
-                                            txtFaultRemarks.val('');
-                                        }
-                                        function validateFaultForm() {
-                                            var isValid = true;
-            $(".error").addClass('hide');
-
-                                            if (ddlFaultName.val() === "") {
-                $(".required-faultName").removeClass("hide");
-                                                isValid = false;
-                                            }
-                                            else {
-                                                var id = TryParseInt(hdfJobOrderId.val(), 0);
-                                                $.each(ddlFaultName.val(), function (index,item) {
-                                                    if (ajaxBooleanChecker(JSON.stringify({ id: id, faultId: TryParseInt(item, 0) }), '/Common2/IsDuplicateFaultId', getToken()) == true) {
-                                                        $(".duplicate-faultName").removeClass("hide");
-                                                        isValid = false;
-                                                    }
-                                                })
-
-
-                                    }
-            return isValid;
         }
 
-        //ddlFaultName.change(function () {
-        //    console.log("ddlFaultName change");
-        //    console.log(ddlFaultName.val());
-        //})
+        $("#btnFault").click(function (e) {
+           e.preventDefault();
+           clearCtrlFault();
+            OpenFaultModal();
+        })
+        function clearCtrlFault() {
+            hdfFaultId.val('0');
+            ddlFaultName.val('');
+            txtFaultRemarks.val('');
+        }
+         function validateFaultForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
 
+             if (ddlFaultName.val() === "") {
+                $(".required-faultName").removeClass("hide");
+                  isValid = false;
+                  }
+                  else {
+                     var id = TryParseInt(hdfJobOrderId.val(), 0);
+                     $.each(ddlFaultName.val(), function (index,item) {
+                       if (ajaxBooleanChecker(JSON.stringify({ id: id, faultId: TryParseInt(item, 0) }), '/Common2/IsDuplicateFaultId', getToken()) == true) {
+                          $(".duplicate-faultName").removeClass("hide");
+                       isValid = false;
+                       }
+                     })
+              }
+            return isValid;
+        }
         $("#btnSubmitFault").click(function (e) {
-                                    e.preventDefault();
-                                    if (validateFaultForm()) {
+            e.preventDefault();
+            if (validateFaultForm()) {
 
-                                        //var aryFault = []; aryFault.length = 0;
-                                        //var Fault = ddlFaultName.val();
-                                        //aryFault.push({
-                                        //    FaultId: Fault,
-                                        //    JobOrderId: hdfJobOrderId.val()
-                                        //});
-                                        var aryFault = []; aryFault.length = 0;
-                                        var Fault = ddlFaultName.val();
-                                        for (var i = 0; i < Fault.length; i++) {
-                                            aryFault.push({
-                                            FaultId: Fault[i],
+                //var aryFault = []; aryFault.length = 0;
+                //var Fault = ddlFaultName.val();
+                //aryFault.push({
+                //    FaultId: Fault,
+                //    JobOrderId: hdfJobOrderId.val()
+                //});
+                var aryFault = []; aryFault.length = 0;
+                var Fault = ddlFaultName.val();
+                for (var i = 0; i < Fault.length; i++) {
+                    aryFault.push({
+                        FaultId: Fault[i],
                         JobOrderId: hdfJobOrderId.val()
-                                            });
-                                    }
+                    });
+                }
+                var data = JSON.stringify({ jobOrderFaultViewModels: aryFault });
+              console.log("Faulty List");
+               console.log(data);
 
-                                    var data = JSON.stringify({ jobOrderFaultViewModels: aryFault });
-                                    console.log("Faulty List");
-                                    console.log(data);
-
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderFault', data, getToken())).then(function (res, status) {
-                                        if (res === true && status === "success") {
-                        $('.toastrDefaultSuccess').trigger('click');
-                                            setTimeout(function () {
-                                                redirectPage('@Url.Action("ServicesDetails", "FrontDesk", new { @joborderId = jobOrder.JodOrderId })');
-                                            }, 1000);
-                                        }
-                                        else {
-                        $('.toastrDefaultError').trigger('click');
-                                        }
-                                    }).fail(function (error) {
-                                        console.log(error);
-                    $('.toastrDefaultError').trigger('click');
-                                    });
-                                }
-                            });
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderFault', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                            setTimeout(function () {
+                            redirectPage('@Url.Action("ServicesDetails", "FrontDesk", new { @joborderId =jobOrder.JodOrderId })');
+                                }, 1000);
+                            }
+                                else {
+                            $('.toastrDefaultError').trigger('click');
+                    }
+                                }).fail(function (error) {
+                                    console.log(error);
+                $('.toastrDefaultError').trigger('click');
+                                });
+            }
+          });
+         //#endregion
+        
         //Service
         var hdfServicesId = $("#hdfServicesId");
         var ddlServiceName = $("#ddlServiceName");
         var txtServiceRemarks = $("#txtServiceRemarks");
 
         function OpenServicesModal() {
-                                clearCtrlService();
+            clearCtrlService();
             $("#modalServices").modal("show");
             $(".error").addClass("hide");
-                            }
+        }
 
         $("#btnService").click(function (e) {
-                                e.preventDefault();
-                                clearCtrlService();
-                                OpenServicesModal();
-                            })
+           e.preventDefault();
+           clearCtrlService();
+           OpenServicesModal();
+        })
         function clearCtrlService() {
-                                hdfServicesId.val('0');
-                                ddlServiceName.val('');
-                                txtServiceRemarks.val('');
-                            }
-                            function validateServiceForm() {
-                                var isValid = true;
+               hdfServicesId.val('0');
+               ddlServiceName.val('');
+               txtServiceRemarks.val('');
+        }
+
+        function validateServiceForm() {
+              var isValid = true;
             $(".error").addClass('hide');
-                                if (ddlServiceName.val() === "") {
+              if (ddlServiceName.val() === "") {
                 $(".required-ServiceName").removeClass("hide");
-                                    isValid = false;
-                                }
-                                else {
-                                    var id = TryParseInt(hdfJobOrderId.val(), 0);
-                                    $.each(ddlServiceName.val(), function (index, item) {
-                                        if (ajaxBooleanChecker(JSON.stringify({ id: id, servicesId: TryParseInt(item, 0) }), '/Common2/IsDuplicateServicesId', getToken()) == true) {
-                                            $(".duplicate-servicesName").removeClass("hide");
-                                            isValid = false;
-                                        }
-                                    });
-                                    
-                                }
-                                return isValid;
-                            }
+                    isValid = false;
+              }
+              else {
+                 var id = TryParseInt(hdfJobOrderId.val(), 0);
+                  $.each(ddlServiceName.val(), function (index, item) {
+                  if (ajaxBooleanChecker(JSON.stringify({ id: id, servicesId: TryParseInt(item, 0) }), '/Common2/IsDuplicateServicesId', getToken()) == true) {
+                    $(".duplicate-servicesName").removeClass("hide");
+                       isValid = false;
+                  }
+              });
+
+              }
+           return isValid;
+        }
 
         $("#btnSubmitService").click(function (e) {
                                 e.preventDefault();
@@ -834,7 +840,7 @@
                                         aryService.push({
                                         ServiceId: Service[i],
                         JobOrderId: hdfJobOrderId.val()
-                                        });
+                                    });
                                 }
 
                                 var data = JSON.stringify({ jobOrderServiceViewModels: aryService });
@@ -854,86 +860,86 @@
                                 }).fail(function (error) {
                                     console.log(error);
                     $('.toastrDefaultError').trigger('click');
-                                });
-                            }
+                     });
+                }
         });
         //symptom
         var hdfSymptomId = $("#hdfSymptomId");
         var ddlSymptomName = $("#ddlSymptomName");
 
         function OpenSymptomModal() {
-                                clearCtrlSymptom();
+            clearCtrlSymptom();
             $("#modalSymptom").modal("show");
             $(".error").addClass("hide");
-                            }
+        }
 
         $("#btnSymptom").click(function (e) {
-                                e.preventDefault();
-                                clearCtrlSymptom();
-                                OpenSymptomModal();
-                            })
+             e.preventDefault();
+             clearCtrlSymptom();
+             OpenSymptomModal();
+        })
         function clearCtrlSymptom() {
-                                hdfSymptomId.val('0');
-                                ddlSymptomName.val('');
-                            }
-                            function validateSymptomForm() {
-                                var isValid = true;
+             hdfSymptomId.val('0');
+            ddlSymptomName.val('');
+        }
+        function validateSymptomForm() {
+             var isValid = true;
             $(".error").addClass('hide');
-                                if (ddlSymptomName.val() === "") {
+             if (ddlSymptomName.val() === "") {
                 $(".required-SymptomName").removeClass("hide");
-                                    isValid = false;
-                                }
-                                else {
-                                    var id = TryParseInt(hdfJobOrderId.val(), 0);
-                                    $.each(ddlSymptomName.val(), function (index, item) {
-                                        if (ajaxBooleanChecker(JSON.stringify({ id: id, prblmId: TryParseInt(item, 0) }), '/Common2/IsDuplicateSymptomId', getToken()) == true) {
-                                            $(".duplicate-Symptom").removeClass("hide");
-                                            isValid = false;
-                                        }
-                                    });
-                                    
-                                }
-                                return isValid;
-                            }
+                   isValid = false;
+             }
+             else {
+                    var id = TryParseInt(hdfJobOrderId.val(), 0);
+                   $.each(ddlSymptomName.val(), function (index, item) {
+                   if (ajaxBooleanChecker(JSON.stringify({ id: id, prblmId: TryParseInt(item, 0) }), '/Common2/IsDuplicateSymptomId', getToken()) == true) {
+                         $(".duplicate-Symptom").removeClass("hide");
+                            isValid = false;
+                    }
+                  });
+
+             }
+         return isValid;
+        }
 
         $("#btnSubmitSymptom").click(function (e) {
-                                e.preventDefault();
-                                if (validateSymptomForm()) {
+           e.preventDefault();
+          if (validateSymptomForm()) {
 
-                                    //var arySymptom = []; arySymptom.length = 0;
-                                    //var symptom = ddlSymptomName.val();
-                                    //arySymptom.push({
-                                    //    ProblemId: symptom,
-                                    //    JobOrderId: hdfJobOrderId.val()
-                                    //});
-                                    var arySymptom = []; arySymptom.length = 0;
-                                    var symptom = ddlSymptomName.val();
-                                    for (var i = 0; i < symptom.length; i++) {
-                                        arySymptom.push({
-                                        ProblemId: symptom[i],
-                        JobOrderId: hdfJobOrderId.val()
-                                        });
-                                }
+            //var arySymptom = []; arySymptom.length = 0;
+              //var symptom = ddlSymptomName.val();
+            //arySymptom.push({
+            //    ProblemId: symptom,
+             //    JobOrderId: hdfJobOrderId.val()
+             //});
+               var arySymptom = []; arySymptom.length = 0;
+               var symptom = ddlSymptomName.val();
+               for (var i = 0; i < symptom.length; i++) {
+                   arySymptom.push({
+                    ProblemId: symptom[i],
+                    JobOrderId: hdfJobOrderId.val()
+                   });
+               }
 
-                                var data = JSON.stringify({ jobOrderProblemViewModels: arySymptom });
-                                console.log("Problem List");
-                                console.log(data);
+                var data = JSON.stringify({ jobOrderProblemViewModels: arySymptom });
+                console.log("Problem List");
+                console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrderProblem', data, getToken())).then(function (res, status) {
-                                    if (res === true && status === "success") {
-                        $('.toastrDefaultSuccess').trigger('click');
-                                        setTimeout(function () {
-                                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
-                                        }, 1000);
-                                    }
-                                    else {
-                        $('.toastrDefaultError').trigger('click');
-                                    }
-                                }).fail(function (error) {
-                                    console.log(error);
-                    $('.toastrDefaultError').trigger('click');
-                                });
+                       if (res === true && status === "success") {
+                         $('.toastrDefaultSuccess').trigger('click');
+                          setTimeout(function () {
+                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                            }, 1000);
+                          }
+                       else {
+                         $('.toastrDefaultError').trigger('click');
                             }
+                       }).fail(function (error) {
+                        console.log(error);
+                    $('.toastrDefaultError').trigger('click');
+                        });
+                 }
         });
 
         //Repair
@@ -942,41 +948,41 @@
         var txtRepairRemarks = $("#txtRepairRemarks");
 
         function OpenRepairModal() {
-                                clearCtrlRepair();
+            clearCtrlRepair();
             $("#modalRepair").modal("show");
             $(".error").addClass("hide");
-                            }
+         }
 
         $("#btnRepair").click(function (e) {
-                                e.preventDefault();
-                                clearCtrlRepair();
-                                OpenRepairModal();
-                            })
+         e.preventDefault();
+         clearCtrlRepair();
+         OpenRepairModal();
+        })
         function clearCtrlRepair() {
-                                hdfRepairId.val('0');
-                                ddlRepairName.val('');
-                                txtRepairRemarks.val('');
-                            }
-                            function validateRepairForm() {
-                                var isValid = true;
-            $(".error").addClass('hide');
-                                if (ddlRepairName.val() === "") {
-                $(".required-Repair").removeClass("hide");
-                                    isValid = false;
-                                }
-                                return isValid;
-                            }
+           hdfRepairId.val('0');
+           ddlRepairName.val('');
+           txtRepairRemarks.val('');
+        }
+          function validateRepairForm() {
+                var isValid = true;
+                $(".error").addClass('hide');
+             if (ddlRepairName.val() === "") {
+              $(".required-Repair").removeClass("hide");
+                isValid = false;
+             }
+           return isValid;
+          }
 
         $("#btnSubmitRepair").click(function (e) {
-                                e.preventDefault();
-                                if (validateRepairForm()) {
+                e.preventDefault();
+               if (validateRepairForm()) {
 
-                                    var aryRepair = []; aryRepair.length = 0;
-                                    var Repair = ddlRepairName.val();
-                                    aryRepair.push({
-                                    RepairId: Repair,
-                    JobOrderId: hdfJobOrderId.val()
-                                        });
+                var aryRepair = []; aryRepair.length = 0;
+               var Repair = ddlRepairName.val();
+                  aryRepair.push({
+                   RepairId: Repair,
+                  JobOrderId: hdfJobOrderId.val()
+               });
 
                                     var data = JSON.stringify({ jobOrderRepairViewModels: aryRepair, jobOrderId: hdfJobOrderId.val() });
                                     console.log("Repair List");
@@ -1049,8 +1055,8 @@ $('.toastrDefaultError').trigger('click');
 
         ddlMobilePart.change(function () {
             $("#stockQty").text('');
-            if (ddlServicesWarehouse.val() != "", ddlMobilePart.val() != "") {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetPartsStockByParts', JSON.stringify({ warehouseId: ddlServicesWarehouse.val(), partsId: ddlMobilePart.val() }), getToken())).then(function (res, status) {
+            if (ddlMobilePart.val() != "", hdfJobOrderId.val() != "") {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetPartsStockByParts', JSON.stringify({ partsId: ddlMobilePart.val(), jobOrderId: TryParseInt(hdfJobOrderId.val(),0) }), getToken())).then(function (res, status) {
                                 console.log(res);
                                 console.log(status);
                                 if (status == "success") {
@@ -1064,50 +1070,50 @@ $('.toastrDefaultError').trigger('click');
         })
 
         $("#btnReset").click(function (e) {
-                                e.preventDefault();
-                                clearDropdown("#ddlMobilePart");
+             e.preventDefault();
+            clearDropdown("#ddlMobilePart");
             $("#tblRequsitionDetailForJobOrders tbody").empty();
-                                txtStockInQty.val('0');
-                                txtRemarks.val('');
-                            })
+            txtStockInQty.val('0');
+            txtRemarks.val('');
+        })
         function OpenModal() {
             $("#modalRequstionDetailForJobOrder").modal("show");
             $(".error").addClass("hide");
-                                clearCtrl();
-                            }
+             clearCtrl();
+        }
 
         $("#btnAddNew").click(function (e) {
-                                e.preventDefault();
-                                OpenModal();
-                            })
+             e.preventDefault();
+             OpenModal();
+        })
 
         function validateInput() {
             $('.error').addClass('hide');
-                                var isValid = true;
-                                var count = $("#tblRequsitionDetailForJobOrders tbody tr").length;
-                                if (count > 0) {
+               var isValid = true;
+                var count = $("#tblRequsitionDetailForJobOrders tbody tr").length;
+               if (count > 0) {
                 $.each($("#tblRequsitionDetailForJobOrders tbody tr"), function (index, item) {
-                                        var partsId = $(this).children('td').eq(1).html();
-                                        if (partsId == ddlMobilePart.val()) {
-                                            isValid = false;
-                        $(".duplicate-parts").removeClass('hide');
-                                        }
-                                    })
+                     var partsId = $(this).children('td').eq(1).html();
+                     if (partsId == ddlMobilePart.val()) {
+                     isValid = false;
+                     $(".duplicate-parts").removeClass('hide');
+                      }
+                })
             }
-                                if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
-                                    isValid = false;
+                if (TryParseInt(ddlServicesWarehouse.val(), 0) <= 0) {
+                     isValid = false;
                 $(".require-warehouse").removeClass("hide");
-                                }
-                                if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
-                                    isValid = false;
+                   }
+                if (TryParseInt(ddlMobilePart.val(), 0) <= 0) {
+                       isValid = false;
                 $(".require-parts").removeClass("hide");
-                                }
-                                if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
-                                    isValid = false;
+                  }
+               if (txtStockInQty.val() == "" || TryParseInt(txtStockInQty.val(), 0) <= 0) {
+                    isValid = false;
                 $(".required-qty").removeClass("hide");
-                                }
-                                return isValid;
-                            }
+                   }
+                  return isValid;
+              }
 
         $("#btnAddToList").click(function (e) {
                                 e.preventDefault();
@@ -1153,7 +1159,7 @@ $('.toastrDefaultError').trigger('click');
 
         $("#btnSubmit").click(function (e) {
                                 e.preventDefault();
-            $(".error").addClass("hide");
+                                $(".error").addClass("hide");
                                 bootbox.confirm("Are you sure you want to save?", function (result) {
                                     if (result) {
                                         disable("#btnSubmit");

@@ -184,7 +184,9 @@
     <Compile Include="FrontDesk\DomainModels\JobOrderFault.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderProblem.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderRepair.cs" />
+    <Compile Include="FrontDesk\DomainModels\JobOrderReturnDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderService.cs" />
+    <Compile Include="FrontDesk\DomainModels\JobOrderTransferDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrderTS.cs" />
     <Compile Include="FrontDesk\DomainModels\RequsitionDetailForJobOrder.cs" />
     <Compile Include="FrontDesk\DomainModels\RequsitionInfoForJobOrder.cs" />
@@ -202,7 +204,9 @@
     <Compile Include="FrontDesk\DTOModels\InvoiceUsedPartsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderFaultDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderRepairDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\JobOrderReturnDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderServiceDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\JobOrderTransferDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\JobOrderTSDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\RequsitionDetailForJobOrderDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\RequsitionInfoForJobOrderDTO.cs" />
@@ -225,7 +229,9 @@
     <Compile Include="FrontDesk\ViewModels\InvoiceUsedPartsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderFaultViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderRepairViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\JobOrderReturnDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderServiceViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\JobOrderTransferDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\JobOrderTSViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\RequsitionDetailForJobOrderViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\RequsitionInfoForJobOrderViewModel.cs" />

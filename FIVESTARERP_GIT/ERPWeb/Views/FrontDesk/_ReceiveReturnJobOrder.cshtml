@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderReturnDetailViewModel>
+@{
+    int sl = 0;
+    string badge = string.Empty;
+    string badge1 = string.Empty;
+}
+<div class="col-md-12 text-sm">
+    <table class="table table-bordered table-sm table-striped" id="tblJobOrderReturn">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th class="hide"></th>
+                <th>ReturnCode</th>
+                <th class="hide"></th>
+                <th>JobCode</th>
+                <th>JobStatus</th>
+                <th>TransferStatus</th>
+                <th class="hide"></th>
+                <th>RepairBranch</th>
+                <th>EntryDate</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rec in Model)
+            {
+                sl = sl + 1;
+                badge1 = rec.JobStatus == "Repair-Done" ? "badge bg-success" : "badge bg-danger";
+                badge = rec.TransferStatus == "Pending" ? "badge bg-warning" : "badge bg-success";
+                string EntryDate = rec.EntryDate != null ? rec.EntryDate.Value.ToString("dd-MMM-yyy") : "";
+                <tr>
+                    <td class="text-center" width="10%">@sl</td>
+                    <td class="hide">@rec.JobOrderReturnDetailId</td>
+                    <td>@rec.TransferCode</td>
+                    <td class="hide joborderId" joborderId="@rec.JobOrderId">@rec.JobOrderId</td>
+                    <td>@rec.JobOrderCode</td>
+                    <td class="text-center" data-val="@rec.JobStatus">
+                        <span class="@badge1">@rec.JobStatus</span>
+                    </td>
+                    <td class="text-center" data-val="@rec.TransferStatus">
+                        <span class="@badge">@rec.TransferStatus</span>
+                    </td>
+                    <td class="hide">@rec.BranchId</td>
+                    <td>@rec.FromBranchName</td>
+                    <th>@EntryDate</th>
+                    <td class="text-center">
+                        @if (rec.TransferStatus == "Pending")
+                        {
+                            <a class="btn btn-sm btn-outline-success  data-item-received" title="Receive Job Order" data-item-received="@rec.JobOrderReturnDetailId"><i class="fas fa-download"></i></a>
+                        }
+                    </td>
+
+                </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="8">
+                        No Rows Found
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

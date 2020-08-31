@@ -160,6 +160,12 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(currentRequsitionDTO, currentRequsitionViewModels);
                 ViewBag.DashboardCurrentViewModel = currentRequsitionViewModels;
 
+                // Requsition Another Branch
+                IEnumerable<DashboardApprovedRequsitionDTO> anotherBranchReqDTO = _jobOrderBusiness.DashboardAnotherBranchRequsition(User.OrgId, User.BranchId);
+                IEnumerable<DashboardApprovedRequsitionViewModel> anotherBranchReqViewModels = new List<DashboardApprovedRequsitionViewModel>();
+                AutoMapper.Mapper.Map(anotherBranchReqDTO, anotherBranchReqViewModels);
+                ViewBag.AnotherBranchRequsition = anotherBranchReqViewModels;
+
                 // Return Spareparts
                 IEnumerable<DashbordTsPartsReturnDTO> returnDTO = _tsStockReturnInfoBusiness.DashboardReturnParts(User.OrgId, User.BranchId);
                 IEnumerable<DashbordTsPartsReturnViewModel> returnViewModels = new List<DashbordTsPartsReturnViewModel>();

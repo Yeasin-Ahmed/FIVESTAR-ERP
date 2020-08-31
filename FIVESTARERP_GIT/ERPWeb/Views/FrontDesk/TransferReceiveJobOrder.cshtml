@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "Return JobOrder";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <h4>Return Job Orders</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-3">
+                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                        <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-5">
+                        <button type="submit" id="btnSubmit" class="btn float-right btn-outline-primary"> Return <i class="fas fa-retweet"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row text-sm">
+                    <div class="col-md-12 mt-2 text-sm" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("TransferReceiveJobOrder", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var ddlBranchName = $("#ddlBranchName");
+        var count = 0;
+
+        $(document).on('change', 'input[name="allJobOrder"]', function () {
+            var isChecked = $('input[name="allJobOrder"]').is(":checked");
+            $('input[name="jobOrderName"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblTransferReceiveJob tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+
+        $(document).on('change', 'input[name="jobOrderName"]', function () {
+            count = 0;
+            $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="jobOrderName"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblTransferReceiveJob tbody tr").length == count;
+            $('input[name="allJobOrder"]').prop("checked", allChecked);
+        })
+
+        ddlBranchName.change(function () {
+            LoadDataTable();
+        })
+        function LoadDataTable() {
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0)};
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/TransferReceiveJobOrder', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+        function ValidateSubmit() {
+            var isValid = true;
+            if (ddlBranchName.val() === "") {
+                isValid = false;
+                bootbox.alert("Select a Branch");
+            }
+            if (count == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one JobOrder");
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit()) {
+                bootbox.confirm("Are you sure you want to Return these Job Orders", function (result) {
+                    if (result) {
+                        disable("#btnSubmit");
+                        var transferId = TryParseInt(ddlBranchName.val(), 0);
+                        var jobOrders = []; jobOrders.length = 0;
+                        $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
+                            if (checkBox.is(":checked")) {
+                                jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                            }
+                        });
+                        //console.log("JobOrders");
+                        //console.log(jobOrders);
+
+                        var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders });
+                        //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobReturn', data, getToken())).then(function (res, status) {
+                            if (res.isSuccess === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                var pdfWindow = window.open("", "_blank")
+                                console.log(res.text);
+                                pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
+                                download(res.text, "DeliveryChallan", "application/pdf"); // Download
+                                count = 0;
+                                setTimeout(function () {
+                            redirectPage('@Url.Action("TransferReceiveJobOrder")');
+                        }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmit");
+                        });
+                    }
+                })
+            }
+        })
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+    </script>
+    }

@@ -2,79 +2,100 @@
 @{
     ViewBag.Title = "Job Order List";
 }
-
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-center">
+                        <h4><b>Job Order List</b></h4>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/FrontDesk/CreateJobOrder" title="Create a New Job Order" class="btn btn-outline-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnReset"><i class="fas fa-plus"></i> Job Order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3 hide">
-                <a href="#" class="btn btn-sm btn-outline-danger data-report-item" id="btnReport" title="Pdf Report"><i class="fas fa-file-pdf"></i></a>
-            </div>
-            <div class="col-md-10 text-center">
-                <h4><b style="color:darkblue">List of Job Order</b></h4>
-            </div>
-            <div class="col-md-2">
-                <a href="/FrontDesk/CreateJobOrder" class="btn btn-outline-primary btn-sm float-lg-right" id="btnReset"><i class="fas fa-plus"></i> Job Order</a>
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="col-md-12 text-sm">
-        <div class="row">
-            <div class="col-md-2">
-                <label class="col-form-label">JobCode</label>
-                <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
-            </div>
-            <div class="col-md-2">
-                <label class="col-form-label">Model</label>
-                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Search By Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
-            </div>
-            <div class="col-md-2">
-                <label class="col-form-label">IMEI1</label>
-                <input type="text" id="txtIMEINo" class="form-control form-control-sm" placeholder="Search By IMEI1" />
-            </div>
-            <div class="col-md-2">
-                <label class="col-form-label">IMEI2</label>
-                <input type="text" id="txtIMEI2No" class="form-control form-control-sm" placeholder="Search By IMEI2" />
-            </div>
-            <div class="col-md-2">
-                <label class="col-form-label">Mobile No</label>
-                <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
-            </div>
-            <div class="col-md-2">
-                <label class="col-form-label">JobStatus</label>
-                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <label class="control-label font-weight-bold">From Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-2">
+                        <label class="col-form-label">JobCode</label>
+                        <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">Model</label>
+                        @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Search By Model--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">IMEI1</label>
+                        <input type="text" id="txtIMEINo" class="form-control form-control-sm" placeholder="Search By IMEI1" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">IMEI2</label>
+                        <input type="text" id="txtIMEI2No" class="form-control form-control-sm" placeholder="Search By IMEI2" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">Mobile No</label>
+                        <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">JobStatus</label>
+                        @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <label class="control-label font-weight-bold">To Date</label>
-                <div class="input-group input-group-sm ">
-                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                        <span class="input-group-text">&#10008;</span>
+                <div class="row text-sm">
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-8">
+                        <label class="control-label font-weight-bold" style="visibility:hidden">Toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo Date</label>
+                        <a href="/FrontDesk/CreateJobOrder" class="btn btn-outline-primary btn-sm float-lg-right" id="btnReset"><i class="fas fa-plus"></i> Job Order</a>
+                    </div>*@
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12 mt-2 text-sm" id="dataContainer" style="overflow-y:scroll">
-        @{Html.RenderAction("GetJobOrders", new { @flag = "view" });}
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm text-sm" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("GetJobOrders", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="modal fade" id="modalJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 @Html.AntiForgeryToken()
                 <input type="hidden" id="hdfJobOrderId" />
                 <h4 id="modalHeading" class="modal-title">JobOrder Details</h4>
@@ -90,7 +111,7 @@
 <div class="modal fade" id="modalInvoice" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Invoice</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -259,7 +280,20 @@
         $(document).on('click', 'a.data-item-details', function (e) {
             e.preventDefault();
             var id = $(this).attr("data-item-details");
-            getJobOrderDetail("Detail",id);
+            getJobOrderDetail("Detail",id)
+            //var data = { jobOrderId: id};
+
+            //console.log(data);
+            //$.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderDetails', data)).then(function (res, status) {
+            //    console.log(status);
+            //    if (status === "success") {
+            //        $("#dataContainer2").empty();
+            //        $("#dataContainer2").append(res).fadeIn('500');
+            //        $("#modalJobOrderDetails").modal("show");
+            //    }
+            //}).fail(function (error) {
+            //    console.log(error);
+            //});
         })
         //Ts Work Details
         $(document).on('click', 'a.data-item-tsWork', function (e) {
@@ -551,7 +585,6 @@
                     }
                 });
         });
-
         //$(document).on('click', '.data-report-item2', function (e) {
         //    e.preventDefault();
         //    //infoId

@@ -193,6 +193,7 @@ where ts.UsedQty>0 and 1=1{0}
 
         public bool SaveTechnicalServicesStockIn(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId, long branchId)
         {
+
             List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
             foreach (var item in servicesStockDTOs)
             {
