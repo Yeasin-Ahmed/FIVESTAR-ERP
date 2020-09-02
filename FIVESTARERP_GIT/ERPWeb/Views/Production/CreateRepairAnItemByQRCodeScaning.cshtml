@@ -101,7 +101,7 @@
                                             <button type="button" class="btn btn-sm btn-sm btn-flat btn-warning" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="card-body">
@@ -121,8 +121,7 @@
                                                     <th class="hide item"></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -285,13 +284,13 @@
             }
         }
 
-        function bindQrCodeProblems(obj,transferId) {
+        function bindQrCodeProblems(obj, transferId) {
             $("#tblQRCodeProblems tbody").empty();
             if (!$.isEmptyObject(obj)) {
                 $.each(obj, function (index, item) {
                     var status = (transferId == item.TransferId) ? "<span class='badge badge-success'>New</span>" : "<span class='badge badge-primary'>Old</span>"
                     var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
-                    var td2 = "<td>" + item.ProblemName+' '+ status+ "</td>";
+                    var td2 = "<td>" + item.ProblemName + ' ' + status + "</td>";
                     var td3 = "<td class='hide'>" + item.ProblemId + "</td>";
                     var tr = "<tr>" + td1 + td2 + td3 + "</tr>";
                     $("#tblQRCodeProblems tbody").append(tr);
@@ -307,8 +306,8 @@
                     var td1 = "<td class='text-center text-bold'>" + (index + 1) + "</td>";
                     var td2 = "<td>" + item.ItemName + "[" + item.ItemTypeName + "-" + item.WarehouseName + "]" + "</td>";
                     var td3 = "<td class='text-center text-bold'>" + item.Quantity + "</td>";
-                    var td4 = "<td class='text-center'><input type='checkbox' class='chkChinaFaulty' name='chinaFaulty'" + isChecked+"  /></td>"
-                    var td5 = "<td></td>";
+                    var td4 = "<td class='text-center'><input type='checkbox' class='chkChinaFaulty' name='chinaFaulty'" + isChecked + "  /></td>"
+                    var td5 = "<td class='text-center'><a href='#' class='btn btn-sm btn-secondary data-item-del' data-item-val='0'><i class='far fa-minus-square'></i></a></td>";
                     var td6 = "<td class='hide warehouse'>" + item.WarehouseId + "</td>";
                     var td7 = "<td class='hide itemType'>" + item.ItemTypeId + "</td>";
                     var td8 = "<td class='hide item'>" + item.ItemId + "</td>";
@@ -402,7 +401,7 @@
                 var td7 = "<td class='hide itemType'>" + itemType + "</td>";
                 var td8 = "<td class='hide item'>" + item + "</td>";
 
-                var tr = "<tr class='new-item'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 +td8+ "</tr>";
+                var tr = "<tr class='new-item'>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + "</tr>";
                 $("#tblFaultItems tbody").append(tr);
                 txtQuantity.val('0');
             }
@@ -474,7 +473,7 @@
         function validateRepairDone() {
             var isValid = true;
             var errorText = "";
-            if (hdfQRCode.val() =="") {
+            if (hdfQRCode.val() == "") {
                 errorText += "QRCode not found</br>";
                 isValid = false;
             }
@@ -494,14 +493,14 @@
                 errorText += "Repair Line not found</br>";
                 isValid = false;
             }
-            
+
             if (hdfQRCode.val() !== "" && TryParseInt(hdfModelId.val(), 0) > 0 && TryParseInt(hdfItem.val(), 0) > 0 && TryParseInt(hdfRepairLineId.val(), 0) > 0 && TryParseInt(hdfQCLineId.val(), 0) > 0) {
                 var data = JSON.stringify({ modelId: TryParseInt(hdfModelId.val(), 0), itemId: TryParseInt(hdfItem.val(), 0), repairLineId: TryParseInt(hdfRepairLineId.val(), 0) });
                 var value = ajaxValueReturnable(data, '/Common/CheckingAvailabilityOfSparepartsWithRepairLineStock', getToken());
                 console.log("ajaxValueReturnable");
                 console.log(value);
                 if (value.isSuccess === false) {
-                    errorText +=value.text;
+                    errorText += value.text;
                     isValid = false;
                 }
             }
@@ -513,7 +512,7 @@
 
         function fnGetFaultyItemsAfterSubmit(qrCode, transferId) {
             var data = JSON.stringify({ qrCode: qrCode, transferId: transferId })
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetFaultyItemsByQRCode', data, getToken())).then(function (res,status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Common/GetFaultyItemsByQRCode', data, getToken())).then(function (res, status) {
                 console.log(res);
                 console.log(status);
                 if (res.faultyItems !== null && status === "success") {
@@ -525,9 +524,8 @@
         }
 
         function fnRepairDone() {
-            if (validateRepairDone())
-            {
-                var data = JSON.stringify({ QRCode: hdfQRCode.val(), AssemblyLineId:TryParseInt(hdfAssemblyLineId.val(),0), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
+            if (validateRepairDone()) {
+                var data = JSON.stringify({ QRCode: hdfQRCode.val(), AssemblyLineId: TryParseInt(hdfAssemblyLineId.val(), 0), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
                 console.log("Repair Done");
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairItemByQRCodeScaning', data, getToken())).then(function (res, status) {
@@ -553,6 +551,34 @@
                 enable('.btn-Action');
             }
         }
+
+        //SaveVoidAFaultyItem
+
+        $(document).on('click', '.data-item-del', function (e) {
+            e.preventDefault();
+            var transferId = TryParseInt(hdfTransferId.val(), 0);
+            var qrCode = hdfQRCode.val();
+            var itemId = $(this).parent().parents('tr').children('td').eq(7).html();
+
+            if (transferId > 0 && $.trim(qrCode) != '' && TryParseInt(itemId, 0) > 0) {
+                bootbox.confirm("Are you sure you want to delete this faulty item", function (result) {
+                    if (result) {
+                        var data = JSON.stringify({ transferId: transferId, qrCode: qrCode, itemId: TryParseInt(itemId, 0) });
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveVoidAFaultyItem', data, getToken())).then(function (res, status) {
+                            if (res == true && status == "success") {
+                                toastrSuccessAlert("Data has been deleted Successfully");
+                                var index = $(this).parent().parents('tbody tr').index();
+                                removeTableRow("#tblFaultItems tbody", index);
+                                fnFixTheTbodyRowSerial("#tblFaultItems", index);
+                                fnGetFaultyItemsAfterSubmit(qrCode, transferId);
+                            }
+                        }).fail(function (error) {
+                            console.log(error);
+                        })
+                    }
+                })
+            }
+        })
     </script>
 }
 

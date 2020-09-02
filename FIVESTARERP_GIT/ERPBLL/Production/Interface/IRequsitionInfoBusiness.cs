@@ -17,6 +17,6 @@ namespace ERPBLL.Production.Interface
         IEnumerable<DashboardRequisitionSummeryDTO> DashboardRequisitionSummery(long orgId);
         bool SaveRequisitionWithItemInfoAndDetail(RequsitionInfoDTO infoDTO, long userId, long orgId);
         IEnumerable<RequsitionInfoDTO> GetRequsitionInfosByQuery(long? floorId, long? assemblyId, long? packagingId, long? repairLineId, long? warehouseId,long? modelId,string reqCode,string reqType, string reqFor, string fromDate, string toDate,string status, string reqFlag,long? reqInfoId, long orgId);
-        
+        IEnumerable<DashBoardAssemblyProgressDTO> GetDashBoardAssemblyProgresses(long? floorId, long? assemblyId,long orgId);
     }
 }

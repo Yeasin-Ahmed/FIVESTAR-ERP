@@ -170,7 +170,7 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetRoleList");
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-            IPagedList<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(role => new RoleViewModel
+            List<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoles().Select(role => new RoleViewModel
             {
                 RoleId = role.RoleId,
                 RoleName = role.RoleName,
@@ -178,8 +178,8 @@ namespace ERPWeb.Controllers
                 OrganizationName = (_organizationBusiness.GetOrganizationById(role.OrganizationId).OrganizationName),
                 EntryUser = UserForEachRecord(role.EUserId.Value).UserName,
                 UpdateUser = (role.UpUserId == null || role.UpUserId == 0) ? "" : UserForEachRecord(role.UpUserId.Value).UserName
-            }).OrderBy(role => role.RoleId).ToPagedList(page ?? 1, 15);
-            IEnumerable<RoleViewModel> roleViewModelForPage = new List<RoleViewModel>();
+            }).OrderBy(role => role.RoleId).ToList();
+
             return View(roleViewModels);
         }
         public ActionResult SaveRole(RoleViewModel roleViewModel)
@@ -193,7 +193,7 @@ namespace ERPWeb.Controllers
                 {
                     RoleDTO dto = new RoleDTO();
                     AutoMapper.Mapper.Map(roleViewModel, dto);
-                    isSuccess = _roleBusiness.SaveRole(dto, User.UserId, User.OrgId);
+                    isSuccess = _roleBusiness.SaveRole(dto, User.UserId, roleViewModel.OrganizationId);
                 }
                 catch (Exception ex)
                 {

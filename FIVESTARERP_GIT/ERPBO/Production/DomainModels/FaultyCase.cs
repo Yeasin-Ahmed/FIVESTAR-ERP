@@ -16,6 +16,10 @@ namespace ERPBO.Production.DomainModels
         public long? DescriptionId { get; set; }
         [StringLength(200)]
         public string ProblemDescription { get; set; }
+        [StringLength(50)]
+        public string  FaultyGroup { get; set; }
+        [StringLength(50)]
+        public string FaultyType { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
         [StringLength(100)]

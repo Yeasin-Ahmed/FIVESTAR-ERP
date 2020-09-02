@@ -19,5 +19,7 @@ namespace ERPBLL.Production.Interface
         // bool StockOutByAddingFaultyWithQRCode(FaultyInfoByQRCodeDTO model, long userId, long orgId);
         Task<bool> SaveRepairLineStockOutAsync(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId, string flag);
         bool SaveRepairLineStockReturn(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId, string flag);
+
+        bool SaveVoidAFaultyItem(long transferId, string qrCode, long itemId, long userId, long orgId);
     }
 }

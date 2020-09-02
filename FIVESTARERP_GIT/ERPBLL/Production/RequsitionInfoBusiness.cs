@@ -23,7 +23,7 @@ namespace ERPBLL.Production
         private readonly RequsitionInfoRepository requsitionInfoRepository; // table
         private readonly IInventoryUnitOfWork _inventoryDb; // database
         private readonly IItemBusiness _itemBusiness; // interface
-        
+
 
         private readonly IWarehouseStockInfoBusiness _warehouseStockInfoBusiness;
         public RequsitionInfoBusiness(IProductionUnitOfWork productionDb, IInventoryUnitOfWork inventoryDb, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IItemBusiness itemBusiness)
@@ -53,7 +53,7 @@ namespace ERPBLL.Production
             return requsitionInfoRepository.GetOneByOrg(req => req.ReqInfoId == reqId && req.OrganizationId == orgId);
         }
 
-        public IEnumerable<RequsitionInfoDTO> GetRequsitionInfosByQuery(long? floorId, long? assemblyId,long? packagingId, long? repairLineId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status,string reqFlag,long? reqInfoId, long orgId)
+        public IEnumerable<RequsitionInfoDTO> GetRequsitionInfosByQuery(long? floorId, long? assemblyId, long? packagingId, long? repairLineId, long? warehouseId, long? modelId, string reqCode, string reqType, string reqFor, string fromDate, string toDate, string status, string reqFlag, long? reqInfoId, long orgId)
         {
             return this._productionDb.Db.Database.SqlQuery<RequsitionInfoDTO>(QueryForRequsitionInfos(floorId, assemblyId, packagingId, repairLineId, warehouseId, modelId, reqCode, reqType, reqFor, fromDate, toDate, status, reqFlag, reqInfoId, orgId)).ToList();
         }
@@ -63,8 +63,8 @@ namespace ERPBLL.Production
             string query = string.Empty;
             string param = string.Empty;
 
-            param += string.Format(@" and ri.OrganizationId={0}",orgId);
-            if(floorId != null && floorId > 0)
+            param += string.Format(@" and ri.OrganizationId={0}", orgId);
+            if (floorId != null && floorId > 0)
             {
                 param += string.Format(@" and ri.LineId={0}", floorId);
             }
@@ -88,11 +88,11 @@ namespace ERPBLL.Production
             {
                 param += string.Format(@" and ri.DescriptionId={0}", modelId);
             }
-            if (!string.IsNullOrEmpty(reqCode) && reqCode.Trim() !="")
+            if (!string.IsNullOrEmpty(reqCode) && reqCode.Trim() != "")
             {
                 param += string.Format(@" and ri.ReqInfoCode LIKE'%{0}%'", reqCode);
             }
-            if(!string.IsNullOrEmpty(reqType) && reqType.Trim() != "")
+            if (!string.IsNullOrEmpty(reqType) && reqType.Trim() != "")
             {
                 param += string.Format(@" and ri.RequisitionType='{0}'", reqType);
             }
@@ -124,7 +124,7 @@ namespace ERPBLL.Production
                 string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
                 param += string.Format(@" and Cast(ri.EntryDate as date)='{0}'", tDate);
             }
-            if(reqInfoId !=null && reqInfoId> 0)
+            if (reqInfoId != null && reqInfoId > 0)
             {
                 param += string.Format(@" and ri.ReqInfoId={0}", reqInfoId);
             }
@@ -143,7 +143,6 @@ Inner Join [Inventory].dbo.tblWarehouses wi on ri.WarehouseId = wi.Id
 Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
             return query;
         }
-
         public bool SaveRequisition(ReqInfoDTO reqInfoDTO, long userId, long orgId)
         {
             bool IsSuccess = false;
@@ -194,7 +193,7 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                 requsitionInfoRepository.Insert(requsitionInfo);
                 IsSuccess = requsitionInfoRepository.Save();
             }
-           
+
             return IsSuccess;
         }
         public bool SaveRequisitionStatus(long reqId, string status, long orgId, long userId)
@@ -228,7 +227,7 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                 EUserId = userId,
                 EntryDate = DateTime.Now,
                 StateStatus = RequisitionStatus.Pending,
-                Remarks = "Requisition By Production Floor For "+ infoDTO.RequisitionFor,
+                Remarks = "Requisition By Production Floor For " + infoDTO.RequisitionFor,
                 IsBundle = true,
                 Flag = Flag.Direct
             };
@@ -248,7 +247,7 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
                     EUserId = userId,
                     Quantity = item.Quantity,
                     IssueQty = 0,
-                    Remarks = "Requisition By Production Floor For "+infoDTO.RequisitionFor,
+                    Remarks = "Requisition By Production Floor For " + infoDTO.RequisitionFor,
                     UnitId = allItemsInDb.FirstOrDefault(s => s.ItemId == item.ItemId).UnitId
                 };
                 requsitionDetails.Add(requsitionDetail);
@@ -299,7 +298,47 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
             requsitionInfoRepository.Insert(requsitionInfo);
             return requsitionInfoRepository.Save();
         }
+        public IEnumerable<DashBoardAssemblyProgressDTO> GetDashBoardAssemblyProgresses(long? floorId, long? assemblyId, long orgId)
+        {
+            var data = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyProgressDTO>(string.Format(@"Select pl.LineId 'ProductionFloorId',pl.LineNumber 'ProductionFloorName',al.AssemblyLineId,al.AssemblyLineName,
+(Select ISNULL(SUM(Quantity),0) From tblRequisitionItemInfo req 
+Inner Join tblRequsitionInfo r on r.ReqInfoId = req.ReqInfoId And r.StateStatus='Accepted'
+Where r.OrganizationId={0} and r.AssemblyLineId=al.AssemblyLineId and Cast(req.EntryDate as date)= Cast(GETDATE() as date)) 'TargetQuantity',
 
-        
+(Select COUNT(*) From tblTempQRCodeTrace 
+Where AssemblyId=al.AssemblyLineId and OrganizationId={0} and StateStatus='MiniStock' and Cast(EntryDate as date)= Cast(GETDATE() as date)) 'CompleteQunatity',
+--and StateStatus IN('Send','Received')
+(Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0}  and Cast(EntryDate as date)= Cast(GETDATE() as date) and AssemblyLineId=al.AssemblyLineId) 'RepairIn',
+
+(Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0} and StateStatus ='Repair-Done' and Cast(EntryDate as date)= Cast(GETDATE() as date) and AssemblyLineId=al.AssemblyLineId) 'RepairOut'
+
+From tblRequsitionInfo ri
+Inner Join [Production].dbo.tblAssemblyLines al on ri.AssemblyLineId =al.AssemblyLineId
+Inner Join [Production].dbo.tblProductionLines pl on al.ProductionLineId = pl.LineId
+Where al.OrganizationId={0} and Cast(ri.EntryDate as date)= Cast(GETDATE() as date)
+Group By pl.LineId,pl.LineNumber,al.AssemblyLineId,al.AssemblyLineName", orgId)).ToList();
+
+            foreach (var item in data)
+            {
+                string assemblyFaulty = string.Format(@"Select fsd.ItemId,i.ItemName,ISNULL(COUNT(fsd.Quantity),0) 'Quantity' From tblFaultyItemStockDetail fsd
+Inner Join [Inventory].dbo.tblItems i on fsd.ItemId = i.ItemId
+Inner Join [Production].dbo.tblAssemblyLines al on fsd.AsseemblyLineId = al.AssemblyLineId
+Inner Join [Production].dbo.tblProductionLines pl on al.ProductionLineId = pl.LineId
+Where 1=1 and fsd.OrganizationId={0} and Cast(fsd.EntryDate as Date) = Cast(GetDate() as date) and fsd.StockStatus='Stock-In' and fsd.AsseemblyLineId={1}
+Group By al.AssemblyLineId,fsd.ItemId,i.ItemName", orgId, item.AssemblyLineId);
+
+                item.AssemblyFaultys = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyFaultyDTO>(assemblyFaulty).ToList();
+
+                string AssemblyProblems = string.Format(@"Select al.AssemblyLineId,al.AssemblyLineName,f.CaseId 'ProblemId',f.ProblemDescription,COUNT(*) 'Count' From tblQRCodeProblem qp
+Inner Join tblFaultyCase f on f.CaseId = qp.ProblemId
+Inner Join [Production].dbo.tblAssemblyLines al on qp.AssemblyLineId = al.AssemblyLineId
+Where 1= 1 and qp.OrganizationId={0} and Cast(qp.EntryDate as date)= Cast(GETDATE() as date) and qp.AssemblyLineId={1}
+Group By al.AssemblyLineId,al.AssemblyLineName,f.CaseId,f.ProblemDescription", orgId, item.AssemblyLineId);
+
+                item.AssemblyProblems = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyProblemDTO>(AssemblyProblems).ToList();
+
+            }
+            return data;
+        }
     }
 }

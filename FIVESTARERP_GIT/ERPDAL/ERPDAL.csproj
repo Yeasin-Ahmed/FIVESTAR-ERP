@@ -607,6 +607,10 @@
     <Compile Include="ProductionContextMigrations\202008270544236_Production_AddStockItemReturn.Designer.cs">
       <DependentUpon>202008270544236_Production_AddStockItemReturn.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.cs" />
+    <Compile Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.Designer.cs">
+      <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -1007,6 +1011,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202008270544236_Production_AddStockItemReturn.resx">
       <DependentUpon>202008270544236_Production_AddStockItemReturn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.resx">
+      <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

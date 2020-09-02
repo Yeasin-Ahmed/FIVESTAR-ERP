@@ -4137,6 +4137,7 @@ namespace ERPWeb.Controllers
             }
             return Json(new { IsSuccess = IsSuccess, Msg = stockAvailable.text });
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetRepairItemDetailsByQRCode(string qrCode)
         {
@@ -4168,6 +4169,16 @@ namespace ERPWeb.Controllers
             return Json(new { info = new { } });
         }
 
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public  ActionResult SaveVoidAFaultyItem(long transferId, string qrCode, long itemId)
+        {
+            bool IsSuccess = false;
+            if(transferId > 0 && !string.IsNullOrEmpty(qrCode) &&  itemId > 0)
+            {
+                IsSuccess= _repairLineStockDetailBusiness.SaveVoidAFaultyItem(transferId, qrCode, itemId, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
         #endregion
 
         public ActionResult GetQRCode()

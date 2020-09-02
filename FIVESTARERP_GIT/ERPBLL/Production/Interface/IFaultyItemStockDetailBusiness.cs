@@ -14,5 +14,8 @@ namespace ERPBLL.Production.Interface
         bool SaveFaultyItemStockIn(List<FaultyItemStockDetailDTO> stockDetails, long userId,long orgId);
         bool SaveFaultyItemStockOut(List<FaultyItemStockDetailDTO> stockDetails, long userId, long orgId);
         IEnumerable<FaultyItemStockDetailDTO> GetFaultyItemStockDetailsByQrCode(string QRCode, long transferId,long orgId);
+        FaultyItemStockDetail GetFaultyItemStockInDetailByTransferId(long transferId, string qrCode, long itemId,long orgId);
+        bool DeleteAFaultyItemByVoidItem(long stockDetailId, long userId, long orgId);
+        FaultyItemStockDetail GetFaultyItemDetailById(long id, long orgId);
     }
 }
