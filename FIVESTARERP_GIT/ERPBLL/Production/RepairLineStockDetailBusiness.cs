@@ -18,6 +18,7 @@ namespace ERPBLL.Production
         // Business Class
         private readonly IRepairLineStockInfoBusiness _repairLineStockInfoBusiness;
         private readonly IFaultyItemStockDetailBusiness _faultyItemStockDetailBusiness;
+        private readonly IFaultyItemStockInfoBusiness _faultyItemStockInfoBusiness;
         private readonly IItemBusiness _itemBusiness;
         private readonly IRepairSectionRequisitionInfoBusiness _repairSectionRequisitionInfoBusiness;
         private readonly IRepairSectionRequisitionDetailBusiness _repairSectionRequisitionDetailBusiness;
@@ -29,7 +30,7 @@ namespace ERPBLL.Production
         private readonly RepairSectionRequisitionInfoRepository _repairSectionRequisitionInfoRepository;
 
 
-        public RepairLineStockDetailBusiness(IProductionUnitOfWork productionDb, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IItemBusiness itemBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness)
+        public RepairLineStockDetailBusiness(IProductionUnitOfWork productionDb, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IItemBusiness itemBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness)
         {
             this._productionDb = productionDb;
             // Repository
@@ -43,6 +44,7 @@ namespace ERPBLL.Production
             this._itemBusiness = itemBusiness;
             this._repairSectionRequisitionInfoBusiness = repairSectionRequisitionInfoBusiness;
             this._repairSectionRequisitionDetailBusiness = repairSectionRequisitionDetailBusiness;
+            this._faultyItemStockInfoBusiness = faultyItemStockInfoBusiness;
             //, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness
             //this._qRCodeTransferToRepairInfoBusiness = qRCodeTransferToRepairInfoBusiness;
         }
@@ -53,16 +55,16 @@ namespace ERPBLL.Production
 
         public bool SaveRepairLineStockIn(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId)
         {
+            bool IsSuccess = false;
             List<RepairLineStockDetail> repairLineStockDetails = new List<RepairLineStockDetail>();
             foreach (var item in repairLineStockDetailDTO)
             {
                 RepairLineStockDetail stockDetail = new RepairLineStockDetail();
                 stockDetail.RepairLineId = item.RepairLineId;
-                stockDetail.QCLineId = item.QCLineId;
+                //stockDetail.QCLineId = item.QCLineId;
                 stockDetail.ProductionLineId = item.ProductionLineId;
                 stockDetail.DescriptionId = item.DescriptionId;
                 stockDetail.WarehouseId = item.WarehouseId;
-
                 stockDetail.ItemTypeId = item.ItemTypeId;
                 stockDetail.ItemId = item.ItemId;
                 stockDetail.Quantity = item.Quantity;
@@ -75,7 +77,8 @@ namespace ERPBLL.Production
                 stockDetail.RefferenceNumber = item.RefferenceNumber;
 
                 // && o.QCLineId ==item.QCLineId // 30-Jun-2020
-                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.ProductionLineId == item.ProductionLineId && o.DescriptionId == item.DescriptionId && o.RepairLineId == item.RepairLineId).FirstOrDefault();
+                var repairStockInfo = _repairLineStockInfoBusiness.GetRepairLineStockInfoByRepairAndItemAndModelId(item.RepairLineId.Value, item.ItemId.Value, item.DescriptionId.Value, orgId);
+
                 if (repairStockInfo != null)
                 {
                     repairStockInfo.StockInQty += item.Quantity;
@@ -89,7 +92,6 @@ namespace ERPBLL.Production
                     info.ProductionLineId = item.ProductionLineId;
                     info.WarehouseId = item.WarehouseId;
                     info.DescriptionId = item.DescriptionId;
-
                     info.ItemTypeId = item.ItemTypeId;
                     info.ItemId = item.ItemId;
                     info.UnitId = stockDetail.UnitId;
@@ -98,13 +100,13 @@ namespace ERPBLL.Production
                     info.OrganizationId = orgId;
                     info.EUserId = userId;
                     info.EntryDate = DateTime.Now;
-
                     _repairLineStockInfoRepository.Insert(info);
                 }
                 repairLineStockDetails.Add(stockDetail);
             }
             _repairLineStockDetailRepository.InsertAll(repairLineStockDetails);
-            return _repairLineStockDetailRepository.Save();
+             IsSuccess = _repairLineStockDetailRepository.Save();
+            return IsSuccess;   
         }
 
         public bool SaveRepairLineStockOut(List<RepairLineStockDetailDTO> repairLineStockDetailDTO, long userId, long orgId, string flag)
@@ -274,6 +276,40 @@ namespace ERPBLL.Production
             }
             _repairLineStockDetailRepository.InsertAll(repairLineStockDetails);
             return  await _repairLineStockDetailRepository.SaveAsync();
+        }
+
+        public bool SaveVoidAFaultyItem(long transferId, string qrCode, long itemId,long userId, long orgId)
+        {
+            var data = _faultyItemStockDetailBusiness.GetFaultyItemStockInDetailByTransferId(transferId, qrCode, itemId,orgId);
+            if (data != null)
+            {
+                List<RepairLineStockDetailDTO> repairLineStockDetails = new List<RepairLineStockDetailDTO>()
+                {
+                    new RepairLineStockDetailDTO(){
+                        ProductionLineId = data.ProductionFloorId,
+                        DescriptionId =data.DescriptionId,
+                        WarehouseId = data.WarehouseId,
+                        ItemTypeId = data.ItemTypeId,
+                        ItemId = data.ItemId,
+                        Quantity = data.Quantity,
+                        AssemblyLineId = data.AsseemblyLineId,
+                        QCLineId =data.QCId,
+                        RepairLineId =data.RepairLineId,
+                        OrganizationId = data.OrganizationId,
+                        StockStatus = StockStatus.StockIn,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        RefferenceNumber=data.ReferenceNumber+"#"+data.TransferCode+"#"+data.TransferId.ToString(),
+                        UnitId = data.UnitId,
+                        Remarks ="Stock In By Void a Faulty "
+                    }
+                };
+
+                if (_faultyItemStockDetailBusiness.DeleteAFaultyItemByVoidItem(data.FaultyItemStockDetailId, userId, orgId)) {
+                    return this.SaveRepairLineStockIn(repairLineStockDetails, userId, orgId);
+                }
+            }
+            return false;
         }
 
         // Adding Faulty Item By QRCode Scanning //

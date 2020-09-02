@@ -7,111 +7,137 @@
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
-<div class="row">
-    <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">List Of User</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblAppUserData tbody tr',this)" />
-            </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                @if (privilege != null && privilege.Add)
-                {
-                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create New User</button>
-                }
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">List Of Application User</h5>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12" style="overflow-y:scroll">
-        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblAppUserData">
-            <thead class="btn-dark">
-                <tr class="text-center">
-                    <th style="vertical-align:middle">#SL</th>
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">Employee Id</th>
-                    <th style="vertical-align:middle">Full Name</th>
-                    <th style="vertical-align:middle" class="hide">Mobile No</th>
-                    <th style="vertical-align:middle" class="hide">Address</th>
-                    <th style="vertical-align:middle">Email</th>
-                    <th style="vertical-align:middle" class="hide">Desigation</th>
-                    <th style="vertical-align:middle">User Name</th>
-                    <th style="vertical-align:middle">Password</th>
-                    <th style="vertical-align:middle">User Status</th>
-                    <th style="vertical-align:middle">Role Status</th>
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">Organization</th>
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">Branch</th>
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">Role</th>
-                    <th style="vertical-align:middle">Entry User</th>
-                    <th style="vertical-align:middle" class="hide">Update User</th>
-                    <th style="vertical-align:middle">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    sl += 1;
-                    badge = (user.StateStatus == "Active" ? "badge bg-success" : "badge bg-danger");
-                    badge1 = (user.StateStatusRole == "Active" ? "badge bg-success" : "badge bg-danger");
-                <tr>
-                    <td class="text-center">
-                        <b>@sl</b>
-                    </td>
-                    <td class="hide">@user.UserId</td>
-                    <td>@user.EmployeeId</td>
-                    <td>@user.FullName</td>
-                    <td class="hide">@user.MobileNo</td>
-                    <td class="hide">@user.Address</td>
-                    <td>@user.Email</td>
-                    <td class="hide">@user.Desigation</td>
-                    <td>@user.UserName</td>
-                    <td>@user.Password</td>
-                    <td class="text-center" data-val="@user.StateStatus">
-                        <span class="@badge">@user.StateStatus</span>
-                    </td>
-                    <td class="text-center" data-val="@user.StateStatusRole">
-                        <span class="@badge1">@user.StateStatusRole</span>
-                    </td>
-                    <td class="hide">@user.OrganizationId</td>
-                    <td>@user.OrganizationName</td>
-                    <td class="hide">@user.BranchId</td>
-                    <td>@user.BranchName</td>
-                    <td class="hide">@user.RoleId</td>
-                    <td>@user.RoleName</td>
-                    <td class="text-sm">@user.EntryUser</td>
-                    <td class="hide">@user.UpdateUser</td>
-                    <td class="text-center">
-                        @if (privilege != null && privilege.Edit)
+</div>
+<div class="row text-sm" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-navy">
+            <div class="card-header">
+                <div class="row">
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-4">
+                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblAppUserData tbody tr',this)" />
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        @if (privilege != null && privilege.Add)
                         {
-                            <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@user.UserId"><i class="fa fa-pen"></i> Edit</a>
+                            <button class="btn btn-outline-primary btn-sm float-lg-right btn-flat" style="background-color:" id="btnAddNew"><i class="fa fa-plus"></i> Create New User</button>
                         }
-                    </td>
-                </tr>
-                }
-                @if(Model.Count() == 0)
-                {
-                    <tr class="text-center empty-row">
-                        <td colspan="20">
-                            No data found in the table
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-sm">
+    <div class="col-md-12" style="margin-top:-15px">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12" style="overflow-y:scroll">
+                        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblAppUserData">
+                            <thead class="btn-dark">
+                                <tr class="text-center">
+                                    <th style="vertical-align:middle">#SL</th>
+                                    <th class="hide"></th>
+                                    <th style="vertical-align:middle">Employee Id</th>
+                                    <th style="vertical-align:middle">Full Name</th>
+                                    <th style="vertical-align:middle" class="hide">Mobile No</th>
+                                    <th style="vertical-align:middle" class="hide">Address</th>
+                                    <th style="vertical-align:middle">Email</th>
+                                    <th style="vertical-align:middle" class="hide">Desigation</th>
+                                    <th style="vertical-align:middle">User Name</th>
+                                    <th style="vertical-align:middle">Password</th>
+                                    <th style="vertical-align:middle">User Status</th>
+                                    <th style="vertical-align:middle">Role Status</th>
+                                    <th class="hide"></th>
+                                    <th style="vertical-align:middle">Organization</th>
+                                    <th class="hide"></th>
+                                    <th style="vertical-align:middle">Branch</th>
+                                    <th class="hide"></th>
+                                    <th style="vertical-align:middle">Role</th>
+                                    <th style="vertical-align:middle">Entry User</th>
+                                    <th style="vertical-align:middle" class="hide">Update User</th>
+                                    <th style="vertical-align:middle">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    sl += 1;
+                                    badge = (user.StateStatus == "Active" ? "badge bg-success" : "badge bg-danger");
+                                    badge1 = (user.StateStatusRole == "Active" ? "badge bg-success" : "badge bg-danger");
+                                    <tr>
+                                        <td class="text-center">
+                                            <b>@sl</b>
+                                        </td>
+                                        <td class="hide">@user.UserId</td>
+                                        <td>@user.EmployeeId</td>
+                                        <td>@user.FullName</td>
+                                        <td class="hide">@user.MobileNo</td>
+                                        <td class="hide">@user.Address</td>
+                                        <td>@user.Email</td>
+                                        <td class="hide">@user.Desigation</td>
+                                        <td>@user.UserName</td>
+                                        <td>@user.Password</td>
+                                        <td class="text-center" data-val="@user.StateStatus">
+                                            <span class="@badge">@user.StateStatus</span>
+                                        </td>
+                                        <td class="text-center" data-val="@user.StateStatusRole">
+                                            <span class="@badge1">@user.StateStatusRole</span>
+                                        </td>
+                                        <td class="hide">@user.OrganizationId</td>
+                                        <td>@user.OrganizationName</td>
+                                        <td class="hide">@user.BranchId</td>
+                                        <td>@user.BranchName</td>
+                                        <td class="hide">@user.RoleId</td>
+                                        <td>@user.RoleName</td>
+                                        <td class="text-sm">@user.EntryUser</td>
+                                        <td class="hide">@user.UpdateUser</td>
+                                        <td class="text-center">
+                                            @if (privilege != null && privilege.Edit)
+                                            {
+                                                <a href="#" class="btn btn-sm btn-warning data-edit-item" data-edit-item="@user.UserId"><i class="fa fa-pen"></i> Edit</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Count() == 0)
+                                {
+                                    <tr class="text-center empty-row">
+                                        <td colspan="20">
+                                            No data found in the table
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="modal fade" id="modalAppUser" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-primary">
+            <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New User</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -240,8 +266,7 @@
         var chkStatestatus = $("#chkStatestatus");
         var chkStatestatusRole = $("#chkStatestatusRole");
 
-        $(document).ready(function ()
-        {
+        $(document).ready(function () {
             //$('#tblappuserdata').datatable({
             //    "paging": false,
             //    "lengthchange": false,
@@ -255,8 +280,7 @@
         ddlOrganizationName.change(function () {
             clearDropdown("ddlRoleName");
             clearDropdown("ddlBranchName");
-            if (TryParseInt(ddlOrganizationName.val(), 0) > 0)
-            {
+            if (TryParseInt(ddlOrganizationName.val(), 0) > 0) {
                 LoadDropDown('/Common/GetBranchesByOrgId', type.post, ddlBranchName, JSON.stringify({ orgId: ddlOrganizationName.val() }));
                 LoadDropDown('/Common/GetRolesByOrgId', type.post, ddlRoleName, JSON.stringify({ orgId: ddlOrganizationName.val() }));
             }
@@ -278,15 +302,15 @@
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
-            if ($.trim(txtEmployeeId.val()) == ""){
+            if ($.trim(txtEmployeeId.val()) == "") {
                 $(".required-employeeId").removeClass("hide");
                 isValid = false;
             }
             else {
-                    var id = TryParseInt(hdfUserId.val(), 0);
-                    if (ajaxBooleanChecker(JSON.stringify({ id: id, employeeId: txtEmployeeId.val().trim() }), '/Common/IsDuplicateEmployeeId', getToken()) == true) {
-                        $(".duplicate-employeeId").removeClass("hide");
-                        isValid = false;
+                var id = TryParseInt(hdfUserId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, employeeId: txtEmployeeId.val().trim() }), '/Common/IsDuplicateEmployeeId', getToken()) == true) {
+                    $(".duplicate-employeeId").removeClass("hide");
+                    isValid = false;
                 }
             }
             if ($.trim(txtFullName.val()) === "") {
@@ -303,8 +327,7 @@
                     isValid = false;
                 }
                 else {
-                    if ($.trim(txtConfirmPassword.val()) !== $.trim(txtPassword.val()))
-                    {
+                    if ($.trim(txtConfirmPassword.val()) !== $.trim(txtPassword.val())) {
                         $(".compare-password").removeClass("hide");
                         isValid = false;
                     }
@@ -314,23 +337,19 @@
                 $(".required-userName").removeClass("hide");
                 isValid = false;
             }
-            else
-            {
-                if (ajaxBooleanChecker(JSON.stringify({ userName: txtUserName.val().trim(), id: TryParseInt(hdfUserId.val(), 0) }), '/Common/IsUserExist', getToken()) === true)
-                {
+            else {
+                if (ajaxBooleanChecker(JSON.stringify({ userName: txtUserName.val().trim(), id: TryParseInt(hdfUserId.val(), 0) }), '/Common/IsUserExist', getToken()) === true) {
                     $('.dup-userName').removeClass('hide');
                     isValid = false;
                 }
             }
-            if (txtEmail.val().trim() !== '')
-            {
-                if (ajaxBooleanChecker(JSON.stringify({ email: txtEmail.val().trim(), id: TryParseInt(hdfUserId.val(), 0) }), '/Common/IsEmailExist', getToken()) === true)
-                {
+            if (txtEmail.val().trim() !== '') {
+                if (ajaxBooleanChecker(JSON.stringify({ email: txtEmail.val().trim(), id: TryParseInt(hdfUserId.val(), 0) }), '/Common/IsEmailExist', getToken()) === true) {
                     $('.dup-email').removeClass('hide');
                     isValid = false;
                 }
             }
-            if (TryParseInt(ddlOrganizationName.val(),0) === 0) {
+            if (TryParseInt(ddlOrganizationName.val(), 0) === 0) {
                 $(".req-org").removeClass("hide");
                 isValid = false;
             }
@@ -342,7 +361,7 @@
                 $(".req-branch").removeClass("hide");
                 isValid = false;
             }
-           
+
             return isValid;
         }
 
@@ -433,8 +452,7 @@
             LoadDropDown4('/Common/GetRolesByOrgId', type.post, ddlRoleName, JSON.stringify({ orgId: td12 }), td16);
         })
 
-        function clearCtrl()
-        {
+        function clearCtrl() {
             hdfUserId.val('0');
             txtEmployeeId.val('');
             txtFullName.val('');

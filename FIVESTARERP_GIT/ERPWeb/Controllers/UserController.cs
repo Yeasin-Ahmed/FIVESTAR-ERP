@@ -103,6 +103,17 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(OverAllFacultyDTO, OverAllFacultyViews);
                 ViewBag.DashboardFacultyWiseOverAllProductionViewModel = OverAllFacultyViews;
 
+                #region Assembly Line Progress
+
+                var assemblyProgressDto =_requsitionInfoBusiness.GetDashBoardAssemblyProgresses(null, null, User.OrgId);
+
+                List<DashBoardAssemblyProgressViewModel> assemblyProgressViewModel = new List<DashBoardAssemblyProgressViewModel>();
+
+                AutoMapper.Mapper.Map(assemblyProgressDto, assemblyProgressViewModel);
+                ViewBag.AssemblyProgress = assemblyProgressViewModel;
+
+                #endregion
+
                 return View();
             }
             else

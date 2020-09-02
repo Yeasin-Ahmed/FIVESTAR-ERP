@@ -24,6 +24,11 @@ namespace ERPBLL.ControlPanel
             return roleRepository.GetAll(r => r.OrganizationId == orgId).ToList();
         }
 
+        public IEnumerable<Role> GetAllRoles()
+        {
+            return roleRepository.GetAll();
+        }
+
         public IEnumerable<TechnicalServiceByRoleDTO> GetRoleByTechnicalServicesId(string roleName, long orgId, long BranchId)
         {
             return _controlPanelUnitOfWork.Db.Database.SqlQuery<TechnicalServiceByRoleDTO>(string.Format(@"Select us.UserId,us.UserName,rl.RoleId,rl.RoleName,us.BranchId From [ControlPanel].dbo.tblApplicationUsers us

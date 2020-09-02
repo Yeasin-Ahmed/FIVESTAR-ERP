@@ -101,13 +101,11 @@ Where 1=1 and rsi.OrganizationId={0} and rsi.ProductionLineId={1} and rsi.Repair
                 param += string.Format(@" and  (ri.StockInQty - ri.StockOutQty) <= {0}", qty);
             }
 
-            query = string.Format(@"Select ri.ProductionLineId,pl.LineNumber 'ProductionLineName',ri.RepairLineId,rl.RepairLineName,
-ri.QCLineId,qc.QCName 'QCLineName',ri.DescriptionId,de.DescriptionName 'ModelName',ri.WarehouseId,w.WarehouseName,ri.ItemTypeId,it.ItemName 'ItemTypeName',ri.ItemId,i.ItemName,
+            query = string.Format(@"Select ri.ProductionLineId,pl.LineNumber 'ProductionLineName',ri.RepairLineId,rl.RepairLineName,ri.DescriptionId,de.DescriptionName 'ModelName',ri.WarehouseId,w.WarehouseName,ri.ItemTypeId,it.ItemName 'ItemTypeName',ri.ItemId,i.ItemName,
 u.UnitSymbol 'UnitName',ri.StockInQty,ri.StockOutQty  
 From [Production].dbo.tblRepairLineStockInfo ri
 Inner Join [Production].dbo.tblProductionLines pl on ri.ProductionLineId = pl.LineId
 Inner Join [Production].dbo.tblRepairLine rl on ri.RepairLineId = rl.RepairLineId
-Inner Join [Production].dbo.tblQualityControl qc on ri.QCLineId = qc.QCId
 Inner Join [Inventory].dbo.tblDescriptions de on ri.DescriptionId = de.DescriptionId
 Inner Join [Inventory].dbo.tblWarehouses w on ri.WarehouseId = w.Id
 Inner Join [Inventory].dbo.tblItemTypes it on ri.ItemTypeId = it.ItemId

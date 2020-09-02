@@ -11,6 +11,7 @@ namespace ERPBLL.ControlPanel.Interface
    public interface IRoleBusiness
     {
         IEnumerable<Role> GetAllRoleByOrgId(long orgId);
+        IEnumerable<Role> GetAllRoles();
         bool SaveRole(RoleDTO roleDTO, long userId, long orgId);
         bool IsDuplicateRoleName(string roleName, long id, long orgId);
         Role GetRoleOneById(long id, long orgId);

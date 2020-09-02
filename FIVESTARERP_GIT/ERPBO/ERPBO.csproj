@@ -381,6 +381,7 @@
     <Compile Include="Production\DTOModel\AddingFaultyByQRCodeDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineDTO.cs" />
     <Compile Include="Production\DTOModel\AssemblyLineStockDetailDTO.cs" />
+    <Compile Include="Production\DTOModel\DashBoardAssemblyProgressDTO.cs" />
     <Compile Include="Production\DTOModel\FaultyCaseDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemPreparationDetailWithInfoDTO.cs" />
     <Compile Include="Production\DTOModel\BatteryWriteDTO.cs" />
@@ -490,6 +491,7 @@
     <Compile Include="Production\ViewModels\AssemblyLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineViewModel.cs" />
+    <Compile Include="Production\ViewModels\DashBoardAssemblyProgressViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardFacultyWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardLineWiseProductionViewModel.cs" />
     <Compile Include="Production\ViewModels\DashboardRequisitionSummeryViewModel.cs" />

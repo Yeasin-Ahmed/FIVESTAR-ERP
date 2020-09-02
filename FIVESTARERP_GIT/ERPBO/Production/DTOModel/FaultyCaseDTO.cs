@@ -14,6 +14,10 @@ namespace ERPBO.Production.DTOModel
         public long? DescriptionId { get; set; }
         [StringLength(200)]
         public string ProblemDescription { get; set; }
+        [StringLength(50)]
+        public string FaultyGroup { get; set; }
+        [StringLength(50)]
+        public string FaultyType { get; set; }
         [StringLength(100)]
         public string QRCode { get; set; }
         public string Remarks { get; set; }
