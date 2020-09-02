@@ -686,6 +686,8 @@
     <Content Include="Views\FrontDesk\_ReceiveJobOrder.cshtml" />
     <Content Include="Views\FrontDesk\_ReceiveReturnJobOrder.cshtml" />
     <Content Include="Views\FrontDesk\_TransferReceiveJobOrder.cshtml" />
+    <Content Include="Views\FrontDesk\RepairedJobOfOtherBranch.cshtml" />
+    <Content Include="Views\FrontDesk\_RepairedJobOfOtherBranch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -712,18 +714,42 @@
     <Content Include="Reports\ERPRpt\rptQRCodesByRef.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrder.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobReturnDeliveryChalan.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptJobTransferDeliveryChalan.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptOtherBranchRepairJob.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptSellsReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptTSRequsitionReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc" />
+    <Content Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrder.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobReturnDeliveryChalan.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptJobTransferDeliveryChalan.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptOtherBranchRepairJob.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptSellsReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptTSRequsitionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
@@ -738,6 +764,11 @@
       <Project>{c075def3-a65b-4b86-90fa-dd698b139db4}</Project>
       <Name>ERPDAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\rptRepairedJobOfOtherBranch.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

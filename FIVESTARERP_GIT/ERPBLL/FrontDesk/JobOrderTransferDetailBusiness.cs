@@ -27,11 +27,11 @@ namespace ERPBLL.FrontDesk
             this._jobOrderBusiness = jobOrderBusiness;
         }
 
-        public IEnumerable<JobOrderTransferDetailDTO> GetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode)
+        public IEnumerable<JobOrderTransferDetailDTO> GetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderTransferDetailDTO>(QueryForGetReceiveJob(orgId,branchId,branchName,jobCode,transferCode)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderTransferDetailDTO>(QueryForGetReceiveJob(orgId,branchId,branchName,jobCode,transferCode,fromDate,toDate)).ToList();
         }
-        private string QueryForGetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode)
+        private string QueryForGetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -55,13 +55,35 @@ namespace ERPBLL.FrontDesk
             {
                 param += string.Format(@"and d.TransferCode Like '%{0}%'", transferCode);
             }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(d.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(d.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(d.EntryDate as date)='{0}'", tDate);
+            }
 
-            query = string.Format(@"Select d.JobOrderTransferDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,d.TransferStatus,b.BranchName'FromBranchName',d.EntryDate 
+            query = string.Format(@"Select JobOrderTransferDetailId,BranchId,TransferCode,JobOrderId,JobOrderCode,JobStatus,
+TransferStatus,FromBranchName,EntryDate,ModelColor,ModelName,SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames' From (Select d.JobOrderTransferDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,
+d.TransferStatus,b.BranchName'FromBranchName',d.EntryDate,j.ModelColor,de.DescriptionName'ModelName',
+(Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
+Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
+Where joa.JobOrderId = j.JodOrderId
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX)))  'AccessoriesNames'
 from [FrontDesk].dbo.tblJobOrderTransferDetail d
-left join [ControlPanel].dbo.tblBranch b
-on d.BranchId=b.BranchId
-where 1=1{0} 
-
+left join tblJobOrders j on d.JobOrderId=j.JodOrderId
+left join [Inventory].dbo.tblDescriptions de on j.DescriptionId=de.DescriptionId
+left join [ControlPanel].dbo.tblBranch b on d.BranchId=b.BranchId
+where 1=1{0} ) tbl
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -104,7 +126,7 @@ where 1=1{0}
             bool IsSuccess = false;
             ExecutionStateWithText executionState = new ExecutionStateWithText();
             List<JobOrderTransferDetail> jobOrderTransfers = new List<JobOrderTransferDetail>();
-            string transferCode = ("T-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            string transferCode = ("DO-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
             foreach (var job in jobOrders)
             {
                 var jobOrderInDb = _jobOrderBusiness.GetJobOrdersByIdWithBranch(job, branchId, orgId);

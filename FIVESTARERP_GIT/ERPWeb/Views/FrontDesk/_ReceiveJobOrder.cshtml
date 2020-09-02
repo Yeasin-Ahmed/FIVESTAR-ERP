@@ -13,6 +13,9 @@
                 <th>TrnasferCode</th>
                 <th class="hide"></th>
                 <th>JobCode</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>Accessories</th>
                 <th>JobStatus</th>
                 <th>TransferStatus</th>
                 <th class="hide"></th>
@@ -29,11 +32,14 @@
                 badge = rec.TransferStatus == "Pending" ? "badge bg-warning" : "badge bg-success";
                 string EntryDate = rec.EntryDate != null ? rec.EntryDate.Value.ToString("dd-MMM-yyy") : "";
             <tr>
-                <td class="text-center" width="10%">@sl</td>
+                <td class="text-center">@sl</td>
                 <td class="hide">@rec.JobOrderTransferDetailId</td>
                 <td>@rec.TransferCode</td>
                 <td class="hide joborderId" joborderId="@rec.JobOrderId">@rec.JobOrderId</td>
                 <td>@rec.JobOrderCode</td>
+                <td>@rec.ModelName</td>
+                <td>@rec.ModelColor</td>
+                <td>@rec.AccessoriesNames</td>
                 <td class="text-center" data-val="@rec.JobStatus">
                     <span class="@badge1">@rec.JobStatus</span>
                 </td>
@@ -55,7 +61,7 @@
             @if (Model.Count() == 0)
             {
                 <tr class="text-center empty-row">
-                    <td colspan="5">
+                    <td colspan="11">
                         No Rows Found
                     </td>
                 </tr>

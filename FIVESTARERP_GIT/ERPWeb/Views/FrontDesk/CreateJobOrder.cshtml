@@ -311,18 +311,21 @@
             $('#dptWarrantyDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
-                todayHighlight: true
+                todayHighlight: true,
+                autoclose: true
             });
             $('#dptWarrantyEndDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
-                todayHighlight: true
+                todayHighlight: true,
+                autoclose: true
             });
            
             $('#dptJobEntryDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
-                todayHighlight: true
+                todayHighlight: true,
+                autoclose: true
             });
 
             if (TryParseInt(hdfJobOrderId.val(), 0) <= 0) {

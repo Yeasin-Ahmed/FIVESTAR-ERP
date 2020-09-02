@@ -388,7 +388,7 @@ namespace ERPWeb.Controllers
 
             return file;
         }
-        public ActionResult ReceiveJobOrder(string flag,long? branchName,string jobCode="",string transferCode="")
+        public ActionResult ReceiveJobOrder(string flag,long? branchName, string fromDate, string toDate, string jobCode="",string transferCode="")
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -397,7 +397,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _jobOrderTransferDetailBusiness.GetReceiveJob(User.OrgId, User.BranchId,branchName,jobCode,transferCode);
+                var dto = _jobOrderTransferDetailBusiness.GetReceiveJob(User.OrgId, User.BranchId,branchName,jobCode,transferCode,fromDate,toDate);
                 List<JobOrderTransferDetailViewModel> viewModels = new List<JobOrderTransferDetailViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_ReceiveJobOrder", viewModels);
@@ -498,7 +498,7 @@ namespace ERPWeb.Controllers
 
             return file;
         }
-        public ActionResult ReceiveReturnJobOrder(string flag, long? branchName, string jobCode = "", string transferCode = "")
+        public ActionResult ReceiveReturnJobOrder(string flag, long? branchName, string fromDate, string toDate, string jobCode = "", string transferCode = "")
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -507,7 +507,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, branchName, jobCode, transferCode);
+                var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, branchName, jobCode, transferCode,fromDate,toDate);
                 List<JobOrderReturnDetailViewModel> viewModels = new List<JobOrderReturnDetailViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_ReceiveReturnJobOrder", viewModels);
@@ -891,44 +891,6 @@ namespace ERPWeb.Controllers
         }
         public ActionResult AnotherBranchRequsitionPartialList(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, int page = 1)
         {
-            //IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
-            //    (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
-            //    &&
-            //    (warehouseId == null || warehouseId <= 0 || req.SWarehouseId == warehouseId)
-            //    &&
-            //    (tsId == null || tsId <= 0 || req.EUserId == tsId)
-            //    &&
-            //    (status == null || status.Trim() == "" || req.StateStatus == status.Trim())
-            //    &&
-            //    (
-            //        (fromDate == null && toDate == null)
-            //        ||
-            //         (fromDate == "" && toDate == "")
-            //        ||
-            //        (fromDate.Trim() != "" && toDate.Trim() != "" &&
-
-            //            req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
-            //            req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
-            //        ||
-            //        (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
-            //        ||
-            //        (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
-            //    )).Select(info => new RequsitionInfoForJobOrderDTO
-            //{
-            //    RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
-            //    RequsitionCode = info.RequsitionCode,
-            //    SWarehouseId = info.SWarehouseId,
-            //    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
-            //    StateStatus = info.StateStatus,
-            //    JobOrderId = info.JobOrderId,
-            //    JobOrderCode = info.JobOrderCode,
-            //    Remarks = info.Remarks,
-            //    BranchId = info.BranchId,
-            //    OrganizationId = info.OrganizationId,
-            //    EUserId = info.EUserId,
-            //    Requestby = UserForEachRecord(info.EUserId.Value).UserName,
-            //    EntryDate = info.EntryDate
-            //}).ToList();
             var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode, warehouseId, tsId, status, fromDate, toDate, User.OrgId, User.BranchId);
             List<RequsitionInfoForJobOrderViewModel> requsitionInfoForJobs = new List<RequsitionInfoForJobOrderViewModel>();
             // Pagination //
@@ -1467,6 +1429,21 @@ namespace ERPWeb.Controllers
                 List<JobOrderReturnDetailViewModel> viewModels = new List<JobOrderReturnDetailViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_JobRepairOtherBranch", viewModels);
+            }
+        }
+        public ActionResult RepairedJobOfOtherBranch(string flag, long? branchName, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderReturnDetailBusiness.RepairedJobOfOtherBranch(User.BranchId, branchName, User.OrgId, fromDate, toDate);
+                List<JobOrderReturnDetailViewModel> viewModels = new List<JobOrderReturnDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_RepairedJobOfOtherBranch", viewModels);
             }
         }
         #endregion

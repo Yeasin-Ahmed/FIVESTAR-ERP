@@ -25,11 +25,11 @@ namespace ERPBLL.FrontDesk
             this._jobOrderBusiness = jobOrderBusiness;
         }
 
-        public IEnumerable<JobOrderReturnDetailDTO> GetReturnJobOrder(long orgId, long branchId, long? branchName, string jobCode, string transferCode)
+        public IEnumerable<JobOrderReturnDetailDTO> GetReturnJobOrder(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderReturnDetailDTO>(QueryForGetReturnJob(orgId, branchId, branchName, jobCode, transferCode)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderReturnDetailDTO>(QueryForGetReturnJob(orgId, branchId, branchName, jobCode, transferCode,fromDate,toDate)).ToList();
         }
-        private string QueryForGetReturnJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode)
+        private string QueryForGetReturnJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -53,14 +53,35 @@ namespace ERPBLL.FrontDesk
             {
                 param += string.Format(@"and d.TransferCode Like '%{0}%'", transferCode);
             }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(d.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(d.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(d.EntryDate as date)='{0}'", tDate);
+            }
 
-            query = string.Format(@"Select d.JobOrderReturnDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,d.TransferStatus,b.BranchName'FromBranchName',d.EntryDate 
+            query = string.Format(@"Select JobOrderReturnDetailId,BranchId,TransferCode,JobOrderId,JobOrderCode,JobStatus,
+TransferStatus,FromBranchName,EntryDate,ModelColor,ModelName,SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames' From (Select d.JobOrderReturnDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,
+d.TransferStatus,b.BranchName'FromBranchName',d.EntryDate,j.ModelColor,de.DescriptionName'ModelName',
+(Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
+Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
+Where joa.JobOrderId = j.JodOrderId
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX)))  'AccessoriesNames'
 from [FrontDesk].dbo.tblJobOrderReturnDetails d
-left join [ControlPanel].dbo.tblBranch b
-on d.BranchId=b.BranchId
-where 1=1 {0}
-
-", Utility.ParamChecker(param));
+left join tblJobOrders j on d.JobOrderId=j.JodOrderId
+left join [Inventory].dbo.tblDescriptions de on j.DescriptionId=de.DescriptionId
+left join [ControlPanel].dbo.tblBranch b on d.BranchId=b.BranchId
+where 1=1 {0}) tbl", Utility.ParamChecker(param));
             return query;
         }
 
@@ -186,7 +207,7 @@ Select JobOrderId From tblJobOrderReturnDetails Where TransferCode='{0}' and Org
             bool IsSuccess = false;
             ExecutionStateWithText executionState = new ExecutionStateWithText();
             List<JobOrderReturnDetail> jobOrderReturn = new List<JobOrderReturnDetail>();
-            string transferCode = ("R-" + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            string transferCode = ("DO-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
             foreach (var job in jobOrders)
             {
                 var jobOrderInDb = _jobOrderBusiness.GetJobOrdersByIdWithBranch(job, transferId, orgId);
@@ -256,6 +277,49 @@ left join [ControlPanel].dbo.tblBranch b on b.BranchId=jrd.ToBranch
 where JobStatus='Repair-Done' and 1=1{0}
 
 ", Utility.ParamChecker(param));
+            return query;
+        }
+
+        public IEnumerable<JobOrderReturnDetailDTO> RepairedJobOfOtherBranch(long branchId, long? branchName, long orgId, string fromDate, string toDate)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderReturnDetailDTO>(QueryForRepairedJobOfOtherBranch(branchId, branchName, orgId, fromDate, toDate)).ToList();
+        }
+        private string QueryForRepairedJobOfOtherBranch(long branchId, long? branchName, long orgId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            if (orgId > 0)
+            {
+                param += string.Format(@"and jrd.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and jrd.ToBranch={0} ", branchId);
+            }
+            if (branchName != null && branchName > 0)
+            {
+                param += string.Format(@"and jrd.FromBranch ={0}", branchName);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jrd.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jrd.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(jrd.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"select JobOrderCode,JobStatus,BranchName 'FromBranchName',jrd.EntryDate,jrd.FromBranch From tblJobOrderReturnDetails jrd
+left join [ControlPanel].dbo.tblBranch b on b.BranchId=jrd.FromBranch
+where JobStatus='Repair-Done' and 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
     }

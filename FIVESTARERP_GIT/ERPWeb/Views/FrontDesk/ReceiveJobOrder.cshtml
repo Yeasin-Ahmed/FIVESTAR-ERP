@@ -24,17 +24,36 @@
                 @Html.AntiForgeryToken()
                 <div class="row text-sm">
                     <div class="col-md-2">
-                        <label class="col-form-label">BranchName</label>
+                        <label class="control-label font-weight-bold">BranchName</label>
                         @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                         <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                     </div>
                     <div class="col-md-2">
-                        <label class="col-form-label">TransferCode</label>
+                        <label class="control-label font-weight-bold">TransferCode</label>
                         <input type="text" id="txtTransferCode" class="form-control form-control-sm" placeholder="Search By Code" />
                     </div>
                     <div class="col-md-2">
-                        <label class="col-form-label">JobCode</label>
+                        <label class="control-label font-weight-bold">JobCode</label>
                         <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,6 +79,50 @@
         var ddlBranchName = $("#ddlBranchName");
         var txtTransferCode = $("#txtTransferCode");
         var txtJobCode = $("#txtJobCode");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+
+        $(document).ready(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
 
         txtJobCode.keyup(function () {
             LoadDataTable();
@@ -70,8 +133,14 @@
         ddlBranchName.change(function () {
             LoadDataTable();
         })
+        dptFromDate.change(function () {
+            LoadDataTable();
+        })
+        dptToDate.change(function () {
+            LoadDataTable();
+        })
         function LoadDataTable() {
-            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0), jobCode: txtJobCode.val(), transferCode: txtTransferCode.val() };
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0), jobCode: txtJobCode.val(), transferCode: txtTransferCode.val(),fromDate: dptFromDate.val(), toDate: dptToDate.val() };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/ReceiveJobOrder', data)).then(function (res, status) {

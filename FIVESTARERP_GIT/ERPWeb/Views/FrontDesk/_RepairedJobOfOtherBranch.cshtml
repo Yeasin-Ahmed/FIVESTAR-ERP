@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderReturnDetailViewModel>
-@{ 
+@{
     int sl = 0;
 }
 <div class="col-md-12 text-sm">
@@ -10,7 +10,7 @@
                 <th>JobCode</th>
                 <th>JobStatus</th>
                 <th class="hide"></th>
-                <th>BranchName</th>
+                <th>RepairBranch</th>
                 <th>Date</th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
                     <td class="text-center" width="10%">@sl</td>
                     <td>@job.JobOrderCode</td>
                     <td>@job.JobStatus</td>
-                    <td class="hide">@job.BranchId</td>
+                    <td class="hide">@job.FromBranch</td>
                     <td class="text-center">@job.FromBranchName</td>
                     <td class="text-center">@EntryDate</td>
                 </tr>
@@ -39,3 +39,4 @@
         </tbody>
     </table>
 </div>
+

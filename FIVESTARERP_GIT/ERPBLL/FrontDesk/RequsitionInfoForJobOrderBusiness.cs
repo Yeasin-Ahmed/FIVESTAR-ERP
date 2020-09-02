@@ -110,6 +110,7 @@ q.EntryDate,UserBranchId From tblRequsitionInfoForJobOrders q
 inner join tblJobOrders j on q.JobOrderId=j.JodOrderId 
 inner join[ControlPanel].dbo.tblApplicationUsers app on q.OrganizationId = app.OrganizationId and q.EUserId= app.UserId 
 where j.IsTransfer IS NULL and 1=1{0}
+order by EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -246,6 +247,7 @@ q.EntryDate,UserBranchId From tblRequsitionInfoForJobOrders q
 left join tblJobOrders j on q.JobOrderId=j.JodOrderId
 inner join[ControlPanel].dbo.tblApplicationUsers app on q.OrganizationId = app.OrganizationId and q.EUserId= app.UserId 
 where j.IsTransfer='True' and 1=1{0}
+order by q.EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
         }

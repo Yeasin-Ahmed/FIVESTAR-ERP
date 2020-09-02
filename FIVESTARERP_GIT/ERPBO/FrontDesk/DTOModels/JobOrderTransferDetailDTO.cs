@@ -24,5 +24,8 @@ namespace ERPBO.FrontDesk.DTOModels
         public Nullable<DateTime> UpdateDate { get; set; }
         //
         public string FromBranchName { get; set; }
+        public string AccessoriesNames { get; set; }
+        public string ModelColor { get; set; }
+        public string ModelName { get; set; }
     }
 }
