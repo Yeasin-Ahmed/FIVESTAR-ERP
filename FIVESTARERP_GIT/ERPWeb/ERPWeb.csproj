@@ -697,6 +697,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Reports\ERPRpt\Inventory\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common2\" />
@@ -706,48 +707,48 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Reports\ERPRpt\rptProductionRequisition.rdlc">
+    <Content Include="Reports\ERPRpt\Production\rptProductionRequisition.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Reports\ERPRpt\rptQRCodesByRef.rdlc">
+    <Content Include="Reports\ERPRpt\Production\rptQRCodesByRef.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptCurrentStockReport.rdlc">
+    <Content Include="Reports\ServiceRpt\Configuration\rptCurrentStockReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptInvoiceReceipt.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptInvoiceReceipt.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptJobOrder.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobOrder.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptJobOrderCreateReceipt.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobOrderCreateReceipt.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptJobOrderReceipt.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobOrderReceipt.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptJobReturnDeliveryChalan.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobReturnDeliveryChalan.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptJobTransferDeliveryChalan.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobTransferDeliveryChalan.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptOtherBranchRepairJob.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptOtherBranchRepairJob.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptPartsReturnStock.rdlc">
+    <Content Include="Reports\ServiceRpt\Configuration\rptPartsReturnStock.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptSellsReport.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptSellsReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptTSRequsitionReport.rdlc">
+    <Content Include="Reports\ServiceRpt\Configuration\rptTSRequsitionReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\rptUsedPartsReport.rdlc">
+    <Content Include="Reports\ServiceRpt\Configuration\rptUsedPartsReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -766,7 +767,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Reports\ServiceRpt\rptRepairedJobOfOtherBranch.rdlc">
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptRepairedJobOfOtherBranch.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
