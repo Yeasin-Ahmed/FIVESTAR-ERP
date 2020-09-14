@@ -4,6 +4,7 @@ using ERPBLL.Production;
 using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DomainModels;
 using ERPBO.Inventory.DTOModel;
+using ERPBO.Inventory.ReportModels;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
 using System;
@@ -347,6 +348,9 @@ Left Join [ControlPanel].dbo.tblApplicationUsers au on wsd.EUserId = au.UserId
 Where 1=1 {0}", Utility.ParamChecker(param));
             return query;
         }
-
+        public IEnumerable<StockShortageOrExcessQty> StockShortageOrExcessQty(long orgId,string fromDate, string toDate,long modelId)
+        {
+            return this._inventoryDb.Db.Database.SqlQuery<StockShortageOrExcessQty>("Exec spWarehouseShortageReport {0},{1},{2},{3}", orgId, fromDate, toDate, modelId).ToList();
+        }
     }
 }

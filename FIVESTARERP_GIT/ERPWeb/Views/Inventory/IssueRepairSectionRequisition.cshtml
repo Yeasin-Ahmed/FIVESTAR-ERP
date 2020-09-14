@@ -27,7 +27,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row text-sm">
     <div class="col-md-12" style="margin-top:-10px">
         <div class="card card-navy">
             <div class="card-header">
@@ -115,6 +115,17 @@
         var hdfRequisitionId = $("#hdfRequisitionId");
         var hdfRequisitionCode = $("#hdfRequisitionCode");
         var ddlAction = $("#ddlAction");
+
+        //.issueQty
+
+        $(document).on('keyup', '.issueQty', function (e) {
+            e.preventDefault();
+            var qty = $(this).val();
+            var reqQty = $(this).parent().parents('tr').children('td').eq(7).html();
+            if (qty > reqQty) {
+                $(this).val('0');
+            }
+        })
 
         function validateSubmit() {
             var isValid = true;

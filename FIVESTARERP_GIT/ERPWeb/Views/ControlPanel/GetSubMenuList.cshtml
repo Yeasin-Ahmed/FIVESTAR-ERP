@@ -7,92 +7,121 @@
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
-<div class="row">
-    <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">List of Submenu</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblSubMenuData tbody tr',this)" />
-            </div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                @if (privilege != null && privilege.Add)
-                {
-                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create SubMenu</button>
-                }
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-gray-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center text-bold">List of Submenu</h5>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12" style="overflow-y:scroll">
-        <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblSubMenuData">
-            <thead class="btn-dark">
-                <tr class="text-center">
-                    <th style="vertical-align:middle">#SL</th>
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">SubMenu Name</th>
-                    <th class="hide">MMId</th>
-                    <th style="vertical-align:middle">Main Menu</th>
-                    <th>Controller Name</th>
-                    <th style="vertical-align:middle;width:10%">Action Name</th>
-                    <th style="vertical-align:middle">IconClass</th>
-                    <th style="vertical-align:middle">Is Viewable</th>
-                    <th style="vertical-align:middle">Is ActAsParent</th>
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">Parent Submenu</th>
-                    <th style="vertical-align:middle">Entry User</th>
-                    <th style="vertical-align:middle">Update User</th>
-                    <th style="vertical-align:middle">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var sub in Model)
-                {
-                    sl = sl + 1;
-                    badge = (sub.IsViewableStatus == "Yes" ? "badge bg-success" : "badge bg-danger");
-                    badge1 = (sub.IsActAsParentStatus == "Yes" ? "badge bg-success" : "badge bg-danger");
-                <tr>
-                    <td class="text-center text-bold">@sl</td>
-                    <td class="hide">@sub.SubMenuId</td>
-                    <td>@sub.SubMenuName</td>
-                    <td class="hide">@sub.MMId</td>
-                    <td>@sub.MenuName</td>
-                    <td>@sub.ControllerName</td>
-                    <td style="width:10%;word-break:break-word">@sub.ActionName</td>
-                    <td>@sub.IconClass</td>
-                    <td class="text-center" data-val="@sub.IsViewableStatus">
-                        <span class="@badge">@sub.IsViewableStatus</span>
-                    </td>
-                    <td class="text-center" data-val="@sub.IsActAsParentStatus">
-                        <span class="@badge1">@sub.IsActAsParentStatus</span>
-                    </td>
-                    <td class="hide">@sub.ParentSubMenuId</td>
-                    <td>@sub.ParentSubmenuName</td>
+</div>
 
-                    <td class="text-center text-sm">@sub.EntryUser</td>
-                    <td class="text-center text-sm">@sub.UpdateUser</td>
-
-                    <td class="text-center">
-                        @if (privilege != null && privilege.Edit)
+<div class="row" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-navy">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblSubMenuData tbody tr',this)" />
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        @if (privilege != null && privilege.Add)
                         {
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@sub.SubMenuId"><i class="fa fa-pen"></i> Edit</a>
+                            <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create SubMenu</button>
                         }
-                    </td>
-                </tr>
-                }
-                @if (Model.Count() == 0)
-                {
-                    <tr class="text-center empty-row">
-                        <td colspan="13">
-                            No data found in the table
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-sm">
+    <div class="col-md-12" style="margin-top:-10px">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-12" style="overflow-y:scroll">
+   <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblSubMenuData">
+                            <thead class="btn-dark">
+                                <tr class="text-center">
+                                    <th style="vertical-align:middle">#SL</th>
+                                    <th class="hide"></th>
+                                    <th style="vertical-align:middle">SubMenu Name</th>
+                                    <th class="hide">MMId</th>
+                                    <th style="vertical-align:middle">Main Menu</th>
+                                    <th>Controller Name</th>
+                                    <th style="vertical-align:middle;width:10%">Action Name</th>
+                                    <th style="vertical-align:middle">IconClass</th>
+                                    <th style="vertical-align:middle">Is Viewable</th>
+                                    <th style="vertical-align:middle">Is ActAsParent</th>
+                                    <th class="hide"></th>
+                                    <th style="vertical-align:middle">Parent Submenu</th>
+                                    <th style="vertical-align:middle">Entry User</th>
+                                    <th style="vertical-align:middle">Update User</th>
+                                    <th style="vertical-align:middle">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var sub in Model)
+                                {
+                                    sl = sl + 1;
+                                    badge = (sub.IsViewableStatus == "Yes" ? "badge bg-success" : "badge bg-danger");
+                                    badge1 = (sub.IsActAsParentStatus == "Yes" ? "badge bg-success" : "badge bg-danger");
+                                    <tr>
+                                        <td class="text-center text-bold">@sl</td>
+                                        <td class="hide">@sub.SubMenuId</td>
+                                        <td>@sub.SubMenuName</td>
+                                        <td class="hide">@sub.MMId</td>
+                                        <td>@sub.MenuName</td>
+                                        <td>@sub.ControllerName</td>
+                                        <td style="width:10%;word-break:break-word">@sub.ActionName</td>
+                                        <td>@sub.IconClass</td>
+                                        <td class="text-center" data-val="@sub.IsViewableStatus">
+                                            <span class="@badge">@sub.IsViewableStatus</span>
+                                        </td>
+                                        <td class="text-center" data-val="@sub.IsActAsParentStatus">
+                                            <span class="@badge1">@sub.IsActAsParentStatus</span>
+                                        </td>
+                                        <td class="hide">@sub.ParentSubMenuId</td>
+                                        <td>@sub.ParentSubmenuName</td>
+
+                                        <td class="text-center text-sm">@sub.EntryUser</td>
+                                        <td class="text-center text-sm">@sub.UpdateUser</td>
+
+                                        <td class="text-center">
+                                            @if (privilege != null && privilege.Edit)
+                                            {
+                                                <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@sub.SubMenuId"><i class="fa fa-pen"></i> Edit</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Count() == 0)
+                                {
+                                    <tr class="text-center empty-row">
+                                        <td colspan="13">
+                                            No data found in the table
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -411,6 +411,20 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetFaultyItemStockInfoByRepairAndModelAndItemAndFultyType(long itemId, long repairId, long modelId, bool isChinaFaulty)
+        {
+            var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;
+            var unit = _unitBusiness.GetUnitOneByOrgId(unitId, User.OrgId);
+            var repairStock = _faultyItemStockInfoBusiness.GetFaultyItemStockInfoByRepairAndModelAndItemAndFultyType(repairId, modelId, itemId, isChinaFaulty, User.OrgId);
+            var itemStock = 0;
+            if (repairStock != null)
+            {
+                itemStock = (repairStock.StockInQty - repairStock.StockOutQty);
+            }
+            return Json(new { unitid = unit.UnitId, unitName = unit.UnitName, unitSymbol = unit.UnitSymbol, stockQty = itemStock });
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetItemUnitAndFGStockQty(long lineId, long warehouseId, long itemId, long modelId)
         {
             var unitId = _itemBusiness.GetItemOneByOrgId(itemId, User.OrgId).UnitId;

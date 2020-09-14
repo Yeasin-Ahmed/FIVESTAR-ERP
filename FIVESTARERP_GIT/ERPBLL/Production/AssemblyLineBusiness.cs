@@ -33,7 +33,7 @@ namespace ERPBLL.Production
             return this._productionDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (al.AssemblyLineName+' ['+pl.LineNumber+']') 'text'
 , Cast(al.AssemblyLineId as Nvarchar(50))+'#'+Cast(pl.LineId as Nvarchar(50)) 'value'
 From [Production].dbo.tblAssemblyLines al
-Inner Join  [Production].dbo.tblProductionLines pl on pl.LineId = al.AssemblyLineId
+Inner Join  [Production].dbo.tblProductionLines pl on pl.LineId = al.ProductionLineId
 Where 1=1 and al.OrganizationId={0}", orgId)).ToList();
         }
         public bool SaveAssembly(AssemblyLineDTO line, long userId, long orgId)

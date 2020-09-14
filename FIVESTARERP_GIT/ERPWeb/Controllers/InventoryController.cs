@@ -680,13 +680,17 @@ namespace ERPWeb.Controllers
                     Text = ware.WarehouseName,
                     Value = ware.Id.ToString()
                 }).ToList();
+
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Select(s => new SelectListItem
                 {
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
                 ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
+
                 ViewBag.tab = tab;
 
                 ViewBag.ddlReturnStateStatus = Utility.ListOfFinishGoodsSendStatus().Select(s => new SelectListItem()
@@ -1146,7 +1150,12 @@ namespace ERPWeb.Controllers
                     Value = l.LineId.ToString()
                 }).ToList();
 
-                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s => !s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem {
+                    Text= s.ItemName,
+                    Value = s.ItemId
+                }).ToList();
 
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
                 {
@@ -1335,7 +1344,7 @@ namespace ERPWeb.Controllers
 
         public ActionResult GetFinishGoodsSendItemDetail(long sendId)
         {
-            List<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
+            IEnumerable<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetFinishGoodsSendToWarehouse");
             if (sendId > 0)
             {
