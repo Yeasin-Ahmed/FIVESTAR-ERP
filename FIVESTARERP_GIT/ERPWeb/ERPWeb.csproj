@@ -658,7 +658,7 @@
     <Content Include="Views\Production\GetPackagingQCProcess.cshtml" />
     <Content Include="Views\Production\_GetPackagingRepairItemStockInfo.cshtml" />
     <Content Include="Views\Production\_GetPackagingRepairRawStockInfo.cshtml" />
-    <Content Include="Views\Inventory\CreateExcel.cshtml" />
+    <Content Include="Views\Inventory\CreateExcel2.cshtml" />
     <Content Include="Views\Inventory\CreateIQCItemReturn.cshtml" />
     <Content Include="Views\Inventory\GetIQCReturnDataInfoList.cshtml" />
     <Content Include="Views\Inventory\GetIQCReturnDataInfoListForWarehouse.cshtml" />
@@ -704,6 +704,7 @@
     <Content Include="Views\FrontDesk\_TransferReceiveJobOrder.cshtml" />
     <Content Include="Views\FrontDesk\RepairedJobOfOtherBranch.cshtml" />
     <Content Include="Views\FrontDesk\_RepairedJobOfOtherBranch.cshtml" />
+    <Content Include="Views\Inventory\CreateExcel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -792,7 +793,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reports\ERPRpt\Inventory\rptStockShortageOrExcess.rdlc" />
+    <Content Include="Reports\ERPRpt\Inventory\rptStockShortageOrExcess.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ExcelFile\Demo.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\SalarySheetReport.rdlc" />
   </ItemGroup>
   <PropertyGroup>

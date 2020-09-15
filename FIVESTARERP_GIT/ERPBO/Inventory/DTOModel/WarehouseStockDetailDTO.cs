@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ERPBO.Inventory.DTOModel
 {
@@ -52,5 +53,6 @@ namespace ERPBO.Inventory.DTOModel
         public string StockStatus { get; set; }
         [StringLength(150)]
         public string SupplierName { get; set; }
+        public HttpPostedFileBase FileUpload { get; set; }
     }
 }

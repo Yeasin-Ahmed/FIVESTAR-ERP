@@ -352,5 +352,10 @@ Where 1=1 {0}", Utility.ParamChecker(param));
         {
             return this._inventoryDb.Db.Database.SqlQuery<StockShortageOrExcessQty>("Exec spWarehouseShortageReport {0},{1},{2},{3}", orgId, fromDate, toDate, modelId).ToList();
         }
+
+        public IEnumerable<StockExcelUploaderData> GetStockExcelUploaderData(long orgId)
+        {
+            return this._inventoryDb.Db.Database.SqlQuery<StockExcelUploaderData>("Exec spExcelUploaderItemList {0}", orgId).ToList();
+        }
     }
 }

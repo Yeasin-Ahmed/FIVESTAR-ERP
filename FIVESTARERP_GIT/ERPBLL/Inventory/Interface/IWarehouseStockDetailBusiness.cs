@@ -18,5 +18,7 @@ namespace ERPBLL.Inventory.Interface
         bool SaveWarehouseStockInByProductionItemReturn(long irInfoId, string status, long orgId, long userId);
         IEnumerable<WarehouseStockDetailInfoListDTO> GetWarehouseStockDetailInfoLists(long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long? supplierId,long orgId);
         IEnumerable<StockShortageOrExcessQty> StockShortageOrExcessQty(long orgId, string fromDate, string toDate, long modelId);
+
+        IEnumerable<StockExcelUploaderData> GetStockExcelUploaderData(long orgId);
     }
 }

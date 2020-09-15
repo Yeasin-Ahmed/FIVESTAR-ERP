@@ -256,6 +256,7 @@
     <Compile Include="Inventory\DTOModel\IQCStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\ReportModels\StockExcelUploaderData.cs" />
     <Compile Include="Inventory\ReportModels\StockShortageOrExcessQty.cs" />
     <Compile Include="Inventory\ViewModels\CommitGeneratedIMEIViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqDetailListViewModel.cs" />
