@@ -341,7 +341,6 @@ namespace ERPWeb.Controllers
             }
             return View();
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveWarehouse(WarehouseViewModel viewModel)
         {
@@ -363,7 +362,6 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveDescriptionTAC(DescriptionViewModel model)
         {
@@ -440,7 +438,6 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveIQC(IQCViewModel viewModel)
         {
@@ -1140,6 +1137,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region RepairStock -Table
+
         public ActionResult GetRepairStockInfoList(string flag, long? LineId, long? ModelId, long? WarehouseId, long? ItemTypeId, long? ItemId, string lessOrEq, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
