@@ -149,6 +149,14 @@ Inner Join tblWarehouses w on it.WarehouseId = w.Id
 Where 1=1 and w.Id={0} and w.OrganizationId={1} Order By it.ItemName,i.ItemName", warehouseId, orgId)).ToList();
         }
 
+        public IEnumerable<WarehouseStockInfoDTO> GetItemWithKeys(long orgId)
+        {
+            return this._inventoryDb.Db.Database.SqlQuery<WarehouseStockInfoDTO>(string.Format(@"Select it.WarehouseId,i.ItemTypeId,i.ItemId From tblItems i
+Inner Join tblItemTypes it on i.ItemTypeId  = it.ItemId
+Inner Join tblWarehouses w on it.WarehouseId = w.Id
+Where i.OrganizationId={0}", orgId)).ToList();
+        }
+
         public bool IsDuplicateItemName(string itemName, long id, long orgId)
         {
             return itemRepository.GetOneByOrg(item => item.ItemName == itemName && item.OrganizationId == orgId && item.ItemId != id) != null ? true : false;

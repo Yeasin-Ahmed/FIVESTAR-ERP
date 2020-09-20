@@ -31,6 +31,7 @@ using System.Configuration;
 using System.Data.OleDb;
 using LinqToExcel;
 using System.Data.Entity.Validation;
+using Microsoft.Reporting.WebForms;
 
 namespace ERPWeb.Controllers
 {
@@ -340,7 +341,6 @@ namespace ERPWeb.Controllers
             }
             return View();
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveWarehouse(WarehouseViewModel viewModel)
         {
@@ -362,7 +362,6 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveDescriptionTAC(DescriptionViewModel model)
         {
@@ -439,7 +438,6 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveIQC(IQCViewModel viewModel)
         {
@@ -680,13 +678,17 @@ namespace ERPWeb.Controllers
                     Text = ware.WarehouseName,
                     Value = ware.Id.ToString()
                 }).ToList();
+
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Select(s => new SelectListItem
                 {
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
                 ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
+
                 ViewBag.tab = tab;
 
                 ViewBag.ddlReturnStateStatus = Utility.ListOfFinishGoodsSendStatus().Select(s => new SelectListItem()
@@ -1135,6 +1137,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region RepairStock -Table
+
         public ActionResult GetRepairStockInfoList(string flag, long? LineId, long? ModelId, long? WarehouseId, long? ItemTypeId, long? ItemId, string lessOrEq, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
@@ -1146,7 +1149,12 @@ namespace ERPWeb.Controllers
                     Value = l.LineId.ToString()
                 }).ToList();
 
-                ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s => !s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem {
+                    Text= s.ItemName,
+                    Value = s.ItemId
+                }).ToList();
 
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
                 {
@@ -1335,7 +1343,7 @@ namespace ERPWeb.Controllers
 
         public ActionResult GetFinishGoodsSendItemDetail(long sendId)
         {
-            List<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
+            IEnumerable<FinishGoodsSendToWarehouseDetailViewModel> viewModels = new List<FinishGoodsSendToWarehouseDetailViewModel>();
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetFinishGoodsSendToWarehouse");
             if (sendId > 0)
             {
@@ -2275,83 +2283,107 @@ namespace ERPWeb.Controllers
 
         public ActionResult CreateExcel()
         {
+            ViewBag.ddlSupplierName = _supplierBusiness.GetSuppliers(User.OrgId).Select(s => new SelectListItem { Text = s.SupplierName, Value = s.SupplierId.ToString() });
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(s => new SelectListItem { Text = s.DescriptionName, Value = s.DescriptionId.ToString() }).ToList();
             return PartialView();
         }
 
         [HttpPost]
-        public ActionResult UploadExcel(WarehouseStockDetailDTO models, HttpPostedFileBase FileUpload)
+        public ActionResult UploadExcel(WarehouseStockDetailDTO models)
         {
             ExecutionStateWithText executionState = new ExecutionStateWithText();
-            List<string> data = new List<string>();
-            if (FileUpload != null)
+            if (models.DescriptionId > 0 && models.SupplierId > 0)
             {
-                if (FileUpload.ContentType == "application/vnd.ms-excel" || FileUpload.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                List<string> data = new List<string>();
+                if (models.FileUpload != null)
                 {
-                    string filename = FileUpload.FileName;
-                    string targetpath = Server.MapPath("~/ExcelFile/");
-                    FileUpload.SaveAs(targetpath + filename);
-                    string pathToExcelFile = targetpath + filename;
-                    var connectionString = "";
-                    if (filename.EndsWith(".xls"))
+                    if (models.FileUpload.ContentType == "application/vnd.ms-excel" || models.FileUpload.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                     {
-                        connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", pathToExcelFile);
-                    }
-                    else if (filename.EndsWith(".xlsx"))
-                    {
-                        connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=1\";", pathToExcelFile);
-                    }
-
-                    var adapter = new OleDbDataAdapter("SELECT * FROM [Sheet1$]", connectionString);
-                    var ds = new DataSet();
-
-                    adapter.Fill(ds, "ExcelTable");
-
-                    DataTable dtable = ds.Tables["ExcelTable"];
-
-                    string sheetName = "Sheet1";
-
-                    var excelFile = new ExcelQueryFactory(pathToExcelFile);
-                    var linqToExcel = (from a in excelFile.Worksheet<WarehouseStockDetailDTO>(sheetName) select a).ToList();
-
-                    List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
-
-                    //    catch (DbEntityValidationException ex)
-                    //    {
-                    //        foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    //        {
-
-                    //            foreach (var validationError in entityValidationErrors.ValidationErrors)
-                    //            {
-
-                    //                Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-
-                    //            }
-
-                    //        }
-                    //    }
-
-                    foreach (var item in linqToExcel)
-                    {
-                        if (item.WarehouseId > 0 && item.ItemTypeId > 0 && item.ItemId > 0 && item.EUserId > 0 && item.SupplierId > 0 && item.DescriptionId > 0 && item.Quantity >= 0 && item.OrderQty >= 0)
+                        string filename = models.FileUpload.FileName;
+                        string targetpath = Server.MapPath("~/ExcelFile/");
+                        models.FileUpload.SaveAs(targetpath + filename);
+                        string pathToExcelFile = targetpath + filename;
+                        var connectionString = "";
+                        if (filename.EndsWith(".xls"))
                         {
-                            warehouseStocks.Add(item);
+                            connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", pathToExcelFile);
                         }
-                        else
+                        else if (filename.EndsWith(".xlsx"))
                         {
-                            executionState.text += item.ItemId + " has error" + "</br>";
+                            connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=1\";", pathToExcelFile);
                         }
-                    }
 
-                    executionState.isSuccess = (warehouseStocks.Count() > 0 ? _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, User.UserId, User.OrgId) : executionState.isSuccess);
+                        var adapter = new OleDbDataAdapter("SELECT * FROM [Demo$]", connectionString);
+                        var ds = new DataSet();
 
-                    //deleting excel file from folder  
-                    if ((System.IO.File.Exists(pathToExcelFile)))
-                    {
-                        System.IO.File.Delete(pathToExcelFile);
+                        adapter.Fill(ds, "ExcelTable");
+
+                        DataTable dtable = ds.Tables["ExcelTable"];
+
+                        string sheetName = "Demo";
+
+                        var excelFile = new ExcelQueryFactory(pathToExcelFile);
+                        var linqToExcel = (from a in excelFile.Worksheet<WarehouseStockDetailDTO>(sheetName) select a).ToList();
+
+                        List<WarehouseStockDetailDTO> warehouseStocks = new List<WarehouseStockDetailDTO>();
+
+                        var dbValues = _itemBusiness.GetItemWithKeys(User.OrgId);
+
+                        foreach (var item in linqToExcel)
+                        {
+                            if (item.ItemId > 0 && item.UnitId > 0 && item.Quantity > 0)
+                            {
+                                var values = dbValues.FirstOrDefault(s => s.ItemId == item.ItemId);
+                                item.WarehouseId = values.WarehouseId;
+                                item.ItemTypeId = values.ItemTypeId;
+                                item.DescriptionId = models.DescriptionId;
+                                item.SupplierId = models.SupplierId;
+                                warehouseStocks.Add(item);
+                            }
+                        }
+
+                        executionState.isSuccess = (warehouseStocks.Count() > 0 ? _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, User.UserId, User.OrgId) : executionState.isSuccess);
+
+                        //deleting excel file from folder  
+                        if ((System.IO.File.Exists(pathToExcelFile)))
+                        {
+                            System.IO.File.Delete(pathToExcelFile);
+                        }
                     }
                 }
             }
             return Json(executionState);
+        }
+
+        public ActionResult DownloadExcel()
+        {
+            var data = _warehouseStockDetailBusiness.GetStockExcelUploaderData(User.OrgId);
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/ExcelFile/Demo.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("StockExcelUploaderData", data);
+                localReport.DataSources.Add(dataSource1);
+                string reportType = "Excel";
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+
+                var renderedBytes = localReport.Render(
+                    reportType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                localReport.DisplayName = "StockInByExcel-" + DateTime.Now.ToString("dd-MMM-yyyy")+"."+ fileNameExtension;
+                return File(renderedBytes, mimeType, localReport.DisplayName);
+            }
+            return new EmptyResult();
         }
         #endregion
 

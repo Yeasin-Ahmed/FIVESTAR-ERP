@@ -256,6 +256,8 @@
     <Compile Include="Inventory\DTOModel\IQCStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\ReportModels\StockExcelUploaderData.cs" />
+    <Compile Include="Inventory\ReportModels\StockShortageOrExcessQty.cs" />
     <Compile Include="Inventory\ViewModels\CommitGeneratedIMEIViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqInfoListViewModel.cs" />
@@ -487,6 +489,7 @@
     <Compile Include="Production\DTOModel\TransferToPackagingRepairInfoDTO.cs" />
     <Compile Include="Production\ReportModels\ProductionRequisitionReport.cs" />
     <Compile Include="Production\ReportModels\QRCodesByRef.cs" />
+    <Compile Include="Production\ReportModels\ReportHead.cs" />
     <Compile Include="Production\ViewModels\AddingFaultyByQRCodeViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\AssemblyLineStockInfoViewModel.cs" />
@@ -598,7 +601,6 @@
   <ItemGroup>
     <Folder Include="Configuration\ReportModels\" />
     <Folder Include="ControlPanel\ReportModels\" />
-    <Folder Include="Inventory\ReportModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

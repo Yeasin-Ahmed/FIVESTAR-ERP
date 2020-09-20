@@ -3799,8 +3799,10 @@ namespace ERPWeb.Controllers
 
         public ActionResult CreateRepairSectionFaultyItemTransfer()
         {
-            ViewBag.ddlProductionFloor = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
-            ViewBag.ddlModelName = _descriptionBusiness.GetAllDescriptionsInProductionStock(User.OrgId).Select(des => new SelectListItem { Text = des.text, Value = des.value }).ToList();
+            ViewBag.ddlRepairLine = _repairLineBusiness.GetRepairLineWithFloor(User.OrgId).Select(line => new SelectListItem { Text = line.text, Value = line.value }).ToList();
+
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
             return View();
         }
 
@@ -3815,7 +3817,6 @@ namespace ERPWeb.Controllers
                 IsSuccess = _repairSectionFaultyItemTransferInfoBusiness.SaveRepairSectionFaultyItemTransfer(dto, User.OrgId, User.UserId);
             }
             return Json(IsSuccess);
-
         }
 
         //[HttpPost, ValidateJsonAntiForgeryToken]

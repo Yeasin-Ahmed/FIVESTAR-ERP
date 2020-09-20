@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Repair Section Faulty Item Requisition";
 }
-<div class="row">
+<div class="row text-sm" style="margin-top:-10px">
     <div class="col-md-12">
         <div class="card card-gray-dark">
             <div class="card-header">
@@ -27,26 +27,24 @@
                 <input type="hidden" id="hdfItemId" value="0" />
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <label for="ddlProductionFloor" class="control-label font-weight-bold">Production Floor</label>
-                            @Html.DropDownList("ddlProductionFloor", (IEnumerable<SelectListItem>)ViewBag.ddlProductionFloor, "--Select Floor--", new { @class = "form-control form-control-sm" })
-                            <span class="error hide req-floor font-weight-bold">Production Floor is required</span>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <label for="ddlRepairLine" class="control-label font-weight-bold">Repair Line</label>
-                            <select id="ddlRepairLine" class="form-control form-control-sm">
-                                <option value="0">--Select Repair Line--</option>
-                            </select>
+                            @Html.DropDownList("ddlRepairLine", (IEnumerable<SelectListItem>)ViewBag.ddlRepairLine, "--Select Repair--", new { @class = "form-control form-control-sm" })
                             <span class="error hide req-repair">Repair line is required</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
                             @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide req-model">Model is required</span>
                         </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-5">
+                        <div class="col-md-2">
+                            <label for="ddlFaultyCase" class="control-label font-weight-bold">Faulty Case</label>
+                            <select id="ddlFaultyCase" class="form-control form-control-sm">
+                                <option value="China Made">China Made</option>
+                                <option value="Man Made">Man Made</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
                             <label for="ddlItems" class="control-label font-weight-bold">Item</label>
                             <select id="ddlItems" class="form-control form-control-sm select2 select2-danger">
                                 <option value="">--Select Items--</option>
@@ -70,19 +68,26 @@
                             <span class="error hide require-quantity">Quantity is required</span>
                             <span class="error hide req-stockOver">Stock is not available</span>
                         </div>
+                        <div class="col-md-1">
+                            <label class="control-label font-weight-bold" style="visibility:hidden">
+                                Add
+                            </label>
+                            <div class="clearfix">
+                                <button type="button" class="btn btn-sm btn-warning float-left" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="row mb-2">
                         <div class="col-md-4">
                             <label for="txtRemarks" class="control-label font-weight-bold">Item Remarks</label>
                             <div class="row">
                                 <div class="col-md-10">
                                     <textarea type="text" name="remarks" cols="5" rows="1" value="" id="txtTransferRemarks" class="form-control form-control-sm"></textarea>
                                 </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-sm btn-warning float-right" id="btnAddToList" title="Add To List"><i class="fas fa-plus"></i></button>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    </div>*@
+                    <div class="row mt-2">
                         <div class="col-md-12">
                             <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblItems">
                                 <thead class="text-center">
@@ -121,7 +126,7 @@
 </div>
 @section scripts{
     <script type="text/javascript">
-        var ddlProductionFloor = $("#ddlProductionFloor");
+        var ddlFaultyCase = $("#ddlFaultyCase");
         var ddlRepairLine = $("#ddlRepairLine");
         var ddlModelName = $("#ddlModelName");
         var ddlItems = $("#ddlItems");
@@ -142,13 +147,7 @@
             });
         })
 
-        ddlProductionFloor.change(function () {
-            clearDropdown("ddlRepairLine");
-            if (ddlProductionFloor.val() != "") {
-                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLine, JSON.stringify({ lineId: ddlProductionFloor.val() }));
-            }
-            LoadItems();
-        })
+       
 
         ddlRepairLine.change(function () {
             LoadItems();
@@ -167,8 +166,9 @@
             $("#unitName").text('');
             $("#stockQty").text('(0)');
             clearDropdown("ddlItems");
-            if (ddlProductionFloor.val() != "" && ddlRepairLine.val() != "" && ddlModelName.val() != "") {
-                LoadDropDown('/Common/GetItemDetailByRepairFaultySection', 'POST', ddlItems, JSON.stringify({ floorId: ddlProductionFloor.val(), repairLineId: ddlRepairLine.val(), modelId: ddlModelName.val() }));
+            if (ddlRepairLine.val() != "" && ddlModelName.val() != "") {
+                var line = ddlRepairLine.val().split("#");
+                LoadDropDown('/Common/GetItemDetailByRepairFaultySection', 'POST', ddlItems, JSON.stringify({ floorId: line[1], repairLineId: line[0], modelId: ddlModelName.val() }));
             }
         }
 
@@ -196,9 +196,10 @@
             $("#unitName").text('');
             $("#stockQty").text('(0)');
             txtQuantity.val('0');
-            if (hdfItemId.val() != "" && TryParseInt(hdfItemId.val(), 0) > 0 && ddlRepairLine.val() != "" && TryParseInt(ddlRepairLine.val(), 0) > 0 && TryParseInt(ddlModelName.val(), 0) > 0) {
-
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetFaultyItemStockInfoByRepairAndModelAndItem', JSON.stringify({ itemId: hdfItemId.val(), repairId: ddlRepairLine.val(), modelId: TryParseInt(ddlModelName.val(), 0) }), getToken())).then(function (res, status) {
+            if (hdfItemId.val() != "" && TryParseInt(hdfItemId.val(), 0) > 0 && ddlRepairLine.val() != ""  && TryParseInt(ddlModelName.val(), 0) > 0) {
+                var isChinaFaulty = ddlFaultyCase.val() == "China Made" ? true : false;
+                var line = ddlRepairLine.val().split("#");
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common/GetFaultyItemStockInfoByRepairAndModelAndItemAndFultyType', JSON.stringify({ itemId: hdfItemId.val(), repairId: line[0], modelId: TryParseInt(ddlModelName.val(), 0), isChinaFaulty: isChinaFaulty }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {
@@ -222,10 +223,10 @@
         function validateInput() {
             var isValid = true;
             $(".error").addClass('hide');
-            if (ddlProductionFloor.val() == "") {
-                $(".req-floor").removeClass('hide');
-                isValid = false;
-            }
+            //if (ddlProductionFloor.val() == "") {
+            //    $(".req-floor").removeClass('hide');
+            //    isValid = false;
+            //}
             if (ddlRepairLine.val() == "") {
                 isValid = false;
                 $(".req-repair").removeClass("hide");
@@ -255,7 +256,6 @@
                     // Check Stock In Db
                 }
             }
-
             var count = $("#tblItems tbody tr").length;
             if (count > 0) {
                 $.each($("#tblItems tbody tr"), function (index, item) {

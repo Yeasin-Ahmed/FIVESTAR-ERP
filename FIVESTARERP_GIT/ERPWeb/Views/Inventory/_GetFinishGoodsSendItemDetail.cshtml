@@ -1,10 +1,11 @@
-﻿@model IEnumerable<ERPBO.Production.DTOModel.FinishGoodsSendToWarehouseDetailViewModel>
+﻿@model IEnumerable<ERPBO.Production.ViewModels.FinishGoodsSendToWarehouseDetailViewModel>
 @using ERPBO.Production.ViewModels;
 @{
     int sl = 0;
     FinishGoodsSendToWarehouseInfoViewModel info = ((FinishGoodsSendToWarehouseInfoViewModel)ViewBag.FinishGoodsSendInfo);
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
+
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
     <tbody>
         <tr>
@@ -25,6 +26,7 @@
         </tr>
     </tbody>
 </table>
+
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblDetail">
     <thead class="thead-dark">
         <tr class="text-center">
@@ -49,9 +51,7 @@
                 <td>@detail.ItemTypeName</td>
                 <td class="hide">@detail.ItemId</td>
                 <td>@detail.ItemName</td>
-                <td class="text-center" style="width:15%">
-                    @detail.Quantity
-                </td>
+                <td class="text-center" style="width:15%">@detail.Quantity</td>
                 <td class="text-center">@detail.UnitName</td>
             </tr>
         }

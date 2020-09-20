@@ -11,5 +11,7 @@ namespace ERPBLL.Report.Interface
     {
         IEnumerable<ProductionRequisitionReport> GetProductionRequisitionReport(long reqInfoId);
         IEnumerable<QRCodesByRef> GetQRCodesByRefId(long? itemId, long referenceId,long orgId);
+        IEnumerable<ReportHead> GetReportHead(long branchId, long orgId);
+       
     }
 }

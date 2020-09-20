@@ -92,7 +92,7 @@
                                                 <span class="error hide duplicate-itemName font-weight-bold">The itemName is already exist!</span>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">Qty(Less/Equal)</label>
+                                                <label class="control-label font-weight-bold" for="txtLessOrEq">Qty(Less/Equal)</label>
                                                 <input type="number" id="txtLessOrEq" class="form-control form-control-sm" />
                                             </div>
                                         </div>
@@ -357,14 +357,19 @@
 </div>
 
 <div class="modal fade" id="modalExcelImport" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary">
                 <h4 id="modalHeading" class="modal-title">IMPORT EXCEL</h4>
+                <div class="col-md-7">
+                    <a href="/Inventory/DownloadExcel" class="btn btn-outline-primary btn-sm float-lg-right" id="btnDemoExcel" title="DEMO"><i class="fas fa-plus"></i> Download EXCEL</a>
+                </div>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="modelContainer2">
-
+            </div>
+            <div class=" modal-footer btn-default">
+                <input type="submit" value="Upload" id="btnExcelSubmit" class="btn btn-primary float-right btnExcelSubmit" />
             </div>
         </div>
     </div>
@@ -502,7 +507,15 @@
         function OpenModalExcel() {
             $("#modelDataContainer").empty();
             $("#modalExcelImport").modal("show");
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
         }
+
 
         $("#btnExcelImport").click(function (e) {
             e.preventDefault();
@@ -511,6 +524,12 @@
                     OpenModalExcel();
                     $("#modelContainer2").empty();
                     $("#modelContainer2").append(res);
+                    $('.select2').select2();
+
+                    //Initialize Select2 Elements
+                    $('.select2bs4').select2({
+                        theme: 'bootstrap4'
+                    });
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -519,11 +538,16 @@
 
         var FileUpload = $(".FileUpload");
 
-        $(document).on('click', '.btnExcelSubmit', function (e) {
+        $("#btnExcelSubmit").click(function (e) {
             e.preventDefault();
             var excelFile = $(".FileUpload").prop('files')[0];
+            var ddlModelNameForFileUpolad = $("#DescriptionId option:selected").val();
+            var ddlSupplierNameForFileUpolad = $("#SupplierId option:selected").val();
             var formData = new FormData();
+            formData.append("DescriptionId", ddlModelNameForFileUpolad);
+            formData.append("SupplierId", ddlSupplierNameForFileUpolad);
             formData.append("FileUpload", excelFile);
+            console.log(formData);
             $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res, status) {
                 console.log(res);
                 console.log(status);
@@ -533,11 +557,14 @@
                     if (res.text != '' && res.text != null) {
                         toastr.info(res.text).fadeOut(10000);
                     }
+
+                    //removeTableRow("#tblWarehouseStockInfo tbody", index);
                     setTimeout(function () {
                         LoadDataTable();
-
-                    }, 1500);
+                        @* redirectPage('@Url.Action("GetWarehouseStockInfoList")');*@
+                        }, 1500);
                 }
+
                 else {
                     toastrErrorAlert(execuStatus.fail);
                     if (res.text != '' && res.text != null) {

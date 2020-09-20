@@ -4,22 +4,23 @@
     Layout = null;
 }
 
-<hr />
 @using (Html.BeginForm("UploadExcel", "Inventory", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return myFunction()" }))
 {
-    <div class=" form-horizontal row">
-        <div class="form-group col-sm-2">
-            <label class="control-label"> Select File  :</label>
-        </div>
-        <div class="form-group col-sm-5">
-            <input type="file" id="FileUpload" name="FileUpload" class="form-control FileUpload" />
-        </div>
-        <div class="col-sm-1"></div>
-        <div class="form-group col-sm-3">
-            <input type="submit" value="Upload" id="btnExcelSubmit" class="btn btn-primary form-control btnExcelSubmit" />
-        </div>
+<div class="form-vertical row">
+    <div class="form-group col-md-12">
+        <label for="ddlModelName" class="control-label">Model Name</label>
+        @Html.DropDownList("DescriptionId", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
     </div>
+    <div class="form-group col-md-12">
+        <label for="ddlSupplierName" class="control-label">Supplier Name</label>
+        @Html.DropDownList("SupplierId", (IEnumerable<SelectListItem>)ViewBag.ddlSupplierName, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger" })
+    </div>
+    <div class="form-group col-md-12">
+        <label class="control-label">Select File</label>
+        <input type="file" id="FileUpload" name="FileUpload" class="form-control FileUpload" />
+    </div>
+</div>
 }
-<hr />
+
 
 
