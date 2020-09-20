@@ -7,10 +7,10 @@
         <Value>=First(Fields!ReportImage.Value, "ServicesReportHead")</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>FitProportional</Sizing>
-        <Top>0.32798in</Top>
-        <Left>0.18481in</Left>
-        <Height>1.02043in</Height>
-        <Width>1.07342in</Width>
+        <Top>0.06201in</Top>
+        <Left>0.15348in</Left>
+        <Height>1.16765in</Height>
+        <Width>1.27151in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -24,7 +24,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Return Parts</Value>
+                <Value>Job Sign-In and Out Report</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                   <FontSize>12pt</FontSize>
@@ -37,10 +37,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>0.16826in</Top>
-        <Left>2.64172in</Left>
+        <Top>0.04951in</Top>
+        <Left>2.37098in</Left>
         <Height>0.25in</Height>
-        <Width>1.86622in</Width>
+        <Width>2.40789in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -69,8 +69,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.16826in</Top>
-        <Left>5.12883in</Left>
+        <Top>0.04951in</Top>
+        <Left>5.16017in</Left>
         <Height>0.25in</Height>
         <Width>0.69246in</Width>
         <ZIndex>2</ZIndex>
@@ -106,8 +106,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.18076in</Top>
-        <Left>5.73518in</Left>
+        <Top>0.06201in</Top>
+        <Left>5.76652in</Left>
         <Height>0.25in</Height>
         <Width>1.35in</Width>
         <ZIndex>3</ZIndex>
@@ -141,8 +141,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.44881in</Top>
-        <Left>2.12594in</Left>
+        <Top>0.33006in</Top>
+        <Left>2.15728in</Left>
         <Height>0.21627in</Height>
         <Width>2.7968in</Width>
         <ZIndex>4</ZIndex>
@@ -184,8 +184,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.68036in</Top>
-        <Left>2.1235in</Left>
+        <Top>0.56161in</Top>
+        <Left>2.15484in</Left>
         <Height>0.21627in</Height>
         <Width>2.79924in</Width>
         <ZIndex>5</ZIndex>
@@ -220,8 +220,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.89891in</Top>
-        <Left>2.12458in</Left>
+        <Top>0.78016in</Top>
+        <Left>2.15592in</Left>
         <Height>0.21627in</Height>
         <Width>2.79816in</Width>
         <ZIndex>6</ZIndex>
@@ -268,8 +268,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>1.11796in</Top>
-        <Left>2.12214in</Left>
+        <Top>0.99921in</Top>
+        <Left>2.15348in</Left>
         <Height>0.21627in</Height>
         <Width>2.8006in</Width>
         <ZIndex>7</ZIndex>
@@ -287,33 +287,27 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.47701in</Width>
+              <Width>0.44926in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.16175in</Width>
+              <Width>1.30275in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.0784in</Width>
+              <Width>1.30275in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.80507in</Width>
+              <Width>1.30275in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.70098in</Width>
+              <Width>1.30275in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.61081in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>0.68444in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>1.41941in</Width>
+              <Width>1.30275in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.29167in</Height>
+              <Height>0.25in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -324,7 +318,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>SL</Value>
+                              <Value>#SL</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -363,7 +357,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Requsition Code</Value>
+                              <Value>JobCode</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -395,45 +389,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox2">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>JobCode</Value>
-                              <Style>
-                                <FontFamily>times New Roman</FontFamily>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox2</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Width>0.25pt</Width>
-                        </Border>
-                        <RightBorder>
-                          <Style>None</Style>
-                        </RightBorder>
-                        <BackgroundColor>LightGrey</BackgroundColor>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="Textbox19">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -441,7 +396,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>PartsName</Value>
+                              <Value>State Status</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -480,7 +435,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>PartsCode</Value>
+                              <Value>TSName</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -519,7 +474,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Qty.</Value>
+                              <Value>Sign-In Date</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -551,14 +506,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox1">
+                    <Textbox Name="Textbox25">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>TSName</Value>
+                              <Value>Sign-Out Date</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -570,46 +525,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox1</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Width>0.25pt</Width>
-                        </Border>
-                        <RightBorder>
-                          <Style>None</Style>
-                        </RightBorder>
-                        <BackgroundColor>LightGrey</BackgroundColor>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox3">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Issue Date</Value>
-                              <Style>
-                                <FontFamily>times New Roman</FontFamily>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox3</rd:DefaultName>
+                      <rd:DefaultName>Textbox25</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -627,7 +543,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.29167in</Height>
+              <Height>0.25in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -639,9 +555,10 @@
                           <TextRuns>
                             <TextRun>
                               <Label>SL</Label>
-                              <Value>=RowNumber(Nothing)</Value>
+                              <Value>=Rownumber(Nothing)</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -651,43 +568,6 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox16</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Width>0.25pt</Width>
-                        </Border>
-                        <RightBorder>
-                          <Style>None</Style>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="RequsitionCode">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!RequsitionCode.Value</Value>
-                              <Style>
-                                <FontFamily>times New Roman</FontFamily>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>RequsitionCode</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -716,12 +596,11 @@
                               <Value>=Fields!JobOrderCode.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
+                          <Style />
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>JobOrderCode</rd:DefaultName>
@@ -743,90 +622,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="PartsName">
+                    <Textbox Name="StateStatus">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PartsName.Value</Value>
+                              <Value>=Fields!StateStatus.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>PartsName</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Width>0.25pt</Width>
-                        </Border>
-                        <RightBorder>
-                          <Style>None</Style>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="PartsCode">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!PartsCode.Value</Value>
-                              <Style>
-                                <FontFamily>times New Roman</FontFamily>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>PartsCode</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Width>0.25pt</Width>
-                        </Border>
-                        <RightBorder>
-                          <Style>None</Style>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Quantity">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!Quantity.Value</Value>
-                              <Style>
-                                <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -835,7 +641,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Quantity</rd:DefaultName>
+                      <rd:DefaultName>StateStatus</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -854,25 +660,24 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="EntryUser">
+                    <Textbox Name="TSName">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!EntryUser.Value</Value>
+                              <Value>=Fields!TSName.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
+                          <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>EntryUser</rd:DefaultName>
+                      <rd:DefaultName>TSName</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -891,16 +696,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="EntryDate">
+                    <Textbox Name="AssignDate">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!EntryDate.Value</Value>
+                              <Value>=Fields!AssignDate.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
                                 <Format>dd MMM yyyy hh:mm tt</Format>
                               </Style>
                             </TextRun>
@@ -910,7 +716,46 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>EntryDate</rd:DefaultName>
+                      <rd:DefaultName>AssignDate</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                          <Width>0.25pt</Width>
+                        </Border>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="SignOutDate">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!SignOutDate.Value</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
+                                <Format>dd MMM yyyy hh:mm tt</Format>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>SignOutDate</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -936,8 +781,6 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
-            <TablixMember />
-            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -950,27 +793,26 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>ReturnStock</DataSetName>
-        <Top>1.5925in</Top>
-        <Left>0.14731in</Left>
-        <Height>0.58334in</Height>
-        <Width>6.93787in</Width>
+        <DataSetName>JobSignInAndOut</DataSetName>
+        <Top>1.37375in</Top>
+        <Left>0.15348in</Left>
+        <Height>0.5in</Height>
+        <Width>6.96304in</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
-            <Width>0.25pt</Width>
           </Border>
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>2.66667in</Height>
+    <Height>1.95833in</Height>
     <Style />
   </Body>
   <Width>7.27in</Width>
   <Page>
     <PageFooter>
-      <Height>0.34375in</Height>
+      <Height>0.3125in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -992,8 +834,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox57</rd:DefaultName>
-          <Top>0.05625in</Top>
-          <Left>6.48101in</Left>
+          <Top>0.02917in</Top>
+          <Left>6.58735in</Left>
           <Height>0.25in</Height>
           <Width>0.60417in</Width>
           <Style>
@@ -1028,57 +870,49 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>0fb59c63-0ed6-4ef5-91c6-6896cf6b6a33</rd:DataSourceID>
+      <rd:DataSourceID>7eebbe8a-d10a-4586-ac93-0e5c05ea0dd0</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="ReturnStock">
+    <DataSet Name="JobSignInAndOut">
       <Query>
         <DataSourceName>ServicesDS</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="RequsitionCode">
-          <DataField>RequsitionCode</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="PartsId">
-          <DataField>PartsId</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="PartsName">
-          <DataField>PartsName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Quantity">
-          <DataField>Quantity</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="PartsCode">
-          <DataField>PartsCode</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="EntryUser">
-          <DataField>EntryUser</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="EUserId">
-          <DataField>EUserId</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
         <Field Name="JobOrderCode">
           <DataField>JobOrderCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="EntryDate">
-          <DataField>EntryDate</DataField>
+        <Field Name="TSId">
+          <DataField>TSId</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="StateStatus">
+          <DataField>StateStatus</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Remarks">
+          <DataField>Remarks</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TSName">
+          <DataField>TSName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AssignDate">
+          <DataField>AssignDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="SignOutDate">
+          <DataField>SignOutDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>ServicesDS</rd:DataSetName>
         <rd:SchemaPath>E:\ERP\05_08_2020\Yeasin-Ahmed\FIVESTAR-ERP\FIVESTARERP_GIT\ERPWeb\Reports\DataSets\ServicesDS.xsd</rd:SchemaPath>
-        <rd:TableName>ReturnStock</rd:TableName>
+        <rd:TableName>JobSignInAndOut</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -1134,5 +968,5 @@
     </DataSet>
   </DataSets>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>7052fcb1-9e39-4c92-a397-0e373c144969</rd:ReportID>
+  <rd:ReportID>73787de6-ec1f-4e5a-8855-40fb37a1e38b</rd:ReportID>
 </Report>

@@ -28,8 +28,10 @@ namespace ERPWeb.Controllers
         private readonly IRequsitionInfoForJobOrderBusiness _requsitionInfoForJobOrderBusiness;
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         private readonly IJobOrderReturnDetailBusiness _jobOrderReturnDetailBusiness;
+        private readonly IJobOrderTransferDetailBusiness _jobOrderTransferDetailBusiness;
+        private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
         // GET: ReportSS
-        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness)
+        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness)
         {
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
@@ -42,6 +44,8 @@ namespace ERPWeb.Controllers
             this._requsitionInfoForJobOrderBusiness = requsitionInfoForJobOrderBusiness;
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
             this._jobOrderReturnDetailBusiness = jobOrderReturnDetailBusiness;
+            this._jobOrderTransferDetailBusiness = jobOrderTransferDetailBusiness;
+            this._jobOrderTSBusiness = jobOrderTSBusiness;
         }
 
         #region JobOrderList
@@ -49,7 +53,7 @@ namespace ERPWeb.Controllers
         public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate,string rptType)
         {
             bool IsSuccess = false;
-            IEnumerable<JobOrderDTO> reportData = _jobOrderReportBusiness.GetJobOrdersReport(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate).ToList();
+            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate).ToList();
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -57,7 +61,7 @@ namespace ERPWeb.Controllers
             List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
             servicesReportHeads.Add(reportHead);
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptJobOrder.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobOrder.rdlc");
             string id = string.Empty;
             if (System.IO.File.Exists(reportPath))
             {
@@ -111,7 +115,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptJobOrderReceipt.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobOrderReceipt.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -159,7 +163,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptJobOrderCreateReceipt.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobOrderCreateReceipt.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -210,7 +214,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptInvoiceReceipt.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptInvoiceReceipt.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -255,7 +259,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptCurrentStockReport.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptCurrentStockReport.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -297,36 +301,9 @@ namespace ERPWeb.Controllers
 
         #region PartsReturnReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult PartsReturnReport(long? ddlMobileParts,long? ddlTechnicalServicesName, string fromDate, string toDate,string rptType)
+        public ActionResult PartsReturnReport(long? ddlMobileParts,long? ddlTechnicalServicesName,string jobCode, string fromDate, string toDate,string rptType)
         {
-            bool IsSuccess = false;
-            IEnumerable<TsStockReturnDetailDTO> dto = _tsStockReturnDetailsBusiness.GetAllTsStockReturn(User.OrgId, User.BranchId).Select(ret => new TsStockReturnDetailDTO
-            {
-                RequsitionCode = ret.RequsitionCode,
-                PartsId = ret.PartsId,
-                PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartName),
-                PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(ret.PartsId, User.OrgId).MobilePartCode),
-                Quantity = ret.Quantity,
-                EntryDate = ret.EntryDate,
-                EUserId=ret.EUserId,
-                EntryUser = UserForEachRecord(ret.EUserId.Value).UserName,
-            }).AsEnumerable();
-            dto = dto.Where(f => 1 == 1 && (ddlMobileParts == null || ddlMobileParts <= 0 || f.PartsId == ddlMobileParts) && (ddlTechnicalServicesName == null || ddlTechnicalServicesName <= 0 || f.EUserId == ddlTechnicalServicesName) &&
-                         (
-                             (fromDate == null && toDate == null)
-                             ||
-                              (fromDate == "" && toDate == "")
-                             ||
-                             (fromDate.Trim() != "" && toDate.Trim() != "" &&
-
-                                 f.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
-                                 f.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
-                             ||
-                             (fromDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
-                             ||
-                             (toDate.Trim() != "" && f.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
-                         )
-                     );
+            var dto = _tsStockReturnDetailsBusiness.GetReturnParts(User.OrgId, User.BranchId, ddlTechnicalServicesName, ddlMobileParts, jobCode, fromDate, toDate);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -334,7 +311,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptPartsReturnStock.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptPartsReturnStock.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -362,10 +339,6 @@ namespace ERPWeb.Controllers
                     out streams,
                     out warnings);
                 return File(renderedBytes, mimeType);
-                //var base64 = Convert.ToBase64String(renderedBytes);
-                //var fs = String.Format("data:application/pdf;base64,{0}", base64);
-                //IsSuccess = true;
-                //return Json(new { IsSuccess = IsSuccess, File = fs, FileName = "Return_" + localReport.DisplayName });
             }
             return new EmptyResult();
         }
@@ -373,11 +346,11 @@ namespace ERPWeb.Controllers
 
         #region UsedPartsReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult UsedPartsReport(long? ddlMobileParts,long? ddlTechnicalServicesName, string fromDate, string toDate,string rptType)
+        public ActionResult UsedPartsReport(long? ddlMobileParts,long? ddlTechnicalServicesName, string fromDate, string toDate,string rptType,string jobCode)
         {
             bool IsSuccess = false;
 
-            IEnumerable<TechnicalServicesStockDTO> dto = _technicalServicesStockBusiness.GetUsedParts(ddlMobileParts, ddlTechnicalServicesName, User.OrgId, User.BranchId, fromDate, toDate);
+            IEnumerable<TechnicalServicesStockDTO> dto = _technicalServicesStockBusiness.GetUsedParts(ddlMobileParts, ddlTechnicalServicesName, User.OrgId, User.BranchId, fromDate, toDate,jobCode);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -385,7 +358,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptUsedPartsReport.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptUsedPartsReport.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -437,7 +410,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptSellsReport.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptSellsReport.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -476,57 +449,22 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region TSRequsitionReport
-        public ActionResult TSRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType)
+        public ActionResult TSRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType, string jobCode = "")
         {
-            IEnumerable<RequsitionInfoForJobOrderDTO> requsitionInfoForJobOrderDTO = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJob(User.OrgId, User.BranchId).Where(req =>
-                (reqCode == null || reqCode.Trim() == "" || req.RequsitionCode.Contains(reqCode))
-                &&
-                (ddlWarehouseName == null || ddlWarehouseName <= 0 || req.SWarehouseId == ddlWarehouseName)
-                &&
-                (ddlTechnicalServicesName == null || ddlTechnicalServicesName <= 0 || req.EUserId == ddlTechnicalServicesName)
-                &&
-                (reqStatus == null || reqStatus.Trim() == "" || req.StateStatus == reqStatus.Trim())
-                &&
-                (
-                    (fromDate == null && toDate == null)
-                    ||
-                     (fromDate == "" && toDate == "")
-                    ||
-                    (fromDate.Trim() != "" && toDate.Trim() != "" &&
+            
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoData(reqCode, ddlWarehouseName, ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId,jobCode);
 
-                        req.EntryDate.Value.Date >= Convert.ToDateTime(fromDate).Date &&
-                        req.EntryDate.Value.Date <= Convert.ToDateTime(toDate).Date)
-                    ||
-                    (fromDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(fromDate).Date)
-                    ||
-                    (toDate.Trim() != "" && req.EntryDate.Value.Date == Convert.ToDateTime(toDate).Date)
-                )).Select(info => new RequsitionInfoForJobOrderDTO
-                {
-                    RequsitionInfoForJobOrderId = info.RequsitionInfoForJobOrderId,
-                    RequsitionCode = info.RequsitionCode,
-                    SWarehouseId = info.SWarehouseId,
-                    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
-                    StateStatus = info.StateStatus,
-                    JobOrderId = info.JobOrderId,
-                    JobOrderCode = info.JobOrderCode,
-                    Remarks = info.Remarks,
-                    BranchId = info.BranchId,
-                    OrganizationId = info.OrganizationId,
-                    EUserId = info.EUserId,
-                    Requestby = UserForEachRecord(info.EUserId.Value).UserName,
-                    EntryDate = info.EntryDate
-                }).ToList();
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
             List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptTSRequsitionReport.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptTSRequsitionReport.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
-                ReportDataSource dataSource1 = new ReportDataSource("TSRequsition", requsitionInfoForJobOrderDTO);
+                ReportDataSource dataSource1 = new ReportDataSource("TSRequsition", dto);
                 ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
                 localReport.DataSources.Clear();
                 localReport.DataSources.Add(dataSource1);
@@ -568,7 +506,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptOtherBranchRepairJob.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptOtherBranchRepairJob.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -614,7 +552,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/rptRepairedJobOfOtherBranch.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptRepairedJobOfOtherBranch.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -625,6 +563,182 @@ namespace ERPWeb.Controllers
                 localReport.DataSources.Add(dataSource2);
                 localReport.Refresh();
                 localReport.DisplayName = "Parts";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region OtherBranchRequsitionReport
+        public ActionResult OtherBranchRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType)
+        {
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode, ddlWarehouseName, ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptOtherBranchRequsition.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("OtherBranchRequsition", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region JobOrderReceivedReport
+        public ActionResult ReceivedJobOrderReport(long? ddlBranchName, string fromDate, string ddlTransferStatus, string toDate,string rptType, string jobCode = "", string transferCode = "")
+        {
+            var dto = _jobOrderTransferDetailBusiness.GetReceiveJob(User.OrgId, User.BranchId, ddlBranchName, jobCode, transferCode, fromDate, toDate, ddlTransferStatus);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptReceivedJobOrderReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("ReceivedJobOrder", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region JobOrderReturnReceivedReport
+        public ActionResult ReceivedReturnJobOrderReport(long? ddlBranchName, string fromDate, string ddlTransferStatus, string toDate, string rptType, string jobCode = "", string transferCode = "")
+        {
+            var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, ddlBranchName, jobCode, transferCode, fromDate, toDate, ddlTransferStatus);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptReceivedReturnJobOrderReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("ReceivedReturnJobOrder", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region JobSignIn And Out 
+        public ActionResult JobSignInAndOut(long? ddlTechnicalServicesName, string fromDate, string toDate, string rptType, string jobCode = "")
+        {
+            var dto = _jobOrderTSBusiness.JobSignInAndOut(ddlTechnicalServicesName,jobCode,User.OrgId,User.BranchId,fromDate,toDate);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobSignInAndOutReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("JobSignInAndOut", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Stock";
 
                 string mimeType;
                 string encoding;

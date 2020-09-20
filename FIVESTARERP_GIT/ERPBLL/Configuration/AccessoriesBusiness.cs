@@ -26,6 +26,13 @@ namespace ERPBLL.Configuration
             return accessoriesRepository.Save();
         }
 
+        public IEnumerable<AccessoriesDTO> GetAccessoriesByOrgId(long orgId)
+        {
+            var data = _configurationDb.Db.Database.SqlQuery<AccessoriesDTO>(string.Format(@"select * from          [Configuration].dbo.tblAccessories
+                where OrganizationId={0}", orgId)).ToList();
+            return data;
+        }
+
         public Accessories GetAccessoriesOneByOrgId(long id, long orgId)
         {
             return accessoriesRepository.GetOneByOrg(access => access.AccessoriesId == id && access.OrganizationId == orgId);

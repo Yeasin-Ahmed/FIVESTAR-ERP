@@ -16,5 +16,6 @@ namespace ERPBLL.Configuration.Interface
         ServiceWarehouse GetServiceWarehouseOneByOrgId(long id, long orgId, long branchId);
         bool DeleteServicesWarehouse(long id, long orgId, long branchId);
         ServiceWarehouse GetWarehouseOneByOrgId(long orgId, long branchId);
+        IEnumerable<ServicesWarehouseDTO> GetServiceWarehouseByOrgId(long orgId, long branchId);
     }
 }

@@ -16,5 +16,6 @@ namespace ERPBLL.Configuration.Interface
         bool IsDuplicateMobilePartCode(string partsCode, long id, long orgId);
         MobilePart GetMobilePartOneByOrgId(long id, long orgId);
         bool DeleteMobilePart(long id, long orgId);
+        IEnumerable<MobilePartDTO> GetMobilePartByOrgId(long orgId);
     }
 }

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderTSViewModel>
+@{ 
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+    Layout = null;
+    string badge = string.Empty;
+}
+<div class="col-md-12 text-sm">
+    <table class="table table-bordered table-sm table-striped" id="tblSignInandOut">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th>JobCode</th>
+                <th>StateStatus</th>
+                <th>TSName</th>
+                <th>Sign-In Date</th>
+                <th>Sign-Out Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sign in Model)
+            {
+                sl = sl + 1;
+                badge = sign.StateStatus == "Sign-In" ? "badge bg-success" : "badge bg-danger";
+                string signInDate = sign.AssignDate != null ? sign.AssignDate.Value.ToString("dd-MMM-yyy hh:mm tt") : "";
+                string signOutDate = sign.SignOutDate != null ? sign.SignOutDate.Value.ToString("dd-MMM-yyy hh:mm tt") : "";
+            <tr>
+                <td class="text-center">@sl</td>
+                <td>@sign.JobOrderCode</td>
+                <td class="text-center" data-val="@sign.StateStatus">
+                    <span class="@badge">@sign.StateStatus</span>
+                </td>
+                <td>@sign.TSName</td>
+                <td>@signInDate</td>
+                <td>@signOutDate</td>
+            </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="6">
+                        No Rows Found
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="col-md-12">
+    @Html.Partial("_Pagination", pagerData)
+</div>

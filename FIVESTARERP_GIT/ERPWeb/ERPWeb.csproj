@@ -688,6 +688,11 @@
     <Content Include="Views\FrontDesk\_TransferReceiveJobOrder.cshtml" />
     <Content Include="Views\FrontDesk\RepairedJobOfOtherBranch.cshtml" />
     <Content Include="Views\FrontDesk\_RepairedJobOfOtherBranch.cshtml" />
+    <Content Include="Views\FrontDesk\TSOtherBranchRequsitionReport.cshtml" />
+    <Content Include="Views\FrontDesk\ReceiveJobOrderReport.cshtml" />
+    <Content Include="Views\FrontDesk\ReceiveReturnJobOrderReport.cshtml" />
+    <Content Include="Views\FrontDesk\JobSignInAndOut.cshtml" />
+    <Content Include="Views\FrontDesk\_JobSignInAndOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -768,6 +773,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\ServiceRpt\FrontDesk\rptRepairedJobOfOtherBranch.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedJobOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

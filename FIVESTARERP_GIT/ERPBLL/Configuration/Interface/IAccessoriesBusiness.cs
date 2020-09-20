@@ -15,5 +15,6 @@ namespace ERPBLL.Configuration.Interface
         bool IsDuplicateAccessoriesName(string accessoriesName, long id, long orgId);
         Accessories GetAccessoriesOneByOrgId(long id, long orgId);
         bool DeleteAccessories(long id, long orgId);
+        IEnumerable<AccessoriesDTO> GetAccessoriesByOrgId(long orgId);
     }
 }

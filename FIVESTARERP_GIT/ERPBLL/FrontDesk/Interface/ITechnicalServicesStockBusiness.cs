@@ -18,6 +18,6 @@ namespace ERPBLL.FrontDesk.Interface
         bool SaveTechnicalServicesStockOut(List<TechnicalServicesStockDTO> servicesStockDTOs,long jobOrderId, long userId, long orgId, long branchId);
 
         bool SaveJobSignOutWithStock(TSStockInfoDTO dto, long userId, long orgId, long branchId);
-        IEnumerable<TechnicalServicesStockDTO> GetUsedParts(long? partsId, long? tsId, long orgId, long branchId, string fromDate, string toDate);
+        IEnumerable<TechnicalServicesStockDTO> GetUsedParts(long? partsId, long? tsId, long orgId, long branchId, string fromDate, string toDate, string jobCode);
     }
 }

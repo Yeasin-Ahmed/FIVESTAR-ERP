@@ -65,10 +65,11 @@ namespace ERPBLL.FrontDesk
                 string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
                 param += string.Format(@" and Cast(EntryDate as date)='{0}'", tDate);
             }
-            query = string.Format(@"select InvoiceInfoId,InvoiceCode,CustomerName,NetAmount,EntryDate,OrganizationId,BranchId,(select top 1 sum(NetAmount)'Total' from tblInvoiceInfo)'Total' from tblInvoiceInfo
-where 1=1{0}
-
-", Utility.ParamChecker(param));
+            query = string.Format(@"select InvoiceInfoId,InvoiceCode,JobOrderCode,CustomerName,TotalSPAmount,
+LabourCharge,VAT,Tax,Discount,NetAmount,EntryDate,
+OrganizationId,BranchId,(select top 1 sum(NetAmount)'Total' from tblInvoiceInfo)'Total' 
+from tblInvoiceInfo
+where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 

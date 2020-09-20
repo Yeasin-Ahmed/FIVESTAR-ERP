@@ -50,6 +50,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfTransferStatus()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=JobOrderTransferStatus.Received,value=JobOrderTransferStatus.Received},
+                new Dropdown(){text=JobOrderTransferStatus.Pending,value=JobOrderTransferStatus.Pending}
+            };
+            return dropdowns;
+        }
 
         public static IEnumerable<Dropdown> ListOfCustomerType()
         {

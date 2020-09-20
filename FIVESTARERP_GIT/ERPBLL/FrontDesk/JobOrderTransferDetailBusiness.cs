@@ -27,11 +27,11 @@ namespace ERPBLL.FrontDesk
             this._jobOrderBusiness = jobOrderBusiness;
         }
 
-        public IEnumerable<JobOrderTransferDetailDTO> GetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
+        public IEnumerable<JobOrderTransferDetailDTO> GetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate, string tstatus)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderTransferDetailDTO>(QueryForGetReceiveJob(orgId,branchId,branchName,jobCode,transferCode,fromDate,toDate)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderTransferDetailDTO>(QueryForGetReceiveJob(orgId,branchId,branchName,jobCode,transferCode,fromDate,toDate,tstatus)).ToList();
         }
-        private string QueryForGetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
+        private string QueryForGetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate,string tstatus)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -55,6 +55,10 @@ namespace ERPBLL.FrontDesk
             {
                 param += string.Format(@"and d.TransferCode Like '%{0}%'", transferCode);
             }
+            if (!string.IsNullOrEmpty(tstatus))
+            {
+                param += string.Format(@"and d.TransferStatus ='{0}'", tstatus);
+            }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
                 string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
@@ -73,17 +77,18 @@ namespace ERPBLL.FrontDesk
             }
 
             query = string.Format(@"Select JobOrderTransferDetailId,BranchId,TransferCode,JobOrderId,JobOrderCode,JobStatus,
-TransferStatus,FromBranchName,EntryDate,ModelColor,ModelName,SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames' From (Select d.JobOrderTransferDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,
+TransferStatus,FromBranchName,EntryDate,ModelColor,ModelName,SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',UserName'ReceivedBy' From (Select d.JobOrderTransferDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,
 d.TransferStatus,b.BranchName'FromBranchName',d.EntryDate,j.ModelColor,de.DescriptionName'ModelName',
 (Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
 Where joa.JobOrderId = j.JodOrderId
-Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX)))  'AccessoriesNames'
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX)))  'AccessoriesNames',apu.UserName
 from [FrontDesk].dbo.tblJobOrderTransferDetail d
 left join tblJobOrders j on d.JobOrderId=j.JodOrderId
 left join [Inventory].dbo.tblDescriptions de on j.DescriptionId=de.DescriptionId
 left join [ControlPanel].dbo.tblBranch b on d.BranchId=b.BranchId
-where 1=1{0} ) tbl
+left join [ControlPanel].dbo.tblApplicationUsers apu on d.UpUserId=apu.UserId
+where 1=1 {0}) tbl order by EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -135,7 +140,7 @@ where 1=1{0} ) tbl
                 detail.JobOrderId = jobOrderInDb.JodOrderId;
                 detail.JobOrderCode = jobOrderInDb.JobOrderCode;
                 detail.JobStatus = jobOrderInDb.StateStatus;
-                detail.TransferStatus = "Pending";
+                detail.TransferStatus = JobOrderTransferStatus.Pending;
                 detail.BranchId = branchId;
                 detail.FromBranch = branchId;
                 detail.ToBranch = transferId;
@@ -160,7 +165,7 @@ where 1=1{0} ) tbl
             var transfer = GetAllTransferJob(transferId, orgId, branchId);
             if (transfer != null)
             {
-                transfer.TransferStatus = "Received";
+                transfer.TransferStatus = JobOrderTransferStatus.Received;
                 transfer.UpUserId = userId;
                 transfer.UpdateDate = DateTime.Now;
                 _jobOrderTransferDetailRepository.Update(transfer);

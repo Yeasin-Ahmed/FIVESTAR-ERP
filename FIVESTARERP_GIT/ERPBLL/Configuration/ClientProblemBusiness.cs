@@ -65,5 +65,11 @@ namespace ERPBLL.Configuration
             clientProblemRepository.DeleteOneByOrg(client => client.ProblemId == id && client.OrganizationId == orgId);
             return clientProblemRepository.Save();
         }
+
+        public IEnumerable<ClientProblemDTO> GetClientProblemByOrgId(long orgId)
+        {
+            return _configurationDb.Db.Database.SqlQuery<ClientProblemDTO>(string.Format(@"select * from [Configuration].dbo.tblClientProblems
+where OrganizationId={0}",orgId)).ToList();
+        }
     }
 }

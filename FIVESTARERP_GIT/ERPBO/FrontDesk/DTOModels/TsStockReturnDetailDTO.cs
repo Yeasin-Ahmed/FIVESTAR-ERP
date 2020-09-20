@@ -25,5 +25,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public string PartsName { get; set; }
         public string PartsCode { get; set; }
         public string EntryUser { get; set; }
+        public string JobOrderCode { get; set; }
     }
 }

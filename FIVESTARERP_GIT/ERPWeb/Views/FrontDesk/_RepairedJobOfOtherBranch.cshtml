@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderReturnDetailViewModel>
 @{
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
 }
 <div class="col-md-12 text-sm">
     <table class="table table-bordered table-sm table-striped" id="tblPartsUsed">

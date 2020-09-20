@@ -6,7 +6,7 @@
     <div class="col-md-12 text-center">
         <div class="card card-gray shadow">
             <div class="card-header">
-                <h4>Parts Return Report</h4>
+                <h4>Return Parts Report</h4>
             </div>
         </div>
     </div>
@@ -24,6 +24,10 @@
                                 <div class="col-md-2">
                                     <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
                                     @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label font-weight-bold">JobCode</label>
+                                    <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" name="jobCode" />
                                 </div>
                                 <div class="col-md-2">
                                     <label for="ddlTechnicalServicesName" class="control-label font-weight-bold">TSName</label>
@@ -47,8 +51,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <label for="rptType">Report Type</label>
+                                <div class="col-md-1">
+                                    <label for="rptType">Type</label>
                                     <select name="rptType" id="rptType" class="form-control form-control-sm">
                                         <option value="PDF">PDF</option>
                                         <option value="EXCEL">EXCEL</option>
@@ -75,6 +79,7 @@
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+        var txtJobCode = $("#txtJobCode");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -116,7 +121,9 @@
         dptToDate.change(function () {
             LoadDataTable();
         })
-
+        txtJobCode.keyup(function () {
+            LoadDataTable();
+        })
         ddlMobileParts.change(function () {
             LoadDataTable();
         })
@@ -124,7 +131,7 @@
             LoadDataTable();
         })
         function LoadDataTable() {
-            var data = { flag: "search", mobilePartId: TryParseInt(ddlMobileParts.val(), 0), tsId: TryParseInt(ddlTechnicalServicesName.val(), 0), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+            var data = { flag: "search", mobilePartId: TryParseInt(ddlMobileParts.val(), 0), tsId: TryParseInt(ddlTechnicalServicesName.val(), 0), jobCode: txtJobCode.val().trim(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/ReturnParts', data)).then(function (res, status) {

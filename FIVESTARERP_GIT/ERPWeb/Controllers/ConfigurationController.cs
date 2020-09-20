@@ -55,21 +55,22 @@ namespace ERPWeb.Controllers
         #region tblAccessories
         public ActionResult AccessoriesList()
         {
-            IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Select(access => new AccessoriesDTO
-            {
-                AccessoriesId = access.AccessoriesId,
-                AccessoriesName = access.AccessoriesName,
-                AccessoriesCode = access.AccessoriesCode,
-                Remarks = access.Remarks,
-                StateStatus = (access.IsActive == true ? "Active" : "Inactive"),
-                OrganizationId = access.OrganizationId,
-                EUserId = access.EUserId,
-                EntryDate = access.EntryDate,
-                UpUserId = access.UpUserId,
-                UpdateDate = access.UpdateDate,
-            }).ToList();
+            //IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Select(access => new AccessoriesDTO
+            //{
+            //    AccessoriesId = access.AccessoriesId,
+            //    AccessoriesName = access.AccessoriesName,
+            //    AccessoriesCode = access.AccessoriesCode,
+            //    Remarks = access.Remarks,
+            //    StateStatus = (access.IsActive == true ? "Active" : "Inactive"),
+            //    OrganizationId = access.OrganizationId,
+            //    EUserId = access.EUserId,
+            //    EntryDate = access.EntryDate,
+            //    UpUserId = access.UpUserId,
+            //    UpdateDate = access.UpdateDate,
+            //}).ToList();
+            var accessoriesDTO = _accessoriesBusiness.GetAccessoriesByOrgId(User.OrgId);
             List<AccessoriesViewModel> viewModel = new List<AccessoriesViewModel>();
-            AutoMapper.Mapper.Map(accessoriesDTO, viewModel);
+            AutoMapper.Mapper.Map(accessoriesDTO , viewModel);
             return View(viewModel);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -114,17 +115,18 @@ namespace ERPWeb.Controllers
         #region tblClientProblem
         public ActionResult CilentProblemList()
         {
-            IEnumerable<ClientProblemDTO> clientDTO = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(client => new ClientProblemDTO
-            {
-                ProblemId = client.ProblemId,
-                ProblemName = client.ProblemName,
-                Remarks = client.Remarks,
-                OrganizationId = client.OrganizationId,
-                EUserId = client.EUserId,
-                EntryDate = client.EntryDate,
-                UpUserId = client.UpUserId,
-                UpdateDate = client.UpdateDate,
-            }).ToList();
+            //IEnumerable<ClientProblemDTO> clientDTO = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(client => new ClientProblemDTO
+            //{
+            //    ProblemId = client.ProblemId,
+            //    ProblemName = client.ProblemName,
+            //    Remarks = client.Remarks,
+            //    OrganizationId = client.OrganizationId,
+            //    EUserId = client.EUserId,
+            //    EntryDate = client.EntryDate,
+            //    UpUserId = client.UpUserId,
+            //    UpdateDate = client.UpdateDate,
+            //}).ToList();
+            var clientDTO = _clientProblemBusiness.GetClientProblemByOrgId(User.OrgId);
             List<ClientProblemViewModel> viewModel = new List<ClientProblemViewModel>();
             AutoMapper.Mapper.Map(clientDTO, viewModel);
             return View(viewModel);
@@ -170,18 +172,19 @@ namespace ERPWeb.Controllers
         #region tblMobilePart
         public ActionResult MobilePartList()
         {
-            IEnumerable<MobilePartDTO> mobilePartDTO = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(part => new MobilePartDTO
-            {
-                MobilePartId = part.MobilePartId,
-                MobilePartName = part.MobilePartName,
-                MobilePartCode = part.MobilePartCode,
-                Remarks = part.Remarks,
-                OrganizationId = part.OrganizationId,
-                EUserId = part.EUserId,
-                EntryDate = part.EntryDate,
-                UpUserId = part.UpUserId,
-                UpdateDate = part.UpdateDate,
-            }).ToList();
+            //IEnumerable<MobilePartDTO> mobilePartDTO = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(part => new MobilePartDTO
+            //{
+            //    MobilePartId = part.MobilePartId,
+            //    MobilePartName = part.MobilePartName,
+            //    MobilePartCode = part.MobilePartCode,
+            //    Remarks = part.Remarks,
+            //    OrganizationId = part.OrganizationId,
+            //    EUserId = part.EUserId,
+            //    EntryDate = part.EntryDate,
+            //    UpUserId = part.UpUserId,
+            //    UpdateDate = part.UpdateDate,
+            //}).ToList();
+            var mobilePartDTO = _mobilePartBusiness.GetMobilePartByOrgId(User.OrgId);
             List<MobilePartViewModel> viewModel = new List<MobilePartViewModel>();
             AutoMapper.Mapper.Map(mobilePartDTO, viewModel);
             return View(viewModel);
@@ -407,18 +410,19 @@ namespace ERPWeb.Controllers
         #region tblServicesWarehouse
         public ActionResult ServicesWarehouseList()
         {
-            IEnumerable<ServicesWarehouseDTO> servicesWarehouseDTO = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new ServicesWarehouseDTO
-            {
-                SWarehouseId = ware.SWarehouseId,
-                ServicesWarehouseName = ware.ServicesWarehouseName,
-                Remarks = ware.Remarks,
-                OrganizationId = ware.OrganizationId,
-                BranchId = ware.BranchId,
-                EUserId = ware.EUserId,
-                EntryDate = DateTime.Now,
-                UpUserId = ware.UpUserId,
-                UpdateDate = DateTime.Now,
-            }).ToList();
+            //IEnumerable<ServicesWarehouseDTO> servicesWarehouseDTO = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new ServicesWarehouseDTO
+            //{
+            //    SWarehouseId = ware.SWarehouseId,
+            //    ServicesWarehouseName = ware.ServicesWarehouseName,
+            //    Remarks = ware.Remarks,
+            //    OrganizationId = ware.OrganizationId,
+            //    BranchId = ware.BranchId,
+            //    EUserId = ware.EUserId,
+            //    EntryDate = DateTime.Now,
+            //    UpUserId = ware.UpUserId,
+            //    UpdateDate = DateTime.Now,
+            //}).ToList();
+            var servicesWarehouseDTO = _servicesWarehouseBusiness.GetServiceWarehouseByOrgId(User.OrgId, User.BranchId);
             List<ServicesWarehouseViewModel> viewModel = new List<ServicesWarehouseViewModel>();
             AutoMapper.Mapper.Map(servicesWarehouseDTO, viewModel);
             return View(viewModel);

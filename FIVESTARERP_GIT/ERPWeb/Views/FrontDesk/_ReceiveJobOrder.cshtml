@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderTransferDetailViewModel>
 @{ 
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     string badge = string.Empty;
     string badge1 = string.Empty;
 }
@@ -21,7 +22,8 @@
                 <th class="hide"></th>
                 <th>FromBranch</th>
                 <th>EntryDate</th>
-                <th>Action</th>
+                <th>Received By</th>
+                <th class="action">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -48,8 +50,9 @@
                 </td>
                 <td class="hide">@rec.BranchId</td>
                 <td>@rec.FromBranchName</td>
-                <th>@EntryDate</th>
-                <td class="text-center">
+                <td>@EntryDate</td>
+                <td>@rec.ReceivedBy</td>
+                <td class="text-center action">
                     @if (rec.TransferStatus == "Pending")
                     {
                         <a class="btn btn-sm btn-outline-success  data-item-received" title="Receive Job Order" data-item-received="@rec.JobOrderTransferDetailId" ><i class="fas fa-download"></i></a>
@@ -68,4 +71,7 @@
             }
         </tbody>
     </table>
+</div>
+<div class="col-md-12">
+    @Html.Partial("_Pagination", pagerData)
 </div>

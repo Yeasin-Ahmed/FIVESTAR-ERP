@@ -39,6 +39,12 @@ where OrganizationId={0}", orgId)).ToList();
             return mobilePartRepository.GetAll(part => part.OrganizationId == orgId).ToList();
         }
 
+        public IEnumerable<MobilePartDTO> GetMobilePartByOrgId(long orgId)
+        {
+            return _configurationDb.Db.Database.SqlQuery<MobilePartDTO>(string.Format(@"select * from [Configuration].dbo.tblMobileParts
+where OrganizationId={0}", orgId)).ToList();
+        }
+
         public MobilePart GetMobilePartOneByOrgId(long id, long orgId)
         {
             return mobilePartRepository.GetOneByOrg(part => part.MobilePartId == id && part.OrganizationId == orgId);

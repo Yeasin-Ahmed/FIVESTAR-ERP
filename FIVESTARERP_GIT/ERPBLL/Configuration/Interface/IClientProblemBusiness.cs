@@ -15,5 +15,6 @@ namespace ERPBLL.Configuration.Interface
         bool IsDuplicateProblemName(string problemName, long id, long orgId);
         ClientProblem GetClientProblemOneByOrgId(long id, long orgId);
         bool DeleteClientProblem(long id, long orgId);
+        IEnumerable<ClientProblemDTO> GetClientProblemByOrgId(long orgId);
     }
 }

@@ -16,6 +16,7 @@
             <th>StateStatus</th>
             <th class="action">Remarks</th>
             <th class="hide"></th>
+            <th>BranchName</th>
             <th>TSName</th>
             <th>EntryDate</th>
             <th class="action">Actions</th>
@@ -37,6 +38,7 @@
                 </td>
                 <td class="action">@info.Remarks</td>
                 <td class="hide">@info.EUserId</td>
+                <td>@info.BranchName</td>
                 <td>@info.Requestby</td>
                 <td>@info.EntryDate.Value.ToString("dd-MMM-yyyy hh:mm tt")</td>
                 <td class="text-center action">
@@ -47,7 +49,7 @@
         @if (Model.Count() == 0)
         {
             <tr class="text-center empty-row">
-                <td colspan="13">
+                <td colspan="6">
                     No data available in table
                 </td>
             </tr>

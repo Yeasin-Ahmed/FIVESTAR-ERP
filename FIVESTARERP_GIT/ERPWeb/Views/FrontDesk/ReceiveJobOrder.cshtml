@@ -37,6 +37,10 @@
                         <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
                     </div>
                     <div class="col-md-2">
+                        <label class="control-label font-weight-bold">TransferStatus</label>
+                        @Html.DropDownList("ddlTransferStatus", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
+                    </div>
+                    <div class="col-md-2">
                         <label class="control-label font-weight-bold">From Date</label>
                         <div class="input-group input-group-sm ">
                             <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
@@ -81,6 +85,7 @@
         var txtJobCode = $("#txtJobCode");
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
+        var ddlTransferStatus = $("#ddlTransferStatus");
 
         $(document).ready(function () {
 
@@ -133,6 +138,9 @@
         ddlBranchName.change(function () {
             LoadDataTable();
         })
+        ddlTransferStatus.change(function () {
+            LoadDataTable();
+        })
         dptFromDate.change(function () {
             LoadDataTable();
         })
@@ -140,7 +148,7 @@
             LoadDataTable();
         })
         function LoadDataTable() {
-            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0), jobCode: txtJobCode.val(), transferCode: txtTransferCode.val(),fromDate: dptFromDate.val(), toDate: dptToDate.val() };
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0), jobCode: txtJobCode.val(), transferCode: txtTransferCode.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), tstatus: ddlTransferStatus.val() };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/ReceiveJobOrder', data)).then(function (res, status) {

@@ -55,11 +55,11 @@ namespace ERPBLL.FrontDesk
             return requsitionInfoForJobOrderRepository.GetOneByOrg(info => info.RequsitionInfoForJobOrderId == ReqId && info.OrganizationId == orgId && info.BranchId == branchId);
         }
 
-        public IEnumerable<RequsitionInfoForJobOrderDTO> GetRequsitionInfoData(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, long orgId, long branchId)
+        public IEnumerable<RequsitionInfoForJobOrderDTO> GetRequsitionInfoData(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, long orgId, long branchId,string jobCode)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<RequsitionInfoForJobOrderDTO>(QueryForRequsitionInfoData( reqCode,   warehouseId,   tsId,  status,  fromDate,  toDate,  orgId,  branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<RequsitionInfoForJobOrderDTO>(QueryForRequsitionInfoData( reqCode,   warehouseId,   tsId,  status,  fromDate,  toDate,  orgId,  branchId,jobCode)).ToList();
         }
-        private string QueryForRequsitionInfoData(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, long orgId, long branchId)
+        private string QueryForRequsitionInfoData(string reqCode, long? warehouseId, long? tsId, string status, string fromDate, string toDate, long orgId, long branchId,string jobCode)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -87,6 +87,10 @@ namespace ERPBLL.FrontDesk
             {
                 param += string.Format(@"and q.StateStatus ='{0}'", status);
             }
+            if (!string.IsNullOrEmpty(jobCode))
+            {
+                param += string.Format(@"and j.JobOrderCode Like '%{0}%'", jobCode);
+            }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
                 string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
@@ -104,12 +108,12 @@ namespace ERPBLL.FrontDesk
                 param += string.Format(@" and Cast(q.EntryDate as date)='{0}'", tDate);
             }
             query = string.Format(@"Select RequsitionInfoForJobOrderId,RequsitionCode,SWarehouseId,q.StateStatus,
-JobOrderId,q.JobOrderCode,q.Remarks,q.BranchId,q.OrganizationId,q.EUserId,j.IsTransfer,
+JobOrderId,q.JobOrderCode,q.Remarks,q.BranchId,q.OrganizationId,q.EUserId,j.IsTransfer,j.JobOrderCode 'JobCode',
 app.UserName'Requestby',
 q.EntryDate,UserBranchId From tblRequsitionInfoForJobOrders q
 inner join tblJobOrders j on q.JobOrderId=j.JodOrderId 
 inner join[ControlPanel].dbo.tblApplicationUsers app on q.OrganizationId = app.OrganizationId and q.EUserId= app.UserId 
-where j.IsTransfer IS NULL and 1=1{0}
+where j.IsTransfer IS NULL and 1=1 {0}
 order by EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
@@ -241,11 +245,12 @@ order by EntryDate desc
                 string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
                 param += string.Format(@" and Cast(q.EntryDate as date)='{0}'", tDate);
             }
-            query = string.Format(@"Select RequsitionInfoForJobOrderId,RequsitionCode,SWarehouseId,q.StateStatus,
+            query = string.Format(@"Select RequsitionInfoForJobOrderId,RequsitionCode,SWarehouseId,q.StateStatus,b.BranchName,
 JobOrderId,q.JobOrderCode,q.Remarks,q.BranchId,q.OrganizationId,q.EUserId,j.IsTransfer,j.TransferBranchId,app.UserName'Requestby',
 q.EntryDate,UserBranchId From tblRequsitionInfoForJobOrders q
 left join tblJobOrders j on q.JobOrderId=j.JodOrderId
-inner join[ControlPanel].dbo.tblApplicationUsers app on q.OrganizationId = app.OrganizationId and q.EUserId= app.UserId 
+inner join[ControlPanel].dbo.tblApplicationUsers app on q.OrganizationId = app.OrganizationId and q.EUserId= app.UserId
+left join [ControlPanel].dbo.tblBranch b on q.BranchId=b.BranchId
 where j.IsTransfer='True' and 1=1{0}
 order by q.EntryDate desc
 ", Utility.ParamChecker(param));

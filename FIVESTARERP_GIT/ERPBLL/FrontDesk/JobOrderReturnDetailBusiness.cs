@@ -25,11 +25,11 @@ namespace ERPBLL.FrontDesk
             this._jobOrderBusiness = jobOrderBusiness;
         }
 
-        public IEnumerable<JobOrderReturnDetailDTO> GetReturnJobOrder(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
+        public IEnumerable<JobOrderReturnDetailDTO> GetReturnJobOrder(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate, string tstatus)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderReturnDetailDTO>(QueryForGetReturnJob(orgId, branchId, branchName, jobCode, transferCode,fromDate,toDate)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderReturnDetailDTO>(QueryForGetReturnJob(orgId, branchId, branchName, jobCode, transferCode,fromDate,toDate,tstatus)).ToList();
         }
-        private string QueryForGetReturnJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate)
+        private string QueryForGetReturnJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate,string tstatus)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -48,6 +48,10 @@ namespace ERPBLL.FrontDesk
             if (!string.IsNullOrEmpty(jobCode))
             {
                 param += string.Format(@"and d.JobOrderCode Like '%{0}%'", jobCode);
+            }
+            if (!string.IsNullOrEmpty(tstatus))
+            {
+                param += string.Format(@"and d.TransferStatus ='{0}'", tstatus);
             }
             if (!string.IsNullOrEmpty(transferCode))
             {
@@ -71,17 +75,18 @@ namespace ERPBLL.FrontDesk
             }
 
             query = string.Format(@"Select JobOrderReturnDetailId,BranchId,TransferCode,JobOrderId,JobOrderCode,JobStatus,
-TransferStatus,FromBranchName,EntryDate,ModelColor,ModelName,SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames' From (Select d.JobOrderReturnDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,
+TransferStatus,FromBranchName,EntryDate,ModelColor,ModelName,SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',UserName'ReceivedBy' From (Select d.JobOrderReturnDetailId,d.BranchId,d.TransferCode,d.JobOrderId,d.JobOrderCode,d.JobStatus,
 d.TransferStatus,b.BranchName'FromBranchName',d.EntryDate,j.ModelColor,de.DescriptionName'ModelName',
 (Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
 Where joa.JobOrderId = j.JodOrderId
-Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX)))  'AccessoriesNames'
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX)))  'AccessoriesNames',apu.UserName
 from [FrontDesk].dbo.tblJobOrderReturnDetails d
 left join tblJobOrders j on d.JobOrderId=j.JodOrderId
 left join [Inventory].dbo.tblDescriptions de on j.DescriptionId=de.DescriptionId
 left join [ControlPanel].dbo.tblBranch b on d.BranchId=b.BranchId
-where 1=1 {0}) tbl", Utility.ParamChecker(param));
+left join [ControlPanel].dbo.tblApplicationUsers apu on d.UpUserId=apu.UserId
+where 1=1 {0}) tbl order by EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -121,7 +126,7 @@ where 1=1 {0}) tbl", Utility.ParamChecker(param));
             var receive = GetOneByOrgId(returnId, orgId, branchId);
             if (receive != null)
             {
-                receive.TransferStatus = "Received";
+                receive.TransferStatus = JobOrderTransferStatus.Received;
                 receive.UpUserId = userId;
                 receive.UpdateDate = DateTime.Now;
                 _jobOrderReturnDetailRepository.Update(receive);
@@ -216,7 +221,7 @@ Select JobOrderId From tblJobOrderReturnDetails Where TransferCode='{0}' and Org
                 detail.JobOrderId = jobOrderInDb.JodOrderId;
                 detail.JobOrderCode = jobOrderInDb.JobOrderCode;
                 detail.JobStatus = jobOrderInDb.StateStatus;
-                detail.TransferStatus = "Pending";
+                detail.TransferStatus = JobOrderTransferStatus.Pending;
                 detail.BranchId = branchId;
                 detail.FromBranch = branchId;
                 detail.ToBranch = transferId;

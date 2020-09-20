@@ -30,6 +30,12 @@ namespace ERPBLL.Configuration
             return servicesWarehouseRepository.GetAll(ware => ware.OrganizationId == orgId && ware.BranchId== branchId).ToList();
         }
 
+        public IEnumerable<ServicesWarehouseDTO> GetServiceWarehouseByOrgId(long orgId, long branchId)
+        {
+            return _configurationDb.Db.Database.SqlQuery<ServicesWarehouseDTO>(string.Format(@"select * from [Configuration].dbo.tblServiceWarehouses
+where OrganizationId={0} and BranchId={1}", orgId, branchId)).ToList();
+        }
+
         public ServiceWarehouse GetServiceWarehouseOneByOrgId(long id, long orgId, long branchId)
         {
             return servicesWarehouseRepository.GetOneByOrg(ware => ware.SWarehouseId == id && ware.OrganizationId == orgId && ware.BranchId == branchId);

@@ -27,5 +27,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public string AccessoriesNames { get; set; }
         public string ModelColor { get; set; }
         public string ModelName { get; set; }
+        public string ReceivedBy { get; set; }
     }
 }

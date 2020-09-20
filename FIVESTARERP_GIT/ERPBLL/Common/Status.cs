@@ -27,6 +27,11 @@ namespace ERPBLL.Common
         public static readonly string FreshStock = "FreshStock";
         public static readonly string FaultyStock = "FaultyStock";
     }
+    public class JobOrderTransferStatus
+    {
+        public static readonly string Received = "Received";
+        public static readonly string Pending = "Pending";
+    }
     public class StockStatus
     {
         public static readonly string StockIn = "Stock-In";

@@ -9,33 +9,38 @@
             <tr class="text-center">
                 <th>#SL</th>
                 <th>RequsitionCode</th>
+                <th>JobCode</th>
                 <th class="hide"></th>
                 <th>Parts Name</th>
                 <th>Parts Code</th>
                 <th>UseQty</th>
                 <th class="hide"></th>
                 <th>TSName</th>
+                <th>Issue Date</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var part in Model)
             {
                 sl = sl + 1;
+                string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy hh:mm tt") : "";
                 <tr>
                     <td class="text-center" width="10%">@sl</td>
                     <td>@part.RequsitionCode</td>
+                    <td>@part.JobOrderCode</td>
                     <td class="hide">@part.PartsId</td>
                     <td>@part.PartsName</td>
                     <td class="text-center">@part.MobilePartCode</td>
                     <td class="text-center">@part.UsedQty</td>
                     <td class="hide">@part.UpUserId</td>
                     <td>@part.UserName</td>
+                    <th>@entryDate</th>
                 </tr>
             }
             @if (Model.Count() == 0)
             {
                 <tr class="text-center empty-row">
-                    <td colspan="5">
+                    <td colspan="6">
                         No Rows Found
                     </td>
                 </tr>
