@@ -16,6 +16,10 @@
         @Html.DropDownList("SupplierId", (IEnumerable<SelectListItem>)ViewBag.ddlSupplierName, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger" })
     </div>
     <div class="form-group col-md-12">
+        <label for="ddlBomItem" class="control-label">BOM Item</label>
+        @Html.DropDownList("BomItemId", (IEnumerable<SelectListItem>)ViewBag.ddlBomItem, "--Select Target Item--", new { @class = "form-control form-control-sm select2 select2-danger" })
+    </div>
+    <div class="form-group col-md-12">
         <label class="control-label">Select File</label>
         <input type="file" id="FileUpload" name="FileUpload" class="form-control FileUpload" />
     </div>

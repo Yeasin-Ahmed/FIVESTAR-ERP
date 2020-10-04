@@ -18,13 +18,21 @@ namespace ERPWeb.Controllers
     {
         private readonly IProductionReportBusiness _productionReportBusiness; // Production
         private readonly IWarehouseStockDetailBusiness _warehouseStockDetailBusiness;
+        private readonly IInventoryReportBusiness _inventoryReportBusiness;
+        private readonly IDescriptionBusiness _descriptionBusiness;
+        private readonly IWarehouseBusiness _warehouseBusiness;
+        private readonly ISupplierBusiness _supplierBusiness;
 
-        public ReportController(IProductionReportBusiness productionReportBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness)
+        public ReportController(IProductionReportBusiness productionReportBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IInventoryReportBusiness inventoryReportBusiness, IDescriptionBusiness descriptionBusiness, IWarehouseBusiness warehouseBusiness, ISupplierBusiness supplierBusiness)
         {
             this._productionReportBusiness = productionReportBusiness;
 
             #region Inventory
             this._warehouseStockDetailBusiness = warehouseStockDetailBusiness;
+            this._inventoryReportBusiness = inventoryReportBusiness;
+            this._descriptionBusiness = descriptionBusiness;
+            this._warehouseBusiness = warehouseBusiness;
+            this._supplierBusiness = supplierBusiness;
             #endregion
 
         }
@@ -152,6 +160,24 @@ namespace ERPWeb.Controllers
 
             return File(fileBytes, fileMimeType);
         }
+        #region InventoryReportPanel
+
+        public ActionResult InventoryReportPanel()
+        {
+            ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem
+            {
+                Text = ware.WarehouseName,
+                Value = ware.Id.ToString()
+            }).ToList();
+            ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
+            {
+                Text = s.text,
+                Value = s.value
+            }).ToList();
+            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+            ViewBag.ddlSupplier = _supplierBusiness.GetSuppliers(User.OrgId).Select(sup => new SelectListItem { Text = sup.SupplierName, Value = sup.SupplierId.ToString() }).ToList();
+            return View();
+        }
 
         public ActionResult GetWarehouseStockShortageOrExcess(string fromDate, string toDate, long model, string format)
         {
@@ -160,11 +186,41 @@ namespace ERPWeb.Controllers
             byte[] fileBytes = null;
             string fileMimeType = null;
             string rptType = format;
-            GetReportFileByOneDataSource(path, data, "ShortageOrExcess", rptType,out fileBytes, out fileMimeType);
-            return File(fileBytes, fileMimeType);
+            GetReportFileByOneDataSource(path, data, "ShortageOrExcess", rptType, out fileBytes, out fileMimeType);
+
+            var fileName = "StockShortageOrExcessReport_" + DateTime.Now.ToString("dd-MMM-yyyy") + (format == "PDF" ? ".pdf" : (format == "EXCEL" ? ".xls" : ".doc"));
+            if (format == "PDF")
+            {
+                return File(fileBytes, fileMimeType);
+            }
+            else
+            {
+                return File(fileBytes, fileMimeType, fileName);
+            }
+        } 
+
+        public ActionResult GetWarehouseModelWiseTodayStockReport(long model, string format)
+        {
+            var data = _inventoryReportBusiness.GetModelWiseDailyItemStocks(User.OrgId, model);
+            string path = string.Format(@"~/Reports/ERPRpt/Inventory/rptModelWiseDailyItemStock.rdlc");
+            byte[] fileBytes = null;
+            string fileMimeType = null;
+            string rptType = format;
+            GetReportFileByOneDataSource(path, data, "ModelWiseDailyItemStock", rptType, out fileBytes, out fileMimeType);
+
+            var fileName = "ModelWiseDailyItemStockReport_" + DateTime.Now.ToString("dd-MMM-yyyy") + (format == "PDF" ? ".pdf" : (format == "EXCEL" ? ".xls" : ".doc"));
+            if (format == "PDF")
+            {
+                return File(fileBytes, fileMimeType);
+            }
+            else
+            {
+                return File(fileBytes, fileMimeType, fileName);
+            }
         }
         #endregion
 
+        #endregion
         private void GetReportFileByOneDataSource(string path, object reportData, string dataSourceName, string rptType, out byte[] fileBytes, out string fileMimeType)
         {
             fileBytes = null;

@@ -35,7 +35,7 @@ namespace ERPWeb.Controllers
             this._moduleBusiness = moduleBusiness;
             this._maniMenuBusiness = maniMenuBusiness;
             this._subMenuBusiness = subMenuBusiness;
-            this._organizationAuthBusiness= organizationAuthBusiness;
+            this._organizationAuthBusiness = organizationAuthBusiness;
             this._userAuthorizationBusiness = userAuthorizationBusiness;
             this._roleAuthorizationBusiness = roleAuthorizationBusiness;
         }
@@ -47,7 +47,7 @@ namespace ERPWeb.Controllers
         {
             IEnumerable<OrganizationDTO> organizationDTOs = _organizationBusiness.GetAllOrganizations().Select(org => new OrganizationDTO
             {
-                OrgId =org.OrganizationId,
+                OrgId = org.OrganizationId,
                 OrganizationName = org.OrganizationName,
                 ShortName = org.ShortName,
                 Address = org.Address,
@@ -111,7 +111,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = _organizationBusiness.SaveOrganization(dto, User.UserId);
             }
-            
+
             return Json(IsSuccess);
         }
         #endregion
@@ -128,7 +128,7 @@ namespace ERPWeb.Controllers
                 BranchName = br.BranchName,
                 ShortName = br.ShortName,
                 MobileNo = br.MobileNo,
-                Address=br.Address,
+                Address = br.Address,
                 Email = br.Email,
                 PhoneNo = br.PhoneNo,
                 Fax = br.Fax,
@@ -146,8 +146,9 @@ namespace ERPWeb.Controllers
         {
             var pre = UserPrivilege("ControlPanel", "GetBranchList");
             var permission = ((pre.Edit) || (pre.Add));
+            // && permission
             bool isSuccess = false;
-            if (ModelState.IsValid && permission)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -161,6 +162,156 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
+        }
+        #endregion
+
+        #region User Config
+        // For System Admin
+        public ActionResult AppUserConfiguration(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Branch")
+            {
+                
+                IEnumerable<BranchViewModel> branchViewModels = _branchBusiness.GetAllBranches().Select(br => new BranchViewModel
+                {
+                    BranchId = br.BranchId,
+                    BranchName = br.BranchName,
+                    ShortName = br.ShortName,
+                    MobileNo = br.MobileNo,
+                    Address = br.Address,
+                    Email = br.Email,
+                    PhoneNo = br.PhoneNo,
+                    Fax = br.Fax,
+                    StateStatus = (br.IsActive == true ? "Active" : "Inactive"),
+                    Remarks = br.Remarks,
+                    OrgId = br.OrganizationId,
+                    OrganizationName = (_organizationBusiness.GetOrganizationById(br.OrganizationId).OrganizationName),
+                    EntryUser = UserForEachRecord(br.EUserId.Value).UserName,
+                    UpdateUser = (br.UpUserId == null || br.UpUserId == 0) ? "" : UserForEachRecord(br.UpUserId.Value).UserName
+                }).OrderBy(br => br.BranchId).ToList();
+                return PartialView("_GetBranch", branchViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Role")
+            {
+                ViewBag.OPFor = "System";
+                List<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoles().Select(role => new RoleViewModel
+                {
+                    RoleId = role.RoleId,
+                    RoleName = role.RoleName,
+                    OrganizationId = role.OrganizationId,
+                    OrganizationName = (_organizationBusiness.GetOrganizationById(role.OrganizationId).OrganizationName),
+                    EntryUser = UserForEachRecord(role.EUserId.Value).UserName,
+                    UpdateUser = (role.UpUserId == null || role.UpUserId == 0) ? "" : UserForEachRecord(role.UpUserId.Value).UserName
+                }).OrderBy(role => role.RoleId).ToList();
+                return PartialView("_GetRole", roleViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "User")
+            {
+                ViewBag.OPFor = "System";
+                var data = _appUserBusiness.GetAllAppUsers();
+                IEnumerable<AppUserViewModel> appUserViewModels = data.Select(user => new AppUserViewModel
+                {
+                    UserId = user.UserId,
+                    EmployeeId = user.EmployeeId,
+                    FullName = user.FullName,
+                    MobileNo = user.MobileNo,
+                    Address = user.Address,
+                    Email = user.Email,
+                    Desigation = user.Desigation,
+                    UserName = user.UserName,
+                    Password = Utility.Decrypt(user.Password),
+                    StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
+                    StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
+                    OrganizationId = user.OrganizationId,
+                    OrganizationName = (_organizationBusiness.GetOrganizationById(user.OrganizationId).OrganizationName),
+                    BranchId = user.BranchId,
+                    BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, user.OrganizationId).BranchName),
+                    RoleId = user.RoleId,
+                    RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, user.OrganizationId).RoleName),
+                    EntryUser = UserForEachRecord(user.EUserId.Value).UserName,
+                    UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
+                }).OrderBy(user => user.UserId).ToList();
+                return PartialView("_GetUsers",appUserViewModels);
+            }
+            return Content("");
+        }
+
+        // For App Client
+        public ActionResult ClientUserConfiguration(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Branch")
+            {
+                IEnumerable<BranchViewModel> branchViewModels = _branchBusiness.GetBranchByOrgId(User.OrgId).Select(br => new BranchViewModel
+                {
+                    BranchId = br.BranchId,
+                    BranchName = br.BranchName,
+                    ShortName = br.ShortName,
+                    MobileNo = br.MobileNo,
+                    Address = br.Address,
+                    Email = br.Email,
+                    PhoneNo = br.PhoneNo,
+                    Fax = br.Fax,
+                    StateStatus = (br.IsActive == true ? "Active" : "Inactive"),
+                    Remarks = br.Remarks,
+                    OrgId = br.OrganizationId,
+                    OrganizationName = (_organizationBusiness.GetOrganizationById(br.OrganizationId).OrganizationName),
+                    EntryUser = UserForEachRecord(br.EUserId.Value).UserName,
+                    UpdateUser = (br.UpUserId == null || br.UpUserId == 0) ? "" : UserForEachRecord(br.UpUserId.Value).UserName
+                }).OrderBy(br => br.BranchId).ToList();
+                return PartialView("_GetBranch", branchViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Role")
+            {
+                List<RoleViewModel> roleViewModels = _roleBusiness.GetAllRoleByOrgId(User.OrgId).Select(role => new RoleViewModel
+                {
+                    RoleId = role.RoleId,
+                    RoleName = role.RoleName,
+                    OrganizationId = role.OrganizationId,
+                    OrganizationName = (_organizationBusiness.GetOrganizationById(User.OrgId).OrganizationName),
+                    EntryUser = UserForEachRecord(role.EUserId.Value).UserName,
+                    UpdateUser = (role.UpUserId == null || role.UpUserId == 0) ? "" : UserForEachRecord(role.UpUserId.Value).UserName
+                }).OrderBy(role => role.RoleId).ToList();
+                ViewBag.OPFor = "Client";
+                return PartialView("_GetRole", roleViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "User")
+            {
+                ViewBag.OPFor = "Client";
+                var data = _appUserBusiness.GetAllAppUserByOrgId(User.OrgId);
+                IEnumerable<AppUserViewModel> appUserViewModels = data.Select(user => new AppUserViewModel
+                {
+                    UserId = user.UserId,
+                    EmployeeId = user.EmployeeId,
+                    FullName = user.FullName,
+                    MobileNo = user.MobileNo,
+                    Address = user.Address,
+                    Email = user.Email,
+                    Desigation = user.Desigation,
+                    UserName = user.UserName,
+                    Password = Utility.Decrypt(user.Password),
+                    StateStatus = (user.IsActive == true ? "Active" : "Inactive"),
+                    StateStatusRole = (user.IsRoleActive == true ? "Active" : "Inactive"),
+                    OrganizationId = user.OrganizationId,
+                    OrganizationName = (_organizationBusiness.GetOrganizationById(user.OrganizationId).OrganizationName),
+                    BranchId = user.BranchId,
+                    BranchName = (_branchBusiness.GetBranchOneByOrgId(user.BranchId, user.OrganizationId).BranchName),
+                    RoleId = user.RoleId,
+                    RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, user.OrganizationId).RoleName),
+                    EntryUser = UserForEachRecord(user.EUserId.Value).UserName,
+                    UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
+                }).OrderBy(user => user.UserId).ToList();
+                return PartialView("_GetUsers", appUserViewModels);
+            }
+            return Content("");
         }
         #endregion
 
@@ -182,6 +333,7 @@ namespace ERPWeb.Controllers
 
             return View(roleViewModels);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveRole(RoleViewModel roleViewModel)
         {
             bool isSuccess = false;
@@ -202,6 +354,49 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
+        public ActionResult CreateAppRole(long id = 0)
+        {
+            ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(s => new SelectListItem
+            {
+                Text = s.OrganizationName,
+                Value = s.OrganizationId.ToString()
+            }).ToList();
+            ViewBag.Id = id;
+            ViewBag.PageHead = id > 0 ? "Update User Role" : "Create User Role";
+            ViewBag.RoleName = id > 0 ? _roleBusiness.GetRoleById(id).RoleName : "";
+            ViewBag.OrgId = id > 0 ? _roleBusiness.GetRoleById(id).OrganizationId.ToString() : "";
+            return View();
+
+        }
+        public ActionResult CreateUserRole(long id = 0)
+        {
+            ViewBag.Id = id;
+            ViewBag.PageHead = id > 0 ? "Update User Role" : "Create User Role";
+            ViewBag.RoleName = id > 0 ? _roleBusiness.GetRoleById(id).RoleName : "";
+            ViewBag.OrgId = id > 0 ? _roleBusiness.GetRoleById(id).OrganizationId.ToString() : "";
+            return View();
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveAppRole(RoleViewModel role, List<RoleAuthorizationViewModel> models)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                RoleDTO dto = new RoleDTO();
+                AutoMapper.Mapper.Map(role, dto);
+                var execution = _roleBusiness.SaveAppRole(dto, User.UserId, role.OrganizationId);
+                if (execution.isSuccess)
+                {
+                    List<RoleAuthorizationDTO> roleAuthorizationDTOs = new List<RoleAuthorizationDTO>();
+                    models.FirstOrDefault().RoleId = Convert.ToInt64(execution.text);
+                    AutoMapper.Mapper.Map(models, roleAuthorizationDTOs);
+                    isSuccess = _roleAuthorizationBusiness.SaveRoleAuthorization(roleAuthorizationDTOs, User.UserId, User.OrgId);
+                }
+
+            }
+            return Json(isSuccess);
+        }
         #endregion
 
         #region AppUser
@@ -210,7 +405,7 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetAppUserList");
             ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
 
-             var data =_appUserBusiness.GetAllAppUsers();
+            var data = _appUserBusiness.GetAllAppUsers();
 
             IEnumerable<AppUserViewModel> appUserViewModels = data.Select(user => new AppUserViewModel
             {
@@ -236,7 +431,49 @@ namespace ERPWeb.Controllers
             }).OrderBy(user => user.UserId).ToList();
             return View(appUserViewModels);
         }
-        [HttpPost,ValidateJsonAntiForgeryToken]
+
+        public ActionResult CreateAppUser(string flag, long id = 0)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlOrganizationName = _organizationBusiness.GetAllOrganizations().Select(br => new SelectListItem { Text = br.OrganizationName, Value = br.OrganizationId.ToString() });
+                ViewBag.Id = id;
+                ViewBag.PageHead = id > 0 ? "Update Application User" : "Create Application User";
+                return View();
+            }
+            else
+            {
+                var dto = _appUserBusiness.GetAppUserInfoById(id, User.OrgId);
+                if (dto != null)
+                {
+                    dto.Password = Utility.Decrypt(dto.Password);
+                    dto.ConfirmPassword = dto.Password;
+                }
+                return Json(dto);
+            }
+        }
+
+        public ActionResult CreateClientUser(string flag, long id = 0)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.Id = id;
+                ViewBag.PageHead = id > 0 ? "Update User Info" : "Create User";
+                return View();
+            }
+            else
+            {
+                var dto = _appUserBusiness.GetAppUserInfoById(id, User.OrgId);
+                if (dto != null)
+                {
+                    dto.Password = Utility.Decrypt(dto.Password);
+                    dto.ConfirmPassword = dto.Password;
+                }
+                return Json(dto);
+            }
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveAppUser(AppUserViewModel appUserViewModel)
         {
             bool isSuccess = false;
@@ -254,6 +491,28 @@ namespace ERPWeb.Controllers
                 catch (Exception ex)
                 {
                     isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveApplicationUser(AppUserViewModel appUser, List<UserAuthorizationViewModel> models)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                AppUserDTO dto = new AppUserDTO();
+                appUser.Password = Utility.Encrypt(appUser.Password);
+                appUser.ConfirmPassword = appUser.Password;
+                AutoMapper.Mapper.Map(appUser, dto);
+                var appExecuation = _appUserBusiness.SaveAppUser2(dto, User.UserId, User.OrgId);
+                if (appExecuation.isSuccess)
+                {
+                    List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
+                    models.FirstOrDefault().UserId = Convert.ToInt64(appExecuation.text);
+                    AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
+                    isSuccess = _userAuthorizationBusiness.SaveUserAuthorization(userAuthorizationDTOs, User.UserId, User.OrgId);
                 }
             }
             return Json(isSuccess);
@@ -370,7 +629,7 @@ namespace ERPWeb.Controllers
                 ParentSubmenuName = (sub.ParentSubMenuId > 0 ? _subMenuBusiness.GetSubMenuOneById(sub.ParentSubMenuId.Value).SubMenuName : ""),
                 MMId = sub.MMId,
                 MenuName = (_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
-                
+
                 EntryUser = UserForEachRecord(sub.EUserId.Value).UserName,
                 UpdateUser = (sub.UpUserId == null || sub.UpUserId == 0) ? "" : UserForEachRecord(sub.UpUserId.Value).UserName
             }).ToList();
@@ -401,7 +660,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Orgainzation Auth
-        public ActionResult GetMainMenusForOrgAuth(string flag,long? orgId)
+        public ActionResult GetMainMenusForOrgAuth(string flag, long? orgId)
         {
             ViewBag.UserPrivilege = UserPrivilege("ControlPanel", "GetMainMenusForOrgAuth");
             if (string.IsNullOrEmpty(flag))
@@ -444,7 +703,7 @@ namespace ERPWeb.Controllers
             }
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveOrganizationAuthMenus(OrgAuthMenusViewModels viewModels)
         {
             bool IsSuccess = false;
@@ -475,51 +734,59 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                List<VmUserModule> listVmUserModule = new List<VmUserModule>();
-                IEnumerable<UserCustomMenusDTO> userCustomMenus = _userAuthorizationBusiness.GetUserCustomMenus(userId.Value, orgId.Value);
+
                 var userDto = _appUserBusiness.GetUserDetail(userId.Value, orgId.Value);
                 UserDetaildViewModel userDetaildViewModel = new UserDetaildViewModel();
                 AutoMapper.Mapper.Map(userDto, userDetaildViewModel);
-                if (userCustomMenus.Count() > 0)
-                {
-                    var modules = (from m in userCustomMenus
-                                   select new { MId = m.ModuleId, ModuleName = m.ModuleName }).Distinct().ToList();
-                    foreach (var item in modules)
-                    {
-                        VmUserModule vmUserModule = new VmUserModule();
-                        vmUserModule.ModuleId = item.MId;
-                        vmUserModule.ModuleName = item.ModuleName;
-                        List<VmUserMenu> vmUserMenus = new List<VmUserMenu>();
-                        var mainmenu = (from m in userCustomMenus
-                                        where m.ModuleId == item.MId
-                                        select new { MenuId = m.MainmenuId, MenuName = m.MainmenuName }).Distinct().ToList();
-                        foreach (var mm in mainmenu)
-                        {
-                            VmUserMenu vmUserMenu = new VmUserMenu();
-                            vmUserMenu.MenuId = mm.MenuId;
-                            vmUserMenu.MenuName = mm.MenuName;
-                            vmUserMenu.SubMenus = userCustomMenus.Where(s => s.MainmenuId == mm.MenuId).Select(s => new VmUserSubmenu
-                            {
-                                SubmenuId = s.SubmenuId,
-                                SubMenuName = s.SubMenuName,
-                                ParentSubMenuId = s.ParentSubMenuId,
-                                Add = s.Add,
-                                Edit = s.Edit,
-                                Detail = s.Detail,
-                                Delete = s.Delete,
-                                Approval = s.Approval,
-                                Report = s.Report,
-                                TaskId = s.TaskId
-                            }).ToList();
-                            vmUserMenus.Add(vmUserMenu);
-                        }
-
-                        vmUserModule.Menus = vmUserMenus;
-                        listVmUserModule.Add(vmUserModule);
-                    }
-                }
+                List<VmUserModule> listVmUserModule = GetAppMenus(userId.Value, orgId.Value);
                 return Json(new { userDetail = userDetaildViewModel, menuDetail = listVmUserModule });
             }
+        }
+
+        private List<VmUserModule> GetAppMenus(long? userId, long? orgId)
+        {
+            List<VmUserModule> listVmUserModule = new List<VmUserModule>();
+            IEnumerable<UserCustomMenusDTO> userCustomMenus = _userAuthorizationBusiness.GetUserCustomMenus(userId.Value, orgId.Value);
+            if (userCustomMenus.Count() > 0)
+            {
+                var modules = (from m in userCustomMenus
+                               select new { MId = m.ModuleId, ModuleName = m.ModuleName }).Distinct().ToList();
+                foreach (var item in modules)
+                {
+                    VmUserModule vmUserModule = new VmUserModule();
+                    vmUserModule.ModuleId = item.MId;
+                    vmUserModule.ModuleName = item.ModuleName;
+                    List<VmUserMenu> vmUserMenus = new List<VmUserMenu>();
+                    var mainmenu = (from m in userCustomMenus
+                                    where m.ModuleId == item.MId
+                                    select new { MenuId = m.MainmenuId, MenuName = m.MainmenuName }).Distinct().ToList();
+                    foreach (var mm in mainmenu)
+                    {
+                        VmUserMenu vmUserMenu = new VmUserMenu();
+                        vmUserMenu.MenuId = mm.MenuId;
+                        vmUserMenu.MenuName = mm.MenuName;
+                        vmUserMenu.SubMenus = userCustomMenus.Where(s => s.MainmenuId == mm.MenuId).Select(s => new VmUserSubmenu
+                        {
+                            SubmenuId = s.SubmenuId,
+                            SubMenuName = s.SubMenuName,
+                            ParentSubMenuId = s.ParentSubMenuId,
+                            Add = s.Add,
+                            Edit = s.Edit,
+                            Detail = s.Detail,
+                            Delete = s.Delete,
+                            Approval = s.Approval,
+                            Report = s.Report,
+                            TaskId = s.TaskId
+                        }).ToList();
+                        vmUserMenus.Add(vmUserMenu);
+                    }
+
+                    vmUserModule.Menus = vmUserMenus;
+                    listVmUserModule.Add(vmUserModule);
+                }
+            }
+
+            return listVmUserModule;
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -593,7 +860,7 @@ namespace ERPWeb.Controllers
                         listVmUserModule.Add(vmUserModule);
                     }
                 }
-                return Json(new {menuDetail = listVmUserModule });
+                return Json(new { menuDetail = listVmUserModule });
             }
         }
 

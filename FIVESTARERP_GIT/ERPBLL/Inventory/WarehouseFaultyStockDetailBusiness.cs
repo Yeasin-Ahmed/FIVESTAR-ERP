@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.Inventory
 {
-    public class RepairStockDetailBusiness : IRepairStockDetailBusiness
+    public class WarehouseFaultyStockDetailBusiness : IWarehouseFaultyStockDetailBusiness
     {
         /// <summary>
         ///  BC Stands for          - Business Class
@@ -21,34 +21,34 @@ namespace ERPBLL.Inventory
         /// 
         private readonly IInventoryUnitOfWork _inventoryDb; // db
         private readonly IItemBusiness _itemBusiness;
-        private readonly IRepairStockInfoBusiness _repairStockInfoBusiness;
-        private readonly RepairStockInfoRepository repairStockInfoRepository;
-        private readonly RepairStockDetailRepository repairStockDetailRepository;
-        public RepairStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IRepairStockInfoBusiness repairStockInfoBusiness)
+        private readonly IWarehouseFaultyStockInfoBusiness _repairStockInfoBusiness;
+        private readonly WarehouseFaultyInfoRepository repairStockInfoRepository;
+        private readonly WarehouseFaultyStockDetailRepository repairStockDetailRepository;
+        public WarehouseFaultyStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness)
         {
             this._inventoryDb = inventoryDb;
             this._itemBusiness = itemBusiness;
             this._repairStockInfoBusiness = repairStockInfoBusiness;
-            this.repairStockInfoRepository = new RepairStockInfoRepository(this._inventoryDb);
-            this.repairStockDetailRepository = new RepairStockDetailRepository(this._inventoryDb);
+            this.repairStockInfoRepository = new WarehouseFaultyInfoRepository(this._inventoryDb);
+            this.repairStockDetailRepository = new WarehouseFaultyStockDetailRepository(this._inventoryDb);
         }
 
-        public RepairStockDetail GetRepairStockDetailById(long orgId, long stockDetailId)
+        public WarehouseFaultyStockDetail GetWarehouseFaultyStockDetailById(long orgId, long stockDetailId)
         {
             return repairStockDetailRepository.GetAll(r => r.OrganizationId == orgId && r.RStockDetailId == stockDetailId).FirstOrDefault();
         }
 
-        public IEnumerable<RepairStockDetail> GetRepairStockDetails(long orgId)
+        public IEnumerable<WarehouseFaultyStockDetail> GetWarehouseFaultyStockDetails(long orgId)
         {
             return repairStockDetailRepository.GetAll(r => r.OrganizationId == orgId).ToList();
         }
 
-        public bool SaveRepairStockIn(List<RepairStockDetailDTO> repairStockDetailDTOs, long orgId, long userId)
+        public bool SaveWarehouseFaultyStockIn(List<WarehouseFaultyStockDetailDTO> repairStockDetailDTOs, long orgId, long userId)
         {
-            List<RepairStockDetail> repairStockDetails = new List<RepairStockDetail>();
+            List<WarehouseFaultyStockDetail> repairStockDetails = new List<WarehouseFaultyStockDetail>();
             foreach (var item in repairStockDetailDTOs)
             {
-                RepairStockDetail stockDetail = new RepairStockDetail();
+                WarehouseFaultyStockDetail stockDetail = new WarehouseFaultyStockDetail();
                 stockDetail.WarehouseId = item.WarehouseId;
                 stockDetail.ItemTypeId = item.ItemTypeId;
                 stockDetail.ItemId = item.ItemId;
@@ -65,7 +65,7 @@ namespace ERPBLL.Inventory
                 stockDetail.ReturnType = item.ReturnType;
                 stockDetail.FaultyCase= item.FaultyCase;
 
-                var repairStockInfo = _repairStockInfoBusiness.GetRepairStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
+                var repairStockInfo = _repairStockInfoBusiness.GetWarehouseFaultyStockInfos(orgId).Where(o => o.ItemTypeId == item.ItemTypeId && o.ItemId == item.ItemId && o.LineId == item.LineId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 if (repairStockInfo != null)
                 {
                     repairStockInfo.StockInQty += item.Quantity;
@@ -73,7 +73,7 @@ namespace ERPBLL.Inventory
                 }
                 else
                 {
-                    RepairStockInfo repairStockInfoNew = new RepairStockInfo();
+                    WarehouseFaultyStockInfo repairStockInfoNew = new WarehouseFaultyStockInfo();
                     repairStockInfoNew.WarehouseId = item.WarehouseId;
                     repairStockInfoNew.ItemTypeId = item.ItemTypeId;
                     repairStockInfoNew.ItemId = item.ItemId;
@@ -93,10 +93,10 @@ namespace ERPBLL.Inventory
             return repairStockDetailRepository.Save();
         }
 
-        public IEnumerable<RepairStockDetailListDTO> GetRepairStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId, string returnType, string faultyCase)
+        public IEnumerable<WarehouseFaultyStockDetailListDTO> GetWarehouseFaultyStockDetailList(long? lineId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, string stockStatus, string fromDate, string toDate, string refNum,long orgId, string returnType, string faultyCase)
         {
-            IEnumerable<RepairStockDetailListDTO> repairStockDetailListDTOs = new List<RepairStockDetailListDTO>();
-            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<RepairStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId, returnType, faultyCase)).ToList();
+            IEnumerable<WarehouseFaultyStockDetailListDTO> repairStockDetailListDTOs = new List<WarehouseFaultyStockDetailListDTO>();
+            repairStockDetailListDTOs = this._inventoryDb.Db.Database.SqlQuery<WarehouseFaultyStockDetailListDTO>(QueryForRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum,orgId, returnType, faultyCase)).ToList();
             return repairStockDetailListDTOs;
         }
 

@@ -30,6 +30,8 @@ namespace ERPWeb.Reports.DataSets {
         
         private StockExcelUploaderDataDataTable tableStockExcelUploaderData;
         
+        private DailyItemStockDataTable tableDailyItemStock;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -66,6 +68,9 @@ namespace ERPWeb.Reports.DataSets {
                 }
                 if ((ds.Tables["StockExcelUploaderData"] != null)) {
                     base.Tables.Add(new StockExcelUploaderDataDataTable(ds.Tables["StockExcelUploaderData"]));
+                }
+                if ((ds.Tables["DailyItemStock"] != null)) {
+                    base.Tables.Add(new DailyItemStockDataTable(ds.Tables["DailyItemStock"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -112,6 +117,16 @@ namespace ERPWeb.Reports.DataSets {
         public StockExcelUploaderDataDataTable StockExcelUploaderData {
             get {
                 return this.tableStockExcelUploaderData;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public DailyItemStockDataTable DailyItemStock {
+            get {
+                return this.tableDailyItemStock;
             }
         }
         
@@ -191,6 +206,9 @@ namespace ERPWeb.Reports.DataSets {
                 if ((ds.Tables["StockExcelUploaderData"] != null)) {
                     base.Tables.Add(new StockExcelUploaderDataDataTable(ds.Tables["StockExcelUploaderData"]));
                 }
+                if ((ds.Tables["DailyItemStock"] != null)) {
+                    base.Tables.Add(new DailyItemStockDataTable(ds.Tables["DailyItemStock"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -242,6 +260,12 @@ namespace ERPWeb.Reports.DataSets {
                     this.tableStockExcelUploaderData.InitVars();
                 }
             }
+            this.tableDailyItemStock = ((DailyItemStockDataTable)(base.Tables["DailyItemStock"]));
+            if ((initTable == true)) {
+                if ((this.tableDailyItemStock != null)) {
+                    this.tableDailyItemStock.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -258,6 +282,8 @@ namespace ERPWeb.Reports.DataSets {
             base.Tables.Add(this.tableShortageOrExcess);
             this.tableStockExcelUploaderData = new StockExcelUploaderDataDataTable();
             base.Tables.Add(this.tableStockExcelUploaderData);
+            this.tableDailyItemStock = new DailyItemStockDataTable();
+            base.Tables.Add(this.tableDailyItemStock);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -275,6 +301,12 @@ namespace ERPWeb.Reports.DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializeStockExcelUploaderData() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeDailyItemStock() {
             return false;
         }
         
@@ -341,6 +373,9 @@ namespace ERPWeb.Reports.DataSets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void StockExcelUploaderDataRowChangeEventHandler(object sender, StockExcelUploaderDataRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void DailyItemStockRowChangeEventHandler(object sender, DailyItemStockRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -1561,6 +1596,509 @@ namespace ERPWeb.Reports.DataSets {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class DailyItemStockDataTable : global::System.Data.TypedTableBase<DailyItemStockRow> {
+            
+            private global::System.Data.DataColumn columnReceiveDate;
+            
+            private global::System.Data.DataColumn columnModelName;
+            
+            private global::System.Data.DataColumn columnItemName;
+            
+            private global::System.Data.DataColumn columnStockInQty;
+            
+            private global::System.Data.DataColumn columnStockOutQty;
+            
+            private global::System.Data.DataColumn columnOpeningStock;
+            
+            private global::System.Data.DataColumn columnPackagingBomQty;
+            
+            private global::System.Data.DataColumn columnPhysicalReceivedQty;
+            
+            private global::System.Data.DataColumn columnReceivedAsShortageQty;
+            
+            private global::System.Data.DataColumn columnReceivedAsExcessQty;
+            
+            private global::System.Data.DataColumn columnTotalReceive;
+            
+            private global::System.Data.DataColumn columnProductionIssueQty;
+            
+            private global::System.Data.DataColumn columnRepairIssueQty;
+            
+            private global::System.Data.DataColumn columnLabOrQcIssueQty;
+            
+            private global::System.Data.DataColumn columnHeadOfficeIssueQty;
+            
+            private global::System.Data.DataColumn columnGoodReturnQtyFromAssembly;
+            
+            private global::System.Data.DataColumn columnGoodReturnQtyFromOthers;
+            
+            private global::System.Data.DataColumn columnFaultyReturnQty;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailyItemStockDataTable() {
+                this.TableName = "DailyItemStock";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal DailyItemStockDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected DailyItemStockDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReceiveDateColumn {
+                get {
+                    return this.columnReceiveDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ModelNameColumn {
+                get {
+                    return this.columnModelName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ItemNameColumn {
+                get {
+                    return this.columnItemName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn StockInQtyColumn {
+                get {
+                    return this.columnStockInQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn StockOutQtyColumn {
+                get {
+                    return this.columnStockOutQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OpeningStockColumn {
+                get {
+                    return this.columnOpeningStock;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PackagingBomQtyColumn {
+                get {
+                    return this.columnPackagingBomQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PhysicalReceivedQtyColumn {
+                get {
+                    return this.columnPhysicalReceivedQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReceivedAsShortageQtyColumn {
+                get {
+                    return this.columnReceivedAsShortageQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReceivedAsExcessQtyColumn {
+                get {
+                    return this.columnReceivedAsExcessQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalReceiveColumn {
+                get {
+                    return this.columnTotalReceive;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ProductionIssueQtyColumn {
+                get {
+                    return this.columnProductionIssueQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RepairIssueQtyColumn {
+                get {
+                    return this.columnRepairIssueQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn LabOrQcIssueQtyColumn {
+                get {
+                    return this.columnLabOrQcIssueQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn HeadOfficeIssueQtyColumn {
+                get {
+                    return this.columnHeadOfficeIssueQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn GoodReturnQtyFromAssemblyColumn {
+                get {
+                    return this.columnGoodReturnQtyFromAssembly;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn GoodReturnQtyFromOthersColumn {
+                get {
+                    return this.columnGoodReturnQtyFromOthers;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn FaultyReturnQtyColumn {
+                get {
+                    return this.columnFaultyReturnQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailyItemStockRow this[int index] {
+                get {
+                    return ((DailyItemStockRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailyItemStockRowChangeEventHandler DailyItemStockRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailyItemStockRowChangeEventHandler DailyItemStockRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailyItemStockRowChangeEventHandler DailyItemStockRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailyItemStockRowChangeEventHandler DailyItemStockRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddDailyItemStockRow(DailyItemStockRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailyItemStockRow AddDailyItemStockRow(
+                        string ReceiveDate, 
+                        string ModelName, 
+                        string ItemName, 
+                        long StockInQty, 
+                        long StockOutQty, 
+                        long OpeningStock, 
+                        long PackagingBomQty, 
+                        long PhysicalReceivedQty, 
+                        int ReceivedAsShortageQty, 
+                        int ReceivedAsExcessQty, 
+                        long TotalReceive, 
+                        long ProductionIssueQty, 
+                        long RepairIssueQty, 
+                        long LabOrQcIssueQty, 
+                        long HeadOfficeIssueQty, 
+                        long GoodReturnQtyFromAssembly, 
+                        long GoodReturnQtyFromOthers, 
+                        long FaultyReturnQty) {
+                DailyItemStockRow rowDailyItemStockRow = ((DailyItemStockRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ReceiveDate,
+                        ModelName,
+                        ItemName,
+                        StockInQty,
+                        StockOutQty,
+                        OpeningStock,
+                        PackagingBomQty,
+                        PhysicalReceivedQty,
+                        ReceivedAsShortageQty,
+                        ReceivedAsExcessQty,
+                        TotalReceive,
+                        ProductionIssueQty,
+                        RepairIssueQty,
+                        LabOrQcIssueQty,
+                        HeadOfficeIssueQty,
+                        GoodReturnQtyFromAssembly,
+                        GoodReturnQtyFromOthers,
+                        FaultyReturnQty};
+                rowDailyItemStockRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDailyItemStockRow);
+                return rowDailyItemStockRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                DailyItemStockDataTable cln = ((DailyItemStockDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new DailyItemStockDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnReceiveDate = base.Columns["ReceiveDate"];
+                this.columnModelName = base.Columns["ModelName"];
+                this.columnItemName = base.Columns["ItemName"];
+                this.columnStockInQty = base.Columns["StockInQty"];
+                this.columnStockOutQty = base.Columns["StockOutQty"];
+                this.columnOpeningStock = base.Columns["OpeningStock"];
+                this.columnPackagingBomQty = base.Columns["PackagingBomQty"];
+                this.columnPhysicalReceivedQty = base.Columns["PhysicalReceivedQty"];
+                this.columnReceivedAsShortageQty = base.Columns["ReceivedAsShortageQty"];
+                this.columnReceivedAsExcessQty = base.Columns["ReceivedAsExcessQty"];
+                this.columnTotalReceive = base.Columns["TotalReceive"];
+                this.columnProductionIssueQty = base.Columns["ProductionIssueQty"];
+                this.columnRepairIssueQty = base.Columns["RepairIssueQty"];
+                this.columnLabOrQcIssueQty = base.Columns["LabOrQcIssueQty"];
+                this.columnHeadOfficeIssueQty = base.Columns["HeadOfficeIssueQty"];
+                this.columnGoodReturnQtyFromAssembly = base.Columns["GoodReturnQtyFromAssembly"];
+                this.columnGoodReturnQtyFromOthers = base.Columns["GoodReturnQtyFromOthers"];
+                this.columnFaultyReturnQty = base.Columns["FaultyReturnQty"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnReceiveDate = new global::System.Data.DataColumn("ReceiveDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceiveDate);
+                this.columnModelName = new global::System.Data.DataColumn("ModelName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModelName);
+                this.columnItemName = new global::System.Data.DataColumn("ItemName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemName);
+                this.columnStockInQty = new global::System.Data.DataColumn("StockInQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStockInQty);
+                this.columnStockOutQty = new global::System.Data.DataColumn("StockOutQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStockOutQty);
+                this.columnOpeningStock = new global::System.Data.DataColumn("OpeningStock", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningStock);
+                this.columnPackagingBomQty = new global::System.Data.DataColumn("PackagingBomQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPackagingBomQty);
+                this.columnPhysicalReceivedQty = new global::System.Data.DataColumn("PhysicalReceivedQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPhysicalReceivedQty);
+                this.columnReceivedAsShortageQty = new global::System.Data.DataColumn("ReceivedAsShortageQty", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceivedAsShortageQty);
+                this.columnReceivedAsExcessQty = new global::System.Data.DataColumn("ReceivedAsExcessQty", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReceivedAsExcessQty);
+                this.columnTotalReceive = new global::System.Data.DataColumn("TotalReceive", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalReceive);
+                this.columnProductionIssueQty = new global::System.Data.DataColumn("ProductionIssueQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductionIssueQty);
+                this.columnRepairIssueQty = new global::System.Data.DataColumn("RepairIssueQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRepairIssueQty);
+                this.columnLabOrQcIssueQty = new global::System.Data.DataColumn("LabOrQcIssueQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLabOrQcIssueQty);
+                this.columnHeadOfficeIssueQty = new global::System.Data.DataColumn("HeadOfficeIssueQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnHeadOfficeIssueQty);
+                this.columnGoodReturnQtyFromAssembly = new global::System.Data.DataColumn("GoodReturnQtyFromAssembly", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGoodReturnQtyFromAssembly);
+                this.columnGoodReturnQtyFromOthers = new global::System.Data.DataColumn("GoodReturnQtyFromOthers", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGoodReturnQtyFromOthers);
+                this.columnFaultyReturnQty = new global::System.Data.DataColumn("FaultyReturnQty", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFaultyReturnQty);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailyItemStockRow NewDailyItemStockRow() {
+                return ((DailyItemStockRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new DailyItemStockRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(DailyItemStockRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.DailyItemStockRowChanged != null)) {
+                    this.DailyItemStockRowChanged(this, new DailyItemStockRowChangeEvent(((DailyItemStockRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.DailyItemStockRowChanging != null)) {
+                    this.DailyItemStockRowChanging(this, new DailyItemStockRowChangeEvent(((DailyItemStockRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.DailyItemStockRowDeleted != null)) {
+                    this.DailyItemStockRowDeleted(this, new DailyItemStockRowChangeEvent(((DailyItemStockRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.DailyItemStockRowDeleting != null)) {
+                    this.DailyItemStockRowDeleting(this, new DailyItemStockRowChangeEvent(((DailyItemStockRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveDailyItemStockRow(DailyItemStockRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                Inventory ds = new Inventory();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "DailyItemStockDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class WarehouseStockDetailRow : global::System.Data.DataRow {
@@ -2644,6 +3182,528 @@ namespace ERPWeb.Reports.DataSets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class DailyItemStockRow : global::System.Data.DataRow {
+            
+            private DailyItemStockDataTable tableDailyItemStock;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal DailyItemStockRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableDailyItemStock = ((DailyItemStockDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ReceiveDate {
+                get {
+                    try {
+                        return ((string)(this[this.tableDailyItemStock.ReceiveDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceiveDate\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.ReceiveDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ModelName {
+                get {
+                    try {
+                        return ((string)(this[this.tableDailyItemStock.ModelNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ModelName\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.ModelNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ItemName {
+                get {
+                    try {
+                        return ((string)(this[this.tableDailyItemStock.ItemNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ItemName\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.ItemNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long StockInQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.StockInQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StockInQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.StockInQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long StockOutQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.StockOutQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StockOutQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.StockOutQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long OpeningStock {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.OpeningStockColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningStock\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.OpeningStockColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long PackagingBomQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.PackagingBomQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PackagingBomQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.PackagingBomQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long PhysicalReceivedQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.PhysicalReceivedQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PhysicalReceivedQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.PhysicalReceivedQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int ReceivedAsShortageQty {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailyItemStock.ReceivedAsShortageQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceivedAsShortageQty\' in table \'DailyItemStock\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.ReceivedAsShortageQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int ReceivedAsExcessQty {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailyItemStock.ReceivedAsExcessQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReceivedAsExcessQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.ReceivedAsExcessQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long TotalReceive {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.TotalReceiveColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalReceive\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.TotalReceiveColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long ProductionIssueQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.ProductionIssueQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductionIssueQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.ProductionIssueQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long RepairIssueQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.RepairIssueQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RepairIssueQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.RepairIssueQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long LabOrQcIssueQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.LabOrQcIssueQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LabOrQcIssueQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.LabOrQcIssueQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long HeadOfficeIssueQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.HeadOfficeIssueQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'HeadOfficeIssueQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.HeadOfficeIssueQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long GoodReturnQtyFromAssembly {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.GoodReturnQtyFromAssemblyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GoodReturnQtyFromAssembly\' in table \'DailyItemStock\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.GoodReturnQtyFromAssemblyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long GoodReturnQtyFromOthers {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.GoodReturnQtyFromOthersColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GoodReturnQtyFromOthers\' in table \'DailyItemStock\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.GoodReturnQtyFromOthersColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public long FaultyReturnQty {
+                get {
+                    try {
+                        return ((long)(this[this.tableDailyItemStock.FaultyReturnQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FaultyReturnQty\' in table \'DailyItemStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailyItemStock.FaultyReturnQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReceiveDateNull() {
+                return this.IsNull(this.tableDailyItemStock.ReceiveDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReceiveDateNull() {
+                this[this.tableDailyItemStock.ReceiveDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsModelNameNull() {
+                return this.IsNull(this.tableDailyItemStock.ModelNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetModelNameNull() {
+                this[this.tableDailyItemStock.ModelNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsItemNameNull() {
+                return this.IsNull(this.tableDailyItemStock.ItemNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetItemNameNull() {
+                this[this.tableDailyItemStock.ItemNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsStockInQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.StockInQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetStockInQtyNull() {
+                this[this.tableDailyItemStock.StockInQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsStockOutQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.StockOutQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetStockOutQtyNull() {
+                this[this.tableDailyItemStock.StockOutQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOpeningStockNull() {
+                return this.IsNull(this.tableDailyItemStock.OpeningStockColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOpeningStockNull() {
+                this[this.tableDailyItemStock.OpeningStockColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPackagingBomQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.PackagingBomQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPackagingBomQtyNull() {
+                this[this.tableDailyItemStock.PackagingBomQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPhysicalReceivedQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.PhysicalReceivedQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPhysicalReceivedQtyNull() {
+                this[this.tableDailyItemStock.PhysicalReceivedQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReceivedAsShortageQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.ReceivedAsShortageQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReceivedAsShortageQtyNull() {
+                this[this.tableDailyItemStock.ReceivedAsShortageQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReceivedAsExcessQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.ReceivedAsExcessQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReceivedAsExcessQtyNull() {
+                this[this.tableDailyItemStock.ReceivedAsExcessQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalReceiveNull() {
+                return this.IsNull(this.tableDailyItemStock.TotalReceiveColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalReceiveNull() {
+                this[this.tableDailyItemStock.TotalReceiveColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsProductionIssueQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.ProductionIssueQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetProductionIssueQtyNull() {
+                this[this.tableDailyItemStock.ProductionIssueQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRepairIssueQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.RepairIssueQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRepairIssueQtyNull() {
+                this[this.tableDailyItemStock.RepairIssueQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsLabOrQcIssueQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.LabOrQcIssueQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetLabOrQcIssueQtyNull() {
+                this[this.tableDailyItemStock.LabOrQcIssueQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsHeadOfficeIssueQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.HeadOfficeIssueQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetHeadOfficeIssueQtyNull() {
+                this[this.tableDailyItemStock.HeadOfficeIssueQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsGoodReturnQtyFromAssemblyNull() {
+                return this.IsNull(this.tableDailyItemStock.GoodReturnQtyFromAssemblyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetGoodReturnQtyFromAssemblyNull() {
+                this[this.tableDailyItemStock.GoodReturnQtyFromAssemblyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsGoodReturnQtyFromOthersNull() {
+                return this.IsNull(this.tableDailyItemStock.GoodReturnQtyFromOthersColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetGoodReturnQtyFromOthersNull() {
+                this[this.tableDailyItemStock.GoodReturnQtyFromOthersColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsFaultyReturnQtyNull() {
+                return this.IsNull(this.tableDailyItemStock.FaultyReturnQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetFaultyReturnQtyNull() {
+                this[this.tableDailyItemStock.FaultyReturnQtyColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -2731,6 +3791,40 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public StockExcelUploaderDataRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class DailyItemStockRowChangeEvent : global::System.EventArgs {
+            
+            private DailyItemStockRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailyItemStockRowChangeEvent(DailyItemStockRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailyItemStockRow Row {
                 get {
                     return this.eventRow;
                 }

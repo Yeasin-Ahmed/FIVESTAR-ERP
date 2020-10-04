@@ -44,11 +44,12 @@ namespace ERPWeb
             container.RegisterType<IUnitBusiness, UnitBusiness>();
             container.RegisterType<IItemTypeBusiness, ItemTypeBusiness>();
             container.RegisterType<IWarehouseBusiness, WarehouseBusiness>();
-            container.RegisterType<IRepairStockInfoBusiness, RepairStockInfoBusiness>();
-            container.RegisterType<IRepairStockDetailBusiness, RepairStockDetailBusiness>();
+            container.RegisterType<IWarehouseFaultyStockInfoBusiness, WarehouseFaultyStockInfoBusiness>();
+            container.RegisterType<IWarehouseFaultyStockDetailBusiness, WarehouseFaultyStockDetailBusiness>();
             container.RegisterType<IItemPreparationInfoBusiness, ItemPreparationInfoBusiness>();
             container.RegisterType<IItemPreparationDetailBusiness, ItemPreparationDetailBusiness>();
             container.RegisterType<ISupplierBusiness, SupplierBusiness>();
+            container.RegisterType<IInventoryReportBusiness, InventoryReportBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
 

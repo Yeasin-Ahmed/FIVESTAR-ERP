@@ -8,23 +8,19 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Inventory.DomainModels
 {
-    [Table("tblRepairStockDetails")]
-    public class RepairStockDetail
+    [Table("tblWarehouseFaultyStockInfo")]
+    public class WarehouseFaultyStockInfo
     {
         [Key]
-        public long RStockDetailId { get; set; }
+        public long RStockInfoId { get; set; }
         public long? WarehouseId { get; set; }
         public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; }
         public long? UnitId { get; set; }
         public long? LineId { get; set; }
         public long? DescriptionId { get; set; }
-        public int Quantity { get; set; }
-        [StringLength(50)]
-        public string ReturnType { get; set; }
-        [StringLength(50)]
-        public string FaultyCase { get; set; }
-        public Nullable<DateTime> ExpireDate { get; set; }
+        public int? StockInQty { get; set; }
+        public int? StockOutQty { get; set; }
         [StringLength(150)]
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
@@ -32,9 +28,6 @@ namespace ERPBO.Inventory.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        [StringLength(150)]
-        public string StockStatus { get; set; }
-        [StringLength(150)]
-        public string RefferenceNumber { get; set; }
+        public ICollection<WarehouseFaultyStockDetail> RepairStockDetails { get; set; }
     }
 }

@@ -541,11 +541,13 @@
         $("#btnExcelSubmit").click(function (e) {
             e.preventDefault();
             var excelFile = $(".FileUpload").prop('files')[0];
-            var ddlModelNameForFileUpolad = $("#DescriptionId option:selected").val();
-            var ddlSupplierNameForFileUpolad = $("#SupplierId option:selected").val();
+            var ddlModelNameForFileUpolad = TryParseInt($("#DescriptionId option:selected").val(),0);
+            var ddlSupplierNameForFileUpolad = TryParseInt($("#SupplierId option:selected").val(),0);
+            var ddlBomItemForFileUpload = $("#BomItemId option:selected").val();
             var formData = new FormData();
             formData.append("DescriptionId", ddlModelNameForFileUpolad);
             formData.append("SupplierId", ddlSupplierNameForFileUpolad);
+            formData.append("BomItemId", ddlBomItemForFileUpload);
             formData.append("FileUpload", excelFile);
             console.log(formData);
             $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res, status) {

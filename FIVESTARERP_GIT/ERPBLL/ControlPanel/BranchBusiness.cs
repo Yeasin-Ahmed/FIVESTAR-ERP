@@ -19,6 +19,12 @@ namespace ERPBLL.ControlPanel
             this._controlPanelUnitOfWork = controlPanelUnitOfWork;
             branchRepository = new BranchRepository(this._controlPanelUnitOfWork);
         }
+
+        public IEnumerable<Branch> GetAllBranches()
+        {
+            return branchRepository.GetAll().ToList();
+        }
+
         public IEnumerable<Branch> GetBranchByOrgId(long orgId)
         {
             return branchRepository.GetAll(br => br.OrganizationId == orgId).ToList();
@@ -59,7 +65,7 @@ namespace ERPBLL.ControlPanel
                 }
                 else
                 {
-                    var branchInDb = GetBranchOneByOrgId(branchDTO.BranchId, orgId);
+                    var branchInDb = GetBranchOneByOrgId(branchDTO.BranchId, branchDTO.OrgId);
                     branchInDb.BranchName = branchDTO.BranchName;
                     branchInDb.ShortName = branchDTO.ShortName;
                     branchInDb.MobileNo = branchDTO.MobileNo;

@@ -54,5 +54,7 @@ namespace ERPBO.Inventory.ViewModels
         [StringLength(150)]
         public string SupplierName { get; set; }
         public HttpPostedFileBase FileUpload { get; set; }
+        public string BomItemId { get; set; }
+        public int? ConsumptionQty { get; set; }
     }
 }

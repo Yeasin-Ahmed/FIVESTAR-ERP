@@ -1,4 +1,5 @@
 ﻿using ERPBLL.ControlPanel.Interface;
+using ERPBO.Common;
 using ERPBO.ControlPanel.DomainModels;
 using ERPBO.ControlPanel.DTOModels;
 using ERPDAL.ControlPanelDAL;
@@ -29,6 +30,11 @@ namespace ERPBLL.ControlPanel
             return roleRepository.GetAll();
         }
 
+        public Role GetRoleById(long id)
+        {
+            return roleRepository.GetOneByOrg(role => role.RoleId == id);
+        }
+
         public IEnumerable<TechnicalServiceByRoleDTO> GetRoleByTechnicalServicesId(string roleName, long orgId, long BranchId)
         {
             return _controlPanelUnitOfWork.Db.Database.SqlQuery<TechnicalServiceByRoleDTO>(string.Format(@"Select us.UserId,us.UserName,rl.RoleId,rl.RoleName,us.BranchId From [ControlPanel].dbo.tblApplicationUsers us
@@ -45,6 +51,33 @@ namespace ERPBLL.ControlPanel
         public bool IsDuplicateRoleName(string roleName, long id, long orgId)
         {
             return roleRepository.GetOneByOrg(role => role.RoleName == roleName && role.RoleId != id && role.OrganizationId == orgId) != null ? true : false;
+        }
+
+        public ExecutionStateWithText SaveAppRole(RoleDTO roleDTO, long userId, long orgId)
+        {
+            ExecutionStateWithText execution = new ExecutionStateWithText();
+            Role role = new Role();
+            if (roleDTO.RoleId == 0)
+            {
+                role.RoleName = roleDTO.RoleName;
+                role.EUserId = userId;
+                role.OrganizationId = roleDTO.OrganizationId;
+                role.EntryDate = DateTime.Now;
+                roleRepository.Insert(role);
+            }
+            else
+            {
+                role = GetRoleOneById(roleDTO.RoleId, orgId);
+                role.RoleName = roleDTO.RoleName;
+                role.UpUserId = userId;
+                //role.OrganizationId = roleDTO.OrganizationId;
+                role.UpdateDate = DateTime.Now;
+                roleRepository.Update(role);
+            }
+            execution.isSuccess = roleRepository.Save();
+            execution.text = role.RoleId.ToString();
+
+            return execution;
         }
 
         public bool SaveRole(RoleDTO roleDTO, long userId, long orgId)

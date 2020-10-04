@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Inventory.ViewModels
 {
-    public class RepairStockDetailListViewModel
+    public class WarehouseFaultyStockDetailListViewModel
     {
         public long RStockDetailId { get; set; }
         public string LineNumber { get; set; }

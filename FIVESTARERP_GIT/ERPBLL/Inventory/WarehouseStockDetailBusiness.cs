@@ -35,9 +35,9 @@ namespace ERPBLL.Inventory
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness; // BC
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness; // BC
         private readonly IItemReturnDetailBusiness _itemReturnDetailBusiness; // BC
-        private readonly IRepairStockDetailBusiness _repairStockDetailBusiness; //BC
+        private readonly IWarehouseFaultyStockDetailBusiness _repairStockDetailBusiness; //BC
 
-        public WarehouseStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockDetailBusiness repairStockDetailBusiness)
+        public WarehouseStockDetailBusiness(IInventoryUnitOfWork inventoryDb, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness)
         {
             this._inventoryDb = inventoryDb;
             warehouseStockDetailRepository = new WarehouseStockDetailRepository(this._inventoryDb);
@@ -247,10 +247,10 @@ namespace ERPBLL.Inventory
 
                     else if (irInfo.ReturnType == ReturnType.ProductionFaultyReturn || irInfo.ReturnType == ReturnType.RepairFaultyReturn)
                     {
-                        List<RepairStockDetailDTO> repairStockDetailDTOs = new List<RepairStockDetailDTO>();
+                        List<WarehouseFaultyStockDetailDTO> repairStockDetailDTOs = new List<WarehouseFaultyStockDetailDTO>();
                         foreach (var item in irDetails)
                         {
-                            RepairStockDetailDTO stockDetailDTO = new RepairStockDetailDTO()
+                            WarehouseFaultyStockDetailDTO stockDetailDTO = new WarehouseFaultyStockDetailDTO()
                             {
                                 WarehouseId = irInfo.WarehouseId,
                                 ItemTypeId = item.ItemTypeId,
@@ -270,7 +270,7 @@ namespace ERPBLL.Inventory
                             };
                             repairStockDetailDTOs.Add(stockDetailDTO);
                         }
-                        if (_repairStockDetailBusiness.SaveRepairStockIn(repairStockDetailDTOs, userId, orgId) == true)
+                        if (_repairStockDetailBusiness.SaveWarehouseFaultyStockIn(repairStockDetailDTOs, userId, orgId) == true)
                         {
                             executionStatus = _itemReturnInfoBusiness.SaveItemReturnStatus(irInfoId, status, orgId);
                         }
