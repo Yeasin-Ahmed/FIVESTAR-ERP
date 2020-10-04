@@ -732,6 +732,7 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common2\" />
+    <Folder Include="Views\Production2\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -805,6 +806,9 @@
     </Content>
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\SalarySheetReport.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptAllBranchDailySummaryReport.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptDailySummaryReport.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport - Copy.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptReceivedJobOrderReport.rdlc" />
     <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc" />
