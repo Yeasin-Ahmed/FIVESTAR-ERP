@@ -264,6 +264,9 @@
                     if (res === true && status === 'success') {
                         $('.toastrDefaultSuccess').trigger("click");
                         $('.toastrDefaultSuccess').fadeOut(500);
+                        setTimeout(function () {
+                            redirectPage('@Url.Action("AppUserConfiguration")');
+                        }, 1000);
                     }
                     else {
                         $('.toastrDefaultError').trigger("click");
@@ -321,6 +324,9 @@
             })
 
             return dataAry;
+        }
+        function redirectPage(page) {
+            window.location.replace(page);
         }
     </script>
 }

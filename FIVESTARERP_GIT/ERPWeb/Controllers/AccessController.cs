@@ -38,6 +38,7 @@ namespace ERPWeb.Controllers
             return View();
         }
 
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<ActionResult> LogIn(UserLogInViewModel loginModel, string returnUrl = "")
         {

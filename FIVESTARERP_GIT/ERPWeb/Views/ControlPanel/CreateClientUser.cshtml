@@ -474,6 +474,9 @@
                     if (res === true && status === 'success') {
                         $('.toastrDefaultSuccess').trigger("click");
                         $('.toastrDefaultSuccess').fadeOut(500);
+                         setTimeout(function () {
+                            redirectPage('@Url.Action("ClientUserConfiguration")');
+                        }, 1000);
                     }
                     else {
                         $('.toastrDefaultError').trigger("click");
@@ -486,6 +489,10 @@
                 })
             }
         })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
 
         function fnMenuData() {
             var dataAry = [];
