@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "InventoryReportPanel";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-stock-tab" data-toggle="pill" href="#custom-tabs-one-stock" role="tab" aria-controls="custom-tabs-one-stock" aria-selected="true">Stock Report</a>
+                    </li>
+                    @*<li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-stockTransfer-tab" data-toggle="pill" href="#custom-tabs-two-stockTransfer" role="tab" aria-controls="custom-tabs-two-stockTransfer" aria-selected="false">Stock Transfer</a>
+                    </li>*@
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-stock" role="tabpanel" aria-labelledby="custom-tabs-one-stock-tab">
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Stock Report
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-3">
+                                                <label for="ddlStockReportDefination" class="control-label font-weight-bold">Report Defination</label>
+                                                <select class="form-control form-control-sm" id="ddlStockReportDefination">
+                                                    <option value="Shortage Report">Shortage Report</option>
+                                                    <option value="Model Wise Today Stock Report">Model Wise Today Stock Report</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelInStockReport" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelInStockReport", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlReportFormatInStockReport" class="control-label font-weight-bold">Format</label>
+                                                <select class="form-control form-control-sm" id="ddlReportFormatInStockReport">
+                                                    <option value="PDF">PDF</option>
+                                                    <option value="EXCEL">EXCEL</option>
+                                                    <option value="WORD">WORD</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="" class="control-label font-weight-bold" style="visibility:hidden">File</label>
+                                                <div class="clearfix">
+                                                    <button class="btn btn-sm btn-primary" type="button" id="btnStockReport" title="Generate Report">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-transferList" role="tabpanel" aria-labelledby="custom-tabs-two-transferList-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-stockTransfer" role="tabpanel" aria-labelledby="custom-tabs-two-stockTransfer-tab">
+                        <div class="row" style="margin-top:-15px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlStockReportDefination = $("#ddlStockReportDefination");
+        var ddlModelInStockReport = $("#ddlModelInStockReport");
+        var ddlReportFormatInStockReport = $("#ddlReportFormatInStockReport");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+
+        $(document).ready(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                }
+            }
+        })
+        
+        $("#btnStockReport").click(function (e) {
+            e.preventDefault();
+            console.log("clicked");
+            if (ddlStockReportDefination.val() == "Shortage Report") {
+                console.log("From Date=" + dptFromDate.val() + ",To Date=" + dptToDate.val() + ",Model=" + ddlModelInStockReport.val());
+                if (dptFromDate.val() !== "" && dptToDate.val() !== "" && ddlModelInStockReport.val() != "") {
+                    window.open("/Report/GetWarehouseStockShortageOrExcess?fromDate=" + dptFromDate.val() + "&toDate=" + dptToDate.val() + "&model=" + TryParseInt(ddlModelInStockReport.val(), 0) + "&format=" + ddlReportFormatInStockReport.val(), "_blank")
+                }
+                else {
+                    toastr.error("Please select Model , From Date & To Date", null, { timeOut: 1500 });
+                }
+            }
+
+            else if (ddlStockReportDefination.val() == "Model Wise Today Stock Report") {
+                if (ddlModelInStockReport.val() != "") {
+                    window.open("/Report/GetWarehouseModelWiseTodayStockReport?model=" + TryParseInt(ddlModelInStockReport.val(), 0) + "&format=" + ddlReportFormatInStockReport.val(), "_blank")
+                }
+                else {
+                    toastr.error("Please select a Model", null, { timeOut: 1500 });
+                }
+            }
+        })
+    </script>    
+}

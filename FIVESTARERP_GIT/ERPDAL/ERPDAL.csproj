@@ -348,6 +348,10 @@
     <Compile Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.Designer.cs">
       <DependentUpon>202008240549493_Inventory_AddTACInDescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.cs" />
+    <Compile Include="InventoryContextMigrations\202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.Designer.cs">
+      <DependentUpon>202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -819,6 +823,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008240549493_Inventory_AddTACInDescription.resx">
       <DependentUpon>202008240549493_Inventory_AddTACInDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.resx">
+      <DependentUpon>202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>

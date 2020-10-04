@@ -47,6 +47,17 @@ namespace ERPBLL.ControlPanel
             return appUserRepository.GetAll().ToList();
         }
 
+        public AppUserDTO GetAppUserInfoById(long id, long orgId)
+        {
+            return _controlPanelUnitOfWork.Db.Database.SqlQuery<AppUserDTO>(string.Format(@"Select app.EmployeeId,app.UserId,app.FullName,app.MobileNo,app.[Address],app.Email,app.Desigation,app.UserName, 
+app.[Password],app.ConfirmPassword,app.OrganizationId,app.RoleId,app.BranchId,app.IsActive,app.IsRoleActive
+From tblApplicationUsers app 
+Inner Join tblBranch b on app.BranchId = b.BranchId and app.OrganizationId = b.OrganizationId
+Inner Join tblRoles r on app.RoleId = r.RoleId and app.OrganizationId = r.OrganizationId
+Where app.UserId={0}", id)).FirstOrDefault();
+
+        }
+
         public AppUser GetAppUserOneById(long id, long orgId)
         {
             return appUserRepository.GetOneByOrg(user => user.UserId == id && user.OrganizationId == orgId);
@@ -61,7 +72,7 @@ ISNULL(a.Address,'N/A') 'Address'
 From tblApplicationUsers a
 Inner Join tblOrganizations o on a.OrganizationId = o.OrganizationId
 Left Join tblRoles r on a.RoleId = r.RoleId
-Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).Single();
+Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).FirstOrDefault();
         }
 
         public async Task<UserInformation> GetUserInformation(UserLogInViewModel loginModel)
@@ -134,6 +145,57 @@ Where U.UserName = '{0}' And U.[Password] = '{1}'", loginModel.UserName, loginMo
                 appUserRepository.Update(appUser);
             }
             return appUserRepository.Save();
+        }
+
+        public ExecutionStateWithText SaveAppUser2(AppUserDTO appUserDTO, long userId, long orgId)
+        {
+            ExecutionStateWithText execution = new ExecutionStateWithText();
+            AppUser appUser = new AppUser();
+            if (appUserDTO.UserId == 0)
+            {
+                appUser.EmployeeId = appUserDTO.EmployeeId;
+                appUser.FullName = appUserDTO.FullName;
+                appUser.MobileNo = appUserDTO.MobileNo;
+                appUser.Address = appUserDTO.Address;
+                appUser.Email = appUserDTO.Email;
+                appUser.Desigation = appUserDTO.Desigation;
+                appUser.UserName = appUserDTO.UserName;
+                appUser.Password = appUserDTO.Password;
+                appUser.ConfirmPassword = appUserDTO.ConfirmPassword;
+                appUser.IsActive = appUserDTO.IsActive;
+                appUser.IsRoleActive = appUserDTO.IsRoleActive;
+                appUser.EUserId = userId;
+                appUser.EntryDate = DateTime.Now;
+                appUser.OrganizationId = appUserDTO.OrganizationId;
+                appUser.BranchId = appUserDTO.BranchId;
+                appUser.RoleId = appUserDTO.RoleId;
+                appUserRepository.Insert(appUser);
+
+            }
+            else
+            {
+                appUser = GetAppUserOneById(appUserDTO.UserId, orgId);
+                appUser.EmployeeId = appUserDTO.EmployeeId;
+                appUser.FullName = appUserDTO.FullName;
+                appUser.MobileNo = appUserDTO.MobileNo;
+                appUser.Address = appUserDTO.Address;
+                appUser.Email = appUserDTO.Email;
+                appUser.Desigation = appUserDTO.Desigation;
+                appUser.UserName = appUserDTO.UserName;
+                appUser.Password = appUserDTO.Password;
+                appUser.ConfirmPassword = appUserDTO.ConfirmPassword;
+                appUser.IsActive = appUserDTO.IsActive;
+                appUser.IsRoleActive = appUserDTO.IsRoleActive;
+                appUser.UpUserId = userId;
+                appUser.UpdateDate = DateTime.Now;
+                appUser.OrganizationId = appUserDTO.OrganizationId;
+                appUser.BranchId = appUserDTO.BranchId;
+                appUser.RoleId = appUserDTO.RoleId;
+                appUserRepository.Update(appUser);
+            }
+            execution.isSuccess = appUserRepository.Save();
+            execution.text = appUser.UserId.ToString();
+            return execution;
         }
     }
 }

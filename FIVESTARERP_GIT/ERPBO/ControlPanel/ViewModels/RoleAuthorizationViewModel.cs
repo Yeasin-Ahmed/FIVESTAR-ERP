@@ -11,7 +11,7 @@ namespace ERPBO.ControlPanel.ViewModels
     public class RoleAuthorizationViewModel
     {
         public long TaskId { get; set; }
-        [Range(1, long.MaxValue)]
+        [Range(0, long.MaxValue)]
         public long RoleId { get; set; }
         [Range(1, long.MaxValue)]
         public long ModuleId { get; set; }

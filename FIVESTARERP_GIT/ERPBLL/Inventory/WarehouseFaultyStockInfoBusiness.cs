@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.Inventory
 {
-    public class RepairStockInfoBusiness : IRepairStockInfoBusiness
+    public class WarehouseFaultyStockInfoBusiness : IWarehouseFaultyStockInfoBusiness
     {
         /// <summary>
         ///  BC Stands for          - Business Class
@@ -17,17 +17,17 @@ namespace ERPBLL.Inventory
         ///  repo Stands for       - Repository
         /// </summary>
         private readonly IInventoryUnitOfWork _inventoryDb; // database
-        private readonly RepairStockInfoRepository repairStockInfoRepository; // repo
-        public RepairStockInfoBusiness(IInventoryUnitOfWork inventoryDb)
+        private readonly WarehouseFaultyInfoRepository repairStockInfoRepository; // repo
+        public WarehouseFaultyStockInfoBusiness(IInventoryUnitOfWork inventoryDb)
         {
             this._inventoryDb = inventoryDb;
-            this.repairStockInfoRepository = new RepairStockInfoRepository(this._inventoryDb);
+            this.repairStockInfoRepository = new WarehouseFaultyInfoRepository(this._inventoryDb);
         }
-        public RepairStockInfo GetRepairStockInfoById(long orgId, long stockInfoId)
+        public WarehouseFaultyStockInfo GetWarehouseFaultyStockInfoById(long orgId, long stockInfoId)
         {
             return repairStockInfoRepository.GetAll(r => r.OrganizationId == orgId && r.RStockInfoId == stockInfoId).FirstOrDefault();
         }
-        public IEnumerable<RepairStockInfo> GetRepairStockInfos(long orgId)
+        public IEnumerable<WarehouseFaultyStockInfo> GetWarehouseFaultyStockInfos(long orgId)
         {
             return repairStockInfoRepository.GetAll(r => r.OrganizationId == orgId).ToList();
         }

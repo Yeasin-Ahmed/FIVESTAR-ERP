@@ -35,13 +35,13 @@ namespace ERPDAL.InventoryDAL
     {
         public WarehouseStockDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
-    public class RepairStockInfoRepository : InventoryBaseRepository<RepairStockInfo>
+    public class WarehouseFaultyInfoRepository : InventoryBaseRepository<WarehouseFaultyStockInfo>
     {
-        public RepairStockInfoRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+        public WarehouseFaultyInfoRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
-    public class RepairStockDetailRepository : InventoryBaseRepository<RepairStockDetail>
+    public class WarehouseFaultyStockDetailRepository : InventoryBaseRepository<WarehouseFaultyStockDetail>
     {
-        public RepairStockDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+        public WarehouseFaultyStockDetailRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
     public class ItemPreparationInfoRepository : InventoryBaseRepository<ItemPreparationInfo>
     {

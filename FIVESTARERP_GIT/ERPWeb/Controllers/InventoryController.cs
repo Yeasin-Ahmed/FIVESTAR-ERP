@@ -53,8 +53,8 @@ namespace ERPWeb.Controllers
         private readonly IRequsitionDetailBusiness _requsitionDetailBusiness;
         private readonly IItemReturnInfoBusiness _itemReturnInfoBusiness;
         private readonly IItemReturnDetailBusiness _itemReturnDetailBusiness;
-        private readonly IRepairStockInfoBusiness _repairStockInfoBusiness;
-        private readonly IRepairStockDetailBusiness _repairStockDetailBusiness;
+        private readonly IWarehouseFaultyStockInfoBusiness _repairStockInfoBusiness;
+        private readonly IWarehouseFaultyStockDetailBusiness _repairStockDetailBusiness;
         private readonly IDescriptionBusiness _descriptionBusiness;
         private readonly IFinishGoodsSendToWarehouseInfoBusiness _finishGoodsSendToWarehouseInfoBusiness;
         private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
@@ -81,7 +81,7 @@ namespace ERPWeb.Controllers
         private readonly IStockItemReturnDetailBusiness _stockItemReturnDetailBusiness;
         #endregion
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IRepairStockInfoBusiness repairStockInfoBusiness, IRepairStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness)
         {
             #region Inventory
             this._inventoryDb = inventoryDb;
@@ -124,6 +124,7 @@ namespace ERPWeb.Controllers
             this._stockItemReturnDetailBusiness = stockItemReturnDetailBusiness;
             #endregion
         }
+
         #region IMEI Generate
         public ActionResult GetIMEIGenerator()
         {
@@ -696,6 +697,8 @@ namespace ERPWeb.Controllers
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+
+               
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "search")
             {
@@ -1168,7 +1171,7 @@ namespace ERPWeb.Controllers
             {
                 var descriptions = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId);
                 var lines = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId);
-                IEnumerable<RepairStockInfoDTO> dto = _repairStockInfoBusiness.GetRepairStockInfos(User.OrgId).Select(info => new RepairStockInfoDTO
+                IEnumerable<WarehouseFaultyStockInfoDTO> dto = _repairStockInfoBusiness.GetWarehouseFaultyStockInfos(User.OrgId).Select(info => new WarehouseFaultyStockInfoDTO
                 {
                     RStockInfoId = info.RStockInfoId,
                     DescriptionId = info.DescriptionId,
@@ -1204,7 +1207,7 @@ namespace ERPWeb.Controllers
                 dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 //-----------------//
 
-                List<RepairStockInfoViewModel> repairStockInfoViewModels = new List<RepairStockInfoViewModel>();
+                List<WarehouseFaultyStockInfoViewModel> repairStockInfoViewModels = new List<WarehouseFaultyStockInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, repairStockInfoViewModels);
                 return PartialView("_RepairStockInfoList", repairStockInfoViewModels);
             }
@@ -1248,13 +1251,13 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _repairStockDetailBusiness.GetRepairStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId, returnType, faultyCase).OrderByDescending(s => s.RStockDetailId).ToList();
+                var dto = _repairStockDetailBusiness.GetWarehouseFaultyStockDetailList(lineId, modelId, warehouseId, itemTypeId, itemId, stockStatus, fromDate, toDate, refNum, User.OrgId, returnType, faultyCase).OrderByDescending(s => s.RStockDetailId).ToList();
 
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
                 dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 //-----------------//
-                IEnumerable<RepairStockDetailListViewModel> viewModel = new List<RepairStockDetailListViewModel>();
+                IEnumerable<WarehouseFaultyStockDetailListViewModel> viewModel = new List<WarehouseFaultyStockDetailListViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModel);
                 return PartialView("_GetRepairStockDetailInfoList", viewModel);
             }
@@ -2284,7 +2287,15 @@ namespace ERPWeb.Controllers
         public ActionResult CreateExcel()
         {
             ViewBag.ddlSupplierName = _supplierBusiness.GetSuppliers(User.OrgId).Select(s => new SelectListItem { Text = s.SupplierName, Value = s.SupplierId.ToString() });
+
             ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(s => new SelectListItem { Text = s.DescriptionName, Value = s.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlBomItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s=> s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem()
+            {
+                Text = s.ItemName,
+                Value = s.ItemId
+            }).ToList();
+
             return PartialView();
         }
 
@@ -2329,6 +2340,27 @@ namespace ERPWeb.Controllers
 
                         var dbValues = _itemBusiness.GetItemWithKeys(User.OrgId);
 
+                        ItemPreparationInfoDTO itemPreparationInfo = new ItemPreparationInfoDTO();
+                        List<ItemPreparationDetailDTO> itemPreparationDetails = new List<ItemPreparationDetailDTO>();
+                        var isItemPreparationExist = false;
+
+
+                        if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() !="")
+                        {
+                            string[] bomKeys = models.BomItemId.Split('#');
+                            isItemPreparationExist = _itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(ItemPreparationType.Production,models.DescriptionId.Value, Utility.TryParseInt(bomKeys[0]), User.OrgId);
+                            if (!isItemPreparationExist)
+                            {
+                                itemPreparationInfo.DescriptionId = models.DescriptionId.Value;
+                                itemPreparationInfo.WarehouseId = Utility.TryParseInt(bomKeys[2]);
+                                itemPreparationInfo.ItemTypeId = Utility.TryParseInt(bomKeys[1]);
+                                itemPreparationInfo.ItemId = Utility.TryParseInt(bomKeys[0]);
+                                itemPreparationInfo.PreparationType = ItemPreparationType.Production;
+                                itemPreparationInfo.OrganizationId = User.OrgId;
+                                itemPreparationInfo.UnitId = _itemBusiness.GetItemById(itemPreparationInfo.ItemId, User.OrgId).UnitId;
+                            }
+                        }
+
                         foreach (var item in linqToExcel)
                         {
                             if (item.ItemId > 0 && item.UnitId > 0 && item.Quantity > 0)
@@ -2338,11 +2370,28 @@ namespace ERPWeb.Controllers
                                 item.ItemTypeId = values.ItemTypeId;
                                 item.DescriptionId = models.DescriptionId;
                                 item.SupplierId = models.SupplierId;
+                                item.Quantity = item.Quantity;
+                                item.UnitId = item.UnitId;
                                 warehouseStocks.Add(item);
+                                if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() != "" && !isItemPreparationExist && item.ConsumptionQty.HasValue && item.ConsumptionQty.Value > 0)
+                                {
+                                    ItemPreparationDetailDTO itemPreparationDetail = new ItemPreparationDetailDTO()
+                                    {
+                                        ItemId= item.ItemId.Value,
+                                        ItemTypeId= item.ItemTypeId.Value,
+                                        WarehouseId = item.WarehouseId.Value,
+                                        Quantity = item.ConsumptionQty.Value,
+                                        UnitId = item.UnitId.Value
+                                    };
+                                    itemPreparationDetails.Add(itemPreparationDetail);
+                                }
                             }
                         }
 
                         executionState.isSuccess = (warehouseStocks.Count() > 0 ? _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, User.UserId, User.OrgId) : executionState.isSuccess);
+
+                        if (!isItemPreparationExist && itemPreparationInfo !=null && itemPreparationDetails.Count > 0)
+                            _itemPreparationInfoBusiness.SaveItemPreparations(itemPreparationInfo, itemPreparationDetails, User.UserId, User.OrgId);
 
                         //deleting excel file from folder  
                         if ((System.IO.File.Exists(pathToExcelFile)))

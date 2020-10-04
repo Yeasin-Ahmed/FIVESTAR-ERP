@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Inventory.DTOModel
 {
-    public class RepairStockDetailListDTO
+    public class WarehouseFaultyStockDetailListDTO
     {
         public long RStockDetailId { get; set; }
         public string LineNumber { get; set; }

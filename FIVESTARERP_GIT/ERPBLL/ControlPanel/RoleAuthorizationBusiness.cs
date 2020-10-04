@@ -91,7 +91,7 @@ Where oa.OrganizationId = {1} and IsActAsParent = 0", roleId, orgId)).ToList();
                         existInDb.Delete = item.Delete;
                         existInDb.Approval = item.Approval;
                         existInDb.Report = item.Report;
-                        existInDb.RoleId = item.RoleId;
+                        existInDb.RoleId = appUserRole;
                         existInDb.UpUserId = userId;
                         existInDb.UpdateDate = DateTime.Now;
                         _roleAuthorizationRepository.Update(existInDb);

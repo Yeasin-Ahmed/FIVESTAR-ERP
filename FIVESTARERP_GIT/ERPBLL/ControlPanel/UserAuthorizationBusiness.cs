@@ -102,7 +102,7 @@ Where oa.OrganizationId = {1} and IsActAsParent = 0", userId,orgId)).ToList();
                     {
                         UserAuthorization userAuthorization = new UserAuthorization
                         {
-                            UserId = item.UserId,
+                            UserId = appUser,
                             RoleId = userRoleId,
                             SubmenuId = item.SubmenuId,
                             MainmenuId=item.MainmenuId,

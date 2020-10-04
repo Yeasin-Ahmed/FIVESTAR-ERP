@@ -892,6 +892,13 @@ namespace ERPWeb.Controllers
 
             return Json(viewModels);
         }
+
+        public ActionResult IsDuplicateBrachName(string branchName, long branchId, long orgId)
+        {
+            var branches =_branchBusiness.GetBranchByOrgId(orgId);
+            var isExist = branches.FirstOrDefault(s => s.BranchName == branchName && s.BranchId != branchId && s.OrganizationId == orgId) != null;
+            return Json(isExist);
+        }
         #endregion
 
         #endregion

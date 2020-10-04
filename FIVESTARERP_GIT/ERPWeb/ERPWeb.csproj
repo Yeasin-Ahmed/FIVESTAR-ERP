@@ -710,6 +710,16 @@
     <Content Include="Views\FrontDesk\ReceiveReturnJobOrderReport.cshtml" />
     <Content Include="Views\FrontDesk\TSOtherBranchRequsitionReport.cshtml" />
     <Content Include="Views\FrontDesk\_JobSignInAndOut.cshtml" />
+    <Content Include="Views\Report\InventoryReportPanel.cshtml" />
+    <Content Include="Views\ControlPanel\CreateAppUser.cshtml" />
+    <Content Include="Views\ControlPanel\CreateAppRole.cshtml" />
+    <Content Include="Views\ControlPanel\AppUserConfiguration.cshtml" />
+    <Content Include="Views\ControlPanel\_GetBranch.cshtml" />
+    <Content Include="Views\ControlPanel\_GetRole.cshtml" />
+    <Content Include="Views\ControlPanel\_GetUsers.cshtml" />
+    <Content Include="Views\ControlPanel\CreateUserRole.cshtml" />
+    <Content Include="Views\ControlPanel\CreateClientUser.cshtml" />
+    <Content Include="Views\ControlPanel\ClientUserConfiguration.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -722,7 +732,6 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common2\" />
-    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -788,6 +797,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ExcelFile\Demo.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Reports\ERPRpt\Inventory\rptModelWiseDailyItemStock.rdlc" />
+    <Content Include="Reports\ERPRpt\Inventory\rptStockShortageOrExcess - Copy.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\SalarySheetReport.rdlc" />

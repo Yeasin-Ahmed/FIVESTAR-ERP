@@ -1,4 +1,5 @@
-﻿using ERPBO.ControlPanel.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.ControlPanel.DomainModels;
 using ERPBO.ControlPanel.DTOModels;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace ERPBLL.ControlPanel.Interface
         bool IsDuplicateRoleName(string roleName, long id, long orgId);
         Role GetRoleOneById(long id, long orgId);
         IEnumerable<TechnicalServiceByRoleDTO> GetRoleByTechnicalServicesId(string roleName,long orgId,long BranchId);
+        Role GetRoleById(long id);
+        ExecutionStateWithText SaveAppRole(RoleDTO roleDTO, long userId, long orgId);
     }
 }

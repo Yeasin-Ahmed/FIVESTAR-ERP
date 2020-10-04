@@ -28,3 +28,6 @@ Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.Conf
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
 -- Yeasin
 
+
+--- Model State Validation ---
+ModelState.Where(x => x.Value.Errors.Count > 0).Select(x => x.Key).ToList()
