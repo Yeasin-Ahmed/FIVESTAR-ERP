@@ -10,6 +10,7 @@
                 <th>#SL</th>
                 <th class="hide"></th>
                 <th>InvoiceCode</th>
+                <th>INV-Type</th>
                 <th>JobCode</th>
                 <th>CustomerName</th>
                 <th>Parts Price</th>
@@ -35,6 +36,7 @@
                     <td class="action">
                         <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= part.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2 " style="color:blue;line-height:5px" id="btnReport" title="Download Invoice">@part.InvoiceCode</a>
                     </td>
+                    <td>@part.InvoiceType</td>
                     <td>@part.JobOrderCode</td>
                     <td>@part.CustomerName</td>
                     <td class="text-center">@part.TotalSPAmount.ToString("0.00")</td>

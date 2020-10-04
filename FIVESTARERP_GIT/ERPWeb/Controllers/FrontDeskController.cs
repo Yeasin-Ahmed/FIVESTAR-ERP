@@ -1295,6 +1295,30 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
+        #region Accessories Invoice
+        public ActionResult CreateAccessoriesInvoice()
+        {
+            ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+            ViewBag.ddlsellsPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
+            return View();
+        }
+
+        public ActionResult SaveInvoiceForAccessoriesSells(InvoiceInfoViewModel info, List<InvoiceDetailViewModel> details)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                InvoiceInfoDTO dtoInfo = new InvoiceInfoDTO();
+                List<InvoiceDetailDTO> dtoDetail = new List<InvoiceDetailDTO>();
+                AutoMapper.Mapper.Map(info, dtoInfo);
+                AutoMapper.Mapper.Map(details, dtoDetail);
+                IsSuccess = _invoiceInfoBusiness.SaveInvoiceForAccessoriesSells(dtoInfo, dtoDetail, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
         #region Reports
         [HttpGet]
         public ActionResult GetJobOrderListReport()
@@ -1546,6 +1570,44 @@ namespace ERPWeb.Controllers
                 //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_JobSignInAndOut", viewModels);
+            }
+        }
+
+        public ActionResult DailySummaryReport(string flag, string fromDate, string toDate,int page=1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderBusiness.DailySummaryReport(User.OrgId, User.BranchId,fromDate,toDate);
+                List<DailySummaryReportViewModel> viewModels = new List<DailySummaryReportViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_DailySummaryReport", viewModels);
+            }
+        }
+
+        public ActionResult AllBranchDailySummaryReport(string flag, string fromDate, string toDate, int page = 1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _jobOrderBusiness.AllBranchDailySummaryReport(User.OrgId, fromDate, toDate);
+                List<DailySummaryReportViewModel> viewModels = new List<DailySummaryReportViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_AllBranchDailySummaryReport", viewModels);
             }
         }
         #endregion

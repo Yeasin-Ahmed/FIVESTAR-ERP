@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ERPBO.ControlPanel.DomainModels
 {
     [Table("tblInvoiceInfo")]
-   public class InvoiceInfo
+    public class InvoiceInfo
     {
         [Key]
         public long InvoiceInfoId { get; set; }
@@ -33,6 +33,12 @@ namespace ERPBO.ControlPanel.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+
+        //03-10-2020
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public int? WarrentyFor {get;set;}
+        public string InvoiceType { get; set; }
 
     }
 }

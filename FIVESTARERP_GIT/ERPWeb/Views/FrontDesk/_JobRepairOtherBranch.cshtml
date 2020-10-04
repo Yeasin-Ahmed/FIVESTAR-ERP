@@ -20,7 +20,7 @@
                 sl = sl + 1;
                 string EntryDate = job.EntryDate != null ? job.EntryDate.Value.ToString("dd-MMM-yyy") : "";
                 <tr>
-                    <td class="text-center" width="10%">@sl</td>
+                    <td class="text-center">@sl</td>
                     <td>@job.JobOrderCode</td>
                     <td>@job.JobStatus</td>
                     <td class="hide">@job.BranchId</td>

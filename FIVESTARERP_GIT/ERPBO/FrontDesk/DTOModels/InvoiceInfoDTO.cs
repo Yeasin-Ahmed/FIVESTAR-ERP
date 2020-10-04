@@ -28,5 +28,9 @@ namespace ERPBO.FrontDesk.DTOModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public double Total { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public int? WarrentyFor { get; set; }
+        public string InvoiceType { get; set; }
     }
 }

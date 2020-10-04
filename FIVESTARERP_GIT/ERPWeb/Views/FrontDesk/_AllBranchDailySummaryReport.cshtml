@@ -1,0 +1,80 @@
+﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.DailySummaryReportViewModel>
+
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+}
+
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblJobOrderList">
+            <thead class="btn-dark">
+                <tr class="text-center text-sm">
+                    <th style="vertical-align:middle">#SL</th>
+                    <th style="vertical-align:middle">DATE</th>
+                    <th style="vertical-align:middle">BranchWise DailyJob</th>
+                    <th style="vertical-align:middle">TOTAL</th>
+                    <th style="vertical-align:middle">Warrenty</th>
+                    <th style="vertical-align:middle">Billing</th>
+                    <th style="vertical-align:middle">Cash</th>
+                    <th style="vertical-align:middle">Ts Backlog</th>
+                    <th style="vertical-align:middle">Ts Ovell All Backlog</th>
+                    <th style="vertical-align:middle">Ts Sign In Pending</th>
+                    <th style="vertical-align:middle">TS WIP</th>
+                    <th style="vertical-align:middle">RAR</th>
+                    <th style="vertical-align:middle">RWR</th>
+                    <th style="vertical-align:middle">PFS</th>
+                    <th style="vertical-align:middle">PFA</th>
+                    <th style="vertical-align:middle">Warranty Delivered</th>
+                    <th style="vertical-align:middle">Billing Delivered</th>
+                    <th style="vertical-align:middle">Delivered</th>
+                    <th style="vertical-align:middle">Delivery Pending</th>
+                    <th style="vertical-align:middle">Over all Warranty Undelivered</th>
+                    <th style="vertical-align:middle">Over all Billing Undelivered</th>
+                    <th style="vertical-align:middle">Total Undelivered</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    string entryDate = item.EntryDate != null ? item.EntryDate.ToString("dd-MMM-yyy") : "";
+                <tr class="text-sm">
+                    <td class="text-center">@sl</td>
+                    <td class="text-center">@entryDate</td>
+                    <td class="text-center">@item.BranchWiseDailyJob</td>
+                    <td class="text-center">@item.TOTAL</td>
+                    <td class="text-center">@item.WarrentyJob</td>
+                    <td class="text-center">@item.BillingJob</td>
+                    <td class="text-center">@item.CASH</td>
+                    <td class="text-center">@item.TSBacklog</td>
+                    <td class="text-center">@item.TSOverAllBacklog</td>
+                    <td class="text-center">@item.TSSignInPending</td>
+                    <td class="text-center">@item.WorkInProgress</td>
+                    <td class="text-center">@item.RepairAndReturn</td>
+                    <td class="text-center">@item.ReturnWithoutRepair</td>
+                    <td class="text-center">@item.PendingForSpareParts</td>
+                    <td class="text-center">@item.PendingForApproval</td>
+                    <td class="text-center">@item.WarrentyDelivery</td>
+                    <td class="text-center">@item.BillingDelivery</td>
+                    <th class="text-center">@item.TotalDelivery</th>
+                    <td class="text-center">@item.DeliveryPending</td>
+                    <td class="text-center">@item.OverAllWarrentyUnDelivered</td>
+                    <td class="text-center">@item.OverAllBillingUnDelivered</td>
+                    <td class="text-center">@item.TotalUnDelivered</td>
+                </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="empty-row text-center">
+                        <td colspan="20">No data found in the table</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="col-md-12">
+            @Html.Partial("_Pagination", pagerData)
+        </div>
+    </div>
+</div>
+

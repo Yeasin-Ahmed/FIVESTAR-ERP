@@ -12,7 +12,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public long InvoiceInfoId { get; set; }
         [StringLength(100)]
         public string InvoiceCode { get; set; }
-        [Range(1, long.MaxValue)]
+        //[Range(1, long.MaxValue)]
         public long JobOrderId { get; set; }
         [StringLength(100)]
         public string JobOrderCode { get; set; }
@@ -35,5 +35,9 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public double Total { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string WarrentyFor { get; set; }
+        public string InvoiceType { get; set; }
     }
 }

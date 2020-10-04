@@ -7,7 +7,7 @@
           <Line Name="Line9">
             <Top>0.22121in</Top>
             <Height>0in</Height>
-            <Width>6.90037in</Width>
+            <Width>7.13787in</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -30,7 +30,7 @@
           <Line Name="Line11">
             <Top>0.43212in</Top>
             <Height>0in</Height>
-            <Width>6.90037in</Width>
+            <Width>7.13787in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -42,7 +42,7 @@
           <Line Name="Line12">
             <Top>0.64669in</Top>
             <Height>0in</Height>
-            <Width>6.90036in</Width>
+            <Width>7.13787in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -615,12 +615,47 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Textbox33">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>JobCode</Label>
+                    <Value>Delivery Date</Value>
+                    <Style>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox23</rd:DefaultName>
+            <Top>0.01718in</Top>
+            <Left>3.37963in</Left>
+            <Height>0.20402in</Height>
+            <Width>1in</Width>
+            <ZIndex>22</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.42443in</Top>
-        <Left>0.15847in</Left>
+        <Top>1.14943in</Top>
+        <Left>0.05847in</Left>
         <Height>1.09671in</Height>
-        <Width>6.90037in</Width>
+        <Width>7.13787in</Width>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -633,10 +668,10 @@
         <Value>=First(Fields!ReportImage.Value, "ServicesReportHead")</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>FitProportional</Sizing>
-        <Top>0.33849in</Top>
-        <Left>0.15847in</Left>
-        <Height>0.8746in</Height>
-        <Width>0.90675in</Width>
+        <Top>0.06349in</Top>
+        <Left>0.04597in</Left>
+        <Height>0.9996in</Height>
+        <Width>1.02244in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -662,7 +697,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>0.03294in</Top>
+        <Top>0.00794in</Top>
         <Left>2.87579in</Left>
         <Height>0.25in</Height>
         <Width>1.30372in</Width>
@@ -694,8 +729,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.03294in</Top>
-        <Left>5.10249in</Left>
+        <Top>0.00794in</Top>
+        <Left>5.23999in</Left>
         <Height>0.25in</Height>
         <Width>0.69246in</Width>
         <ZIndex>3</ZIndex>
@@ -731,8 +766,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.04544in</Top>
-        <Left>5.70884in</Left>
+        <Top>0.02044in</Top>
+        <Left>5.84634in</Left>
         <Height>0.25in</Height>
         <Width>1.35in</Width>
         <ZIndex>4</ZIndex>
@@ -756,6 +791,7 @@
                 <Label>Organization</Label>
                 <Value>=First(Fields!OrganizationName.Value, "ServicesReportHead")</Value>
                 <Style>
+                  <FontFamily>times New Roman</FontFamily>
                   <FontSize>9pt</FontSize>
                 </Style>
               </TextRun>
@@ -766,7 +802,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.31349in</Top>
+        <Top>0.25099in</Top>
         <Left>2.0996in</Left>
         <Height>0.21627in</Height>
         <Width>2.7968in</Width>
@@ -809,7 +845,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.54504in</Top>
+        <Top>0.45754in</Top>
         <Left>2.09716in</Left>
         <Height>0.21627in</Height>
         <Width>2.79924in</Width>
@@ -845,7 +881,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.76359in</Top>
+        <Top>0.67609in</Top>
         <Left>2.09824in</Left>
         <Height>0.21627in</Height>
         <Width>2.79816in</Width>
@@ -870,12 +906,14 @@
                 <Label>PhoneNo</Label>
                 <Value>=First(Fields!PhoneNo.Value, "ServicesReportHead")</Value>
                 <Style>
+                  <FontFamily>times New Roman</FontFamily>
                   <FontSize>9pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>,</Value>
                 <Style>
+                  <FontFamily>times New Roman</FontFamily>
                   <FontSize>9pt</FontSize>
                 </Style>
               </TextRun>
@@ -883,6 +921,7 @@
                 <Label>MobileNo</Label>
                 <Value>=First(Fields!MobileNo.Value, "ServicesReportHead")</Value>
                 <Style>
+                  <FontFamily>times New Roman</FontFamily>
                   <FontSize>9pt</FontSize>
                 </Style>
               </TextRun>
@@ -893,46 +932,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.98264in</Top>
+        <Top>0.88264in</Top>
         <Left>2.0958in</Left>
         <Height>0.21627in</Height>
         <Width>2.8006in</Width>
         <ZIndex>8</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox33">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Label>JobCode</Label>
-                <Value>Delivery Date</Value>
-                <Style>
-                  <FontFamily>Times New Roman</FontFamily>
-                  <FontSize>9pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox23</rd:DefaultName>
-        <Top>1.42911in</Top>
-        <Left>3.5256in</Left>
-        <Height>0.20402in</Height>
-        <Width>1in</Width>
-        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -966,11 +970,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox23</rd:DefaultName>
-        <Top>1.63864in</Top>
-        <Left>4.87421in</Left>
+        <Top>1.38864in</Top>
+        <Left>4.77421in</Left>
         <Height>0.20402in</Height>
         <Width>2.12718in</Width>
-        <ZIndex>10</ZIndex>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1001,11 +1005,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox23</rd:DefaultName>
-        <Top>1.85655in</Top>
-        <Left>4.87421in</Left>
+        <Top>1.60655in</Top>
+        <Left>4.77421in</Left>
         <Height>0.20402in</Height>
         <Width>2.12718in</Width>
-        <ZIndex>11</ZIndex>
+        <ZIndex>10</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1017,13 +1021,13 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>2.58257in</Height>
+    <Height>2.28049in</Height>
     <Style />
   </Body>
   <Width>7.26in</Width>
   <Page>
     <PageFooter>
-      <Height>0.7817in</Height>
+      <Height>0.51087in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1044,7 +1048,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox19</rd:DefaultName>
-          <Top>0.32222in</Top>
+          <Top>0.18472in</Top>
           <Left>0.64365in</Left>
           <Height>0.30159in</Height>
           <Width>1in</Width>
@@ -1078,8 +1082,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox19</rd:DefaultName>
-          <Top>0.32222in</Top>
-          <Left>6.00139in</Left>
+          <Top>0.18472in</Top>
+          <Left>6.11389in</Left>
           <Height>0.30159in</Height>
           <Width>1in</Width>
           <ZIndex>1</ZIndex>
@@ -1107,8 +1111,8 @@
     <PageWidth>8.27in</PageWidth>
     <LeftMargin>0.5in</LeftMargin>
     <RightMargin>0.5in</RightMargin>
-    <TopMargin>0.5in</TopMargin>
-    <BottomMargin>0.5in</BottomMargin>
+    <TopMargin>0.25in</TopMargin>
+    <BottomMargin>0.25in</BottomMargin>
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>

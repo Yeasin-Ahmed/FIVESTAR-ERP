@@ -60,5 +60,7 @@ namespace ERPBLL.FrontDesk.Interface
         bool UpdateReturnJob(long jobOrderId, long userId,long orgId);
         JobOrderDTO GetJobOrderDetails(long jobOrderId, long orgId);
         IEnumerable<DashboardApprovedRequsitionDTO> DashboardAnotherBranchRequsition(long orgId, long branchId);
+        IEnumerable<DailySummaryReportDTO> DailySummaryReport(long orgId, long branchId, string fromDate, string toDate);
+        IEnumerable<DailySummaryReportDTO> AllBranchDailySummaryReport(long orgId, string fromDate, string toDate);
     }
 }

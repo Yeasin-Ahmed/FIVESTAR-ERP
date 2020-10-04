@@ -588,7 +588,7 @@ namespace ERPWeb.Controllers
         #region OtherBranchRequsitionReport
         public ActionResult OtherBranchRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType)
         {
-            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode, ddlWarehouseName, ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId);
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode, ddlWarehouseName,ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -596,7 +596,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptOtherBranchRequsition.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/Configuration/rptOtherBranchRequsition - Copy.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -728,7 +728,7 @@ namespace ERPWeb.Controllers
             servicesReportHeads.Add(reportHead);
 
             LocalReport localReport = new LocalReport();
-            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobSignInAndOutReport.rdlc");
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobSignInAndOutReport - Copy.rdlc");
             if (System.IO.File.Exists(reportPath))
             {
                 localReport.ReportPath = reportPath;
@@ -739,6 +739,94 @@ namespace ERPWeb.Controllers
                 localReport.DataSources.Add(dataSource2);
                 localReport.Refresh();
                 localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region Daily Summary Report 
+        public ActionResult DailySummaryReport(string fromDate, string toDate, string rptType)
+        {
+            var dto = _jobOrderBusiness.DailySummaryReport(User.OrgId, User.BranchId, fromDate, toDate);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptDailySummaryReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("DailySummary", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "DailySummary";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region ALL Branch Daily Summary Report
+        public ActionResult AllBranchDailySummaryReport(string fromDate, string toDate, string rptType)
+        {
+            var dto = _jobOrderBusiness.AllBranchDailySummaryReport(User.OrgId, fromDate, toDate);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptAllBranchDailySummaryReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("AllBranchDailySummary", dto);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "DailySummary";
 
                 string mimeType;
                 string encoding;

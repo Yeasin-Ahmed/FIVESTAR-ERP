@@ -194,6 +194,7 @@
     <Compile Include="FrontDesk\DomainModels\TechnicalServicesStock.cs" />
     <Compile Include="FrontDesk\DomainModels\TsStockReturnDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\TsStockReturnInfo.cs" />
+    <Compile Include="FrontDesk\DTOModels\DailySummaryReportDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardApprovedRequsitionDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardDailyBillingAndWarrantyJobDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardDailyReceiveJobOrderDTO.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="FrontDesk\DTOModels\TsStockReturnDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\TsStockReturnInfoDTO.cs" />
     <Compile Include="FrontDesk\ReportModels\ServicesReportHead.cs" />
+    <Compile Include="FrontDesk\ViewModels\DailySummaryReportViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardApprovedRequsitionViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailyBillingAndWarrantyJobViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailyReceiveJobOrderViewModel.cs" />

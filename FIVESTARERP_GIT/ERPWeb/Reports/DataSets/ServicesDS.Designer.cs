@@ -62,6 +62,10 @@ namespace ERPWeb.Reports.DataSets {
         
         private JobSignInAndOutDataTable tableJobSignInAndOut;
         
+        private DailySummaryDataTable tableDailySummary;
+        
+        private AllBranchDailySummaryDataTable tableAllBranchDailySummary;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -146,6 +150,12 @@ namespace ERPWeb.Reports.DataSets {
                 }
                 if ((ds.Tables["JobSignInAndOut"] != null)) {
                     base.Tables.Add(new JobSignInAndOutDataTable(ds.Tables["JobSignInAndOut"]));
+                }
+                if ((ds.Tables["DailySummary"] != null)) {
+                    base.Tables.Add(new DailySummaryDataTable(ds.Tables["DailySummary"]));
+                }
+                if ((ds.Tables["AllBranchDailySummary"] != null)) {
+                    base.Tables.Add(new AllBranchDailySummaryDataTable(ds.Tables["AllBranchDailySummary"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -357,6 +367,26 @@ namespace ERPWeb.Reports.DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public DailySummaryDataTable DailySummary {
+            get {
+                return this.tableDailySummary;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public AllBranchDailySummaryDataTable AllBranchDailySummary {
+            get {
+                return this.tableAllBranchDailySummary;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -478,6 +508,12 @@ namespace ERPWeb.Reports.DataSets {
                 }
                 if ((ds.Tables["JobSignInAndOut"] != null)) {
                     base.Tables.Add(new JobSignInAndOutDataTable(ds.Tables["JobSignInAndOut"]));
+                }
+                if ((ds.Tables["DailySummary"] != null)) {
+                    base.Tables.Add(new DailySummaryDataTable(ds.Tables["DailySummary"]));
+                }
+                if ((ds.Tables["AllBranchDailySummary"] != null)) {
+                    base.Tables.Add(new AllBranchDailySummaryDataTable(ds.Tables["AllBranchDailySummary"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -626,6 +662,18 @@ namespace ERPWeb.Reports.DataSets {
                     this.tableJobSignInAndOut.InitVars();
                 }
             }
+            this.tableDailySummary = ((DailySummaryDataTable)(base.Tables["DailySummary"]));
+            if ((initTable == true)) {
+                if ((this.tableDailySummary != null)) {
+                    this.tableDailySummary.InitVars();
+                }
+            }
+            this.tableAllBranchDailySummary = ((AllBranchDailySummaryDataTable)(base.Tables["AllBranchDailySummary"]));
+            if ((initTable == true)) {
+                if ((this.tableAllBranchDailySummary != null)) {
+                    this.tableAllBranchDailySummary.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -674,6 +722,10 @@ namespace ERPWeb.Reports.DataSets {
             base.Tables.Add(this.tableOtherBranchRequsition);
             this.tableJobSignInAndOut = new JobSignInAndOutDataTable();
             base.Tables.Add(this.tableJobSignInAndOut);
+            this.tableDailySummary = new DailySummaryDataTable();
+            base.Tables.Add(this.tableDailySummary);
+            this.tableAllBranchDailySummary = new AllBranchDailySummaryDataTable();
+            base.Tables.Add(this.tableAllBranchDailySummary);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -792,6 +844,18 @@ namespace ERPWeb.Reports.DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeDailySummary() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeAllBranchDailySummary() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private void SchemaChanged(object sender, global::System.ComponentModel.CollectionChangeEventArgs e) {
             if ((e.Action == global::System.ComponentModel.CollectionChangeAction.Remove)) {
                 this.InitVars();
@@ -901,6 +965,12 @@ namespace ERPWeb.Reports.DataSets {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void JobSignInAndOutRowChangeEventHandler(object sender, JobSignInAndOutRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void DailySummaryRowChangeEventHandler(object sender, DailySummaryRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void AllBranchDailySummaryRowChangeEventHandler(object sender, AllBranchDailySummaryRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -9347,6 +9417,1102 @@ namespace ERPWeb.Reports.DataSets {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class DailySummaryDataTable : global::System.Data.TypedTableBase<DailySummaryRow> {
+            
+            private global::System.Data.DataColumn columnEntryDate;
+            
+            private global::System.Data.DataColumn columnDailyJobOrder;
+            
+            private global::System.Data.DataColumn columnBillingJob;
+            
+            private global::System.Data.DataColumn columnWarrentyJob;
+            
+            private global::System.Data.DataColumn columnCASH;
+            
+            private global::System.Data.DataColumn columnTSBacklog;
+            
+            private global::System.Data.DataColumn columnTSOverAllBacklog;
+            
+            private global::System.Data.DataColumn columnTSSignInPending;
+            
+            private global::System.Data.DataColumn columnRepairAndReturn;
+            
+            private global::System.Data.DataColumn columnReturnWithoutRepair;
+            
+            private global::System.Data.DataColumn columnWorkInProgress;
+            
+            private global::System.Data.DataColumn columnPendingForSpareParts;
+            
+            private global::System.Data.DataColumn columnPendingForApproval;
+            
+            private global::System.Data.DataColumn columnWarrentyDelivery;
+            
+            private global::System.Data.DataColumn columnBillingDelivery;
+            
+            private global::System.Data.DataColumn columnTotalDelivery;
+            
+            private global::System.Data.DataColumn columnDeliveryPending;
+            
+            private global::System.Data.DataColumn columnOverAllWarrentyUnDelivered;
+            
+            private global::System.Data.DataColumn columnOverAllBillingUnDelivered;
+            
+            private global::System.Data.DataColumn columnTotalUnDelivered;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailySummaryDataTable() {
+                this.TableName = "DailySummary";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal DailySummaryDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected DailySummaryDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn EntryDateColumn {
+                get {
+                    return this.columnEntryDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DailyJobOrderColumn {
+                get {
+                    return this.columnDailyJobOrder;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BillingJobColumn {
+                get {
+                    return this.columnBillingJob;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WarrentyJobColumn {
+                get {
+                    return this.columnWarrentyJob;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CASHColumn {
+                get {
+                    return this.columnCASH;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TSBacklogColumn {
+                get {
+                    return this.columnTSBacklog;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TSOverAllBacklogColumn {
+                get {
+                    return this.columnTSOverAllBacklog;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TSSignInPendingColumn {
+                get {
+                    return this.columnTSSignInPending;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RepairAndReturnColumn {
+                get {
+                    return this.columnRepairAndReturn;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReturnWithoutRepairColumn {
+                get {
+                    return this.columnReturnWithoutRepair;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WorkInProgressColumn {
+                get {
+                    return this.columnWorkInProgress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PendingForSparePartsColumn {
+                get {
+                    return this.columnPendingForSpareParts;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PendingForApprovalColumn {
+                get {
+                    return this.columnPendingForApproval;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WarrentyDeliveryColumn {
+                get {
+                    return this.columnWarrentyDelivery;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BillingDeliveryColumn {
+                get {
+                    return this.columnBillingDelivery;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalDeliveryColumn {
+                get {
+                    return this.columnTotalDelivery;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DeliveryPendingColumn {
+                get {
+                    return this.columnDeliveryPending;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OverAllWarrentyUnDeliveredColumn {
+                get {
+                    return this.columnOverAllWarrentyUnDelivered;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OverAllBillingUnDeliveredColumn {
+                get {
+                    return this.columnOverAllBillingUnDelivered;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalUnDeliveredColumn {
+                get {
+                    return this.columnTotalUnDelivered;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailySummaryRow this[int index] {
+                get {
+                    return ((DailySummaryRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailySummaryRowChangeEventHandler DailySummaryRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailySummaryRowChangeEventHandler DailySummaryRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailySummaryRowChangeEventHandler DailySummaryRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event DailySummaryRowChangeEventHandler DailySummaryRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddDailySummaryRow(DailySummaryRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailySummaryRow AddDailySummaryRow(
+                        System.DateTime EntryDate, 
+                        int DailyJobOrder, 
+                        int BillingJob, 
+                        int WarrentyJob, 
+                        double CASH, 
+                        int TSBacklog, 
+                        int TSOverAllBacklog, 
+                        int TSSignInPending, 
+                        int RepairAndReturn, 
+                        int ReturnWithoutRepair, 
+                        int WorkInProgress, 
+                        string PendingForSpareParts, 
+                        int PendingForApproval, 
+                        int WarrentyDelivery, 
+                        int BillingDelivery, 
+                        int TotalDelivery, 
+                        int DeliveryPending, 
+                        int OverAllWarrentyUnDelivered, 
+                        int OverAllBillingUnDelivered, 
+                        int TotalUnDelivered) {
+                DailySummaryRow rowDailySummaryRow = ((DailySummaryRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        EntryDate,
+                        DailyJobOrder,
+                        BillingJob,
+                        WarrentyJob,
+                        CASH,
+                        TSBacklog,
+                        TSOverAllBacklog,
+                        TSSignInPending,
+                        RepairAndReturn,
+                        ReturnWithoutRepair,
+                        WorkInProgress,
+                        PendingForSpareParts,
+                        PendingForApproval,
+                        WarrentyDelivery,
+                        BillingDelivery,
+                        TotalDelivery,
+                        DeliveryPending,
+                        OverAllWarrentyUnDelivered,
+                        OverAllBillingUnDelivered,
+                        TotalUnDelivered};
+                rowDailySummaryRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDailySummaryRow);
+                return rowDailySummaryRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                DailySummaryDataTable cln = ((DailySummaryDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new DailySummaryDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnEntryDate = base.Columns["EntryDate"];
+                this.columnDailyJobOrder = base.Columns["DailyJobOrder"];
+                this.columnBillingJob = base.Columns["BillingJob"];
+                this.columnWarrentyJob = base.Columns["WarrentyJob"];
+                this.columnCASH = base.Columns["CASH"];
+                this.columnTSBacklog = base.Columns["TSBacklog"];
+                this.columnTSOverAllBacklog = base.Columns["TSOverAllBacklog"];
+                this.columnTSSignInPending = base.Columns["TSSignInPending"];
+                this.columnRepairAndReturn = base.Columns["RepairAndReturn"];
+                this.columnReturnWithoutRepair = base.Columns["ReturnWithoutRepair"];
+                this.columnWorkInProgress = base.Columns["WorkInProgress"];
+                this.columnPendingForSpareParts = base.Columns["PendingForSpareParts"];
+                this.columnPendingForApproval = base.Columns["PendingForApproval"];
+                this.columnWarrentyDelivery = base.Columns["WarrentyDelivery"];
+                this.columnBillingDelivery = base.Columns["BillingDelivery"];
+                this.columnTotalDelivery = base.Columns["TotalDelivery"];
+                this.columnDeliveryPending = base.Columns["DeliveryPending"];
+                this.columnOverAllWarrentyUnDelivered = base.Columns["OverAllWarrentyUnDelivered"];
+                this.columnOverAllBillingUnDelivered = base.Columns["OverAllBillingUnDelivered"];
+                this.columnTotalUnDelivered = base.Columns["TotalUnDelivered"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnEntryDate = new global::System.Data.DataColumn("EntryDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntryDate);
+                this.columnDailyJobOrder = new global::System.Data.DataColumn("DailyJobOrder", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDailyJobOrder);
+                this.columnBillingJob = new global::System.Data.DataColumn("BillingJob", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillingJob);
+                this.columnWarrentyJob = new global::System.Data.DataColumn("WarrentyJob", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWarrentyJob);
+                this.columnCASH = new global::System.Data.DataColumn("CASH", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCASH);
+                this.columnTSBacklog = new global::System.Data.DataColumn("TSBacklog", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTSBacklog);
+                this.columnTSOverAllBacklog = new global::System.Data.DataColumn("TSOverAllBacklog", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTSOverAllBacklog);
+                this.columnTSSignInPending = new global::System.Data.DataColumn("TSSignInPending", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTSSignInPending);
+                this.columnRepairAndReturn = new global::System.Data.DataColumn("RepairAndReturn", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRepairAndReturn);
+                this.columnReturnWithoutRepair = new global::System.Data.DataColumn("ReturnWithoutRepair", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReturnWithoutRepair);
+                this.columnWorkInProgress = new global::System.Data.DataColumn("WorkInProgress", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWorkInProgress);
+                this.columnPendingForSpareParts = new global::System.Data.DataColumn("PendingForSpareParts", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPendingForSpareParts);
+                this.columnPendingForApproval = new global::System.Data.DataColumn("PendingForApproval", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPendingForApproval);
+                this.columnWarrentyDelivery = new global::System.Data.DataColumn("WarrentyDelivery", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWarrentyDelivery);
+                this.columnBillingDelivery = new global::System.Data.DataColumn("BillingDelivery", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillingDelivery);
+                this.columnTotalDelivery = new global::System.Data.DataColumn("TotalDelivery", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDelivery);
+                this.columnDeliveryPending = new global::System.Data.DataColumn("DeliveryPending", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryPending);
+                this.columnOverAllWarrentyUnDelivered = new global::System.Data.DataColumn("OverAllWarrentyUnDelivered", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOverAllWarrentyUnDelivered);
+                this.columnOverAllBillingUnDelivered = new global::System.Data.DataColumn("OverAllBillingUnDelivered", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOverAllBillingUnDelivered);
+                this.columnTotalUnDelivered = new global::System.Data.DataColumn("TotalUnDelivered", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalUnDelivered);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailySummaryRow NewDailySummaryRow() {
+                return ((DailySummaryRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new DailySummaryRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(DailySummaryRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.DailySummaryRowChanged != null)) {
+                    this.DailySummaryRowChanged(this, new DailySummaryRowChangeEvent(((DailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.DailySummaryRowChanging != null)) {
+                    this.DailySummaryRowChanging(this, new DailySummaryRowChangeEvent(((DailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.DailySummaryRowDeleted != null)) {
+                    this.DailySummaryRowDeleted(this, new DailySummaryRowChangeEvent(((DailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.DailySummaryRowDeleting != null)) {
+                    this.DailySummaryRowDeleting(this, new DailySummaryRowChangeEvent(((DailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveDailySummaryRow(DailySummaryRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ServicesDS ds = new ServicesDS();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "DailySummaryDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class AllBranchDailySummaryDataTable : global::System.Data.TypedTableBase<AllBranchDailySummaryRow> {
+            
+            private global::System.Data.DataColumn columnEntryDate;
+            
+            private global::System.Data.DataColumn columnDailyJobOrder;
+            
+            private global::System.Data.DataColumn columnBillingJob;
+            
+            private global::System.Data.DataColumn columnWarrentyJob;
+            
+            private global::System.Data.DataColumn columnCASH;
+            
+            private global::System.Data.DataColumn columnTSBacklog;
+            
+            private global::System.Data.DataColumn columnTSOverAllBacklog;
+            
+            private global::System.Data.DataColumn columnTSSignInPending;
+            
+            private global::System.Data.DataColumn columnRepairAndReturn;
+            
+            private global::System.Data.DataColumn columnReturnWithoutRepair;
+            
+            private global::System.Data.DataColumn columnWorkInProgress;
+            
+            private global::System.Data.DataColumn columnPendingForSpareParts;
+            
+            private global::System.Data.DataColumn columnPendingForApproval;
+            
+            private global::System.Data.DataColumn columnWarrentyDelivery;
+            
+            private global::System.Data.DataColumn columnBillingDelivery;
+            
+            private global::System.Data.DataColumn columnTotalDelivery;
+            
+            private global::System.Data.DataColumn columnDeliveryPending;
+            
+            private global::System.Data.DataColumn columnOverAllWarrentyUnDelivered;
+            
+            private global::System.Data.DataColumn columnOverAllBillingUnDelivered;
+            
+            private global::System.Data.DataColumn columnTotalUnDelivered;
+            
+            private global::System.Data.DataColumn columnBranchWiseDailyJob;
+            
+            private global::System.Data.DataColumn columnTOTAL;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public AllBranchDailySummaryDataTable() {
+                this.TableName = "AllBranchDailySummary";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal AllBranchDailySummaryDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected AllBranchDailySummaryDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn EntryDateColumn {
+                get {
+                    return this.columnEntryDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DailyJobOrderColumn {
+                get {
+                    return this.columnDailyJobOrder;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BillingJobColumn {
+                get {
+                    return this.columnBillingJob;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WarrentyJobColumn {
+                get {
+                    return this.columnWarrentyJob;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CASHColumn {
+                get {
+                    return this.columnCASH;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TSBacklogColumn {
+                get {
+                    return this.columnTSBacklog;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TSOverAllBacklogColumn {
+                get {
+                    return this.columnTSOverAllBacklog;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TSSignInPendingColumn {
+                get {
+                    return this.columnTSSignInPending;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RepairAndReturnColumn {
+                get {
+                    return this.columnRepairAndReturn;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ReturnWithoutRepairColumn {
+                get {
+                    return this.columnReturnWithoutRepair;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WorkInProgressColumn {
+                get {
+                    return this.columnWorkInProgress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PendingForSparePartsColumn {
+                get {
+                    return this.columnPendingForSpareParts;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PendingForApprovalColumn {
+                get {
+                    return this.columnPendingForApproval;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn WarrentyDeliveryColumn {
+                get {
+                    return this.columnWarrentyDelivery;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BillingDeliveryColumn {
+                get {
+                    return this.columnBillingDelivery;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalDeliveryColumn {
+                get {
+                    return this.columnTotalDelivery;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DeliveryPendingColumn {
+                get {
+                    return this.columnDeliveryPending;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OverAllWarrentyUnDeliveredColumn {
+                get {
+                    return this.columnOverAllWarrentyUnDelivered;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OverAllBillingUnDeliveredColumn {
+                get {
+                    return this.columnOverAllBillingUnDelivered;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalUnDeliveredColumn {
+                get {
+                    return this.columnTotalUnDelivered;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BranchWiseDailyJobColumn {
+                get {
+                    return this.columnBranchWiseDailyJob;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TOTALColumn {
+                get {
+                    return this.columnTOTAL;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public AllBranchDailySummaryRow this[int index] {
+                get {
+                    return ((AllBranchDailySummaryRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event AllBranchDailySummaryRowChangeEventHandler AllBranchDailySummaryRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event AllBranchDailySummaryRowChangeEventHandler AllBranchDailySummaryRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event AllBranchDailySummaryRowChangeEventHandler AllBranchDailySummaryRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event AllBranchDailySummaryRowChangeEventHandler AllBranchDailySummaryRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddAllBranchDailySummaryRow(AllBranchDailySummaryRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public AllBranchDailySummaryRow AddAllBranchDailySummaryRow(
+                        System.DateTime EntryDate, 
+                        int DailyJobOrder, 
+                        int BillingJob, 
+                        int WarrentyJob, 
+                        double CASH, 
+                        int TSBacklog, 
+                        int TSOverAllBacklog, 
+                        int TSSignInPending, 
+                        int RepairAndReturn, 
+                        int ReturnWithoutRepair, 
+                        int WorkInProgress, 
+                        string PendingForSpareParts, 
+                        int PendingForApproval, 
+                        int WarrentyDelivery, 
+                        int BillingDelivery, 
+                        int TotalDelivery, 
+                        int DeliveryPending, 
+                        int OverAllWarrentyUnDelivered, 
+                        int OverAllBillingUnDelivered, 
+                        int TotalUnDelivered, 
+                        string BranchWiseDailyJob, 
+                        int TOTAL) {
+                AllBranchDailySummaryRow rowAllBranchDailySummaryRow = ((AllBranchDailySummaryRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        EntryDate,
+                        DailyJobOrder,
+                        BillingJob,
+                        WarrentyJob,
+                        CASH,
+                        TSBacklog,
+                        TSOverAllBacklog,
+                        TSSignInPending,
+                        RepairAndReturn,
+                        ReturnWithoutRepair,
+                        WorkInProgress,
+                        PendingForSpareParts,
+                        PendingForApproval,
+                        WarrentyDelivery,
+                        BillingDelivery,
+                        TotalDelivery,
+                        DeliveryPending,
+                        OverAllWarrentyUnDelivered,
+                        OverAllBillingUnDelivered,
+                        TotalUnDelivered,
+                        BranchWiseDailyJob,
+                        TOTAL};
+                rowAllBranchDailySummaryRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowAllBranchDailySummaryRow);
+                return rowAllBranchDailySummaryRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                AllBranchDailySummaryDataTable cln = ((AllBranchDailySummaryDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new AllBranchDailySummaryDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnEntryDate = base.Columns["EntryDate"];
+                this.columnDailyJobOrder = base.Columns["DailyJobOrder"];
+                this.columnBillingJob = base.Columns["BillingJob"];
+                this.columnWarrentyJob = base.Columns["WarrentyJob"];
+                this.columnCASH = base.Columns["CASH"];
+                this.columnTSBacklog = base.Columns["TSBacklog"];
+                this.columnTSOverAllBacklog = base.Columns["TSOverAllBacklog"];
+                this.columnTSSignInPending = base.Columns["TSSignInPending"];
+                this.columnRepairAndReturn = base.Columns["RepairAndReturn"];
+                this.columnReturnWithoutRepair = base.Columns["ReturnWithoutRepair"];
+                this.columnWorkInProgress = base.Columns["WorkInProgress"];
+                this.columnPendingForSpareParts = base.Columns["PendingForSpareParts"];
+                this.columnPendingForApproval = base.Columns["PendingForApproval"];
+                this.columnWarrentyDelivery = base.Columns["WarrentyDelivery"];
+                this.columnBillingDelivery = base.Columns["BillingDelivery"];
+                this.columnTotalDelivery = base.Columns["TotalDelivery"];
+                this.columnDeliveryPending = base.Columns["DeliveryPending"];
+                this.columnOverAllWarrentyUnDelivered = base.Columns["OverAllWarrentyUnDelivered"];
+                this.columnOverAllBillingUnDelivered = base.Columns["OverAllBillingUnDelivered"];
+                this.columnTotalUnDelivered = base.Columns["TotalUnDelivered"];
+                this.columnBranchWiseDailyJob = base.Columns["BranchWiseDailyJob"];
+                this.columnTOTAL = base.Columns["TOTAL"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnEntryDate = new global::System.Data.DataColumn("EntryDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntryDate);
+                this.columnDailyJobOrder = new global::System.Data.DataColumn("DailyJobOrder", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDailyJobOrder);
+                this.columnBillingJob = new global::System.Data.DataColumn("BillingJob", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillingJob);
+                this.columnWarrentyJob = new global::System.Data.DataColumn("WarrentyJob", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWarrentyJob);
+                this.columnCASH = new global::System.Data.DataColumn("CASH", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCASH);
+                this.columnTSBacklog = new global::System.Data.DataColumn("TSBacklog", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTSBacklog);
+                this.columnTSOverAllBacklog = new global::System.Data.DataColumn("TSOverAllBacklog", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTSOverAllBacklog);
+                this.columnTSSignInPending = new global::System.Data.DataColumn("TSSignInPending", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTSSignInPending);
+                this.columnRepairAndReturn = new global::System.Data.DataColumn("RepairAndReturn", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRepairAndReturn);
+                this.columnReturnWithoutRepair = new global::System.Data.DataColumn("ReturnWithoutRepair", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReturnWithoutRepair);
+                this.columnWorkInProgress = new global::System.Data.DataColumn("WorkInProgress", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWorkInProgress);
+                this.columnPendingForSpareParts = new global::System.Data.DataColumn("PendingForSpareParts", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPendingForSpareParts);
+                this.columnPendingForApproval = new global::System.Data.DataColumn("PendingForApproval", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPendingForApproval);
+                this.columnWarrentyDelivery = new global::System.Data.DataColumn("WarrentyDelivery", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWarrentyDelivery);
+                this.columnBillingDelivery = new global::System.Data.DataColumn("BillingDelivery", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillingDelivery);
+                this.columnTotalDelivery = new global::System.Data.DataColumn("TotalDelivery", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDelivery);
+                this.columnDeliveryPending = new global::System.Data.DataColumn("DeliveryPending", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeliveryPending);
+                this.columnOverAllWarrentyUnDelivered = new global::System.Data.DataColumn("OverAllWarrentyUnDelivered", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOverAllWarrentyUnDelivered);
+                this.columnOverAllBillingUnDelivered = new global::System.Data.DataColumn("OverAllBillingUnDelivered", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOverAllBillingUnDelivered);
+                this.columnTotalUnDelivered = new global::System.Data.DataColumn("TotalUnDelivered", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalUnDelivered);
+                this.columnBranchWiseDailyJob = new global::System.Data.DataColumn("BranchWiseDailyJob", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchWiseDailyJob);
+                this.columnTOTAL = new global::System.Data.DataColumn("TOTAL", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTOTAL);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public AllBranchDailySummaryRow NewAllBranchDailySummaryRow() {
+                return ((AllBranchDailySummaryRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new AllBranchDailySummaryRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(AllBranchDailySummaryRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.AllBranchDailySummaryRowChanged != null)) {
+                    this.AllBranchDailySummaryRowChanged(this, new AllBranchDailySummaryRowChangeEvent(((AllBranchDailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.AllBranchDailySummaryRowChanging != null)) {
+                    this.AllBranchDailySummaryRowChanging(this, new AllBranchDailySummaryRowChangeEvent(((AllBranchDailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.AllBranchDailySummaryRowDeleted != null)) {
+                    this.AllBranchDailySummaryRowDeleted(this, new AllBranchDailySummaryRowChangeEvent(((AllBranchDailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.AllBranchDailySummaryRowDeleting != null)) {
+                    this.AllBranchDailySummaryRowDeleting(this, new AllBranchDailySummaryRowChangeEvent(((AllBranchDailySummaryRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveAllBranchDailySummaryRow(AllBranchDailySummaryRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ServicesDS ds = new ServicesDS();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "AllBranchDailySummaryDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class JobOrderRow : global::System.Data.DataRow {
@@ -17399,6 +18565,1228 @@ namespace ERPWeb.Reports.DataSets {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class DailySummaryRow : global::System.Data.DataRow {
+            
+            private DailySummaryDataTable tableDailySummary;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal DailySummaryRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableDailySummary = ((DailySummaryDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime EntryDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableDailySummary.EntryDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EntryDate\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.EntryDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int DailyJobOrder {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.DailyJobOrderColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DailyJobOrder\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.DailyJobOrderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int BillingJob {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.BillingJobColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillingJob\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.BillingJobColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int WarrentyJob {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.WarrentyJobColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WarrentyJob\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.WarrentyJobColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double CASH {
+                get {
+                    try {
+                        return ((double)(this[this.tableDailySummary.CASHColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CASH\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.CASHColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TSBacklog {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.TSBacklogColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TSBacklog\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.TSBacklogColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TSOverAllBacklog {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.TSOverAllBacklogColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TSOverAllBacklog\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.TSOverAllBacklogColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TSSignInPending {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.TSSignInPendingColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TSSignInPending\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.TSSignInPendingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int RepairAndReturn {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.RepairAndReturnColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RepairAndReturn\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.RepairAndReturnColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int ReturnWithoutRepair {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.ReturnWithoutRepairColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReturnWithoutRepair\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.ReturnWithoutRepairColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int WorkInProgress {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.WorkInProgressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WorkInProgress\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.WorkInProgressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PendingForSpareParts {
+                get {
+                    try {
+                        return ((string)(this[this.tableDailySummary.PendingForSparePartsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PendingForSpareParts\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.PendingForSparePartsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int PendingForApproval {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.PendingForApprovalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PendingForApproval\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.PendingForApprovalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int WarrentyDelivery {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.WarrentyDeliveryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WarrentyDelivery\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.WarrentyDeliveryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int BillingDelivery {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.BillingDeliveryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillingDelivery\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.BillingDeliveryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TotalDelivery {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.TotalDeliveryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelivery\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.TotalDeliveryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int DeliveryPending {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.DeliveryPendingColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryPending\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.DeliveryPendingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int OverAllWarrentyUnDelivered {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.OverAllWarrentyUnDeliveredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OverAllWarrentyUnDelivered\' in table \'DailySummary\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.OverAllWarrentyUnDeliveredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int OverAllBillingUnDelivered {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.OverAllBillingUnDeliveredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OverAllBillingUnDelivered\' in table \'DailySummary\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.OverAllBillingUnDeliveredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TotalUnDelivered {
+                get {
+                    try {
+                        return ((int)(this[this.tableDailySummary.TotalUnDeliveredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalUnDelivered\' in table \'DailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDailySummary.TotalUnDeliveredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsEntryDateNull() {
+                return this.IsNull(this.tableDailySummary.EntryDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetEntryDateNull() {
+                this[this.tableDailySummary.EntryDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDailyJobOrderNull() {
+                return this.IsNull(this.tableDailySummary.DailyJobOrderColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDailyJobOrderNull() {
+                this[this.tableDailySummary.DailyJobOrderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBillingJobNull() {
+                return this.IsNull(this.tableDailySummary.BillingJobColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBillingJobNull() {
+                this[this.tableDailySummary.BillingJobColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWarrentyJobNull() {
+                return this.IsNull(this.tableDailySummary.WarrentyJobColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWarrentyJobNull() {
+                this[this.tableDailySummary.WarrentyJobColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCASHNull() {
+                return this.IsNull(this.tableDailySummary.CASHColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCASHNull() {
+                this[this.tableDailySummary.CASHColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTSBacklogNull() {
+                return this.IsNull(this.tableDailySummary.TSBacklogColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTSBacklogNull() {
+                this[this.tableDailySummary.TSBacklogColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTSOverAllBacklogNull() {
+                return this.IsNull(this.tableDailySummary.TSOverAllBacklogColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTSOverAllBacklogNull() {
+                this[this.tableDailySummary.TSOverAllBacklogColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTSSignInPendingNull() {
+                return this.IsNull(this.tableDailySummary.TSSignInPendingColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTSSignInPendingNull() {
+                this[this.tableDailySummary.TSSignInPendingColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRepairAndReturnNull() {
+                return this.IsNull(this.tableDailySummary.RepairAndReturnColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRepairAndReturnNull() {
+                this[this.tableDailySummary.RepairAndReturnColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReturnWithoutRepairNull() {
+                return this.IsNull(this.tableDailySummary.ReturnWithoutRepairColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReturnWithoutRepairNull() {
+                this[this.tableDailySummary.ReturnWithoutRepairColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWorkInProgressNull() {
+                return this.IsNull(this.tableDailySummary.WorkInProgressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWorkInProgressNull() {
+                this[this.tableDailySummary.WorkInProgressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPendingForSparePartsNull() {
+                return this.IsNull(this.tableDailySummary.PendingForSparePartsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPendingForSparePartsNull() {
+                this[this.tableDailySummary.PendingForSparePartsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPendingForApprovalNull() {
+                return this.IsNull(this.tableDailySummary.PendingForApprovalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPendingForApprovalNull() {
+                this[this.tableDailySummary.PendingForApprovalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWarrentyDeliveryNull() {
+                return this.IsNull(this.tableDailySummary.WarrentyDeliveryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWarrentyDeliveryNull() {
+                this[this.tableDailySummary.WarrentyDeliveryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBillingDeliveryNull() {
+                return this.IsNull(this.tableDailySummary.BillingDeliveryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBillingDeliveryNull() {
+                this[this.tableDailySummary.BillingDeliveryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalDeliveryNull() {
+                return this.IsNull(this.tableDailySummary.TotalDeliveryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalDeliveryNull() {
+                this[this.tableDailySummary.TotalDeliveryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDeliveryPendingNull() {
+                return this.IsNull(this.tableDailySummary.DeliveryPendingColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDeliveryPendingNull() {
+                this[this.tableDailySummary.DeliveryPendingColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOverAllWarrentyUnDeliveredNull() {
+                return this.IsNull(this.tableDailySummary.OverAllWarrentyUnDeliveredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOverAllWarrentyUnDeliveredNull() {
+                this[this.tableDailySummary.OverAllWarrentyUnDeliveredColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOverAllBillingUnDeliveredNull() {
+                return this.IsNull(this.tableDailySummary.OverAllBillingUnDeliveredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOverAllBillingUnDeliveredNull() {
+                this[this.tableDailySummary.OverAllBillingUnDeliveredColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalUnDeliveredNull() {
+                return this.IsNull(this.tableDailySummary.TotalUnDeliveredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalUnDeliveredNull() {
+                this[this.tableDailySummary.TotalUnDeliveredColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class AllBranchDailySummaryRow : global::System.Data.DataRow {
+            
+            private AllBranchDailySummaryDataTable tableAllBranchDailySummary;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal AllBranchDailySummaryRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableAllBranchDailySummary = ((AllBranchDailySummaryDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime EntryDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableAllBranchDailySummary.EntryDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EntryDate\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.EntryDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int DailyJobOrder {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.DailyJobOrderColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DailyJobOrder\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.DailyJobOrderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int BillingJob {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.BillingJobColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillingJob\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.BillingJobColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int WarrentyJob {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.WarrentyJobColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WarrentyJob\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.WarrentyJobColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double CASH {
+                get {
+                    try {
+                        return ((double)(this[this.tableAllBranchDailySummary.CASHColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CASH\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.CASHColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TSBacklog {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.TSBacklogColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TSBacklog\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.TSBacklogColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TSOverAllBacklog {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.TSOverAllBacklogColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TSOverAllBacklog\' in table \'AllBranchDailySummary\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.TSOverAllBacklogColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TSSignInPending {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.TSSignInPendingColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TSSignInPending\' in table \'AllBranchDailySummary\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.TSSignInPendingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int RepairAndReturn {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.RepairAndReturnColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RepairAndReturn\' in table \'AllBranchDailySummary\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.RepairAndReturnColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int ReturnWithoutRepair {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.ReturnWithoutRepairColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ReturnWithoutRepair\' in table \'AllBranchDailySummary\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.ReturnWithoutRepairColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int WorkInProgress {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.WorkInProgressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WorkInProgress\' in table \'AllBranchDailySummary\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.WorkInProgressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PendingForSpareParts {
+                get {
+                    try {
+                        return ((string)(this[this.tableAllBranchDailySummary.PendingForSparePartsColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PendingForSpareParts\' in table \'AllBranchDailySummary\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.PendingForSparePartsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int PendingForApproval {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.PendingForApprovalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PendingForApproval\' in table \'AllBranchDailySummary\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.PendingForApprovalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int WarrentyDelivery {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.WarrentyDeliveryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'WarrentyDelivery\' in table \'AllBranchDailySummary\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.WarrentyDeliveryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int BillingDelivery {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.BillingDeliveryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillingDelivery\' in table \'AllBranchDailySummary\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.BillingDeliveryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TotalDelivery {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.TotalDeliveryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDelivery\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.TotalDeliveryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int DeliveryPending {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.DeliveryPendingColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeliveryPending\' in table \'AllBranchDailySummary\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.DeliveryPendingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int OverAllWarrentyUnDelivered {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.OverAllWarrentyUnDeliveredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OverAllWarrentyUnDelivered\' in table \'AllBranchDailySummary" +
+                                "\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.OverAllWarrentyUnDeliveredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int OverAllBillingUnDelivered {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.OverAllBillingUnDeliveredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OverAllBillingUnDelivered\' in table \'AllBranchDailySummary\'" +
+                                " is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.OverAllBillingUnDeliveredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TotalUnDelivered {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.TotalUnDeliveredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalUnDelivered\' in table \'AllBranchDailySummary\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.TotalUnDeliveredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BranchWiseDailyJob {
+                get {
+                    try {
+                        return ((string)(this[this.tableAllBranchDailySummary.BranchWiseDailyJobColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchWiseDailyJob\' in table \'AllBranchDailySummary\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.BranchWiseDailyJobColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int TOTAL {
+                get {
+                    try {
+                        return ((int)(this[this.tableAllBranchDailySummary.TOTALColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TOTAL\' in table \'AllBranchDailySummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBranchDailySummary.TOTALColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsEntryDateNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.EntryDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetEntryDateNull() {
+                this[this.tableAllBranchDailySummary.EntryDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDailyJobOrderNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.DailyJobOrderColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDailyJobOrderNull() {
+                this[this.tableAllBranchDailySummary.DailyJobOrderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBillingJobNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.BillingJobColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBillingJobNull() {
+                this[this.tableAllBranchDailySummary.BillingJobColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWarrentyJobNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.WarrentyJobColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWarrentyJobNull() {
+                this[this.tableAllBranchDailySummary.WarrentyJobColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCASHNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.CASHColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCASHNull() {
+                this[this.tableAllBranchDailySummary.CASHColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTSBacklogNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.TSBacklogColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTSBacklogNull() {
+                this[this.tableAllBranchDailySummary.TSBacklogColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTSOverAllBacklogNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.TSOverAllBacklogColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTSOverAllBacklogNull() {
+                this[this.tableAllBranchDailySummary.TSOverAllBacklogColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTSSignInPendingNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.TSSignInPendingColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTSSignInPendingNull() {
+                this[this.tableAllBranchDailySummary.TSSignInPendingColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRepairAndReturnNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.RepairAndReturnColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRepairAndReturnNull() {
+                this[this.tableAllBranchDailySummary.RepairAndReturnColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsReturnWithoutRepairNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.ReturnWithoutRepairColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetReturnWithoutRepairNull() {
+                this[this.tableAllBranchDailySummary.ReturnWithoutRepairColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWorkInProgressNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.WorkInProgressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWorkInProgressNull() {
+                this[this.tableAllBranchDailySummary.WorkInProgressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPendingForSparePartsNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.PendingForSparePartsColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPendingForSparePartsNull() {
+                this[this.tableAllBranchDailySummary.PendingForSparePartsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPendingForApprovalNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.PendingForApprovalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPendingForApprovalNull() {
+                this[this.tableAllBranchDailySummary.PendingForApprovalColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsWarrentyDeliveryNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.WarrentyDeliveryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetWarrentyDeliveryNull() {
+                this[this.tableAllBranchDailySummary.WarrentyDeliveryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBillingDeliveryNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.BillingDeliveryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBillingDeliveryNull() {
+                this[this.tableAllBranchDailySummary.BillingDeliveryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalDeliveryNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.TotalDeliveryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalDeliveryNull() {
+                this[this.tableAllBranchDailySummary.TotalDeliveryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDeliveryPendingNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.DeliveryPendingColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDeliveryPendingNull() {
+                this[this.tableAllBranchDailySummary.DeliveryPendingColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOverAllWarrentyUnDeliveredNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.OverAllWarrentyUnDeliveredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOverAllWarrentyUnDeliveredNull() {
+                this[this.tableAllBranchDailySummary.OverAllWarrentyUnDeliveredColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOverAllBillingUnDeliveredNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.OverAllBillingUnDeliveredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOverAllBillingUnDeliveredNull() {
+                this[this.tableAllBranchDailySummary.OverAllBillingUnDeliveredColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalUnDeliveredNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.TotalUnDeliveredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalUnDeliveredNull() {
+                this[this.tableAllBranchDailySummary.TotalUnDeliveredColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBranchWiseDailyJobNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.BranchWiseDailyJobColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBranchWiseDailyJobNull() {
+                this[this.tableAllBranchDailySummary.BranchWiseDailyJobColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTOTALNull() {
+                return this.IsNull(this.tableAllBranchDailySummary.TOTALColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTOTALNull() {
+                this[this.tableAllBranchDailySummary.TOTALColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -18030,6 +20418,74 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public JobSignInAndOutRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class DailySummaryRowChangeEvent : global::System.EventArgs {
+            
+            private DailySummaryRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailySummaryRowChangeEvent(DailySummaryRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public DailySummaryRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class AllBranchDailySummaryRowChangeEvent : global::System.EventArgs {
+            
+            private AllBranchDailySummaryRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public AllBranchDailySummaryRowChangeEvent(AllBranchDailySummaryRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public AllBranchDailySummaryRow Row {
                 get {
                     return this.eventRow;
                 }

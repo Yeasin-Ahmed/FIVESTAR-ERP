@@ -65,7 +65,7 @@ namespace ERPBLL.FrontDesk
                 string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
                 param += string.Format(@" and Cast(EntryDate as date)='{0}'", tDate);
             }
-            query = string.Format(@"select InvoiceInfoId,InvoiceCode,JobOrderCode,CustomerName,TotalSPAmount,
+            query = string.Format(@"select InvoiceInfoId,InvoiceCode,JobOrderCode,CustomerName,TotalSPAmount,InvoiceType,
 LabourCharge,VAT,Tax,Discount,NetAmount,EntryDate,
 OrganizationId,BranchId,(select top 1 sum(NetAmount)'Total' from tblInvoiceInfo)'Total' 
 from tblInvoiceInfo
@@ -109,6 +109,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 invoiceInfo.JobOrderCode = jobOrder.JobOrderCode;
                 invoiceInfo.CustomerName = jobOrder.CustomerName;
                 invoiceInfo.CustomerPhone = jobOrder.MobileNo;
+                invoiceInfo.InvoiceType = "JobOrder";
                 invoiceInfo.LabourCharge = infodto.LabourCharge;
                 invoiceInfo.VAT = infodto.VAT;
                 invoiceInfo.Tax = infodto.Tax;
@@ -146,6 +147,8 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             }
             return IsSuccess;
         }
+
+
         public bool UpdateJobOrderInvoice(long jobOrderId,long userId, long orgId, long branchId)
         {
             var jobOrder = _jobOrderBusiness.GetJobOrderById(jobOrderId, orgId);
@@ -165,6 +168,61 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
         public InvoiceInfo GetAllInvoiceByOrgId(long invoiceId, long orgId, long branchId)
         {
             return _invoiceInfoRepository.GetOneByOrg(inv => inv.InvoiceInfoId == invoiceId && inv.OrganizationId == orgId && inv.BranchId == branchId);
+        }
+
+        public bool SaveInvoiceForAccessoriesSells(InvoiceInfoDTO infodto, List<InvoiceDetailDTO> detailsdto, long userId, long orgId, long branchId)
+        {
+            bool IsSuccess = false;
+            double netamount = 0;
+            double spamount = 0;
+            spamount = detailsdto.Select(t => t.Total).Sum();
+            netamount = ((spamount + infodto.VAT + infodto.Tax) - infodto.Discount);
+           
+            //var jobOrder = _jobOrderBusiness.GetJobOrdersByIdWithBranch(infodto.JobOrderId, branchId, orgId);
+            InvoiceInfo invoiceInfo = new InvoiceInfo();
+            if (infodto.InvoiceInfoId == 0)
+            {
+                invoiceInfo.InvoiceCode = ("INV-" + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+                invoiceInfo.JobOrderId = 0;
+                invoiceInfo.JobOrderCode = null;
+                invoiceInfo.InvoiceType = "Sells";
+                invoiceInfo.CustomerName = infodto.CustomerName;
+                invoiceInfo.CustomerPhone = infodto.CustomerPhone;
+                invoiceInfo.Email = infodto.Email;
+                invoiceInfo.Address = infodto.Address;
+                invoiceInfo.WarrentyFor = infodto.WarrentyFor;
+                invoiceInfo.LabourCharge = 0;
+                invoiceInfo.VAT = infodto.VAT;
+                invoiceInfo.Tax = infodto.Tax;
+                invoiceInfo.Discount = infodto.Discount;//01925424687
+                invoiceInfo.TotalSPAmount = spamount;
+                invoiceInfo.NetAmount = netamount;
+                invoiceInfo.Remarks = infodto.Remarks;
+                invoiceInfo.EntryDate = DateTime.Now;
+                invoiceInfo.EUserId = userId;
+                invoiceInfo.OrganizationId = orgId;
+                invoiceInfo.BranchId = branchId;
+                List<InvoiceDetail> invoiceDetails = new List<InvoiceDetail>();
+
+                foreach (var item in detailsdto)
+                {
+                    InvoiceDetail Detail = new InvoiceDetail();
+                    Detail.PartsId = item.PartsId;
+                    Detail.PartsName = item.PartsName;
+                    Detail.Quantity = item.Quantity;
+                    Detail.SellPrice = item.SellPrice;
+                    Detail.Total = item.Total;
+                    Detail.EUserId = userId;
+                    Detail.EntryDate = DateTime.Now;
+                    Detail.OrganizationId = orgId;
+                    Detail.BranchId = branchId;
+                    invoiceDetails.Add(Detail);
+                }
+                invoiceInfo.InvoiceDetails = invoiceDetails;
+                _invoiceInfoRepository.Insert(invoiceInfo);
+                IsSuccess = _invoiceInfoRepository.Save();
+            }
+            return IsSuccess;
         }
     }
 }

@@ -710,6 +710,11 @@
     <Content Include="Views\FrontDesk\ReceiveReturnJobOrderReport.cshtml" />
     <Content Include="Views\FrontDesk\TSOtherBranchRequsitionReport.cshtml" />
     <Content Include="Views\FrontDesk\_JobSignInAndOut.cshtml" />
+    <Content Include="Views\FrontDesk\_DailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\DailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\AllBranchDailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\_AllBranchDailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\CreateAccessoriesInvoice.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -763,9 +768,9 @@
     <Content Include="Reports\ServiceRpt\Configuration\rptPartsReturnStock.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\ServiceRpt\FrontDesk\rptSellsReport.rdlc">
+    <None Include="Reports\ServiceRpt\FrontDesk\rptSellsReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Reports\ServiceRpt\Configuration\rptTSRequsitionReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -791,10 +796,30 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\SalarySheetReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptReceivedJobOrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc" />
+    <Content Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedJobOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport - Copy.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition - Copy.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptDailySummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptAllBranchDailySummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">

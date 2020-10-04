@@ -270,12 +270,30 @@ namespace ERPWeb.Controllers
             }
             return Json(stock);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetStockForAccessoriesSells(long partsId)
+        {
+            var warehouse = _servicesWarehouseBusiness.GetWarehouseOneByOrgId(User.OrgId, User.BranchId);
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            if (stock == null)
+            {
+                stock = 0;
+            }
+            return Json(stock);
+        }
 
         [HttpPost]
         public ActionResult GetCostPriceForDDL(long partsId)
         {
             var cost = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).AsEnumerable();
             var dropDown = cost.Where(i => i.MobilePartId == partsId).Select(i => new Dropdown { text = i.CostPrice.ToString(), value = i.CostPrice.ToString() }).ToList();
+            return Json(dropDown);
+        }
+        [HttpPost]
+        public ActionResult GetSellPriceForDDL(long partsId)
+        {
+            var sell = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).AsEnumerable();
+            var dropDown = sell.Where(i => i.MobilePartId == partsId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
             return Json(dropDown);
         }
 
