@@ -720,6 +720,11 @@
     <Content Include="Views\ControlPanel\CreateUserRole.cshtml" />
     <Content Include="Views\ControlPanel\CreateClientUser.cshtml" />
     <Content Include="Views\ControlPanel\ClientUserConfiguration.cshtml" />
+    <Content Include="Views\FrontDesk\AllBranchDailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\CreateAccessoriesInvoice.cshtml" />
+    <Content Include="Views\FrontDesk\DailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\_AllBranchDailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\_DailySummaryReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

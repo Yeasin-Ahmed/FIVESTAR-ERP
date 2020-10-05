@@ -174,7 +174,7 @@ Where U.UserName = '{0}' And U.[Password] = '{1}'", loginModel.UserName, loginMo
             }
             else
             {
-                appUser = GetAppUserOneById(appUserDTO.UserId, orgId);
+                appUser = GetAppUserOneById(appUserDTO.UserId, appUserDTO.OrganizationId);
                 appUser.EmployeeId = appUserDTO.EmployeeId;
                 appUser.FullName = appUserDTO.FullName;
                 appUser.MobileNo = appUserDTO.MobileNo;
