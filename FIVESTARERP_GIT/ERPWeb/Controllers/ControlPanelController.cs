@@ -176,7 +176,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "Branch")
             {
-                
+
                 IEnumerable<BranchViewModel> branchViewModels = _branchBusiness.GetAllBranches().Select(br => new BranchViewModel
                 {
                     BranchId = br.BranchId,
@@ -236,7 +236,7 @@ namespace ERPWeb.Controllers
                     EntryUser = UserForEachRecord(user.EUserId.Value).UserName,
                     UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
                 }).OrderBy(user => user.UserId).ToList();
-                return PartialView("_GetUsers",appUserViewModels);
+                return PartialView("_GetUsers", appUserViewModels);
             }
             return Content("");
         }
@@ -310,6 +310,80 @@ namespace ERPWeb.Controllers
                     UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
                 }).OrderBy(user => user.UserId).ToList();
                 return PartialView("_GetUsers", appUserViewModels);
+            }
+            return Content("");
+        }
+        #endregion
+
+        #region App Config
+        public ActionResult ApplicationConfig(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModuleName = _moduleBusiness.GetAllModules().Select(br => new SelectListItem { Text = br.ModuleName, Value = br.MId.ToString() });
+
+                ViewBag.ddlMainMenu = _maniMenuBusiness.GetAllMainMenu().Select(br => new SelectListItem { Text = br.MenuName, Value = br.MMId.ToString() });
+
+                ViewBag.ddlParentSubMenu = _subMenuBusiness.GetAllSubMenu().Where(s => s.IsActAsParent == true).Select(s => new SelectListItem
+                {
+                    Text = s.SubMenuName + ((s.MMId > 0) ? " (" + (_maniMenuBusiness.GetMainMenuOneById(s.MMId).MenuName) + ")" : ""),
+                    Value = s.SubMenuId.ToString()
+                });
+
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Module")
+            {
+                var data = _moduleBusiness.GetAllModules().Select(s => new ModuleViewModel()
+                {
+                    MId = s.MId,
+                    ModuleName = s.ModuleName,
+                    IconName = s.IconName,
+                    IconColor = s.IconColor,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
+                }).ToList();
+                return PartialView("_GetModules", data);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Mainmenu")
+            {
+                IEnumerable<MainMenuDTO> mainMenuDTO = _maniMenuBusiness.GetAllMainMenu().Select(mainmenu => new MainMenuDTO
+                {
+                    MMId = mainmenu.MMId,
+                    MenuName = mainmenu.MenuName,
+                    MId = mainmenu.MId,
+                    ModuleName = (_moduleBusiness.GetModuleOneById(mainmenu.MId).ModuleName),
+                    EntryUser = UserForEachRecord(mainmenu.EUserId.Value).UserName,
+                    UpdateUser = (mainmenu.UpUserId == null || mainmenu.UpUserId == 0) ? "" : UserForEachRecord(mainmenu.UpUserId.Value).UserName
+                }).ToList();
+                IEnumerable<MainMenuViewModel> mainMenuViewModels = new List<MainMenuViewModel>();
+                AutoMapper.Mapper.Map(mainMenuDTO, mainMenuViewModels);
+                return PartialView("_GetMainmenu",mainMenuViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "Submenu")
+            {
+                IEnumerable<SubMenuDTO> subMenuDTO = _subMenuBusiness.GetAllSubMenu().Select(sub => new SubMenuDTO
+                {
+                    SubMenuId = sub.SubMenuId,
+                    SubMenuName = sub.SubMenuName,
+                    ControllerName = sub.ControllerName,
+                    ActionName = sub.ActionName,
+                    IconClass = sub.IconClass,
+                    IsViewable = sub.IsViewable,
+                    IsActAsParent = sub.IsActAsParent,
+                    IsViewableStatus = (sub.IsViewable == true ? "Yes" : "No"),
+                    IsActAsParentStatus = (sub.IsActAsParent == true ? "Yes" : "No"),
+                    ParentSubMenuId = sub.ParentSubMenuId,
+                    ParentSubmenuName = (sub.ParentSubMenuId > 0 ? _subMenuBusiness.GetSubMenuOneById(sub.ParentSubMenuId.Value).SubMenuName : ""),
+                    MMId = sub.MMId,
+                    MenuName = (_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
+
+                    EntryUser = UserForEachRecord(sub.EUserId.Value).UserName,
+                    UpdateUser = (sub.UpUserId == null || sub.UpUserId == 0) ? "" : UserForEachRecord(sub.UpUserId.Value).UserName
+                }).ToList();
+                IEnumerable<SubMenuViewModel> subMenuViewModels = new List<SubMenuViewModel>();
+                AutoMapper.Mapper.Map(subMenuDTO, subMenuViewModels);
+                return PartialView("_GetSubmenu", subMenuViewModels);
             }
             return Content("");
         }
@@ -443,7 +517,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _appUserBusiness.GetAppUserInfoById(id, User.OrgId);
+                var dto = _appUserBusiness.GetAppUserInfoById(id, User.OrgId, "System");
                 if (dto != null)
                 {
                     dto.Password = Utility.Decrypt(dto.Password);
@@ -463,7 +537,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _appUserBusiness.GetAppUserInfoById(id, User.OrgId);
+                var dto = _appUserBusiness.GetAppUserInfoById(id, User.OrgId, "Client");
                 if (dto != null)
                 {
                     dto.Password = Utility.Decrypt(dto.Password);

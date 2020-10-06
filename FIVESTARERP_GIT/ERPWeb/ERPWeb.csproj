@@ -725,6 +725,10 @@
     <Content Include="Views\FrontDesk\DailySummaryReport.cshtml" />
     <Content Include="Views\FrontDesk\_AllBranchDailySummaryReport.cshtml" />
     <Content Include="Views\FrontDesk\_DailySummaryReport.cshtml" />
+    <Content Include="Views\ControlPanel\ApplicationConfig.cshtml" />
+    <Content Include="Views\ControlPanel\_GetModules.cshtml" />
+    <Content Include="Views\ControlPanel\_GetMainmenu.cshtml" />
+    <Content Include="Views\ControlPanel\_GetSubmenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
