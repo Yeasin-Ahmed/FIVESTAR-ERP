@@ -729,6 +729,8 @@
     <Content Include="Views\ControlPanel\_GetModules.cshtml" />
     <Content Include="Views\ControlPanel\_GetMainmenu.cshtml" />
     <Content Include="Views\ControlPanel\_GetSubmenu.cshtml" />
+    <Content Include="Views\FrontDesk\AccessoriesSells.cshtml" />
+    <Content Include="Views\FrontDesk\_AccessoriesSells.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -814,13 +816,27 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\SalarySheetReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptAllBranchDailySummaryReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptDailySummaryReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport - Copy.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptReceivedJobOrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc" />
+    <Content Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptAllBranchDailySummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptDailySummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport - Copy.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptJobSignInAndOutReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedJobOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
