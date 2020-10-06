@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "Accessories Sells";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 text-center">
+                        <h4><b>Invoice List For Sells Accessories</b></h4>
+
+                    </div>
+                    <div class="col-md-2">
+                        <a href="/FrontDesk/CreateAccessoriesInvoice" title="Create a New Job Order" class="btn btn-outline-primary btn-sm float-lg-right" style="background-color: darkblue" id="btnReset"><i class="fas fa-plus"></i> Sells Accessories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">Invoice</label>
+                        <input type="text" id="txtInvoice" class="form-control form-control-sm" placeholder="Search By Invoice" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">From Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label font-weight-bold">To Date</label>
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                <span class="input-group-text">&#10008;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm text-sm" id="dataContainer" style="overflow-y:scroll">
+                        @{Html.RenderAction("AccessoriesSells", new { @flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var txtInvoice = $("#txtInvoice");
+        var pageNo = 1;
+
+        $(document).ready(function () {
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTable();
+                }
+            }
+        })
+        dptFromDate.change(function () {
+            LoadDataTable();
+        })
+        dptToDate.change(function () {
+            LoadDataTable();
+        })
+        txtInvoice.keyup(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "search", invoice: txtInvoice.val().trim(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/AccessoriesSells', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
+    </script>
+    }

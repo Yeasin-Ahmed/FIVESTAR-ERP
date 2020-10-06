@@ -725,6 +725,8 @@
     <Content Include="Views\FrontDesk\DailySummaryReport.cshtml" />
     <Content Include="Views\FrontDesk\_AllBranchDailySummaryReport.cshtml" />
     <Content Include="Views\FrontDesk\_DailySummaryReport.cshtml" />
+    <Content Include="Views\FrontDesk\AccessoriesSells.cshtml" />
+    <Content Include="Views\FrontDesk\_AccessoriesSells.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

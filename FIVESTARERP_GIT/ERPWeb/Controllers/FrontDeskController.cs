@@ -1296,6 +1296,24 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Accessories Invoice
+        public ActionResult AccessoriesSells( string flag,string fromDate,string toDate, string invoice = "", int page=1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _invoiceInfoBusiness.GetSellsAccessories(User.OrgId, User.BranchId, fromDate, toDate,invoice);
+                List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_AccessoriesSells",viewModels);
+            }
+        }
         public ActionResult CreateAccessoriesInvoice()
         {
             ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();

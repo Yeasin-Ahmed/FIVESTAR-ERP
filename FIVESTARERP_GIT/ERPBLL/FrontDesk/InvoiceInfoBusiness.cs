@@ -224,5 +224,48 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             }
             return IsSuccess;
         }
+
+        public IEnumerable<InvoiceInfoDTO> GetSellsAccessories(long orgId, long branchId, string fromDate, string toDate, string invoice)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceInfoDTO>(QueryForSellsAccessories(orgId, branchId, fromDate, toDate,invoice)).ToList();
+        }
+        private string QueryForSellsAccessories(long orgId, long branchId, string fromDate, string toDate, string invoice)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (orgId > 0)
+            {
+                param += string.Format(@"and inv.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and inv.BranchId={0}", branchId);
+            }
+            if (!string.IsNullOrEmpty(invoice))
+            {
+                param += string.Format(@"and inv.InvoiceCode Like '%{0}%'", invoice);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(inv.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(inv.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(inv.EntryDate as date)='{0}'", tDate);
+            }
+            query = string.Format(@"select * from tblInvoiceInfo inv
+left join [ControlPanel].dbo.tblApplicationUsers au on inv.EUserId=au.UserId
+where 1=1{0} and InvoiceType='Sells'", Utility.ParamChecker(param));
+            return query;
+        }
     }
 }

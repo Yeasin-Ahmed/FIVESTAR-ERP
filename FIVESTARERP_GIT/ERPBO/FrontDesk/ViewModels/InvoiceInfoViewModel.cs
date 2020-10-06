@@ -39,5 +39,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public string Address { get; set; }
         public string WarrentyFor { get; set; }
         public string InvoiceType { get; set; }
+        public string UserName { get; set; }
     }
 }
