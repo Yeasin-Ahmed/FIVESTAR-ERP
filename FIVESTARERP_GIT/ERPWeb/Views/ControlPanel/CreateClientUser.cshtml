@@ -185,9 +185,12 @@
         var branch = "";
 
         $(document).ready(function () {
-            ddlLoad();
+            
             if (TryParseInt(hdfUserId.val(), 0) > 0) {
                 loadAppUserInfo(TryParseInt(hdfUserId.val(), 0));
+            }
+            else {
+                ddlLoad();
             }
         })
 
@@ -207,7 +210,7 @@
                     txtConfirmPassword.val(res.ConfirmPassword);
                     role = res.RoleId;
                     branch = res.BranchId;
-                   
+                    ddlLoad();
                     //ddlBranchName.val(res.BranchId);
                     //ddlRoleName.val(res.RoleId);
                     chkStatestatus.prop("checked", res.IsActive);
