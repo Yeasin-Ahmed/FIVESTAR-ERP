@@ -28,7 +28,7 @@ var reqStatus = {
     canceled: "Canceled",
     checked: "Checked",
     handOver: "HandOver",
-    receive_return:"Receive-Return",
+    receive_return: "Receive-Return",
 };
 
 var flag = {
@@ -49,7 +49,7 @@ var jobOrderStatus = {
     pendingJobOrder: "Pending-JobOrder",
     customerApproved: "Customer-Approved",
     customerDisapproved: "Customer-Disapproved",
-    deliveryDone:"Delivery-Done"
+    deliveryDone: "Delivery-Done"
 };
 var returnStatus = {
     stockReturn: "Stock-Return",
@@ -67,10 +67,10 @@ var execuStatus = {
 };
 
 var stockReturnFlag = {
-    assemblyLine : "AssemblyLine",
-    assemblyRepair : "Assembly-Repair",
-    packagingLine : "PackagingLine",
-    packagingRepair : "Packaging-Repair"
+    assemblyLine: "AssemblyLine",
+    assemblyRepair: "Assembly-Repair",
+    packagingLine: "PackagingLine",
+    packagingRepair: "Packaging-Repair"
 };
 
 
@@ -683,13 +683,20 @@ function enable(elementId) {
 }
 
 function message(element, modalId) {
-    $(element).show(200).fadeIn('slow', function () {
-        $(element).delay(500).fadeOut('slow', function () {
-            if (modalId !== "" && modalId !== undefined) {
-                hideModal(modalId, reloadPage());
-            }
+    if (element !== null) {
+        $(element).show(200).fadeIn('slow', function () {
+            $(element).delay(500).fadeOut('slow', function () {
+                if (modalId !== "" && modalId !== undefined) {
+                    hideModal(modalId, reloadPage());
+                }
+            });
         });
-    });
+    }
+    else {
+        if (modalId !== "" && modalId !== undefined) {
+            hideModal(modalId, reloadPage());
+        }
+    }
 }
 
 // modal hide
@@ -745,12 +752,11 @@ function getDateFromJson(jsonVal) {
     var parsedDate = new Date(parseInt(StartDateServer.substr(6)));
     var day = ("0" + parsedDate.getDate()).slice(-2);
     var month = ("0" + (parsedDate.getMonth() + 1)).slice(-2);
-   // return parsedDate.getFullYear() + "-" + month + "-" + day;
+    // return parsedDate.getFullYear() + "-" + month + "-" + day;
     return day + "-" + month + "-" + parsedDate.getFullYear();
 }
 
-function clearDropdown(eletementId)
-{
+function clearDropdown(eletementId) {
     $('#' + eletementId + ' option:not(:first)').remove();
 }
 
@@ -801,6 +807,10 @@ function consoleLog(log) {
     console.log(log);
 }
 
+function alerting(alt) {
+    alert(alt);
+}
+
 function readImg(file, elementId) {
     console.log(file.id);
     if (file.files && file.files[0] && file.files[0].name !== '') {
@@ -816,7 +826,7 @@ function readImg(file, elementId) {
 }
 
 
-function postReqWithFile(dataType,type,url,data,token) {
+function postReqWithFile(dataType, type, url, data, token) {
     return $.ajax({
         dataType: dataType,
         method: type,
@@ -837,3 +847,4 @@ function postReqWithFile(dataType,type,url,data,token) {
 function dropDownSelectedText(idName) {
     return $("#" + idName + " option:selected").text();
 }
+

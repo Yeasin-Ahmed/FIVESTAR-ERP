@@ -731,6 +731,14 @@
     <Content Include="Views\ControlPanel\_GetSubmenu.cshtml" />
     <Content Include="Views\FrontDesk\AccessoriesSells.cshtml" />
     <Content Include="Views\FrontDesk\_AccessoriesSells.cshtml" />
+    <Content Include="Views\ControlPanel\_GetOrg.cshtml" />
+    <Content Include="Views\ControlPanel\OrgConfiguration.cshtml" />
+    <Content Include="Views\Production\ProductionBeltConfig.cshtml" />
+    <Content Include="Views\Production\_floor.cshtml" />
+    <Content Include="Views\Production\_assembly.cshtml" />
+    <Content Include="Views\Production\_qc.cshtml" />
+    <Content Include="Views\Production\_repair.cshtml" />
+    <Content Include="Views\Production\_packaging.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -740,10 +748,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Base\" />
-    <Folder Include="Views\Common2\" />
-    <Folder Include="Views\Production2\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

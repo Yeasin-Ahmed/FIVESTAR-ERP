@@ -221,6 +221,120 @@ namespace ERPWeb.Controllers
             #endregion
         }
 
+        #region Production Belts Config
+
+        public  ActionResult ProductionBeltConfig(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="floor")
+            {
+                //GetProductionLineList
+                IEnumerable<ProductionLineDTO> dto = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new ProductionLineDTO
+                {
+                    LineId = line.LineId,
+                    LineNumber = line.LineNumber,
+                    LineIncharge = line.LineIncharge,
+                    Remarks = line.Remarks,
+                    StateStatus = (line.IsActive == true ? "Active" : "Inactive"),
+                    OrganizationId = line.OrganizationId,
+                    EntryDate = line.EntryDate,
+                    UpdateDate = line.UpdateDate,
+                    EntryUser = UserForEachRecord(line.EUserId.Value).UserName,
+                    UpdateUser = (line.UpUserId == null || line.UpUserId == 0) ? "" : UserForEachRecord(line.UpUserId.Value).UserName
+                }).OrderBy(line => line.LineId).ToList();
+                IEnumerable<ProductionLineViewModel> viewModel = new List<ProductionLineViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return PartialView("_floor",viewModel);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "assembly")
+            {
+                //GetAssemblyLines
+                var assemblyLinesDtos = _assemblyLineBusiness.GetAssemblyLines(User.OrgId).Select(a => new AssemblyLineDTO
+                {
+                    AssemblyLineId = a.AssemblyLineId,
+                    AssemblyLineName = a.AssemblyLineName,
+                    ProductionLineId = a.ProductionLineId,
+                    LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(a.ProductionLineId, User.OrgId).LineNumber,
+                    IsActive = a.IsActive,
+                    OrganizationId = a.OrganizationId,
+                    EntryDate = DateTime.Now,
+                    Remarks = a.Remarks,
+                    EntryUser = UserForEachRecord(a.EUserId.Value).UserName,
+                    UpdateUser = (a.UpUserId == null || a.UpUserId == 0) ? "" : UserForEachRecord(a.UpUserId.Value).UserName
+                }).ToList();
+                IEnumerable<AssemblyLineViewModel> assemblyLineViewModels = new List<AssemblyLineViewModel>();
+                AutoMapper.Mapper.Map(assemblyLinesDtos, assemblyLineViewModels);
+                return PartialView("_assembly",assemblyLineViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "qc")
+            {
+                //GetQualityControls
+                var dto = _qualityControlBusiness.GetQualityControls(User.OrgId).Select(s => new QualityControlDTO
+                {
+                    QCId = s.QCId,
+                    QCName = s.QCName,
+                    IsActive = s.IsActive,
+                    ProductionLineId = s.ProductionLineId,
+                    LineNumber = _productionLineBusiness.GetProductionLineOneByOrgId(s.ProductionLineId, User.OrgId).LineNumber,
+                    Remarks = s.Remarks,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    EntryDate = s.EntryDate,
+                    UpdateDate = s.UpdateDate
+                }).ToList();
+                IEnumerable<QualityControlViewModel> viewModels = new List<QualityControlViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_qc",viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "repair")
+            {
+                //GetRepairLines
+                var dto = _repairLineBusiness.GetRepairLinesByOrgId(User.OrgId).Select(s => new RepairLineDTO
+                {
+                    RepairLineId = s.RepairLineId,
+                    RepairLineName = s.RepairLineName,
+                    IsActive = s.IsActive,
+                    ProductionLineId = s.ProductionLineId,
+                    ProductionLineName = _productionLineBusiness.GetProductionLineOneByOrgId(s.ProductionLineId, User.OrgId).LineNumber,
+                    Remarks = s.Remarks,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    EntryDate = s.EntryDate,
+                    UpdateDate = s.UpdateDate
+                }).ToList();
+                IEnumerable<RepairLineViewModel> viewModels = new List<RepairLineViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_repair",viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "packaging")
+            {
+                //GetPackagingLines
+                var dto = _packagingLineBusiness.GetPackagingLinesByOrgId(User.OrgId).Select(s => new PackagingLineDTO
+                {
+                    PackagingLineId = s.PackagingLineId,
+                    PackagingLineName = s.PackagingLineName,
+                    IsActive = s.IsActive,
+                    ProductionLineId = s.ProductionLineId,
+                    ProductionLineName = _productionLineBusiness.GetProductionLineOneByOrgId(s.ProductionLineId, User.OrgId).LineNumber,
+                    Remarks = s.Remarks,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    EntryDate = s.EntryDate,
+                    UpdateDate = s.UpdateDate
+                }).ToList();
+                IEnumerable<PackagingLineViewModel> viewModels = new List<PackagingLineViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_packaging", viewModels);
+            }
+            return Content("");
+        }
+
+        #endregion
+
         #region ProductionLine
         public ActionResult GetProductionLineList()
         {
@@ -246,9 +360,10 @@ namespace ERPWeb.Controllers
         public ActionResult SaveProductionLine(ProductionLineViewModel productionLineViewModel)
         {
             bool isSuccess = false;
-            var privilege = UserPrivilege("Production", "GetProductionLineList");
-            var permission = (productionLineViewModel.LineId == 0 && privilege.Add) || (productionLineViewModel.LineId > 0 && privilege.Edit);
-            if (ModelState.IsValid && permission)
+            var privilege = UserPrivilege("Production", "GetProductionLineList") ;
+            //var permission = (productionLineViewModel.LineId == 0 && privilege.Add) || (productionLineViewModel.LineId > 0 && privilege.Edit);
+            //&& permission
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -1830,9 +1945,9 @@ namespace ERPWeb.Controllers
         {
             bool IsSuccess = false;
             var privilege = UserPrivilege("Production", "GetAssemblyLines");
-            var permission = (model.AssemblyLineId == 0 && privilege.Add) || (model.AssemblyLineId > 0 && privilege.Edit);
-
-            if (ModelState.IsValid && permission)
+            //var permission = (model.AssemblyLineId == 0 && privilege.Add) || (model.AssemblyLineId > 0 && privilege.Edit);
+            //&& permission
+            if (ModelState.IsValid )
             {
                 AssemblyLineDTO dto = new AssemblyLineDTO();
                 AutoMapper.Mapper.Map(model, dto);
@@ -2771,7 +2886,6 @@ namespace ERPWeb.Controllers
                 EntryDate = s.EntryDate,
                 UpdateDate = s.UpdateDate
             }).ToList();
-
             ViewBag.UserPrivilege = UserPrivilege("Production", "GetPackagingLines");
             ViewBag.ddlLineNumber = _productionLineBusiness.GetAllProductionLineByOrgId(User.OrgId).Select(line => new SelectListItem { Text = line.LineNumber, Value = line.LineId.ToString() }).ToList();
 

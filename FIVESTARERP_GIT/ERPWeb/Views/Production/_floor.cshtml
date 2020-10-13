@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.ProductionLineViewModel>
+@{ 
+    int sl = 0;
+    string badge = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg tblfloor" id="tblfloor">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL </th>
+                    <th class="hide"></th>
+                    <th>Floor</th>
+                    <th>InCharge Name</th>
+                    <th>StateStatus</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model)
+                {
+                    sl = sl + 1;
+                    badge = line.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@line.LineId</td>
+                        <td>@line.LineNumber</td>
+                        <td>@line.LineIncharge</td>
+                        <td class="text-center" data-val="@line.StateStatus">
+                            <span class="@badge">@line.StateStatus</span>
+                        </td>
+                        <td>@line.Remarks</td>
+                        <td class="text-center">@line.EntryUser</td>
+                        <td class="text-center">@line.UpdateUser</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-warning btn-sm data-floor-edit" data-floor-edit="@line.LineId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="9">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
