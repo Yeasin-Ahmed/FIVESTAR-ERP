@@ -29,6 +29,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public long JodOrderId { get; set; }
         // Custom Property
+        [StringLength(100)]
         public string TSName { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,9 @@ namespace ERPBO.FrontDesk.ViewModels
         public long ReturnInfoId { get; set; }
         public long ReqInfoId { get; set; }
         public long JobOrderId { get; set; }
+        [Required,StringLength(100)]
         public string RequsitionCode { get; set; }
+        [Required,StringLength(100)]
         public string StateStatus { get; set; }
         public long? BranchId { get; set; }
         public long? OrganizationId { get; set; }

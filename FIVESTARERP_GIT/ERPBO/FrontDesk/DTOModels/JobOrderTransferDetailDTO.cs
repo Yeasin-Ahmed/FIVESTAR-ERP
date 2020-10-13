@@ -28,5 +28,9 @@ namespace ERPBO.FrontDesk.DTOModels
         public string ModelColor { get; set; }
         public string ModelName { get; set; }
         public string ReceivedBy { get; set; }
+        //
+        public string CourierName { get; set; }
+        public string CourierNumber { get; set; }
+        public string ApproxBill { get; set; }
     }
 }

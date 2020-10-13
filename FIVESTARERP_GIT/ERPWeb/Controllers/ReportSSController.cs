@@ -301,9 +301,9 @@ namespace ERPWeb.Controllers
 
         #region PartsReturnReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult PartsReturnReport(long? ddlMobileParts,long? ddlTechnicalServicesName,string jobCode, string fromDate, string toDate,string rptType)
+        public ActionResult PartsReturnReport(long? ddlMobileParts2,long? ddlTechnicalServicesName2,string jobCode2, string fromDate2, string toDate2,string rptType2)
         {
-            var dto = _tsStockReturnDetailsBusiness.GetReturnParts(User.OrgId, User.BranchId, ddlTechnicalServicesName, ddlMobileParts, jobCode, fromDate, toDate);
+            var dto = _tsStockReturnDetailsBusiness.GetReturnParts(User.OrgId, User.BranchId, ddlTechnicalServicesName2, ddlMobileParts2, jobCode2, fromDate2, toDate2);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -331,7 +331,7 @@ namespace ERPWeb.Controllers
                 byte[] renderedBytes;
 
                 renderedBytes = localReport.Render(
-                    rptType,
+                    rptType2,
                     "",
                     out mimeType,
                     out encoding,
@@ -541,10 +541,10 @@ namespace ERPWeb.Controllers
 
         #region RepairedJobOfOtherBranch
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult RepairedJobOfOtherBranch(long? ddlBranchName, string fromDate, string toDate, string rptType)
+        public ActionResult RepairedJobOfOtherBranch(long? ddlBranchName2, string fromDate2, string toDate2, string rptType2)
         {
 
-            IEnumerable<JobOrderReturnDetailDTO> dto = _jobOrderReturnDetailBusiness.RepairedJobOfOtherBranch(User.BranchId, ddlBranchName, User.OrgId, fromDate, toDate);
+            IEnumerable<JobOrderReturnDetailDTO> dto = _jobOrderReturnDetailBusiness.RepairedJobOfOtherBranch(User.BranchId, ddlBranchName2, User.OrgId, fromDate2, toDate2);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -572,7 +572,7 @@ namespace ERPWeb.Controllers
                 byte[] renderedBytes;
 
                 renderedBytes = localReport.Render(
-                    rptType,
+                    rptType2,
                     "",
                     out mimeType,
                     out encoding,
@@ -586,9 +586,9 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region OtherBranchRequsitionReport
-        public ActionResult OtherBranchRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType)
+        public ActionResult OtherBranchRequsitionReport(string reqCode2, long? ddlWarehouseName2, long? ddlTechnicalServicesName2, string reqStatus2, string fromDate2, string toDate2, string rptType2)
         {
-            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode, ddlWarehouseName,ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId);
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode2, ddlWarehouseName2,ddlTechnicalServicesName2, reqStatus2, fromDate2, toDate2, User.OrgId, User.BranchId);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -616,7 +616,7 @@ namespace ERPWeb.Controllers
                 byte[] renderedBytes;
 
                 renderedBytes = localReport.Render(
-                    rptType,
+                    rptType2,
                     "",
                     out mimeType,
                     out encoding,
@@ -674,9 +674,9 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region JobOrderReturnReceivedReport
-        public ActionResult ReceivedReturnJobOrderReport(long? ddlBranchName, string fromDate, string ddlTransferStatus, string toDate, string rptType, string jobCode = "", string transferCode = "")
+        public ActionResult ReceivedReturnJobOrderReport(long? ddlBranchName2, string fromDate2, string ddlTransferStatus2, string toDate2, string rptType2, string jobCode2 = "", string transferCode2 = "")
         {
-            var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, ddlBranchName, jobCode, transferCode, fromDate, toDate, ddlTransferStatus);
+            var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, ddlBranchName2, jobCode2, transferCode2, fromDate2, toDate2, ddlTransferStatus2);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -704,7 +704,7 @@ namespace ERPWeb.Controllers
                 byte[] renderedBytes;
 
                 renderedBytes = localReport.Render(
-                    rptType,
+                    rptType2,
                     "",
                     out mimeType,
                     out encoding,

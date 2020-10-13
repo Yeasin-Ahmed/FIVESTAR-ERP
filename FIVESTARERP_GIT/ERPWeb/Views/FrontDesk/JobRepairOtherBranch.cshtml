@@ -2,83 +2,270 @@
 @{
     ViewBag.Title = "JobRepairOtherBranch";
 }
-
-<div class="row">
-    <div class="col-md-12 text-center">
-        <div class="card card-gray shadow">
-            <div class="card-header">
-                <h4>Job Repaired (Outer Branches)</h4>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header">
-                @Html.AntiForgeryToken()
-                @using (Html.BeginForm("OtherBranchRepairJob", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
-                {
-                    <div class="col-md-12">
-                        <form method="get">
-                            <div class="row text-sm">
-                                <div class="col-md-2">
-                                    <label class="control-label font-weight-bold">FromBranch</label>
-                                    @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm font-weight-bold ctrl-changed select2 select2-danger ctrl-changed" })
-                                    <span class="error hide require-branch font-weight-bold">Branch is required !</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="control-label font-weight-bold">From Date</label>
-                                    <div class="input-group input-group-sm ">
-                                        <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
-                                        <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                                            <span class="input-group-text">&#10008;</span>
+        <div class="card shadow card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-jobRepairOtherBranch-tab" data-toggle="pill" href="#custom-tabs-two-jobRepairOtherBranch" role="tab" aria-controls="custom-tabs-two-jobRepairOtherBranch" aria-selected="true">Job Repaired (Outer Branches)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-jobRepairOtherBranch2-tab" data-toggle="pill" href="#custom-tabs-two-jobRepairOtherBranch2" role="tab" aria-controls="custom-tabs-two-jobRepairOtherBranch2" aria-selected="true">Job Repair(From Outer Branch)</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body shadow">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-two-jobRepairOtherBranch" role="tabpanel" aria-labelledby="custom-tabs-two-jobRepairOtherBranch-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Job Repaired (Outer Branches)
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="control-label font-weight-bold">To Date</label>
-                                    <div class="input-group input-group-sm ">
-                                        <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
-                                        <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                                            <span class="input-group-text">&#10008;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="rptType">Type</label>
-                                    <select name="rptType" id="rptType" class="form-control form-control-sm">
-                                        <option value="PDF">PDF</option>
-                                        <option value="EXCEL">EXCEL</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <label for="Download" style="visibility:hidden">Download </label>
-                                    <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> </button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        @Html.AntiForgeryToken()
+                                        @using (Html.BeginForm("OtherBranchRepairJob", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
+                                        {
+                                            <div class="col-md-12">
+                                                <form method="get">
+                                                    <div class="row text-sm">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">FromBranch</label>
+                                                            @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm font-weight-bold ctrl-changed select2 select2-danger ctrl-changed" })
+                                                            <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">From Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
+                                                                <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">To Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
+                                                                <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="rptType">Type</label>
+                                                            <select name="rptType" id="rptType" class="form-control form-control-sm">
+                                                                <option value="PDF">PDF</option>
+                                                                <option value="EXCEL">EXCEL</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label for="Download" style="visibility:hidden">Download </label>
+                                                            <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-12 mt-3 text-sm" id="dataContainer">
+                                                @{Html.RenderAction("JobRepairOtherBranch", new { flag = "view" });}
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-12 mt-3 text-sm" id="dataContainer">
-                        @{Html.RenderAction("JobRepairOtherBranch", new { flag = "view" });}
+                    <div class="tab-pane fade show" id="custom-tabs-two-jobRepairOtherBranch2" role="tabpanel" aria-labelledby="custom-tabs-two-jobRepairOtherBranch2-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Job Repair(From Outer Branch)
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        @Html.AntiForgeryToken()
+                                        @using (Html.BeginForm("RepairedJobOfOtherBranch", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
+                                        {
+                                            <div class="col-md-12">
+                                                <form method="get">
+                                                    <div class="row text-sm">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">RepairBranch</label>
+                                                            @Html.DropDownList("ddlBranchName2", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName2, "--Select Repair Branch--", new { @class = "form-control form-control-sm font-weight-bold ctrl-changed select2 select2-danger ctrl-changed" })
+                                                            <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">From Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" name="fromDate2" />
+                                                                <div class="input-group-prepend cursor-pointer remove-date dptFromDate2" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">To Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate2" name="toDate2" />
+                                                                <div class="input-group-prepend remove-date dptToDate2" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="rptType2">Type</label>
+                                                            <select name="rptType2" id="rptType2" class="form-control form-control-sm">
+                                                                <option value="PDF">PDF</option>
+                                                                <option value="EXCEL">EXCEL</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label for="Download" style="visibility:hidden">Download </label>
+                                                            <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-12 mt-3 text-sm" id="dataContainer1">
+                                                @{Html.RenderAction("RepairedJobOfOtherBranch", new { flag = "view" });}
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                }
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<div>
+    @*<div class="row">
+        <div class="col-md-12 text-center">
+            <div class="card card-gray shadow">
+                <div class="card-header">
+                    <h4>Job Repaired (Outer Branches)</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    @Html.AntiForgeryToken()
+                    @using (Html.BeginForm("OtherBranchRepairJob", "ReportSS", FormMethod.Get, new { @target = "_blank" }))
+                    {
+                        <div class="col-md-12">
+                            <form method="get">
+                                <div class="row text-sm">
+                                    <div class="col-md-2">
+                                        <label class="control-label font-weight-bold">FromBranch</label>
+                                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm font-weight-bold ctrl-changed select2 select2-danger ctrl-changed" })
+                                        <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="control-label font-weight-bold">From Date</label>
+                                        <div class="input-group input-group-sm ">
+                                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
+                                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                <span class="input-group-text">&#10008;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="control-label font-weight-bold">To Date</label>
+                                        <div class="input-group input-group-sm ">
+                                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
+                                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                <span class="input-group-text">&#10008;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="rptType">Type</label>
+                                        <select name="rptType" id="rptType" class="form-control form-control-sm">
+                                            <option value="PDF">PDF</option>
+                                            <option value="EXCEL">EXCEL</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="Download" style="visibility:hidden">Download </label>
+                                        <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-12 mt-3 text-sm" id="dataContainer">
+                            @{Html.RenderAction("JobRepairOtherBranch", new { flag = "view" });}
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+
 @section scripts{
     <script type="text/javascript">
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
         var ddlBranchName = $("#ddlBranchName");
         var pageNo = 1;
+        /////
+        var dptFromDate2 = $("#dptFromDate2");
+        var dptToDate2 = $("#dptToDate2");
+        var ddlBranchName2 = $("#ddlBranchName2");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
+            dptFromDate2.prop('readonly', true);
+            dptToDate2.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
             dptToDate.css("background-color", "#fff");
+            dptFromDate2.css("background-color", "#fff");
+            dptToDate2.css("background-color", "#fff");
             $('#dptFromDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
@@ -86,6 +273,18 @@
                 autoclose: true
             });
             $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptFromDate2').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptToDate2').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
                 todayHighlight: true,
@@ -104,6 +303,18 @@
                 if (dptFromDate.val() !== '') {
                     dptFromDate.val('');
                     LoadDataTable();
+                }
+            }
+            if ($(this).hasClass("dptToDate2")) {
+                if (dptToDate2.val() !== '') {
+                    dptToDate2.val('');
+                    LoadDataTable2();
+                }
+            }
+            if ($(this).hasClass("dptFromDate2")) {
+                if (dptFromDate2.val() !== '') {
+                    dptFromDate2.val('');
+                    LoadDataTable2();
                 }
             }
         })
@@ -132,14 +343,46 @@
             }).fail(function (error) {
                 console.log(error);
                 })
-            pageNo = 1;
+        }
+        /////////
+        dptFromDate2.change(function () {
+            LoadDataTable2();
+        })
+        dptToDate2.change(function () {
+            LoadDataTable2();
+        })
+
+        ddlBranchName2.change(function () {
+            LoadDataTable2();
+        })
+        function LoadDataTable2() {
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName2.val(), 0), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), page: pageNo };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/RepairedJobOfOtherBranch', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
         }
         // Pagination
         $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
             if (!$(this).hasClass('current-page')) {
-                pageNo = $(this).attr('data-page-no');
-                LoadDataTable();
+                if ($(this).parent().parents('div').hasClass('jobRepair')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTable();
+                }
+                if ($(this).parent().parents('div').hasClass('jobRepair2')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTable2();
+                }
             }
         })
         function redirectPage(page) {

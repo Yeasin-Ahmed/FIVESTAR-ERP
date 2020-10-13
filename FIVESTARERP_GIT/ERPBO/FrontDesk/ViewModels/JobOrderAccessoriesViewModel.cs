@@ -20,7 +20,9 @@ namespace ERPBO.FrontDesk.ViewModels
         public long JobOrderId { get; set; }
         // Custom Property
         public string AccessoriesName { get; set; }
+        [StringLength(100)]
         public string EntryUser { get; set; }
+        [StringLength(100)]
         public string UpdateUser { get; set; }
     }
 }

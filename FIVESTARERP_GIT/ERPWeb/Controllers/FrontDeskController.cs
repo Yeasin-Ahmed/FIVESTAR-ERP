@@ -97,8 +97,9 @@ namespace ERPWeb.Controllers
 
         #region JobOrder
         [HttpGet]
-        public ActionResult GetJobOrders(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", int page = 1)
+        public ActionResult GetJobOrders(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", string tab = "", int page = 1)
         {
+            ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrders");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
@@ -314,28 +315,47 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region JobTransfer And Receive
-        public ActionResult GetJobTransferList(string flag)
+        [HttpGet]
+        public ActionResult GetJobTransferList(string flag,string tab="",int page=1)
         {
+            ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobTransferList");
             if (string.IsNullOrEmpty(flag))
             {
+                //Transfer Job
                 ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+
+                ViewBag.ddlTransferCondition = Utility.ListOfTransferCondition().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                //receive Job
+                ViewBag.ddlBranchName2 = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                ViewBag.ddlTransferStatus2 = Utility.ListOfTransferStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlReceiveCondition = Utility.ListOfReceiveCondition().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                //Return Job
+                ViewBag.ddlBranchName3 = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                //Receive Return Job
+                ViewBag.ddlTransferStatus4 = Utility.ListOfTransferStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+                ViewBag.ddlBranchName4 = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
                 return View();
             }
             else
             {
                 var dto = _jobOrderBusiness.JobOrderTransfer(User.OrgId, User.BranchId);
                 List<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetJobTransferList",viewModels);
             }
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SaveJobTransfer(long transferId, long[] jobOrders)
+        public ActionResult SaveJobTransfer(long transferId, long[] jobOrders,string cName,string cNumber)
         {
             ExecutionStateWithText executionState = new ExecutionStateWithText();
             if (transferId > 0 && jobOrders.Count() > 0)
             {
-                executionState = _jobOrderTransferDetailBusiness.SaveJobOrderTransferWithReport(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+                executionState = _jobOrderTransferDetailBusiness.SaveJobOrderTransferWithReport(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId,cName,cNumber);
                 if (executionState.isSuccess)
                 {
                     // Report ..
@@ -390,19 +410,24 @@ namespace ERPWeb.Controllers
 
             return file;
         }
-        public ActionResult ReceiveJobOrder(string flag,long? branchName, string fromDate, string tstatus, string toDate, string jobCode="",string transferCode="")
+        public ActionResult ReceiveJobOrder(string flag,long? branchName, string fromDate, string tstatus, string toDate, string jobCode="",string transferCode="",int page=1)
         {
-            if (string.IsNullOrEmpty(flag))
+            if (string.IsNullOrEmpty(flag) && flag=="recive")
             {
                 ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
 
                 ViewBag.ddlTransferStatus = Utility.ListOfTransferStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlReceiveCondition = Utility.ListOfReceiveCondition().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 return View();
             }
             else
             {
                 var dto = _jobOrderTransferDetailBusiness.GetReceiveJob(User.OrgId, User.BranchId,branchName,jobCode,transferCode,fromDate,toDate,tstatus);
                 List<JobOrderTransferDetailViewModel> viewModels = new List<JobOrderTransferDetailViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_ReceiveJobOrder", viewModels);
             }
@@ -416,7 +441,7 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
-        public ActionResult TransferReceiveJobOrder(string flag,long? branchName)
+        public ActionResult TransferReceiveJobOrder(string flag,long? branchName,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -427,6 +452,10 @@ namespace ERPWeb.Controllers
             {
                 var dto = _jobOrderBusiness.TransferReceiveJobOrder(User.OrgId, User.BranchId,branchName);
                 List<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_TransferReceiveJobOrder", viewModels);
             }
@@ -443,12 +472,12 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SaveJobReturn(long transferId, long[] jobOrders)
+        public ActionResult SaveJobReturn(long transferId, long[] jobOrders,string cName,string cNumber)
         {
             ExecutionStateWithText executionState = new ExecutionStateWithText();
             if (transferId > 0 && jobOrders.Count() > 0)
             {
-                executionState = _jobOrderReturnDetailBusiness.SaveJobOrderReturnWithReport(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId);
+                executionState = _jobOrderReturnDetailBusiness.SaveJobOrderReturnWithReport(transferId, jobOrders, User.UserId, User.OrgId, User.BranchId,cName,cNumber);
                 if (executionState.isSuccess)
                 {
                     executionState.text = GetReturnDeliveryChalan(executionState.text);
@@ -502,7 +531,7 @@ namespace ERPWeb.Controllers
 
             return file;
         }
-        public ActionResult ReceiveReturnJobOrder(string flag, long? branchName, string fromDate, string toDate, string tstatus, string jobCode = "", string transferCode = "")
+        public ActionResult ReceiveReturnJobOrder(string flag, long? branchName, string fromDate, string toDate, string tstatus, string jobCode = "", string transferCode = "",int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -515,6 +544,10 @@ namespace ERPWeb.Controllers
             {
                 var dto = _jobOrderReturnDetailBusiness.GetReturnJobOrder(User.OrgId, User.BranchId, branchName, jobCode, transferCode,fromDate,toDate, tstatus);
                 List<JobOrderReturnDetailViewModel> viewModels = new List<JobOrderReturnDetailViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_ReceiveReturnJobOrder", viewModels);
             }
@@ -732,6 +765,15 @@ namespace ERPWeb.Controllers
                 Value = st.value
             }).ToList();
             ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+            //Other Branch
+            ViewBag.ddlWarehouseName2 = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlStateStatus2 = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Void).Select(st => new SelectListItem
+            {
+                Text = st.text,
+                Value = st.value
+            }).ToList();
+            ViewBag.ddlTechnicalServicesName2 = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
             return View();
         }
         public ActionResult TSRequsitionInfoForJobOrderPartialListList(string reqCode, long? warehouseId,long? tsId, string status, string fromDate, string toDate,string jobCode="",int page=1)
@@ -1298,7 +1340,7 @@ namespace ERPWeb.Controllers
         #region Accessories Invoice
         public ActionResult AccessoriesSells( string flag,string fromDate,string toDate, string invoice = "", int page=1)
         {
-            if (string.IsNullOrEmpty(flag))
+            if (string.IsNullOrEmpty(flag) && flag=="sell")
             {
                 return View();
             }
@@ -1307,8 +1349,8 @@ namespace ERPWeb.Controllers
                 var dto = _invoiceInfoBusiness.GetSellsAccessories(User.OrgId, User.BranchId, fromDate, toDate,invoice);
                 List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
                 // Pagination //
-                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
-                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                ViewBag.PagerData = GetPagerData(dto.Count(),5, page);
+                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
                 //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_AccessoriesSells",viewModels);
@@ -1357,6 +1399,15 @@ namespace ERPWeb.Controllers
             }).ToList();
 
             ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+            /////////
+            ViewBag.ddlWarehouseName2 = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlStateStatus2 = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Void).Select(st => new SelectListItem
+            {
+                Text = st.text,
+                Value = st.value
+            }).ToList();
+            ViewBag.ddlTechnicalServicesName2 = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
             return View();
         }
 
@@ -1417,6 +1468,10 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
                 ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+                //
+                ViewBag.ddlMobileParts2 = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+                ViewBag.ddlTechnicalServicesName2 = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
                 return View();
             }
             else
@@ -1470,6 +1525,7 @@ namespace ERPWeb.Controllers
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                ViewBag.ddlBranchName2 = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
                 return View();
             }
             else
@@ -1488,7 +1544,7 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+                ViewBag.ddlBranchName2 = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
                 return View();
             }
             else
@@ -1507,14 +1563,14 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlWarehouseName = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
+                ViewBag.ddlWarehouseName2 = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(ware => new SelectListItem { Text = ware.ServicesWarehouseName, Value = ware.SWarehouseId.ToString() }).ToList();
 
-                ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Void).Select(st => new SelectListItem
+                ViewBag.ddlStateStatus2 = Utility.ListOfReqStatus().Where(status => status.value == RequisitionStatus.Current || status.value == RequisitionStatus.Pending || status.value == RequisitionStatus.Approved || status.value == RequisitionStatus.Rejected || status.value == RequisitionStatus.Void).Select(st => new SelectListItem
                 {
                     Text = st.text,
                     Value = st.value
                 }).ToList();
-                ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+                ViewBag.ddlTechnicalServicesName2 = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
                 return View();
             }
             else
@@ -1536,6 +1592,10 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlBranchName = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
 
                 ViewBag.ddlTransferStatus = Utility.ListOfTransferStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                /////
+                ViewBag.ddlBranchName2 = _branchBusiness.GetBranchByOrgId(User.OrgId).Where(b => b.BranchId != User.BranchId).Select(branch => new SelectListItem { Text = branch.BranchName, Value = branch.BranchId.ToString() }).ToList();
+
+                ViewBag.ddlTransferStatus2 = Utility.ListOfTransferStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 return View();
             }
             else

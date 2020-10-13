@@ -1071,10 +1071,10 @@ Where jo.JodOrderId={0} and  jo.OrganizationId={1} and jo.BranchId={2}) tbl Orde
                 param += string.Format(@"and jo.BranchId={0}", branchId);
             }
 
-            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,CourierName,CourierNumber,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CourierName,jo.CourierNumber,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -1093,7 +1093,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             return query;
         }
 
-        public bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId)
+        public bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId, string cName, string cNumber)
         {
             foreach(var job in jobOrders)
             {
@@ -1101,6 +1101,8 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 if (jobOrderInDb != null )
                 {
                     jobOrderInDb.IsTransfer = true;
+                    jobOrderInDb.CourierName = cName;
+                    jobOrderInDb.CourierNumber = cNumber;
                     jobOrderInDb.UpUserId = userId;
                     jobOrderInDb.UpdateDate = DateTime.Now;
                     _jobOrderRepository.Update(jobOrderInDb);
@@ -1136,10 +1138,10 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 param += string.Format(@"and jo.BranchId={0}", branchName);
             }
 
-            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,CourierName,CourierNumber,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,BranchId
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CourierName,jo.CourierNumber,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -1194,7 +1196,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             return _jobOrderRepository.GetOneByOrg(o => o.OrganizationId == orgId);
         }
 
-        public bool SaveJobOrderReturnAndUpdateJobOrder(long transferId, long[] jobOrders, long userId, long orgId, long branchId)
+        public bool SaveJobOrderReturnAndUpdateJobOrder(long transferId, long[] jobOrders, long userId, long orgId, long branchId,string cName,string cNumber)
         {
             foreach (var job in jobOrders)
             {
@@ -1202,6 +1204,8 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 if (jobOrderInDb != null)
                 {
                     jobOrderInDb.IsTransfer = false;
+                    jobOrderInDb.CourierName = cName;
+                    jobOrderInDb.CourierNumber = cNumber;
                     jobOrderInDb.UpUserId = userId;
                     jobOrderInDb.UpdateDate = DateTime.Now;
                     _jobOrderRepository.Update(jobOrderInDb);
@@ -1492,6 +1496,12 @@ where 1=1{0}
 Group By  Cast(jo.EntryDate as Date)
 Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
+        }
+
+        public JobOrder GetReferencesNumberByJobOrder(string jobOrder, long orgId, long branchId)
+        {
+            jobOrder = jobOrder.Trim();
+            return _jobOrderRepository.GetAll(job => job.JobOrderCode == jobOrder.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).FirstOrDefault();
         }
     }
 }

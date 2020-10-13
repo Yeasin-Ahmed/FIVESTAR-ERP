@@ -50,17 +50,18 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<JobOrderDTO> GetJobCreateReceipt(long jobOrderId, long orgId, long branchId);
         ExecutionStateWithText SaveJobOrderWithReport(JobOrderDTO jobOrder, List<JobOrderAccessoriesDTO> jobOrderAccessories, List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId, long branchId);
         IEnumerable<JobOrderDTO> JobOrderTransfer(long orgId, long branchId);
-        bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId);
+        bool SaveJobOrderTransfer(long transferId,long[] jobOrders, long userId, long orgId, long branchId, string cName, string cNumber);
         JobOrder GetJobOrdersByIdWithTransferBranch(long jobOrderId, long transferId, long orgId);
         IEnumerable<JobOrderDTO> TransferReceiveJobOrder(long orgId, long branchId,long? branchName);
         bool SaveTransferReceiveJob(long transferId, long[] jobOrders, long userId, long orgId, long branchId);
         bool UpdateTransferJob(long jobOrderId, long userId, long orgId, long branchId);
         JobOrder GetAllJobOrderByOrgId(long orgId);
-        bool SaveJobOrderReturnAndUpdateJobOrder(long transferId, long[] jobOrders, long userId, long orgId, long branchId);
+        bool SaveJobOrderReturnAndUpdateJobOrder(long transferId, long[] jobOrders, long userId, long orgId, long branchId, string cName, string cNumber);
         bool UpdateReturnJob(long jobOrderId, long userId,long orgId);
         JobOrderDTO GetJobOrderDetails(long jobOrderId, long orgId);
         IEnumerable<DashboardApprovedRequsitionDTO> DashboardAnotherBranchRequsition(long orgId, long branchId);
         IEnumerable<DailySummaryReportDTO> DailySummaryReport(long orgId, long branchId, string fromDate, string toDate);
         IEnumerable<DailySummaryReportDTO> AllBranchDailySummaryReport(long orgId, string fromDate, string toDate);
+        JobOrder GetReferencesNumberByJobOrder(string jobOrder, long orgId, long branchId);
     }
 }

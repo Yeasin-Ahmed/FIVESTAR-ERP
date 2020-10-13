@@ -193,11 +193,11 @@
             hdfRowIndex.val("");
         }
 
-        $(document).on("click", "a.data-item-details", function (e) {
+        $(document).on("click", "a.data-item-details2", function (e) {
             e.preventDefault();
             OpenModalDetails()
             var data = {
-                requsitionInfoId: TryParseInt($(this).attr("data-item-details"), 0)
+                requsitionInfoId: TryParseInt($(this).attr("data-item-details2"), 0)
             };
             var idx = $(this).parent().parents('tr').index();
             $.when(getReqWithData('html', 'GET', '/FrontDesk/AnotherBranchRequsitionDetails', data)).then(function (res, status) {
@@ -217,15 +217,15 @@
             hdfRowIndex.val('0');
         }
         ////////Warehouse Stock Out
-        $(document).on('click', ".btnPending", function (e) {
+        $(document).on('click', ".btnPending2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.pending);
         })
-        $(document).on('click', ".btnReject", function (e) {
+        $(document).on('click', ".btnReject2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.reject);
         })
-        $(document).on('click', ".btnIssue", function (e) {
+        $(document).on('click', ".btnIssue2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.approved);
         })

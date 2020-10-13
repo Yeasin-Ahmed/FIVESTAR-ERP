@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace ERPBO.FrontDesk.ViewModels
 
         // Custom Properties
         public string ServiceName { get; set; }
+        [StringLength(100)]
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
     }

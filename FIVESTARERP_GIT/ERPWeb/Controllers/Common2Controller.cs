@@ -164,6 +164,37 @@ namespace ERPWeb.Controllers
             return Json(viewModel);
         }
 
+        [HttpPost]
+        public ActionResult GetReferencesByJobOrder(string jobOrder)
+        {
+            var Refe = _jobOrderBusiness.GetReferencesNumberByJobOrder(jobOrder, User.OrgId, User.BranchId);
+            JobOrderViewModel viewModel = new JobOrderViewModel();
+            if (Refe != null)
+            {
+                viewModel.JodOrderId = Refe.JodOrderId;
+                viewModel.IMEI = Refe.IMEI;
+                viewModel.ReferenceNumber = Refe.JobOrderCode;
+                viewModel.IMEI2 = Refe.IMEI2;
+                viewModel.Type = Refe.Type;
+                viewModel.ModelColor = Refe.ModelColor;
+                viewModel.JobOrderType = Refe.JobOrderType;
+                viewModel.Remarks = Refe.Remarks;
+                viewModel.WarrantyDate = Refe.WarrantyDate;
+                viewModel.DescriptionId = Refe.DescriptionId;
+                viewModel.ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(Refe.DescriptionId, User.OrgId).DescriptionName);
+                viewModel.CustomerName = Refe.CustomerName;
+                viewModel.Address = Refe.Address;
+                viewModel.MobileNo = Refe.MobileNo;
+                viewModel.CustomerType = Refe.CustomerType;
+
+                viewModel.CourierName = Refe.CourierName;
+                viewModel.CourierNumber = Refe.CourierNumber;
+                viewModel.ApproxBill = Refe.ApproxBill;
+
+            }
+            return Json(viewModel);
+        }
+
         #endregion
 
         #region Duplicate Check

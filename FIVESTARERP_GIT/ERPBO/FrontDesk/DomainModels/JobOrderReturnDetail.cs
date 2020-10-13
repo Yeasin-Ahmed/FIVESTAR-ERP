@@ -26,5 +26,8 @@ namespace ERPBO.FrontDesk.DomainModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public string CourierName { get; set; }
+        public string CourierNumber { get; set; }
+        public string ApproxBill { get; set; }
     }
 }

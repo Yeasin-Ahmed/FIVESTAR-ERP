@@ -21,7 +21,9 @@ namespace ERPBO.FrontDesk.ViewModels
 
         // Custom Properties
         public string ProblemName { get; set; }
+        [StringLength(100)]
         public string EntryUser { get; set; }
+        [StringLength(100)]
         public string UpdateUser { get; set; }
     }
 }

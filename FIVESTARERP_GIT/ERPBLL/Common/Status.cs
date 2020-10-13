@@ -32,6 +32,16 @@ namespace ERPBLL.Common
         public static readonly string Received = "Received";
         public static readonly string Pending = "Pending";
     }
+    public class JobOrderTransferCondition
+    {
+        public static readonly string Transfer = "Transfer";
+        public static readonly string Return = "Return";
+    }
+    public class ReceiveCondition
+    {
+        public static readonly string ReceiveJob = "ReceiveJob";
+        public static readonly string ReceiveReturnJob = "Receive ReturnJob";
+    }
     public class StockStatus
     {
         public static readonly string StockIn = "Stock-In";
@@ -106,12 +116,15 @@ namespace ERPBLL.Common
     {
         public static readonly string Warrenty = "Warrenty";
         public static readonly string Billing = "Billing";
+        public static readonly string WarrentyBounce = "Warrenty Bounce";
+        public static readonly string BillingBounce = "Billing Bounce";
     }
     public class PhoneTypes
     {
         public static readonly string Smartphone = "Smart phone";
         public static readonly string Featurephone = "Feature phone";
         public static readonly string Accessories = "Accessories";
+        public static readonly string SpareParts = "Spare Parts";
     }
     public class ModelColors
     {

@@ -115,7 +115,7 @@ where 1=1 {0}) tbl order by EntryDate desc", Utility.ParamChecker(param));
             _jobOrderReturnDetailRepository.InsertAll(jobOrderReturn);
             if (_jobOrderReturnDetailRepository.Save() == true)
             {
-                IsSuccess = _jobOrderBusiness.SaveJobOrderReturnAndUpdateJobOrder(transferId, jobOrders, userId, orgId, branchId);
+                IsSuccess = _jobOrderBusiness.SaveJobOrderReturnAndUpdateJobOrder(transferId, jobOrders, userId, orgId, branchId,string.Empty,string.Empty);
             }
             return IsSuccess;
         }
@@ -151,7 +151,7 @@ CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,TransferCode
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,TransferCode,DestinationBranch
 From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
@@ -193,6 +193,12 @@ Order By JTSId desc) 'TSName',
 Inner Join tblJobOrders joo on tjt.JobOrderId = joo.JodOrderId
 Where tjt.JobOrderId = jo.JodOrderId)'TransferCode' ,
 
+(Select Top 1 BranchName 'DestinationBranch' from tblJobOrderReturnDetails tdt
+Inner Join tblJobOrders jodr on tdt.JobOrderId = jodr.JodOrderId
+inner join [ControlPanel].dbo.tblBranch bb on tdt.ToBranch=bb.BranchId
+Where jodr.JodOrderId = jo.JodOrderId 
+Order By JobOrderId desc) 'DestinationBranch',
+
 (Select top 1 SignOutDate from tblJobOrderTS jt
 Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
 Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
@@ -207,7 +213,7 @@ Select JobOrderId From tblJobOrderReturnDetails Where TransferCode='{0}' and Org
             return data;
         }
 
-        public ExecutionStateWithText SaveJobOrderReturnWithReport(long transferId, long[] jobOrders, long userId, long orgId, long branchId)
+        public ExecutionStateWithText SaveJobOrderReturnWithReport(long transferId, long[] jobOrders, long userId, long orgId, long branchId, string cName, string cNumber)
         {
             bool IsSuccess = false;
             ExecutionStateWithText executionState = new ExecutionStateWithText();
@@ -233,7 +239,7 @@ Select JobOrderId From tblJobOrderReturnDetails Where TransferCode='{0}' and Org
             _jobOrderReturnDetailRepository.InsertAll(jobOrderReturn);
             if (_jobOrderReturnDetailRepository.Save() == true)
             {
-                IsSuccess = _jobOrderBusiness.SaveJobOrderReturnAndUpdateJobOrder(transferId, jobOrders, userId, orgId, branchId);
+                IsSuccess = _jobOrderBusiness.SaveJobOrderReturnAndUpdateJobOrder(transferId, jobOrders, userId, orgId, branchId,cName,cNumber);
                 executionState.isSuccess = IsSuccess;
                 executionState.text = transferCode;
             }

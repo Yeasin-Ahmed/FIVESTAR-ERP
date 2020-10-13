@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public long ReturnDetailId { get; set; }
         public long ReqInfoId { get; set; }
         public long JobOrderId { get; set; }
+        [Required,StringLength(100)]
         public string RequsitionCode { get; set; }
         public long PartsId { get; set; }
         public int Quantity { get; set; }
@@ -22,8 +24,11 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public long ReturnInfoId { get; set; }
         //c
+        [Required,StringLength(100)]
         public string PartsName { get; set; }
+        [Required,StringLength(100)]
         public string PartsCode { get; set; }
+        [Required,StringLength(100)]
         public string EntryUser { get; set; }
         public string JobOrderCode { get; set; }
 

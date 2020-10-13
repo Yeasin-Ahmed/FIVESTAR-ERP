@@ -59,6 +59,24 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfTransferCondition()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=JobOrderTransferCondition.Transfer,value=JobOrderTransferCondition.Transfer},
+                new Dropdown(){text=JobOrderTransferCondition.Return,value=JobOrderTransferCondition.Return}
+            };
+            return dropdowns;
+        }
+        public static IEnumerable<Dropdown> ListOfReceiveCondition()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=ReceiveCondition.ReceiveJob,value=ReceiveCondition.ReceiveJob},
+                new Dropdown(){text=ReceiveCondition.ReceiveReturnJob,value=ReceiveCondition.ReceiveReturnJob}
+            };
+            return dropdowns;
+        }
 
         public static IEnumerable<Dropdown> ListOfCustomerType()
         {
@@ -105,7 +123,8 @@ namespace ERPBLL.Common
             {
                 new Dropdown(){text=PhoneTypes.Smartphone,value=PhoneTypes.Smartphone},
                 new Dropdown(){text=PhoneTypes.Featurephone,value=PhoneTypes.Featurephone},
-                new Dropdown(){text=PhoneTypes.Accessories,value=PhoneTypes.Accessories}
+                new Dropdown(){text=PhoneTypes.Accessories,value=PhoneTypes.Accessories},
+                new Dropdown(){text=PhoneTypes.SpareParts,value=PhoneTypes.SpareParts}
             };
             return dropdowns;
         }
@@ -155,7 +174,9 @@ namespace ERPBLL.Common
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
             {
                 new Dropdown(){text=JobOrderTypes.Warrenty,value=JobOrderTypes.Warrenty},
-                new Dropdown(){text=JobOrderTypes.Billing,value=JobOrderTypes.Billing}
+                new Dropdown(){text=JobOrderTypes.Billing,value=JobOrderTypes.Billing},
+                new Dropdown(){text=JobOrderTypes.WarrentyBounce,value=JobOrderTypes.WarrentyBounce},
+                new Dropdown(){text=JobOrderTypes.BillingBounce,value=JobOrderTypes.BillingBounce}
             };
             return dropdowns;
         }

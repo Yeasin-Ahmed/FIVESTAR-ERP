@@ -16,7 +16,7 @@ namespace ERPBLL.FrontDesk.Interface
         bool UpdateReturnJobOrder(long returnId,long jobOrderId, long userId, long orgId, long branchId);
         JobOrderReturnDetail GetOneByOrgId(long returnId, long orgId, long branchId);
         IEnumerable<JobOrderDTO> GetReturnDeliveryChalan(string transferCode,long orgId);
-        ExecutionStateWithText SaveJobOrderReturnWithReport(long transferId, long[] jobOrders, long userId, long orgId, long branchId);
+        ExecutionStateWithText SaveJobOrderReturnWithReport(long transferId, long[] jobOrders, long userId, long orgId, long branchId,string cName,string cNumber);
         IEnumerable<JobOrderReturnDetailDTO> RepairOtherBranchJob(long branchId, long? branchName, long orgId, string fromDate, string toDate);
         IEnumerable<JobOrderReturnDetailDTO> RepairedJobOfOtherBranch(long branchId, long? branchName, long orgId, string fromDate, string toDate);
     }

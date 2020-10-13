@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public long JobOrderId { get; set; }
         // Custom Properties
+        [StringLength(100)]
         public string RepairName { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }

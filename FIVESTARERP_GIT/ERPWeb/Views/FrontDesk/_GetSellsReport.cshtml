@@ -26,7 +26,7 @@
             @foreach (var part in Model)
             {
                 sl = sl + 1;
-                string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy hh:mm tt") : "";
+                string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy hh:mm") : "";
                 <tr class="text-sm">
                     <td class="text-center">@sl</td>
                     <td class="hide">@part.InvoiceInfoId</td>

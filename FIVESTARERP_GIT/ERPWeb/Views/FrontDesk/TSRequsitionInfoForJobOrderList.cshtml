@@ -3,53 +3,176 @@
     ViewBag.Title = "T S Requsition For Parts";
 }
 <div class="row">
-    <div class="col-md-12 text-center">
-        <div class="card card-gray shadow">
-            <div class="card-header">
-                <h4>T.S Requsition List</h4>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
     <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header">
-                @Html.AntiForgeryToken()
-                <div class="row text-sm">
-                    <div class="col-md-2">
-                        <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
-                        <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
-                    </div>
-                    <div class="col-md-4 hide">
-                        <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
-                        @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouseName, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
-                        <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="ddlTechnicalServicesName" class="control-label font-weight-bold">TSName</label>
-                        @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select TSName--", new { @class = "form-control form-control-sm" })
-                    </div>
-                    <div class="col-md-2">
-                        <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
-                        @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
-                    </div>
-                    <div class="col-md-2">
-                        <label class="control-label font-weight-bold">From Date</label>
-                        <div class="input-group input-group-sm ">
-                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                                <span class="input-group-text">&#10008;</span>
-                            </div>
-                        </div>
+        <div class="card shadow card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-requsitionList-tab" data-toggle="pill" href="#custom-tabs-two-requsitionList" role="tab" aria-controls="custom-tabs-two-requsitionList" aria-selected="true">Requsition</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-otherBRequsitionList-tab" data-toggle="pill" href="#custom-tabs-two-otherBRequsitionList" role="tab" aria-controls="custom-tabs-two-otherBRequsitionList" aria-selected="true">Requsition(Other Branch)</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body shadow">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-two-requsitionList" role="tabpanel" aria-labelledby="custom-tabs-two-requsitionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    T.S Requsition List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="col-md-2">
+                                                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                                                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4 hide">
+                                                <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouseName, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlTechnicalServicesName" class="control-label font-weight-bold">TSName</label>
+                                                @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select TSName--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                                                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm" id="dataContainer">
+                                                @{Html.RenderAction("TSRequsitionInfoForJobOrderPartialListList");}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <label class="control-label font-weight-bold">To Date</label>
-                        <div class="input-group input-group-sm ">
-                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                                <span class="input-group-text">&#10008;</span>
+                    <div class="tab-pane fade show " id="custom-tabs-two-otherBRequsitionList" role="tabpanel" aria-labelledby="custom-tabs-two-otherBRequsitionList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    T.S Requsition List(Other Branches)
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="col-md-2">
+                                                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                                                <input type="text" name="search" id="txtReqCode2" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4 hide">
+                                                <label for="ddlWarehouseName2" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseName2", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouseName2, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlTechnicalServicesName2" class="control-label font-weight-bold">TSName</label>
+                                                @Html.DropDownList("ddlTechnicalServicesName2", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName2, "--Select TSName--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlStateStatus2" class="control-label font-weight-bold">StateStatus</label>
+                                                @Html.DropDownList("ddlStateStatus2", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus2, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate2" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate2" />
+                                                    <div class="input-group-prepend remove-date dptToDate2" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm" id="dataContainer2">
+                                                @{Html.RenderAction("AnotherBranchRequsitionPartialList");}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -58,19 +181,79 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12 text-sm" id="dataContainer">
-                        @{Html.RenderAction("TSRequsitionInfoForJobOrderPartialListList");}
+
+<div>
+    @*<div class="row">
+            <div class="col-md-12 text-center">
+                <div class="card card-gray shadow">
+                    <div class="card-header">
+                        <h4>T.S Requsition List</h4>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        @Html.AntiForgeryToken()
+                        <div class="row text-sm">
+                            <div class="col-md-2">
+                                <label for="txtReqCode" class="control-label font-weight-bold">Requisition Code</label>
+                                <input type="text" name="search" id="txtReqCode" class="form-control form-control-sm" placeholder="Search By Requisition Code" onkeyup="tableFilter('#tblReqInfoData tbody tr',this)" />
+                            </div>
+                            <div class="col-md-4 hide">
+                                <label for="ddlWarehouseName" class="control-label font-weight-bold">Warehouse Name</label>
+                                @Html.DropDownList("ddlWarehouseName", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouseName, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                <span class="error hide required-warehouseName font-weight-bold">Required Warehouse Name!</span>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="ddlTechnicalServicesName" class="control-label font-weight-bold">TSName</label>
+                                @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select TSName--", new { @class = "form-control form-control-sm" })
+                            </div>
+                            <div class="col-md-2">
+                                <label for="ddlStateStatus" class="control-label font-weight-bold">StateStatus</label>
+                                @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Select Status--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label font-weight-bold">From Date</label>
+                                <div class="input-group input-group-sm ">
+                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                        <span class="input-group-text">&#10008;</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label font-weight-bold">To Date</label>
+                                <div class="input-group input-group-sm ">
+                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                        <span class="input-group-text">&#10008;</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-sm" id="dataContainer">
+                                @{Html.RenderAction("TSRequsitionInfoForJobOrderPartialListList");}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
 </div>
+
 
 <div class="row">
     <div class="modal fade" id="modalRequsitionJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
@@ -93,6 +276,27 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="modal fade" id="modalRequsitionJobOrderDetails2" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="hdfRequsitionDetailId2" />
+                    <input type="hidden" id="hdfRowIndex2" />
+                    <h4 id="modalHeading" class="modal-title">
+                        Requsition For Job Order Details
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" id="dataContainer3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
         var hdfRequstionDetailForJobOrderId = $("#hdfRequstionDetailForJobOrderId");
@@ -107,6 +311,18 @@
         var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
         var pageNo = 1;
 
+        //OtherBranch
+        var hdfRequstionDetailForJobOrderId2 = $("#hdfRequstionDetailForJobOrderId2");
+        var ddlWarehouseName2 = $("#ddlWarehouseName2");
+        var txtReqCode2 = $("#txtReqCode2");
+        var ddlStateStatus2 = $("#ddlStateStatus2");
+        var dptFromDate2 = $("#dptFromDate2");
+        var dptToDate2 = $("#dptToDate2");
+        var hdfJobCodeId2 = $("#hdfJobCodeId2");
+        var hdfRequsitionDetailId2 = $("#hdfRequsitionDetailId2");
+        var hdfRowIndex2 = $("#hdfRowIndex2");
+        var ddlTechnicalServicesName2 = $("#ddlTechnicalServicesName2");
+
         $(document).ready(function () {
 
             //Initialize Select2 Elements
@@ -118,8 +334,12 @@
             });
             dptFromDate.prop('readonly', true);
             dptToDate.prop('readonly', true);
+            dptFromDate2.prop('readonly', true);
+            dptToDate2.prop('readonly', true);
             dptFromDate.css("background-color", "#fff");
             dptToDate.css("background-color", "#fff");
+            dptFromDate2.css("background-color", "#fff");
+            dptToDate2.css("background-color", "#fff");
             $('#dptFromDate').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
@@ -127,6 +347,18 @@
                 autoclose: true
             });
             $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptFromDate2').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptToDate2').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
                 todayHighlight: true,
@@ -147,6 +379,18 @@
                     LoadDataTable();
                 }
             }
+            if ($(this).hasClass("dptToDate2")) {
+                if (dptToDate2.val() !== '') {
+                    dptToDate2.val('');
+                    LoadDataTableReqOtherBranch();
+                }
+            }
+            if ($(this).hasClass("dptFromDate2")) {
+                if (dptFromDate2.val() !== '') {
+                    dptFromDate2.val('');
+                    LoadDataTableReqOtherBranch();
+                }
+            }
         })
 
         txtReqCode.keyup(function () {
@@ -155,6 +399,7 @@
 
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
+            LoadDataTableReqOtherBranch();
         })
         ddlTechnicalServicesName.change(function () {
             LoadDataTable();
@@ -175,14 +420,7 @@
             })
             pageNo = 1;
         }
-        // Pagination
-        $(document).on('click', 'a.page-link', function (e) {
-            e.preventDefault();
-            if (!$(this).hasClass('current-page')) {
-                pageNo = $(this).attr('data-page-no');
-                LoadDataTable();
-            }
-        })
+        
 
         function OpenModalDetails() {
             clearCtr()
@@ -247,6 +485,107 @@
                 })
             }
         }
+        //Other Branch Requsition
+        txtReqCode2.keyup(function () {
+            LoadDataTableReqOtherBranch();
+        })
+        ddlTechnicalServicesName2.change(function () {
+            LoadDataTableReqOtherBranch();
+        })
+
+        function LoadDataTableReqOtherBranch() {
+            var data = { reqCode: txtReqCode2.val().trim(), warehouseId: TryParseInt(ddlWarehouseName2.val(), 0), tsId: TryParseInt(ddlTechnicalServicesName2.val(), 0), status: ddlStateStatus2.val(), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), page: pageNo };
+
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/AnotherBranchRequsitionPartialList', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        function OpenModalDetails2() {
+            clearCtr2()
+            $("#modalRequsitionJobOrderDetails2").modal("show");
+            $("#dataContainer3").empty();
+            hdfRequsitionDetailId2.val('0');
+            hdfRowIndex2.val("");
+        }
+
+        $(document).on("click", "a.data-item-details2", function (e) {
+            e.preventDefault();
+            OpenModalDetails2()
+            var data = {
+                requsitionInfoId: TryParseInt($(this).attr("data-item-details2"), 0)
+            };
+            var idx = $(this).parent().parents('tr').index();
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/AnotherBranchRequsitionDetails', data)).then(function (res, status) {
+                if (status == "success") {
+                    hdfRequsitionDetailId2.val(data.requsitionInfoId);
+                    hdfRowIndex2.val(idx)
+                    $("#dataContainer3").empty();
+                    $("#dataContainer3").append(res);
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            clearCtr2()
+        })
+        function clearCtr2() {
+            hdfRequsitionDetailId2.val('0');
+            hdfRowIndex2.val('0');
+        }
+        ////////Warehouse Stock Out
+        $(document).on('click', ".btnPending2", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange2(hdfRequsitionDetailId2.val(), hdfRowIndex2.val(), reqStatus.pending);
+        })
+        $(document).on('click', ".btnReject2", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange2(hdfRequsitionDetailId2.val(), hdfRowIndex2.val(), reqStatus.reject);
+        })
+        $(document).on('click', ".btnIssue2", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange2(hdfRequsitionDetailId2.val(), hdfRowIndex2.val(), reqStatus.approved);
+        })
+
+        function fnRequisitionStateChange2(id, index, status) {
+            if (id > 0) {
+                var data = JSON.stringify({ reqId: id, status: status })
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/TSSaveRequisitionStatus', data, getToken())).then(function (res, status) {
+                    if (status == "success" && res === true) {
+                        $("#modalRequsitionJobOrderDetails2").modal("toggle").toggle("fast");
+                        hdfRequsitionDetailId2.val('0');
+                        hdfRowIndex2.val("");
+                        removeTableRow("#tblRequsitionInfoForJobOrder tbody", index);
+                        $('.toastrReqSuccess').trigger('click');
+                        setTimeout(function () {
+                        }, 1500);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('requsition')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('otherBRequsition')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableForReceiveJob();
+                }
+            }
+        })
 
         function redirectPage(page) {
             window.location.replace(page);

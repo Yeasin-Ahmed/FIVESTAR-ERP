@@ -71,5 +71,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public string BranchName { get; set; }
         public bool? IsReturn { get; set; }
         public string TransferCode { get; set; }
+        public string DestinationBranch { get; set; }
     }
 }

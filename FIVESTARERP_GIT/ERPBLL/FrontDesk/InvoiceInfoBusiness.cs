@@ -264,7 +264,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             }
             query = string.Format(@"select * from tblInvoiceInfo inv
 left join [ControlPanel].dbo.tblApplicationUsers au on inv.EUserId=au.UserId
-where 1=1{0} and InvoiceType='Sells'", Utility.ParamChecker(param));
+where 1=1{0} and InvoiceType='Sells' order by inv.EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
     }

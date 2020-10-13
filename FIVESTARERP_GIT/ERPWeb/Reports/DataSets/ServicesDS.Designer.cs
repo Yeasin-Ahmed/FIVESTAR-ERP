@@ -5683,6 +5683,12 @@ namespace ERPWeb.Reports.DataSets {
             
             private global::System.Data.DataColumn columnTransferCode;
             
+            private global::System.Data.DataColumn columnDestinationBranch;
+            
+            private global::System.Data.DataColumn columnCourierName;
+            
+            private global::System.Data.DataColumn columnCourierNumber;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public JobTransferDataTable() {
@@ -6030,6 +6036,30 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DestinationBranchColumn {
+                get {
+                    return this.columnDestinationBranch;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CourierNameColumn {
+                get {
+                    return this.columnCourierName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CourierNumberColumn {
+                get {
+                    return this.columnCourierNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -6104,7 +6134,10 @@ namespace ERPWeb.Reports.DataSets {
                         long CUserId, 
                         string CloseUser, 
                         System.DateTime RepairDate, 
-                        string TransferCode) {
+                        string TransferCode, 
+                        string DestinationBranch, 
+                        string CourierName, 
+                        string CourierNumber) {
                 JobTransferRow rowJobTransferRow = ((JobTransferRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         JodOrderId,
@@ -6145,7 +6178,10 @@ namespace ERPWeb.Reports.DataSets {
                         CUserId,
                         CloseUser,
                         RepairDate,
-                        TransferCode};
+                        TransferCode,
+                        DestinationBranch,
+                        CourierName,
+                        CourierNumber};
                 rowJobTransferRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowJobTransferRow);
                 return rowJobTransferRow;
@@ -6207,6 +6243,9 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnCloseUser = base.Columns["CloseUser"];
                 this.columnRepairDate = base.Columns["RepairDate"];
                 this.columnTransferCode = base.Columns["TransferCode"];
+                this.columnDestinationBranch = base.Columns["DestinationBranch"];
+                this.columnCourierName = base.Columns["CourierName"];
+                this.columnCourierNumber = base.Columns["CourierNumber"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6290,6 +6329,12 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnRepairDate);
                 this.columnTransferCode = new global::System.Data.DataColumn("TransferCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTransferCode);
+                this.columnDestinationBranch = new global::System.Data.DataColumn("DestinationBranch", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDestinationBranch);
+                this.columnCourierName = new global::System.Data.DataColumn("CourierName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCourierName);
+                this.columnCourierNumber = new global::System.Data.DataColumn("CourierNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCourierNumber);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6500,6 +6545,12 @@ namespace ERPWeb.Reports.DataSets {
             private global::System.Data.DataColumn columnRepairDate;
             
             private global::System.Data.DataColumn columnTransferCode;
+            
+            private global::System.Data.DataColumn columnDestinationBranch;
+            
+            private global::System.Data.DataColumn columnCourierName;
+            
+            private global::System.Data.DataColumn columnCourierNumber;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -6848,6 +6899,30 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DestinationBranchColumn {
+                get {
+                    return this.columnDestinationBranch;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CourierNameColumn {
+                get {
+                    return this.columnCourierName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CourierNumberColumn {
+                get {
+                    return this.columnCourierNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -6922,7 +6997,10 @@ namespace ERPWeb.Reports.DataSets {
                         long CUserId, 
                         string CloseUser, 
                         System.DateTime RepairDate, 
-                        string TransferCode) {
+                        string TransferCode, 
+                        string DestinationBranch, 
+                        string CourierName, 
+                        string CourierNumber) {
                 JobReturnRow rowJobReturnRow = ((JobReturnRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         JodOrderId,
@@ -6963,7 +7041,10 @@ namespace ERPWeb.Reports.DataSets {
                         CUserId,
                         CloseUser,
                         RepairDate,
-                        TransferCode};
+                        TransferCode,
+                        DestinationBranch,
+                        CourierName,
+                        CourierNumber};
                 rowJobReturnRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowJobReturnRow);
                 return rowJobReturnRow;
@@ -7025,6 +7106,9 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnCloseUser = base.Columns["CloseUser"];
                 this.columnRepairDate = base.Columns["RepairDate"];
                 this.columnTransferCode = base.Columns["TransferCode"];
+                this.columnDestinationBranch = base.Columns["DestinationBranch"];
+                this.columnCourierName = base.Columns["CourierName"];
+                this.columnCourierNumber = base.Columns["CourierNumber"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7108,6 +7192,12 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnRepairDate);
                 this.columnTransferCode = new global::System.Data.DataColumn("TransferCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTransferCode);
+                this.columnDestinationBranch = new global::System.Data.DataColumn("DestinationBranch", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDestinationBranch);
+                this.columnCourierName = new global::System.Data.DataColumn("CourierName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCourierName);
+                this.columnCourierNumber = new global::System.Data.DataColumn("CourierNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCourierNumber);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -15322,6 +15412,54 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DestinationBranch {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobTransfer.DestinationBranchColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DestinationBranch\' in table \'JobTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobTransfer.DestinationBranchColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CourierName {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobTransfer.CourierNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CourierName\' in table \'JobTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobTransfer.CourierNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CourierNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobTransfer.CourierNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CourierNumber\' in table \'JobTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobTransfer.CourierNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsJodOrderIdNull() {
                 return this.IsNull(this.tableJobTransfer.JodOrderIdColumn);
             }
@@ -15786,6 +15924,42 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetTransferCodeNull() {
                 this[this.tableJobTransfer.TransferCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDestinationBranchNull() {
+                return this.IsNull(this.tableJobTransfer.DestinationBranchColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDestinationBranchNull() {
+                this[this.tableJobTransfer.DestinationBranchColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCourierNameNull() {
+                return this.IsNull(this.tableJobTransfer.CourierNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCourierNameNull() {
+                this[this.tableJobTransfer.CourierNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCourierNumberNull() {
+                return this.IsNull(this.tableJobTransfer.CourierNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCourierNumberNull() {
+                this[this.tableJobTransfer.CourierNumberColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -16429,6 +16603,54 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DestinationBranch {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobReturn.DestinationBranchColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DestinationBranch\' in table \'JobReturn\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobReturn.DestinationBranchColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CourierName {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobReturn.CourierNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CourierName\' in table \'JobReturn\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobReturn.CourierNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CourierNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobReturn.CourierNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CourierNumber\' in table \'JobReturn\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobReturn.CourierNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsJodOrderIdNull() {
                 return this.IsNull(this.tableJobReturn.JodOrderIdColumn);
             }
@@ -16893,6 +17115,42 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetTransferCodeNull() {
                 this[this.tableJobReturn.TransferCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDestinationBranchNull() {
+                return this.IsNull(this.tableJobReturn.DestinationBranchColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDestinationBranchNull() {
+                this[this.tableJobReturn.DestinationBranchColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCourierNameNull() {
+                return this.IsNull(this.tableJobReturn.CourierNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCourierNameNull() {
+                this[this.tableJobReturn.CourierNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCourierNumberNull() {
+                return this.IsNull(this.tableJobReturn.CourierNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCourierNumberNull() {
+                this[this.tableJobReturn.CourierNumberColumn] = global::System.Convert.DBNull;
             }
         }
         

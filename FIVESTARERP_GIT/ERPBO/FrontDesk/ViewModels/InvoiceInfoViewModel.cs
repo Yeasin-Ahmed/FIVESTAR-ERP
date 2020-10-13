@@ -35,10 +35,14 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public double Total { get; set; }
+        [StringLength(100)]
         public string Email { get; set; }
+        [StringLength(100)]
         public string Address { get; set; }
         public string WarrentyFor { get; set; }
+        [StringLength(100)]
         public string InvoiceType { get; set; }
+        [StringLength(100)]
         public string UserName { get; set; }
     }
 }

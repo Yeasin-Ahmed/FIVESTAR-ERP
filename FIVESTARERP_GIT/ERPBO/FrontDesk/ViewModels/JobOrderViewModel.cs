@@ -69,9 +69,11 @@ namespace ERPBO.FrontDesk.ViewModels
         public string ApproxBill { get; set; }
         public bool? IsTransfer { get; set; }
         public long? TransferBranchId { get; set; }
+        [StringLength(100)]
         public string BranchName { get; set; }
         public bool? IsReturn { get; set; }
         public string TransferCode { get; set; }
+        public string DestinationBranch { get; set; }
 
     }
 }

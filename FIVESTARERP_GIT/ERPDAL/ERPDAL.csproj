@@ -334,6 +334,10 @@
     <Compile Include="FrontDeskContextMigrations\202010040625137_FrontDesk_Column_InvoiceType.Designer.cs">
       <DependentUpon>202010040625137_FrontDesk_Column_InvoiceType.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202010111055005_FrontDesk_JobTransfer&amp;Return_Column_add.cs" />
+    <Compile Include="FrontDeskContextMigrations\202010111055005_FrontDesk_JobTransfer&amp;Return_Column_add.Designer.cs">
+      <DependentUpon>202010111055005_FrontDesk_JobTransfer&amp;Return_Column_add.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -825,6 +829,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202010040625137_FrontDesk_Column_InvoiceType.resx">
       <DependentUpon>202010040625137_FrontDesk_Column_InvoiceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202010111055005_FrontDesk_JobTransfer&amp;Return_Column_add.resx">
+      <DependentUpon>202010111055005_FrontDesk_JobTransfer&amp;Return_Column_add.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

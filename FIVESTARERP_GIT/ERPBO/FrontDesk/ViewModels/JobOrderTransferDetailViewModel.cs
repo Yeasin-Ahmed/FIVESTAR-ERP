@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +23,15 @@ namespace ERPBO.FrontDesk.ViewModels
         public long? UpUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        [StringLength(100)]
         public string FromBranchName { get; set; }
         public string AccessoriesNames { get; set; }
         public string ModelColor { get; set; }
         public string ModelName { get; set; }
         public string ReceivedBy { get; set; }
+        //
+        public string CourierName { get; set; }
+        public string CourierNumber { get; set; }
+        public string ApproxBill { get; set; }
     }
 }

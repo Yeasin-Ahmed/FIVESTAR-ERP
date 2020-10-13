@@ -34,9 +34,9 @@
                 @Html.Hidden("jobOrderId")
                 <div class="card-body shadow">
                     <div class="row" style="border-bottom:1px solid #cecece">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Search Phone IMEI No" id="txtSearchIMEI" />
+                                <input type="text" class="form-control form-control-sm" placeholder="Search IMEI No" id="txtSearchIMEI" />
                                 <div class="input-group-append" style="cursor:pointer">
                                     <a id="SearchIMEI" href="#" class="input-group-text">
                                         <i class="fas fa-search"></i>
@@ -44,9 +44,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control form-control-sm" placeholder="Search Customer By Mobile No" id="txtSearchCustomer" />
+                                <input type="text" class="form-control form-control-sm" placeholder="Search JobOrder" id="txtSearchJobOrder" />
+                                <div class="input-group-append" style="cursor:pointer">
+                                    <a id="searchJobOrder" href="#" class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search Mobile No" id="txtSearchCustomer" />
                                 <div class="input-group-append" style="cursor:pointer">
                                     <a id="searchCustomer" href="#" class="input-group-text">
                                         <i class="fas fa-search"></i>
@@ -54,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="input-group input-group-sm ">
                                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date" />
                                 <div class="input-group-prepend cursor-pointer remove-date dptJobEntryDate" style="cursor:pointer">
@@ -66,7 +76,7 @@
                         <div class="col-md-1">
                             <button type="button" id="btnCustomer" class="btn btn-sm btn-primary" title="If the Customer is not exist with this Mobile No then please add here"><i class="fas fa-plus"> </i> </button>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <button type="submit" id="btnSubmit" class="btn btn-sm btn-success float-right" title="Submit the form for save"><i class="fas fa-paper-plane"></i> Place Job Order </button>
                         </div>
                     </div>
@@ -287,6 +297,7 @@
         var txtCourierNumber = $("#txtCourierNumber");
         var txtCourierName = $("#txtCourierName");
         var txtApproxBill = $("#txtApproxBill");
+        var txtSearchJobOrder = $("#txtSearchJobOrder");
 
         $(document).ready(function () {
             var date = new Date();
@@ -611,6 +622,52 @@
         }
         //end
 
+        //Get Serch By JobOrder
+        $("#searchJobOrder").click(function (e) {
+            e.preventDefault();
+            if ($.trim(txtSearchJobOrder.val()) !== "") {
+                getJobOrder($.trim(txtSearchJobOrder.val()));
+            }
+        })
+        function getJobOrder(jobOrder) {
+            var data = JSON.stringify({ jobOrder: jobOrder });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByJobOrder', data)).then(function (res, status) {
+                if (status === "success") {
+                    if (res.JodOrderId > 0) {
+                        txtIMEI.val(res.IMEI);
+                        txtReferenceNumber.val(res.ReferenceNumber);
+                        txtIMEI2.val(res.IMEI2);
+                        ddlPhoneTypes.val(res.Type);
+                        ddlPhoneTypes.trigger('change');
+                        ddlModelColor.val(res.ModelColor);
+                        ddlModelColor.trigger('change');
+                        ddlJobOrderType.val(res.JobOrderType);
+                        ddlJobOrderType.trigger('change');
+                        ddlCustomerType.val(res.CustomerType);
+                        ddlCustomerType.trigger('change');
+                        txtRemarks.val(res.Remarks);
+                        if (ddlJobOrderType.val() == "Warrenty") {
+                            dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
+                        }
+                        ddlDescriptions.val(res.DescriptionId);
+                        ddlDescriptions.trigger('change');
+                        txtCustomer.val(res.CustomerName);
+                        txtAddress.val(res.Address);
+                        txtMobileNumber.val(res.MobileNo);
+                        txtCourierName.val(res.CourierName);
+                        txtCourierNumber.val(res.CourierNumber);
+                        txtApproxBill.val(res.ApproxBill);
+
+                    }
+                    else {
+                        bootbox.alert('JobOrder Not Found');
+                    }
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+        //end
 
         //Get Serch By IMEI2
         $("#SearchIMEI").click(function (e) {

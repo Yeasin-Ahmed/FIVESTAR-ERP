@@ -1,53 +1,461 @@
 ﻿
 @{
     ViewBag.Title = "Job Order Transfer";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
+    string tab = Request.QueryString["tab"] != null ? Request.QueryString["tab"].ToString() : "";
 }
-<div class="row">
-    <div class="col-md-12 text-center">
-        <div class="card card-gray shadow">
-            <div class="card-header">
-                <h4>Transfer Job Orders</h4>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header">
-                @Html.AntiForgeryToken()
-                <div class="row text-sm">
-                    <div class="col-md-3">
-                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
-                        <span class="error hide require-branch font-weight-bold">Branch is required !</span>
-                    </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-5">
-                        <button type="submit" id="btnSubmit" class="btn float-right btn-outline-primary"> Transfer <i class="fas fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12 mt-2 text-sm" id="dataContainer" style="overflow-y:scroll">
-                        @{Html.RenderAction("GetJobTransferList", new { @flag = "view" });}
+        <div class="card shadow card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active"  id="custom-tabs-two-jobTransferList-tab" data-toggle="pill" href="#custom-tabs-two-jobTransferList" role="tab" aria-controls="custom-tabs-two-jobTransferList" aria-selected="true">Job Transfer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  id="custom-tabs-two-receiveJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-receiveJobOrderList" role="tab" aria-controls="custom-tabs-two-receiveJobOrderList" aria-selected="true">Receive JobOrder</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link "  id="custom-tabs-two-returnJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-returnJobOrderList" role="tab" aria-controls="custom-tabs-two-returnJobOrderList" aria-selected="true">Return JobOrder</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link"  id="custom-tabs-two-receivedReturnJobList-tab" data-toggle="pill" href="#custom-tabs-two-receivedReturnJobList" role="tab" aria-controls="custom-tabs-two-receivedReturnJobList" aria-selected="false">Receive Return Job</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body shadow">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-two-jobTransferList" role="tabpanel" aria-labelledby="custom-tabs-two-jobTransferList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Transfer Job Orders
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="col-md-3">
+                                                @Html.DropDownList("ddlTransferCondition", (IEnumerable<SelectListItem>)ViewBag.ddlTransferCondition, "--Select Condition--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                                @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-5">
+                                                <button type="submit" id="btnSubmitReturnJob" class="btn float-right btn-outline-success"> Return <i class="fas fa-retweet"></i></button>
+                                                <button type="submit" id="btnSubmitJobTransfer" class="btn float-right btn-outline-primary"> Transfer <i class="fas fa-paper-plane"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2 text-sm" id="dataContainer" style="overflow-y:scroll">
+                                                @*@{Html.RenderAction("GetJobTransferList", new { @flag = "view" });}*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-receiveJobOrderList" role="tabpanel" aria-labelledby="custom-tabs-two-receiveJobOrderList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Receive JobOrder List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">ReceiveCondition</label>
+                                                @Html.DropDownList("ddlReceiveCondition", (IEnumerable<SelectListItem>)ViewBag.ddlReceiveCondition, "Select Condition", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">BranchName</label>
+                                                @Html.DropDownList("ddlBranchName2", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName2, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">TransferCode</label>
+                                                <input type="text" id="txtTransferCode2" class="form-control form-control-sm" placeholder="Search By Code" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">JobCode</label>
+                                                <input type="text" id="txtJobCode2" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">TransferStatus</label>
+                                                @Html.DropDownList("ddlTransferStatus2", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus2, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" name="fromDate2" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate2" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row text-sm">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate2" name="toDate2" />
+                                                    <div class="input-group-prepend remove-date dptToDate2" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm text-sm" id="dataContainer2" style="overflow-y:scroll">
+                                                @*@{Html.RenderAction("ReceiveJobOrder", new { @flag = "view" });}*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-returnJobOrderList" role="tabpanel" aria-labelledby="custom-tabs-two-returnJobOrderList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Return JobOrder List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="col-md-3">
+                                                @Html.DropDownList("ddlBranchName3", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName3, "--Select Branch--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-5">
+                                                @*<button type="submit" id="btnSubmitReturnJob" class="btn float-right btn-outline-primary"> Return <i class="fas fa-retweet"></i></button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2 text-sm" id="dataContainer3" style="overflow-y:scroll">
+                                                @{Html.RenderAction("TransferReceiveJobOrder", new { @flag = "view" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-receivedReturnJobList" role="tabpanel" aria-labelledby="custom-tabs-two-receivedReturnJobList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Receive Return JobOrder
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">RepairBranch</label>
+                                                @Html.DropDownList("ddlBranchName4", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName4, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">TransferCode</label>
+                                                <input type="text" id="txtTransferCode4" class="form-control form-control-sm" placeholder="Search By Code" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">JobCode</label>
+                                                <input type="text" id="txtJobCode4" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">TransferStatus</label>
+                                                @Html.DropDownList("ddlTransferStatus4", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus4, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate4" name="fromDate4" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate4" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate4" name="toDate4" />
+                                                    <div class="input-group-prepend remove-date dptToDate4" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm text-sm" id="dataContainer4" style="overflow-y:scroll">
+                                                @{Html.RenderAction("ReceiveReturnJobOrder", new { @flag = "view" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div>
+    @*<div class="row">
+            <div class="col-md-12 text-center">
+                <div class="card card-gray shadow">
+                    <div class="card-header">
+                        <h4>Transfer Job Orders</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        @Html.AntiForgeryToken()
+                        <div class="row text-sm">
+                            <div class="col-md-3">
+                                @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                                <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                            </div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-5">
+                                <button type="submit" id="btnSubmit" class="btn float-right btn-outline-primary"> Transfer <i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 mt-2 text-sm" id="dataContainer" style="overflow-y:scroll">
+                                @{Html.RenderAction("GetJobTransferList", new { @flag = "view" });}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+
 @section scripts{
     <script type="text/javascript">
         var ddlBranchName = $("#ddlBranchName");
+        var ddlTransferCondition = $("#ddlTransferCondition");
+        var pageNo = 1;
+
+        //Receive JobOrder
+        var ddlBranchName2 = $("#ddlBranchName2");
+        var txtTransferCode2 = $("#txtTransferCode2");
+        var txtJobCode2 = $("#txtJobCode2");
+        var dptFromDate2 = $("#dptFromDate2");
+        var dptToDate2 = $("#dptToDate2");
+        var ddlTransferStatus2 = $("#ddlTransferStatus2");
+        var ddlReceiveCondition = $("#ddlReceiveCondition");
+
+        //Return JobOrder
+        var ddlBranchName3 = $("#ddlBranchName3");
         var count = 0;
+        //Receive Return JobOrder
+        var ddlBranchName4 = $("#ddlBranchName4");
+        var txtTransferCode4 = $("#txtTransferCode4");
+        var txtJobCode4 = $("#txtJobCode4");
+        var dptFromDate4 = $("#dptFromDate4");
+        var dptToDate4 = $("#dptToDate4");
+        var ddlTransferStatus4 = $("#ddlTransferStatus4");
+
+        $(document).ready(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptFromDate2.prop('readonly', true);
+            dptToDate2.prop('readonly', true);
+            dptFromDate4.prop('readonly', true);
+            dptToDate4.prop('readonly', true);
+            dptFromDate2.css("background-color", "#fff");
+            dptToDate2.css("background-color", "#fff");
+            dptFromDate4.css("background-color", "#fff");
+            dptToDate4.css("background-color", "#fff");
+            $('#dptFromDate2').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptToDate2').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptFromDate4').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptToDate4').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+
+            if ('@tab' == "ReceiveReturnJob") {
+                $("#custom-tabs-two-receivedReturnJobList-tab").trigger('click');
+            }
+            if ('@tab' == "ReturnJobOrder") {
+                $("#custom-tabs-two-returnJobOrderList-tab").trigger('click');
+            }
+            if ('@tab' == "ReceiveJobOrder") {
+                $("#custom-tabs-two-receiveJobOrderList-tab").trigger('click');
+            }
+
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate2")) {
+                if (dptToDate2.val() !== '') {
+                    dptToDate2.val('');
+                    LoadDataTableForReceiveJob();
+                }
+            }
+            if ($(this).hasClass("dptFromDate2")) {
+                if (dptFromDate2.val() !== '') {
+                    dptFromDate2.val('');
+                    LoadDataTableForReceiveJob();
+                }
+            }
+            if ($(this).hasClass("dptToDate4")) {
+                if (dptToDate4.val() !== '') {
+                    dptToDate4.val('');
+                    LoadDataTableForReceiveReturnJob();
+                }
+            }
+            if ($(this).hasClass("dptFromDate4")) {
+                if (dptFromDate4.val() !== '') {
+                    dptFromDate4.val('');
+                    LoadDataTableForReceiveReturnJob();
+                }
+            }
+        })
 
         $(document).on('change', 'input[name="allJobOrder"]', function () {
             var isChecked = $('input[name="allJobOrder"]').is(":checked");
@@ -70,15 +478,49 @@
             var allChecked = $(".tblJobOrderTransferList tbody tr").length == count;
             $('input[name="allJobOrder"]').prop("checked", allChecked);
         })
+   
+        function LoadDataTableForTransferJob() {
+            var data = { flag: "search", page: pageNo };
 
-        $("#btnSubmit").click(function (e) {
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobTransferList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $("#ddlTransferCondition").change(function () {
+            $("#dataContainer").empty();
+            if (ddlTransferCondition.val() == "Transfer") {
+                LoadDataTableForTransferJob();
+            }
+            if (ddlTransferCondition.val() == "Return") {
+                LoadDataTableForReturnJob();
+            }
+        })
+
+        $("#ddlBranchName").change(function () {
+            $("#ddlTransferCondition").trigger("change");
+        })
+
+        $("#btnSubmitJobTransfer").click(function (e) {
             e.preventDefault();
             if (ValidateSubmit()) {
                 bootbox.confirm("Are you sure you want to Transfer these Job Orders", function (result) {
                     if (result) {
-                        disable("#btnSubmit");
+                        disable("#btnSubmitJobTransfer");
                         var transferId = TryParseInt(ddlBranchName.val(), 0);
                         var jobOrders = []; jobOrders.length = 0;
+                        var cName = $(".tblJobOrderTransferList tbody tr").children('td').eq('11').children('input').val();
+                        var cNumber = $(".tblJobOrderTransferList tbody tr").children('td').eq('12').children('input').val();
+
                         $.each($(".tblJobOrderTransferList tbody tr"), function (index, item) {
                             var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
                             if (checkBox.is(":checked")) {
@@ -86,9 +528,10 @@
                             }
                         });
                         //console.log("JobOrders");
-                        //console.log(jobOrders);
+                        console.log(jobOrders);
 
-                        var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders });
+                        var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders, cName: cName, cNumber: cNumber });
+                        console.log(data);
                         //return console.log(data);
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobTransfer', data, getToken())).then(function (res, status) {
                             if (res.isSuccess === true && status === "success") {
@@ -103,16 +546,16 @@
                                 setTimeout(function () {
                                     redirectPage('@Url.Action("GetJobTransferList")');
                                 }, 1000);
-                               
+
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
                             }
-                            enable("#btnSubmit");
+                            enable("#btnSubmitJobTransfer");
                         }).fail(function (error) {
                             console.log(error);
                             $('.toastrDefaultError').trigger('click');
-                            enable("#btnSubmit");
+                            enable("#btnSubmitJobTransfer");
                         });
                     }
                 })
@@ -131,6 +574,299 @@
             }
             return isValid;
         }
+
+
+
+
+        //#region ReceiveJobOrder
+        //txtJobCode2.keyup(function () {
+        //    LoadDataTableForReceiveJob();
+        //})
+        //txtTransferCode2.keyup(function () {
+        //    LoadDataTableForReceiveJob();
+        //})
+        //ddlBranchName2.change(function () {
+        //    LoadDataTableForReceiveJob();
+        //})
+        //ddlTransferStatus2.change(function () {
+        //    LoadDataTableForReceiveJob();
+        //})
+        //dptFromDate2.change(function () {
+        //    LoadDataTableForReceiveJob();
+        //})
+        //dptToDate2.change(function () {
+        //    LoadDataTableForReceiveJob();
+        //})
+
+        $("#ddlReceiveCondition").change(function () {
+            $("#dataContainer2").empty();
+            if (ddlReceiveCondition.val() == "ReceiveJob") {
+                LoadDataTableForReceiveJob();
+            }
+            if (ddlReceiveCondition.val() == "Receive ReturnJob") {
+                LoadDataTableForReceiveReturnJob();
+            }
+        })
+        $("#txtJobCode2").keyup(function () {
+            $("#ddlReceiveCondition").trigger("change");
+        })
+        $("#txtTransferCode2").keyup(function () {
+            $("#ddlReceiveCondition").trigger("change");
+        })
+        $("#ddlBranchName2").change(function () {
+            $("#ddlReceiveCondition").trigger("change");
+        })
+        $("#ddlTransferStatus2").change(function () {
+            $("#ddlReceiveCondition").trigger("change");
+        })
+        $("#dptFromDate2").change(function () {
+            $("#ddlReceiveCondition").trigger("change");
+        })
+        $("#dptToDate2").change(function () {
+            $("#ddlReceiveCondition").trigger("change");
+        })
+
+        function LoadDataTableForReceiveJob() {
+            var data = { flag: "receive", branchName: TryParseInt(ddlBranchName2.val(), 0), jobCode: txtJobCode2.val(), transferCode: txtTransferCode2.val(), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), tstatus: ddlTransferStatus2.val(), page:pageNo };
+
+            console.log(data);
+            //return console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/ReceiveJobOrder', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+        $(document).on('click', '.data-item-received', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-received");
+            var jobId = $(this).parent().parent('tr').find('td:eq(3)').html();
+            //alert(jobId);joborderId
+            bootbox.confirm("Are you sure you want to Received This Job", function (result) {
+                if (result) {
+                    receivedJobOrder2(id, jobId);
+                }
+            });
+        })
+
+        function receivedJobOrder2(id, jobId) {
+            var data = JSON.stringify({ transferId: id, jobOrderId: jobId });
+            //return console.log(data);
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateReceiveJob', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobTransferList", new { tab = "ReceiveJobOrder" })');
+                    }, 1000);
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+            });
+        }
+        //#endregion
+
+        ////Return Job Order
+        //ddlBranchName3.change(function () {
+        //    LoadDataTableForReturnJob();
+        //})
+        function LoadDataTableForReturnJob() {
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName.val(), 0), page: pageNo };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/TransferReceiveJobOrder', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        }
+
+        $(document).on('change', 'input[name="allJobOrder2"]', function () {
+            var isChecked = $('input[name="allJobOrder2"]').is(":checked");
+            $('input[name="jobOrderName2"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblTransferReceiveJob tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+
+        $(document).on('change', 'input[name="jobOrderName2"]', function () {
+            count = 0;
+            $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="jobOrderName2"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblTransferReceiveJob tbody tr").length == count;
+            $('input[name="allJobOrder2"]').prop("checked", allChecked);
+        })
+        function ValidateSubmit2() {
+            var isValid = true;
+            if (ddlBranchName.val() === "") {
+                isValid = false;
+                bootbox.alert("Select a Branch");
+            }
+            if (count == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one JobOrder");
+            }
+            return isValid;
+        }
+        $("#btnSubmitReturnJob").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit2()) {
+                bootbox.confirm("Are you sure you want to Return these Job Orders", function (result) {
+                    if (result) {
+                        disable("#btnSubmitReturnJob");
+                        var transferId = TryParseInt(ddlBranchName.val(), 0);
+                        var jobOrders = []; jobOrders.length = 0;
+                        var cName = $(".tblTransferReceiveJob tbody tr").children('td').eq('11').children('input').val();
+                        var cNumber = $(".tblTransferReceiveJob tbody tr").children('td').eq('12').children('input').val();
+                        $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName2"]');
+                            if (checkBox.is(":checked")) {
+                                jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                            }
+                        });
+                        //console.log("JobOrders");
+                        //console.log(jobOrders);
+
+                        var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders, cName: cName, cNumber: cNumber });
+                        //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobReturn', data, getToken())).then(function (res, status) {
+                            if (res.isSuccess === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                var pdfWindow = window.open("", "_blank")
+                                console.log(res.text);
+                                pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
+                                download(res.text, "DeliveryChallan", "application/pdf"); // Download
+                                count = 0;
+                                setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobTransferList")');
+                        }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmitReturnJob");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmitReturnJob");
+                        });
+                    }
+                })
+            }
+        })
+        //Receive Return JobOrder
+        dptFromDate4.change(function () {
+            LoadDataTableForReceiveReturnJob();
+        })
+        dptToDate4.change(function () {
+            LoadDataTableForReceiveReturnJob();
+        })
+
+        txtJobCode4.keyup(function () {
+            LoadDataTableForReceiveReturnJob();
+        })
+        txtTransferCode4.keyup(function () {
+            LoadDataTableForReceiveReturnJob();
+        })
+        ddlBranchName4.change(function () {
+            LoadDataTableForReceiveReturnJob();
+        })
+        ddlTransferStatus4.change(function () {
+            LoadDataTableForReceiveReturnJob();
+        })
+        function LoadDataTableForReceiveReturnJob() {
+            var data = { flag: "search", branchName: TryParseInt(ddlBranchName2.val(), 0), jobCode: txtJobCode2.val(), transferCode: txtTransferCode2.val(), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), tstatus: ddlTransferStatus2.val(), page: pageNo };
+
+            console.log(data);
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/ReceiveReturnJobOrder', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+        }
+        $(document).on('click', '.data-item-received2', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-received2");
+            var jobOrderId = $(this).parent().parent('tr').find('td:eq(3)').html();
+            //alert(jobId);joborderId
+            bootbox.confirm("Are you sure you want to Received This Job", function (result) {
+                if (result) {
+                    receivedJobOrder(id, jobOrderId);
+                }
+            });
+        })
+
+        function receivedJobOrder(id, jobOrderId) {
+            var data = JSON.stringify({ receiveId: id, jobOrderId: jobOrderId });
+            //return console.log(data);
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateReturnJob', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobTransferList",new {tab="ReceiveReturnJob" })');
+                    }, 1000);
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+            });
+        }
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('receiveJob')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableForReceiveJob();
+                }
+                else if ($(this).parent().parents('div').hasClass('returnJob')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableForReturnJob();
+                }
+                else if ($(this).parent().parents('div').hasClass('transferJob')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableForTransferJob();
+                }
+                else if ($(this).parent().parents('div').hasClass('receiveReturnJob')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableForReceiveReturnJob();
+                }
+            }
+        })
+
         function redirectPage(page) {
             window.location.replace(page);
         }

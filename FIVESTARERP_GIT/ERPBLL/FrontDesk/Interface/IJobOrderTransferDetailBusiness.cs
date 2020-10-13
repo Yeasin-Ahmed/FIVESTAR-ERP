@@ -16,6 +16,6 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<JobOrderTransferDetailDTO> GetReceiveJob(long orgId, long branchId, long? branchName, string jobCode, string transferCode, string fromDate, string toDate, string tstatus);
         bool UpdateReceiveJobOrder(long transferId, long jobOrderId, long userId, long orgId, long branchId);
         IEnumerable<JobOrderDTO> GetTransferDeliveryChalan(string transferCode, long orgId);
-        ExecutionStateWithText SaveJobOrderTransferWithReport(long transferId, long[] jobOrders, long userId, long orgId, long branchId);
+        ExecutionStateWithText SaveJobOrderTransferWithReport(long transferId, long[] jobOrders, long userId, long orgId, long branchId,string cName,string cNumber);
     }
 }

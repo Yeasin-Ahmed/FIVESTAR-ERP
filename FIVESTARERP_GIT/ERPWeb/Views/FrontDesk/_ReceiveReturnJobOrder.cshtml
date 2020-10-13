@@ -55,7 +55,7 @@
                     <td class="text-center action">
                         @if (rec.TransferStatus == "Pending")
                         {
-                            <a class="btn btn-sm btn-outline-success  data-item-received" title="Receive Job Order" data-item-received="@rec.JobOrderReturnDetailId"><i class="fas fa-download"></i></a>
+                            <a class="btn btn-sm btn-outline-success  data-item-received2" title="Receive Job Order" data-item-received2="@rec.JobOrderReturnDetailId"><i class="fas fa-download"></i></a>
                         }
                     </td>
 
@@ -72,6 +72,6 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12">
+<div class="col-md-12 receiveReturnJob">
     @Html.Partial("_Pagination", pagerData)
 </div>
