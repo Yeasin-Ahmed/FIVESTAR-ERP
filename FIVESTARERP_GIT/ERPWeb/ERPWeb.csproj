@@ -841,6 +841,7 @@
     <Content Include="Reports\ServiceRpt\FrontDesk\rptReceivedReturnJobOrderReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition - Copy.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">
