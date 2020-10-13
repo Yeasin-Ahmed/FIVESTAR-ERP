@@ -23,7 +23,7 @@
     <div class="col-md-12">
         <div class="card card-dark">
             <div class="card-header">
-                <a href="/ControlPanel/GetOrganizations" class="float-left" title="Back To List">
+                <a href="/ControlPanel/OrgConfiguration" class="float-left" title="Back To List">
                     <i class="fa fa-arrow-alt-circle-left fa-2x"></i>
                 </a>
                 <h4 class="text-center">@ViewBag.PageTitle</h4>
@@ -183,12 +183,12 @@
                 formData.append("OrgImage", orgLogo);
                 formData.append("ReportImage", reportLogo);
                 $.when(postReqWithFile(dataType.json, type.post, '/ControlPanel/SaveOrganization', formData, getToken())).then(function (res,status) {
-                    console.log(res);
-                    console.log(status);
+                    consoleLog(res);
+                    consoleLog(status);
                     if (res === true && status ==='success') {
                         $('.toastrDefaultSuccess').trigger('click');
                         setTimeout(function () {
-                            redirectPage('@Url.Action("GetOrganizations")');
+                            redirectPage('@Url.Action("OrgConfiguration")');
                         }, 1000);
                     }
                 })

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.PackagingLineViewModel>
+@{
+    int sl = 0;
+    string badge = string.Empty;
+    string status = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg tblPackagingLine" id="tblPackagingLine">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Packaging Line</th>
+                    <th class="hide"></th>
+                    <th>Floor</th>
+                    <th class="hide">Status</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Update User</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.IsActive ? "badge bg-success" : "badge bg-danger";
+                    status = item.IsActive ? "Active" : "Inactive";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.PackagingLineId</td>
+                        <td>@item.PackagingLineName</td>
+                        <td class="hide">@item.ProductionLineId</td>
+                        <td class="text-center">@item.ProductionLineName</td>
+                        <td class="text-center hide" data-val="@item.IsActive">
+                            <span class="@badge">@status</span>
+                        </td>
+                        <td class="text-center">@item.Remarks</td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.UpdateUser</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-warning btn-sm data-packaging-edit" data-packaging-edit="@item.PackagingLineId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="9">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -93,6 +93,17 @@
             }
         })
 
+        $(document).on("change", 'input[type="checkbox"]', function () {
+            if ($(this).is(":checked")) {
+                //alert("Checked");
+                $(this).parent().parents('li').addClass("done");
+            }
+            else {
+                //alert("Not Checked");
+                $(this).parent().parents('li').removeClass("done");
+            }
+        })
+
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
             if (TryParseInt(ddlOrganization.val(), 0) > 0) {

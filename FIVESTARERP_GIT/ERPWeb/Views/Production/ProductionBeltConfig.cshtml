@@ -1,0 +1,1023 @@
+﻿
+@{
+    ViewBag.Title = "Production Belt Config";
+}
+
+<div class="row text-sm">
+    @Html.AntiForgeryToken()
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-floor-tab" data-toggle="pill" href="#custom-tabs-one-floor" role="tab" aria-controls="custom-tabs-one-floor" aria-selected="true">Floor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-assembly-tab" data-toggle="pill" href="#custom-tabs-two-assembly" role="tab" aria-controls="custom-tabs-two-assembly" aria-selected="true">Assembly</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-qc-tab" data-toggle="pill" href="#custom-tabs-three-qc" role="tab" aria-controls="custom-tabs-three-qc" aria-selected="false">Quality Control</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-repair-tab" data-toggle="pill" href="#custom-tabs-four-repair" role="tab" aria-controls="custom-tabs-four-repair" aria-selected="false">Repair Line</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-five-packaging-tab" data-toggle="pill" href="#custom-tabs-five-packaging" role="tab" aria-controls="custom-tabs-five-packaging" aria-selected="false">Packaging Line</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-floor" role="tabpanel" aria-labelledby="custom-tabs-one-floor">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Floor
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchFloor" id="searchByFloor" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblfloor tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewFloor"><i class="fa fa-plus"></i> Create Floor</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "floor" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-assembly" role="tabpanel" aria-labelledby="custom-tabs-two-assembly">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Assembly
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchAssembly" id="searchByAssembly" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblAssembly tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewAssembly"><i class="fa fa-plus"></i> Create Assembly</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "assembly" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-three-qc" role="tabpanel" aria-labelledby="custom-tabs-three-qc">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Quality Control
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchQC" id="searchByQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblQCLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewQC"><i class="fa fa-plus"></i> Create QC</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "qc" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-four-repair" role="tabpanel" aria-labelledby="custom-tabs-four-repair">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Repair Line
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchRepair" id="searchByRepair" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblRepairLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewRepair"><i class="fa fa-plus"></i> Create Repair Line</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "repair" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-five-packaging" role="tabpanel" aria-labelledby="custom-tabs-five-packaging">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Packaging Line
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchPackaging" id="searchByPackaging" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblPackagingLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewPackaging"><i class="fa fa-plus"></i> Create Packaging Line</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "packaging" });}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalLine" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadFloor">Add New Production Floor</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmFloor">
+                    <input type="hidden" name="Id" id="hdfLineId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtLineNumber" class="control-label font-weight-bold">Floor</label>
+                            <input type="text" name="lineNumber" value="" id="txtLineNumber" class="form-control form-control-sm" />
+                            <span class="error hide required-lineNumber font-weight-bold">Input Floor!</span>
+                            <span class="error hide duplicate-lineNumber font-weight-bold">Already Floor Number Exist!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtIncharge" class="control-label font-weight-bold">InCharge Name</label>
+                            <input type="text" name="incharge" value="" id="txtIncharge" class="form-control form-control-sm" />
+                            <span class="error hide required-incharge font-weight-bold">Input Incharge Name!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarksFloor" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksFloor" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label style="visibility:hidden">Is Active</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatusFloor" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitFloor"><i class="far fa-save"></i> <span id="spanSaveTextFloor"> Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAssembly" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadAssembly">Add New Assembly Line</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAssembly">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" id="hdfAssemblyId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlLineNumberAssembly" class="control-label font-weight-bold">Floor</label>
+                            @Html.DropDownList("ddlLineNumberAssembly", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-productionLine font-weight-bold">Production Line is required!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtAssemblyLineName" class="control-label font-weight-bold">Assembly Line Name</label>
+                            <input type="text" value="" id="txtAssemblyLineName" class="form-control form-control-sm" />
+                            <span class="error hide required-assemblyLineName font-weight-bold">Input Assembly Line Name!</span>
+                            <span class="error hide duplicate-assemblyLineName font-weight-bold">Duplicate Assembly!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarksAssembly" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksAssembly" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="chkStatestatusAssembly" class="control-label font-weight-bold" style="visibility:hidden">Is Active?</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatusAssembly" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitAssembly"><i class="far fa-save"></i> <span id="spanSaveTextAssembly">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalQC" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadQC">Add New QC Line</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmQC">
+                    <input type="hidden" name="Id" id="hdfQCId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlLineNumberQC" class="control-label font-weight-bold">Floor</label>
+                            @Html.DropDownList("ddlLineNumberQC", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-productionLine font-weight-bold">Production Line is required!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtQCName" class="control-label font-weight-bold">QC Name</label>
+                            <input type="text" value="" id="txtQCName" class="form-control form-control-sm" />
+                            <span class="error hide required-qcName font-weight-bold">Input QC Line Name!</span>
+                            <span class="error hide duplicate-qcName font-weight-bold">Duplicate QC!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarksQC" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksQC" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="chkStatestatusQC" class="control-label font-weight-bold" style="visibility:hidden">Is Active?</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatusQC" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitQC"><i class="far fa-save"></i> <span id="spanSaveTextQC">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRl" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadRepair">Add New Repair Line</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmWarehouse">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Id" id="hdfRepairLineId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlLineNumberRepair" class="control-label font-weight-bold">Floor</label>
+                            @Html.DropDownList("ddlLineNumberRepair", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-productionLine font-weight-bold">Production Line is required!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRepairLineName" class="control-label font-weight-bold">Repair Line Name</label>
+                            <input type="text" value="" id="txtRepairLineName" class="form-control form-control-sm" />
+                            <span class="error hide required-rlName font-weight-bold">Input Repair Line Name!</span>
+                            <span class="error hide duplicate-rlName font-weight-bold">Duplicate Repair line!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarksRepair" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksRepair" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="chkStatestatusRepair" class="control-label font-weight-bold" style="visibility:hidden">Is Active?</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatusRepair" /> <b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success btn-flat
+ float-right" id="btnSubmitRepair">
+                    <i class="far fa-save"></i> <span id="spanSaveTextRepair">Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPl" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadPackaging">Add New Packaging Line</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmPackaging">
+                    <input type="hidden" name="Id" id="hdfPackagingLineId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlLineNumberPackaging" class="control-label font-weight-bold">Floor</label>
+                            @Html.DropDownList("ddlLineNumberPackaging", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-productionLine font-weight-bold">Production Line is required!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtPackagingLineName" class="control-label font-weight-bold">Packaging Line Name</label>
+                            <input type="text" value="" id="txtPackagingLineName" class="form-control form-control-sm" />
+                            <span class="error hide required-plName font-weight-bold">Input Packaging Line Name!</span>
+                            <span class="error hide duplicate-plName font-weight-bold">Duplicate Packaging line!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarksPackaging" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="chkStatestatus" class="control-label font-weight-bold" style="visibility:hidden">Is Active?</label>
+                            <div class="form-control form-control-sm">
+                                <input type="checkbox" id="chkStatestatusPackaging"/><b>Is Active?</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success float-right" id="btnSubmitPackaging"><i class="far fa-save"></i> <span id="spanSaveTextPackaging">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        // Floor
+        var hdfLineId = $("#hdfLineId");
+        var txtLineNumber = $("#txtLineNumber");
+        var txtIncharge = $("#txtIncharge");
+        var chkStatestatusFloor = $("#chkStatestatusFloor");
+        var txtRemarksFloor = $("#txtRemarksFloor");
+
+        // Assembly
+        var ddlLineNumberAssembly = $("#ddlLineNumberAssembly");
+        var txtAssemblyLineName = $("#txtAssemblyLineName");
+        var txtRemarksAssembly = $("#txtRemarksAssembly");
+        var chkStatestatusAssembly = $("#chkStatestatusAssembly");
+        var hdfAssemblyId = $("#hdfAssemblyId");
+
+        // QC
+        var ddlLineNumberQC = $("#ddlLineNumberQC");
+        var txtQCName = $("#txtQCName");
+        var txtRemarksQC = $("#txtRemarksQC");
+        var chkStatestatusQC = $("#chkStatestatusQC");
+        var hdfQCId = $("#hdfQCId");
+
+        // Repair
+        var ddlLineNumberRepair = $("#ddlLineNumberRepair");
+        var txtRepairLineName = $("#txtRepairLineName");
+        var txtRemarksRepair = $("#txtRemarksRepair");
+        var chkStatestatusRepair = $("#chkStatestatusRepair");
+        var hdfRepairLineId = $("#hdfRepairLineId");
+
+        // Packaging
+        var ddlLineNumberPackaging = $("#ddlLineNumberPackaging");
+        var txtPackagingLineName = $("#txtPackagingLineName");
+        var txtRemarksPackaging = $("#txtRemarksPackaging");
+        var chkStatestatusPackaging = $("#chkStatestatusPackaging");
+        var hdfPackagingLineId = $("#hdfPackagingLineId");
+
+        $(document).ready(function () {
+            //$('#tblLineData').DataTable({
+            //    "paging": true,
+            //    "lengthChange": false,
+            //    "searching": true,
+            //    "ordering": true,
+            //    "info": false,
+            //    "autoWidth": false,
+            //    "pageLength": 10,
+            //    "language": {
+            //        searchPlaceholder: "Search By Anything",
+            //        search: ""
+            //    }
+            //});
+            //$('.dataTables_filter input[type="search"]').css(
+            //    { 'width': '350px', 'display': 'inline-block' }
+            //);
+        })
+
+        // Floor
+        function OpenModalFloor() {
+            $("#spanModalHeadFloor").text('Add New Production Line');
+            $("#spanSaveTextFloor").text('Save');
+            $("#modalLine").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewFloor").click(function (e) {
+            e.preventDefault();
+            OpenModalFloor();
+            clearCtrlFloor();
+        })
+
+        function validateFloorForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtLineNumber.val()) == "") {
+                $(".required-lineNumber").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfLineId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, lineNumber: txtLineNumber.val().trim() }), '/Common/IsDuplicateLineNumber', getToken()) == true) {
+                    $(".duplicate-lineNumber").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(txtIncharge.val()) == "") {
+                $(".required-incharge").removeClass("hide");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        $("#btnSubmitFloor").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateFloorForm() == true) {
+                var data = JSON.stringify({
+                    LineId: TryParseInt(hdfLineId.val(), 0), LineNumber: $.trim(txtLineNumber.val()), LineIncharge: txtIncharge.val(), Remarks: txtRemarksFloor.val(),
+                    IsActive: chkStatestatusFloor.is(":checked")
+                });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveProductionLine', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        location.reload();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitFloor");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitFloor");
+                });
+            }
+
+        })
+
+        $(document).on("click", "a.data-floor-edit", function (e) {
+            e.preventDefault()
+            clearCtrlFloor();
+            OpenModalFloor()
+
+            $("#spanModalHeadFloor").text('Update Production Floor');
+            $("#spanSaveTextFloor").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').attr("data-val");
+            var td5 = row.find('td:eq(5)').html();
+
+            hdfLineId.val(td1);
+            txtLineNumber.val(td2);
+            txtIncharge.val(td3);
+            chkStatestatusFloor.prop("checked", false);
+            if (td4 === 'Active') {
+                chkStatestatusFloor.prop("checked", true);
+            }
+            txtRemarksFloor.val(td5);
+        })
+
+        function clearCtrlFloor() {
+            hdfLineId.val('0');
+            txtLineNumber.val('');
+            txtIncharge.val('');
+            chkStatestatusFloor.prop("checked", false);
+            txtRemarksFloor.val('');
+        }
+
+        //Assembly
+        function OpenModalAssembly() {
+            $("#spanModalHeadAssembly").text('Create Assembly Line');
+            $("#spanSaveTextAssembly").text('Save');
+            $("#modalAssembly").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewAssembly").click(function (e) {
+            e.preventDefault();
+            OpenModalAssembly();
+            clearCtrlAssembly();
+        })
+
+        function clearCtrlAssembly() {
+            hdfAssemblyId.val("0");
+            ddlLineNumberAssembly.val('');
+            txtAssemblyLineName.val('');
+            txtRemarksAssembly.val('');
+            chkStatestatusAssembly.prop('checked', false);
+        }
+
+        function validateFormAssembly() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($.trim(ddlLineNumberAssembly.val()) === "") {
+                $(".required-productionLine").removeClass('hide');
+                isValid = false;
+            }
+            if (txtAssemblyLineName.val() === "") {
+                $(".required-assemblyLineName").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                var lineId = $.trim(ddlLineNumberAssembly.val()) === "" ? 0 : TryParseInt(ddlLineNumberAssembly.val(), 0);
+                var data = JSON.stringify({ lineId: lineId, id: TryParseInt(hdfAssemblyId.val(), 0), assemblyName: $.trim(txtAssemblyLineName.val()) });
+
+                if (ajaxBooleanChecker(data, '/Common/IsDuplicateAssemblyInLine', getToken()) === true) {
+                    $('.duplicate-assemblyLineName').removeClass('hide');
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".data-assembly-edit", function (e) {
+            e.preventDefault();
+            var tds = $(this).parent().parents('tr').children('td');
+            var td1 = tds.eq(1).html();
+            var td2 = tds.eq(2).html();
+            var td3 = tds.eq(3).html();
+            var td4 = tds.eq(5).attr("data-val");
+            var td5 = tds.eq(6).html();
+
+            OpenModalAssembly();
+            clearCtrlAssembly();
+            $("#spanModalHeadAssembly").text('Update Assembly Line');
+            hdfAssemblyId.val(td1);
+            txtAssemblyLineName.val(td2);
+            ddlLineNumberAssembly.val(td3);
+            if (td4 === "True") {
+                chkStatestatusAssembly.prop("checked", true);
+            }
+            txtRemarksAssembly.val(td5);
+        })
+
+        $("#btnSubmitAssembly").click(function (e) {
+            e.preventDefault();
+            if (validateFormAssembly()) {
+                disable("#btnSubmitAssembly");
+                var data = JSON.stringify({ AssemblyLineId: TryParseInt(hdfAssemblyId.val(), 0), AssemblyLineName: $.trim(txtAssemblyLineName.val()), ProductionLineId: ddlLineNumberAssembly.val(), IsActive: chkStatestatusAssembly.is(":checked"), Remarks: txtRemarksAssembly.val() });
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveAssemblyLine', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        location.reload();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitAssembly");
+                }).fail(function (error) {
+                    console.log(error);
+                    enable("#btnSubmitAssembly");
+                })
+            }
+        })
+
+        // Quality Control
+        function OpenModalQC() {
+            $("#spanModalHeadQC").text('Create QC Line');
+            $("#spanSaveTextQC").text('Save');
+            $("#modalQC").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewQC").click(function (e) {
+            e.preventDefault();
+            OpenModalQC();
+            clearCtrlQC();
+        })
+
+        function clearCtrlQC() {
+            hdfQCId.val("0");
+            ddlLineNumberQC.val('');
+            txtQCName.val('');
+            txtRemarksQC.val('');
+            chkStatestatusQC.prop('checked', false);
+        }
+
+        function validateQCForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($.trim(ddlLineNumberQC.val()) === "") {
+                $(".required-productionLine").removeClass('hide');
+                isValid = false;
+            }
+            if (txtQCName.val() === "") {
+                $(".required-qcName").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                var lineId = $.trim(ddlLineNumberQC.val()) === "" ? 0 : TryParseInt(ddlLineNumberQC.val(), 0);
+                var data = JSON.stringify({ lineId: lineId, id: TryParseInt(hdfQCId.val(), 0), qcName: $.trim(txtQCName.val()) });
+
+                if (ajaxBooleanChecker(data, '/Common/IsDuplicateQCName', getToken()) === true) {
+                    $('.duplicate-qcName').removeClass('hide');
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".data-qc-edit", function (e) {
+            e.preventDefault();
+            var tds = $(this).parent().parents('tr').children('td');
+            var td1 = tds.eq(1).html();
+            var td2 = tds.eq(2).html();
+            var td3 = tds.eq(3).html();
+            var td4 = tds.eq(5).attr("data-val");
+            var td5 = tds.eq(6).html();
+
+            OpenModalQC();
+            clearCtrlQC();
+            $("#spanModalHeadQC").text('Update QC Line');
+            hdfQCId.val(td1);
+            txtQCName.val(td2);
+            ddlLineNumberQC.val(td3);
+            if (td4 === "True") {
+                chkStatestatusQC.prop("checked", true);
+            }
+            txtRemarksQC.val(td5);
+        })
+
+        $("#btnSubmitQC").click(function (e) {
+            e.preventDefault();
+            if (validateQCForm()) {
+                disable("#btnSubmitQC");
+                var data = JSON.stringify({ QCId: TryParseInt(hdfQCId.val(), 0), QCName: $.trim(txtQCName.val()), ProductionLineId: ddlLineNumberQC.val(), IsActive: chkStatestatusQC.is(":checked"), Remarks: txtRemarksQC.val() });
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQualityControl', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        location.reload();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitQC");
+                }).fail(function (error) {
+                    console.log(error);
+                    enable("#btnSubmitQC");
+                })
+            }
+        })
+
+        // Repair
+        function OpenModalRepair() {
+            $("#spanModalHeadRepair").text('Add Repair Line');
+            $("#spanSaveTextRepair").text('Save');
+            $("#modalRl").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewRepair").click(function (e) {
+            e.preventDefault();
+            OpenModalRepair();
+            clearCtrlRepair();
+        })
+
+        function clearCtrlRepair() {
+            hdfRepairLineId.val("0");
+            ddlLineNumberRepair.val('');
+            txtRepairLineName.val('');
+            txtRemarksRepair.val('');
+            chkStatestatusRepair.prop('checked', false);
+        }
+
+        function validateRepairForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($.trim(ddlLineNumberRepair.val()) === "") {
+                $(".required-productionLine").removeClass('hide');
+                isValid = false;
+            }
+            if (txtRepairLineName.val() === "") {
+                $(".required-rlName").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                var lineId = $.trim(ddlLineNumberRepair.val()) === "" ? 0 : TryParseInt(ddlLineNumberRepair.val(), 0);
+                var data = JSON.stringify({ lineId: lineId, id: TryParseInt(hdfRepairLineId.val(), 0), rlName: $.trim(txtRepairLineName.val()) });
+
+                if (ajaxBooleanChecker(data, '/Common/IsDuplicateRepairName', getToken()) === true) {
+                    $('.duplicate-rlName').removeClass('hide');
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".data-repair-edit", function (e) {
+            e.preventDefault();
+            var tds = $(this).parent().parents('tr').children('td');
+            var td1 = tds.eq(1).html();
+            var td2 = tds.eq(2).html();
+            var td3 = tds.eq(3).html();
+            var td4 = tds.eq(5).attr("data-val");
+            var td5 = tds.eq(6).html();
+
+            OpenModalRepair();
+            clearCtrlRepair();
+            $("#spanModalHeadRepair").text('Update Repair Line');
+            hdfRepairLineId.val(td1);
+            txtRepairLineName.val(td2);
+            ddlLineNumberRepair.val(td3);
+            if (td4 === "True") {
+                chkStatestatusRepair.prop("checked", true);
+            }
+            txtRemarksRepair.val(td5);
+        })
+
+        $("#btnSubmitRepair").click(function (e) {
+            e.preventDefault();
+            if (validateRepairForm()) {
+                disable("#btnSubmitRepair");
+                var data = JSON.stringify({ RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), RepairLineName: $.trim(txtRepairLineName.val()), ProductionLineId: ddlLineNumberRepair.val(), IsActive: chkStatestatusRepair.is(":checked"), Remarks: txtRemarksRepair.val() });
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairLine', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res === true) {
+
+                        toastrSuccessAlert(execuStatus.successSave);
+                        location.reload();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitRepair");
+                }).fail(function (error) {
+                    console.log(error);
+                })
+                enable("#btnSubmitRepair");
+            }
+        })
+
+        // Packaging
+        function OpenModalPackaging() {
+            $("#spanModalHeadPackaging").text('Add Packaging Line');
+            $("#spanSaveTextPackaging").text('Save');
+            $("#modalPl").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewPackaging").click(function (e) {
+            e.preventDefault();
+            OpenModalPackaging();
+            clearCtrlPackaging();
+        })
+
+        function clearCtrlPackaging() {
+            hdfPackagingLineId.val("0");
+            ddlLineNumberPackaging.val('');
+            txtPackagingLineName.val('');
+            txtRemarksPackaging.val('');
+            chkStatestatusPackaging.prop('checked', false);
+        }
+
+        function validatePackagingForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if ($.trim(ddlLineNumberPackaging.val()) === "") {
+                $(".required-productionLine").removeClass('hide');
+                isValid = false;
+            }
+            if (txtPackagingLineName.val() === "") {
+                $(".required-plName").removeClass('hide');
+                isValid = false;
+            }
+            else {
+                var lineId = $.trim(ddlLineNumberPackaging.val()) === "" ? 0 : TryParseInt(ddlLineNumberPackaging.val(), 0);
+                var data = JSON.stringify({ lineId: lineId, id: TryParseInt(hdfPackagingLineId.val(), 0), plName: $.trim(txtPackagingLineName.val()) });
+
+                if (ajaxBooleanChecker(data, '/Common/IsDuplicatePackagingLineName', getToken()) === true) {
+                    $('.duplicate-plName').removeClass('hide');
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $(document).on('click', ".data-packaging-edit", function (e) {
+            e.preventDefault();
+            var tds = $(this).parent().parents('tr').children('td');
+            var td1 = tds.eq(1).html();
+            var td2 = tds.eq(2).html();
+            var td3 = tds.eq(3).html();
+            var td4 = tds.eq(5).attr("data-val");
+            var td5 = tds.eq(6).html();
+
+            OpenModalPackaging();
+            clearCtrlPackaging();
+            $("#spanModalHeadPackaging").text("Update Packaging Line");
+            $("#spanSaveTextPackaging").text("Update");
+            hdfPackagingLineId.val(td1);
+            txtPackagingLineName.val(td2);
+            ddlLineNumberPackaging.val(td3);
+            if (td4 === "True") {
+                chkStatestatusPackaging.prop("checked", true);
+            }
+            txtRemarksPackaging.val(td5);
+        })
+
+        $("#btnSubmitPackaging").click(function (e) {
+            e.preventDefault();
+            if (validatePackagingForm()) {
+                disable("#btnSubmitPackaging");
+                var data = JSON.stringify({ PackagingLineId: TryParseInt(hdfPackagingLineId.val(), 0), PackagingLineName: txtPackagingLineName.val(), ProductionLineId: ddlLineNumberPackaging.val(), IsActive: chkStatestatusPackaging.is(":checked"), Remarks: txtRemarksPackaging.val() });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SavePackagingLines', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res === true) {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        location.reload();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitPackaging");
+                }).fail(function (error) {
+                    console.log(error);
+                    enable("#btnSubmitPackaging");
+                })
+            }
+        })
+
+    </script>
+}
+
+

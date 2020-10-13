@@ -88,8 +88,8 @@
         })
 
         function loadMenu() {
-            var data = JSON.stringify({ flag: "load", roleId: hdfRoleId.val(), orgId: ddlOrganizationName.val() });
-            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserRoleAuthorization', data)).then(function (res, status) {
+            var data = JSON.stringify({ flag: "roleMenus", roleId: hdfRoleId.val(), orgId: ddlOrganizationName.val() });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/AppUserConfiguration', data)).then(function (res, status) {
                 if (status === 'success') {
                     console.log(res);
                     SetUserMenuUI(res);

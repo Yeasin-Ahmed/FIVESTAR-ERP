@@ -231,8 +231,8 @@
         }
 
         function loadMenu() {
-            var data = JSON.stringify({ flag: "load", userId: hdfUserId.val(), orgId: '@User.OrgId' });
-            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserCustomAuthorization', data)).then(function (res, status) {
+            var data = JSON.stringify({ flag: "userMenus", userId: hdfUserId.val(), orgId: '@User.OrgId' });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/ClientUserConfiguration', data)).then(function (res, status) {
                 if (status === 'success') {
                     console.log(res);
                     SetUserMenuUI(res);
@@ -327,8 +327,8 @@
         })
 
         function loadMenuByRole(orgId, roleId) {
-            var data = JSON.stringify({ flag: "load", roleId: roleId, orgId: orgId });
-            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/SetUserRoleAuthorization', data)).then(function (res, status) {
+            var data = JSON.stringify({ flag: "roleMenus", roleId: roleId, orgId: orgId });
+            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/ControlPanel/ClientUserConfiguration', data)).then(function (res, status) {
                 if (status === 'success') {
                     console.log(res);
                     SetUserMenuUI(res);
