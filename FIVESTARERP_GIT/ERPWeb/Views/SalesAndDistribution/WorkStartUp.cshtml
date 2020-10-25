@@ -1,0 +1,685 @@
+﻿
+@{
+    ViewBag.Title = "Sales & Distribution Work Startup";
+}
+
+<div class="row text-sm" style="margin-top:-20px">
+    @Html.AntiForgeryToken()
+    <div class="col-md-12">
+        <div class="card card-navy shadow card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs text-bold" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-dealer-tab" data-toggle="pill" href="#custom-tabs-one-dealer" role="tab" aria-controls="custom-tabs-one-dealer" aria-selected="true">Dealer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-category-tab" data-toggle="pill" href="#custom-tabs-two-category" role="tab" aria-controls="custom-tabs-two-category" aria-selected="true">Category</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-three-qc-tab" data-toggle="pill" href="#custom-tabs-three-qc" role="tab" aria-controls="custom-tabs-three-qc" aria-selected="false">Quality Control</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-four-repair-tab" data-toggle="pill" href="#custom-tabs-four-repair" role="tab" aria-controls="custom-tabs-four-repair" aria-selected="false">Repair Line</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-five-packaging-tab" data-toggle="pill" href="#custom-tabs-five-packaging" role="tab" aria-controls="custom-tabs-five-packaging" aria-selected="false">Packaging Line</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-dealer" role="tabpanel" aria-labelledby="custom-tabs-one-dealer">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Dealer
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchDealer" id="searchByDealer" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDealers tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewDealer"><i class="fa fa-plus"></i> Create Dealer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-category" role="tabpanel" aria-labelledby="custom-tabs-two-category">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Category
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchCategory" id="searchByCategory" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblCategory tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewCategory"><i class="fa fa-plus"></i> Create Category</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-three-qc" role="tabpanel" aria-labelledby="custom-tabs-three-qc">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Quality Control
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchQC" id="searchByQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblQCLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewQC"><i class="fa fa-plus"></i> Create QC</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-four-repair" role="tabpanel" aria-labelledby="custom-tabs-four-repair">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Repair Line
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchRepair" id="searchByRepair" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblRepairLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewRepair"><i class="fa fa-plus"></i> Create Repair Line</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-five-packaging" role="tabpanel" aria-labelledby="custom-tabs-five-packaging">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Packaging Line
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchPackaging" id="searchByPackaging" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblPackagingLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewPackaging"><i class="fa fa-plus"></i> Create Packaging Line</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalDealer" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDealer">Add New Dealer</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmDealer">
+                        <input type="hidden" name="Id" id="hdfDealerId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtDealerName" class="control-label font-weight-bold">
+                                    Dealer
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkStatestatus" id="chkStatestatus" />
+                                        <label for="chkStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtDealerName" value="" id="txtDealerName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-dealerName font-weight-bold">Input Dealer Name!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtAddress" class="control-label font-weight-bold">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-home"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtAddress" value="" id="txtAddress" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-address font-weight-bold">Input Adderess!</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtTelephone" class="control-label font-weight-bold">Telephone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-phone"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTelephone" value="" id="txtTelephone" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtMobile" class="control-label font-weight-bold">Moblie</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtMobile" value="" id="txtMobile" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtEmail" class="control-label font-weight-bold">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtEmail" value="" id="txtEmail" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtContactPersonName" class="control-label font-weight-bold">Contact_Person</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-shield"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtContactPersonName" value="" id="txtContactPersonName" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtContactPersonMobile" class="control-label font-weight-bold">Contact_Mobile</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtContactPersonMobile" value="" id="txtContactPersonMobile" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRemarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitDealer"><i class="far fa-save"></i> <span id="spanSaveTextDealer"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCategory" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadCategory">Add New Category</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmDealer">
+                        <input type="hidden" name="Id" id="hdfCategoryId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtCategoryName" class="control-label font-weight-bold">
+                                    Category 
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkCategoryStatestatus" id="chkCategoryStatestatus" />
+                                        <label for="chkCategoryStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-list-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtCategoryName" value="" id="txtCategoryName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-category font-weight-bold">Input Category!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtCategoryRemarks" value="" id="txtCategoryRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitCategory"><i class="far fa-save"></i> <span id="spanSaveTextCategory"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        // Dealer
+        var hdfDealerId = $("#hdfDealerId");
+        var txtDealerName = $("#txtDealerName");
+        var txtAddress = $("#txtAddress");
+        var txtTelephone = $("#txtTelephone");
+        var txtMobile = $("#txtMobile");
+        var txtEmail = $("#txtEmail");
+        var txtContactPersonName = $("#txtContactPersonName");
+        var txtContactPersonMobile = $("#txtContactPersonMobile");
+        var txtRemarks = $("#txtRemarks");
+        var chkStatestatus = $("#chkStatestatus");
+
+        // Category
+        var hdfCategoryId = $("#hdfCategoryId");
+        var chkCategoryStatestatus = $("#chkCategoryStatestatus");
+        var txtCategoryName = $("#txtCategoryName");
+        var txtCategoryRemarks = $("#txtCategoryRemarks");
+
+        $(document).ready(function () {
+            loadDataInitializer();
+        })
+
+        function loadDataInitializer() {
+            loadDealerDataTable();
+            loadCategoryDataTable();
+        }
+
+        function loadDealerDataTable() {
+            $("#searchByDealer").val('');
+            var data = { flag: "dealer" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadCategoryDataTable() {
+            $("#searchByCategory").val('');
+            var data = { flag: "category" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        $("#btnAddNewDealer").click(function (e) {
+            e.preventDefault();
+            OpenModalDealer();
+        })
+
+        function OpenModalDealer() {
+            $("#modalDealer").modal("show");
+            $("#spanModalHeadDealer").text("Add New Dealer");
+            $("#spanSaveTextDealer").text("Save");
+            clearDealerCtrl();
+        }
+
+        function clearDealerCtrl() {
+            hdfDealerId.val('0');
+            txtDealerName.val('');
+            txtAddress.val('');
+            txtTelephone.val('');
+            txtMobile.val('');
+            txtEmail.val('');
+            txtContactPersonName.val('');
+            txtContactPersonMobile.val('');
+            txtRemarks.val('');
+            chkStatestatus.prop("checked", false);
+            txtDealerName.focus();
+        }
+
+        function validateDealer() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtDealerName.val()) == '') {
+                $(".required-dealerName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtAddress.val()) == '') {
+                $(".required-address").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $(document).on('click', '.data-dealer-edit', function (e) {
+            e.preventDefault();
+            OpenModalDealer();
+            $("#spanModalHeadDealer").text("Update Dealer");
+            $("#spanSaveTextDealer").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfDealerId.val(tds.eq(1).html());
+            txtDealerName.val(tds.eq(2).html());
+            txtAddress.val(tds.eq(3).html());
+            txtTelephone.val(tds.eq(4).html());
+            txtMobile.val(tds.eq(5).html());
+            txtEmail.val(tds.eq(6).html());
+            txtContactPersonName.val(tds.eq(7).html());
+            txtContactPersonMobile.val(tds.eq(8).html());
+            txtRemarks.val(tds.eq(9).html())
+            if (tds.eq(10).attr("data-val") == "Active") {
+                chkStatestatus.prop("checked", true);
+            }
+        })
+
+        $("#btnSubmitDealer").click(function (e) {
+            e.preventDefault();
+            if (validateDealer()) {
+
+                disable("#btnSubmitDealer");
+                var data = JSON.stringify({
+                    DealerId: hdfDealerId.val(),
+                    DealerName: txtDealerName.val(),
+                    Address: txtAddress.val(),
+                    TelephoneNo: txtTelephone.val(),
+                    MobileNo: txtMobile.val(),
+                    Email: txtEmail.val(),
+                    ContactPersonName: txtContactPersonName.val(),
+                    ContactPersonMobile: txtContactPersonMobile.val(),
+                    Remarks: txtRemarks.val(),
+                    IsActive: chkStatestatus.is(":checked")
+                })
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDealer', data, getToken())).then(function (res,status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalDealer").modal("toggle");
+                        clearDealerCtrl();
+                        loadDealerDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitDealer");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitDealer");
+                })
+            }
+        })
+
+        // Category //
+        //data-category-edit
+        $("#btnAddNewCategory").click(function (e) {
+            e.preventDefault();
+            OpenModalCategory();
+        })
+
+        function OpenModalCategory() {
+            $("#modalCategory").modal("show");
+            $("#spanModalHeadCategory").text("Add New Dealer");
+            $("#spanSaveTextCategory").text("Save");
+            clearCategoryCtrl();
+        }
+
+        function clearCategoryCtrl() {
+            hdfCategoryId.val("0");
+            txtCategoryName.val('');
+            txtCategoryRemarks.val('');
+            chkCategoryStatestatus.prop("checked", false);
+        }
+
+        function validateCategory() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtCategoryName.val()) == '') {
+                $(".required-category").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            return isValid;
+        }
+
+        $(document).on('click', '.data-category-edit', function (e) {
+            e.preventDefault();
+            OpenModalCategory();
+            $("#spanModalHeadCategory").text("Update Category");
+            $("#spanSaveTextCategory").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfCategoryId.val(tds.eq(1).html());
+            txtCategoryName.val(tds.eq(2).html());
+            txtCategoryRemarks.val(tds.eq(3).html())
+            if (tds.eq(4).attr("data-val") == "Active") {
+                chkCategoryStatestatus.prop("checked", true);
+            }
+        })
+
+        $("#btnSubmitCategory").click(function (e) {
+            e.preventDefault();
+            if (validateCategory()) {
+
+                var data = JSON.stringify({
+                    CategoryId: TryParseInt(hdfCategoryId.val(),0),
+                    CategoryName: txtCategoryName.val(),
+                    Remarks: txtCategoryRemarks.val(),
+                    IsActive : chkCategoryStatestatus.is(":checked")
+                })
+
+                disable("#btnSubmitCategory");
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveCategory', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalCategory").modal("toggle");
+                        clearCategoryCtrl();
+                        loadCategoryDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitCategory");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitCategory");
+                })
+            }
+        })
+    </script>
+}
+

@@ -63,10 +63,11 @@
     <noscript>
         <style>
             .wrapper {
-                display:none;
+                display: none;
             }
-            body{
-                background-color:#808080;
+
+            body {
+                background-color: #808080;
             }
         </style>
         <div id="dvnoscript">
@@ -132,7 +133,7 @@
             <!-- Brand Logo -->
             <a href="#" class="brand-link navbar-dark">
                 <img src="~/Content/dist/img/fivestar.png" alt="PO24" class="brand-image img-circle elevation-3"
-                     style="opacity: .8"/>
+                     style="opacity: .8" />
                 <span class="brand-text font-weight-light">PO24 ERP</span>
             </a>
             <!-- Sidebar -->
@@ -208,7 +209,7 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"aria-hidden="true">
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header btn-primary">
@@ -284,7 +285,7 @@
 
         $(document).ready(function () {
             bsCustomFileInput.init();
-            
+
             $('.toastrAdded').click(function () {
                 toastr.success('Added')
             });
@@ -471,7 +472,7 @@
                 $(".required-confirmPassword").removeClass("hide");
                 isValid = false;
             }
-            
+
             if (txtPassword.val() !== txtConfirmPassword.val()) {
                 $(".compare-password").removeClass("hide");
                 isValid = false;
@@ -501,6 +502,7 @@
             }
         })
     </script>
+
     @RenderSection("scripts", false)
 </body>
 </html>

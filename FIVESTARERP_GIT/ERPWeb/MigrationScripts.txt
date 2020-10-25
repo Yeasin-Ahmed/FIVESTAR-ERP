@@ -6,18 +6,22 @@ Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ControlPanelDAL.
 Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ProductionDAL.ProductionDbContext –MigrationsDirectory ProductionContextMigrations
 Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.ConfigurationDAL.ConfigurationDbContext –MigrationsDirectory ConfigurationContextMigrations
 Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.FrontDeskDAL.FrontDeskDbContext –MigrationsDirectory FrontDeskContextMigrations
+Enable-Migrations -ProjectName 'ERPDAL' -ContextTypeName ERPDAL.SalesAndDistributionDAL.SalesAndDistributionDbContext –MigrationsDirectory SalesAndDistributionContextMigrations
 
 Add-Migration 'ControlPanel_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Add-Migration 'Inventory_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Add-Migration 'Production_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Add-Migration 'Configuration_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
 Add-Migration 'FrontDesk_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
+Add-Migration 'SalesAndDistribution_' -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.SalesAndDistributionContextMigrations.Configuration
+
 
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ControlPanelContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.InventoryContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
 Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
+Update-database -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.SalesAndDistributionContextMigrations.Configuration
 
 
 --- Scripts
@@ -26,6 +30,8 @@ Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.Inve
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ProductionContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.ConfigurationContextMigrations.Configuration
 Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.FrontDeskContextMigrations.Configuration
+Update-database -script -ProjectName 'ERPDAL' -ConfigurationTypeName ERPDAL.SalesAndDistributionContextMigrations.Configuration
+
 -- Yeasin
 
 

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ERPDAL.ControlPanelDAL
 {
-    public class ControlPanelBaseRepository<T>: IBaseRepository<T> where T : class
+    public class ControlPanelBaseRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly IControlPanelUnitOfWork _controlUnitOfWork;
         internal DbSet<T> dbSet = null;
@@ -172,6 +172,23 @@ namespace ERPDAL.ControlPanelDAL
             for (var fieldCount = 0; fieldCount < dataReader.FieldCount; fieldCount++)
                 dataRow.Add(dataReader.GetName(fieldCount), dataReader[fieldCount]);
             return dataRow;
+        }
+
+        public IEnumerable<T> GetAll(string childtableName)
+        {
+            return dbSet.Include(childtableName).AsEnumerable();
+        }
+        public IEnumerable<T> GetAll(string childtableName, Expression<Func<T, bool>> whereCondition)
+        {
+            return dbSet.Include(childtableName).Where(whereCondition).AsEnumerable();
+        }
+        public T GetOneByOrg(string childtableName, Expression<Func<T, bool>> whereCondition)
+        {
+            return dbSet.Include(childtableName).FirstOrDefault(whereCondition);
+        }
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await dbSet.Where(whereCondition).ToListAsync();
         }
     }
 }

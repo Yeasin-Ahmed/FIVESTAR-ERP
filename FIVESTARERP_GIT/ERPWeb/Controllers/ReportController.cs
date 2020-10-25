@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ERPWeb.Infrastructure;
+using System.Drawing.Printing;
 
 namespace ERPWeb.Controllers
 {
@@ -197,6 +199,16 @@ namespace ERPWeb.Controllers
             {
                 return File(fileBytes, fileMimeType, fileName);
             }
+            //LocalReport report = new LocalReport();
+            //report.ReportPath = Server.MapPath("~/Reports/ERPRpt/Inventory/rptStockShortageOrExcess.rdlc");
+            //ReportDataSource dataSource1 = new ReportDataSource("ShortageOrExcess", data);
+            //report.DataSources.Add(dataSource1);
+            //report.PrintToPrinter();
+            //return Content("Printed");
+
+            //PrinterSettings settings = new PrinterSettings();
+            //return Content(settings.PrinterName);
+
         } 
 
         public ActionResult GetWarehouseModelWiseTodayStockReport(long model, string format)

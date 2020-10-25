@@ -69,7 +69,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "floor" });}
+                                            @*@{Html.RenderAction("ProductionBeltConfig", new { @flag = "floor" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer2">
-                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "assembly" });}
+                                            @*@{Html.RenderAction("ProductionBeltConfig", new { @flag = "assembly" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer3">
-                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "qc" });}
+                                            @*@{Html.RenderAction("ProductionBeltConfig", new { @flag = "qc" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer4">
-                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "repair" });}
+                                            @*@{Html.RenderAction("ProductionBeltConfig", new { @flag = "repair" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer5">
-                                            @{Html.RenderAction("ProductionBeltConfig", new { @flag = "packaging" });}
+                                            @*@{Html.RenderAction("ProductionBeltConfig", new { @flag = "packaging" });}*@
                                         </div>
                                     </div>
                                 </div>
@@ -558,6 +558,7 @@
             //$('.dataTables_filter input[type="search"]').css(
             //    { 'width': '350px', 'display': 'inline-block' }
             //);
+            loadDataInitializer();
         })
 
         // Floor
@@ -610,7 +611,8 @@
                     console.log(res);
                     if (res == true) {
                         toastrSuccessAlert(execuStatus.successSave);
-                        location.reload();
+                        loadFloorDataTable();
+                        //location.reload();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -733,7 +735,8 @@
                     console.log(res);
                     if (res === true) {
                         toastrSuccessAlert(execuStatus.successSave);
-                        location.reload();
+                        //location.reload();
+                        loadAssemblyDataTable();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -823,7 +826,8 @@
                     console.log(res);
                     if (res === true) {
                         toastrSuccessAlert(execuStatus.successSave);
-                        location.reload();
+                        //location.reload();
+                        loadQCDataTable();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -914,7 +918,8 @@
                     if (res === true) {
 
                         toastrSuccessAlert(execuStatus.successSave);
-                        location.reload();
+                        //location.reload();
+                        loadRepairDataTable();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -1004,7 +1009,7 @@
                     console.log(res);
                     if (res === true) {
                         toastrSuccessAlert(execuStatus.successSave);
-                        location.reload();
+                        loadPackagingDataTable();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -1017,6 +1022,88 @@
             }
         })
 
+        function loadDataInitializer() {
+            loadFloorDataTable();
+            loadAssemblyDataTable();
+            loadQCDataTable();
+            loadRepairDataTable();
+            loadPackagingDataTable();
+        }
+
+        function loadFloorDataTable() {
+            $("#searchByFloor").val('');
+            var data = { flag: "floor" };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/ProductionBeltConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadAssemblyDataTable() {
+            $("#searchByAssembly").val('');
+            var data = { flag: "assembly" };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/ProductionBeltConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadQCDataTable() {
+            $("#searchByQC").val('');
+            var data = { flag: "qc" };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/ProductionBeltConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadRepairDataTable() {
+            $("#searchByRepair").val('');
+            var data = { flag: "repair" };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/ProductionBeltConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadPackagingDataTable() {
+            $("#searchByPackaging").val('');
+            var data = { flag: "packaging" };
+            $.when(getReqWithData(dataType.html, type.get, '/Production/ProductionBeltConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
     </script>
 }
 

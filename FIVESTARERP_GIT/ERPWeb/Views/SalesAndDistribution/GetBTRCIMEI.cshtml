@@ -1,0 +1,407 @@
+﻿
+@{
+    ViewBag.Title = "BTRC Approved IMEI";
+}
+<div class="row text-sm" style="margin-top:-20px">
+    <div class="col-md-12">
+        @Html.AntiForgeryToken()
+        <div class="card card-navy shadow card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs text-bold" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-IMEIList-tab" data-toggle="pill" href="#custom-tabs-one-IMEIList" role="tab" aria-controls="custom-tabs-one-IMEIList" aria-selected="true">BTRC Approved IMEI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-stock-tab" data-toggle="pill" href="#custom-tabs-two-stock" role="tab" aria-controls="custom-tabs-two-stock" aria-selected="true">Item Stock</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-three-qc-tab" data-toggle="pill" href="#custom-tabs-three-qc" role="tab" aria-controls="custom-tabs-three-qc" aria-selected="false">Quality Control</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-four-repair-tab" data-toggle="pill" href="#custom-tabs-four-repair" role="tab" aria-controls="custom-tabs-four-repair" aria-selected="false">Repair Line</a>
+                    </li>
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-five-packaging-tab" data-toggle="pill" href="#custom-tabs-five-packaging" role="tab" aria-controls="custom-tabs-five-packaging" aria-selected="false">Packaging Line</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-IMEIList" role="tabpanel" aria-labelledby="custom-tabs-one-IMEIList">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of BTRC IMEI
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchIMEI" id="searchByIMEI" class="form-control form-control-sm" placeholder="Search By IMEI" onkeyup="tableFilter('.tblBTRCIMEIList tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddIMEI"><i class="fa fa-plus"></i> Add IMEI</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-stock" role="tabpanel" aria-labelledby="custom-tabs-two-stock">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Item Stocks
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddProcess"><i class="fa fa-cogs"></i> Run Process</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-three-qc" role="tabpanel" aria-labelledby="custom-tabs-three-qc">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Quality Control
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchQC" id="searchByQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblQCLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewQC"><i class="fa fa-plus"></i> Create QC</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-four-repair" role="tabpanel" aria-labelledby="custom-tabs-four-repair">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Repair Line
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchRepair" id="searchByRepair" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblRepairLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewRepair"><i class="fa fa-plus"></i> Create Repair Line</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-five-packaging" role="tabpanel" aria-labelledby="custom-tabs-five-packaging">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Packaging Line
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchPackaging" id="searchByPackaging" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblPackagingLine tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewPackaging"><i class="fa fa-plus"></i> Create Packaging Line</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalIMEI" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadIMEI">Upload IMEI Excel</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmIMEI">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input form-control-sm" id="FileUpload" name="FileUpload" />
+                                    <label class="custom-file-label" for="OrgImage"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitIMEI"><i class="far fa-save"></i> <span id="spanSaveTextIMEI"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="callout callout-warning hide" id="loader-process" style="position:absolute;top:40%;left:40%">
+        <div id="loader-div">
+            <h3 class="text-center">
+                <img src="~/Content/Images/loader.gif" width="50" height="50" />
+            </h3>
+            <h5>Please wait. This process will take few times!</h5>
+            <h6 class="text-center">Don't exit from this page while process is running</h6>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var FileUpload = $("#FileUpload");
+        $(document).ready(function () {
+            loadDataInitializer();
+        })
+
+        $("#btnAddIMEI").click(function (e) {
+            e.preventDefault();
+            OpenModalIMEI();
+        })
+
+        function loadDataInitializer() {
+            loadBTRCApprovedDataTable();
+            loadItemStockDataTable();
+        }
+
+        function OpenModalIMEI() {
+            $("#modalIMEI").modal("show");
+        }
+
+        function loadBTRCApprovedDataTable() {
+            $("#searchByIMEI").val('');
+            var data = { flag: "list" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetBTRCIMEI', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadItemStockDataTable() {
+            var data = { flag: "stock" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetBTRCIMEI', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        $("#btnSubmitIMEI").click(function (e) {
+            e.preventDefault();
+            var excelFile = $("#FileUpload").prop('files')[0];
+            var formData = new FormData();
+            formData.append("FileUpload", excelFile);
+            console.log(formData);
+            if (excelFile !=null) {
+                disable("#btnSubmitIMEI");
+                $.when(postReqWithFile(dataType.json, type.post, '/SalesAndDistribution/SaveBTRCApprovedIMEI', formData, getToken())).then(function (res, status) {
+                    if (res.isSuccess === true && status === 'success') {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalIMEI").modal("toggle").toggle("fast");
+                        setTimeout(function () {
+                            loadBTRCApprovedDataTable();
+                        }, 1500);
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitIMEI");
+                }).fail(function (error) {
+                    enable("#btnSubmitIMEI");
+                })
+            }
+            
+        })
+
+        $("#btnAddProcess").click(function (e) {
+            e.preventDefault();
+            bootbox.confirm("Are you sure you want to Run this Process", function (result) {
+                if (result) {
+                    $("#loader-process").removeClass("hide");
+                    //return;
+                    $.when(postReqWithToken(null, dataType.json, type.post, '/SalesAndDistribution/IMEIProcess', null, getToken())).then(function (res, status) {
+                        if (status === 'success') {
+                            toastr.info(res.rows + "(Rows) affected", null, { timeOut: 1500 });
+                            loadItemStockDataTable();
+                            loadBTRCApprovedDataTable();
+                        }
+                        else {
+                            toastrErrorAlert(execuStatus.fail);
+                        }
+                        $("#loader-process").addClass("hide");
+                    }).fail(function (error) {
+                        toastrErrorAlert(execuStatus.fail);
+                        $("#loader-process").addClass("hide");
+                    })
+                }
+            })
+        })
+    </script>
+}

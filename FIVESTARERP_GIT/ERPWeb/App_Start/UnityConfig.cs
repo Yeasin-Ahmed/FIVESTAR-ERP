@@ -12,11 +12,14 @@ using ERPBLL.Report;
 using ERPBLL.Report.Interface;
 using ERPBLL.ReportSS;
 using ERPBLL.ReportSS.Interface;
+using ERPBLL.SalesAndDistribution;
+using ERPBLL.SalesAndDistribution.Interface;
 using ERPDAL.ConfigurationDAL;
 using ERPDAL.ControlPanelDAL;
 using ERPDAL.FrontDeskDAL;
 using ERPDAL.InventoryDAL;
 using ERPDAL.ProductionDAL;
+using ERPDAL.SalesAndDistributionDAL;
 using System.Web.Mvc;
 using Unity;
 using Unity.Mvc5;
@@ -202,6 +205,16 @@ namespace ERPWeb
             #region Report
             container.RegisterType<IJobOrderReportBusiness, JobOrderReportBusiness>();
             container.RegisterType<IProductionReportBusiness, ProductionReportBusiness>();
+
+            #endregion
+
+            #region Sales & Distribution
+
+            container.RegisterType<ISalesAndDistributionUnitOfWork, SalesAndDistributionUnitOfWork>();
+            container.RegisterType<IDealerBusiness, DealerBusiness>();
+            container.RegisterType<IBTRCApprovedIMEIBusiness, BTRCApprovedIMEIBusiness>();
+            container.RegisterType<IItemStockBusiness, ItemStockBusiness>();
+            container.RegisterType<ICategoryBusiness, CategoryBusiness>();
 
             #endregion
 

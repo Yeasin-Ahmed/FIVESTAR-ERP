@@ -181,5 +181,23 @@ namespace ERPDAL.FrontDeskDAL
                 dataRow.Add(dataReader.GetName(fieldCount), dataReader[fieldCount]);
             return dataRow;
         }
+
+
+        public IEnumerable<T> GetAll(string childtableName)
+        {
+            return dbSet.Include(childtableName).AsEnumerable();
+        }
+        public IEnumerable<T> GetAll(string childtableName, Expression<Func<T, bool>> whereCondition)
+        {
+            return dbSet.Include(childtableName).Where(whereCondition).AsEnumerable();
+        }
+        public T GetOneByOrg(string childtableName, Expression<Func<T, bool>> whereCondition)
+        {
+            return dbSet.Include(childtableName).FirstOrDefault(whereCondition);
+        }
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await dbSet.Where(whereCondition).ToListAsync();
+        }
     }
 }

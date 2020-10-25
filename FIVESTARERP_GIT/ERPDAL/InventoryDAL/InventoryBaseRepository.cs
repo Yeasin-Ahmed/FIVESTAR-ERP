@@ -185,5 +185,18 @@ namespace ERPDAL.InventoryDAL
                 dataRow.Add(dataReader.GetName(fieldCount), dataReader[fieldCount]);
             return dataRow;
         }
+
+        public IEnumerable<T> GetAll(string childtableName)
+        {
+            return dbSet.Include(childtableName).AsEnumerable();
+        }
+        public IEnumerable<T> GetAll(string childtableName, Expression<Func<T, bool>> whereCondition)
+        {
+            return dbSet.Include(childtableName).Where(whereCondition).AsEnumerable();
+        }
+        public T GetOneByOrg(string childtableName, Expression<Func<T, bool>> whereCondition)
+        {
+            return dbSet.Include(childtableName).FirstOrDefault(whereCondition);
+        }
     }
 }

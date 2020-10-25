@@ -7,6 +7,7 @@
 <div class="row text-sm">
     <div class="col-md-12" style="margin-top:-15px">
         <div class="card card-primary card-outline card-tabs">
+            @Html.AntiForgeryToken()
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
@@ -62,7 +63,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer1">
-                                            @{Html.RenderAction("ApplicationConfig", "ControlPanel", new { @flag = "Module" }); }
+                                            @*@{Html.RenderAction("ApplicationConfig", "ControlPanel", new { @flag = "Module" }); }*@
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +112,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer2">
-                                            @{Html.RenderAction("ApplicationConfig", "ControlPanel", new { @flag = "Mainmenu" }); }
+                                            @*@{Html.RenderAction("ApplicationConfig", "ControlPanel", new { @flag = "Mainmenu" }); }*@
                                         </div>
                                     </div>
                                 </div>
@@ -160,7 +161,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer3">
-                                            @{Html.RenderAction("ApplicationConfig", "ControlPanel", new { @flag = "Submenu" }); }
+                                            @*@{Html.RenderAction("ApplicationConfig", "ControlPanel", new { @flag = "Submenu" }); }*@
                                         </div>
                                     </div>
                                 </div>
@@ -344,6 +345,58 @@
         var ddlParentSubMenu = $("#ddlParentSubMenu");
         var ddlMainMenu = $("#ddlMainMenu");
 
+        $(document).ready(function () {
+            loadDataInitializer();
+        })
+
+        function loadDataInitializer() {
+            loadModuleDataTable();
+            loadMainmenuDataTable();
+            loadSubmenuDataTable();
+        }
+
+        function loadModuleDataTable() {
+            var data = { flag: 'Module' };
+            $.when(getReqWithData(dataType.html, 'POST', '/ControlPanel/ApplicationConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+        }
+
+        function loadMainmenuDataTable() {
+            var data = { flag: 'Mainmenu' };
+            $.when(getReqWithData(dataType.html, 'POST', '/ControlPanel/ApplicationConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+        }
+
+        function loadSubmenuDataTable() {
+            var data = { flag: 'Submenu' };
+            $.when(getReqWithData(dataType.html, 'POST', '/ControlPanel/ApplicationConfig', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+        }
+
         function OpenModuleModal() {
             clearModuleCtrl();
             $("#spanModuleModalHead").text('Add New Module');
@@ -393,10 +446,14 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#modalModule");
+                        clearModuleCtrl();
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalModule").modal("toggle");
+                        loadModuleDataTable();
+                        LoadDropdownForPage("module");
                     }
                     else {
-                        message("#msg2");
+                        toastrErrorAlert(execuStatus.fail);
                     }
                     enable("#btnSubmitModule");
                 }).fail(function (err) {
@@ -472,11 +529,11 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        $("#modalMainMenu").modal("toggle");
+                        clearMainmenuCtrl();
                         toastrSuccessAlert(execuStatus.successSave);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1500)
+                        $("#modalMainMenu").modal("toggle");
+                        loadMainmenuDataTable();
+                        LoadDropdownForPage("mainmenu");
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -581,11 +638,11 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        $("#modalSubMenu").modal("toggle");
+                        clearSubmenuCtrl();
                         toastrSuccessAlert(execuStatus.successSave);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1500);
+                        $("#modalSubMenu").modal("toggle");
+                        loadSubmenuDataTable();
+                        LoadDropdownForPage("submenu");
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -628,8 +685,11 @@
             chkIsActAsParent.prop("checked", false);
             if (td8 === 'Yes') {
                 chkIsActAsParent.prop("checked", true);
+               
             }
-            ddlParentSubMenu.val(td9);
+            if (TryParseInt(td9, 0) > 0) {
+                ddlParentSubMenu.val(td9);
+            }
         })
 
         function clearSubmenuCtrl() {
@@ -640,8 +700,24 @@
             txtIconName.val('');
             chkIsViewable.prop("checked", false);
             chkIsActAsParent.prop("checked", false);
-            ddlParentSubMenu.val('0');
+            ddlParentSubMenu.val('');
             ddlMainMenu.val('');
         }
+
+        function LoadDropdownForPage(flag) {
+            if (flag === 'module') {
+                clearDropdown("ddlModuleName");
+                LoadDropDown('/Common/GetModules', type.post, ddlModuleName);
+            }
+            else if (flag === 'mainmenu') {
+                clearDropdown("ddlMainMenu");
+                LoadDropDown('/Common/GetMainmenus', type.post, ddlMainMenu);
+            }
+            if (flag === 'submenu') {
+                clearDropdown("ddlParentSubMenu");
+                LoadDropDown('/Common/GetParentSubmenus', type.post, ddlParentSubMenu);
+            }
+        }
+        
     </script>
 }
