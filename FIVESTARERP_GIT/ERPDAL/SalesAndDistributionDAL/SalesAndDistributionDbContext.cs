@@ -16,7 +16,9 @@ namespace ERPDAL.SalesAndDistributionDAL
         }
         public DbSet<Dealer> tblDealer { get; set; }
         public DbSet<BTRCApprovedIMEI> tblBTRCApprovedIMEI { get; set; }
-
         public DbSet<ItemStock> tblItemStock { get; set; }
+        public DbSet<Category> tblCategory { get; set; }
+        public DbSet<Brand> tblBrand { get; set; }
+        public DbSet<BrandCategories> tblBrandCategories { get; set; }
     }
 }

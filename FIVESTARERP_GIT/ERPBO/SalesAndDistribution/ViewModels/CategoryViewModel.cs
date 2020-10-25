@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.SalesAndDistribution.DTOModels
+namespace ERPBO.SalesAndDistribution.ViewModels
 {
-    public class CategoryDTO
+    public class CategoryViewModel
     {
         public long CategoryId { get; set; }
         [StringLength(150)]

@@ -751,6 +751,7 @@
     <Content Include="Views\SalesAndDistribution\GetBTRCIMEI.cshtml" />
     <Content Include="Views\SalesAndDistribution\_BTRCIMEIList.cshtml" />
     <Content Include="Views\SalesAndDistribution\_itemStock.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_category.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

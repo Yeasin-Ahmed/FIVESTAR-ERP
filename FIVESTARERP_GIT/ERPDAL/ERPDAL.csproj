@@ -646,6 +646,22 @@
     <Compile Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.Designer.cs">
       <DependentUpon>202010210645210_SalesAndDistribution_ItemStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010250558229_SalesAndDistribution_Category.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010250558229_SalesAndDistribution_Category.Designer.cs">
+      <DependentUpon>202010250558229_SalesAndDistribution_Category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010250959337_SalesAndDistribution_Brand.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010250959337_SalesAndDistribution_Brand.Designer.cs">
+      <DependentUpon>202010250959337_SalesAndDistribution_Brand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010251046409_SalesAndDistribution_BrandCategories.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010251046409_SalesAndDistribution_BrandCategories.Designer.cs">
+      <DependentUpon>202010251046409_SalesAndDistribution_BrandCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.Designer.cs">
+      <DependentUpon>202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1062,6 +1078,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.resx">
       <DependentUpon>202010210645210_SalesAndDistribution_ItemStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010250558229_SalesAndDistribution_Category.resx">
+      <DependentUpon>202010250558229_SalesAndDistribution_Category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010250959337_SalesAndDistribution_Brand.resx">
+      <DependentUpon>202010250959337_SalesAndDistribution_Brand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010251046409_SalesAndDistribution_BrandCategories.resx">
+      <DependentUpon>202010251046409_SalesAndDistribution_BrandCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.resx">
+      <DependentUpon>202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

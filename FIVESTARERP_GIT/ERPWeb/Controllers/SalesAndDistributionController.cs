@@ -21,13 +21,17 @@ namespace ERPWeb.Controllers
         private readonly IDealerBusiness _dealerBusiness;
         private readonly IBTRCApprovedIMEIBusiness _bTRCApprovedIMEIBusiness;
         private readonly IItemStockBusiness _itemStockBusiness;
+        private readonly ICategoryBusiness _categoryBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ICategoryBusiness categoryBusiness)
         {
             #region Sales & Distribution
+
             this._dealerBusiness = dealerBusiness;
             this._bTRCApprovedIMEIBusiness = bTRCApprovedIMEIBusiness;
             this._itemStockBusiness = itemStockBusiness;
+            this._categoryBusiness = categoryBusiness;
+
             #endregion
         }
 
@@ -60,6 +64,40 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_dealer",viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag == "category")
+            {
+                var dto = this._categoryBusiness.GetCategories(User.OrgId).Select(s => new CategoryDTO
+                {
+                    CategoryId = s.CategoryId,
+                    CategoryName = s.CategoryName,
+                    Remarks = s.Remarks,
+                    IsActive = s.IsActive,
+                    EUserId = s.EUserId,
+                    EntryDate = DateTime.Now,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
+                }).ToList();
+                IEnumerable<CategoryViewModel> viewModels = new List<CategoryViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_category", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "brand")
+            {
+                var dto = this._categoryBusiness.GetCategories(User.OrgId).Select(s => new CategoryDTO
+                {
+                    CategoryId = s.CategoryId,
+                    CategoryName = s.CategoryName,
+                    Remarks = s.Remarks,
+                    IsActive = s.IsActive,
+                    EUserId = s.EUserId,
+                    EntryDate = DateTime.Now,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
+                }).ToList();
+                IEnumerable<CategoryViewModel> viewModels = new List<CategoryViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_category", viewModels);
+            }
             return View();
         }
 
@@ -72,6 +110,19 @@ namespace ERPWeb.Controllers
                 DealerDTO dto = new DealerDTO();
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess =_dealerBusiness.SaveDealer(dto,User.UserId,User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveCategory(CategoryViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                CategoryDTO dto = new CategoryDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _categoryBusiness.SaveCategory(dto, User.UserId,User.BranchId, User.OrgId);
             }
             return Json(IsSuccess);
         }

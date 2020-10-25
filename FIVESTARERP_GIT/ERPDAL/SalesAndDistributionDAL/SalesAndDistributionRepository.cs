@@ -16,7 +16,6 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
-
     public class BTRCApprovedIMEIRepository : SalesAndDistributionBaseRepository<BTRCApprovedIMEI>
     {
         public BTRCApprovedIMEIRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
@@ -33,5 +32,29 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
+    public class CategoryRepository : SalesAndDistributionBaseRepository<Category>
+    {
+        public CategoryRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
 
+        }
+    }
+    public class BrandRepository : SalesAndDistributionBaseRepository<Brand>
+    {
+        public BrandRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class BrandCategoriesRepository : SalesAndDistributionBaseRepository<BrandCategories>
+    {
+        public BrandCategoriesRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    
 }
