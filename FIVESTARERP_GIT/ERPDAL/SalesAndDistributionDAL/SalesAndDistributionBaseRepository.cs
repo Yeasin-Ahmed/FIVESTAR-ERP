@@ -1,5 +1,6 @@
 ﻿using ERPDAL.ControlPanelDAL;
 using ERPDAL.InventoryDAL;
+using ERPDAL.ProductionDAL;
 using ERPDAL.Repository;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,21 @@ using System.Data.Entity;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Data.Entity.Infrastructure;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPDAL.FrontDeskDAL
+namespace ERPDAL.SalesAndDistributionDAL
 {
-    public class FrontDeskBaseRepository<T>: IBaseRepository<T> where T : class
+    public class SalesAndDistributionBaseRepository<T>: IBaseRepository<T> where T : class
     {
-        private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
+        private readonly ISalesAndDistributionUnitOfWork _salesAndDistributionUnitOfWork;
         internal DbSet<T> dbSet = null;
-        public FrontDeskBaseRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork)
+        public SalesAndDistributionBaseRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork)
         {
-            if (frontDeskUnitOfWork == null) throw new ArgumentNullException("DbContext is not assigned");
-            this._frontDeskUnitOfWork = frontDeskUnitOfWork;
-            dbSet = this._frontDeskUnitOfWork.Db.Set<T>();
+            if (salesAndDistributionUnitOfWork == null) throw new ArgumentNullException("SalesAndDistribution DbContext is not assigned");
+            this._salesAndDistributionUnitOfWork = salesAndDistributionUnitOfWork;
+            dbSet = this._salesAndDistributionUnitOfWork.Db.Set<T>();
         }
 
         public T SingleOrDefault(Expression<Func<T, bool>> whereCondition)
@@ -39,6 +41,11 @@ namespace ERPDAL.FrontDeskDAL
         {
             return dbSet.Where(whereCondition).AsEnumerable();
         }
+        // Async
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await dbSet.Where(whereCondition).ToListAsync();
+        }
 
         public T GetById(object Id)
         {
@@ -49,16 +56,21 @@ namespace ERPDAL.FrontDeskDAL
         {
             return dbSet.FirstOrDefault(whereCondition);
         }
+        // Async
+        public async Task<T> GetOneByOrgAsync(Expression<Func<T, bool>> whereCondition)
+        {
+            return await dbSet.FirstOrDefaultAsync(whereCondition);
+        }
 
         public bool Save()
         {
             //throw new NotImplementedException();
-            return _frontDeskUnitOfWork.Db.SaveChanges() > 0;
+            return _salesAndDistributionUnitOfWork.Db.SaveChanges() > 0;
         }
 
         public async Task<bool> SaveAsync()
         {
-            return await _frontDeskUnitOfWork.Db.SaveChangesAsync() > 0;
+            return await _salesAndDistributionUnitOfWork.Db.SaveChangesAsync() > 0;
         }
 
         public void Insert(T entity)
@@ -73,22 +85,14 @@ namespace ERPDAL.FrontDeskDAL
 
         public void Update(T entity)
         {
-            _frontDeskUnitOfWork.Db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+            _salesAndDistributionUnitOfWork.Db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
         }
 
         public void UpdateAll(IList<T> entities)
         {
             foreach (var entity in entities)
             {
-                _frontDeskUnitOfWork.Db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
-            }
-        }
-
-        public void DeleteAll(IList<T> entities)
-        {
-            foreach (var entity in entities)
-            {
-                _frontDeskUnitOfWork.Db.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
+                _salesAndDistributionUnitOfWork.Db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
             }
         }
 
@@ -132,7 +136,7 @@ namespace ERPDAL.FrontDeskDAL
 
         public IEnumerable<dynamic> SqlQuery(string Sql, Dictionary<string, object> Parameters)
         {
-            using (var cmd = _frontDeskUnitOfWork.Db.Database.Connection.CreateCommand())
+            using (var cmd = _salesAndDistributionUnitOfWork.Db.Database.Connection.CreateCommand())
             {
                 cmd.CommandText = Sql;
                 if (cmd.Connection.State != ConnectionState.Open)
@@ -156,9 +160,10 @@ namespace ERPDAL.FrontDeskDAL
                 }
             }
         }
+
         public IEnumerable<dynamic> SqlQuery(string Sql)
         {
-            using (var cmd = _frontDeskUnitOfWork.Db.Database.Connection.CreateCommand())
+            using (var cmd = _salesAndDistributionUnitOfWork.Db.Database.Connection.CreateCommand())
             {
                 cmd.CommandText = Sql;
                 if (cmd.Connection.State != ConnectionState.Open)
@@ -182,7 +187,6 @@ namespace ERPDAL.FrontDeskDAL
             return dataRow;
         }
 
-
         public IEnumerable<T> GetAll(string childtableName)
         {
             return dbSet.Include(childtableName).AsEnumerable();
@@ -195,9 +199,7 @@ namespace ERPDAL.FrontDeskDAL
         {
             return dbSet.Include(childtableName).FirstOrDefault(whereCondition);
         }
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition)
-        {
-            return await dbSet.Where(whereCondition).ToListAsync();
-        }
+
+        
     }
 }

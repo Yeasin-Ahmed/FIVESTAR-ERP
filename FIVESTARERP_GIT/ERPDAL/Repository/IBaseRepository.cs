@@ -10,9 +10,12 @@ namespace ERPDAL.Repository
     public interface IBaseRepository<T> where T : class
     {
         T SingleOrDefault(Expression<Func<T, bool>> whereCondition);
+        IEnumerable<T> GetAll(string childtableName);
         IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(string childtableName,Expression<Func<T, bool>> whereCondition);
         IEnumerable<T> GetAll(Expression<Func<T, bool>> whereCondition);
         T GetById(object Id);
+        T GetOneByOrg(string childtableName,Expression<Func<T, bool>> whereCondition);
         T GetOneByOrg(Expression<Func<T, bool>> whereCondition);
         void Insert(T entity);
         void InsertAll(IList<T> entities);
@@ -23,5 +26,7 @@ namespace ERPDAL.Repository
         void DeleteAll(Expression<Func<T, bool>> whereCondition);
         bool Exists(Expression<Func<T, bool>> whereCondition);
         bool Save();
+        Task<bool> SaveAsync();
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> whereCondition);
     }
 }

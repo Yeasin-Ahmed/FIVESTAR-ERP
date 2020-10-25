@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.ItemStockViewModel>
+@{
+    int sl = 0;
+    string badge = string.Empty;
+}
+
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg tblItemStock" id="tblItemStock">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Model Name</th>
+                    <th>ItemType Name</th>
+                    <th>Item Name</th>
+                    <th>IMEI</th>
+                    <th>Status</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.StockStatus == "Stock-In" ? "badge badge-success" : "badge badge-danger";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.StockId</td>
+                        <td class="text-center">@item.ModelName</td>
+                        <td>@item.ItemTypeName</td>
+                        <td>@item.ItemName</td>
+                        <td>@item.AllIMEI</td>
+                        <td class="text-center" data-val="@item.StockStatus">
+                            <span class="@badge">@item.StockStatus</span>
+                        </td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

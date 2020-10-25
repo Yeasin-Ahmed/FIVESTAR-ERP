@@ -388,6 +388,12 @@
     <Compile Include="ReportSS\JobOrderReportBusiness.cs" />
     <Compile Include="Report\Interface\IProductionReportBusiness.cs" />
     <Compile Include="Report\ProductionReportBusiness.cs" />
+    <Compile Include="SalesAndDistribution\BTRCApprovedIMEIBusiness.cs" />
+    <Compile Include="SalesAndDistribution\DealerBusiness.cs" />
+    <Compile Include="SalesAndDistribution\Interface\IBTRCApprovedIMEIBusiness.cs" />
+    <Compile Include="SalesAndDistribution\Interface\IDealerBusiness.cs" />
+    <Compile Include="SalesAndDistribution\Interface\IItemStockBusiness.cs" />
+    <Compile Include="SalesAndDistribution\ItemStockBusiness.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -403,5 +409,6 @@
       <Name>ERPDAL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

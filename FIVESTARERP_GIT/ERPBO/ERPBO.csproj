@@ -596,6 +596,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ControlPanel\DomainModels\Organization.cs" />
     <Compile Include="Inventory\DomainModels\Warehouse.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\Category.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\Dealer.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\BTRCApprovedIMEI.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\ItemStock.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\BTRCApprovedIMEIDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\CategoryDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\DealerDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\ApprovedIMEI.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\ItemStockDTO.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\BTRCApprovedIMEIViewModel.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\DealerViewModel.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\ItemStockViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -604,6 +616,7 @@
   <ItemGroup>
     <Folder Include="Configuration\ReportModels\" />
     <Folder Include="ControlPanel\ReportModels\" />
+    <Folder Include="SalesAndDistribution\ReportModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

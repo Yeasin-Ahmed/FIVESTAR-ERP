@@ -638,6 +638,20 @@
     <Compile Include="InventoryDAL\InventoryBaseRepository.cs" />
     <Compile Include="Repository\IBaseRepository.cs" />
     <Compile Include="InventoryDAL\IInventoryUnitOfWork.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.Designer.cs">
+      <DependentUpon>202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.Designer.cs">
+      <DependentUpon>202010210645210_SalesAndDistribution_ItemStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
+    <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
+    <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
+    <Compile Include="SalesAndDistributionDAL\SalesAndDistributionRepository.cs" />
+    <Compile Include="SalesAndDistributionDAL\SalesAndDistributionBaseRepository.cs" />
+    <Compile Include="SalesAndDistributionDAL\SalesAndDistributionDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -1043,6 +1057,12 @@
     <EmbeddedResource Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.resx">
       <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.resx">
+      <DependentUpon>202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.resx">
+      <DependentUpon>202010210645210_SalesAndDistribution_ItemStock.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBO\ERPBO.csproj">
@@ -1050,5 +1070,6 @@
       <Name>ERPBO</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
