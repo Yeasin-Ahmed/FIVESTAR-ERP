@@ -23,7 +23,7 @@
                         <form method="get">
                             <div class="row text-sm">
                                 <div class="col-md-2">
-                                    <label class="control-label font-weight-bold">From Date</label>
+                                    <label class="control-label font-weight-bold">Date</label>
                                     <div class="input-group input-group-sm ">
                                         <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
                                         <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
@@ -31,7 +31,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 hide">
+                                    <label class="control-label font-weight-bold">Branch</label>
+                                    @*@Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })*@
+                                    <span class="error hide require-branch font-weight-bold">Branch is required !</span>
+                                </div>
+                                <div class="col-md-2 hide">
                                     <label class="control-label font-weight-bold">To Date</label>
                                     <div class="input-group input-group-sm ">
                                         <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
@@ -57,8 +62,8 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-12 mt-3 text-sm" id="dataContainer">
-                        @{Html.RenderAction("AllBranchDailySummaryReport", new { flag = "view" });}
+                    <div class="col-md-12 mt-3 text-sm" id="dataContainer" >
+                        @*@{Html.RenderAction("AllBranchDailySummaryReport", new { flag = "view" });}*@
                     </div>
                 }
             </div>
@@ -94,13 +99,15 @@
             if ($(this).hasClass("dptToDate")) {
                 if (dptToDate.val() !== '') {
                     dptToDate.val('');
-                    LoadDataTable();
+                    $("#dataContainer").empty();
+                    //LoadDataTable();
                 }
             }
             if ($(this).hasClass("dptFromDate")) {
                 if (dptFromDate.val() !== '') {
                     dptFromDate.val('');
-                    LoadDataTable();
+                    $("#dataContainer").empty();
+                    //LoadDataTable();
                 }
             }
         })

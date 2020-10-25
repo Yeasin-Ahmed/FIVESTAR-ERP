@@ -542,7 +542,7 @@
           <Source>Database</Source>
           <Value>=First(Fields!ReportImage.Value, "ServicesReportHead")</Value>
           <MIMEType>image/png</MIMEType>
-          <Sizing>FitProportional</Sizing>
+          <Sizing>Fit</Sizing>
           <Top>0.03785in</Top>
           <Left>0.04098in</Left>
           <Height>1.10347in</Height>

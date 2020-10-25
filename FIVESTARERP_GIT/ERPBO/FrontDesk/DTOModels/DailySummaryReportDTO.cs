@@ -30,5 +30,7 @@ namespace ERPBO.FrontDesk.DTOModels
         public int? TotalUnDelivered { get; set; }
         public string BranchWiseDailyJob { get; set; }
         public int? TOTAL { get; set; }
+        public double? AccessoriesSells { get; set; }
+        public string BranchName { get; set; }
     }
 }

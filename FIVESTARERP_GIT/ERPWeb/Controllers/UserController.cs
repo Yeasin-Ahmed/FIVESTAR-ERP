@@ -141,6 +141,30 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dashboardJobOrders, dashboardJob);
                 ViewBag.DashboardDailyJobOrderViewModel = dashboardJob;
 
+                // Daily Sells//25-10-2020
+                IEnumerable<DashboardSellsDTO> dailysellDTO = _jobOrderBusiness.DashboardDailySells(User.OrgId, User.BranchId);
+                IEnumerable<DashboardSellsViewModel> dailyView = new List<DashboardSellsViewModel>();
+                AutoMapper.Mapper.Map(dailysellDTO, dailyView);
+                ViewBag.DashboardDailySellsViewModel = dailyView;
+
+                // Total Sells//25-10-2020
+                IEnumerable<DashboardSellsDTO> totalDTO = _jobOrderBusiness.DashboardTotalSells(User.OrgId, User.BranchId);
+                IEnumerable<DashboardSellsViewModel> totalView = new List<DashboardSellsViewModel>();
+                AutoMapper.Mapper.Map(totalDTO, totalView);
+                ViewBag.DashboardTotalSellsViewModel = totalView;
+
+                // Daily Job Transfer//25-10-2020
+                IEnumerable<DashboardDailyReceiveJobOrderDTO> dailyTransferDTO = _jobOrderBusiness.DashboardDailyTransferJob(User.OrgId, User.BranchId);
+                IEnumerable<DashboardDailyReceiveJobOrderViewModel> dailyTransferView = new List<DashboardDailyReceiveJobOrderViewModel>();
+                AutoMapper.Mapper.Map(dailyTransferDTO, dailyTransferView);
+                ViewBag.DashboardTotalTransferViewModel = dailyTransferView;
+
+                // Daily Job Transfer//25-10-2020
+                IEnumerable<DashboardDailyReceiveJobOrderDTO> receiveJobDTO = _jobOrderBusiness.DashboardDailyReceiveJob(User.OrgId, User.BranchId);
+                IEnumerable<DashboardDailyReceiveJobOrderViewModel> receiveJOBView = new List<DashboardDailyReceiveJobOrderViewModel>();
+                AutoMapper.Mapper.Map(receiveJobDTO, receiveJOBView);
+                ViewBag.DashboardTotalReceiveViewModel = receiveJOBView;
+
                 // Daily Warranty and Billing Job 
                 IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> andWarrantyJobDTO = _jobOrderBusiness.DashboardDailyBillingAndWarrantyJob(User.OrgId, User.BranchId);
                 IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel> andWarrantyJobViewModels = new List<DashboardDailyBillingAndWarrantyJobViewModel>();

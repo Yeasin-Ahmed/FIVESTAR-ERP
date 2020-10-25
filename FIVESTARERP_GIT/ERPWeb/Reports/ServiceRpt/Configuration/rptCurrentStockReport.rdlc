@@ -53,12 +53,14 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>Silver</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -92,12 +94,14 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>Silver</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -131,12 +135,14 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>Silver</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -167,12 +173,14 @@
                           <Width>0.25pt</Width>
                         </Border>
                         <BackgroundColor>Silver</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -351,7 +359,7 @@
         <Top>0.05694in</Top>
         <Left>0.03481in</Left>
         <Height>0.5in</Height>
-        <Width>7.15037in</Width>
+        <Width>7.15036in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -379,7 +387,7 @@
           <Source>Database</Source>
           <Value>=First(Fields!ReportImage.Value, "ServicesReportHead")</Value>
           <MIMEType>image/png</MIMEType>
-          <Sizing>FitProportional</Sizing>
+          <Sizing>Fit</Sizing>
           <Top>0.0125in</Top>
           <Left>0.03481in</Left>
           <Height>1.10347in</Height>

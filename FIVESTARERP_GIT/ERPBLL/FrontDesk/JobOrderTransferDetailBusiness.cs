@@ -88,7 +88,7 @@ left join tblJobOrders j on d.JobOrderId=j.JodOrderId
 left join [Inventory].dbo.tblDescriptions de on j.DescriptionId=de.DescriptionId
 left join [ControlPanel].dbo.tblBranch b on d.BranchId=b.BranchId
 left join [ControlPanel].dbo.tblApplicationUsers apu on d.UpUserId=apu.UserId
-where 1=1 {0}) tbl order by EntryDate desc
+where TransferStatus='Pending' and 1=1 {0}) tbl order by EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
         }

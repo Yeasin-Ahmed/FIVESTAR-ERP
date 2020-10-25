@@ -1,6 +1,8 @@
 ﻿@using ERPBO.Production.ViewModels
 @using ERPBO.FrontDesk.ViewModels
 @{
+    /**/
+
     ViewBag.Title = "Index";
     int sl = 0;
     string badge = string.Empty;
@@ -12,14 +14,13 @@
         <hr />
     </div>
 </div>
-
-@if (User.RoleName == "FrontDesk")
+@if (User.RoleName == "User")
 {
     <div class="row">
         @Html.AntiForgeryToken()
         <div class="col-md-12">
-            <div class="card shadow card-gray">
-                <div class="card-header border-transparent">
+            <div class="card shadow card-dark" style="background-image:url(/Content/Images/summary2.jpg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/summary2.jpg)">
                     <h3 class="card-title text-bold text-white"><i class="fas fa-gavel"></i> Job Order Status Summery</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -45,8 +46,8 @@
                         </div>
                         <div class="col-md-3">
                             <div class="info-box">
-                                <span class="info-box-icon bg-secondary">
-                                    <i class="fas fa-flag"></i>
+                                <span class="info-box-icon bg-indigo">
+                                    <i class="fas fa-user-cog"></i>
                                 </span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).StateStatus)</span>
@@ -57,7 +58,7 @@
                         <div class="col-md-3">
                             <div class="info-box">
                                 <span class="info-box-icon bg-warning">
-                                    <i class="fas fa-flag"></i>
+                                    <i class="fas fa-shopping-cart"></i>
                                 </span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RepairDone).StateStatus)</span>
@@ -70,7 +71,7 @@
                         <div class="col-md-3">
                             <div class="info-box">
                                 <span class="info-box-icon bg-danger">
-                                    <i class="fas fa-flag"></i>
+                                    <i class="fas fa-truck"></i>
                                 </span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.DeliveryDone).StateStatus)</span>
@@ -83,12 +84,207 @@
             </div>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-sm-4 col-6">
-            <div class="card shadow card-cyan">
+        <div class="col-md-12">
+            <div class="card shadow" style="background-image:url(../../Content/Images/skyblue.jpg)">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-info">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today JobOrders</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-success">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody class="">
+                                        @foreach (var Bill in (IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>@Bill.Billing</i></b></td>
+                                            </tr>
+                                            <tr style="visibility:hidden">
+                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>@Bill.Billing</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Warrenty---</i></b></td>
+                                                <td><b><i>@Bill.Warrenty</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="icon">
+                                <i class="far fa-bell-slash"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-indigo">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardDailySellsViewModel)
+                                    {
+                                        <b><i>@job.Total.ToString("0.00 TK")</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today Sells</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-yellow">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardTotalSellsViewModel)
+                                    {
+                                        <b><i>@job.Total.ToString("0.00 TK")</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Total Sells</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-euro-sign"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-fuchsia">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody>
+                                        @foreach (var Bill in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                            <tr style="visibility:hidden">
+                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>SignOut---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-secondary">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody>
+                                        @foreach (var Bill in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>Approved---</i></b></td>
+                                                <td><b><i>@Bill.Approved</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Current---</i></b></td>
+                                                <td><b><i>@Bill.Current</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Pending---</i></b></td>
+                                                <td><b><i>@Bill.Pending</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Void---</i></b></td>
+                                                <td><b><i>@Bill.Void</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-recycle"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-orange">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today TransferJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-navy">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today ReceiveJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark">
                 <div class="card-header border-transparent">
-                    <h3 class="card-title">Today Receive Job Orders</h3>
+                    <h3 class="card-title"><i class="fab fa-gg"></i> Current Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -98,20 +294,28 @@
                         </button>
                     </div>
                 </div>
-                <div class="card-body p-0" style="min-height:200px">
-                    @if (((IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel).Count() > 0)
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardCurrentViewModel).Count() > 0)
                     {
-                        <table class="table table-valign-middle">
+                        <table class="table table-sm table-valign-middle text-sm">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Total</th>
+                                    <th class="hide"></th>
+                                    <th class="hide"></th>
+                                    <th class="text-center">JobOrder</th>
+                                    <th class="text-center">ReqisitionCode</th>
+                                    <th class="text-center">ReqisitionDate</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel)
+                                @foreach (var app in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardCurrentViewModel)
                                 {
                                     <tr>
-                                        <td class="text-center text-bold" style="font-size: xx-large">@job.Total</td>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="hide">@app.RequsitionInfoForJobOrderId</td>
+                                        <td class="text-center">@app.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnStockOut" data-item-current="@app.RequsitionInfoForJobOrderId">@app.RequsitionCode</a></td>
+                                        <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                                     </tr>
                                 }
                             </tbody>
@@ -119,10 +323,10 @@
                     }
                     else
                     {
-                        <div class="text-center text-indigo" style="width:100%;height:100%">
-                            <div style="position:absolute;top:40%;left:26%">
-                                <i class="fas fa-box-open fa-5x"></i>
-                                <p class="text-dark text-bold">No Job Orders</p>
+                        <div class="text-center text-indigo" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-address-card fa-5x"></i>
+                                <p class="text-dark text-bold">No Current Requsition</p>
                             </div>
                         </div>
                     }
@@ -130,10 +334,10 @@
             </div>
         </div>
 
-        <div class="col-sm-4 col-6">
-            <div class="card shadow card-cyan">
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark">
                 <div class="card-header border-transparent">
-                    <h3 class="card-title">Today Bill & Warranty Job</h3>
+                    <h3 class="card-title"><i class="fab fa-atlassian"></i> Pending Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -143,22 +347,28 @@
                         </button>
                     </div>
                 </div>
-                <div class="card-body p-0" style="min-height:200px">
-                    @if (((IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel).Count() > 0)
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardPendingViewModel).Count() > 0)
                     {
-                        <table class="table table-striped table-bordered table-valign-middle">
+                        <table class="table table-sm table-valign-middle text-sm">
                             <thead>
                                 <tr>
-                                    <th>JobOrderType</th>
-                                    <th class="text-center">Total</th>
+                                    <td class="hide"></td>
+                                    <td class="hide"></td>
+                                    <th class="text-center">JobOrder</th>
+                                    <th class="text-center">ReqisitionCode</th>
+                                    <th class="text-center">ReqisitionDate</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var Bill in (IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel)
+                                @foreach (var app in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.DashboardPendingViewModel)
                                 {
                                     <tr>
-                                        <td>@Bill.JobOrderType</td>
-                                        <td class="text-center text-bold" style="font-size:x-large">@Bill.Total</td>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="hide">@app.RequsitionInfoForJobOrderId</td>
+                                        <td class="text-center">@app.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnStockOutPending" data-item-pending="@app.RequsitionInfoForJobOrderId">@app.RequsitionCode</a></td>
+                                        <td class="text-center">@app.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                                     </tr>
                                 }
                             </tbody>
@@ -166,13 +376,330 @@
                     }
                     else
                     {
-                        <div class="text-center text-indigo" style="width:100%;height:100%">
-                            <div style="position:absolute;top:40%;left:26%">
-                                <i class="fas fa-box-open fa-5x"></i>
-                                <p class="text-dark text-bold">No Billing Or Warranty</p>
+                        <div class="text-center text-info" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-hand-holding-heart fa-5x"></i>
+                                <p class="text-dark text-bold">No Pending Requsition</p>
                             </div>
                         </div>
                     }
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title"><i class="fas fa-people-carry"></i> Other Branch Requsition</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.AnotherBranchRequsition).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="hide"></th>
+                                    <th class="text-center">JobOrder</th>
+                                    <th class="text-center">ReqisitionCode</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">ReqisitionDate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var another in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.AnotherBranchRequsition)
+                                {
+                                    badge = another.StateStatus == "Pending" ? "badge bg-warning" : (another.StateStatus == "Approved" ? "badge bg-success" : "badge bg-primary");
+                                    <tr>
+                                        <td class="hide">@another.JodOrderId</td>
+                                        <td class="hide">@another.RequsitionInfoForJobOrderId</td>
+                                        <td class="text-center">@another.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnStockOutOther" data-item-other="@another.RequsitionInfoForJobOrderId">@another.RequsitionCode</a></td>
+                                        <td class="text-center" data-val="@another.StateStatus">
+                                            <span class="@badge">@another.StateStatus</span>
+                                        </td>
+                                        <td class="text-center">@another.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-fuchsia" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-heart-broken fa-5x"></i>
+                                <p class="text-dark text-bold">No Other Branch Requsition</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title"><i class="fas fa-fast-backward"></i> Parts Return(TS end)</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<DashbordTsPartsReturnViewModel>)ViewBag.ReturnPartsViewModel).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="hide"></th>
+                                    <th class="text-center">JobOrder</th>
+                                    <th class="text-center">ReqisitionCode</th>
+                                    <th class="text-center">ReqisitionDate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var stock in (IEnumerable<DashbordTsPartsReturnViewModel>)ViewBag.ReturnPartsViewModel)
+                                {
+                                    <tr>
+                                        <td class="hide">@stock.JobOrderId</td>
+                                        <td class="hide">@stock.ReturnInfoId</td>
+                                        <td class="text-center">@stock.JobOrderCode</td>
+                                        <td class="text-center"><a href="#" class="text-bold btnPartsReturn" data-item-val="@stock.ReturnInfoId.ToString()">@stock.RequsitionCode</a></td>
+                                        <td class="text-center">@stock.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-fuchsia" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-atom fa-5x"></i>
+                                <p class="text-dark text-bold">No Parts Return</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+@if (User.RoleName == "FrontDesk")
+{
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="col-md-12">
+            <div class="card shadow card-dark" style="background-image:url(/Content/Images/summary2.jpg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/summary2.jpg)">
+                    <h3 class="card-title text-bold text-white"><i class="fas fa-gavel"></i> Job Order Status Summery</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success">
+                                    <i class="fas fa-flag"></i>
+                                </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).StateStatus)</span>
+                                    <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrderApproved).TotalCount)</a></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-indigo">
+                                    <i class="fas fa-user-cog"></i>
+                                </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).StateStatus)</span>
+                                    <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.JobOrdeAssignToTS).TotalCount)</a></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.RepairDone).StateStatus)</span>
+                                    <span class="info-box-number">
+                                        <a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.RepairDone).TotalCount)</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-danger">
+                                    <i class="fas fa-truck"></i>
+                                </span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">@(((DashboardRequisitionSummeryViewModel)ViewBag.DeliveryDone).StateStatus)</span>
+                                    <span class="info-box-number"><a href="/FrontDesk/GetJobOrders" class="link-black">@(((DashboardRequisitionSummeryViewModel)ViewBag.DeliveryDone).TotalCount)</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow" style="background-image:url(../../Content/Images/skyblue.jpg)">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-info">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today JobOrders</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-success">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody class="">
+                                        @foreach (var Bill in (IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>@Bill.Billing</i></b></td>
+                                            </tr>
+                                            <tr style="visibility:hidden">
+                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>@Bill.Billing</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Warrenty---</i></b></td>
+                                                <td><b><i>@Bill.Warrenty</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="icon">
+                                <i class="far fa-bell-slash"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-indigo">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardDailySellsViewModel)
+                                    {
+                                        <b><i>@job.Total.ToString("0.00 TK")</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today Sells</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-yellow">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardTotalSellsViewModel)
+                                    {
+                                        <b><i>@job.Total.ToString("0.00 TK")</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Total Sells</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-euro-sign"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-orange">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today TransferJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-maroon">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today ReceiveJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,201 +708,221 @@
 @if (User.RoleName == "Technical Services")
 {
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-sm-4 col-6">
-            <div class="card shadow card-blue">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Today SingIn & SingOut</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body p-0" style="min-height:200px">
-                    @if (((IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel).Count() > 0)
-                    {
-                        <table class="table table-striped table-bordered table-valign-middle">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">SingIn</th>
-                                    <th class="text-center">SingOut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var inout in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
-                                {
-                                    <tr>
-                                        <td class="text-center text-bold" style="font-size:x-large">@inout.TotalSignInToday</td>
-                                        <td class="text-center text-bold" style="font-size:x-large">@inout.TotalSignOutToday</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="text-center text-indigo" style="width:100%;height:100%">
-                            <div style="position:absolute;top:40%;left:26%">
-                                <i class="fas fa-box-open fa-5x"></i>
-                                <p class="text-dark text-bold">No Status</p>
+        <div class="col-md-12">
+            <div class="card shadow" style="background-image:url(../../Content/Images/skyblue.jpg)">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-fuchsia">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody>
+                                        @foreach (var Bill in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                            <tr style="visibility:hidden">
+                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>SignOut---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
+                            <div class="icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
                         </div>
-                    }
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-indigo">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody>
+                                        @foreach (var Bill in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>Approved---</i></b></td>
+                                                <td><b><i>@Bill.Approved</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Current---</i></b></td>
+                                                <td><b><i>@Bill.Current</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Pending---</i></b></td>
+                                                <td><b><i>@Bill.Pending</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Void---</i></b></td>
+                                                <td><b><i>@Bill.Void</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-recycle"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-orange">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today TransferJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-green">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today ReceiveJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-4 col-6">
-            <div class="card shadow card-blue">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Spare Parts Request</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body p-0" style="min-height:200px">
-                    @if (((IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel).Count() > 0)
-                    {
-                        <table class="table table-striped table-bordered table-valign-middle">
-                            <thead>
-                                <tr>
-                                    <th>StateStatus</th>
-                                    <th class="text-center">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var Req in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
-                                {
-                                    <tr>
-                                        <td>@Req.StateStatus</td>
-                                        <td class="text-center text-bold" style="font-size:x-large">@Req.Total</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="text-center text-indigo" style="width:100%;height:100%">
-                            <div style="position:absolute;top:40%;left:26%">
-                                <i class="fas fa-box-open fa-5x"></i>
-                                <p class="text-dark text-bold">No Status</p>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
     </div>
 }
 @if (User.RoleName == "Head Of Technical Services")
 {
     <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-sm-4 col-6">
-            <div class="card shadow card-blue">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Today SingIn & SingOut</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body p-0" style="min-height:200px">
-                    @if (((IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel).Count() > 0)
-                    {
-                        <table class="table table-striped table-bordered table-valign-middle">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">SingIn</th>
-                                    <th class="text-center">SingOut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var inout in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
-                                {
-                                    <tr>
-                                        <td class="text-center text-bold" style="font-size:x-large">@inout.TotalSignInToday</td>
-                                        <td class="text-center text-bold" style="font-size:x-large">@inout.TotalSignOutToday</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="text-center text-indigo" style="width:100%;height:100%">
-                            <div style="position:absolute;top:40%;left:26%">
-                                <i class="fas fa-box-open fa-5x"></i>
-                                <p class="text-dark text-bold">No Status</p>
+        <div class="col-md-12">
+            <div class="card shadow" style="background-image:url(../../Content/Images/tsh1.png)">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-yellow">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody>
+                                        @foreach (var Bill in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                            <tr style="visibility:hidden">
+                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>SignOut---</i></b></td>
+                                                <td><b><i>@Bill.TotalSignOutToday</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
+                            <div class="icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
                         </div>
-                    }
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-indigo">
+                            <div class="inner" style="height:115px">
+                                <table>
+                                    <tbody>
+                                        @foreach (var Bill in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
+                                        {
+                                            <tr>
+                                                <td><b><i>Approved---</i></b></td>
+                                                <td><b><i>@Bill.Approved</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Current---</i></b></td>
+                                                <td><b><i>@Bill.Current</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Pending---</i></b></td>
+                                                <td><b><i>@Bill.Pending</i></b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b><i>Void---</i></b></td>
+                                                <td><b><i>@Bill.Void</i></b></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-recycle"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-danger">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today TransferJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-gradient-teal">
+                            <div class="inner" style="height:115px">
+                                <h3>
+                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                    {
+                                        <b><i>@job.Total</i></b>
+                                    }
+                                </h3>
+                                <p><b><i>Today ReceiveJob</i></b></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-4 col-6">
-            <div class="card shadow card-blue">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Spare Parts Request</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body p-0" style="min-height:200px">
-                    @if (((IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel).Count() > 0)
-                    {
-                        <table class="table table-striped table-bordered table-valign-middle">
-                            <thead>
-                                <tr>
-                                    <th>StateStatus</th>
-                                    <th class="text-center">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var Req in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
-                                {
-                                    <tr>
-                                        <td>@Req.StateStatus</td>
-                                        <td class="text-center text-bold" style="font-size:x-large">@Req.Total</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="text-center text-indigo" style="width:100%;height:100%">
-                            <div style="position:absolute;top:40%;left:26%">
-                                <i class="fas fa-box-open fa-5x"></i>
-                                <p class="text-dark text-bold">No Status</p>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
     </div>
 }
 
@@ -611,7 +1158,7 @@
 <div class="modal fade" id="modalTsStockReturn" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-secondary">
+            <div class="modal-header alert-secondary" style="height:60px">
                 <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Return Stock</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -638,7 +1185,7 @@
 <div class="modal fade" id="modalRequsitionJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header alert-secondary">
+            <div class="modal-header alert-secondary" style="height:60px">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="Id" id="hdfReqInfoId" />
                 <input type="hidden" name="Id" id="hdfRequsitionDetailId" />

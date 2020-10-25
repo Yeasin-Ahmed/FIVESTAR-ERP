@@ -86,6 +86,14 @@
         <td class="text-purple">UsedParts</td>
         <td colspan="3">@Model.PartsName</td>
     </tr>
+    <tr>
+        <td class="text-purple">CourierName</td>
+        <td>@Model.CourierName</td>
+        <td class="text-purple">CourierNumber</td>
+        <td>@Model.CourierNumber</td>
+        <td class="text-purple">ApproxBill</td>
+        <td>@Model.ApproxBill</td>
+    </tr>
     @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.PendingJobOrder)
     {
         <tr>
@@ -111,7 +119,7 @@
     }
 </table>
 <div class="modal-footer">
-    @if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone))
+    @if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.IsReturn ==true) || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone))
     {
         <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
     }

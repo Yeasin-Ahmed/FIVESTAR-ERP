@@ -11,16 +11,16 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active"  id="custom-tabs-two-jobTransferList-tab" data-toggle="pill" href="#custom-tabs-two-jobTransferList" role="tab" aria-controls="custom-tabs-two-jobTransferList" aria-selected="true">Job Transfer</a>
+                        <a class="nav-link active" id="custom-tabs-two-jobTransferList-tab" data-toggle="pill" href="#custom-tabs-two-jobTransferList" role="tab" aria-controls="custom-tabs-two-jobTransferList" aria-selected="true">Job Transfer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  id="custom-tabs-two-receiveJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-receiveJobOrderList" role="tab" aria-controls="custom-tabs-two-receiveJobOrderList" aria-selected="true">Receive JobOrder</a>
+                        <a class="nav-link" id="custom-tabs-two-receiveJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-receiveJobOrderList" role="tab" aria-controls="custom-tabs-two-receiveJobOrderList" aria-selected="true">Receive JobOrder</a>
                     </li>
                     <li class="nav-item hide">
-                        <a class="nav-link "  id="custom-tabs-two-returnJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-returnJobOrderList" role="tab" aria-controls="custom-tabs-two-returnJobOrderList" aria-selected="true">Return JobOrder</a>
+                        <a class="nav-link " id="custom-tabs-two-returnJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-returnJobOrderList" role="tab" aria-controls="custom-tabs-two-returnJobOrderList" aria-selected="true">Return JobOrder</a>
                     </li>
                     <li class="nav-item hide">
-                        <a class="nav-link"  id="custom-tabs-two-receivedReturnJobList-tab" data-toggle="pill" href="#custom-tabs-two-receivedReturnJobList" role="tab" aria-controls="custom-tabs-two-receivedReturnJobList" aria-selected="false">Receive Return Job</a>
+                        <a class="nav-link" id="custom-tabs-two-receivedReturnJobList-tab" data-toggle="pill" href="#custom-tabs-two-receivedReturnJobList" role="tab" aria-controls="custom-tabs-two-receivedReturnJobList" aria-selected="false">Receive Return Job</a>
                     </li>
                 </ul>
             </div>
@@ -41,7 +41,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -63,8 +63,7 @@
                                             </div>
                                             <div class="col-md-1"></div>
                                             <div class="col-md-5">
-                                                <button type="submit" id="btnSubmitReturnJob" class="btn float-right btn-outline-success"> Return <i class="fas fa-retweet"></i></button>
-                                                <button type="submit" id="btnSubmitJobTransfer" class="btn float-right btn-outline-primary"> Transfer <i class="fas fa-paper-plane"></i></button>
+                                                <button type="submit" id="btnSubmit" class="btn float-right btn-outline-primary"> Submit <i class="fas fa-paper-plane"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -120,8 +119,8 @@
                                                 <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">TransferCode</label>
-                                                <input type="text" id="txtTransferCode2" class="form-control form-control-sm" placeholder="Search By Code" />
+                                                <label class="control-label font-weight-bold">DO Number</label>
+                                                <input type="text" id="txtTransferCode2" class="form-control form-control-sm" placeholder="Search By DO No" />
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">JobCode</label>
@@ -304,6 +303,24 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="hdfJobOrderId" />
+                <h4 id="modalHeading" class="modal-title">JobOrder Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="dataContainer5">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div>
     @*<div class="row">
             <div class="col-md-12 text-center">
@@ -368,6 +385,7 @@
         //Return JobOrder
         var ddlBranchName3 = $("#ddlBranchName3");
         var count = 0;
+
         //Receive Return JobOrder
         var ddlBranchName4 = $("#ddlBranchName4");
         var txtTransferCode4 = $("#txtTransferCode4");
@@ -375,6 +393,8 @@
         var dptFromDate4 = $("#dptFromDate4");
         var dptToDate4 = $("#dptToDate4");
         var ddlTransferStatus4 = $("#ddlTransferStatus4");
+        //
+        var hdfJobOrderId = $("#hdfJobOrderId");
 
         $(document).ready(function () {
 
@@ -478,7 +498,7 @@
             var allChecked = $(".tblJobOrderTransferList tbody tr").length == count;
             $('input[name="allJobOrder"]').prop("checked", allChecked);
         })
-   
+
         function LoadDataTableForTransferJob() {
             var data = { flag: "search", page: pageNo };
 
@@ -510,56 +530,104 @@
             $("#ddlTransferCondition").trigger("change");
         })
 
-        $("#btnSubmitJobTransfer").click(function (e) {
+        $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            if (ValidateSubmit()) {
-                bootbox.confirm("Are you sure you want to Transfer these Job Orders", function (result) {
+            if (ddlTransferCondition.val() == "Transfer") {
+                if (ValidateSubmit()) {
+                    bootbox.confirm("Are you sure you want to Transfer these Job Orders", function (result) {
+                        if (result) {
+                            disable("#btnSubmitJobTransfer");
+                            var transferId = TryParseInt(ddlBranchName.val(), 0);
+                            var jobOrders = []; jobOrders.length = 0;
+                            var cName = $(".tblJobOrderTransferList tbody tr").children('td').eq('11').children('input').val();
+                            var cNumber = $(".tblJobOrderTransferList tbody tr").children('td').eq('12').children('input').val();
+
+                            $.each($(".tblJobOrderTransferList tbody tr"), function (index, item) {
+                                var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
+                                if (checkBox.is(":checked")) {
+                                    jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                                }
+                            });
+                            //console.log("JobOrders");
+                            console.log(jobOrders);
+
+                            var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders, cName: cName, cNumber: cNumber });
+                            console.log(data);
+                           // return console.log(data);
+                            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobTransfer', data, getToken())).then(function (res, status) {
+                                if (res.isSuccess === true && status === "success") {
+                                    $('.toastrDefaultSuccess').trigger('click');
+
+                                    var pdfWindow = window.open("", "_blank")
+                                    console.log(res.text);
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
+                                    download(res.text, "DeliveryChallan", "application/pdf"); // Download
+
+                                    count = 0;
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJobTransferList")');
+                                    }, 1000);
+
+                                }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                                }
+                                enable("#btnSubmitJobTransfer");
+                            }).fail(function (error) {
+                                console.log(error);
+                                $('.toastrDefaultError').trigger('click');
+                                enable("#btnSubmitJobTransfer");
+                            });
+                        }
+                    })
+                }
+            }
+            else {
+                if (ValidateSubmit2()) {
+                bootbox.confirm("Are you sure you want to Return these Job Orders", function (result) {
                     if (result) {
-                        disable("#btnSubmitJobTransfer");
+                        disable("#btnSubmitReturnJob");
                         var transferId = TryParseInt(ddlBranchName.val(), 0);
                         var jobOrders = []; jobOrders.length = 0;
-                        var cName = $(".tblJobOrderTransferList tbody tr").children('td').eq('11').children('input').val();
-                        var cNumber = $(".tblJobOrderTransferList tbody tr").children('td').eq('12').children('input').val();
-
-                        $.each($(".tblJobOrderTransferList tbody tr"), function (index, item) {
-                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
+                        var cName = $(".tblTransferReceiveJob tbody tr").children('td').eq('11').children('input').val();
+                        var cNumber = $(".tblTransferReceiveJob tbody tr").children('td').eq('12').children('input').val();
+                        $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName2"]');
                             if (checkBox.is(":checked")) {
                                 jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
                             }
                         });
                         //console.log("JobOrders");
-                        console.log(jobOrders);
+                        //console.log(jobOrders);
 
                         var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders, cName: cName, cNumber: cNumber });
-                        console.log(data);
-                        //return console.log(data);
-                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobTransfer', data, getToken())).then(function (res, status) {
+                       // return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobReturn', data, getToken())).then(function (res, status) {
                             if (res.isSuccess === true && status === "success") {
                                 $('.toastrDefaultSuccess').trigger('click');
-
                                 var pdfWindow = window.open("", "_blank")
                                 console.log(res.text);
                                 pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
                                 download(res.text, "DeliveryChallan", "application/pdf"); // Download
-
                                 count = 0;
                                 setTimeout(function () {
-                                    redirectPage('@Url.Action("GetJobTransferList")');
-                                }, 1000);
-
+                            redirectPage('@Url.Action("GetJobTransferList")');
+                        }, 1000);
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
                             }
-                            enable("#btnSubmitJobTransfer");
+                            enable("#btnSubmitReturnJob");
                         }).fail(function (error) {
                             console.log(error);
                             $('.toastrDefaultError').trigger('click');
-                            enable("#btnSubmitJobTransfer");
+                            enable("#btnSubmitReturnJob");
                         });
                     }
                 })
             }
+            }
+            
         })
 
         function ValidateSubmit() {
@@ -866,6 +934,31 @@
                 }
             }
         })
+        $(document).on('click', 'a.data-item-details', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-item-details");
+            getJobOrderDetail("Detail", id)
+        })
+
+        function getJobOrderDetail(flag, id) {
+            hdfJobOrderId.val("0");
+            if (TryParseInt(id) > 0) {
+                hdfJobOrderId.val(id)
+                var data = { flag: flag, modelId: 0, jobOrderId: id, mobileNo: '', status: "", jobCode: "", page: 1 };
+
+                console.log(data);
+                $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderDetails', data)).then(function (res, status) {
+                    console.log(status);
+                    if (status === "success") {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+                        $("#modalJobOrderDetails").modal("show");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
+            }
+        }
 
         function redirectPage(page) {
             window.location.replace(page);

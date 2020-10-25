@@ -3,6 +3,26 @@
 @{
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
+    int total = 0;
+    int warrenty = 0;
+    int billing = 0;
+    double casht = 0;
+    double sell = 0;
+    int tsbacklog = 0;
+    int tsallblog = 0;
+    int tssp = 0;
+    int tswip = 0;
+    int rar = 0;
+    int rwr = 0;
+    int pfs = 0;
+    int pfa = 0;
+    int wdelivery = 0;
+    int bdelivery = 0;
+    int tdelivery = 0;
+    int deliveryp = 0;
+    int allwUndelivery = 0;
+    int allbUndelivery = 0;
+    int tUndelivery = 0;
 }
 
 <div class="row">
@@ -11,12 +31,13 @@
             <thead class="btn-dark">
                 <tr class="text-center text-sm">
                     <th style="vertical-align:middle">#SL</th>
-                    <th style="vertical-align:middle">DATE</th>
-                    <th style="vertical-align:middle">BranchWise DailyJob</th>
-                    <th style="vertical-align:middle">TOTAL</th>
+                    <th style="vertical-align:middle;white-space:nowrap">DATE</th>
+                    <th style="vertical-align:middle;white-space:nowrap">Branch</th>
+                    <th style="vertical-align:middle">Total</th>
                     <th style="vertical-align:middle">Warrenty</th>
                     <th style="vertical-align:middle">Billing</th>
                     <th style="vertical-align:middle">Cash</th>
+                    <th style="vertical-align:middle">Accessories Sells</th>
                     <th style="vertical-align:middle">Ts Backlog</th>
                     <th style="vertical-align:middle">Ts Ovell All Backlog</th>
                     <th style="vertical-align:middle">Ts Sign In Pending</th>
@@ -38,31 +59,55 @@
                 @foreach (var item in Model)
                 {
                     sl = sl + 1;
+                    total += item.TOTAL.Value;
+                    warrenty += item.WarrentyJob.Value;
+                    billing += item.BillingJob.Value;
+                    casht += item.CASH.Value;
+                    sell += item.AccessoriesSells.Value;
+                    tsbacklog += item.TSBacklog.Value;
+                    tsallblog += item.TSOverAllBacklog.Value;
+                    tssp += item.TSSignInPending.Value;
+                    tswip += item.WorkInProgress.Value;
+                    rar += item.RepairAndReturn.Value;
+                    rwr += item.ReturnWithoutRepair.Value;
+                    pfs += item.PendingForSpareParts.Value;
+                    pfa += item.PendingForApproval.Value;
+                    wdelivery += item.WarrentyDelivery.Value;
+                    bdelivery += item.BillingDelivery.Value;
+                    tdelivery += item.TotalDelivery.Value;
+                    deliveryp += item.DeliveryPending.Value;
+                    allwUndelivery += item.OverAllWarrentyUnDelivered.Value;
+                    allbUndelivery += item.OverAllBillingUnDelivered.Value;
+                    tUndelivery += item.TotalUnDelivered.Value;
+
                     string entryDate = item.EntryDate != null ? item.EntryDate.ToString("dd-MMM-yyy") : "";
-                <tr class="text-sm">
-                    <td class="text-center">@sl</td>
-                    <td class="text-center">@entryDate</td>
-                    <td class="text-center">@item.BranchWiseDailyJob</td>
-                    <td class="text-center">@item.TOTAL</td>
-                    <td class="text-center">@item.WarrentyJob</td>
-                    <td class="text-center">@item.BillingJob</td>
-                    <td class="text-center">@item.CASH</td>
-                    <td class="text-center">@item.TSBacklog</td>
-                    <td class="text-center">@item.TSOverAllBacklog</td>
-                    <td class="text-center">@item.TSSignInPending</td>
-                    <td class="text-center">@item.WorkInProgress</td>
-                    <td class="text-center">@item.RepairAndReturn</td>
-                    <td class="text-center">@item.ReturnWithoutRepair</td>
-                    <td class="text-center">@item.PendingForSpareParts</td>
-                    <td class="text-center">@item.PendingForApproval</td>
-                    <td class="text-center">@item.WarrentyDelivery</td>
-                    <td class="text-center">@item.BillingDelivery</td>
-                    <th class="text-center">@item.TotalDelivery</th>
-                    <td class="text-center">@item.DeliveryPending</td>
-                    <td class="text-center">@item.OverAllWarrentyUnDelivered</td>
-                    <td class="text-center">@item.OverAllBillingUnDelivered</td>
-                    <td class="text-center">@item.TotalUnDelivered</td>
-                </tr>
+                    string cash = item.CASH != null ? item.CASH.Value.ToString("0.00") : "0.00";
+                    string asell = item.AccessoriesSells != null ? item.AccessoriesSells.Value.ToString("0.00") : "0.00";
+                    <tr class="text-sm">
+                        <td class="text-center">@sl</td>
+                        <td class="text-center" style="white-space:nowrap">@entryDate</td>
+                        <td class="text-center" style="white-space:nowrap">@item.BranchName</td>
+                        <td class="text-center">@item.TOTAL</td>
+                        <td class="text-center">@item.WarrentyJob</td>
+                        <td class="text-center">@item.BillingJob</td>
+                        <td class="text-center">@cash</td>
+                        <td class="text-center">@asell</td>
+                        <td class="text-center">@item.TSBacklog</td>
+                        <td class="text-center">@item.TSOverAllBacklog</td>
+                        <td class="text-center">@item.TSSignInPending</td>
+                        <td class="text-center">@item.WorkInProgress</td>
+                        <td class="text-center">@item.RepairAndReturn</td>
+                        <td class="text-center">@item.ReturnWithoutRepair</td>
+                        <td class="text-center">@item.PendingForSpareParts</td>
+                        <td class="text-center">@item.PendingForApproval</td>
+                        <td class="text-center">@item.WarrentyDelivery</td>
+                        <td class="text-center">@item.BillingDelivery</td>
+                        <th class="text-center">@item.TotalDelivery</th>
+                        <td class="text-center">@item.DeliveryPending</td>
+                        <td class="text-center">@item.OverAllWarrentyUnDelivered</td>
+                        <td class="text-center">@item.OverAllBillingUnDelivered</td>
+                        <td class="text-center">@item.TotalUnDelivered</td>
+                    </tr>
                 }
                 @if (Model.Count() == 0)
                 {
@@ -71,10 +116,35 @@
                     </tr>
                 }
             </tbody>
+            <tfoot class="btn-secondary">
+                <tr>
+                    <td colspan="3" class="text-right text-bold">Total</td>
+                    <td class="text-center text-bold">@total</td>
+                    <td class="text-center text-bold">@warrenty</td>
+                    <td class="text-center text-bold">@billing</td>
+                    <td class="text-center text-bold">@casht.ToString("0.00")</td>
+                    <td class="text-center text-bold">@sell.ToString("0.00")</td>
+                    <td class="text-center text-bold">@tsbacklog</td>
+                    <td class="text-center text-bold">@tsallblog</td>
+                    <td class="text-center text-bold">@tssp</td>
+                    <td class="text-center text-bold">@tswip</td>
+                    <td class="text-center text-bold">@rar</td>
+                    <td class="text-center text-bold">@rwr</td>
+                    <td class="text-center text-bold">@pfs</td>
+                    <td class="text-center text-bold">@pfa</td>
+                    <td class="text-center text-bold">@wdelivery</td>
+                    <td class="text-center text-bold">@bdelivery</td>
+                    <td class="text-center text-bold">@tdelivery</td>
+                    <td class="text-center text-bold">@deliveryp</td>
+                    <td class="text-center text-bold">@allwUndelivery</td>
+                    <td class="text-center text-bold">@allbUndelivery</td>
+                    <td class="text-center text-bold">@tUndelivery</td>
+                </tr>
+            </tfoot>
         </table>
-        <div class="col-md-12">
-            @Html.Partial("_Pagination", pagerData)
-        </div>
+    </div>
+    <div class="col-md-12">
+        @Html.Partial("_Pagination", pagerData)
     </div>
 </div>
 

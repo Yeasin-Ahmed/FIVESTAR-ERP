@@ -2298,7 +2298,7 @@
         <Source>Database</Source>
         <Value>=First(Fields!ReportImage.Value, "ReportHead")</Value>
         <MIMEType>image/png</MIMEType>
-        <Sizing>FitProportional</Sizing>
+        <Sizing>Fit</Sizing>
         <Top>0.02792in</Top>
         <Left>0.05292in</Left>
         <Height>0.73958in</Height>

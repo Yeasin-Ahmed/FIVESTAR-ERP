@@ -93,7 +93,7 @@ namespace ERPBLL.FrontDesk
             }
             if (branchId > 0)
             {
-                param += string.Format(@"and ((jo.BranchId={0} and jo.IsTransfer is null)
+                param += string.Format(@"and ((jo.BranchId={0} and (jo.IsTransfer is null or jo.IsTransfer='True'))
 OR 
 (jo.TransferBranchId={0} and jo.IsTransfer= 'true')
 OR
@@ -121,8 +121,8 @@ CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -166,10 +166,9 @@ Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Ord
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
+Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
 
-Where 1 = 1{0}
-) tbl Order By EntryDate desc
-
+Where 1 = 1{0}) tbl Order By EntryDate desc
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -398,7 +397,8 @@ Where 1 = 1{0}
                     JobOrderType = jobOrderDto.JobOrderType,
                     WarrantyDate = jobOrderDto.WarrantyDate,
                     Remarks = jobOrderDto.Remarks,
-                    CourierName=jobOrderDto.CourierName,
+                    JobLocation = branchId,
+                    CourierName =jobOrderDto.CourierName,
                     CourierNumber= jobOrderDto.CourierNumber,
                     ApproxBill= jobOrderDto.ApproxBill,
                     ReferenceNumber = jobOrderDto.ReferenceNumber,
@@ -467,6 +467,7 @@ Where 1 = 1{0}
                 jobOrderDb.IMEI = jobOrderDto.IMEI;
                 jobOrderDb.IMEI2 = jobOrderDto.IMEI2;
                 jobOrderDb.Type = jobOrderDto.Type;
+                jobOrderDb.JobLocation = branchId;
                 jobOrderDb.CustomerType = jobOrderDto.CustomerType;
                 jobOrderDb.ModelColor = jobOrderDto.ModelColor;
                 jobOrderDb.JobOrderType = jobOrderDto.JobOrderType;
@@ -837,7 +838,7 @@ Where 1 = 1{0} and jo.StateStatus='Job-Initiated'
         public JobOrder GetReferencesNumberByIMEI(string imei, long orgId, long branchId)
         {
             imei = imei.Trim();
-            return _jobOrderRepository.GetAll(job => job.IMEI == imei.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
+            return _jobOrderRepository.GetAll(job => (job.IMEI == imei.ToString() || job.IMEI2 == imei.ToString()) && job.OrganizationId == orgId && job.BranchId == branchId).OrderByDescending(o => o.JodOrderId).FirstOrDefault();
         }
         public JobOrder GetReferencesNumberByIMEI2(string imei2, long orgId, long branchId)
         {
@@ -855,9 +856,12 @@ Where 1 = 1{0} and jo.StateStatus='Job-Initiated'
         public IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> DashboardDailyBillingAndWarrantyJob(long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardDailyBillingAndWarrantyJobDTO>(
-                string.Format(@"select JobOrderType,COUNT(JobOrderType) as Total from tblJobOrders 
-                Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1}
-				group by JobOrderType", orgId, branchId)).ToList();
+                string.Format(@"Select 
+(select ISNULL(COUNT(JobOrderType),0)'Billing' from tblJobOrders 
+Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1} and JobOrderType='Billing')'Billing',
+
+(select ISNULL(COUNT(JobOrderType),0)'Warrenty' from tblJobOrders 
+Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1} and JobOrderType='Warrenty')'Warrenty'", orgId, branchId)).ToList();
         }
 
         public bool GetJobOrderById(long jobOrderId, long orgId, long branchId)
@@ -1101,6 +1105,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 if (jobOrderInDb != null )
                 {
                     jobOrderInDb.IsTransfer = true;
+                    jobOrderInDb.JobLocation = transferId;
                     jobOrderInDb.CourierName = cName;
                     jobOrderInDb.CourierNumber = cNumber;
                     jobOrderInDb.UpUserId = userId;
@@ -1204,6 +1209,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
                 if (jobOrderInDb != null)
                 {
                     jobOrderInDb.IsTransfer = false;
+                    jobOrderInDb.JobLocation = transferId;
                     jobOrderInDb.CourierName = cName;
                     jobOrderInDb.CourierNumber = cNumber;
                     jobOrderInDb.UpUserId = userId;
@@ -1301,103 +1307,111 @@ where j.IsTransfer='True' and j.TransferBranchId={0} and q.OrganizationId={1}", 
 
         public IEnumerable<DailySummaryReportDTO> DailySummaryReport(long orgId, long branchId, string fromDate, string toDate)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DailySummaryReportDTO>(QueryForDailySummaryReport(orgId, branchId,fromDate,toDate)).ToList();
+            fromDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+            var query = string.Format(@"Exec [dbo].[spDailySummeryForBranch] '{0}','{1}','{2}','{3}'", fromDate, toDate, branchId, orgId);
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DailySummaryReportDTO>(query).ToList();
         }
         private string QueryForDailySummaryReport(long orgId, long branchId, string fromDate, string toDate)
         {
             string query = string.Empty;
             string param = string.Empty;
 
-            if (orgId > 0)
-            {
-                param += string.Format(@"and jo.OrganizationId={0}", orgId);
-            }
-            if (branchId > 0)
-            {
-                param += string.Format(@"and jo.BranchId={0}", branchId);
-            }
-            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
-            {
-                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
-                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
-                param += string.Format(@" and Cast(jo.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
-            }
-            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
-            {
-                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
-                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", fDate);
-            }
-            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
-            {
-                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
-                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
-            }
-            query = string.Format(@"Select  Cast(jo.EntryDate as Date) 'EntryDate',
-Count(jo.JobOrderCode)'DailyJobOrder',
-(Select count(JobOrderType) From tblJobOrders
-Where JobOrderType='Billing' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'BillingJob',
+            var q= string.Format(@"Exec YourProceName '{0}','{1}','{2}','{3}'", fromDate, toDate,branchId,orgId);
 
-(Select count(JobOrderType) From tblJobOrders
-Where JobOrderType='Warrenty' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'WarrentyJob',
+//            if (orgId > 0)
+//            {
+//                param += string.Format(@"and jo.OrganizationId={0}", orgId);
+//            }
+//            if (branchId > 0)
+//            {
+//                param += string.Format(@"and jo.BranchId={0}", branchId);
+//            }
+//            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+//            {
+//                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+//                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+//                param += string.Format(@" and Cast(jo.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+//            }
+//            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+//            {
+//                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+//                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", fDate);
+//            }
+//            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+//            {
+//                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+//                param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
+//            }
+//            query = string.Format(@"Select  Cast(jo.EntryDate as Date) 'EntryDate',
+//Count(jo.JobOrderCode)'DailyJobOrder',
+//(Select count(JobOrderType) From tblJobOrders
+//Where JobOrderType='Billing' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'BillingJob',
 
-(select Sum(NetAmount) From tblInvoiceInfo
-Where Cast(EntryDate as Date) = Cast(jo.EntryDate as Date) and BranchId=jo.BranchId)'CASH',
+//(Select count(JobOrderType) From tblJobOrders
+//Where JobOrderType='Warrenty' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'WarrentyJob',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='TS-Assigned' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'TSBacklog',
+//(select Sum(NetAmount) From tblInvoiceInfo
+//Where Cast(EntryDate as Date) = Cast(jo.EntryDate as Date) and BranchId=jo.BranchId)'CASH',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='TS-Assigned' and BranchId=jo.BranchId And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'TSOverAllBacklog',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='TS-Assigned' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'TSBacklog',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Job-Initiated' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'TSSignInPending',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='TS-Assigned' and BranchId=jo.BranchId And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'TSOverAllBacklog',
 
-(Select count(TsRepairStatus) From tblJobOrders
-Where TsRepairStatus='REPAIR AND RETURN' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'RepairAndReturn',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='Job-Initiated' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'TSSignInPending',
 
-(Select count(TsRepairStatus) From tblJobOrders
-Where TsRepairStatus='RETURN WITHOUT REPAIR' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'ReturnWithoutRepair',
+//(Select count(TsRepairStatus) From tblJobOrders
+//Where TsRepairStatus='REPAIR AND RETURN' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'RepairAndReturn',
 
-(Select count(TsRepairStatus) From tblJobOrders
-Where TsRepairStatus='WORK IN PROGRESS' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'WorkInProgress',
+//(Select count(TsRepairStatus) From tblJobOrders
+//Where TsRepairStatus='RETURN WITHOUT REPAIR' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'ReturnWithoutRepair',
 
-(Select count(TsRepairStatus) From tblJobOrders
-Where TsRepairStatus='PENDING FOR SPARE PARTS' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'PendingForSpareParts',
+//(Select count(TsRepairStatus) From tblJobOrders
+//Where TsRepairStatus='WORK IN PROGRESS' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'WorkInProgress',
 
-(Select count(TsRepairStatus) From tblJobOrders
-Where TsRepairStatus='PENDING FOR APPROVAL' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'PendingForApproval',
+//(Select count(TsRepairStatus) From tblJobOrders
+//Where TsRepairStatus='PENDING FOR SPARE PARTS' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'PendingForSpareParts',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Delivery-Done' and JobOrderType='Warrenty' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'WarrentyDelivery',
+//(Select count(TsRepairStatus) From tblJobOrders
+//Where TsRepairStatus='PENDING FOR APPROVAL' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'PendingForApproval',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Delivery-Done' and JobOrderType='Billing' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'BillingDelivery',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='Delivery-Done' and JobOrderType='Warrenty' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'WarrentyDelivery',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Delivery-Done' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'TotalDelivery',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='Delivery-Done' and JobOrderType='Billing' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'BillingDelivery',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'DeliveryPending',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='Delivery-Done' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'TotalDelivery',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' and JobOrderType='Warrenty' and BranchId=jo.BranchId And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllWarrentyUnDelivered',
+//(Select count(StateStatus) From tblJobOrders
+//Where StateStatus='Repair-Done' and BranchId=jo.BranchId and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'DeliveryPending',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' and JobOrderType='Billing' and BranchId=jo.BranchId  And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllBillingUnDelivered',
+//(Select count(StateStatus) From tblJobOrders
+//Where (StateStatus='Repair-Done' or StateStatus='Job-Initiated' or StateStatus='TS-Assigned') and JobOrderType='Warrenty' and BranchId=jo.BranchId  And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllWarrentyUnDelivered',
 
-(Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' and BranchId=jo.BranchId And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'TotalUnDelivered'
+//(Select count(StateStatus) From tblJobOrders
+//Where (StateStatus='Repair-Done' or StateStatus='Job-Initiated' or StateStatus='TS-Assigned') and JobOrderType='Billing' and BranchId=jo.BranchId  And Cast(EntryDate as date) <= Cast(jo.EntryDate as date)
+//)'OverAllBillingUnDelivered',
 
-From tblJobOrders jo
-where 1=1{0}
-Group By  jo.BranchId ,Cast(jo.EntryDate as Date)
-Order By EntryDate desc", Utility.ParamChecker(param));
+//(Select count(StateStatus) From tblJobOrders
+//Where (StateStatus='Repair-Done' or StateStatus='Job-Initiated' or StateStatus='TS-Assigned') and BranchId=jo.BranchId 
+//And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'TotalUnDelivered'
+
+//From tblJobOrders jo
+//where 1=1{0}
+//Group By  jo.BranchId ,Cast(jo.EntryDate as Date)
+//Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
         public IEnumerable<DailySummaryReportDTO> AllBranchDailySummaryReport(long orgId, string fromDate, string toDate)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DailySummaryReportDTO>(QueryForAllBranchDailySummaryReport(orgId, fromDate, toDate)).ToList();
+            fromDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+            var query = string.Format(@"Exec [dbo].[spAllBranchDailySummery] '{0}','{1}','{2}'", fromDate, toDate,orgId);
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<DailySummaryReportDTO>(query).ToList();
         }
         private string QueryForAllBranchDailySummaryReport(long orgId, string fromDate, string toDate)
         {
@@ -1483,13 +1497,13 @@ Where StateStatus='Delivery-Done' and Cast(EntryDate as Date) = Cast(jo.EntryDat
 Where StateStatus='Repair-Done' and Cast(EntryDate as Date) = Cast(jo.EntryDate as Date))'DeliveryPending',
 
 (Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' and JobOrderType='Warrenty' And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllWarrentyUnDelivered',
+Where (StateStatus='Repair-Done' or StateStatus='Job-Initiated' or StateStatus='TS-Assigned') and JobOrderType='Warrenty' And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllWarrentyUnDelivered',
 
 (Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' and JobOrderType='Billing'  And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllBillingUnDelivered',
+Where (StateStatus='Repair-Done' or StateStatus='Job-Initiated' or StateStatus='TS-Assigned') and JobOrderType='Billing'  And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'OverAllBillingUnDelivered',
 
 (Select count(StateStatus) From tblJobOrders
-Where StateStatus='Repair-Done' And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'TotalUnDelivered'
+Where (StateStatus='Repair-Done' or StateStatus='Job-Initiated' or StateStatus='TS-Assigned') And Cast(EntryDate as date) <= Cast(jo.EntryDate as date))'TotalUnDelivered'
 
 From tblJobOrders jo
 where 1=1{0}
@@ -1502,6 +1516,35 @@ Order By EntryDate desc", Utility.ParamChecker(param));
         {
             jobOrder = jobOrder.Trim();
             return _jobOrderRepository.GetAll(job => job.JobOrderCode == jobOrder.ToString() && job.OrganizationId == orgId && job.BranchId == branchId).FirstOrDefault();
+        }
+
+        public IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyTransferJob(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardDailyReceiveJobOrderDTO>(
+                string.Format(@"Select count(TransferCode)'Total' From tblJobOrderTransferDetail
+Where  Cast(EntryDate as date)=Cast(GETDATE()  as date) and OrganizationId={0} and BranchId={1}", orgId, branchId)).ToList();
+        }
+
+        public IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyReceiveJob(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardDailyReceiveJobOrderDTO>(
+                string.Format(@"Select count(TransferCode)'Total' From tblJobOrderTransferDetail
+Where  Cast(EntryDate as date)=Cast(GETDATE()  as date) and OrganizationId={0} and ToBranch={0}
+and TransferStatus='Received'", orgId, branchId)).ToList();
+        }
+
+        public IEnumerable<DashboardSellsDTO> DashboardDailySells(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardSellsDTO>(
+                string.Format(@"select ISNULL(Sum(NetAmount),0)'Total' from tblInvoiceInfo
+Where OrganizationId={0} and BranchId={1} and Cast(GETDATE() as date) = Cast(EntryDate as date)", orgId, branchId)).ToList();
+        }
+
+        public IEnumerable<DashboardSellsDTO> DashboardTotalSells(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardSellsDTO>(
+                string.Format(@"select ISNULL(Sum(NetAmount),0)'Total' from tblInvoiceInfo
+Where OrganizationId={0} and BranchId={1}", orgId, branchId)).ToList();
         }
     }
 }

@@ -8,7 +8,9 @@ namespace ERPBO.FrontDesk.DTOModels
 {
    public class DashboardRequestSparePartsDTO
     {
-        public string StateStatus { get; set; }
-        public int Total { get; set; }
+        public int Approved { get; set; }
+        public int Current { get; set; }
+        public int Pending { get; set; }
+        public int Void { get; set; }
     }
 }

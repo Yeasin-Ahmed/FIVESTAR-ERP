@@ -200,6 +200,7 @@
     <Compile Include="FrontDesk\DTOModels\DashboardDailyReceiveJobOrderDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardDailySingInAndOutDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardRequestSparePartsDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\DashboardSellsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceInfoDTO.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="FrontDesk\ViewModels\DashboardDailyReceiveJobOrderViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardDailySingInAndOutViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardRequestSparePartsViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\DashboardSellsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceInfoViewModel.cs" />

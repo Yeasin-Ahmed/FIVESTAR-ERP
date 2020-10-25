@@ -41,6 +41,7 @@ namespace ERPBO.FrontDesk.DomainModels
         public ICollection<JobOrderService> JobOrderServices { get; set; }
         public long? BranchId { get; set; }
         public ICollection<JobOrderTS> JobOrderTS { get; set; }
+        public long? JobLocation { get; set; }
         //
         public string IMEI { get; set; }
         public string Type { get; set; }

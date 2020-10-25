@@ -298,6 +298,7 @@
         var txtCourierName = $("#txtCourierName");
         var txtApproxBill = $("#txtApproxBill");
         var txtSearchJobOrder = $("#txtSearchJobOrder");
+        var chkHandset = $("#chkHandset");
 
         $(document).ready(function () {
             var date = new Date();
@@ -489,10 +490,12 @@
                 if ($('#ddlJobOrderType').val() == 'Warrenty') {
                     $('#warrantydate').show();
                     $('#chkWarrantyPaper').show();
+                    $('#chkHandset').show();
                 }
                 else {
                     $('#warrantydate').hide();
                     $('#chkWarrantyPaper').hide();
+                    $('#chkHandset').hide();
                 }
             });
         });
@@ -613,13 +616,60 @@
 
                     }
                     else {
-                       // bootbox.alert('References is not found');
+                       bootbox.alert('IMEI is not found');
                     }
                 }
             }).fail(function (error) {
                 console.log(error);
             })
         }
+        //end
+
+        //Get Serch By IMEI2
+        //$("#SearchIMEI").click(function (e) {
+        //    e.preventDefault();
+        //    if ($.trim(txtSearchIMEI.val()) !== "") {
+        //        getIMEI2($.trim(txtSearchIMEI.val()));
+        //    }
+        //})
+        //function getIMEI2(imei2) {
+        //    var data = JSON.stringify({ imei2: imei2 });
+        //    $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByIMEI2', data)).then(function (res, status) {
+        //        if (status === "success") {
+        //            if (res.JodOrderId > 0) {
+        //                txtIMEI.val(res.IMEI);
+        //                txtReferenceNumber.val(res.ReferenceNumber);
+        //                txtIMEI2.val(res.IMEI2);
+        //                ddlPhoneTypes.val(res.Type);
+        //                ddlPhoneTypes.trigger('change');
+        //                ddlModelColor.val(res.ModelColor); 
+        //                ddlModelColor.trigger('change');
+        //                ddlJobOrderType.val(res.JobOrderType);
+        //                ddlJobOrderType.trigger('change');
+        //                ddlCustomerType.val(res.CustomerType);
+        //                ddlCustomerType.trigger('change');
+        //                txtRemarks.val(res.Remarks);
+        //                if (ddlJobOrderType.val() == "Warrenty") {
+        //                    dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
+        //                }
+        //                ddlDescriptions.val(res.DescriptionId);
+        //                ddlDescriptions.trigger('change');
+        //                txtCustomer.val(res.CustomerName);
+        //                txtAddress.val(res.Address);
+        //                txtMobileNumber.val(res.MobileNo);
+        //                txtCourierName.val(res.CourierName);
+        //                txtCourierNumber.val(res.CourierNumber);
+        //                txtApproxBill.val(res.ApproxBill);
+
+        //            }
+        //            else {
+        //                //bootbox.alert('References is not found');
+        //            }
+        //        }
+        //    }).fail(function (error) {
+        //        console.log(error);
+        //    })
+        //}
         //end
 
         //Get Serch By JobOrder
@@ -668,54 +718,6 @@
             })
         }
         //end
-
-        //Get Serch By IMEI2
-        $("#SearchIMEI").click(function (e) {
-            e.preventDefault();
-            if ($.trim(txtSearchIMEI.val()) !== "") {
-                getIMEI2($.trim(txtSearchIMEI.val()));
-            }
-        })
-        function getIMEI2(imei2) {
-            var data = JSON.stringify({ imei2: imei2 });
-            $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByIMEI2', data)).then(function (res, status) {
-                if (status === "success") {
-                    if (res.JodOrderId > 0) {
-                        txtIMEI.val(res.IMEI);
-                        txtReferenceNumber.val(res.ReferenceNumber);
-                        txtIMEI2.val(res.IMEI2);
-                        ddlPhoneTypes.val(res.Type);
-                        ddlPhoneTypes.trigger('change');
-                        ddlModelColor.val(res.ModelColor); 
-                        ddlModelColor.trigger('change');
-                        ddlJobOrderType.val(res.JobOrderType);
-                        ddlJobOrderType.trigger('change');
-                        ddlCustomerType.val(res.CustomerType);
-                        ddlCustomerType.trigger('change');
-                        txtRemarks.val(res.Remarks);
-                        if (ddlJobOrderType.val() == "Warrenty") {
-                            dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
-                        }
-                        ddlDescriptions.val(res.DescriptionId);
-                        ddlDescriptions.trigger('change');
-                        txtCustomer.val(res.CustomerName);
-                        txtAddress.val(res.Address);
-                        txtMobileNumber.val(res.MobileNo);
-                        txtCourierName.val(res.CourierName);
-                        txtCourierNumber.val(res.CourierNumber);
-                        txtApproxBill.val(res.ApproxBill);
-
-                    }
-                    else {
-                        //bootbox.alert('References is not found');
-                    }
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
-        }
-        //end
-
 
 
         //serch By MobileNumber GetAll Information Job

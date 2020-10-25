@@ -30,9 +30,19 @@ namespace ERPBLL.FrontDesk
         public IEnumerable<DashboardRequestSparePartsDTO> DashboardRequestSpareParts(long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardRequestSparePartsDTO>(
-                string.Format(@"select StateStatus,COUNT(StateStatus) as Total from tblRequsitionInfoForJobOrders
-                    Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1}
-				group by StateStatus", orgId, branchId)).ToList();
+                string.Format(@"Select 
+(select ISNULL(COUNT(StateStatus),0)'Approved' from tblRequsitionInfoForJobOrders
+Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1} and StateStatus='Approved')'Approved',
+
+(select ISNULL(COUNT(StateStatus),0)'Current' from tblRequsitionInfoForJobOrders
+Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1} and StateStatus='Current')'Current',
+
+(select ISNULL(COUNT(StateStatus),0)'Pending' from tblRequsitionInfoForJobOrders
+Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1} and StateStatus='Pending')'Pending',
+
+(select ISNULL(COUNT(StateStatus),0)'Void' from tblRequsitionInfoForJobOrders
+Where Cast(GETDATE() as date) = Cast(EntryDate as date) and  OrganizationId={0} and BranchId={1} and StateStatus='Void')'Void'
+", orgId, branchId)).ToList();
         }
 
         public IEnumerable<RequsitionInfoForJobOrder> GetAllRequsitionInfoForJob(long orgId, long branchId)

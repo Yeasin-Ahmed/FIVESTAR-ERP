@@ -288,6 +288,7 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -327,6 +328,7 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -366,6 +368,7 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -405,6 +408,7 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -444,6 +448,7 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -483,6 +488,7 @@
                           <Style>None</Style>
                         </RightBorder>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -519,6 +525,7 @@
                           <Width>0.25pt</Width>
                         </Border>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -555,6 +562,7 @@
                           <Width>0.25pt</Width>
                         </Border>
                         <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -566,7 +574,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.33854in</Height>
+              <Height>0.27604in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -902,7 +910,7 @@
         <DataSetName>UsedParts</DataSetName>
         <Top>1.13243in</Top>
         <Left>0.05981in</Left>
-        <Height>0.75299in</Height>
+        <Height>0.69049in</Height>
         <Width>7.116in</Width>
         <ZIndex>6</ZIndex>
         <Style>
@@ -955,7 +963,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>1.9375in</Height>
+    <Height>1.96875in</Height>
     <Style />
   </Body>
   <Width>7.27in</Width>

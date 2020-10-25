@@ -25,8 +25,8 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12 text-sm" id="dataContainer" style="overflow-y:scroll">
-                        @{Html.RenderAction("GetCurrentStockList");}
+                    <div class="col-md-12 text-sm" id="dataContainer">
+                        @{Html.RenderAction("GetCurrentStockReport", new { @flag = "view" });}
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         })
 
         function LoadDataTable() {
-            var data = 0;
+            var data = { page: pageNo };
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Configuration/GetCurrentStockList', data)).then(function (res, status) {
                 console.log(status);
@@ -59,6 +59,14 @@
             })
             pageNo = 1;
         }
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                pageNo = $(this).attr('data-page-no');
+                LoadDataTable();
+            }
+        })
 
         //Report
         //$("#btnReport").click(function (e) {

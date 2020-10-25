@@ -8,7 +8,7 @@ namespace ERPBO.FrontDesk.DTOModels
 {
    public class DashboardDailyBillingAndWarrantyJobDTO
     {
-        public string JobOrderType { get; set; }
-        public int Total { get; set; }
+        public int Billing { get; set; }
+        public int Warrenty { get; set; }
     }
 }

@@ -63,5 +63,10 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<DailySummaryReportDTO> DailySummaryReport(long orgId, long branchId, string fromDate, string toDate);
         IEnumerable<DailySummaryReportDTO> AllBranchDailySummaryReport(long orgId, string fromDate, string toDate);
         JobOrder GetReferencesNumberByJobOrder(string jobOrder, long orgId, long branchId);
+        //
+        IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyTransferJob(long orgId, long branchId);
+        IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardDailyReceiveJob(long orgId, long branchId);
+        IEnumerable<DashboardSellsDTO> DashboardDailySells(long orgId, long branchId);
+        IEnumerable<DashboardSellsDTO> DashboardTotalSells(long orgId, long branchId);
     }
 }

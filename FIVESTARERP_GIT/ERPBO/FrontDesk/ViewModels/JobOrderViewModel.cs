@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -74,6 +75,8 @@ namespace ERPBO.FrontDesk.ViewModels
         public bool? IsReturn { get; set; }
         public string TransferCode { get; set; }
         public string DestinationBranch { get; set; }
+        public long? JobLocation { get; set; }
+        public string JobLocationB { get; set; }
 
     }
 }

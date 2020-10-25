@@ -10,7 +10,7 @@
         <Top>0.03646in</Top>
         <Left>0.05in</Left>
         <Height>1.00347in</Height>
-        <Width>0.99024in</Width>
+        <Width>1.16396in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -609,7 +609,7 @@
         <Top>1.5675in</Top>
         <Left>0.05in</Left>
         <Height>0.5in</Height>
-        <Width>7.16828in</Width>
+        <Width>7.16829in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -899,7 +899,6 @@
             </Style>
           </Line>
           <Line Name="Line4">
-            <Top>0in</Top>
             <Left>0.88034in</Left>
             <Height>0.44326in</Height>
             <Width>0in</Width>
@@ -1267,7 +1266,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox29</rd:DefaultName>
           <Top>0.13436in</Top>
-          <Left>6.01062in</Left>
+          <Left>6.01063in</Left>
           <Height>0.20866in</Height>
           <Width>1in</Width>
           <ZIndex>1</ZIndex>

@@ -72,5 +72,7 @@ namespace ERPBO.FrontDesk.DTOModels
         public bool? IsReturn { get; set; }
         public string TransferCode { get; set; }
         public string DestinationBranch { get; set; }
+        public long? JobLocation { get; set; }
+        public string JobLocationB { get; set; }
     }
 }

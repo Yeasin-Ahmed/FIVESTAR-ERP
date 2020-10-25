@@ -11,7 +11,7 @@
             <tr class="text-center">
                 <th>#SL</th>
                 <th class="hide"></th>
-                <th>ReturnCode</th>
+                <th>DO Number</th>
                 <th class="hide"></th>
                 <th>JobCode</th>
                 <th>Model</th>
@@ -38,7 +38,9 @@
                     <td class="hide">@rec.JobOrderReturnDetailId</td>
                     <td>@rec.TransferCode</td>
                     <td class="hide joborderId" joborderId="@rec.JobOrderId">@rec.JobOrderId</td>
-                    <td>@rec.JobOrderCode</td>
+                    <td>
+                        <a href="#" class="data-item-details" data-item-details="@rec.JobOrderId" title="Job Order Details">@rec.JobOrderCode</a>
+                    </td>
                     <td>@rec.ModelName</td>
                     <td>@rec.ModelColor</td>
                     <td>@rec.AccessoriesNames</td>

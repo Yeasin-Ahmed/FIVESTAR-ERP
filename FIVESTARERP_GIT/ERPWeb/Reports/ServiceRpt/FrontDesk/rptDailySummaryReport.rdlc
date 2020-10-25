@@ -15,13 +15,16 @@
               <Width>0.5in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.4375in</Width>
+              <Width>0.38542in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.54167in</Width>
+              <Width>0.41667in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.46875in</Width>
+              <Width>0.40625in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.48959in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.36458in</Width>
@@ -33,13 +36,13 @@
               <Width>0.46875in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.4375in</Width>
+              <Width>0.40625in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.48958in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.5in</Width>
+              <Width>0.41667in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.45833in</Width>
@@ -48,13 +51,13 @@
               <Width>0.58333in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.55208in</Width>
+              <Width>0.46875in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.5in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.5in</Width>
+              <Width>0.44792in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.5in</Width>
@@ -295,6 +298,46 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox25</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                          <Width>0.25pt</Width>
+                        </Border>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
+                        <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox4">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Access-ories Sells</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox4</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -1120,6 +1163,7 @@
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontSize>9pt</FontSize>
+                                <Format>0.00;(0.00)</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1129,6 +1173,45 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CASH</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                          <Width>0.25pt</Width>
+                        </Border>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="AccessoriesSells">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!AccessoriesSells.Value</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                                <FontSize>9pt</FontSize>
+                                <Format>0.00;(0.00)</Format>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>AccessoriesSells</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -1739,6 +1822,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -1755,7 +1839,7 @@
         <Top>1.08625in</Top>
         <Left>0.07292in</Left>
         <Height>1.00125in</Height>
-        <Width>10.56499in</Width>
+        <Width>10.565in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1789,9 +1873,9 @@
           </Paragraph>
         </Paragraphs>
         <Top>0.03611in</Top>
-        <Left>7.92708in</Left>
+        <Left>7.97917in</Left>
         <Height>0.22569in</Height>
-        <Width>2.71083in</Width>
+        <Width>2.65874in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -1808,7 +1892,6 @@
         <Value>=First(Fields!ReportImage.Value, "ServicesReportHead")</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
-        <Top>0.0139in</Top>
         <Left>0.07292in</Left>
         <Height>1.00346in</Height>
         <Width>1.07292in</Width>
@@ -1842,7 +1925,7 @@
         <Top>0.03959in</Top>
         <Left>1.14583in</Left>
         <Height>0.26736in</Height>
-        <Width>3.26042in</Width>
+        <Width>3.04169in</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -1883,7 +1966,7 @@
         <Top>0.28334in</Top>
         <Left>1.14583in</Left>
         <Height>0.26736in</Height>
-        <Width>3.26042in</Width>
+        <Width>3.04169in</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -1918,7 +2001,7 @@
         <Top>0.51597in</Top>
         <Left>1.14583in</Left>
         <Height>0.26736in</Height>
-        <Width>3.26042in</Width>
+        <Width>3.04169in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -1966,7 +2049,7 @@
         <Top>0.75in</Top>
         <Left>1.14583in</Left>
         <Height>0.26736in</Height>
-        <Width>3.26042in</Width>
+        <Width>3.04169in</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -1999,9 +2082,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox50</rd:DefaultName>
         <Top>0.3625in</Top>
-        <Left>4.40625in</Left>
+        <Left>4.18752in</Left>
         <Height>0.41667in</Height>
-        <Width>6.23167in</Width>
+        <Width>6.4504in</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -2058,9 +2141,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox56</rd:DefaultName>
           <Top>0.03229in</Top>
-          <Left>3.9375in</Left>
+          <Left>3.70835in</Left>
           <Height>0.25in</Height>
-          <Width>2.9375in</Width>
+          <Width>3.30208in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -2091,10 +2174,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox57</rd:DefaultName>
-          <Top>0.04306in</Top>
-          <Left>6.875in</Left>
+          <Top>0.05556in</Top>
+          <Left>7.01043in</Left>
           <Height>0.25in</Height>
-          <Width>3.76292in</Width>
+          <Width>3.62749in</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -2217,6 +2300,10 @@
         <Field Name="TotalUnDelivered">
           <DataField>TotalUnDelivered</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="AccessoriesSells">
+          <DataField>AccessoriesSells</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
