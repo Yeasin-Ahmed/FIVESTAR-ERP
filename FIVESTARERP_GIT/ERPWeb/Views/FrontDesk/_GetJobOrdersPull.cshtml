@@ -6,65 +6,69 @@
     string isWarrantyPaperEnclosed = string.Empty;
     string badge = string.Empty;
 }
-<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblJobOrderList" id="tblJobOrderList">
-    <thead class="btn-dark">
-        <tr class="text-center">
-            <th class="hide"></th>
-            <th style="vertical-align:middle">#SL</th>
-            <th style="vertical-align:middle">JobCode</th>
-            <th style="vertical-align:middle">CustomerName</th>
-            <th style="vertical-align:middle">MobileNo</th>
-            <th style="vertical-align:middle">Address</th>
-            <th style="vertical-align:middle">Model</th>
-            <th style="vertical-align:middle">Symptom</th>
-            <th style="vertical-align:middle">Accessories</th>
-            @*<th style="vertical-align:middle">Warrenty Available</th>*@
-            <th style="vertical-align:middle">Warrenty Paper</th>
-            <th style="vertical-align:middle">JobStatus</th>
-            <th style="vertical-align:middle">FromBranch</th>
-            <th style="vertical-align:middle">Issued by</th>
-            <th style="vertical-align:middle">CreateDate</th>
-            <th style="vertical-align:middle">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            badge = item.StateStatus == "Job-Initiated" ? "badge bg-success" : "badge bg-success";
-            sl = sl + 1;
-            isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
-            isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-        <tr>
-            <td class="hide">@item.JodOrderId</td>
-            <td style="vertical-align:middle" class="text-center text-bold">@sl</td>
-            <td class="text-center text-bold">@item.JobOrderCode</td>
-            <td>@item.CustomerName</td>
-            <td>@item.MobileNo</td>
-            <td>@item.Address</td>
-            <td>@item.ModelName</td>
-            <td>@item.Problems</td>
-            <td>@item.AccessoriesNames</td>
-            @*<td class="text-center">@isWarrantyAvailable</td>*@
-            <td class="text-center">@isWarrantyPaperEnclosed</td>
-            <td class="text-center" data-val="@item.StateStatus">
-                <span class="@badge">@item.StateStatus</span>
-            </td>
-            <td class="text-center text-bold">@item.BranchName</td>
-            <td class="text-center text-bold">@item.EntryUser</td>
-            <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-            <td style="vertical-align:middle">
-                <button href="#" class="btn btn-sm btn-info data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
-                    <i class="fas fa-download"> Pull</i>
-                </button>
-            </td>
-        </tr>
-        }
-        @if (Model.Count() == 0)
-        {
-            <tr class="empty-row text-center">
-                <td colspan="14">No data found in the table</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblJobOrderList" id="tblJobOrderList">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th class="hide"></th>
+                    <th style="vertical-align:middle">#SL</th>
+                    <th style="vertical-align:middle">JobCode</th>
+                    <th style="vertical-align:middle">CustomerName</th>
+                    <th style="vertical-align:middle">MobileNo</th>
+                    <th style="vertical-align:middle">Address</th>
+                    <th style="vertical-align:middle">Model</th>
+                    <th style="vertical-align:middle">Symptom</th>
+                    <th style="vertical-align:middle">Accessories</th>
+                    @*<th style="vertical-align:middle">Warrenty Available</th>*@
+                    <th style="vertical-align:middle">Warrenty Paper</th>
+                    <th style="vertical-align:middle">JobStatus</th>
+                    <th style="vertical-align:middle">FromBranch</th>
+                    <th style="vertical-align:middle">Issued by</th>
+                    <th style="vertical-align:middle">CreateDate</th>
+                    <th style="vertical-align:middle">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    badge = item.StateStatus == "Job-Initiated" ? "badge bg-success" : "badge bg-success";
+                    sl = sl + 1;
+                    isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
+                    isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
+                    <tr>
+                        <td class="hide">@item.JodOrderId</td>
+                        <td style="vertical-align:middle" class="text-center text-bold">@sl</td>
+                        <td class="text-center text-bold">@item.JobOrderCode</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.Address</td>
+                        <td>@item.ModelName</td>
+                        <td>@item.Problems</td>
+                        <td>@item.AccessoriesNames</td>
+                        @*<td class="text-center">@isWarrantyAvailable</td>*@
+                        <td class="text-center">@isWarrantyPaperEnclosed</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td class="text-center text-bold">@item.BranchName</td>
+                        <td class="text-center text-bold">@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td style="vertical-align:middle">
+                            <button href="#" class="btn btn-sm btn-info data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
+                                <i class="fas fa-download"> Pull</i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="empty-row text-center">
+                        <td colspan="14">No data found in the table</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 

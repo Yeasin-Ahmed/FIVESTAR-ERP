@@ -909,7 +909,7 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardApprovedRequsitionDTO>(
                 string.Format(@"select JodOrderId,rq.RequsitionInfoForJobOrderId,jo.JobOrderCode,RequsitionCode,rq.StateStatus,rq.EntryDate from tblJobOrders jo
                 Inner join tblRequsitionInfoForJobOrders rq on jo.JodOrderId=rq.JobOrderId
-                Where  rq.StateStatus='Pending' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
+                Where Cast(GETDATE() as date) = Cast(rq.EntryDate as date) and  rq.StateStatus='Pending' and  jo.OrganizationId={0} and jo.BranchId={1}", orgId, branchId)).ToList();
         }
 
         public IEnumerable<DashboardApprovedRequsitionDTO> DashboardCurrentRequsition(long orgId, long branchId)
@@ -1301,7 +1301,7 @@ Where 1 = 1 and jo.JodOrderId ={0} and jo.OrganizationId={1}
 JobOrderId,q.EntryDate From tblRequsitionInfoForJobOrders q
 left join tblJobOrders j on q.JobOrderId=j.JodOrderId
 inner join[ControlPanel].dbo.tblApplicationUsers app on q.OrganizationId = app.OrganizationId and q.EUserId= app.UserId 
-where j.IsTransfer='True' and j.TransferBranchId={0} and q.OrganizationId={1}", branchId, orgId)).ToList();
+where Cast(GETDATE() as date) = Cast(q.EntryDate as date) and j.IsTransfer='True' and j.TransferBranchId={0} and q.OrganizationId={1}", branchId, orgId)).ToList();
             return data;
         }
 
@@ -1545,6 +1545,17 @@ Where OrganizationId={0} and BranchId={1} and Cast(GETDATE() as date) = Cast(Ent
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardSellsDTO>(
                 string.Format(@"select ISNULL(Sum(NetAmount),0)'Total' from tblInvoiceInfo
 Where OrganizationId={0} and BranchId={1}", orgId, branchId)).ToList();
+        }
+
+        public IEnumerable<DailySellsChart> DailySellsChart(string fromDate, string toDate, long orgId, long branchId)
+        {
+            IEnumerable<DailySellsChart> data = new List<DailySellsChart>();
+            if(orgId>0 && branchId > 0)
+            {
+                return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DailySellsChart>(
+                string.Format(@"Exec [dbo].[spDailySellsChart] '{0}','{1}',{2},{3}",fromDate,toDate, branchId, orgId)).ToList();
+            }
+            return data;
         }
     }
 }

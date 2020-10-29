@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h1 class="m-0 text-dark"><i class="fas fa-fire" style="color:#ff7615"></i> Dashboard</h1>
+        <h4 class="m-0 text-dark"><i class="fas fa-fire" style="color:#ff7615"></i> Dashboard</h4>
         <hr />
     </div>
 </div>
@@ -87,18 +87,18 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow" style="background-image:url(../../Content/Images/skyblue.jpg)">
+            <div class="card shadow" style="background-image:url(../../Content/Images/pic11.jpg)">
                 <div class="row">
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's JobOrders</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today JobOrders</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-chart-line"></i>
@@ -115,15 +115,15 @@
                                         @foreach (var Bill in (IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>Billing :</i></b></td>
                                                 <td><b><i>@Bill.Billing</i></b></td>
                                             </tr>
                                             <tr style="visibility:hidden">
-                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>Billing:</i></b></td>
                                                 <td><b><i>@Bill.Billing</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Warrenty---</i></b></td>
+                                                <td><b><i>Warrenty : </i></b></td>
                                                 <td><b><i>@Bill.Warrenty</i></b></td>
                                             </tr>
                                         }
@@ -140,13 +140,14 @@
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-gradient-indigo">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's Sales</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardDailySellsViewModel)
                                     {
                                         <b><i>@job.Total.ToString("0.00 TK")</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today Sells</i></b></p>
+
                             </div>
                             <div class="icon">
                                 <i class="fas fa-dollar-sign"></i>
@@ -156,15 +157,16 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-yellow">
+                        <div class="small-box bg-gradient-yellow text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Total Sells</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardTotalSellsViewModel)
                                     {
                                         <b><i>@job.Total.ToString("0.00 TK")</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Total Sells</i></b></p>
+
                             </div>
                             <div class="icon">
                                 <i class="fas fa-euro-sign"></i>
@@ -183,7 +185,7 @@
                                         @foreach (var Bill in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>SignIn : </i></b></td>
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                             <tr style="visibility:hidden">
@@ -191,7 +193,7 @@
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>SignOut---</i></b></td>
+                                                <td><b><i>SignOut : </i></b></td>
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                         }
@@ -213,19 +215,19 @@
                                         @foreach (var Bill in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>Approved---</i></b></td>
+                                                <td><b><i>Approved :</i></b></td>
                                                 <td><b><i>@Bill.Approved</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Current---</i></b></td>
+                                                <td><b><i>Current :</i></b></td>
                                                 <td><b><i>@Bill.Current</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Pending---</i></b></td>
+                                                <td><b><i>Pending :</i></b></td>
                                                 <td><b><i>@Bill.Pending</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Void---</i></b></td>
+                                                <td><b><i>Void :</i></b></td>
                                                 <td><b><i>@Bill.Void</i></b></td>
                                             </tr>
                                         }
@@ -240,15 +242,16 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-orange">
+                        <div class="small-box bg-gradient-orange text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's TransferJob</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today TransferJob</i></b></p>
+
                             </div>
                             <div class="icon">
                                 <i class="fas fa-exchange-alt"></i>
@@ -258,15 +261,15 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-navy">
+                        <div class="small-box text-white" style="background-color:olive">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's ReceiveJob</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today ReceiveJob</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-download"></i>
@@ -280,11 +283,34 @@
     </div>
 
     <div class="row">
+        <div class="col-md-8" style="height:auto">
+            <div class="card shadow" style="background-image:url(../../Content/Images/pic15.jpg)">
+                <div class="card-header" style="background-image:url(../../Content/Images/pic16.jpg)">
+                    <h3 class="card-title text-bold"><i class="fas fa-signal"></i> Last 30 Days Sells Graph</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="width:100%;height:80%;">
+                        <canvas class="chart" id="dailySellsChart" style="min-height: 250px; height: 250px; max-height: 300px; min-width: 100%;max-width:700px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title"><i class="fab fa-gg"></i> Current Requsition</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i> Current Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -335,9 +361,9 @@
         </div>
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title"><i class="fab fa-atlassian"></i> Pending Requsition</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic8.svg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic2.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-skyatlas"></i> Pending Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -391,9 +417,9 @@
     <div class="row">
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title"><i class="fas fa-people-carry"></i> Other Branch Requsition</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic12.svg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic13.svg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fas fa-people-carry"></i> Other Branch Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -421,7 +447,7 @@
                                 @foreach (var another in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.AnotherBranchRequsition)
                                 {
                                     badge = another.StateStatus == "Pending" ? "badge bg-warning" : (another.StateStatus == "Approved" ? "badge bg-success" : "badge bg-primary");
-                                    <tr>
+                                    <tr class="">
                                         <td class="hide">@another.JodOrderId</td>
                                         <td class="hide">@another.RequsitionInfoForJobOrderId</td>
                                         <td class="text-center">@another.JobOrderCode</td>
@@ -438,7 +464,7 @@
                     else
                     {
                         <div class="text-center text-fuchsia" style="width:200px;height:200px">
-                            <div style="position:absolute;top:40%;left:35%">
+                            <div style="position:absolute;top:40%;left:31%">
                                 <i class="fas fa-heart-broken fa-5x"></i>
                                 <p class="text-dark text-bold">No Other Branch Requsition</p>
                             </div>
@@ -449,9 +475,9 @@
         </div>
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title"><i class="fas fa-fast-backward"></i> Parts Return(TS end)</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic11.jpg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic9.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fas fa-fast-backward"></i> Parts Return(TS end)</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -491,7 +517,7 @@
                     else
                     {
                         <div class="text-center text-fuchsia" style="width:200px;height:200px">
-                            <div style="position:absolute;top:40%;left:35%">
+                            <div style="position:absolute;top:40%;left:38%">
                                 <i class="fas fa-atom fa-5x"></i>
                                 <p class="text-dark text-bold">No Parts Return</p>
                             </div>
@@ -577,18 +603,18 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow" style="background-image:url(../../Content/Images/skyblue.jpg)">
+            <div class="card shadow" style="background-image:url(../../Content/Images/pic11.jpg)">
                 <div class="row">
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's JobOrders</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardDailyJobOrderViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today JobOrders</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-chart-line"></i>
@@ -605,7 +631,7 @@
                                         @foreach (var Bill in (IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel>)ViewBag.DashboardDailyWarrantyandBillingViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>Billing---</i></b></td>
+                                                <td><b><i>Billing : </i></b></td>
                                                 <td><b><i>@Bill.Billing</i></b></td>
                                             </tr>
                                             <tr style="visibility:hidden">
@@ -613,7 +639,7 @@
                                                 <td><b><i>@Bill.Billing</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Warrenty---</i></b></td>
+                                                <td><b><i>Warrenty : </i></b></td>
                                                 <td><b><i>@Bill.Warrenty</i></b></td>
                                             </tr>
                                         }
@@ -630,13 +656,13 @@
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-gradient-indigo">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's Sales</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardDailySellsViewModel)
                                     {
                                         <b><i>@job.Total.ToString("0.00 TK")</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today Sells</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-dollar-sign"></i>
@@ -646,15 +672,15 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-yellow">
+                        <div class="small-box bg-gradient-yellow text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Total Sells</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardSellsViewModel>)ViewBag.DashboardTotalSellsViewModel)
                                     {
                                         <b><i>@job.Total.ToString("0.00 TK")</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Total Sells</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-euro-sign"></i>
@@ -663,42 +689,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="row">
-                    <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-orange">
-                            <div class="inner" style="height:115px">
-                                <h3>
-                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
-                                    {
-                                        <b><i>@job.Total</i></b>
-                                    }
-                                </h3>
-                                <p><b><i>Today TransferJob</i></b></p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
-                            <a href="#" class="small-box-footer"></a>
-                        </div>
+    <div class="row">
+        <div class="col-md-8" style="height:auto">
+            <div class="card shadow" style="background-image:url(../../Content/Images/pic15.jpg)">
+                <div class="card-header" style="background-image:url(../../Content/Images/pic16.jpg)">
+                    <h3 class="card-title text-bold"><i class="fas fa-signal"></i> Last 30 Days Sells Graph</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-
-                    <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-maroon">
-                            <div class="inner" style="height:115px">
-                                <h3>
-                                    @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
-                                    {
-                                        <b><i>@job.Total</i></b>
-                                    }
-                                </h3>
-                                <p><b><i>Today ReceiveJob</i></b></p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-download"></i>
-                            </div>
-                            <a href="#" class="small-box-footer"></a>
-                        </div>
+                </div>
+                <div class="card-body">
+                    <div style="width:100%;height:80%;">
+                        <canvas class="chart" id="dailySellsChart" style="min-height: 250px; height: 250px; max-height: 300px; min-width: 100%;max-width:700px"></canvas>
                     </div>
                 </div>
             </div>
@@ -709,7 +720,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow" style="background-image:url(../../Content/Images/skyblue.jpg)">
+            <div class="card shadow" style="background-image:url(../../Content/Images/pic11.jpg)">
                 <div class="row">
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-gradient-fuchsia">
@@ -719,7 +730,7 @@
                                         @foreach (var Bill in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>SignIn : </i></b></td>
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                             <tr style="visibility:hidden">
@@ -727,7 +738,7 @@
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>SignOut---</i></b></td>
+                                                <td><b><i>SignOut : </i></b></td>
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                         }
@@ -749,19 +760,19 @@
                                         @foreach (var Bill in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>Approved---</i></b></td>
+                                                <td><b><i>Approved : </i></b></td>
                                                 <td><b><i>@Bill.Approved</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Current---</i></b></td>
+                                                <td><b><i>Current : </i></b></td>
                                                 <td><b><i>@Bill.Current</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Pending---</i></b></td>
+                                                <td><b><i>Pending : </i></b></td>
                                                 <td><b><i>@Bill.Pending</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Void---</i></b></td>
+                                                <td><b><i>Void : </i></b></td>
                                                 <td><b><i>@Bill.Void</i></b></td>
                                             </tr>
                                         }
@@ -776,15 +787,15 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-orange">
+                        <div class="small-box bg-gradient-orange text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's TransferJob</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today TransferJob</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-exchange-alt"></i>
@@ -794,15 +805,15 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-green">
+                        <div class="small-box bg-gradient-green text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's ReceiveJob</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today ReceiveJob</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-download"></i>
@@ -819,7 +830,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow" style="background-image:url(../../Content/Images/tsh1.png)">
+            <div class="card shadow" style="background-image:url(../../Content/Images/pic11.jpg)">
                 <div class="row">
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-gradient-yellow">
@@ -829,7 +840,7 @@
                                         @foreach (var Bill in (IEnumerable<DashboardDailySingInAndOutViewModel>)ViewBag.DashboardDailySingInOutViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>SignIn---</i></b></td>
+                                                <td><b><i>SignIn : </i></b></td>
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                             <tr style="visibility:hidden">
@@ -837,7 +848,7 @@
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>SignOut---</i></b></td>
+                                                <td><b><i>SignOut : </i></b></td>
                                                 <td><b><i>@Bill.TotalSignOutToday</i></b></td>
                                             </tr>
                                         }
@@ -859,19 +870,19 @@
                                         @foreach (var Bill in (IEnumerable<DashboardRequestSparePartsViewModel>)ViewBag.DashboardDailySparePartsViewModel)
                                         {
                                             <tr>
-                                                <td><b><i>Approved---</i></b></td>
+                                                <td><b><i>Approved : </i></b></td>
                                                 <td><b><i>@Bill.Approved</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Current---</i></b></td>
+                                                <td><b><i>Current : </i></b></td>
                                                 <td><b><i>@Bill.Current</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Pending---</i></b></td>
+                                                <td><b><i>Pending : </i></b></td>
                                                 <td><b><i>@Bill.Pending</i></b></td>
                                             </tr>
                                             <tr>
-                                                <td><b><i>Void---</i></b></td>
+                                                <td><b><i>Void : </i></b></td>
                                                 <td><b><i>@Bill.Void</i></b></td>
                                             </tr>
                                         }
@@ -886,15 +897,15 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-danger">
+                        <div class="small-box bg-gradient-danger text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's TransferJob</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today TransferJob</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-exchange-alt"></i>
@@ -904,15 +915,15 @@
                     </div>
 
                     <div class="col-sm-3 col-6">
-                        <div class="small-box bg-gradient-teal">
+                        <div class="small-box bg-gradient-teal text-white">
                             <div class="inner" style="height:115px">
+                                <p><b><i>Today's ReceiveJob</i></b></p>
                                 <h3>
                                     @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
                                     {
                                         <b><i>@job.Total</i></b>
                                     }
                                 </h3>
-                                <p><b><i>Today ReceiveJob</i></b></p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-download"></i>
@@ -932,9 +943,9 @@
     <div class="row">
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Current Requsition</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i> Current Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -985,9 +996,9 @@
         </div>
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Pending Requsition</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic8.svg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic2.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-skyatlas"></i> Pending Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -1041,9 +1052,9 @@
     <div class="row">
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Other Branch Requsition</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic12.svg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic13.svg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fas fa-people-carry"></i> Other Branch Requsition</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -1071,7 +1082,7 @@
                                 @foreach (var another in (IEnumerable<DashboardApprovedRequsitionViewModel>)ViewBag.AnotherBranchRequsition)
                                 {
                                     badge = another.StateStatus == "Pending" ? "badge bg-warning" : (another.StateStatus == "Approved" ? "badge bg-success" : "badge bg-primary");
-                                    <tr>
+                                    <tr class="">
                                         <td class="hide">@another.JodOrderId</td>
                                         <td class="hide">@another.RequsitionInfoForJobOrderId</td>
                                         <td class="text-center">@another.JobOrderCode</td>
@@ -1088,7 +1099,7 @@
                     else
                     {
                         <div class="text-center text-fuchsia" style="width:200px;height:200px">
-                            <div style="position:absolute;top:40%;left:35%">
+                            <div style="position:absolute;top:40%;left:31%">
                                 <i class="fas fa-heart-broken fa-5x"></i>
                                 <p class="text-dark text-bold">No Other Branch Requsition</p>
                             </div>
@@ -1099,9 +1110,9 @@
         </div>
 
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark">
-                <div class="card-header border-transparent">
-                    <h3 class="card-title">Parts Return(TS end)</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic11.jpg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic9.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fas fa-fast-backward"></i> Parts Return(TS end)</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -1141,7 +1152,7 @@
                     else
                     {
                         <div class="text-center text-fuchsia" style="width:200px;height:200px">
-                            <div style="position:absolute;top:40%;left:35%">
+                            <div style="position:absolute;top:40%;left:38%">
                                 <i class="fas fa-atom fa-5x"></i>
                                 <p class="text-dark text-bold">No Parts Return</p>
                             </div>
@@ -1378,6 +1389,136 @@
                 })
             }
         }
+
+        //chart
+
+        $(document).ready(function () {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/User/GetDailySellsChart', null, getToken())).then(function (res, status) {
+                if (status === 'success') {
+                    console.log("Daily Sell Data");
+                    console.log(res);
+                    GenerateDailySellsChart(res.days, res.charts);
+                }
+                else {
+                    $(".toastrDefaultError").trigger('click');
+                    $(".toastrDefaultError").fadeOut(800);
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $(".toastrDefaultError").trigger('click');
+                $(".toastrDefaultError").fadeOut(800);
+            })
+        })
+
+        var colors = [" #410e85"];
+
+        function GenerateDailySellsChart(days, data) {
+
+            var canvas = document.getElementById('dailySellsChart');
+            canvas.width = 960;
+            canvas.height = 300;
+
+            var myCanvas = canvas.getContext('2d');
+            var model = ["Sales"];
+            var month = days;
+            var data = data;
+
+            var mydataSets = [];
+            mydataSets.length = 0;
+
+            for (var i = 0; i < model.length; i++) {
+
+                mydataSets.push({
+                    label: model[i],
+                    fill: false,
+                    borderWidth: 2,
+                    lineTension: 0,
+                    spanGaps: true,
+                    borderColor: colors[i],
+                    pointRadius: 3,
+                    pointHoverRadius: 7,
+                    pointColor: colors[i],
+                    pointBackgroundColor: colors[i],
+                    data: data
+                })
+            }
+            console.log('My data set');
+            console.log(mydataSets);
+
+            var chartData = {
+                labels: month,
+                datasets: mydataSets
+            };
+
+            console.log(chartData);
+
+            var ChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#efefef',
+                        },
+                        gridLines: {
+                            display: false,
+                            color: '#efefef',
+                            drawBorder: false,
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 2000,
+                            fontColor: '#efefef',
+
+                        },
+                        gridLines: {
+                            display: true,
+                            color: '#efefef',
+                            drawBorder: false,
+                        }
+                    }]
+                }
+            }
+
+            Chart.defaults.global.legend.labels.usePointStyle = true;
+            var chart = new Chart(myCanvas, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                fontColor: "#000",
+                                fontStyle: "bold",
+                                beginAtZero: true,
+                                maxTicksLimit: 5,
+                            },
+                            gridLines: {
+
+                            }
+
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                            },
+                            ticks: {
+                                padding: 20, //20
+                                fontColor: "rgba(0,0,0,0.5)",
+                                fontStyle: "bold"
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+
         function redirectPage(page) {
             window.location.replace(page);
         }

@@ -13,7 +13,7 @@
                         <a class="nav-link active" id="custom-tabs-two-jobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-jobOrderList" role="tab" aria-controls="custom-tabs-two-jobOrderList" aria-selected="true">JobOrder List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-accessoriesSellsList-tab" data-toggle="pill" href="#custom-tabs-two-accessoriesSellsList" role="tab" aria-controls="custom-tabs-two-accessoriesSellsList" aria-selected="false">Accessories Sells</a>
+                        <a class="nav-link" id="custom-tabs-two-accessoriesSellsList-tab" data-toggle="pill" href="#custom-tabs-two-accessoriesSellsList" role="tab" aria-controls="custom-tabs-two-accessoriesSellsList" aria-selected="false">AccessoriesSells</a>
                     </li>
                 </ul>
             </div>
@@ -292,7 +292,6 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="dataContainer2">
-
             </div>
         </div>
     </div>
@@ -411,6 +410,10 @@
                 todayHighlight: true,
                 autoclose: true
             });
+            
+            if ('@tab' == "AccessoriesSells") {
+                $("#custom-tabs-two-accessoriesSellsList-tab").trigger('click');
+            }
         })
 
         $(document).on('click', 'div.remove-date', function () {
@@ -438,10 +441,9 @@
                     LoadDataTableForASells();
                 }
             }
-            if ('@tab' == "AccessoriesSells") {
-                $("#custom-tabs-two-accessoriesSellsList-tab").trigger('click');
-            }
+            
         })
+
         dptFromDate.change(function () {
             LoadDataTable();
         })
@@ -788,7 +790,7 @@
                             if (res == true) {
                                 $('.toastrDefaultSuccess').trigger('click');
                                 setTimeout(function () {
-                                    redirectPage('@Url.Action("GetJobOrders","FrontDesk",new {})');
+                                    redirectPage('@Url.Action("GetJobOrders", new { tab = "AccessoriesSells" })');
                                 }, 1000);
                             }
                             else {

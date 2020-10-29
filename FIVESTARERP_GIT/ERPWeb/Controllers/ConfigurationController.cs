@@ -566,7 +566,7 @@ namespace ERPWeb.Controllers
                     EUserId = detail.EUserId,
                     EntryDate = detail.EntryDate,
 
-                }).AsEnumerable();
+                }).OrderByDescending(e=>e.EntryDate).AsEnumerable();
                 // Search start from here..
                 partStockDetailDTO = partStockDetailDTO.Where(f => 1 == 1 &&
                          (swarehouseId == null || swarehouseId <= 0 || f.SWarehouseId == swarehouseId) &&

@@ -1349,8 +1349,8 @@ namespace ERPWeb.Controllers
                 var dto = _invoiceInfoBusiness.GetSellsAccessories(User.OrgId, User.BranchId, fromDate, toDate,invoice);
                 List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
                 // Pagination //
-                ViewBag.PagerData = GetPagerData(dto.Count(),5, page);
-                dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                ViewBag.PagerData = GetPagerData(dto.Count(),10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
                 //-----------------//
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_AccessoriesSells",viewModels);
@@ -1376,6 +1376,8 @@ namespace ERPWeb.Controllers
                 IsSuccess = _invoiceInfoBusiness.SaveInvoiceForAccessoriesSells(dtoInfo, dtoDetail, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
+
+
         }
         #endregion
 

@@ -2,6 +2,12 @@
 @{
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
+    double partsP = 0;
+    double labour = 0;
+    double vat = 0;
+    double tax = 0;
+    double discount = 0;
+    double netA = 0;
 }
 <div class="col-md-12 text-sm">
     <table class="table table-bordered table-sm table-striped" style="vertical-align:central" id="tblPartsUsed">
@@ -26,6 +32,12 @@
             @foreach (var part in Model)
             {
                 sl = sl + 1;
+                partsP += part.TotalSPAmount;
+                labour += part.LabourCharge;
+                vat += part.VAT;
+                tax += part.Tax;
+                discount += part.Discount;
+                netA += part.NetAmount;
                 string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy hh:mm") : "";
                 <tr class="text-sm">
                     <td class="text-center">@sl</td>
@@ -57,6 +69,18 @@
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr style="background-color:lightgrey">
+                <td colspan="5" class="text-right font-weight-bold">Total</td>
+                <td class="text-right font-weight-bold text-center">@partsP.ToString("0.00")</td>
+                <td class="text-right font-weight-bold text-center">@labour.ToString("0.00")</td>
+                <td class="text-right font-weight-bold text-center">@vat.ToString("0.00")</td>
+                <td class="text-right font-weight-bold text-center">@tax.ToString("0.00")</td>
+                <td class="text-right font-weight-bold text-center">@discount.ToString("0.00")</td>
+                <td class="text-right font-weight-bold text-center">@netA.ToString("0.00 Tk")</td>
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
     <div class="col-md-12">
         @Html.Partial("_Pagination", pagerData)

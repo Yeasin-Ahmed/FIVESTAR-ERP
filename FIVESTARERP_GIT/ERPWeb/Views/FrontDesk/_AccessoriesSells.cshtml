@@ -2,6 +2,11 @@
 @{
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
+    double partsP = 0;
+    double vat = 0;
+    double tax = 0;
+    double discount = 0;
+    double netA = 0;
 }
 <div class="col-md-12 text-sm">
     <table class="table table-bordered table-sm table-striped" id="tblAccessoriesSells">
@@ -24,6 +29,12 @@
             @foreach (var inv in Model)
             {
                 sl = sl + 1;
+                partsP += inv.TotalSPAmount;
+                vat += inv.VAT;
+                tax += inv.Tax;
+                discount += inv.Discount;
+                netA += inv.NetAmount;
+
                 string entryDate = inv.EntryDate != null ? inv.EntryDate.Value.ToString("dd-MMM-yyyy") : "";
                 <tr>
                     <td class="text-center">@sl</td>
@@ -50,6 +61,16 @@
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                @*<td colspan="4" class="text-right font-weight-bold">Total</td>
+                <td class="font-weight-bold text-center">@partsP</td>
+                <td class="font-weight-bold text-center">@vat</td>
+                <td class="text-center font-weight-bold">@tax</td>
+                <td class="text-center font-weight-bold">@discount</td>
+                <td class="text-center font-weight-bold">@netA</td>*@
+            </tr>
+        </tfoot>
     </table>
 </div>
 <div class="col-md-12 sell">

@@ -17,5 +17,6 @@ namespace ERPBLL.Configuration.Interface
         bool SaveMobilePartsStockOutByTSRequistion(long reqId, string status, long orgId, long userId,long branchId);
         bool SaveMobilePartStockOutByReq(long reqId,string status, long orgId, long branchId, long userId);
         bool SaveReturnPartsStockIn(List<MobilePartStockDetailDTO> mobilePartStockDetailDTO,long returnInfoId,string status, long userId, long orgId, long branchId);
+        //bool StockOutAccessoriesSells(long invoiceId, long orgId, long branchId, long userId);
     }
 }

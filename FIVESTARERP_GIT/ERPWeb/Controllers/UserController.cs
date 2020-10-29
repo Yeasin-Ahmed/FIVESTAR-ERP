@@ -165,7 +165,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(receiveJobDTO, receiveJOBView);
                 ViewBag.DashboardTotalReceiveViewModel = receiveJOBView;
 
-                // Daily Warranty and Billing Job 
+                // Daily Warranty and Billing Job
                 IEnumerable<DashboardDailyBillingAndWarrantyJobDTO> andWarrantyJobDTO = _jobOrderBusiness.DashboardDailyBillingAndWarrantyJob(User.OrgId, User.BranchId);
                 IEnumerable<DashboardDailyBillingAndWarrantyJobViewModel> andWarrantyJobViewModels = new List<DashboardDailyBillingAndWarrantyJobViewModel>();
                 AutoMapper.Mapper.Map(andWarrantyJobDTO, andWarrantyJobViewModels);
@@ -247,6 +247,8 @@ namespace ERPWeb.Controllers
 
             
         }
+        [HttpPost,ValidateAntiForgeryToken]
+       
         public ActionResult ReturnStockDetails(long id)
         {
             
@@ -280,6 +282,16 @@ namespace ERPWeb.Controllers
             List<TsStockReturnDetailViewModel> detailViewModels = new List<TsStockReturnDetailViewModel>();
             AutoMapper.Mapper.Map(tsStock, detailViewModels);
             return PartialView("ReturnStockDetails", detailViewModels);
+        }
+        public ActionResult GetDailySellsChart()
+        {
+            var data = _jobOrderBusiness.DailySellsChart(string.Empty, string.Empty, User.OrgId, User.BranchId);
+
+
+            var days = data.Select(s => s.EntryDate).ToArray();
+            var charts = data.Select(s => s.Sells).ToArray();
+            return Json(new { days = days, charts = charts });
+
         }
 
         protected override void Dispose(bool disposing)

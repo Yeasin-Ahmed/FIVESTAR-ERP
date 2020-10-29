@@ -19,7 +19,7 @@
             <div class="card-body">
                 @Html.AntiForgeryToken()
                 <div class="row">
-                    <div class="col-md-12 text-sm" id="dataContainer" style="overflow-y:scroll">
+                    <div class="col-md-12 text-sm" id="dataContainer" >
                         @{Html.RenderAction("GetJobOrdersPull", new { @flag = "view" });}
                     </div>
                 </div>

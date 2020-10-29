@@ -1,6 +1,9 @@
-﻿using ERPBLL.FrontDesk.Interface;
+﻿using ERPBLL.Configuration.Interface;
+using ERPBLL.FrontDesk.Interface;
+using ERPBO.Configuration.DomainModels;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
+using ERPDAL.ConfigurationDAL;
 using ERPDAL.FrontDeskDAL;
 using System;
 using System.Collections.Generic;
@@ -19,6 +22,11 @@ namespace ERPBLL.FrontDesk
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._invoiceDetailRepository = new InvoiceDetailRepository(this._frontDeskUnitOfWork);
+            
+        }
+        public IEnumerable<InvoiceDetail> GetAllDetailByInfoId(long infoId, long orgId, long branchId)
+        {
+            return _invoiceDetailRepository.GetAll(de => de.InvoiceInfoId == infoId && de.OrganizationId == orgId && de.BranchId == branchId).ToList();
         }
 
         public IEnumerable<InvoiceUsedPartsDTO> GetUsedPartsDetails(long jobOrderId, long orgId)

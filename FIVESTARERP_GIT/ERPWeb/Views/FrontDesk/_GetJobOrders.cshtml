@@ -9,124 +9,126 @@
 }
 <div class="row">
     <div class="col-md-12" style="overflow-y:scroll">
-        <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblJobOrderList">
-            <thead class="btn-dark">
-                <tr class="text-center text-sm">
-                    <th class="hide"></th>
-                    <th style="vertical-align:middle">#SL</th>
-                    <th style="vertical-align:middle">JobOrder</th>
-                    <th style="vertical-align:middle">JobLocation</th>
-                    <th style="vertical-align:middle">Model</th>
-                    <th style="vertical-align:middle">Type</th>
-                    <th style="vertical-align:middle">IMEI1</th>
-                    <th style="vertical-align:middle">IMEI2</th>
-                    <th style="vertical-align:middle">Color</th>
-                    <th style="vertical-align:middle">Symptoms</th>
-                    <th style="vertical-align:middle">Accessories</th>
-                    <th style="vertical-align:middle">JobType</th>
-                    <th style="vertical-align:middle">Customer Name</th>
-                    <th style="vertical-align:middle">Mobile No</th>
-                    <th style="vertical-align:middle">Customer Type</th>
-                    @*<th style="vertical-align:middle">Address</th>*@
-                    <th style="vertical-align:middle">Warrenty Paper</th>
-                    <th style="vertical-align:middle">WarrantyDate</th>
-                    <th style="vertical-align:middle">JobStatus</th>
-                    <th style="vertical-align:middle">TS WorkStatus</th>
-                    <th style="vertical-align:middle">Ref.Number</th>
-                    <th style="vertical-align:middle">TSName</th>
-                    @*<th style="vertical-align:middle">TSWork</th>*@
-                    @*<th style="vertical-align:middle">Remarks</th>*@
-                    <th style="vertical-align:middle">CourierName</th>
-                    <th style="vertical-align:middle">CourierNumber</th>
-                    <th style="vertical-align:middle">ApproxBill</th>
-                    <th style="vertical-align:middle">Issued by</th>
-                    <th style="vertical-align:middle">Close by</th>
-                    <th style="vertical-align:middle">CreateDate</th>
-                    <th style="vertical-align:middle">RepairDate</th>
-                    <th style="vertical-align:middle">CloseDate</th>
-                    <th style="vertical-align:middle" class="action">Invoice</th>
-                    <th style="vertical-align:middle" class="action">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    badge1 = item.JobOrderType == "Billing" ? "badge bg-danger" : "badge bg-success";
-                    badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Job-Initiated" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
-                    sl = sl + 1;
-                    isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
-                    isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-                    string strWarrentStartDate = item.WarrantyDate.HasValue ? item.WarrantyDate.Value.ToString("dd-MMM-yyy") : "";
-                    string closeDate = item.CloseDate != null ? item.CloseDate.Value.ToString("dd-MMM-yyy") : "";
-                    string repairDate = item.RepairDate != null ? item.RepairDate.Value.ToString("dd-MMM-yyy") : "";
-                <tr class="text-sm">
-                    <td class="hide">@item.JodOrderId</td>
-                    <td class="text-center text-bold">@sl</td>
-                    <td class="text-center text-bold">@item.JobOrderCode</td>
-                    <td>@item.JobLocationB</td>
-                    <td>@item.ModelName</td>
-                    <td>@item.Type</td>
-                    <td>@item.IMEI</td>
-                    <td>@item.IMEI2</td>
-                    <td>@item.ModelColor</td>
-                    <td>@item.Problems</td>
-                    <td class="hiddendots">@item.AccessoriesNames</td>
-                    <td>@item.JobOrderType</td>
-                    <td>@item.CustomerName</td>
-                    <td>@item.MobileNo</td>
-                    <td>@item.CustomerType</td>
-                    @*<td>@item.Address</td>*@
-                    @*<td class="text-center" data-val="@item.JobOrderType">
-            <span class="@badge1">@item.JobOrderType</span>
-        </td>*@
-                    <td class="text-center">@isWarrantyPaperEnclosed</td>
-                    <td>@strWarrentStartDate</td>
-                    <td class="text-center" data-val="@item.StateStatus">
-                        <span class="@badge">@item.StateStatus</span>
-                    </td>
-                    <td>@item.TsRepairStatus</td>
-                    <td>@item.ReferenceNumber</td>
-                    <td>@item.TSName</td>
-                    <td>@item.CourierName</td>
-                    <td>@item.CourierNumber</td>
-                    <td>@item.ApproxBill</td>
-                    @*<td>
-            @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone)
-            {
-                <a href="#" class="data-item-tsWork" data-item-tsWork="@item.JodOrderId" title="View TS Work">
-                    TSWork
-                </a>
-            }
-        </td>*@
-                    @*<td>@item.Remarks</td>*@
-                    <td class="text-center text-bold">@item.EntryUser</td>
-                    <td class="text-center text-bold">@item.CloseUser</td>
-                    <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                    <td>@repairDate</td>
-                    <td>@closeDate</td>
-                    <td class="action">
-                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn text-bold" style="color:blue" title="Download Invoice">@item.InvoiceCode</a>
-                    </td>
-                    <td class="text-center action">
-                        <a href="#" class="btn btn-sm btn-outline-info data-item-details" data-item-details="@item.JodOrderId" title="Job Order Details">
-                            <i class="fas fa-eye"></i>
-                        </a>
-
-                        @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && item.IsTransfer == null)
-                        {
-                            <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit Job Order"><i class="fas fa-pencil-alt"></i> </a>
-                        }
-                    </td>
-                </tr>
-                }
-                @if (Model.Count() == 0)
-                {
-                    <tr class="empty-row text-center">
-                        <td colspan="20">No data found in the table</td>
+        <div class="row">
+            <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm" id="tblJobOrderList">
+                <thead class="btn-dark">
+                    <tr class="text-center text-sm">
+                        <th class="hide"></th>
+                        <th style="vertical-align:middle">#SL</th>
+                        <th style="vertical-align:middle">JobOrder</th>
+                        <th style="vertical-align:middle">JobLocation</th>
+                        <th style="vertical-align:middle">Model</th>
+                        <th style="vertical-align:middle">Type</th>
+                        <th style="vertical-align:middle">IMEI1</th>
+                        <th style="vertical-align:middle">IMEI2</th>
+                        <th style="vertical-align:middle">Color</th>
+                        <th style="vertical-align:middle">Symptoms</th>
+                        <th style="vertical-align:middle">Accessories</th>
+                        <th style="vertical-align:middle">JobType</th>
+                        <th style="vertical-align:middle">Customer Name</th>
+                        <th style="vertical-align:middle">Mobile No</th>
+                        <th style="vertical-align:middle">Customer Type</th>
+                        @*<th style="vertical-align:middle">Address</th>*@
+                        <th style="vertical-align:middle">Warrenty Paper</th>
+                        <th style="vertical-align:middle">WarrantyDate</th>
+                        <th style="vertical-align:middle">JobStatus</th>
+                        <th style="vertical-align:middle">TS WorkStatus</th>
+                        <th style="vertical-align:middle">Ref.Number</th>
+                        <th style="vertical-align:middle">TSName</th>
+                        @*<th style="vertical-align:middle">TSWork</th>*@
+                        @*<th style="vertical-align:middle">Remarks</th>*@
+                        <th style="vertical-align:middle">CourierName</th>
+                        <th style="vertical-align:middle">CourierNumber</th>
+                        <th style="vertical-align:middle">ApproxBill</th>
+                        <th style="vertical-align:middle">Issued by</th>
+                        <th style="vertical-align:middle">Close by</th>
+                        <th style="vertical-align:middle">CreateDate</th>
+                        <th style="vertical-align:middle">RepairDate</th>
+                        <th style="vertical-align:middle">CloseDate</th>
+                        <th style="vertical-align:middle" class="action">Invoice</th>
+                        <th style="vertical-align:middle" class="action">Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        badge1 = item.JobOrderType == "Billing" ? "badge bg-danger" : "badge bg-success";
+                        badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Job-Initiated" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
+                        sl = sl + 1;
+                        isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
+                        isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
+                        string strWarrentStartDate = item.WarrantyDate.HasValue ? item.WarrantyDate.Value.ToString("dd-MMM-yyy") : "";
+                        string closeDate = item.CloseDate != null ? item.CloseDate.Value.ToString("dd-MMM-yyy") : "";
+                        string repairDate = item.RepairDate != null ? item.RepairDate.Value.ToString("dd-MMM-yyy") : "";
+                        <tr class="text-sm">
+                            <td class="hide">@item.JodOrderId</td>
+                            <td class="text-center text-bold">@sl</td>
+                            <td class="text-center text-bold">@item.JobOrderCode</td>
+                            <td>@item.JobLocationB</td>
+                            <td>@item.ModelName</td>
+                            <td>@item.Type</td>
+                            <td>@item.IMEI</td>
+                            <td>@item.IMEI2</td>
+                            <td>@item.ModelColor</td>
+                            <td>@item.Problems</td>
+                            <td class="hiddendots">@item.AccessoriesNames</td>
+                            <td>@item.JobOrderType</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.MobileNo</td>
+                            <td>@item.CustomerType</td>
+                            @*<td>@item.Address</td>*@
+                            @*<td class="text-center" data-val="@item.JobOrderType">
+                            <span class="@badge1">@item.JobOrderType</span>
+                        </td>*@
+                            <td class="text-center">@isWarrantyPaperEnclosed</td>
+                            <td>@strWarrentStartDate</td>
+                            <td class="text-center" data-val="@item.StateStatus">
+                                <span class="@badge">@item.StateStatus</span>
+                            </td>
+                            <td>@item.TsRepairStatus</td>
+                            <td>@item.ReferenceNumber</td>
+                            <td>@item.TSName</td>
+                            <td>@item.CourierName</td>
+                            <td>@item.CourierNumber</td>
+                            <td>@item.ApproxBill</td>
+                            @*<td>
+                            @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone)
+                            {
+                                <a href="#" class="data-item-tsWork" data-item-tsWork="@item.JodOrderId" title="View TS Work">
+                                    TSWork
+                                </a>
+                            }
+                        </td>*@
+                            @*<td>@item.Remarks</td>*@
+                            <td class="text-center text-bold">@item.EntryUser</td>
+                            <td class="text-center text-bold">@item.CloseUser</td>
+                            <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                            <td>@repairDate</td>
+                            <td>@closeDate</td>
+                            <td class="action">
+                                <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= item.InvoiceInfoId})" target="_blank" class="btn text-bold" style="color:blue" title="Download Invoice">@item.InvoiceCode</a>
+                            </td>
+                            <td class="text-center action">
+                                <a href="#" class="btn btn-sm btn-outline-info data-item-details" data-item-details="@item.JodOrderId" title="Job Order Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
+                                @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && item.IsTransfer == null)
+                                {
+                                    <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit Job Order"><i class="fas fa-pencil-alt"></i> </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Count() == 0)
+                    {
+                        <tr class="empty-row text-center">
+                            <td colspan="20">No data found in the table</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-md-12 joborder">
         @Html.Partial("_Pagination", pagerData)

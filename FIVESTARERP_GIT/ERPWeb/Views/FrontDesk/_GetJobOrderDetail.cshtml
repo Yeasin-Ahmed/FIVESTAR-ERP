@@ -8,124 +8,129 @@
     string RepairDate = Model.RepairDate != null ? Model.RepairDate.Value.ToString("dd-MMM-yyy") : "";
     string CloseDate = Model.CloseDate != null ? Model.CloseDate.Value.ToString("dd-MMM-yyy") : "";
 }
-<table class="table table-sm table-bordered table-responsive-lg text-sm text-bold" id="tblJobOrderDetail">
-    <tr>
-        <td class="hide">@Model.JodOrderId</td>
-        <td class="text-purple">JobCode</td>
-        <td>@Model.JobOrderCode</td>
-        <td class="text-purple">Invoice</td>
-        <td>@Model.InvoiceCode</td>
-        <td class="text-purple">CreateDate</td>
-        <td>@EntryDate</td>
-    </tr>
-    <tr>
-        <td class="text-purple">Customer Name</td>
-        <td>@Model.CustomerName</td>
-        <td class="text-purple">Moblie No</td>
-        <td>@Model.MobileNo</td>
-        <td class="text-purple">Address</td>
-        <td>@Model.Address</td>
-    </tr>
-    <tr>
-        <td class="text-purple">CustomerType</td>
-        <td>@Model.CustomerType</td>
-        <td class="text-purple">IMEI2</td>
-        <td>@Model.IMEI</td>
-        <td class="text-purple">IMEI2</td>
-        <td>@Model.IMEI2</td>
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-sm table-bordered table-responsive-lg text-sm text-bold" id="tblJobOrderDetail">
+            <tr>
+                <td class="hide">@Model.JodOrderId</td>
+                <td class="text-purple">JobCode</td>
+                <td>@Model.JobOrderCode</td>
+                <td class="text-purple">Invoice</td>
+                <td>@Model.InvoiceCode</td>
+                <td class="text-purple">CreateDate</td>
+                <td>@EntryDate</td>
+            </tr>
+            <tr>
+                <td class="text-purple">Customer Name</td>
+                <td>@Model.CustomerName</td>
+                <td class="text-purple">Moblie No</td>
+                <td>@Model.MobileNo</td>
+                <td class="text-purple">Address</td>
+                <td>@Model.Address</td>
+            </tr>
+            <tr>
+                <td class="text-purple">CustomerType</td>
+                <td>@Model.CustomerType</td>
+                <td class="text-purple">IMEI2</td>
+                <td>@Model.IMEI</td>
+                <td class="text-purple">IMEI2</td>
+                <td>@Model.IMEI2</td>
 
-    </tr>
-    <tr>
-        <td class="text-purple">Type</td>
-        <td>@Model.Type</td>
-        <td class="text-purple">Model</td>
-        <td>@Model.ModelName</td>
-        <td class="text-purple">Color</td>
-        <td>@Model.ModelColor</td>
+            </tr>
+            <tr>
+                <td class="text-purple">Type</td>
+                <td>@Model.Type</td>
+                <td class="text-purple">Model</td>
+                <td>@Model.ModelName</td>
+                <td class="text-purple">Color</td>
+                <td>@Model.ModelColor</td>
 
-    </tr>
-    <tr>
-        <td class="text-purple">Accessories</td>
-        <td>@Model.AccessoriesNames</td>
-        <td class="text-purple">Problems</td>
-        <td>@Model.Problems</td>
-        @*<td class="text-purple">Warrenty Available</td>
-        <td>@isWarrantyAvailable</td>*@
-        <td class="text-purple">Warrenty Paper</td>
-        <td>@isWarrantyPaperEnclosed</td>
+            </tr>
+            <tr>
+                <td class="text-purple">Accessories</td>
+                <td>@Model.AccessoriesNames</td>
+                <td class="text-purple">Problems</td>
+                <td>@Model.Problems</td>
+                @*<td class="text-purple">Warrenty Available</td>
+                    <td>@isWarrantyAvailable</td>*@
+                <td class="text-purple">Warrenty Paper</td>
+                <td>@isWarrantyPaperEnclosed</td>
 
-    </tr>
-    <tr>
-        <td class="text-purple">JobStatus</td>
-        <td>@Model.StateStatus</td>
-        <td class="text-purple">WorkStatus</td>
-        <td>@Model.TsRepairStatus</td>
-        <td class="text-purple">Ref.Number</td>
-        <td>@Model.ReferenceNumber</td>
+            </tr>
+            <tr>
+                <td class="text-purple">JobStatus</td>
+                <td>@Model.StateStatus</td>
+                <td class="text-purple">WorkStatus</td>
+                <td>@Model.TsRepairStatus</td>
+                <td class="text-purple">Ref.Number</td>
+                <td>@Model.ReferenceNumber</td>
 
-    </tr>
-    <tr>
-        <td class="text-purple">WarrentyDate</td>
-        <td>@strWarrentStartDate</td>
-        <td class="text-purple">RepairDate</td>
-        <td>@RepairDate</td>
-        <td class="text-purple">CloseDate</td>
-        <td>@CloseDate</td>
-    </tr>
-    <tr>
-        <td class="text-purple">TSName</td>
-        <td>@Model.TSName</td>
-        <td class="text-purple">Issued by</td>
-        <td>@Model.EntryUser</td>
-        <td class="text-purple">Close by</td>
-        <td>@Model.CloseUser</td>
-    </tr>
-    <tr>
-        <td class="text-purple">Remarks</td>
-        <td>@Model.Remarks</td>
-        <td class="text-purple">UsedParts</td>
-        <td colspan="3">@Model.PartsName</td>
-    </tr>
-    <tr>
-        <td class="text-purple">CourierName</td>
-        <td>@Model.CourierName</td>
-        <td class="text-purple">CourierNumber</td>
-        <td>@Model.CourierNumber</td>
-        <td class="text-purple">ApproxBill</td>
-        <td>@Model.ApproxBill</td>
-    </tr>
-    @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.PendingJobOrder)
-    {
-        <tr>
-            <td class="text-purple">
-                JobOrder Type
-            </td>
-            <td colspan="5">
-                @Html.DropDownList("ddlJobOrderType", (IEnumerable<SelectListItem>)ViewBag.ddlJobOrderType, "Select JobOrder Type", new { @class = "form-control form-control-sm ddlJobOrderType" })
-                <span class="error hide require-type font-weight-bold">Type is required</span>
-            </td>
-        </tr>
-    }
-    else
-    {
-        <tr>
-            <td class="text-purple">
-                JobOrder Type
-            </td>
-            <td colspan="5">
-                @Model.JobOrderType
-            </td>
-        </tr>
-    }
-</table>
-<div class="modal-footer">
-    @if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.IsReturn ==true) || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone))
-    {
-        <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
-    }
-    @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone && Model.JobOrderType == "Billing" && Model.InvoiceCode==null)
-    {
-        <button type="button" class="btn btn-sm btn-primary btnInvoice">Invoice</button>
-    }
+            </tr>
+            <tr>
+                <td class="text-purple">WarrentyDate</td>
+                <td>@strWarrentStartDate</td>
+                <td class="text-purple">RepairDate</td>
+                <td>@RepairDate</td>
+                <td class="text-purple">CloseDate</td>
+                <td>@CloseDate</td>
+            </tr>
+            <tr>
+                <td class="text-purple">TSName</td>
+                <td>@Model.TSName</td>
+                <td class="text-purple">Issued by</td>
+                <td>@Model.EntryUser</td>
+                <td class="text-purple">Close by</td>
+                <td>@Model.CloseUser</td>
+            </tr>
+            <tr>
+                <td class="text-purple">Remarks</td>
+                <td>@Model.Remarks</td>
+                <td class="text-purple">UsedParts</td>
+                <td colspan="3">@Model.PartsName</td>
+            </tr>
+            <tr>
+                <td class="text-purple">CourierName</td>
+                <td>@Model.CourierName</td>
+                <td class="text-purple">CourierNumber</td>
+                <td>@Model.CourierNumber</td>
+                <td class="text-purple">ApproxBill</td>
+                <td>@Model.ApproxBill</td>
+            </tr>
+            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.PendingJobOrder)
+            {
+                <tr>
+                    <td class="text-purple">
+                        JobOrder Type
+                    </td>
+                    <td colspan="5">
+                        @Html.DropDownList("ddlJobOrderType", (IEnumerable<SelectListItem>)ViewBag.ddlJobOrderType, "Select JobOrder Type", new { @class = "form-control form-control-sm ddlJobOrderType" })
+                        <span class="error hide require-type font-weight-bold">Type is required</span>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="text-purple">
+                        JobOrder Type
+                    </td>
+                    <td colspan="5">
+                        @Model.JobOrderType
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-12">
+        <div class="modal-footer">
+            @if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.IsReturn == true) || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone))
+            {
+                <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
+            }
+            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone && Model.JobOrderType == "Billing" && Model.InvoiceCode == null)
+            {
+                <button type="button" class="btn btn-sm btn-primary btnInvoice">Invoice</button>
+            }
+        </div>
+    </div>
 </div>
-
