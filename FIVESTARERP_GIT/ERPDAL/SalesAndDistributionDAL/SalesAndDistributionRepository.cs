@@ -56,5 +56,28 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
-    
+    public class ModelRepository : SalesAndDistributionBaseRepository<Model>
+    {
+        public ModelRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class ColorRepository : SalesAndDistributionBaseRepository<Color>
+    {
+        public ColorRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class ModelColorsRepository : SalesAndDistributionBaseRepository<ModelColors>
+    {
+        public ModelColorsRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
 }

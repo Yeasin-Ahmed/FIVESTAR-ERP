@@ -14,9 +14,11 @@ namespace ERPBLL.SalesAndDistribution
     {
         private readonly ISalesAndDistributionUnitOfWork _salesAndDistribution;
         private readonly BrandRepository _brandRepository;
-        public BrandBusiness(ISalesAndDistributionUnitOfWork salesAndDistribution)
+        private readonly IBrandCategoriesBusiness _brandCategoriesBusiness;
+        public BrandBusiness(ISalesAndDistributionUnitOfWork salesAndDistribution, IBrandCategoriesBusiness brandCategoriesBusiness)
         {
             this._salesAndDistribution = salesAndDistribution;
+            this._brandCategoriesBusiness = brandCategoriesBusiness;
             this._brandRepository = new BrandRepository(this._salesAndDistribution);
         }
         public Brand GetBrandById(long id, long orgId)
@@ -30,9 +32,10 @@ namespace ERPBLL.SalesAndDistribution
         public bool SaveBrand(BrandDTO model, long[] categories, long orgId, long branchId, long userId)
         {
             bool IsSuccess = false;
-            if(model.BrandId == 0)
+            Brand brand = null;
+            if (model.BrandId == 0)
             {
-                Brand brand = new Brand()
+                brand = new Brand()
                 {
                     BrandName = model.BrandName,
                     BranchId = branchId,
@@ -46,19 +49,27 @@ namespace ERPBLL.SalesAndDistribution
             }
             else
             {
-                var brandInDb = _brandRepository.GetOneByOrg(s => s.BrandId == model.BrandId && s.OrganizationId == orgId);
-                if(brandInDb != null)
+                brand = _brandRepository.GetOneByOrg(s => s.BrandId == model.BrandId && s.OrganizationId == orgId);
+                if(brand != null)
                 {
-                    brandInDb.BrandName = model.BrandName;
-                    brandInDb.IsActive = model.IsActive;
-                    brandInDb.Remarks = model.Remarks;
-                    brandInDb.UpUserId = userId;
-                    brandInDb.UpdateDate = DateTime.Now;
-                    _brandRepository.Update(brandInDb);
+                    brand.BrandName = model.BrandName;
+                    brand.IsActive = model.IsActive;
+                    brand.Remarks = model.Remarks;
+                    brand.UpUserId = userId;
+                    brand.UpdateDate = DateTime.Now;
+                    _brandRepository.Update(brand);
                 }
             }
             if (_brandRepository.Save()) {
 
+                if(categories != null && categories.Length > 0)
+                {
+                    IsSuccess = _brandCategoriesBusiness.SaveBrandCategories(brand.BrandId, categories, userId, branchId, orgId);
+                }
+                else
+                {
+                    IsSuccess = true;
+                }
             }
             return IsSuccess;
         }

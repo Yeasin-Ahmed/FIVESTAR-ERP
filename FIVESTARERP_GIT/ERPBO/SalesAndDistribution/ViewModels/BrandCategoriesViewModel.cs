@@ -25,4 +25,10 @@ namespace ERPBO.SalesAndDistribution.ViewModels
         public string UpdateUser { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
     }
+
+    public class BrandAndCategoriesViewModel
+    {
+        public long CategoryId { get; set; }
+        public string CategoryName { get; set; }
+    }
 }

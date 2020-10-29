@@ -666,6 +666,14 @@
     <Compile Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.Designer.cs">
       <DependentUpon>202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.Designer.cs">
+      <DependentUpon>202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.Designer.cs">
+      <DependentUpon>202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1097,6 +1105,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.resx">
       <DependentUpon>202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.resx">
+      <DependentUpon>202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.resx">
+      <DependentUpon>202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

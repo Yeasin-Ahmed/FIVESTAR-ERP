@@ -166,7 +166,7 @@ namespace ERPWeb.Controllers
             {
                 var userAllMenus = (List<UserAuthorizeMenusViewModels>)Session["UserAuthorizeMenus"];
                 var menus = (from mm in userAllMenus
-                             select new { MainmenuId = mm.MainmenuId, MainmenuName = mm.MainmenuName }).Distinct().ToList();
+                             select new { MainmenuId = mm.MainmenuId, MainmenuName = mm.MainmenuName }).OrderBy(s=>s.MainmenuId).Distinct().ToList();
 
                 foreach (var mm in menus)
                 {

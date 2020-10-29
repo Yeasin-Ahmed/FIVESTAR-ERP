@@ -1,5 +1,6 @@
 ﻿using ERPBLL.SalesAndDistribution.Interface;
 using ERPBO.SalesAndDistribution.DomainModels;
+using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.SalesAndDistribution
 {
-    public class BrandCategoriesBusiness : IBrandCategories
+    public class BrandCategoriesBusiness : IBrandCategoriesBusiness
     {
         private readonly ISalesAndDistributionUnitOfWork _salesAndDistribution;
         private readonly BrandCategoriesRepository _brandCategoriesRepository;
@@ -18,6 +19,14 @@ namespace ERPBLL.SalesAndDistribution
         {
             this._salesAndDistribution = salesAndDistribution;
             this._brandCategoriesRepository = new BrandCategoriesRepository(this._salesAndDistribution);
+        }
+
+        public IEnumerable<BrandAndCategoriesDTO> GetBrandAndCategories(long brandId, long orgId)
+        {
+            string query = string.Format(@"Select c.CategoryId,c.CategoryName From tblBrandCategories bc
+Inner Join tblCategory c on bc.CategoryId = c.CategoryId and bc.BrandId={0}
+Where c.OrganizationId={1}", brandId, orgId);
+            return this._salesAndDistribution.Db.Database.SqlQuery<BrandAndCategoriesDTO>(query).ToList();
         }
 
         public BrandCategories GetBrandCategoriesByIds(long brandId, long categoryId, long orgId)
@@ -48,7 +57,8 @@ namespace ERPBLL.SalesAndDistribution
             }
             if(brandCategoriesList.Count > 0)
             {
-                IsSuccess= _brandCategoriesRepository.Save();
+                _brandCategoriesRepository.InsertAll(brandCategoriesList);
+                IsSuccess = _brandCategoriesRepository.Save();
             }
             else
             {

@@ -25,4 +25,10 @@ namespace ERPBO.SalesAndDistribution.DTOModels
         public string UpdateUser { get; set; }
         public  Nullable<DateTime> UpdateDate { get; set; }
     }
+
+    public class BrandAndCategoriesDTO
+    {
+        public long CategoryId { get; set; }
+        public string CategoryName { get; set; }
+    }
 }

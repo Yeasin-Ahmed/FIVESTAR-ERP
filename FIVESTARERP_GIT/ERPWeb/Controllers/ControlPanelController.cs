@@ -1049,9 +1049,10 @@ namespace ERPWeb.Controllers
         public ActionResult SaveUserAuthorization(List<UserAuthorizationViewModel> models)
         {
             bool IsSuccess = false;
-            var pre = UserPrivilege("ControlPanel", "SetUserCustomAuthorization");
-            var permission = ((pre.Edit) || (pre.Add));
-            if (models.Count > 0 && permission)
+            ///var pre = UserPrivilege("ControlPanel", "SetUserCustomAuthorization");
+            //var permission = ((pre.Edit) || (pre.Add));
+            //&& permission
+            if (models.Count > 0 )
             {
                 List<UserAuthorizationDTO> userAuthorizationDTOs = new List<UserAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, userAuthorizationDTOs);
@@ -1124,9 +1125,9 @@ namespace ERPWeb.Controllers
         public ActionResult SaveRoleAuthorization(List<RoleAuthorizationViewModel> models)
         {
             bool IsSuccess = false;
-            var pre = UserPrivilege("ControlPanel", "SetUserRoleAuthorization");
-            var permission = ((pre.Edit) || (pre.Add));
-            if (models.Count > 0 && permission)
+            //var pre = UserPrivilege("ControlPanel", "SetUserRoleAuthorization");
+            //var permission = ((pre.Edit) || (pre.Add)); && permission
+            if (models.Count > 0 )
             {
                 List<RoleAuthorizationDTO> roleAuthorizationDTOs = new List<RoleAuthorizationDTO>();
                 AutoMapper.Mapper.Map(models, roleAuthorizationDTOs);

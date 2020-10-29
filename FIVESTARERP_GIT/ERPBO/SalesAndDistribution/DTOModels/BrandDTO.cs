@@ -26,6 +26,6 @@ namespace ERPBO.SalesAndDistribution.DTOModels
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
-
+        public IEnumerable<BrandAndCategoriesDTO> BrandAndCategories { get; set; }
     }
 }

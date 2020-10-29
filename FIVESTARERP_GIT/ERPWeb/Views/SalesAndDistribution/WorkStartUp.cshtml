@@ -15,14 +15,14 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-category-tab" data-toggle="pill" href="#custom-tabs-two-category" role="tab" aria-controls="custom-tabs-two-category" aria-selected="true">Category</a>
                     </li>
-                    <li class="nav-item hide">
-                        <a class="nav-link" id="custom-tabs-three-qc-tab" data-toggle="pill" href="#custom-tabs-three-qc" role="tab" aria-controls="custom-tabs-three-qc" aria-selected="false">Quality Control</a>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-brand-tab" data-toggle="pill" href="#custom-tabs-three-brand" role="tab" aria-controls="custom-tabs-three-brand" aria-selected="false">Brand</a>
                     </li>
-                    <li class="nav-item hide">
-                        <a class="nav-link" id="custom-tabs-four-repair-tab" data-toggle="pill" href="#custom-tabs-four-repair" role="tab" aria-controls="custom-tabs-four-repair" aria-selected="false">Repair Line</a>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-color-tab" data-toggle="pill" href="#custom-tabs-four-color" role="tab" aria-controls="custom-tabs-four-color" aria-selected="false">Color</a>
                     </li>
-                    <li class="nav-item hide">
-                        <a class="nav-link" id="custom-tabs-five-packaging-tab" data-toggle="pill" href="#custom-tabs-five-packaging" role="tab" aria-controls="custom-tabs-five-packaging" aria-selected="false">Packaging Line</a>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-five-model-tab" data-toggle="pill" href="#custom-tabs-five-model" role="tab" aria-controls="custom-tabs-five-model" aria-selected="false">Model</a>
                     </li>
                 </ul>
             </div>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show " id="custom-tabs-three-qc" role="tabpanel" aria-labelledby="custom-tabs-three-qc">
+                    <div class="tab-pane fade show " id="custom-tabs-three-brand" role="tabpanel" aria-labelledby="custom-tabs-three-brand">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -132,7 +132,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    List Of Quality Control
+                                                    List Of Brand
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -148,12 +148,12 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchQC" id="searchByQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblQCLine tbody tr',this)" />
+                                                <input type="text" name="searchBrand" id="searchByBrand" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblBrand tbody tr',this)" />
                                             </div>
                                             <div class="col-md-4">
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewQC"><i class="fa fa-plus"></i> Create QC</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewBrand"><i class="fa fa-plus"></i> Create New Brand</button>
                                             </div>
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show " id="custom-tabs-four-repair" role="tabpanel" aria-labelledby="custom-tabs-four-repair">
+                    <div class="tab-pane fade show " id="custom-tabs-four-color" role="tabpanel" aria-labelledby="custom-tabs-four-color">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -179,7 +179,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    List Of Repair Line
+                                                    List Of Colors
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -195,12 +195,12 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchRepair" id="searchByRepair" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblRepairLine tbody tr',this)" />
+                                                <input type="text" name="searchColor" id="searchByColor" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblColors tbody tr',this)" />
                                             </div>
                                             <div class="col-md-4">
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewRepair"><i class="fa fa-plus"></i> Create Repair Line</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewColor"><i class="fa fa-plus"></i> Create New Color</button>
                                             </div>
                                         </div>
                                     </div>
@@ -216,7 +216,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show " id="custom-tabs-five-packaging" role="tabpanel" aria-labelledby="custom-tabs-five-packaging">
+                    <div class="tab-pane fade show " id="custom-tabs-five-model" role="tabpanel" aria-labelledby="custom-tabs-five-model">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card card-gray-dark">
@@ -226,7 +226,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    List Of Packaging Line
+                                                    List Of Model
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -242,12 +242,12 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchPackaging" id="searchByPackaging" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblPackagingLine tbody tr',this)" />
+                                                <input type="text" name="searchModel" id="searchByModel" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblModel tbody tr',this)" />
                                             </div>
                                             <div class="col-md-4">
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewPackaging"><i class="fa fa-plus"></i> Create Packaging Line</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewModel"><i class="fa fa-plus"></i> Create Model</button>
                                             </div>
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form id="frmDealer">
+                    <form id="frmCategory">
                         <input type="hidden" name="Id" id="hdfDealerId" />
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -392,7 +392,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="modalCategory" role="dialog" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -406,7 +405,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="txtCategoryName" class="control-label font-weight-bold">
-                                    Category 
+                                    Category
                                     <div class="checkbox d-inline icheck-emerland">
                                         <input type="checkbox" name="chkCategoryStatestatus" id="chkCategoryStatestatus" />
                                         <label for="chkCategoryStatestatus" class="text-success">
@@ -445,11 +444,176 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalBrand" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadBrand">Add New Brand</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmBrand">
+                        <input type="hidden" name="hdfBrandId" id="hdfBrandId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtBrandName" class="control-label font-weight-bold">
+                                    Brand
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkBrandStatestatus" id="chkBrandStatestatus" />
+                                        <label for="chkBrandStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtBrandName" value="" id="txtBrandName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-brand font-weight-bold">Input Brand!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtBrandRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtBrandRemarks" value="" id="txtBrandRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                @Html.DropDownList("ddlBrandCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitBrand"><i class="far fa-save"></i> <span id="spanSaveTextBrand"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalColor" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadColor">Add New Color</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmDealer">
+                        <input type="hidden" name="Id" id="hdfColorId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtColorName" class="control-label font-weight-bold">
+                                    Color
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkColorStatestatus" id="chkColorStatestatus" />
+                                        <label for="chkColorStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-list-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtColorName" value="" id="txtColorName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-color font-weight-bold">Input Category!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtColorRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtColorRemarks" value="" id="txtColorRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitColor"><i class="far fa-save"></i> <span id="spanSaveTextColor"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalModel" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadModel">Add New Model</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmBrand">
+                        <input type="hidden" name="hdfModelId" id="hdfModelId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtModelName" class="control-label font-weight-bold">
+                                    Model
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkModelStatestatus" id="chkModelStatestatus" />
+                                        <label for="chkModelStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtModelName" value="" id="txtModelName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-color font-weight-bold">Input Color!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtColorRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtColorRemarks" value="" id="txtColorRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                @Html.DropDownList("ddlModelColors", (IEnumerable<SelectListItem>)ViewBag.ddlColors, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitModel"><i class="far fa-save"></i> <span id="spanSaveTextColor"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts{
     <script type="text/javascript">
-
         // Dealer
         var hdfDealerId = $("#hdfDealerId");
         var txtDealerName = $("#txtDealerName");
@@ -468,13 +632,47 @@
         var txtCategoryName = $("#txtCategoryName");
         var txtCategoryRemarks = $("#txtCategoryRemarks");
 
+        // Brand
+        var hdfBrandId = $("#hdfBrandId");
+        var ddlBrandCategories = $("#ddlBrandCategories");
+        var txtBrandName = $("#txtBrandName");
+        var chkBrandStatestatus = $("#chkBrandStatestatus");
+        var txtBrandRemarks = $("#txtBrandRemarks");
+
+        //Color 
+        var hdfColorId = $("#hdfColorId");
+        var chkColorStatestatus = $("#chkColorStatestatus");
+        var txtColorName = $("#txtColorName")
+        var txtColorRemarks = $("#txtColorRemarks");
+
+        // Model
+        var hdfModelId = $("#hdfModelId");
+        var txtModelName = $("#txtModelName");
+        var txtModelRemarks = $("#txtModelRemarks");
+        var chkModelStatestatus = $("#chkModelStatestatus");
+        var ddlModelColors = $("#ddlModelColors");
+
         $(document).ready(function () {
+
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            $(".js-example-placeholder-multiple").select2({
+                placeholder: "Select Categories"
+            });
             loadDataInitializer();
         })
 
         function loadDataInitializer() {
             loadDealerDataTable();
             loadCategoryDataTable();
+            loadBrandDataTable();
+            loadColorDataTable();
+            loadModelDataTable();
         }
 
         function loadDealerDataTable() {
@@ -507,6 +705,51 @@
             })
         }
 
+        function loadBrandDataTable() {
+            $("#searchByBrand").val('');
+            var data = { flag: "brand" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadColorDataTable() {
+            $("#searchByColor").val('');
+            var data = { flag: "color" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadModelDataTable() {
+            $("#searchByModel").val('');
+            var data = { flag: "model" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
         $("#btnAddNewDealer").click(function (e) {
             e.preventDefault();
             OpenModalDealer();
@@ -516,6 +759,7 @@
             $("#modalDealer").modal("show");
             $("#spanModalHeadDealer").text("Add New Dealer");
             $("#spanSaveTextDealer").text("Save");
+            $(".error").addClass("hide");
             clearDealerCtrl();
         }
 
@@ -585,7 +829,7 @@
                     IsActive: chkStatestatus.is(":checked")
                 })
 
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDealer', data, getToken())).then(function (res,status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDealer', data, getToken())).then(function (res, status) {
                     if (res === true && status === "success") {
                         toastrSuccessAlert(execuStatus.successSave);
                         $("#modalDealer").modal("toggle");
@@ -604,7 +848,6 @@
         })
 
         // Category //
-        //data-category-edit
         $("#btnAddNewCategory").click(function (e) {
             e.preventDefault();
             OpenModalCategory();
@@ -614,6 +857,7 @@
             $("#modalCategory").modal("show");
             $("#spanModalHeadCategory").text("Add New Dealer");
             $("#spanSaveTextCategory").text("Save");
+            $(".error").addClass("hide");
             clearCategoryCtrl();
         }
 
@@ -656,10 +900,10 @@
             if (validateCategory()) {
 
                 var data = JSON.stringify({
-                    CategoryId: TryParseInt(hdfCategoryId.val(),0),
+                    CategoryId: TryParseInt(hdfCategoryId.val(), 0),
                     CategoryName: txtCategoryName.val(),
                     Remarks: txtCategoryRemarks.val(),
-                    IsActive : chkCategoryStatestatus.is(":checked")
+                    IsActive: chkCategoryStatestatus.is(":checked")
                 })
 
                 disable("#btnSubmitCategory");
@@ -678,6 +922,259 @@
                     consoleLog(error);
                     enable("#btnSubmitCategory");
                 })
+            }
+        })
+
+        // Brand
+
+        $("#btnAddNewBrand").click(function (e) {
+            e.preventDefault();
+            OpenModalBrand();
+        })
+
+        function clearBrandCtrl() {
+            ddlBrandCategories.val('');
+            ddlBrandCategories.trigger("change");
+            txtBrandName.val('');
+            chkBrandStatestatus.prop("checked", false);
+            txtBrandRemarks.val('');
+            hdfBrandId.val('0')
+        }
+
+        function OpenModalBrand() {
+            $("#modalBrand").modal("show");
+            $("#spanModalHeadBrand").text("Add New Brand");
+            $("#spanSaveTextBrand").text("Save");
+            $(".error").addClass("hide");
+            clearBrandCtrl();
+        }
+
+        function validateBrand() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtBrandName.val()) === "") {
+                $(".required-brand").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Brand Checking //
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitBrand").click(function (e) {
+            e.preventDefault();
+            if (validateBrand()) {
+
+                var categories = [];
+                if (ddlBrandCategories.val().length > 0) {
+                    $.each(ddlBrandCategories.val(), function (index, item) {
+                        categories.push(item);
+                    })
+                }
+
+                var model = { BrandId: TryParseInt(hdfBrandId.val(), 0), BrandName: txtBrandName.val(), IsActive: chkBrandStatestatus.is(":checked"), Remarks: txtBrandRemarks.val() }
+
+                var data = JSON.stringify({
+                    model: model,
+                    categories: categories
+                });
+                disable("#btnSubmitBrand");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveBrand', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalBrand").modal("toggle");
+                        clearBrandCtrl();
+                        loadBrandDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitBrand");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitBrand");
+                })
+
+            }
+        })
+
+        $(document).on('click', '.data-brand-edit', function (e) {
+            e.preventDefault();
+            OpenModalBrand();
+            $("#spanModalHeadBrand").text("Update Brand");
+            $("#spanSaveTextBrand").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfBrandId.val(tds.eq(1).html());
+            txtBrandName.val(tds.eq(2).html());
+            var categories = tds.eq(3).attr("data-val");
+
+            var brandCategories = [];
+            if ($.trim(categories) !== "" && categories.indexOf(",") < 0) {
+                brandCategories.push(categories)
+            }
+            else if ($.trim(categories) !== "" && categories.indexOf(",") >= 0) {
+                brandCategories= $.trim(categories).split(",");
+            }
+            //consoleLog("brandCategories")
+            //consoleLog(brandCategories);
+            ddlBrandCategories.val(brandCategories)
+            ddlBrandCategories.trigger("change");
+            if (tds.eq(4).attr("data-val") == "True") {
+                chkBrandStatestatus.prop("checked", true);
+            }
+            txtBrandRemarks.val(tds.eq(5).html());
+        })
+
+        // Color
+        $("#btnAddNewColor").click(function (e) {
+            e.preventDefault();
+            OpenModalColor();
+        })
+
+        function OpenModalColor() {
+            $("#modalColor").modal("show");
+            $("#spanModalHeadColor").text("Add New Color");
+            $("#spanSaveTextColor").text("Save");
+            $(".error").addClass("hide");
+            clearCategoryCtrl();
+        }
+
+        function clearColorCtrl() {
+            hdfColorId.val("0");
+            txtColorName.val('');
+            txtColorRemarks.val('');
+            chkColorStatestatus.prop("checked", false);
+        }
+
+        function validateColor() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtColorName.val()) == '') {
+                $(".required-color").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitColor").click(function (e) {
+            e.preventDefault();
+            if (validateColor()) {
+
+                var data = JSON.stringify({
+                    ColorId: TryParseInt(hdfColorId.val(),0),
+                    ColorName: $.trim(txtColorName.val()),
+                    Remarks: $.trim(txtColorRemarks.val()),
+                    IsActive: chkColorStatestatus.is(":checked")
+                });
+                disable("#btnSubmitColor");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveColor', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalColor").modal("toggle");
+                        clearColorCtrl();
+                        loadColorDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitColor");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitColor");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-color-edit', function (e) {
+            e.preventDefault();
+            OpenModalColor();
+            $("#spanModalHeadColor").text("Update Color");
+            $("#spanSaveTextColor").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfColorId.val(tds.eq(1).html());
+            txtColorName.val(tds.eq(2).html());
+            txtColorRemarks.val(tds.eq(4).html())
+            if (tds.eq(3).attr("data-val") == "True") {
+                chkColorStatestatus.prop("checked", true);
+            }
+        })
+
+        //
+
+        $("#btnAddNewModel").click(function (e) {
+            e.preventDefault();
+            OpenModalModel();
+        })
+
+        function OpenModalModel() {
+            $("#modalModel").modal("show");
+            $("#spanModalHeadModel").text("Add New Model");
+            $("#spanSaveTextModel").text("Save");
+            $(".error").addClass("hide");
+            clearModelCtrl();
+        }
+
+        function clearModelCtrl() {
+            hdfModelId.val("0");
+            txtModelName.val('');
+            txtModelRemarks.val('');
+            chkModelStatestatus.prop("checked", false);
+        }
+
+        function validateModel() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtModelName.val()) == '') {
+                $(".required-model").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitModel").click(function (e) {
+            e.preventDefault();
+            if (validateModel()) {
+
+                var colors = [];
+                if (ddlModelColors.val().length > 0) {
+                    $.each(ddlModelColors.val(), function (index, item) {
+                        colors.push(item);
+                    })
+                }
+
+                var model = { ModelId: TryParseInt(hdfModelId.val(), 0), ModelName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val() }
+
+                var data = JSON.stringify({
+                    model: model,
+                    colors: colors
+                });
+                disable("#btnSubmitModel");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveModel', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalModel").modal("toggle");
+                        clearModelCtrl();
+                        loadModelDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitModel");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitModel");
+                })
+
             }
         })
     </script>

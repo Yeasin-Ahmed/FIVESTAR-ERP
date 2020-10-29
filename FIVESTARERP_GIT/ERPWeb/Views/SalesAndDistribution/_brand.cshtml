@@ -1,0 +1,58 @@
+﻿@model  IEnumerable<ERPBO.SalesAndDistribution.ViewModels.BrandViewModel>
+@{
+    int sl = 0;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-striped table-bordered table-sm table-responsive-lg tblBrand" id="tblBrand">
+            <thead class="text-center">
+                <tr class="btn-dark">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Brand</th>
+                    <th>Categories</th>
+                    <th>StateStatus</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    string categories = string.Join(",",item.BrandAndCategories.Select(s=> s.CategoryId.ToString()).ToArray());
+
+                    string status = item.IsActive ? "Active" : "Inactive";
+                    string badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.BrandId</td>
+                        <td>@item.BrandName</td>
+                        <td class="text-center" data-val="@categories">
+                            @foreach (var i in item.BrandAndCategories)
+                            {
+                                <span class="badge badge-primary">@i.CategoryName</span> 
+                            }
+                        </td>
+                        <td class="text-center" data-val="@item.IsActive">
+                            <span class="@badge">@status</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-warning btn-flat data-brand-edit" data-brand-edit="@item.BrandId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
+                }
+                @if(Model.Count() == 0)
+                {
+                    <tr class="text-center text-bold empty-row">
+                        <td colspan="10">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -771,6 +771,9 @@
     <Content Include="Views\SalesAndDistribution\_BTRCIMEIList.cshtml" />
     <Content Include="Views\SalesAndDistribution\_itemStock.cshtml" />
     <Content Include="Views\SalesAndDistribution\_category.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_brand.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_color.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_model.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

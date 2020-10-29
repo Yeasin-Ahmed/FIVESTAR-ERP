@@ -209,13 +209,16 @@ namespace ERPWeb
             #endregion
 
             #region Sales & Distribution
-
             container.RegisterType<ISalesAndDistributionUnitOfWork, SalesAndDistributionUnitOfWork>();
             container.RegisterType<IDealerBusiness, DealerBusiness>();
             container.RegisterType<IBTRCApprovedIMEIBusiness, BTRCApprovedIMEIBusiness>();
             container.RegisterType<IItemStockBusiness, ItemStockBusiness>();
             container.RegisterType<ICategoryBusiness, CategoryBusiness>();
-
+            container.RegisterType<IBrandBusiness, BrandBusiness>();
+            container.RegisterType<IBrandCategoriesBusiness, BrandCategoriesBusiness>();
+            container.RegisterType<IModelBusiness, ModelBusiness>();
+            container.RegisterType<IColorBusiness, ColorBusiness>();
+            container.RegisterType<IModelColorBusiness, ModelColorBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
