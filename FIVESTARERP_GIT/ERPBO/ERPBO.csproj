@@ -602,22 +602,29 @@
     <Compile Include="SalesAndDistribution\DomainModels\Brand.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\BrandCategories.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Category.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\Color.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Dealer.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\BTRCApprovedIMEI.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\ItemStock.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\Model.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\ModelColors.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BrandCategoriesDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BrandDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BTRCApprovedIMEIDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\CategoryDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\ColorDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\DealerDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ApprovedIMEI.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ItemStockDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\ModelDTO.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandCategoriesViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BTRCApprovedIMEIViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\CategoryViewModel.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\ColorViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\DealerViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\ItemStockViewModel.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\ModelViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

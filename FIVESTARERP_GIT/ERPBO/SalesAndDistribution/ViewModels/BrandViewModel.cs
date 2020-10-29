@@ -10,7 +10,7 @@ namespace ERPBO.SalesAndDistribution.ViewModels
     public class BrandViewModel
     {
         public long BrandId { get; set; }
-        [StringLength(150)]
+        [StringLength(150),Required]
         public string BrandName { get; set; }
         public bool IsActive { get; set; }
         [StringLength(100)]
@@ -26,6 +26,6 @@ namespace ERPBO.SalesAndDistribution.ViewModels
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
-
+        public IEnumerable<BrandAndCategoriesViewModel> BrandAndCategories { get; set; }
     }
 }
