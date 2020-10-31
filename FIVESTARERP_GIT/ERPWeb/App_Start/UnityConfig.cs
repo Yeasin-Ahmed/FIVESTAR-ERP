@@ -53,6 +53,11 @@ namespace ERPWeb
             container.RegisterType<IItemPreparationDetailBusiness, ItemPreparationDetailBusiness>();
             container.RegisterType<ISupplierBusiness, SupplierBusiness>();
             container.RegisterType<IInventoryReportBusiness, InventoryReportBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.ICategoryBusiness, ERPBLL.Inventory.CategoryBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.ICategoryBusiness, ERPBLL.Inventory.CategoryBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.IBrandBusiness, ERPBLL.Inventory.BrandBusiness>();
+            container.RegisterType <ERPBLL.Inventory.Interface.IBrandCategoriesBusiness, ERPBLL.Inventory.BrandCategoriesBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.IColorBusiness, ERPBLL.Inventory.ColorBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
 
@@ -213,11 +218,11 @@ namespace ERPWeb
             container.RegisterType<IDealerBusiness, DealerBusiness>();
             container.RegisterType<IBTRCApprovedIMEIBusiness, BTRCApprovedIMEIBusiness>();
             container.RegisterType<IItemStockBusiness, ItemStockBusiness>();
-            container.RegisterType<ICategoryBusiness, CategoryBusiness>();
-            container.RegisterType<IBrandBusiness, BrandBusiness>();
-            container.RegisterType<IBrandCategoriesBusiness, BrandCategoriesBusiness>();
+            container.RegisterType<ERPBLL.SalesAndDistribution.Interface.ICategoryBusiness, ERPBLL.SalesAndDistribution.CategoryBusiness>();
+            container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IBrandBusiness, ERPBLL.SalesAndDistribution.BrandBusiness>();
+            container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IBrandCategoriesBusiness, ERPBLL.SalesAndDistribution.BrandCategoriesBusiness>();
             container.RegisterType<IModelBusiness, ModelBusiness>();
-            container.RegisterType<IColorBusiness, ColorBusiness>();
+            container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IColorBusiness, ERPBLL.SalesAndDistribution.ColorBusiness>();
             container.RegisterType<IModelColorBusiness, ModelColorBusiness>();
             #endregion
 

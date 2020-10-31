@@ -12,8 +12,10 @@ namespace ERPBO.SalesAndDistribution.DomainModels
     {
         public long StockId { get; set; }
         public long? WarehouseId { get; set; }
+        public long? CategoryId { get; set; }
+        public long? BrandId { get; set; }
         public long ModelId { get; set; }
-        public long? ItemTypeId { get; set; } // Category
+        public long? ItemTypeId { get; set; }
         public long? ItemId { get; set; } // 
         public long? ColorId { get; set; }
         [StringLength(100)]
@@ -45,5 +47,9 @@ namespace ERPBO.SalesAndDistribution.DomainModels
         public string EntryUser { get; set; }
         [StringLength(150)]
         public string UpdateUser { get; set; }
+        [StringLength(100)]
+        public string CategoryName { get; set; }
+        [StringLength(100)]
+        public string BrandName { get; set; }
     }
 }

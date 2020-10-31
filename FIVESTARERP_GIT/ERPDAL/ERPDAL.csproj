@@ -368,6 +368,22 @@
     <Compile Include="InventoryContextMigrations\202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.Designer.cs">
       <DependentUpon>202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202010300235463_Inventory_Category.cs" />
+    <Compile Include="InventoryContextMigrations\202010300235463_Inventory_Category.Designer.cs">
+      <DependentUpon>202010300235463_Inventory_Category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202010301333211_Inventory_BrandAndBrandCategories.cs" />
+    <Compile Include="InventoryContextMigrations\202010301333211_Inventory_BrandAndBrandCategories.Designer.cs">
+      <DependentUpon>202010301333211_Inventory_BrandAndBrandCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202010301536534_Inventory_tblColor_AddCatAndBrandInModel_AddModelAndColorInItem.cs" />
+    <Compile Include="InventoryContextMigrations\202010301536534_Inventory_tblColor_AddCatAndBrandInModel_AddModelAndColorInItem.Designer.cs">
+      <DependentUpon>202010301536534_Inventory_tblColor_AddCatAndBrandInModel_AddModelAndColorInItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202010310607568_Inventory_UpdateDescription.cs" />
+    <Compile Include="InventoryContextMigrations\202010310607568_Inventory_UpdateDescription.Designer.cs">
+      <DependentUpon>202010310607568_Inventory_UpdateDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -674,6 +690,10 @@
     <Compile Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.Designer.cs">
       <DependentUpon>202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.Designer.cs">
+      <DependentUpon>202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -893,6 +913,18 @@
     <EmbeddedResource Include="InventoryContextMigrations\202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.resx">
       <DependentUpon>202009210828003_Inventory_RenamingRepairStockToWarehouseFaultyStock.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202010300235463_Inventory_Category.resx">
+      <DependentUpon>202010300235463_Inventory_Category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202010301333211_Inventory_BrandAndBrandCategories.resx">
+      <DependentUpon>202010301333211_Inventory_BrandAndBrandCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202010301536534_Inventory_tblColor_AddCatAndBrandInModel_AddModelAndColorInItem.resx">
+      <DependentUpon>202010301536534_Inventory_tblColor_AddCatAndBrandInModel_AddModelAndColorInItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202010310607568_Inventory_UpdateDescription.resx">
+      <DependentUpon>202010310607568_Inventory_UpdateDescription.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1111,6 +1143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.resx">
       <DependentUpon>202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.resx">
+      <DependentUpon>202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

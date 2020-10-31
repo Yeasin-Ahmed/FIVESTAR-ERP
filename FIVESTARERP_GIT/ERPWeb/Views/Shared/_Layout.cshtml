@@ -48,6 +48,7 @@
             scrollbar-color: #888 #f1f1f1;
             scrollbar-width: thin;
         }
+
         div {
             scrollbar-width: thin;
         }
@@ -62,10 +63,10 @@
             background: #888;
         }
 
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
     </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -98,7 +99,14 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link"><b>@User.BranchName</b> &nbsp; |</a>
+                    <a class="nav-link">
+                        <span class="badge badge-warning">
+                            <b><span></span> @User.FullName</b>
+                        </span>
+                        <span class="badge badge-primary">
+                            <b>@User.BranchName Branch</b>
+                        </span>  &nbsp; |
+                    </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">

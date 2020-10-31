@@ -669,10 +669,10 @@
 
         function loadDataInitializer() {
             loadDealerDataTable();
-            loadCategoryDataTable();
-            loadBrandDataTable();
-            loadColorDataTable();
-            loadModelDataTable();
+            //loadCategoryDataTable();
+            //loadBrandDataTable();
+            //loadColorDataTable();
+            //loadModelDataTable();
         }
 
         function loadDealerDataTable() {
@@ -693,11 +693,11 @@
         function loadCategoryDataTable() {
             $("#searchByCategory").val('');
             var data = { flag: "category" };
-            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
                 if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
+                    $("#dataContainer7").fadeOut('500', function () {
+                        $("#dataContainer7").empty();
+                        $("#dataContainer7").append(res).fadeIn('500');
                     });
                 }
             }).fail(function (error) {

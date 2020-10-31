@@ -1,40 +1,48 @@
 ﻿
 @{
-    ViewBag.Title = "List Of Warehouse";
+    ViewBag.Title = "Warehouse Startup Process";
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 
-<div class="row">
+<div class="row text-sm">
     <div class="col-md-12">
-        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+        <div class="card card-navy card-tabs" style="margin-top:-20px">
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-warehouseList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseList" role="tab" aria-controls="custom-tabs-two-warehouseList" aria-selected="true">Warehouse List</a>
+                        <a class="nav-link active" id="custom-tabs-two-warehouseList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseList" role="tab" aria-controls="custom-tabs-two-warehouseList" aria-selected="true">Warehouses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="false">Model List</a>
+                        <a class="nav-link" id="custom-tabs-two-category-tab" data-toggle="pill" href="#custom-tabs-two-category" role="tab" aria-controls="custom-tabs-two-category" aria-selected="false">Moblie Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-itemTypeList-tab" data-toggle="pill" href="#custom-tabs-two-itemTypeList" role="tab" aria-controls="custom-tabs-two-itemTypeList" aria-selected="false">Item Type List</a>
+                        <a class="nav-link" id="custom-tabs-two-brand-tab" data-toggle="pill" href="#custom-tabs-two-brand" role="tab" aria-controls="custom-tabs-two-brand" aria-selected="false">Mobile Brand</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-unitList-tab" data-toggle="pill" href="#custom-tabs-two-unitList" role="tab" aria-controls="custom-tabs-two-unitList" aria-selected="false">Unit List</a>
+                        <a class="nav-link" id="custom-tabs-two-color-tab" data-toggle="pill" href="#custom-tabs-two-color" role="tab" aria-controls="custom-tabs-two-color" aria-selected="false">Color</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-itemList-tab" data-toggle="pill" href="#custom-tabs-two-itemList" role="tab" aria-controls="custom-tabs-two-itemList" aria-selected="false">Item List</a>
+                        <a class="nav-link" id="custom-tabs-two-descriptionList-tab" data-toggle="pill" href="#custom-tabs-two-descriptionList" role="tab" aria-controls="custom-tabs-two-descriptionList" aria-selected="false">Mobile Models</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-IQCList-tab" data-toggle="pill" href="#custom-tabs-two-IQCList" role="tab" aria-controls="custom-tabs-two-IQCList" aria-selected="false">IQC List</a>
+                        <a class="nav-link" id="custom-tabs-two-itemTypeList-tab" data-toggle="pill" href="#custom-tabs-two-itemTypeList" role="tab" aria-controls="custom-tabs-two-itemTypeList" aria-selected="false">Item Types</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-unitList-tab" data-toggle="pill" href="#custom-tabs-two-unitList" role="tab" aria-controls="custom-tabs-two-unitList" aria-selected="false">Units</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-itemList-tab" data-toggle="pill" href="#custom-tabs-two-itemList" role="tab" aria-controls="custom-tabs-two-itemList" aria-selected="false">Items</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-IQCList-tab" data-toggle="pill" href="#custom-tabs-two-IQCList" role="tab" aria-controls="custom-tabs-two-IQCList" aria-selected="false">IQC</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content" id="custom-tabs-two-tabContent">
                     @Html.AntiForgeryToken()
-
                     <div class="tab-pane fade show active" id="custom-tabs-two-warehouseList" role="tabpanel" aria-labelledby="custom-tabs-two-warehouseList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -49,10 +57,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
-                                                @if (privilege.Add)
-                                                {
-                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Create Warehouse</button>
-                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -63,19 +68,15 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body text-sm">
-                                        <div class="row" style="margin-top:-15px">
+                                        <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="search" id="searchByWarehouse" class="form-control form-control-sm" placeholder="Search By Warehouse Name"/>
+                                                <input type="text" name="search" id="searchByWarehouse" class="form-control form-control-sm" placeholder="Search By Warehouse Name" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                               
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Warehouse</button>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +84,151 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer1">
-                                          
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-category" role="tabpanel" aria-labelledby="custom-tabs-two-category">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Category
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchCategory" id="searchByCategory" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblCategory tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewCategory"><i class="fa fa-plus"></i> Create Category</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer7">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show " id="custom-tabs-two-brand" role="tabpanel" aria-labelledby="custom-tabs-two-brand">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Brand
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchBrand" id="searchByBrand" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblBrand tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewBrand"><i class="fa fa-plus"></i> Create New Brand</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer8">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show " id="custom-tabs-two-color" role="tabpanel" aria-labelledby="custom-tabs-two-color">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Colors
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchColor" id="searchByColor" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblColors tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewColor"><i class="fa fa-plus"></i> Create New Color</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer9">
                                         </div>
                                     </div>
                                 </div>
@@ -115,15 +260,13 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body text-sm">
-                                        <div class="row" style="margin-top:-15px">
+                                        <div class="row">
                                             <div class="col-md-4">
                                                 <input type="text" name="searchDescription" id="searchByDescription" class="form-control form-control-sm" placeholder="Search By Model Name" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
+                                                <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewDescription"><i class="fa fa-plus"></i>Add New Model</button>
                                             </div>
                                         </div>
                                     </div>
@@ -154,10 +297,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
-                                                @if (privilege.Add)
-                                                {
-                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewitemType"><i class="fa fa-plus"></i>Add New ItemType</button>
-                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -168,16 +308,13 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body text-sm">
-                                        <div class="row" style="margin-top:-15px">
+                                        <div class="row">
                                             <div class="col-md-4">
                                                 <input type="text" name="searchitemType" id="searchByitemType" class="form-control form-control-sm" placeholder="Search By Item Type" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                               
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewitemType"><i class="fa fa-plus"></i> Create ItemType</button>
                                             </div>
                                         </div>
                                     </div>
@@ -208,10 +345,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
-                                                @if (privilege.Add)
-                                                {
-                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewUnit"><i class="fa fa-plus"></i> Add New Unit</button>
-                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -222,16 +356,13 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body text-sm">
-                                        <div class="row" style="margin-top:-15px">
+                                        <div class="row">
                                             <div class="col-md-4">
                                                 <input type="text" name="searchUnit" id="searchByUnit" class="form-control form-control-sm" placeholder="Search By Unit Name" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4 text-right">
-                                                
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewUnit"><i class="fa fa-plus"></i> Create Unit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -249,8 +380,8 @@
                     </div>
 
                     <div class="tab-pane fade show " id="custom-tabs-two-itemList" role="tabpanel" aria-labelledby="custom-tabs-two-itemList-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
                                 <div class="card card-gray-dark">
                                     <div class="card-header">
                                         <div class="row">
@@ -262,10 +393,6 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
-                                                @if (privilege.Add)
-                                                {
-                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewItem"><i class="fa fa-plus"></i> Create New Item</button>
-                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -276,16 +403,13 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body text-sm">
-                                        <div class="row" style="margin-top:-15px">
+                                        <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchItem" id="searchByItem" class="form-control form-control-sm" placeholder="Search By Item Name"/>
+                                                <input type="text" name="searchItem" id="searchByItem" class="form-control form-control-sm" placeholder="Search By Item Name" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4 text-right">
-                                                
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewItem"><i class="fa fa-plus"></i> Create New Item</button>
                                             </div>
                                         </div>
                                     </div>
@@ -316,10 +440,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
-                                                @if (privilege.Add)
-                                                {
-                                                    <button class="btn btn-primary btn-sm float-lg-right" style="background-color:darkblue" id="btnAddNewIQC"><i class="fa fa-plus"></i> Create IQC</button>
-                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -330,19 +451,15 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
-                                        <h6 class="card-title">Search By</h6>
-                                    </div>
-                                    <div class="card-body text-sm">
-                                        <div class="row" style="margin-top:-15px">
+                                        <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchIQC" id="searchByIQC" class="form-control form-control-sm" placeholder="Search By IQC"/>
+                                                <input type="text" name="searchIQC" id="searchByIQC" class="form-control form-control-sm" placeholder="Search By IQC" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                               
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewIQC"><i class="fa fa-plus"></i> Create IQC</button>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -632,43 +749,235 @@
 </div>
 
 <div class="modal fade" id="modalDescription" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDescription">Update Description</span></h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDescription">Add New Model</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <form id="frmDesctiption">
                     <input type="hidden" name="description" id="hdfDescriptionId" />
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="txtTACNo" class="control-label font-weight-bold">Model</label>
+                        <div class="form-group col-md-6">
+                            <label for="txtModel" class="control-label font-weight-bold">
+                                Model
+                                <div class="checkbox d-inline icheck-emerland">
+                                    <input type="checkbox" name="chkStatestatusDescription" id="chkStatestatusDescription" />
+                                    <label for="chkStatestatusDescription" class="text-success">
+                                        Active
+                                    </label>
+                                </div>
+                            </label>
                             <input type="text" name="Model" value="" id="txtModel" class="form-control form-control-sm" />
+                            <span class="error hide required-descriptionName font-weight-bold">Input Description Name!</span>
+                            <span class="error hide duplicate-descriptionName font-weight-bold">Already DescriptionName Exist!</span>
                         </div>
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
                             <label for="txtTACNo" class="control-label font-weight-bold">TAC No</label>
                             <input type="number" name="TACNo" value="" id="txtTACNo" class="form-control form-control-sm" />
-                            <span class="error hide req-tac">Input TAC!</span>
+                            <span class="error hide req-tac font-weight-bold">Input TAC!</span>
+                            <span class="error hide dup-tac font-weight-bold">Already TAC Exist!</span>
                         </div>
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
+                            <label for="txtStartPoint" class="control-label font-weight-bold">Start Point</label>
+                            <input type="number" name="StartPoint" value="" id="txtStartPoint" class="form-control form-control-sm" />
+                            <span class="error hide req-startPoint">Input Start Point!</span>
+                        </div>
+                        <div class="form-group col-md-6">
                             <label for="txtEndPoint" class="control-label font-weight-bold">End Point</label>
                             <input type="number" name="EndPoint" value="" id="txtEndPoint" class="form-control form-control-sm" />
+                            <span class="error hide req-endPoint">Input End Point!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ddlModelCategories" class="control-label font-weight-bold">Category</label>
+                            @Html.DropDownList("ddlModelCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
+                            <span class="error hide req-modelCategory">Input Category!</span>
+                            <div class="hide">
+                                @Html.DropDownList("ddlModelBrand", (IEnumerable<SelectListItem>)ViewBag.ddlBrand, new { @class = "form-control form-control-sm select2 select2-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ddlColors" class="control-label font-weight-bold">Color</label>
+                            @*@Html.DropDownList("ddlColors", (IEnumerable<SelectListItem>)ViewBag.ddlColors, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple",name = "Color[]" })*@
+                            <select id="ddlColors" class="form-control form-control-sm select2 select2-danger" , multiple="multiple" name="Color[]"></select>
+                            <span class="error hide req-color">Input Color!</span>
+                            <span class="error hide duplicate-colorName font-weight-bold">Already This Model Color Exist!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarksDescription" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksDescription" class="form-control form-control-sm" />
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer btn-default">
-                <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
-                        Data has been saved Successful!
-                    </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
-                        Data has been failed to save!
-                    </div>
-                </div>
                 <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
-                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitDescription"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextDescription">Update</span> </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmitDescription"><i class="fas fa-paper-plane"></i> <span id="spanSaveTextDescription">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCategory" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadCategory">Add New Category</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmDealer">
+                    <input type="hidden" name="Id" id="hdfCategoryId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtCategoryName" class="control-label font-weight-bold">
+                                Category
+                                <div class="checkbox d-inline icheck-emerland">
+                                    <input type="checkbox" name="chkCategoryStatestatus" id="chkCategoryStatestatus" />
+                                    <label for="chkCategoryStatestatus" class="text-success">
+                                        Active
+                                    </label>
+                                </div>
+                            </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-list-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="txtCategoryName" value="" id="txtCategoryName" class="form-control form-control-sm" />
+                            </div>
+                            <span class="error hide required-category font-weight-bold">Input Category!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-comment"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="txtCategoryRemarks" value="" id="txtCategoryRemarks" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitCategory"><i class="far fa-save"></i> <span id="spanSaveTextCategory"> Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalBrand" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadBrand">Add New Brand</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmBrand">
+                    <input type="hidden" name="hdfBrandId" id="hdfBrandId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtBrandName" class="control-label font-weight-bold">
+                                Brand
+                                <div class="checkbox d-inline icheck-emerland">
+                                    <input type="checkbox" name="chkBrandStatestatus" id="chkBrandStatestatus" />
+                                    <label for="chkBrandStatestatus" class="text-success">
+                                        Active
+                                    </label>
+                                </div>
+                            </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-mobile"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="txtBrandName" value="" id="txtBrandName" class="form-control form-control-sm" />
+                            </div>
+                            <span class="error hide required-brand font-weight-bold">Input Brand!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtBrandRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-comment"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="txtBrandRemarks" value="" id="txtBrandRemarks" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            @Html.DropDownList("ddlBrandCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitBrand"><i class="far fa-save"></i> <span id="spanSaveTextBrand"> Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalColor" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadColor">Add New Color</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmDealer">
+                    <input type="hidden" name="Id" id="hdfColorId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtColorName" class="control-label font-weight-bold">
+                                Color
+                                <div class="checkbox d-inline icheck-emerland">
+                                    <input type="checkbox" name="chkColorStatestatus" id="chkColorStatestatus" />
+                                    <label for="chkColorStatestatus" class="text-success">
+                                        Active
+                                    </label>
+                                </div>
+                            </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-list-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="txtColorName" value="" id="txtColorName" class="form-control form-control-sm" />
+                            </div>
+                            <span class="error hide required-color font-weight-bold">Input Category!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtColorRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-comment"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="txtColorRemarks" value="" id="txtColorRemarks" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-light">
+                <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitColor"><i class="far fa-save"></i> <span id="spanSaveTextColor"> Save</span> </button>
             </div>
         </div>
     </div>
@@ -686,12 +995,37 @@
         var chkStatestatus = $("#chkStatestatus");
         var hdfWarehouseId = $("#hdfWarehouseId");
 
+        // Category
+        var hdfCategoryId = $("#hdfCategoryId");
+        var chkCategoryStatestatus = $("#chkCategoryStatestatus");
+        var txtCategoryName = $("#txtCategoryName");
+        var txtCategoryRemarks = $("#txtCategoryRemarks");
+
+        // Brand
+        var hdfBrandId = $("#hdfBrandId");
+        var ddlBrandCategories = $("#ddlBrandCategories");
+        var txtBrandName = $("#txtBrandName");
+        var chkBrandStatestatus = $("#chkBrandStatestatus");
+        var txtBrandRemarks = $("#txtBrandRemarks");
+
+        //Color 
+        var hdfColorId = $("#hdfColorId");
+        var chkColorStatestatus = $("#chkColorStatestatus");
+        var txtColorName = $("#txtColorName")
+        var txtColorRemarks = $("#txtColorRemarks");
+
         // Description
         var searchByDescription = $("#searchByDescription");
         var hdfDescriptionId = $("#hdfDescriptionId");
         var txtModel = $("#txtModel");
         var txtTACNo = $("#txtTACNo");
         var txtEndPoint = $("#txtEndPoint");
+        var ddlColors = $("#ddlColors");
+        var txtStartPoint = $("#txtStartPoint");
+        var txtRemarksDescription = $("#txtRemarksDescription");
+        var chkStatestatusDescription = $("#chkStatestatusDescription");
+        var ddlModelCategories = $("#ddlModelCategories");
+        var ddlModelBrand = $("#ddlModelBrand");
 
         // ItemType
         var searchByitemType = $("#searchByitemType");
@@ -726,6 +1060,17 @@
         var hdfIQCId = $("#hdfIQCId");
 
         $(document).ready(function () {
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+
+            $(".js-example-placeholder-multiple").select2({
+                placeholder: "Select Categories"
+            });
+            LoadDropDown('/Common/GetColors', type.post, ddlColors, null);
             LoadDataInitializer();
         })
 
@@ -736,6 +1081,9 @@
             LoadUnitDataTable();
             LoadItemDataTable();
             LoadIQCDataTable();
+            LoadCategoryDataTable();
+            LoadBrandDataTable();
+            LoadColorDataTable();
         }
 
         //#region Warehouse
@@ -846,45 +1194,106 @@
         //#endregion
 
         //#region Description
+
+        $("#btnAddNewDescription").click(function (e) {
+            e.preventDefault();
+            OpenDescriptionModel();
+        })
         function OpenDescriptionModel() {
+            clearCtrlDescription();
+            $("#spanModalHeadDescription").text('Add New Model');
+            $("#spanSaveTextDescription").text('Save');
+            $(".error").addClass('hide');
+            $("#modalDescription").modal("show");
+        }
+
+        function clearCtrlDescription() {
             txtModel.val('');
             hdfDescriptionId.val('0');
             txtTACNo.val('');
             txtEndPoint.val('');
-            $(".error").addClass('hide');
-            $("#modalDescription").modal("show");
+            ddlColors.val('');
+            ddlColors.trigger("change");
+            txtStartPoint.val('');
+            txtRemarksDescription.val('');
+            ddlModelCategories.val('');
+            chkStatestatusDescription.prop("checked", false);
         }
 
         searchByDescription.keyup(function () {
             LoadDescriptionDataTable();
         })
 
-        $(document).on('click', 'a.data-item-description', function (e) {
+        $(document).on('click', 'a.data-edit-description', function (e) {
             e.preventDefault();
             OpenDescriptionModel();
+            $("#spanModalHeadDescription").text('Update Description')
+            $("#spanSaveTextDescription").text('Update');
             var tds = $(this).parent().parents('tr').children('td');
             hdfDescriptionId.val(tds.eq(1).html());
             txtModel.val(tds.eq(3).html());
             txtTACNo.val(tds.eq(4).html());
+            txtStartPoint.val(tds.eq(5).html());
+            txtEndPoint.val(tds.eq(6).html());
+            txtRemarksDescription.val(tds.eq(8).html());
+            var selectedColors = tds.eq(11).html();
+            console.log(selectedColors);
+            //ddlColors.val
+            var colors = selectedColors.split(",");
+            ddlColors.val(colors);
+            ddlColors.trigger("change");
+            var td = (tds.eq(7).attr("data-val"));
+            console.log(td);
+            chkStatestatusDescription.prop("checked", false);
+
+            if (td.toLowerCase() === 'active') {
+                chkStatestatusDescription.prop("checked", true);
+            }
+
+            if (TryParseInt(tds.eq(10).attr("data-val"), 0) > 0) {
+                ddlModelCategories.val(tds.eq(10).attr("data-val"));
+            }
         })
+
         function validateDescriptionTAC() {
             var isValid = true;
             $(".error").addClass('hide');
-            if (txtTACNo.val() == '') {
-                $(".req-tac").removeClass('hide');
+            //if (txtTACNo.val() == '') {
+            //    $(".req-tac").removeClass('hide');
+            //    isValid = false;
+            //}
+            //if (TryParseInt(hdfDescriptionId.val(), 0) <= 0) {
+            //    bootbox.alert("Maodel Not found");
+            //    isValid = false;
+            //}
+            if ($.trim(txtModel.val()) == '') {
+                $(".required-descriptionName").removeClass('hide');
                 isValid = false;
             }
-            if (TryParseInt(hdfDescriptionId.val(), 0) <= 0) {
-                bootbox.alert("Maodel Not found");
+            else {
+                //var id = TryParseInt(hdfDescriptionId.val(), 0);
+                //if (ajaxBooleanChecker(JSON.stringify({ id: id, descriptionName: txtModel.val().trim() }), '/Common/IsDuplicateDescriptionName', getToken()) == true) {
+                //    $(".duplicate-descriptionName").removeClass("hide");
+                //    isValid = false;
+                //}
+            }
+            if (TryParseInt(ddlModelBrand.val(), 0) <= 0) {
+                isValid = false;
+            }
+            if (TryParseInt(ddlModelCategories.val(), 0) <= 0) {
+                $(".req-modelCategory").removeClass('hide');
                 isValid = false;
             }
             return isValid;
         }
+
         $("#btnSubmitDescription").click(function (e) {
             e.preventDefault();
             if (validateDescriptionTAC()) {
                 disable("#btnSubmitDescription");
-                var data = JSON.stringify({ DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), TAC: txtTACNo.val(), EndPoint: TryParseInt(txtEndPoint.val(), 0) })
+                var colors = ddlColors.val().length > 0 ? ddlColors.val() : [];
+                var data = JSON.stringify({ DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), DescriptionName: txtModel.val(), TAC: txtTACNo.val(), StartPoint: TryParseInt(txtStartPoint.val(), 0), EndPoint: TryParseInt(txtEndPoint.val(), 0), Color: colors, Remarks: txtRemarksDescription.val(), IsActive: chkStatestatusDescription.is(":checked"), CategoryId: TryParseInt(ddlModelCategories.val(), 0), BrandId: TryParseInt(ddlModelBrand.val(), 0) })
+
                 console.log(data);
                 //return;
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveDescriptionTAC', data, getToken())).then(function (res, status) {
@@ -909,6 +1318,7 @@
                 })
             }
         })
+
         function LoadDescriptionDataTable() {
             var data = { flag: "description", name: $.trim(searchByDescription.val()), page: pageNo }
             $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
@@ -923,7 +1333,7 @@
                 console.log(error);
             })
         }
-        //#endregion Description
+        //#endregion
 
         //#region ItemType
 
@@ -1420,6 +1830,312 @@
                 }
             }
         })
+
+        //#region Category
+        function LoadCategoryDataTable() {
+            $("#searchByCategory").val('');
+            var data = { flag: "category" };
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer7").fadeOut('500', function () {
+                        $("#dataContainer7").empty();
+                        $("#dataContainer7").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+        $("#btnAddNewCategory").click(function (e) {
+            e.preventDefault();
+            OpenModalCategory();
+        })
+
+        function OpenModalCategory() {
+            $("#modalCategory").modal("show");
+            $("#spanModalHeadCategory").text("Add New Category");
+            $("#spanSaveTextCategory").text("Save");
+            $(".error").addClass("hide");
+            clearCategoryCtrl();
+        }
+
+        function clearCategoryCtrl() {
+            hdfCategoryId.val("0");
+            txtCategoryName.val('');
+            txtCategoryRemarks.val('');
+            chkCategoryStatestatus.prop("checked", false);
+        }
+
+        function validateCategory() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtCategoryName.val()) == '') {
+                $(".required-category").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            return isValid;
+        }
+
+        $(document).on('click', '.data-category-edit', function (e) {
+            e.preventDefault();
+            OpenModalCategory();
+            $("#spanModalHeadCategory").text("Update Category");
+            $("#spanSaveTextCategory").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfCategoryId.val(tds.eq(1).html());
+            txtCategoryName.val(tds.eq(2).html());
+            txtCategoryRemarks.val(tds.eq(3).html())
+            if (tds.eq(4).attr("data-val") == "Active") {
+                chkCategoryStatestatus.prop("checked", true);
+            }
+        })
+
+        $("#btnSubmitCategory").click(function (e) {
+            e.preventDefault();
+            if (validateCategory()) {
+
+                var data = JSON.stringify({
+                    CategoryId: TryParseInt(hdfCategoryId.val(), 0),
+                    CategoryName: txtCategoryName.val(),
+                    Remarks: txtCategoryRemarks.val(),
+                    IsActive: chkCategoryStatestatus.is(":checked")
+                })
+
+                disable("#btnSubmitCategory");
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveCategory', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalCategory").modal("toggle");
+                        clearCategoryCtrl();
+                        LoadCategoryDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitCategory");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitCategory");
+                })
+            }
+        })
+        //#endregion
+
+        //#region Brand
+        function LoadBrandDataTable() {
+            $("#searchByBrand").val('');
+            var data = { flag: "brand" };
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer8").fadeOut('500', function () {
+                        $("#dataContainer8").empty();
+                        $("#dataContainer8").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        $("#btnAddNewBrand").click(function (e) {
+            e.preventDefault();
+            OpenModalBrand();
+        })
+
+        function clearBrandCtrl() {
+            ddlBrandCategories.val('');
+            ddlBrandCategories.trigger("change");
+            txtBrandName.val('');
+            chkBrandStatestatus.prop("checked", false);
+            txtBrandRemarks.val('');
+            hdfBrandId.val('0')
+        }
+
+        function OpenModalBrand() {
+            $("#modalBrand").modal("show");
+            $("#spanModalHeadBrand").text("Add New Brand");
+            $("#spanSaveTextBrand").text("Save");
+            $(".error").addClass("hide");
+            clearBrandCtrl();
+        }
+
+        function validateBrand() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtBrandName.val()) === "") {
+                $(".required-brand").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Brand Checking //
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitBrand").click(function (e) {
+            e.preventDefault();
+            if (validateBrand()) {
+
+                var categories = [];
+                if (ddlBrandCategories.val().length > 0) {
+                    $.each(ddlBrandCategories.val(), function (index, item) {
+                        categories.push(item);
+                    })
+                }
+
+                var model = { BrandId: TryParseInt(hdfBrandId.val(), 0), BrandName: txtBrandName.val(), IsActive: chkBrandStatestatus.is(":checked"), Remarks: txtBrandRemarks.val() }
+
+                var data = JSON.stringify({
+                    model: model,
+                    categories: categories
+                });
+                disable("#btnSubmitBrand");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveBrand', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalBrand").modal("toggle");
+                        clearBrandCtrl();
+                        LoadBrandDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitBrand");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitBrand");
+                })
+
+            }
+        })
+
+        $(document).on('click', '.data-brand-edit', function (e) {
+            e.preventDefault();
+            OpenModalBrand();
+            $("#spanModalHeadBrand").text("Update Brand");
+            $("#spanSaveTextBrand").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfBrandId.val(tds.eq(1).html());
+            txtBrandName.val(tds.eq(2).html());
+            var categories = tds.eq(3).attr("data-val");
+
+            var brandCategories = [];
+            if ($.trim(categories) !== "" && categories.indexOf(",") < 0) {
+                brandCategories.push(categories)
+            }
+            else if ($.trim(categories) !== "" && categories.indexOf(",") >= 0) {
+                brandCategories = $.trim(categories).split(",");
+            }
+            //consoleLog("brandCategories")
+            //consoleLog(brandCategories);
+            ddlBrandCategories.val(brandCategories)
+            ddlBrandCategories.trigger("change");
+            if (tds.eq(4).attr("data-val") == "True") {
+                chkBrandStatestatus.prop("checked", true);
+            }
+            txtBrandRemarks.val(tds.eq(5).html());
+        })
+        //#endregion
+
+        //#region Color
+
+        function LoadColorDataTable() {
+            $("#searchByColor").val('');
+            var data = { flag: "color" };
+            $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetWarehouseList', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer9").fadeOut('500', function () {
+                        $("#dataContainer9").empty();
+                        $("#dataContainer9").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        $("#btnAddNewColor").click(function (e) {
+            e.preventDefault();
+            OpenModalColor();
+        })
+
+        function OpenModalColor() {
+            $("#modalColor").modal("show");
+            $("#spanModalHeadColor").text("Add New Color");
+            $("#spanSaveTextColor").text("Save");
+            $(".error").addClass("hide");
+            clearCategoryCtrl();
+        }
+
+        function clearColorCtrl() {
+            hdfColorId.val("0");
+            txtColorName.val('');
+            txtColorRemarks.val('');
+            chkColorStatestatus.prop("checked", false);
+        }
+
+        function validateColor() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtColorName.val()) == '') {
+                $(".required-color").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitColor").click(function (e) {
+            e.preventDefault();
+            if (validateColor()) {
+
+                var data = JSON.stringify({
+                    ColorId: TryParseInt(hdfColorId.val(), 0),
+                    ColorName: $.trim(txtColorName.val()),
+                    Remarks: $.trim(txtColorRemarks.val()),
+                    IsActive: chkColorStatestatus.is(":checked")
+                });
+                disable("#btnSubmitColor");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveColor', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalColor").modal("toggle");
+                        clearColorCtrl();
+                        LoadColorDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitColor");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitColor");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-color-edit', function (e) {
+            e.preventDefault();
+            OpenModalColor();
+            $("#spanModalHeadColor").text("Update Color");
+            $("#spanSaveTextColor").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfColorId.val(tds.eq(1).html());
+            txtColorName.val(tds.eq(2).html());
+            if (tds.eq(3).attr("data-val").toLowerCase() == "active") {
+                chkColorStatestatus.prop("checked", true);
+            }
+            txtColorRemarks.val(tds.eq(4).html())
+        })
+
+        //#endregion
     </script>
 }
 

@@ -41,7 +41,6 @@ namespace ERPWeb.Controllers
     {
         // GET: Inventory
         #region Inventory
-        private readonly IInventoryUnitOfWork _inventoryDb;
         private readonly IWarehouseBusiness _warehouseBusiness;
         private readonly IItemTypeBusiness _itemTypeBusiness;
         private readonly IUnitBusiness _unitBusiness;
@@ -66,8 +65,10 @@ namespace ERPWeb.Controllers
         private readonly IIQCItemReqInfoList _iQCItemReqInfoList;
         private readonly IIQCStockDetailBusiness _iQCStockDetailBusiness;
         private readonly IIQCStockInfoBusiness _iQCStockInfoBusiness;
-        private readonly WarehouseStockInfoRepository warehouseStockInfoRepository;
-        private readonly WarehouseStockDetailRepository warehouseStockDetailRepository;
+        private readonly ICategoryBusiness _categoryBusiness;
+        private readonly IBrandBusiness _brandBusiness;
+        private readonly IBrandCategoriesBusiness _brandCategoriesBusiness;
+        private readonly IColorBusiness _colorBusiness;
         #endregion
 
         #region Production
@@ -81,10 +82,9 @@ namespace ERPWeb.Controllers
         private readonly IStockItemReturnDetailBusiness _stockItemReturnDetailBusiness;
         #endregion
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IInventoryUnitOfWork inventoryDb, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoriesBusiness, IColorBusiness colorBusiness)
         {
             #region Inventory
-            this._inventoryDb = inventoryDb;
             this._warehouseBusiness = warehouseBusiness;
             this._itemTypeBusiness = itemTypeBusiness;
             this._unitBusiness = unitBusiness;
@@ -109,8 +109,10 @@ namespace ERPWeb.Controllers
             this._iQCItemReqInfoList = iQCItemReqInfoList;
             this._iQCStockDetailBusiness = iQCStockDetailBusiness;
             this._iQCStockInfoBusiness = iQCStockInfoBusiness;
-            warehouseStockInfoRepository = new WarehouseStockInfoRepository(this._inventoryDb);
-            warehouseStockDetailRepository = new WarehouseStockDetailRepository(this._inventoryDb);
+            this._categoryBusiness = categoryBusiness;
+            this._brandBusiness = brandBusiness;
+            this._brandCategoriesBusiness = brandCategoriesBusiness;
+            this._colorBusiness = colorBusiness;
             #endregion
 
             #region Production
@@ -197,10 +199,23 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
 
                 ViewBag.ddlWarehouse = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Select(ware => new SelectListItem { Text = ware.WarehouseName, Value = ware.Id.ToString() }).ToList();
+
+                ViewBag.ddlCategories = new SelectList(_categoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
+
+                ViewBag.ddlColors = _colorBusiness.GetAllColorByOrgId(User.OrgId).Select(s => new SelectListItem
+                {
+                    Value = s.ColorId.ToString(),
+                    Text = s.ColorName
+                }).ToList();
+
+                ViewBag.ddlBrand = new SelectList(_brandBusiness.GetClientMobileBrand("Five Star", User.OrgId), "BrandId", "BrandName");
+                var clientBrand = _brandBusiness.GetClientMobileBrand("Five Star", User.OrgId).FirstOrDefault();
+
+                ViewBag.ddlBrandCategory = new SelectList(_brandCategoriesBusiness.GetBrandAndCategories(clientBrand.BrandId, User.OrgId), "CategoryId", "CategoryName");
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "warehouse")
             {
-                IEnumerable<WarehouseDTO> dto = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Where(s=> (name == "" || name== null) || (s.WarehouseName.Contains(name))).Select(ware => new WarehouseDTO
+                IEnumerable<WarehouseDTO> dto = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.WarehouseName.Contains(name))).Select(ware => new WarehouseDTO
                 {
                     Id = ware.Id,
                     WarehouseName = ware.WarehouseName,
@@ -229,6 +244,9 @@ namespace ERPWeb.Controllers
                     SubCategoryId = des.SubCategoryId,
                     StateStatus = (des.IsActive == true ? "Active" : "Inactive"),
                     Remarks = des.Remarks,
+                    TAC = des.TAC,
+                    ColorId = des.ColorId,
+                    EndPoint = des.EndPoint,
                     OrganizationId = des.OrganizationId,
                     EUserId = des.EUserId,
                     EntryDate = des.EntryDate,
@@ -236,8 +254,11 @@ namespace ERPWeb.Controllers
                     UpdateDate = des.UpdateDate,
                     EntryUser = UserForEachRecord(des.EUserId.Value).UserName,
                     UpdateUser = (des.UpUserId == null || des.UpUserId == 0) ? "" : UserForEachRecord(des.UpUserId.Value).UserName,
-                    TAC = des.TAC,
-                    EndPoint = des.EndPoint
+                    CategoryId = des.CategoryId,
+                    CategoryName = (des.CategoryId == null ? "" : _categoryBusiness.GetCategoryById(des.CategoryId.Value, User.OrgId).CategoryName),
+                    BrandId = des.BrandId,
+                    BrandName = ((des.BrandId == null || des.BrandId == 0) ? "" : _brandBusiness.GetBrandById(des.BrandId.Value, User.OrgId).BrandName),
+                    Colors= _descriptionBusiness.GetModelColors(des.DescriptionId,User.OrgId)
 
                 }).OrderBy(des => des.DescriptionId).ToList();
 
@@ -262,7 +283,7 @@ namespace ERPWeb.Controllers
                     Remarks = item.Remarks,
                     StateStatus = (item.IsActive == true ? "Active" : "Inactive"),
                     OrganizationId = item.OrganizationId,
-                    WarehouseName = (allWarehouse.FirstOrDefault(s=>item.WarehouseId == s.Id).WarehouseName),
+                    WarehouseName = (allWarehouse.FirstOrDefault(s => item.WarehouseId == s.Id).WarehouseName),
                     EntryUser = UserForEachRecord(item.EUserId.Value).UserName,
                     UpdateUser = (item.UpUserId == null || item.UpUserId == 0) ? "" : UserForEachRecord(item.UpUserId.Value).UserName
                 }).OrderBy(item => item.ItemId).ToList();
@@ -289,7 +310,7 @@ namespace ERPWeb.Controllers
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);
                 dto = dto.Skip((page - 1) * 15).Take(15).ToList();
-                
+
                 AutoMapper.Mapper.Map(dto, unitViewModels);
                 return PartialView("_GetAllUnitPartialList", unitViewModels);
             }
@@ -340,8 +361,61 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModel);
                 return PartialView("GetIQCList", viewModel);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag == "category")
+            {
+                var dto = this._categoryBusiness.GetCategories(User.OrgId).Select(s => new CategoryDTO
+                {
+                    CategoryId = s.CategoryId,
+                    CategoryName = s.CategoryName,
+                    Remarks = s.Remarks,
+                    IsActive = s.IsActive,
+                    EUserId = s.EUserId,
+                    EntryDate = DateTime.Now,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
+                }).ToList();
+                IEnumerable<CategoryViewModel> viewModels = new List<CategoryViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_category", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "brand")
+            {
+                var dto = this._brandBusiness.GetBrands(User.OrgId).Select(s => new BrandDTO
+                {
+                    BrandId = s.BrandId,
+                    BranchId = s.BranchId,
+                    BrandName = s.BrandName,
+                    Remarks = s.Remarks,
+                    IsActive = s.IsActive,
+                    EUserId = s.EUserId,
+                    EntryDate = DateTime.Now,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    BrandAndCategories = _brandCategoriesBusiness.GetBrandAndCategories(s.BrandId, s.OrganizationId)
+                }).ToList();
+                IEnumerable<BrandViewModel> viewModels = new List<BrandViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_brand", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "color")
+            {
+                IEnumerable<ColorDTO> dto = _colorBusiness.GetAllColorByOrgId(User.OrgId).Select(c => new ColorDTO
+                {
+                    ColorId = c.ColorId,
+                    ColorName = c.ColorName,
+                    Remarks = c.Remarks,
+                    StateStatus = c.IsActive == true ? "Active" : "InActive",
+                    OrganizationId = c.OrganizationId,
+                    EntryUser = UserForEachRecord(c.EUserId.Value).UserName,
+                    UpdateUser = c.UpUserId == null || c.UpUserId == 0 ? "" : UserForEachRecord(c.EUserId.Value).UserName,
+                }).ToList();
+                List<ColorViewModel> viewModel = new List<ColorViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return PartialView("_color", viewModel);
+            }
             return View();
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveWarehouse(WarehouseViewModel viewModel)
         {
@@ -375,6 +449,7 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveItemType(ItemTypeViewModel itemTypeViewModel)
         {
@@ -452,6 +527,50 @@ namespace ERPWeb.Controllers
                     IQCDTO dto = new IQCDTO();
                     AutoMapper.Mapper.Map(viewModel, dto);
                     isSuccess = _iQCBusiness.SaveIQC(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveCategory(CategoryViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                CategoryDTO dto = new CategoryDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _categoryBusiness.SaveCategory(dto, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveBrand(BrandViewModel model, long[] categories)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                BrandDTO brand = new BrandDTO();
+                AutoMapper.Mapper.Map(model, brand);
+                IsSuccess = _brandBusiness.SaveBrand(brand, categories, User.OrgId, User.BranchId, User.UserId);
+            }
+
+            return Json(IsSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveColor(ColorViewModel viewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ColorDTO dto = new ColorDTO();
+                    AutoMapper.Mapper.Map(viewModel, dto);
+                    isSuccess = _colorBusiness.SaveColor(dto, User.UserId, User.OrgId);
                 }
                 catch (Exception ex)
                 {
@@ -602,7 +721,7 @@ namespace ERPWeb.Controllers
             return View(viewModels);
         }
 
-        
+
         #endregion
 
         #region Unit - Table
@@ -624,7 +743,7 @@ namespace ERPWeb.Controllers
             return View(unitViewModels);
         }
 
-       
+
         #endregion
 
         #region Item - Table
@@ -655,7 +774,7 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(dto, viewModel);
             return View(viewModel);
         }
-        
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetItemById(long id)
         {
@@ -698,7 +817,7 @@ namespace ERPWeb.Controllers
                     Value = s.value
                 }).ToList();
 
-               
+
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "search")
             {
@@ -1154,8 +1273,9 @@ namespace ERPWeb.Controllers
 
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
 
-                ViewBag.ddlItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s => !s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem {
-                    Text= s.ItemName,
+                ViewBag.ddlItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s => !s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem
+                {
+                    Text = s.ItemName,
                     Value = s.ItemId
                 }).ToList();
 
@@ -2290,7 +2410,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(s => new SelectListItem { Text = s.DescriptionName, Value = s.DescriptionId.ToString() }).ToList();
 
-            ViewBag.ddlBomItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s=> s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem()
+            ViewBag.ddlBomItem = _itemBusiness.GetItemDetails(User.OrgId).Where(s => s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem()
             {
                 Text = s.ItemName,
                 Value = s.ItemId
@@ -2345,10 +2465,10 @@ namespace ERPWeb.Controllers
                         var isItemPreparationExist = false;
 
 
-                        if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() !="")
+                        if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() != "")
                         {
                             string[] bomKeys = models.BomItemId.Split('#');
-                            isItemPreparationExist = _itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(ItemPreparationType.Production,models.DescriptionId.Value, Utility.TryParseInt(bomKeys[0]), User.OrgId);
+                            isItemPreparationExist = _itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(ItemPreparationType.Production, models.DescriptionId.Value, Utility.TryParseInt(bomKeys[0]), User.OrgId);
                             if (!isItemPreparationExist)
                             {
                                 itemPreparationInfo.DescriptionId = models.DescriptionId.Value;
@@ -2377,8 +2497,8 @@ namespace ERPWeb.Controllers
                                 {
                                     ItemPreparationDetailDTO itemPreparationDetail = new ItemPreparationDetailDTO()
                                     {
-                                        ItemId= item.ItemId.Value,
-                                        ItemTypeId= item.ItemTypeId.Value,
+                                        ItemId = item.ItemId.Value,
+                                        ItemTypeId = item.ItemTypeId.Value,
                                         WarehouseId = item.WarehouseId.Value,
                                         Quantity = item.ConsumptionQty.Value,
                                         UnitId = item.UnitId.Value
@@ -2390,7 +2510,7 @@ namespace ERPWeb.Controllers
 
                         executionState.isSuccess = (warehouseStocks.Count() > 0 ? _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, User.UserId, User.OrgId) : executionState.isSuccess);
 
-                        if (!isItemPreparationExist && itemPreparationInfo !=null && itemPreparationDetails.Count > 0)
+                        if (!isItemPreparationExist && itemPreparationInfo != null && itemPreparationDetails.Count > 0)
                             _itemPreparationInfoBusiness.SaveItemPreparations(itemPreparationInfo, itemPreparationDetails, User.UserId, User.OrgId);
 
                         //deleting excel file from folder  
@@ -2429,7 +2549,7 @@ namespace ERPWeb.Controllers
                     out fileNameExtension,
                     out streams,
                     out warnings);
-                localReport.DisplayName = "StockInByExcel-" + DateTime.Now.ToString("dd-MMM-yyyy")+"."+ fileNameExtension;
+                localReport.DisplayName = "StockInByExcel-" + DateTime.Now.ToString("dd-MMM-yyyy") + "." + fileNameExtension;
                 return File(renderedBytes, mimeType, localReport.DisplayName);
             }
             return new EmptyResult();

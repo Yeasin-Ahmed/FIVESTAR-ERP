@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ERPBLL.SalesAndDistribution.Interface;
 using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
 
-namespace ERPBLL.SalesAndDistribution.Interface
+namespace ERPBLL.SalesAndDistribution
 {
     public class ColorBusiness : IColorBusiness
     {

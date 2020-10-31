@@ -23,9 +23,21 @@ namespace ERPBO.Inventory.ViewModels
         [StringLength(10)]
         public string TAC { get; set; }
         public long EndPoint { get; set; }
+        public long StartPoint { get; set; }
+        public long? CategoryId { get; set; }
+        public long? BrandId { get; set; }
+        public string ColorId { get; set; }
         //custom
+        public int[] Color { get; set; }
         public string StateStatus { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public string CategoryName { get; set; }
+        public string BrandName { get; set; }
+        public List<ModelColors> Colors { get; set; }
+    }
+    public class ModelColors
+    {
+        public string ColorName { get; set; }
     }
 }

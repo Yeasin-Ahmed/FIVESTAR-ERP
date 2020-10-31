@@ -11,14 +11,19 @@
         <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblDescriptionData" id="tblDescriptionData">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>#SL</th>
+                    <th width="5%">#SL</th>
                     <th class="hide"></th>
                     <th class="hide">SubCategoryId</th>
                     <th>Model Name</th>
-                    <th>TAC</th>
-                    <th>EndPoint</th>
+                    <th class="hide">TAC</th>
+                    <th class="hide">StartPoint</th>
+                    <th class="hide">EndPoint</th>
                     <th>StateStatus</th>
                     <th>Remarks</th>
+                    <th>Brand</th>
+                    <th>Category</th>
+                    <th class="hide">ColorId</th>
+                    <th>Colors</th>
                     <th>Entry User</th>
                     <th>Update User</th>
                     <th>Action</th>
@@ -29,21 +34,33 @@
                 {
                     sl = sl + 1;
                     badge = des.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
+                    
                     <tr>
-                        <td class="text-center" width="10%">@sl</td>
+                        <td class="text-center text-bold" width="5%">@sl</td>
                         <td class="hide">@des.DescriptionId</td>
                         <td class="hide">@des.SubCategoryId</td>
                         <td class="text-center">@des.DescriptionName</td>
-                        <td class="text-center">@des.TAC</td>
-                        <td class="text-center">@des.EndPoint</td>
+                        <td class="text-center hide">@des.TAC</td>
+                        <td class="text-center hide">@des.StartPoint</td>
+                        <td class="text-center hide">@des.EndPoint</td>
                         <td class="text-center" data-val="@des.StateStatus">
                             <span class="@badge">@des.StateStatus</span>
                         </td>
                         <td>@des.Remarks</td>
+                        <td data-val="@des.BrandId">@des.BrandName</td>
+                        <td data-val="@des.CategoryId">@des.CategoryName</td>
+                        <td class="hide">@des.ColorId</td>
+                        <td>
+                            @foreach (var item in des.Colors)
+                            {
+                                <span class="badge badge-primary"> @item.ColorName</span> 
+                            }
+                        </td>
                         <td class="text-center">@des.EntryUser</td>
                         <td class="text-center">@des.UpdateUser</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm data-item-description" data-item-description="@des.DescriptionId"><i class="fas fa-pen"></i>ADD TAC</a>
+                            <a href="#" class="btn btn-warning btn-sm data-tac-description hide" data-tac-description="@des.DescriptionId"><i class="fas fa-pen"></i>ADD TAC</a>
+                            <a href="#" class="btn btn-warning btn-sm data-edit-description" data-edit-description="@des.DescriptionId"><i class="fas fa-pen"></i>Edit</a>
                         </td>
                     </tr>
                 }
