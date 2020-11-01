@@ -791,6 +791,7 @@
     <Content Include="Views\Inventory\_category.cshtml" />
     <Content Include="Views\Inventory\_brand.cshtml" />
     <Content Include="Views\Inventory\_color.cshtml" />
+    <Content Include="Views\Configuration\GetRepairList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
