@@ -12,8 +12,8 @@ namespace ERPBO.SalesAndDistribution.DomainModels
     public class ModelColors
     {
         [Key, Column(Order = 0)]
-        public long ModelId { get; set; }
-        public Model Model { get; set; }
+        public long DescriptionId { get; set; }
+        public Description Description { get; set; }
         [Key, Column(Order = 1)]
         public long ColorId { get; set; }
         public Color Color { get; set; }

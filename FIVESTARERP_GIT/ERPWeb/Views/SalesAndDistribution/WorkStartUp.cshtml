@@ -661,9 +661,13 @@
                 theme: 'bootstrap4'
             });
 
-            $(".js-example-placeholder-multiple").select2({
+            $("#ddlBrandCategories").select2({
                 placeholder: "Select Categories"
             });
+            $("#ddlModelColors").select2({
+                placeholder: "Select Colors"
+            });
+
             loadDataInitializer();
         })
 
@@ -938,6 +942,8 @@
             txtBrandName.val('');
             chkBrandStatestatus.prop("checked", false);
             txtBrandRemarks.val('');
+            ddlBrandCategories.val('')
+            ddlBrandCategories.trigger('change');
             hdfBrandId.val('0')
         }
 
@@ -1124,6 +1130,8 @@
             hdfModelId.val("0");
             txtModelName.val('');
             txtModelRemarks.val('');
+            ddlModelColors.val('')
+            ddlModelColors.trigger('change');
             chkModelStatestatus.prop("checked", false);
         }
 
@@ -1151,14 +1159,13 @@
                     })
                 }
 
-                var model = { ModelId: TryParseInt(hdfModelId.val(), 0), ModelName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val() }
+                var model = { DescriptionId: TryParseInt(hdfModelId.val(), 0), DescriptionName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val(), Colors: colors }
 
                 var data = JSON.stringify({
-                    model: model,
-                    colors: colors
+                    model: model
+                    //colors: colors
                 });
                 disable("#btnSubmitModel");
-
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveModel', data, getToken())).then(function (res, status) {
                     if (res === true && status === "success") {
                         toastrSuccessAlert(execuStatus.successSave);
@@ -1177,6 +1184,8 @@
 
             }
         })
+
+        //data-model-edit
     </script>
 }
 

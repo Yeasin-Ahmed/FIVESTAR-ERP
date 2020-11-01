@@ -55,12 +55,10 @@ namespace ERPDAL.InventoryDAL
     {
         public SupplierRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
     }
-
     public class IQCRepository : InventoryBaseRepository<IQC>
     {
         public IQCRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base (inventoryUnitOfWork) { }
     }
-
     public class IQCItemReqInfoListRepository : InventoryBaseRepository<IQCItemReqInfoList>
     {
         public IQCItemReqInfoListRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base (inventoryUnitOfWork)
@@ -68,7 +66,6 @@ namespace ERPDAL.InventoryDAL
 
         }
     }
-
     public class IQCItemReqDetailListRepository : InventoryBaseRepository<IQCItemReqDetailList>
     {
         public IQCItemReqDetailListRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork)
@@ -90,5 +87,44 @@ namespace ERPDAL.InventoryDAL
 
         }
     }
+    public class CategoryRepository : InventoryBaseRepository<Category>
+    {
+        public CategoryRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
 
+        }
+    }
+    public class BrandRepository : InventoryBaseRepository<Brand>
+    {
+        public BrandRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
+
+        }
+    }
+    public class BrandCategoriesRepository : InventoryBaseRepository<BrandCategories>
+    {
+        public BrandCategoriesRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
+
+        }
+    }
+    public class ColorRepository : InventoryBaseRepository<Color>
+    {
+        public ColorRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
+
+        }
+    }
+    public class ModelColorsRepository : InventoryBaseRepository<ModelColors>
+    {
+        public ModelColorsRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
+
+        }
+    }
 }

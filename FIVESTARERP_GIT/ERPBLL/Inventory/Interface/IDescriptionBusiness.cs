@@ -14,8 +14,11 @@ namespace ERPBLL.Inventory.Interface
     {
         IEnumerable<Description> GetDescriptionByOrgId(long orgId);
         Description GetDescriptionOneByOrdId(long id, long orgId);
+        List<ModelColor> GetModelColors(long modelId, long orgId);
         IEnumerable<Dropdown> GetAllDescriptionsInProductionStock(long orgId);
         bool UpdateDescriptionTAC(DescriptionDTO model, long userId, long orgId);
-        
+
+        bool SaveDescription(DescriptionDTO model, long userId, long orgId);
+
     }
 }

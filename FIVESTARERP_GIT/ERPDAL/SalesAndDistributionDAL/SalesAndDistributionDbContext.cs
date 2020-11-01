@@ -20,8 +20,8 @@ namespace ERPDAL.SalesAndDistributionDAL
         public DbSet<Category> tblCategory { get; set; }
         public DbSet<Brand> tblBrand { get; set; }
         public DbSet<BrandCategories> tblBrandCategories { get; set; }
-        public DbSet<Model> tblModel { get; set; }
-        public DbSet<Color> tblColor { get; set; }
+        public DbSet<Description> tblDescriptions { get; set; }
+        public DbSet<Color> tblColors { get; set; }
         public DbSet<ModelColors> tblModelColors { get; set; }
     }
 }

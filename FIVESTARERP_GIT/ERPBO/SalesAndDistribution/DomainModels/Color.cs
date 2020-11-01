@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.DomainModels
 {
-    [Table("tblColor")]
+    [Table("tblColors")]
     public class Color
     {
         [Key]

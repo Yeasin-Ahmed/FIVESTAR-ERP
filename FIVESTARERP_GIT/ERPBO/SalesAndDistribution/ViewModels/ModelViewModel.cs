@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.ViewModels
 {
-    public class ModelViewModel
+    public class DescriptionViewModel
     {
-        public long ModelId { get; set; }
+        public long DescriptionId { get; set; }
         [StringLength(100)]
-        public string ModelName { get; set; }
+        public string DescriptionName { get; set; }
         public bool IsActive { get; set; }
         [StringLength(200)]
         public string Remarks { get; set; }
@@ -21,8 +21,8 @@ namespace ERPBO.SalesAndDistribution.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-
         // Custom Properties
+        public List<long> Colors { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
         public IEnumerable<ModelColorViewModel> ModelColors { get; set; }

@@ -34,5 +34,8 @@ namespace ERPBO.Inventory.DomainModels
         public ItemType ItemType { get; set; }
         [Range(1, long.MaxValue)]
         public long UnitId { get; set; }
+
+        public long? DescriptionId { get; set; }
+        public long? ColorId { get; set; }
     }
 }

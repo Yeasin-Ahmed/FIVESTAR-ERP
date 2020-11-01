@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.DTOModels
 {
-    public class ModelDTO
+    public class DescriptionDTO
     {
-        public long ModelId { get; set; }
+        public long DescriptionId { get; set; }
         [StringLength(100)]
-        public string ModelName { get; set; }
+        public string DescriptionName { get; set; }
         public bool IsActive { get; set; }
         [StringLength(200)]
         public string Remarks { get; set; }
@@ -24,8 +24,10 @@ namespace ERPBO.SalesAndDistribution.DTOModels
         // Custom Properties
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
+        public List<long> Colors { get; set; }
         public IEnumerable<ModelColorDTO> ModelColors { get; set; }
     }
+
     public class ModelColorDTO
     {
         public long ColorId { get; set; }

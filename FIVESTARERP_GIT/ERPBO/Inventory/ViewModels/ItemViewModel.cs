@@ -40,5 +40,10 @@ namespace ERPBO.Inventory.ViewModels
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
 
+        public long? DescriptionId { get; set; }
+        public string ModelName { get; set; }
+        public long? ColorId { get; set; }
+        public string ColorName { get; set; }
+
     }
 }

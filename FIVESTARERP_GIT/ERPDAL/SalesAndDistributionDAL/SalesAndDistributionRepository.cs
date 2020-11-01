@@ -56,7 +56,7 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
-    public class ModelRepository : SalesAndDistributionBaseRepository<Model>
+    public class ModelRepository : SalesAndDistributionBaseRepository<Description>
     {
         public ModelRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
             base(salesAndDistributionUnitOfWork)

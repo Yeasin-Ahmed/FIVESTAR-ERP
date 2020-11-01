@@ -26,5 +26,9 @@ namespace ERPBO.Inventory.DomainModels
         [StringLength(10)]
         public string TAC { get; set; }
         public long EndPoint { get; set; }
+        public long? CategoryId { get; set; }
+        public long? BrandId { get; set; }
+        public string ColorId { get; set; }
+        public long StartPoint { get; set; }
     }
 }

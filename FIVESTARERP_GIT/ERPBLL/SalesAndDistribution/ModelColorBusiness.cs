@@ -22,7 +22,7 @@ namespace ERPBLL.SalesAndDistribution
         }
         public ModelColors GetModelColors(long modelId, long colorId, long orgId)
         {
-            return _modelColorsRepository.GetOneByOrg(s => s.ModelId == modelId && s.ColorId == colorId && s.OrganizationId == orgId);
+            return _modelColorsRepository.GetOneByOrg(s => s.DescriptionId == modelId && s.ColorId == colorId && s.OrganizationId == orgId);
         }
         public IEnumerable<ModelColors> GetModelColors(long orgId)
         {
@@ -30,16 +30,16 @@ namespace ERPBLL.SalesAndDistribution
         }
         public IEnumerable<ModelColorDTO> GetModelColorsByModel(long modelId, long orgId)
         {
-            var query = string.Format(@"Select c.ColorId,c.ColorName From [SalesAndDistribution].dbo.tblColor c
-Inner Join [SalesAndDistribution].dbo.tblModelColors mc on c.ColorId = mc.ColorId and mc.ModelId={0}
-Where c.OrgnarizationId = {1}", modelId, orgId);
+            var query = string.Format(@"Select c.ColorId,c.ColorName From [SalesAndDistribution].dbo.tblColors c
+Inner Join [SalesAndDistribution].dbo.tblModelColors mc on c.ColorId = mc.ColorId and mc.DescriptionId={0}
+Where mc.OrganizationId = {1}", modelId, orgId);
             return _salesAndDistribution.Db.Database.SqlQuery<ModelColorDTO>(query).ToList();
         }
         public IEnumerable<ModelColors> GetModelColorsByOrg(long orgId)
         {
             return _modelColorsRepository.GetAll(s => s.OrganizationId == orgId);
         }
-        public bool SaveModelColors(long modelId, long[] colors, long userId, long orgId)
+        public bool SaveModelColors(long modelId, List<long> colors, long userId, long orgId)
         {
             bool IsSuccess = false;
             List<ModelColors> modelColorslist = new List<ModelColors>();
@@ -50,7 +50,7 @@ Where c.OrgnarizationId = {1}", modelId, orgId);
                 {
                     ModelColors modelColors = new ModelColors()
                     {
-                        ModelId = modelId,
+                        DescriptionId = modelId,
                         ColorId = color,
                         EUserId = userId,
                         EntryDate = DateTime.Now,
@@ -70,6 +70,5 @@ Where c.OrgnarizationId = {1}", modelId, orgId);
             }
             return IsSuccess;
         }
-
     }
 }
