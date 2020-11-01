@@ -257,6 +257,7 @@
     <Compile Include="Inventory\DomainModels\IQCItemReqInfoList.cs" />
     <Compile Include="Inventory\DomainModels\IQCStockDetail.cs" />
     <Compile Include="Inventory\DomainModels\IQCStockInfo.cs" />
+    <Compile Include="Inventory\DomainModels\ModelColors.cs" />
     <Compile Include="Inventory\DTOModel\BrandCategoriesDTO.cs" />
     <Compile Include="Inventory\DTOModel\BrandDTO.cs" />
     <Compile Include="Inventory\DTOModel\CategoryDTO.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Inventory\DTOModel\IQCStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\DTOModel\ModelColorDTO.cs" />
     <Compile Include="Inventory\ReportModels\DailyStock.cs" />
     <Compile Include="Inventory\ReportModels\StockExcelUploaderData.cs" />
     <Compile Include="Inventory\ReportModels\StockShortageOrExcessQty.cs" />
@@ -282,6 +284,7 @@
     <Compile Include="Inventory\ViewModels\IQCStockDetailViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCStockInfoViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCViewModel.cs" />
+    <Compile Include="Inventory\ViewModels\ModelColorViewModel.cs" />
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
     <Compile Include="Production\DomainModels\GeneratedIMEI.cs" />

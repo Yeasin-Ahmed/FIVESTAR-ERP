@@ -24,8 +24,9 @@ namespace ERPBLL.Inventory
         private readonly IUnitBusiness _unitBusiness;
         private readonly IItemBusiness _itemBusiness;
         private readonly IColorBusiness _colorBusiness;
+        private readonly IModelColorBusiness _modelColorBusiness;
 
-        public DescriptionBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IColorBusiness colorBusiness)
+        public DescriptionBusiness(IInventoryUnitOfWork inventoryDb, IProductionStockInfoBusiness productionStockInfoBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness)
         {
             this._inventoryDb = inventoryDb;
             descriptionRepository = new DescriptionRepository(this._inventoryDb);
@@ -35,6 +36,7 @@ namespace ERPBLL.Inventory
             this._unitBusiness = unitBusiness;
             this._itemBusiness = itemBusiness;
             this._colorBusiness = colorBusiness;
+            this._modelColorBusiness = modelColorBusiness;
         }
 
         public IEnumerable<Dropdown> GetAllDescriptionsInProductionStock(long orgId)
@@ -53,31 +55,133 @@ namespace ERPBLL.Inventory
             return descriptionRepository.GetOneByOrg(des => des.DescriptionId == id && des.OrganizationId == orgId);
         }
 
-        public List<ModelColors> GetModelColors(long modelId, long orgId)
+        public List<ModelColor> GetModelColors(long modelId, long orgId)
         {
-            List<ModelColors> colors = new List<ModelColors>();
-            var colorsInDb = this.GetDescriptionOneByOrdId(modelId, orgId);
-            if (colorsInDb != null && colorsInDb.ColorId != null && colorsInDb.ColorId.Trim() != "")
+            List<ModelColor> colors = _inventoryDb.Db.Database.SqlQuery<ModelColor>(string.Format(@"Select C.ColorId,C.ColorName From tblModelColors mc 
+Inner Join tblColors c on mc.ColorId = c.ColorId
+Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList();
+            return colors;
+        }
+
+        public bool SaveDescription(DescriptionDTO model, long userId, long orgId)
+        {
+            Description description = null;
+            // For Inserting Item Color //
+            if (model.DescriptionId == 0)
             {
-                string[] colorIds = null;
-                if (colorsInDb.ColorId.Contains(","))
+                // Insert
+                description = new Description();
+                description.DescriptionName = model.DescriptionName;
+                description.TAC = model.TAC;
+                description.StartPoint = model.StartPoint;
+                description.EndPoint = model.EndPoint;
+                description.Remarks = model.Remarks;
+                description.IsActive = model.IsActive;
+                description.EUserId = userId;
+                description.EntryDate = DateTime.Now;
+                description.OrganizationId = orgId;
+                description.CategoryId = model.CategoryId;
+                description.BrandId = model.BrandId;
+                descriptionRepository.Insert(description);
+                
+            }
+            else if (model.DescriptionId > 0)
+            {
+                // Update
+                description = GetDescriptionOneByOrdId(model.DescriptionId, orgId);
+                description.DescriptionName = model.DescriptionName;
+                description.IsActive = model.IsActive;
+                description.Remarks = model.Remarks;
+                description.TAC = model.TAC;
+                description.StartPoint = model.StartPoint;
+                description.EndPoint = model.EndPoint;
+                description.UpUserId = userId;
+                description.UpdateDate = DateTime.Now;
+
+                if (description.CategoryId == null || description.CategoryId == 0)
                 {
-                    colorIds = colorsInDb.ColorId.Split(',');
+                    description.CategoryId = model.CategoryId;
+                }
+                if (description.BrandId == null || description.BrandId == 0)
+                {
+                    description.BrandId = model.BrandId;
+                }
+                
+            }
+            if (descriptionRepository.Save())
+            {
+                //colors = model.Color.Count() > 0 ? null : new long[model.Color.Count()];
+                //for (int i = 0; i < model.Color.Count(); i++)
+                //{
+                //    colors[i] = model.Color[i];
+                //}
+                if (model.Color.Count > 0)
+                {
+                  return IssertModelItemColors(model.Color, description, userId, orgId);
                 }
                 else
                 {
-                    colorIds = new string[1];
-                    colorIds[0] = colorsInDb.ColorId;
+                    return true;
                 }
-
-                if (colorIds.Length > 0)
-                {
-                    var colorName = string.Join(",", colorIds);
-                    colors = _inventoryDb.Db.Database.SqlQuery<ModelColors>(string.Format(@"Select ColorName From tblColors Where ColorId In ({0}) and OrganizationId = {1}", colorName, orgId)).ToList();
-                }
-
             }
-            return colors;
+            return false;
+        }
+
+        private bool IssertModelItemColors(List<long> colors, Description description, long userId, long orgId)
+        {
+            if (colors.Count > 0)
+            {
+                Item item = new Item();
+                List<Item> itemList = new List<Item>();
+                var GetHandSet = _itemTypeBusiness.GetAllItemTypeByOrgId(orgId).Where(s => s.ItemName == "Handset").FirstOrDefault();
+                var unit = _unitBusiness.GetAllUnitByOrgId(orgId).Where(s => s.UnitName == "Piece").FirstOrDefault();
+                List<long> insertedColor = null;
+                if (_modelColorBusiness.SaveModelColors(description.DescriptionId, colors, userId, orgId, out insertedColor))
+                {
+                    if (GetHandSet != null && unit != null && insertedColor.Count > 0)
+                    {
+                        string strColors = string.Join(",", colors);
+                        List<ModelColorDTO> modelColors = new List<ModelColorDTO>();
+                        modelColors = _inventoryDb.Db.Database.SqlQuery<ModelColorDTO>(
+                            string.Format(@"Select ColorId,ColorName From tblColors
+                                Where ColorId IN ({0}) and OrganizationId={1}", strColors, orgId)).ToList();
+                        if (modelColors.Count > 0)
+                        {
+                            foreach (var itemColor in modelColors)
+                            {
+                                var itemInDb = _itemBusiness.GetItemsByQuery(null, null, null, null, (description.DescriptionName + " " + itemColor.ColorName), null, orgId).FirstOrDefault();
+                                if(itemInDb == null)
+                                {
+                                    Item newItem = new Item
+                                    {
+                                        IsActive = description.IsActive,
+                                        ItemName = description.DescriptionName + " " + itemColor.ColorName,
+                                        ItemTypeId = GetHandSet.ItemId,
+                                        ItemCode = GenerateItemCode(orgId, GetHandSet.ItemId),
+                                        Remarks = description.Remarks,
+                                        OrganizationId = orgId,
+                                        UnitId = unit.UnitId,
+                                        ColorId = Convert.ToInt64(itemColor.ColorId),
+                                        DescriptionId = description.DescriptionId,
+                                    };
+                                    itemList.Add(newItem);
+                                }
+                            }
+                            itemRepository.InsertAll(itemList);
+                            return itemRepository.Save();
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            return true;
         }
 
         public bool UpdateDescriptionTAC(DescriptionDTO model, long userId, long orgId)
@@ -107,7 +211,7 @@ namespace ERPBLL.Inventory
                 description.CategoryId = model.CategoryId;
                 description.BrandId = model.BrandId;
 
-                if(model.Color.Length > 0)
+                if (model.Color.Count > 0)
                 {
                     foreach (var items in model.Color)
                     {
@@ -120,7 +224,7 @@ namespace ERPBLL.Inventory
                 //itemRepository.InsertAll(itemList);
                 if (descriptionRepository.Save())
                 {
-                    if(model.Color.Length > 0 && itemTypeId > 0)
+                    if (model.Color.Count > 0 && itemTypeId > 0)
                     {
                         string[] colorSplit = description.ColorId.Split(',');
                         foreach (var i in colorSplit)
@@ -149,7 +253,7 @@ namespace ERPBLL.Inventory
                     else
                     {
                         return true;
-                    }                   
+                    }
                 }
             }
             else
@@ -175,14 +279,14 @@ namespace ERPBLL.Inventory
                     {
                         descriptionInDb.BrandId = model.BrandId;
                     }
-                    List<int> unqColor = new List<int>();
-                    if (model.Color.Length > 0)
+                    List<long> unqColor = new List<long>();
+                    if (model.Color.Count > 0)
                     {
                         string colorInDb = !string.IsNullOrEmpty(descriptionInDb.ColorId) ? descriptionInDb.ColorId : string.Empty;
                         string[] colorsDb = !string.IsNullOrEmpty(descriptionInDb.ColorId) ? colorInDb.Split(',') : null;
                         unqColor = (from c in model.Color
-                                        where colorsDb == null || !colorsDb.Any(x => Convert.ToInt32(x) == c)
-                                        select c).ToList();
+                                    where colorsDb == null || !colorsDb.Any(x => Convert.ToInt64(x) == c)
+                                    select c).ToList();
                         allColor = !string.IsNullOrEmpty(descriptionInDb.ColorId) ? descriptionInDb.ColorId + "," : "";
                         foreach (var items in unqColor)
                         {
@@ -192,7 +296,7 @@ namespace ERPBLL.Inventory
                         allColor = allColor.Substring(0, allColor.Length - 1);
                         descriptionInDb.ColorId = unqColor.Count > 0 ? allColor : colorInDb;
                     }
-                    
+
 
                     descriptionRepository.Update(descriptionInDb);
                     if (descriptionRepository.Save())
@@ -235,7 +339,6 @@ namespace ERPBLL.Inventory
             }
             return false;
         }
-
         private string GenerateItemCode(long OrgId, long itemTypeId)
         {
             string code = string.Empty;

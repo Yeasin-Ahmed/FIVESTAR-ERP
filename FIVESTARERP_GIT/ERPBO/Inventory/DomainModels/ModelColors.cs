@@ -6,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.SalesAndDistribution.DomainModels
+namespace ERPBO.Inventory.DomainModels
 {
-    [Table("tblColors")]
-    public class Color
+    [Table("tblModelColors")]
+    public class ModelColors
     {
-        [Key]
+        [Key, Column(Order = 0)]
+        public long DescriptionId { get; set; }
+        public Description Description { get; set; }
+        [Key, Column(Order = 1)]
         public long ColorId { get; set; }
-        [StringLength(200)]
-        public string ColorName { get; set; }
-        public bool IsActive { get; set; }
-        [StringLength(200)]
-        public string Remarks { get; set; }
+        public Color Color { get; set; }
         public long OrganizationId { get; set; }
+        public long BranchId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.ModelViewModel>
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DescriptionViewModel>
 @{ 
     int sl = 0;
 }
@@ -26,8 +26,8 @@
                     string badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
-                        <td class="hide">@item.ModelId</td>
-                        <td>@item.ModelName</td>
+                        <td class="hide">@item.DescriptionId</td>
+                        <td>@item.DescriptionName</td>
                         <td class="text-center" data-val="@colors">
                             @foreach (var i in item.ModelColors)
                             {
@@ -39,7 +39,7 @@
                         </td>
                         <td>@item.Remarks</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-sm btn-warning btn-flat data-model-edit" data-model-edit="@item.ModelId"><i class="fa fa-pen"></i> Edit</a>
+                            <a href="#" class="btn btn-sm btn-warning btn-flat data-model-edit" data-model-edit="@item.DescriptionId"><i class="fa fa-pen"></i> Edit</a>
                         </td>
                     </tr>
                 }

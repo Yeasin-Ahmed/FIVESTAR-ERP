@@ -384,6 +384,10 @@
     <Compile Include="InventoryContextMigrations\202010310607568_Inventory_UpdateDescription.Designer.cs">
       <DependentUpon>202010310607568_Inventory_UpdateDescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202011010430514_Inventory_ModelColor.cs" />
+    <Compile Include="InventoryContextMigrations\202011010430514_Inventory_ModelColor.Designer.cs">
+      <DependentUpon>202011010430514_Inventory_ModelColor.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -658,41 +662,9 @@
     <Compile Include="InventoryDAL\InventoryBaseRepository.cs" />
     <Compile Include="Repository\IBaseRepository.cs" />
     <Compile Include="InventoryDAL\IInventoryUnitOfWork.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.Designer.cs">
-      <DependentUpon>202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.Designer.cs">
-      <DependentUpon>202010210645210_SalesAndDistribution_ItemStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010250558229_SalesAndDistribution_Category.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010250558229_SalesAndDistribution_Category.Designer.cs">
-      <DependentUpon>202010250558229_SalesAndDistribution_Category.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010250959337_SalesAndDistribution_Brand.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010250959337_SalesAndDistribution_Brand.Designer.cs">
-      <DependentUpon>202010250959337_SalesAndDistribution_Brand.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010251046409_SalesAndDistribution_BrandCategories.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010251046409_SalesAndDistribution_BrandCategories.Designer.cs">
-      <DependentUpon>202010251046409_SalesAndDistribution_BrandCategories.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.Designer.cs">
-      <DependentUpon>202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.Designer.cs">
-      <DependentUpon>202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.Designer.cs">
-      <DependentUpon>202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SalesAndDistributionContextMigrations\202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.cs" />
-    <Compile Include="SalesAndDistributionContextMigrations\202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.Designer.cs">
-      <DependentUpon>202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.cs</DependentUpon>
+    <Compile Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.Designer.cs">
+      <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>
     </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
@@ -925,6 +897,9 @@
     <EmbeddedResource Include="InventoryContextMigrations\202010310607568_Inventory_UpdateDescription.resx">
       <DependentUpon>202010310607568_Inventory_UpdateDescription.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202011010430514_Inventory_ModelColor.resx">
+      <DependentUpon>202011010430514_Inventory_ModelColor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1120,32 +1095,8 @@
     <EmbeddedResource Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.resx">
       <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.resx">
-      <DependentUpon>202010180541521_SalesAndDistribution_Table-DealerAndBTRCApproveIMEI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010210645210_SalesAndDistribution_ItemStock.resx">
-      <DependentUpon>202010210645210_SalesAndDistribution_ItemStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010250558229_SalesAndDistribution_Category.resx">
-      <DependentUpon>202010250558229_SalesAndDistribution_Category.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010250959337_SalesAndDistribution_Brand.resx">
-      <DependentUpon>202010250959337_SalesAndDistribution_Brand.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010251046409_SalesAndDistribution_BrandCategories.resx">
-      <DependentUpon>202010251046409_SalesAndDistribution_BrandCategories.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.resx">
-      <DependentUpon>202010251050591_SalesAndDistribution_BrandCategories_UpdateUserEntity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.resx">
-      <DependentUpon>202010270925276_SalesAndDistribution_Add_Model_Color_ModelColor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.resx">
-      <DependentUpon>202010271003091_SalesAndDistribution_ChangeUserIdPropTypeInModelAndColor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.resx">
-      <DependentUpon>202010311005147_SalesAndDistribution_AddCategoryBrandInItemStock.cs</DependentUpon>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.resx">
+      <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

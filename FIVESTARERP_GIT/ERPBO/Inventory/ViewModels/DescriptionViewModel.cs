@@ -28,7 +28,7 @@ namespace ERPBO.Inventory.ViewModels
         public long? BrandId { get; set; }
         public string ColorId { get; set; }
         //custom
-        public int[] Color { get; set; }
+        public List<long> Color { get; set; }
         public string StateStatus { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
@@ -38,6 +38,7 @@ namespace ERPBO.Inventory.ViewModels
     }
     public class ModelColors
     {
+        public long ColorId { get; set; }
         public string ColorName { get; set; }
     }
 }

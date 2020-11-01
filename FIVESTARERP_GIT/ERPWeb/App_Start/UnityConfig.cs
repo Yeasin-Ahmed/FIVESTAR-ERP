@@ -58,6 +58,7 @@ namespace ERPWeb
             container.RegisterType<ERPBLL.Inventory.Interface.IBrandBusiness, ERPBLL.Inventory.BrandBusiness>();
             container.RegisterType <ERPBLL.Inventory.Interface.IBrandCategoriesBusiness, ERPBLL.Inventory.BrandCategoriesBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.IColorBusiness, ERPBLL.Inventory.ColorBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.IModelColorBusiness, ERPBLL.Inventory.ModelColorBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
 
@@ -223,7 +224,7 @@ namespace ERPWeb
             container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IBrandCategoriesBusiness, ERPBLL.SalesAndDistribution.BrandCategoriesBusiness>();
             container.RegisterType<IModelBusiness, ModelBusiness>();
             container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IColorBusiness, ERPBLL.SalesAndDistribution.ColorBusiness>();
-            container.RegisterType<IModelColorBusiness, ModelColorBusiness>();
+            container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IModelColorBusiness, ERPBLL.SalesAndDistribution.ModelColorBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

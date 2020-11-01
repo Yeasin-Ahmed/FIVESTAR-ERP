@@ -415,7 +415,6 @@ namespace ERPWeb.Controllers
             }
             return View();
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveWarehouse(WarehouseViewModel viewModel)
         {
@@ -445,11 +444,10 @@ namespace ERPWeb.Controllers
             {
                 DescriptionDTO dto = new DescriptionDTO();
                 AutoMapper.Mapper.Map(model, dto);
-                IsSuccess = _descriptionBusiness.UpdateDescriptionTAC(dto, User.UserId, User.OrgId);
+                IsSuccess = _descriptionBusiness.SaveDescription(dto, User.UserId, User.OrgId);
             }
             return Json(IsSuccess);
         }
-
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveItemType(ItemTypeViewModel itemTypeViewModel)
         {

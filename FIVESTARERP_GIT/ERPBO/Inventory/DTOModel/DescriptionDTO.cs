@@ -28,17 +28,19 @@ namespace ERPBO.Inventory.DTOModel
         public long? BrandId { get; set; }
         public string ColorId { get; set; }
         //custom
-        public int[] Color { get; set; }
+        public List<long> Color { get; set; }
         public string StateStatus { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
         public string CategoryName { get; set; }
         public string BrandName { get; set; }
-        public List<ModelColors> Colors { get; set; }
+        public List<ModelColor> Colors { get; set; }
     }
 
-    public class ModelColors
+    public class ModelColor
     {
+        public long ColorId { get; set; }
         public string ColorName { get; set; }
     }
+
 }

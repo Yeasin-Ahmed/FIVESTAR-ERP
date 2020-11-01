@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.DomainModels
 {
-    [Table("tblModel")]
-    public class Model
+    [Table("tblDescriptions")]
+    public class Description
     {
         [Key]
-        public long ModelId { get; set; }
+        public long DescriptionId { get; set; }
         [StringLength(100)]
-        public string ModelName { get; set; }
+        public string DescriptionName { get; set; }
         public bool IsActive { get; set; }
         [StringLength(200)]
         public string Remarks { get; set; }

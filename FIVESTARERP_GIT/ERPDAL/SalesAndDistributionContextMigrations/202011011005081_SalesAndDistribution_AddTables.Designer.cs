@@ -7,13 +7,13 @@ namespace ERPDAL.SalesAndDistributionContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class SalesAndDistribution_Brand : IMigrationMetadata
+    public sealed partial class SalesAndDistribution_AddTables : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SalesAndDistribution_Brand));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SalesAndDistribution_AddTables));
         
         string IMigrationMetadata.Id
         {
-            get { return "202010250959337_SalesAndDistribution_Brand"; }
+            get { return "202011011005081_SalesAndDistribution_AddTables"; }
         }
         
         string IMigrationMetadata.Source

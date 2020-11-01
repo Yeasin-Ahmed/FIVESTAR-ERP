@@ -26,39 +26,39 @@ namespace ERPBLL.SalesAndDistribution
             this._modelColorBusiness = modelColorBusiness;
         }
 
-        public Model GetModelById(long id, long orgId)
+        public Description GetModelById(long id, long orgId)
         {
-            return this._modelRepository.GetOneByOrg(s => s.ModelId == id && s.OrganizationId == orgId);
+            return this._modelRepository.GetOneByOrg(s => s.DescriptionId == id && s.OrganizationId == orgId);
         }
 
-        public IEnumerable<Model> GetModels(long orgId)
+        public IEnumerable<Description> GetModels(long orgId)
         {
             return this._modelRepository.GetAll(s => s.OrganizationId == orgId);
         }
 
-        public bool SaveModel(ModelDTO dto, long[] colors, long userId, long orgId)
+        public bool SaveModel(DescriptionDTO dto, long userId, long orgId)
         {
             bool IsSuccess = false;
-            Model model = null;
-            if(dto.ModelId == 0)
+            Description model = null;
+            if(dto.DescriptionId == 0)
             {
-                model = new Model()
+                model = new Description()
                 {
-                    ModelName =dto.ModelName,
+                    DescriptionName =dto.DescriptionName,
                     IsActive =dto.IsActive,
                     Remarks=dto.Remarks,
-                    OrganizationId = dto.OrganizationId,
+                    OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now
                 };
                 _modelRepository.Insert(model);
             }
-            else if(dto.ModelId > 0)
+            else if(dto.DescriptionId > 0)
             {
-                model = this.GetModelById(dto.ModelId, orgId);
+                model = this.GetModelById(dto.DescriptionId, orgId);
                 if(model != null)
                 {
-                    model.ModelName = dto.ModelName;
+                    model.DescriptionName = dto.DescriptionName;
                     model.IsActive = dto.IsActive;
                     model.Remarks = dto.Remarks;
                     model.UpdateDate = DateTime.Now;
@@ -68,9 +68,9 @@ namespace ERPBLL.SalesAndDistribution
             }
             if (_modelRepository.Save())
             {
-                if(colors != null && colors.Length > 0)
+                if(dto.Colors.Count > 0)
                 {
-                    IsSuccess=_modelColorBusiness.SaveModelColors(model.ModelId, colors, userId, orgId);
+                    IsSuccess=_modelColorBusiness.SaveModelColors(model.DescriptionId, dto.Colors, userId, orgId);
                 }
                 else
                 {

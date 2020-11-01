@@ -4,6 +4,7 @@
     string badge = string.Empty;
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
+    string colors = "";
 }
 
 <div class="row text-sm">
@@ -34,7 +35,7 @@
                 {
                     sl = sl + 1;
                     badge = des.StateStatus.ToLower() == "active" ? "badge bg-success" : "badge bg-danger";
-                    
+                    des.ColorId = des.Colors.Count > 0 ? string.Join(",", des.Colors.Select(s => s.ColorId).ToArray()) : "";
                     <tr>
                         <td class="text-center text-bold" width="5%">@sl</td>
                         <td class="hide">@des.DescriptionId</td>

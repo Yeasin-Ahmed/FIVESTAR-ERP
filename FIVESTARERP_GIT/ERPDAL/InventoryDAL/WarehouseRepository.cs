@@ -119,4 +119,12 @@ namespace ERPDAL.InventoryDAL
 
         }
     }
+    public class ModelColorsRepository : InventoryBaseRepository<ModelColors>
+    {
+        public ModelColorsRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
+
+        }
+    }
 }
