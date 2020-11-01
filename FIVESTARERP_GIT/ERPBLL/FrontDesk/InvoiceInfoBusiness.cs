@@ -46,11 +46,11 @@ namespace ERPBLL.FrontDesk
             return _invoiceInfoRepository.GetOneByOrg(inv => inv.JobOrderId == jobOrderId && inv.OrganizationId == orgId && inv.BranchId == branchId);
         }
 
-        public IEnumerable<InvoiceInfoDTO> GetSellsReport(long orgId, long branchId, string fromDate, string toDate)
+        public IEnumerable<InvoiceInfoDTO> GetSellsReport(long orgId, long branchId, string fromDate, string toDate,string status,string invoice)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceInfoDTO>(QueryForSells( orgId, branchId, fromDate, toDate)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceInfoDTO>(QueryForSells( orgId, branchId, fromDate, toDate,status,invoice)).ToList();
         }
-        private string QueryForSells(long orgId, long branchId, string fromDate, string toDate)
+        private string QueryForSells(long orgId, long branchId, string fromDate, string toDate,string status,string invoice)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -62,6 +62,14 @@ namespace ERPBLL.FrontDesk
             if (branchId > 0)
             {
                 param += string.Format(@"and BranchId={0}", branchId);
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                param += string.Format(@"and InvoiceType ='{0}'", status);
+            }
+            if (!string.IsNullOrEmpty(invoice))
+            {
+                param += string.Format(@"and InvoiceCode Like '%{0}%'", invoice);
             }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
@@ -123,7 +131,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 invoiceInfo.JobOrderCode = jobOrder.JobOrderCode;
                 invoiceInfo.CustomerName = jobOrder.CustomerName;
                 invoiceInfo.CustomerPhone = jobOrder.MobileNo;
-                invoiceInfo.InvoiceType = "JobOrder";
+                invoiceInfo.InvoiceType = InvoiceTypeStatus.JobOrder;
                 invoiceInfo.LabourCharge = infodto.LabourCharge;
                 invoiceInfo.VAT = infodto.VAT;
                 invoiceInfo.Tax = infodto.Tax;
@@ -199,7 +207,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 invoiceInfo.InvoiceCode = ("INV-" + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
                 invoiceInfo.JobOrderId = 0;
                 invoiceInfo.JobOrderCode = null;
-                invoiceInfo.InvoiceType = "Sells";
+                invoiceInfo.InvoiceType = InvoiceTypeStatus.Sells;
                 invoiceInfo.CustomerName = infodto.CustomerName;
                 invoiceInfo.CustomerPhone = infodto.CustomerPhone;
                 invoiceInfo.Email = infodto.Email;
@@ -300,11 +308,11 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             return _mobilePartStockDetailRepository.Save();
         }
 
-        public IEnumerable<InvoiceInfoDTO> GetSellsAccessories(long orgId, long branchId, string fromDate, string toDate, string invoice)
+        public IEnumerable<InvoiceInfoDTO> GetSellsAccessories(long orgId, long branchId, string fromDate, string toDate, string invoice,string mobileNo)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceInfoDTO>(QueryForSellsAccessories(orgId, branchId, fromDate, toDate,invoice)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceInfoDTO>(QueryForSellsAccessories(orgId, branchId, fromDate, toDate,invoice, mobileNo)).ToList();
         }
-        private string QueryForSellsAccessories(long orgId, long branchId, string fromDate, string toDate, string invoice)
+        private string QueryForSellsAccessories(long orgId, long branchId, string fromDate, string toDate, string invoice,string mobileNo)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -320,6 +328,10 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             if (!string.IsNullOrEmpty(invoice))
             {
                 param += string.Format(@"and inv.InvoiceCode Like '%{0}%'", invoice);
+            }
+            if (!string.IsNullOrEmpty(mobileNo))
+            {
+                param += string.Format(@"and inv.CustomerPhone Like '%{0}%'", mobileNo);
             }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {

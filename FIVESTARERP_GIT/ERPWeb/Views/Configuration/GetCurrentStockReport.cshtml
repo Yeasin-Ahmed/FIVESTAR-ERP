@@ -46,7 +46,7 @@
         function LoadDataTable() {
             var data = { page: pageNo };
             console.log(data);
-            $.when(getReqWithData('html', 'GET', '/Configuration/GetCurrentStockList', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Configuration/GetCurrentStockReport', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {

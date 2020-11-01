@@ -22,6 +22,14 @@
                         <form method="get">
                             <div class="row text-sm">
                                 <div class="col-md-2">
+                                    <label class="control-label font-weight-bold">Invoice</label>
+                                    <input type="text" id="txtInvoice" name="invoice" class="form-control form-control-sm" placeholder="Search By Invoice" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label font-weight-bold">InvoiceType</label>
+                                    @Html.DropDownList("ddlInvoiceTypeStatus", (IEnumerable<SelectListItem>)ViewBag.ddlInvoiceTypeStatus, "--Search By Type--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
+                                </div>
+                                <div class="col-md-2">
                                     <label class="control-label font-weight-bold">From Date</label>
                                     <div class="input-group input-group-sm ">
                                         <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
@@ -82,6 +90,8 @@
     <script type="text/javascript">
         var dptFromDate = $("#dptFromDate");
         var dptToDate = $("#dptToDate");
+        var ddlInvoiceTypeStatus = $("#ddlInvoiceTypeStatus");
+        var txtInvoice = $("#txtInvoice");
         var pageNo = 1;
 
         $(document).ready(function () {
@@ -123,9 +133,15 @@
         dptToDate.change(function () {
             LoadDataTable();
         })
+        ddlInvoiceTypeStatus.change(function () {
+            LoadDataTable();
+        })
+        txtInvoice.keyup(function () {
+            LoadDataTable();
+        })
         function LoadDataTable() {
             var data = {
-                flag: "search", fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo
+                flag: "search", fromDate: dptFromDate.val(), toDate: dptToDate.val(), invoiceType: ddlInvoiceTypeStatus.val(), invoice: txtInvoice.val().trim(), page: pageNo
         };
 
             console.log(data);

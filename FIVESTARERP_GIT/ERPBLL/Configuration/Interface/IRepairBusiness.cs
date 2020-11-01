@@ -1,4 +1,5 @@
 ﻿using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace ERPBLL.Configuration.Interface
     {
         IEnumerable<Repair> GetAllRepairByOrgId(long orgId);
         Repair GetRepairOneByOrgId(long id, long orgId);
+        bool SaveRepair(RepairDTO repairDTO, long userId, long orgId);
+        bool IsDuplicateRepairName(string code, long id, long orgId);
+        bool DeleteRepair(long id, long orgId);
     }
 }

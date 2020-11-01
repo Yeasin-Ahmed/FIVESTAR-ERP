@@ -1,14 +1,13 @@
-﻿@model IEnumerable<ERPBO.Configuration.ViewModels.ServiceViewModel>
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.RepairViewModel>
 @{
-    ViewBag.Title = "Service List";
+    ViewBag.Title = "Repair List";
     int sl = 0;
 }
-
 <div class="row">
     <div class="col-md-12 text-center">
         <div class="card card-gray shadow">
             <div class="card-header">
-                <h4>Service List</h4>
+                <h4>Repair List</h4>
             </div>
         </div>
     </div>
@@ -21,11 +20,11 @@
                 @Html.AntiForgeryToken()
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblServiceData tbody tr',this)" />
+                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblRepairData tbody tr',this)" />
                     </div>
                     <div class="col-md-4"></div>
                     <div class="col-md-4 text-right">
-                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Services</button>
+                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Repair</button>
                     </div>
                 </div>
             </div>
@@ -39,30 +38,30 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 text-sm">
-                        <table class="table table-bordered table-sm table-striped" id="tblServiceData">
+                        <table class="table table-bordered table-sm table-striped" id="tblRepairData">
                             <thead class="btn-dark">
                                 <tr class="text-center">
                                     <th>#SL</th>
                                     <th class="hide"></th>
-                                    <th>ServiceName</th>
-                                    <th>Service Code</th>
+                                    <th>RepairName</th>
+                                    <th>RepairCode</th>
                                     <th>Remarks</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var service in Model)
+                                @foreach (var rep in Model)
                                 {
                                     sl = sl + 1;
                                     <tr>
                                         <td class="text-center" width="10%">@sl</td>
-                                        <td class="hide">@service.ServiceId</td>
-                                        <td>@service.ServiceName</td>
-                                        <td>@service.ServiceCode</td>
-                                        <td>@service.Remarks</td>
+                                        <td class="hide">@rep.RepairId</td>
+                                        <td>@rep.RepairName</td>
+                                        <td>@rep.RepairCode</td>
+                                        <td>@rep.Remarks</td>
                                         <td class="text-center">
-                                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@service.ServiceId"><i class="fas fa-pencil-alt"></i> </a>
-                                            <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@service.ServiceId"><i class="far fa-trash-alt"></i> </a>
+                                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@rep.RepairId"><i class="fas fa-pencil-alt"></i> </a>
+                                            <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@rep.RepairId"><i class="far fa-trash-alt"></i> </a>
                                         </td>
                                     </tr>
                                 }
@@ -83,29 +82,30 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalServices" role="dialog" tabindex="-1" aria-hidden="true">
+
+<div class="modal fade" id="modalRepair" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary" style="height:60px">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Services</span></h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Repair</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <form id="frmAccessories">
-                    <input type="hidden" name="Id" id="hdfServicesId" />
+                    <input type="hidden" name="Id" id="hdfRepairId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtServicesName" class="control-label font-weight-bold">Service Name</label>
-                            <input type="text" name="txtServicesName" value="" id="txtServicesName" class="form-control form-control-sm" />
-                            <span class="error hide required-servicesName font-weight-bold">Input ServiceName Name!</span>
+                            <label for="txtRepairName" class="control-label font-weight-bold">RepairName</label>
+                            <input type="text" name="txtRepairName" value="" id="txtRepairName" class="form-control form-control-sm" />
+                            <span class="error hide required-repairName font-weight-bold">Input Repair Name!</span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtServicesCode" class="control-label font-weight-bold">Service Code</label>
-                            <input type="text" name="txtServicesCode" value="" id="txtServicesCode" class="form-control form-control-sm" />
-                            <span class="error hide required-servicesCode font-weight-bold">Input Service Code!</span>
-                            <span class="error hide duplicate-servicesCode font-weight-bold">Already Service Code Exist!</span>
+                            <label for="txtRepairCode" class="control-label font-weight-bold">Repair Code</label>
+                            <input type="text" name="txtRepairCode" value="" id="txtRepairCode" class="form-control form-control-sm" />
+                            <span class="error hide required-repairCode font-weight-bold">Input Repair Code!</span>
+                            <span class="error hide duplicate-repairCode font-weight-bold">Already Repair Code Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -135,13 +135,13 @@
 
 @section scripts{
     <script type="text/javascript">
-        var hdfServicesId = $("#hdfServicesId");
-        var txtServicesName = $("#txtServicesName");
-        var txtServicesCode = $("#txtServicesCode");
+        var hdfRepairId = $("#hdfRepairId");
+        var txtRepairName = $("#txtRepairName");
+        var txtRepairCode = $("#txtRepairCode");
         var txtRemarks = $("#txtRemarks");
 
         $(document).ready(function () {
-            $('#tblServiceData').DataTable({
+            $('#tblRepairData').DataTable({
                 "paging": false,
                 "lengthChange": false,
                 "searching": false,
@@ -153,9 +153,9 @@
 
         function OpenModal() {
             clearCtrl();
-            $("#spanModalHead").text('Add New Services');
+            $("#spanModalHead").text('Add New Repair');
             $("#spanSaveText").text('Save');
-            $("#modalServices").modal("show");
+            $("#modalRepair").modal("show");
             $(".error").addClass("hide");
         }
 
@@ -185,29 +185,29 @@
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");
-            var data = JSON.stringify({ ServiceId: TryParseInt(hdfServicesId.val(), 0), ServiceName: txtServicesName.val(), ServiceCode: txtServicesCode.val(), Remarks: txtRemarks.val() });
-            console.log(data);
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveService', data, getToken())).then(function (res, status) {
-                console.log(status);
-                console.log(res);
-                if (res == true) {
-                    message("#msg1", "#tblServiceData");
-                }
-                else {
-                    message("#msg2");
-                }
-                enable("#btnSubmit");
-            }).fail(function (err) {
-                console.log(err);
-                enable("#btnSubmit");
-            });
+            var data = JSON.stringify({ RepairId: TryParseInt(hdfRepairId.val(), 0), RepairName: txtRepairName.val(), RepairCode: txtRepairCode.val(), Remarks: txtRemarks.val() });
+                console.log(data);
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveRepair', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblRepairData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
 
         })
 
         $(document).on("click", "a.data-edit-item", function (e) {
             e.preventDefault()
             OpenModal()
-            $("#spanModalHead").text('Update Services');
+            $("#spanModalHead").text('Update Repair');
             $("#spanSaveText").text('Update');
             var row = $(this).parent().parents('tr');
             var td1 = row.find('td:eq(1)').html();
@@ -215,17 +215,17 @@
             var td3 = row.find('td:eq(3)').html();
             var td4 = row.find('td:eq(4)').html();
 
-            hdfServicesId.val(td1);
-            txtServicesName.val(td2);
-            txtServicesCode.val(td3);
+            hdfRepairId.val(td1);
+            txtRepairName.val(td2);
+            txtRepairCode.val(td3);
             txtRemarks.val(td4)
 
         })
 
         function clearCtrl() {
-            hdfServicesId.val('0');
-            txtServicesName.val('');
-            txtServicesCode.val('');
+            hdfRepairId.val('0');
+            txtRepairName.val('');
+            txtRepairCode.val('');
             txtRemarks.val('');
         }
 
@@ -238,12 +238,12 @@
             bootbox.confirm('Are you sure you want to delete', function (result) {
                 if (result) {
 
-                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteService', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteRepair', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
                         console.log(status);
                         console.log(res);
                         if (res === true) {
                             $('.toastrDefaultDelete').trigger('click');
-                            fnRemoveARowFromTbody("#tblServiceData", index);
+                            fnRemoveARowFromTbody("#tblRepairData", index);
                         }
                         else {
                             $('.toastrDefaultError').trigger('click');
@@ -257,3 +257,4 @@
         })
     </script>
 }
+

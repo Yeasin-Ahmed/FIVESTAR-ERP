@@ -59,6 +59,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfInvoiceTypeStatus()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=InvoiceTypeStatus.JobOrder,value=InvoiceTypeStatus.JobOrder},
+                new Dropdown(){text=InvoiceTypeStatus.Sells,value=InvoiceTypeStatus.Sells}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfTransferCondition()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>

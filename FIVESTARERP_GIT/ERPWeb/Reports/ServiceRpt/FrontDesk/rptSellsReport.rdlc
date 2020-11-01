@@ -7,10 +7,10 @@
         <Value>=First(Fields!ReportImage.Value, "ServicesReportHead")</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
-        <Top>0.04013in</Top>
-        <Left>0.10942in</Left>
+        <Top>0.02791in</Top>
+        <Left>0.00525in</Left>
         <Height>1.08264in</Height>
-        <Width>1.25301in</Width>
+        <Width>1.24259in</Width>
         <ToolTip>=First(Fields!ReportImage.Value, "ServicesReportHead")</ToolTip>
         <Style>
           <Border>
@@ -29,6 +29,7 @@
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                   <FontSize>12pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -38,10 +39,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>0.02763in</Top>
-        <Left>2.3223in</Left>
+        <Top>0.04013in</Top>
+        <Left>1.8468in</Left>
         <Height>0.25in</Height>
-        <Width>2.70851in</Width>
+        <Width>3.91838in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -76,15 +77,15 @@
               </TextRun>
             </TextRuns>
             <Style>
-              <TextAlign>Left</TextAlign>
+              <TextAlign>Right</TextAlign>
             </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
         <Top>0.04013in</Top>
-        <Left>5.64906in</Left>
+        <Left>5.76518in</Left>
         <Height>0.25in</Height>
-        <Width>1.52363in</Width>
+        <Width>1.95959in</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -117,10 +118,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.28318in</Top>
-        <Left>2.3223in</Left>
+        <Top>0.29568in</Top>
+        <Left>1.8468in</Left>
         <Height>0.21627in</Height>
-        <Width>2.70851in</Width>
+        <Width>3.91838in</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -160,10 +161,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.4684in</Top>
-        <Left>2.3223in</Left>
+        <Top>0.4809in</Top>
+        <Left>1.8468in</Left>
         <Height>0.21627in</Height>
-        <Width>2.70851in</Width>
+        <Width>3.91838in</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -196,10 +197,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.68745in</Top>
-        <Left>2.3223in</Left>
+        <Top>0.69995in</Top>
+        <Left>1.8468in</Left>
         <Height>0.21627in</Height>
-        <Width>2.70851in</Width>
+        <Width>3.91838in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -247,10 +248,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.9065in</Top>
-        <Left>2.3223in</Left>
+        <Top>0.919in</Top>
+        <Left>1.8468in</Left>
         <Height>0.21627in</Height>
-        <Width>2.70851in</Width>
+        <Width>3.91838in</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -266,37 +267,40 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.31602in</Width>
+              <Width>0.31081in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.93699in</Width>
+              <Width>0.93178in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.95987in</Width>
+              <Width>0.59896in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.66681in</Width>
+              <Width>0.91299in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.53075in</Width>
+              <Width>0.9741in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.53075in</Width>
+              <Width>0.52554in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.53695in</Width>
+              <Width>0.52554in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.44325in</Width>
+              <Width>0.49007in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.61825in</Width>
+              <Width>0.49012in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.56077in</Width>
+              <Width>0.59221in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.96286in</Width>
+              <Width>0.55556in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.81182in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -344,7 +348,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -388,7 +391,49 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Invoice Type</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                          <Width>0.25pt</Width>
+                        </Border>
+                        <BottomBorder>
+                          <Width>0.25pt</Width>
+                        </BottomBorder>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
+                        <BackgroundColor>LightGrey</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -432,7 +477,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -476,7 +520,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -520,7 +563,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -564,7 +606,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -608,7 +649,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -652,7 +692,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -696,7 +735,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -740,7 +778,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -781,7 +818,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -846,6 +882,41 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>InvoiceCode</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                          <Width>0.25pt</Width>
+                        </Border>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="InvoiceType">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!InvoiceType.Value</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>InvoiceType</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -1212,6 +1283,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -1225,10 +1297,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>Sells</DataSetName>
-        <Top>1.19458in</Top>
-        <Left>0.10942in</Left>
+        <Top>1.16333in</Top>
+        <Left>0.00525in</Left>
         <Height>0.67708in</Height>
-        <Width>7.06327in</Width>
+        <Width>7.71952in</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -1237,10 +1309,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>1.96751in</Height>
+    <Height>1.88418in</Height>
     <Style />
   </Body>
-  <Width>7.27in</Width>
+  <Width>7.77in</Width>
   <Page>
     <PageFooter>
       <Height>0.32292in</Height>
@@ -1268,9 +1340,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox57</rd:DefaultName>
           <Top>0.03333in</Top>
-          <Left>6.20983in</Left>
+          <Left>6.35739in</Left>
           <Height>0.25in</Height>
-          <Width>0.96286in</Width>
+          <Width>1.36738in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1290,8 +1362,8 @@
     </PageFooter>
     <PageHeight>11.69in</PageHeight>
     <PageWidth>8.27in</PageWidth>
-    <LeftMargin>0.5in</LeftMargin>
-    <RightMargin>0.5in</RightMargin>
+    <LeftMargin>0.25in</LeftMargin>
+    <RightMargin>0.25in</RightMargin>
     <TopMargin>0.25in</TopMargin>
     <BottomMargin>0.25in</BottomMargin>
     <Style />
@@ -1355,6 +1427,10 @@
         </Field>
         <Field Name="JobOrderCode">
           <DataField>JobOrderCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvoiceType">
+          <DataField>InvoiceType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

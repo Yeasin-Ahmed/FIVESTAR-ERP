@@ -148,6 +148,10 @@
                                                 <input type="text" id="txtInvoice" class="form-control form-control-sm" placeholder="Search By Invoice" />
                                             </div>
                                             <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">MobileNo</label>
+                                                <input type="text" id="txtMobileNo2" class="form-control form-control-sm" placeholder="Search By MobileNo" />
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" />
@@ -372,6 +376,7 @@
         var dptFromDate2 = $("#dptFromDate2");
         var dptToDate2 = $("#dptToDate2");
         var txtInvoice = $("#txtInvoice");
+        var txtMobileNo2 = $("#txtMobileNo2");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -834,8 +839,11 @@
         txtInvoice.keyup(function () {
             LoadDataTableForASells();
         })
+        txtMobileNo2.keyup(function () {
+            LoadDataTableForASells();
+        })
         function LoadDataTableForASells() {
-            var data = { flag: "sell", invoice: txtInvoice.val().trim(), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), page: pageNo };
+            var data = { flag: "sell", invoice: txtInvoice.val().trim(), mobileNo: txtMobileNo2.val().trim(), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), page: pageNo };
 
             console.log(data);
             //return console.log(data);

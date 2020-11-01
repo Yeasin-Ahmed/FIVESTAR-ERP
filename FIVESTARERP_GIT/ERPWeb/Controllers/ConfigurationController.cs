@@ -32,8 +32,9 @@ namespace ERPWeb.Controllers
         private readonly IFaultBusiness _faultBusiness;
         private readonly IServiceBusiness _serviceBusiness;
         private readonly IWorkShopBusiness _workShopBusiness;
+        private readonly IRepairBusiness _repairBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -51,6 +52,7 @@ namespace ERPWeb.Controllers
             this._faultBusiness = faultBusiness;
             this._serviceBusiness = serviceBusiness;
             this._workShopBusiness = workShopBusiness;
+            this._repairBusiness = repairBusiness;
         }
         #region tblAccessories
         public ActionResult AccessoriesList()
@@ -998,21 +1000,84 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region Reports
-        [HttpGet]
-        public ActionResult GetCurrentStockList()
+        #region tblRepairCode
+        public ActionResult GetRepairList()
         {
-            var dto = _mobilePartStockInfoBusiness.GetCurrentStock(User.OrgId, User.BranchId);
-            IEnumerable<MobilePartStockInfoViewModel> viewModels = new List<MobilePartStockInfoViewModel>();
-
-            AutoMapper.Mapper.Map(dto, viewModels);
-            return PartialView("_GetCurrentStockList", viewModels);
+            IEnumerable<RepairDTO> repairDTOs = _repairBusiness.GetAllRepairByOrgId(User.OrgId).Select(services => new RepairDTO
+            {
+                RepairId = services.RepairId,
+                RepairName = services.RepairName,
+                RepairCode = services.RepairCode,
+                Remarks = services.Remarks,
+                OrganizationId = services.OrganizationId,
+                EUserId = services.EUserId,
+                EntryDate = services.EntryDate,
+                UpUserId = services.UpUserId,
+                UpdateDate = services.UpdateDate,
+            }).ToList();
+            List<RepairViewModel> viewModel = new List<RepairViewModel>();
+            AutoMapper.Mapper.Map(repairDTOs, viewModel);
+            return View(viewModel);
         }
-        [HttpGet]
-        public ActionResult GetCurrentStockReport()
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRepair(RepairViewModel repairViewModel)
         {
-            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
-            return View();
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    RepairDTO dto = new RepairDTO();
+                    AutoMapper.Mapper.Map(repairViewModel, dto);
+                    isSuccess = _repairBusiness.SaveRepair(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteRepair(long id)
+        {
+            bool isSuccess = false;
+            if (id > 0)
+            {
+                try
+                {
+                    isSuccess = _repairBusiness.DeleteRepair(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Reports
+
+        [HttpGet]
+        public ActionResult GetCurrentStockReport(string flag,int page=1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _mobilePartStockInfoBusiness.GetCurrentStock(User.OrgId, User.BranchId);
+                IEnumerable<MobilePartStockInfoViewModel> viewModels = new List<MobilePartStockInfoViewModel>();
+                // Pagination //
+                //ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                //dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetCurrentStockList", viewModels);
+            }
         }
         #endregion
     }

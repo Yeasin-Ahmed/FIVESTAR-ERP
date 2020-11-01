@@ -189,7 +189,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SaveJobOrder(JobOrderViewModel jobOrder, List<JobOrderAccessoriesViewModel> jobOrderAccessories, List<JobOrderProblemViewModel> jobOrderProblems)
+        public ActionResult SaveJobOrder(JobOrderViewModel jobOrder, List<JobOrderAccessoriesViewModel> jobOrderAccessories,List<JobOrderProblemViewModel> jobOrderProblems)
         {
             bool IsSuccess = false;
             string file = string.Empty;
@@ -1338,7 +1338,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Accessories Invoice
-        public ActionResult AccessoriesSells( string flag,string fromDate,string toDate, string invoice = "", int page=1)
+        public ActionResult AccessoriesSells( string flag,string fromDate,string toDate, string invoice = "",string mobileNo="", int page=1)
         {
             if (string.IsNullOrEmpty(flag) && flag=="sell")
             {
@@ -1346,7 +1346,7 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _invoiceInfoBusiness.GetSellsAccessories(User.OrgId, User.BranchId, fromDate, toDate,invoice);
+                var dto = _invoiceInfoBusiness.GetSellsAccessories(User.OrgId, User.BranchId, fromDate, toDate,invoice,mobileNo);
                 List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(),10, page);
@@ -1489,15 +1489,20 @@ namespace ERPWeb.Controllers
             }
         }
     
-        public ActionResult GetSellsReport(string flag, string fromDate, string toDate,int page=1)
+        public ActionResult GetSellsReport(string flag, string fromDate, string toDate,string invoiceType,string invoice, int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.ddlInvoiceTypeStatus = Utility.ListOfInvoiceTypeStatus().Select(i => new SelectListItem
+                {
+                    Text = i.text,
+                    Value = i.value
+                }).ToList();
                 return View();
             }
             else
             {
-                var dto = _invoiceInfoBusiness.GetSellsReport(User.OrgId, User.BranchId, fromDate, toDate);
+                var dto = _invoiceInfoBusiness.GetSellsReport(User.OrgId, User.BranchId, fromDate, toDate, invoiceType, invoice);
                 List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);

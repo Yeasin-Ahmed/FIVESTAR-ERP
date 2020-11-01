@@ -398,11 +398,11 @@ namespace ERPWeb.Controllers
 
         #region SellsReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SellsReport(string fromDate, string toDate,string rptType)
+        public ActionResult SellsReport(string fromDate, string toDate,string rptType,string ddlInvoiceTypeStatus,string invoice)
         {
             bool IsSuccess = false;
 
-            IEnumerable<InvoiceInfoDTO> dto = _invoiceInfoBusiness.GetSellsReport(User.OrgId, User.BranchId, fromDate, toDate);
+            IEnumerable<InvoiceInfoDTO> dto = _invoiceInfoBusiness.GetSellsReport(User.OrgId, User.BranchId, fromDate, toDate, ddlInvoiceTypeStatus, invoice);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);

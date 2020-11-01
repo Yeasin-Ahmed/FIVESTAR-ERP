@@ -3,45 +3,257 @@
     ViewBag.Title = "Fault List";
     int sl = 0;
 }
-
 <div class="row">
     <div class="col-md-12 text-center">
-        <h4><b style="color:darkblue">Fault List</b></h4>
-        <hr />
-    </div>
-    <div class="col-md-12 mb-2">
-        @Html.AntiForgeryToken()
-    </div>
-    <div class="col-md-12">
-        <table class="table table-bordered table-sm table-striped" id="tblFaultData">
-            <thead class="btn-dark">
-                <tr class="text-center">
-                    <th>#SL</th>
-                    <th class="hide"></th>
-                    <th>FaultName</th>
-                    <th>Fault Code</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var f in Model)
-                {
-                    sl = sl + 1;
-                    <tr>
-                        <td class="text-center" width="10%">@sl</td>
-                        <td class="hide">@f.FaultId</td>
-                        <td>@f.FaultName</td>
-                        <td>@f.FaultCode</td>
-                    </tr>
-                }
-                @if (Model.Count() == 0)
-                {
-                    <tr class="text-center empty-row">
-                        <td colspan="5">
-                            No Rows Found
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <h4>Fault List</h4>
+            </div>
+        </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblFaultData tbody tr',this)" />
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-right">
+                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Fault</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-sm">
+                        <table class="table table-bordered table-sm table-striped" id="tblFaultData">
+                            <thead class="btn-dark">
+                                <tr class="text-center">
+                                    <th>#SL</th>
+                                    <th class="hide"></th>
+                                    <th>FaultName</th>
+                                    <th>FaultCode</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var f in Model)
+                                {
+                                    sl = sl + 1;
+                                    <tr>
+                                        <td class="text-center" width="10%">@sl</td>
+                                        <td class="hide">@f.FaultId</td>
+                                        <td>@f.FaultName</td>
+                                        <td>@f.FaultCode</td>
+                                        <td>@f.Remarks</td>
+                                        <td class="text-center">
+                                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@f.FaultId"><i class="fas fa-pencil-alt"></i> </a>
+                                            <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@f.FaultId"><i class="far fa-trash-alt"></i> </a>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Count() == 0)
+                                {
+                                    <tr class="text-center empty-row">
+                                        <td colspan="5">
+                                            No Rows Found
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalFault" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Fault</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfFaultId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtFaultName" class="control-label font-weight-bold">FaultName</label>
+                            <input type="text" name="txtFaultName" value="" id="txtFaultName" class="form-control form-control-sm" />
+                            <span class="error hide required-faultName font-weight-bold">Input FaultName Name!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtFaultCode" class="control-label font-weight-bold">Fault Code</label>
+                            <input type="text" name="txtFaultCode" value="" id="txtFaultCode" class="form-control form-control-sm" />
+                            <span class="error hide required-faultCode font-weight-bold">Input Fault Code!</span>
+                            <span class="error hide duplicate-faultCode font-weight-bold">Already Fault Code Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var hdfFaultId = $("#hdfFaultId");
+        var txtFaultName = $("#txtFaultName");
+        var txtFaultCode = $("#txtFaultCode");
+        var txtRemarks = $("#txtRemarks");
+
+        $(document).ready(function () {
+            $('#tblFaultData').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+            });
+        })
+
+        function OpenModal() {
+            clearCtrl();
+            $("#spanModalHead").text('Add New Fault');
+            $("#spanSaveText").text('Save');
+            $("#modalFault").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNew").click(function (e) {
+            e.preventDefault();
+            clearCtrl();
+            OpenModal();
+        })
+
+        //function validateForm() {
+        //    $(".error").addClass("hide");
+        //    var isValid = true;
+        //    if ($.trim(txtFaultCode.val()) == "") {
+        //        $(".required-problemName").removeClass("hide");
+        //        isValid = false;
+        //    }
+        //    else {
+        //        var id = TryParseInt(hdfProblemId.val(), 0);
+        //        if (ajaxBooleanChecker(JSON.stringify({ id: id, problemName: txtProblemName.val().trim() }), '/Common2/IsDuplicateProblemName', getToken()) == true) {
+        //            $(".duplicate-problemName").removeClass("hide");
+        //            isValid = false;
+        //        }
+        //    }
+        //    return isValid;
+        //}
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+                var data = JSON.stringify({ FaultId: TryParseInt(hdfFaultId.val(), 0), FaultName: txtFaultName.val(), FaultCode: txtFaultCode.val(), Remarks: txtRemarks.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveFault', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblFaultData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+
+        })
+
+        $(document).on("click", "a.data-edit-item", function (e) {
+            e.preventDefault()
+            OpenModal()
+            $("#spanModalHead").text('Update Fault');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+
+            hdfFaultId.val(td1);
+            txtFaultName.val(td2);
+            txtFaultCode.val(td3);
+            txtRemarks.val(td4)
+
+        })
+
+        function clearCtrl() {
+            hdfFaultId.val('0');
+            txtFaultName.val('');
+            txtFaultCode.val('');
+            txtRemarks.val('');
+        }
+
+        //data-del-item
+
+        $(document).on('click', 'a.data-del-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-item');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteFault', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblFaultData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+    </script>
+}

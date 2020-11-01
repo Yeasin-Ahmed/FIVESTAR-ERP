@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -297,6 +298,10 @@
     <Content Include="Content\LogIn\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\LogIn\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\LogIn\fonts\FontAwesome.otf" />
+    <None Include="Dockerfile" />
+    <None Include=".dockerignore">
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Reports\DataSets\ProductionDS.xsc">
       <DependentUpon>ProductionDS.xsd</DependentUpon>
@@ -788,6 +793,7 @@
     <Content Include="Views\SalesAndDistribution\_brand.cshtml" />
     <Content Include="Views\SalesAndDistribution\_color.cshtml" />
     <Content Include="Views\SalesAndDistribution\_model.cshtml" />
+    <Content Include="Views\Configuration\GetRepairList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

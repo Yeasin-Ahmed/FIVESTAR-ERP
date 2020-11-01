@@ -4923,6 +4923,8 @@ namespace ERPWeb.Reports.DataSets {
             
             private global::System.Data.DataColumn columnJobOrderCode;
             
+            private global::System.Data.DataColumn columnInvoiceType;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public SellsDataTable() {
@@ -5046,6 +5048,14 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn InvoiceTypeColumn {
+                get {
+                    return this.columnInvoiceType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5081,7 +5091,7 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public SellsRow AddSellsRow(string InvoiceCode, string CustomerName, double NetAmount, System.DateTime EntryDate, double Total, double TotalSPAmount, double LabourCharge, double VAT, double Tax, double Discount, string JobOrderCode) {
+            public SellsRow AddSellsRow(string InvoiceCode, string CustomerName, double NetAmount, System.DateTime EntryDate, double Total, double TotalSPAmount, double LabourCharge, double VAT, double Tax, double Discount, string JobOrderCode, string InvoiceType) {
                 SellsRow rowSellsRow = ((SellsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         InvoiceCode,
@@ -5094,7 +5104,8 @@ namespace ERPWeb.Reports.DataSets {
                         VAT,
                         Tax,
                         Discount,
-                        JobOrderCode};
+                        JobOrderCode,
+                        InvoiceType};
                 rowSellsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSellsRow);
                 return rowSellsRow;
@@ -5128,6 +5139,7 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnTax = base.Columns["Tax"];
                 this.columnDiscount = base.Columns["Discount"];
                 this.columnJobOrderCode = base.Columns["JobOrderCode"];
+                this.columnInvoiceType = base.Columns["InvoiceType"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5155,6 +5167,8 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnDiscount);
                 this.columnJobOrderCode = new global::System.Data.DataColumn("JobOrderCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnJobOrderCode);
+                this.columnInvoiceType = new global::System.Data.DataColumn("InvoiceType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInvoiceType);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -14458,6 +14472,22 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string InvoiceType {
+                get {
+                    try {
+                        return ((string)(this[this.tableSells.InvoiceTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InvoiceType\' in table \'Sells\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSells.InvoiceTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsInvoiceCodeNull() {
                 return this.IsNull(this.tableSells.InvoiceCodeColumn);
             }
@@ -14586,6 +14616,18 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetJobOrderCodeNull() {
                 this[this.tableSells.JobOrderCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsInvoiceTypeNull() {
+                return this.IsNull(this.tableSells.InvoiceTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetInvoiceTypeNull() {
+                this[this.tableSells.InvoiceTypeColumn] = global::System.Convert.DBNull;
             }
         }
         

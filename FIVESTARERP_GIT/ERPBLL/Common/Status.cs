@@ -32,6 +32,11 @@ namespace ERPBLL.Common
         public static readonly string Received = "Received";
         public static readonly string Pending = "Pending";
     }
+    public class InvoiceTypeStatus
+    {
+        public static readonly string JobOrder = "JobOrder";
+        public static readonly string Sells = "Sells";
+    }
     public class JobOrderTransferCondition
     {
         public static readonly string Transfer = "Transfer";
