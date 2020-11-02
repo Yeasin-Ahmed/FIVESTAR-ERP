@@ -1,86 +1,363 @@
-﻿@model IEnumerable<ERPBO.Configuration.ViewModels.AccessoriesViewModel>
+﻿
 @{
     ViewBag.Title = "Accessories List";
+    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
     int sl = 0;
 }
 <div class="row">
-    <div class="col-md-12 text-center">
-        <div class="card card-gray shadow">
-            <div class="card-header">
-                <h4>Accessories List</h4>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
     <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header">
-                @Html.AntiForgeryToken()
-                <div class="row text-sm">
-                    <div class="col-md-4">
-                        <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblAccessoriesData tbody tr',this)" />
+        <div class="card shadow card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-accessoriesList-tab" data-toggle="pill" href="#custom-tabs-two-accessoriesList" role="tab" aria-controls="custom-tabs-two-accessoriesList" aria-selected="true">Accessories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-handsetSymtomList-tab" data-toggle="pill" href="#custom-tabs-two-handsetSymtomList" role="tab" aria-controls="custom-tabs-two-handsetSymtomList" aria-selected="false">HandsetSymptom</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-mobilePartsList-tab" data-toggle="pill" href="#custom-tabs-two-mobilePartsList" role="tab" aria-controls="custom-tabs-two-mobilePartsList" aria-selected="false">Spare Parts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-faultList-tab" data-toggle="pill" href="#custom-tabs-two-faultList" role="tab" aria-controls="custom-tabs-two-faultList" aria-selected="false">Fault Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-servicesList-tab" data-toggle="pill" href="#custom-tabs-two-servicesList" role="tab" aria-controls="custom-tabs-two-servicesList" aria-selected="false">Service Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-repairList-tab" data-toggle="pill" href="#custom-tabs-two-repairList" role="tab" aria-controls="custom-tabs-two-repairList" aria-selected="false">Repair Code</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body shadow">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-two-accessoriesList" role="tabpanel" aria-labelledby="custom-tabs-two-accessoriesList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Accessories List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="search" id="searchByAccessories" class="form-control form-control-sm" placeholder="Search By Accessories Name" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Accessories</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-right">
-                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New</button>
+                    <div class="tab-pane fade show" id="custom-tabs-two-handsetSymtomList" role="tabpanel" aria-labelledby="custom-tabs-two-handsetSymtomList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    HandsetSymptom List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="search" id="searchByHandsetSymptom" class="form-control form-control-sm" placeholder="Search By Symptom Name" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewSymptom"><i class="fa fa-plus"></i> Create Symptom</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-mobilePartsList" role="tabpanel" aria-labelledby="custom-tabs-two-mobilePartsList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Spare Parts List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="search" id="searchByMobileParts" class="form-control form-control-sm" placeholder="Search By Spare Parts Or Code" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewParts"><i class="fa fa-plus"></i> Create Parts</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-faultList" role="tabpanel" aria-labelledby="custom-tabs-two-faultList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Fault List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="search" id="searchByFault" class="form-control form-control-sm" placeholder="Search By Fault Name Or Code" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewFault"><i class="fa fa-plus"></i> Create Fault</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-servicesList" role="tabpanel" aria-labelledby="custom-tabs-two-servicesList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Service Code List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="search" id="searchByServices" class="form-control form-control-sm" placeholder="Search By Services Name Or Code" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewServices"><i class="fa fa-plus"></i> Create Services</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer5">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12 text-sm">
-                        <table class="table table-bordered table-sm table-striped" id="tblAccessoriesData">
-                            <thead class="btn-dark">
-                                <tr class="text-center">
-                                    <th>#SL</th>
-                                    <th class="hide"></th>
-                                    <th>AccessoriesName</th>
-                                    <th>AccessoriesCode</th>
-                                    <th>Remarks</th>
-                                    <th>Entry Date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var access in Model)
-                                {
-                                    sl = sl + 1;
-                                    <tr>
-                                        <td class="text-center" width="10%">@sl</td>
-                                        <td class="hide">@access.AccessoriesId</td>
-                                        <td>@access.AccessoriesName</td>
-                                        <td class="text-center">@access.AccessoriesCode</td>
-                                        <td class="text-center">@access.Remarks</td>
-                                        <td>@access.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                                        <td class="text-center">
-                                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@access.AccessoriesId"><i class="fas fa-pencil-alt"></i> </a>
-                                            <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@access.AccessoriesId"><i class="far fa-trash-alt"></i> </a>
-                                        </td>
-                                    </tr>
-                                }
-                                @if (Model.Count() == 0)
-                                {
-                                    <tr class="text-center empty-row">
-                                        <td colspan="5">
-                                            No Rows Found
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+<div>
+    @*<div class="row">
+        <div class="col-md-12 text-center">
+            <div class="card card-gray shadow">
+                <div class="card-header">
+                    <h4>Accessories List</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    @Html.AntiForgeryToken()
+                    <div class="row text-sm">
+                        <div class="col-md-4">
+                            <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblAccessoriesData tbody tr',this)" />
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 text-right">
+                            <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-sm">
+                            <table class="table table-bordered table-sm table-striped" id="tblAccessoriesData">
+                                <thead class="btn-dark">
+                                    <tr class="text-center">
+                                        <th>#SL</th>
+                                        <th class="hide"></th>
+                                        <th>AccessoriesName</th>
+                                        <th>AccessoriesCode</th>
+                                        <th>Remarks</th>
+                                        <th>Entry Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var access in Model)
+                                    {
+                                        sl = sl + 1;
+                                        <tr>
+                                            <td class="text-center" width="10%">@sl</td>
+                                            <td class="hide">@access.AccessoriesId</td>
+                                            <td>@access.AccessoriesName</td>
+                                            <td class="text-center">@access.AccessoriesCode</td>
+                                            <td class="text-center">@access.Remarks</td>
+                                            <td>@access.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                            <td class="text-center">
+                                                <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@access.AccessoriesId"><i class="fas fa-pencil-alt"></i> </a>
+                                                <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@access.AccessoriesId"><i class="far fa-trash-alt"></i> </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Count() == 0)
+                                    {
+                                        <tr class="text-center empty-row">
+                                            <td colspan="5">
+                                                No Rows Found
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
 </div>
+
 
 <div class="modal fade" id="modalAccessories" role="dialog" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -131,23 +408,265 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalProblem" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Symptom</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfProblemId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtProblemName" class="control-label font-weight-bold">Handset Symptom Name</label>
+                            <input type="text" name="txtProblemName" value="" id="txtProblemName" class="form-control form-control-sm" />
+                            <span class="error hide required-problemName font-weight-bold">Input Symptom Name!</span>
+                            <span class="error hide duplicate-problemName font-weight-bold">Already Symptom Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarksSymptom" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksSymptom" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitSymptom"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalMobilePart" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Parts</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfMobilePartId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtMobilePartName" class="control-label font-weight-bold">Parts Name</label>
+                            <input type="text" name="txtMobilePartName" value="" id="txtMobilePartName" class="form-control form-control-sm" />
+                            <span class="error hide required-mobilePartName font-weight-bold">Input Parts Name!</span>
+                            <span class="error hide duplicate-mobilePartName font-weight-bold">Already Parts Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtMobilePartCode" class="control-label font-weight-bold">Parts Code</label>
+                            <input type="text" name="txtMobilePartCode" value="" id="txtMobilePartCode" class="form-control form-control-sm" />
+                            <span class="error hide required-partsCode font-weight-bold">Input Parts Code!</span>
+                            <span class="error hide duplicate-partsCode font-weight-bold">Already Parts Code Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarksParts" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksParts" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitParts"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalFault" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Fault</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfFaultId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtFaultName" class="control-label font-weight-bold">FaultName</label>
+                            <input type="text" name="txtFaultName" value="" id="txtFaultName" class="form-control form-control-sm" />
+                            <span class="error hide required-faultName font-weight-bold">Input FaultName Name!</span>
+                            <span class="error hide duplicate-faultName font-weight-bold">Already Fault Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtFaultCode" class="control-label font-weight-bold">Fault Code</label>
+                            <input type="text" name="txtFaultCode" value="" id="txtFaultCode" class="form-control form-control-sm" />
+                            <span class="error hide required-faultCode font-weight-bold">Input Fault Code!</span>
+                            <span class="error hide duplicate-faultCode font-weight-bold">Already Fault Code Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarksFault" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksFault" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitFault"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalServices" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Services</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfServicesId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtServicesName" class="control-label font-weight-bold">Service Name</label>
+                            <input type="text" name="txtServicesName" value="" id="txtServicesName" class="form-control form-control-sm" />
+                            <span class="error hide required-servicesName font-weight-bold">Input ServiceName Name!</span>
+                            <span class="error hide duplicate-servicesName font-weight-bold">Already Service Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtServicesCode" class="control-label font-weight-bold">Service Code</label>
+                            <input type="text" name="txtServicesCode" value="" id="txtServicesCode" class="form-control form-control-sm" />
+                            <span class="error hide required-servicesCode font-weight-bold">Input Service Code!</span>
+                            <span class="error hide duplicate-servicesCode font-weight-bold">Already Service Code Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarksServices" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksServices" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msg1" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msg2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitServices"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script type="text/javascript">
+        //Accessories
         var hdfAccessoriesId = $("#hdfAccessoriesId");
         var txtAccessoriesName = $("#txtAccessoriesName");
         var txtAccessoriesCode = $("#txtAccessoriesCode");
         var txtRemarks = $("#txtRemarks");
+        var searchByAccessories = $("#searchByAccessories");
+        //Symptom
+        var hdfProblemId = $("#hdfProblemId");
+        var txtProblemName = $("#txtProblemName");
+        var txtRemarksSymptom = $("#txtRemarksSymptom");
+        var searchByHandsetSymptom = $("#searchByHandsetSymptom");
+        //Parts
+        var hdfMobilePartId = $("#hdfMobilePartId");
+        var txtMobilePartName = $("#txtMobilePartName");
+        var txtMobilePartCode = $("#txtMobilePartCode");
+        var txtRemarksParts = $("#txtRemarksParts");
+        var searchByMobileParts = $("#searchByMobileParts");
+        //Fault
+        var hdfFaultId = $("#hdfFaultId");
+        var txtFaultName = $("#txtFaultName");
+        var txtFaultCode = $("#txtFaultCode");
+        var txtRemarksFault = $("#txtRemarksFault");
+        var searchByFault = $("#searchByFault");
+        //Services
+        var hdfServicesId = $("#hdfServicesId");
+        var txtServicesName = $("#txtServicesName");
+        var txtServicesCode = $("#txtServicesCode");
+        var txtRemarksServices = $("#txtRemarksServices");
+        var searchByServices = $("#searchByServices");
 
         $(document).ready(function () {
-            $('#tblAccessoriesData').DataTable({
-                "paging": false,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": false,
-                "autoWidth": false,
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
             });
+            LoadDataInitializer();
         })
+
+        function LoadDataInitializer() {
+            LoadAccessoriesDataTable();
+            LoadSymptomDataTable();
+            LoadMobilePartsDataTable();
+            LoadFaultDataTable();
+            LoadServicesDataTable();
+        }
+        searchByAccessories.keyup(function () {
+            LoadAccessoriesDataTable()
+        })
+
+        function LoadAccessoriesDataTable() {
+            var data = { flag: "accessories", name: $.trim(searchByAccessories.val()) }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer1").empty();
+                    $("#dataContainer1").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
 
         function OpenModal() {
             clearCtrl();
@@ -261,6 +780,496 @@
                 }
             })
         })
-        
+
+        //////////Handset Symptom//////////
+        searchByHandsetSymptom.keyup(function () {
+            LoadSymptomDataTable()
+        })
+
+        function LoadSymptomDataTable() {
+            var data = { flag: "symptom", name: $.trim(searchByHandsetSymptom.val()) }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer2").empty();
+                    $("#dataContainer2").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+
+        function OpenModalSymptom() {
+            clearCtrlSymptom();
+            $("#spanModalHead").text('Add New Problem');
+            $("#spanSaveText").text('Save');
+            $("#modalProblem").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewSymptom").click(function (e) {
+            e.preventDefault();
+            clearCtrlSymptom();
+            OpenModalSymptom();
+        })
+
+        function validateFormSymptom() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtProblemName.val()) == "") {
+                $(".required-problemName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfProblemId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, problemName: txtProblemName.val().trim() }), '/Common2/IsDuplicateProblemName', getToken()) == true) {
+                    $(".duplicate-problemName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitSymptom").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateFormSymptom() == true) {
+                var data = JSON.stringify({ ProblemId: TryParseInt(hdfProblemId.val(), 0), ProblemName: txtProblemName.val(), Remarks: txtRemarksSymptom.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveClientProblem', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblClientProblemData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+
+        })
+
+        $(document).on("click", "a.data-edit-item-symptom", function (e) {
+            e.preventDefault()
+            OpenModalSymptom()
+            $("#spanModalHead").text('Update ClientProblem');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+
+            hdfProblemId.val(td1);
+            txtProblemName.val(td2);
+            txtRemarksSymptom.val(td3)
+
+        })
+
+        function clearCtrlSymptom() {
+            hdfProblemId.val('0');
+            txtProblemName.val('');
+            txtRemarksSymptom.val('');
+        }
+
+        //data-del-item
+
+        $(document).on('click', 'a.data-del-item-symptom', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-item-symptom');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteClientProblem', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblClientProblemData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+
+        ////////////Mobile Parts//////////
+        searchByMobileParts.keyup(function () {
+            LoadMobilePartsDataTable()
+        })
+
+        function LoadMobilePartsDataTable() {
+            var data = { flag: "parts", name: $.trim(searchByMobileParts.val()) }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer3").empty();
+                    $("#dataContainer3").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+
+        function OpenModalParts() {
+            clearCtrlParts();
+            $("#spanModalHead").text('Add New Mobile Parts');
+            $("#spanSaveText").text('Save');
+            $("#modalMobilePart").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewParts").click(function (e) {
+            e.preventDefault();
+            clearCtrlParts();
+            OpenModalParts();
+        })
+
+        function validateFormParts() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtMobilePartName.val()) == "") {
+                $(".required-mobilePartName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(txtMobilePartCode.val()) == "") {
+                $(".required-partsCode").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfMobilePartId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, partsCode: txtMobilePartCode.val().trim() }), '/Common2/IsDuplicateMobilePartCode', getToken()) == true) {
+                    $(".duplicate-partsCode").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitParts").click(function (e) {
+            e.preventDefault();
+            $(".error").addClass("hide");
+            if (validateFormParts() == true) {
+                var data = JSON.stringify({
+                    MobilePartId: TryParseInt(hdfMobilePartId.val(), 0),
+                    MobilePartName: txtMobilePartName.val(),
+                    MobilePartCode: txtMobilePartCode.val(),
+                    Remarks: txtRemarksParts.val()
+                });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveMobilePart', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblMobilePartData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+
+        })
+
+        $(document).on("click", "a.data-edit-parts", function (e) {
+            e.preventDefault()
+            OpenModalParts()
+            $("#spanModalHead").text('Update Mobile Parts');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+
+            hdfMobilePartId.val(td1);
+            txtMobilePartName.val(td2);
+            txtMobilePartCode.val(td3);
+            txtRemarksParts.val(td4)
+
+        })
+
+        function clearCtrlParts() {
+            hdfMobilePartId.val('0');
+            txtMobilePartName.val('');
+            txtMobilePartCode.val('');
+            txtRemarksParts.val('');
+        }
+
+        $(document).on('click', 'a.data-del-parts', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-parts');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteMobilePart', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblMobilePartData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+        //////////Fault//////////////
+        searchByFault.keyup(function () {
+            LoadFaultDataTable()
+        })
+
+        function LoadFaultDataTable() {
+            var data = { flag: "fault", name: $.trim(searchByFault.val()) }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer4").empty();
+                    $("#dataContainer4").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+        function OpenModalFault() {
+            clearCtrlFault();
+            $("#spanModalHead").text('Add New Fault');
+            $("#spanSaveText").text('Save');
+            $("#modalFault").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewFault").click(function (e) {
+            e.preventDefault();
+            clearCtrlFault();
+            OpenModalFault();
+        })
+
+        function validateFormFault() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtFaultName.val()) == "") {
+                $(".required-faultName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfFaultId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, faultName: txtFaultName.val().trim() }), '/Common2/IsDuplicateFaultNameL', getToken()) == true) {
+                    $(".duplicate-faultName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitFault").click(function (e) {
+            e.preventDefault();
+            if (validateFormFault() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ FaultId: TryParseInt(hdfFaultId.val(), 0), FaultName: txtFaultName.val(), FaultCode: txtFaultCode.val(), Remarks: txtRemarksFault.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveFault', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblFaultData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+        })
+
+        $(document).on("click", "a.data-edit-fault", function (e) {
+            e.preventDefault()
+            OpenModalFault()
+            $("#spanModalHead").text('Update Fault');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+
+            hdfFaultId.val(td1);
+            txtFaultName.val(td2);
+            txtFaultCode.val(td3);
+            txtRemarksFault.val(td4)
+
+        })
+
+        function clearCtrlFault() {
+            hdfFaultId.val('0');
+            txtFaultName.val('');
+            txtFaultCode.val('');
+            txtRemarksFault.val('');
+        }
+
+        //data-del-item
+
+        $(document).on('click', 'a.data-del-fault', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-fault');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteFault', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblFaultData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+        //////////Services//////////////
+        searchByServices.keyup(function () {
+            LoadServicesDataTable()
+        })
+
+        function LoadServicesDataTable() {
+            var data = { flag: "services", name: $.trim(searchByServices.val()) }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer5").empty();
+                    $("#dataContainer5").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+
+        function OpenModalServices() {
+            clearCtrlServices();
+            $("#spanModalHead").text('Add New Services');
+            $("#spanSaveText").text('Save');
+            $("#modalServices").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewServices").click(function (e) {
+            e.preventDefault();
+            clearCtrlServices();
+            OpenModalServices();
+        })
+
+        function validateFormServices() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtServicesName.val()) == "") {
+                $(".required-servicesName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfServicesId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, servicesName: txtServicesName.val().trim() }), '/Common2/IsDuplicateServicesNameC', getToken()) == true) {
+                    $(".duplicate-servicesName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitServices").click(function (e) {
+            e.preventDefault();
+            if (validateFormServices() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ ServiceId: TryParseInt(hdfServicesId.val(), 0), ServiceName: txtServicesName.val(), ServiceCode: txtServicesCode.val(), Remarks: txtRemarksServices.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveService', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblServiceData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
+        })
+
+        $(document).on("click", "a.data-edit-services", function (e) {
+            e.preventDefault()
+            OpenModalServices()
+            $("#spanModalHead").text('Update Services');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+
+            hdfServicesId.val(td1);
+            txtServicesName.val(td2);
+            txtServicesCode.val(td3);
+            txtRemarksServices.val(td4)
+
+        })
+
+        function clearCtrlServices() {
+            hdfServicesId.val('0');
+            txtServicesName.val('');
+            txtServicesCode.val('');
+            txtRemarksServices.val('');
+        }
+
+        //data-del-item
+
+        $(document).on('click', 'a.data-del-services', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-services');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteService', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblServiceData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
     </script>
     }

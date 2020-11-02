@@ -36,9 +36,9 @@ namespace ERPBLL.Configuration
             return repairRepository.GetOneByOrg(f => f.RepairId == id && f.OrganizationId == orgId);
         }
 
-        public bool IsDuplicateRepairName(string code, long id, long orgId)
+        public bool IsDuplicateRepairName(string repairName, long id, long orgId)
         {
-            return repairRepository.GetOneByOrg(f => f.RepairCode == code && f.RepairId != id && f.OrganizationId == orgId) != null ? true : false;
+            return repairRepository.GetOneByOrg(f => f.RepairName == repairName && f.RepairId != id && f.OrganizationId == orgId) != null ? true : false;
         }
 
         public bool SaveRepair(RepairDTO repairDTO, long userId, long orgId)

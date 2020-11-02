@@ -98,6 +98,7 @@
                             <label for="txtServicesName" class="control-label font-weight-bold">Service Name</label>
                             <input type="text" name="txtServicesName" value="" id="txtServicesName" class="form-control form-control-sm" />
                             <span class="error hide required-servicesName font-weight-bold">Input ServiceName Name!</span>
+                            <span class="error hide duplicate-servicesName font-weight-bold">Already Service Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -165,43 +166,44 @@
             OpenModal();
         })
 
-        //function validateForm() {
-        //    $(".error").addClass("hide");
-        //    var isValid = true;
-        //    if ($.trim(txtFaultCode.val()) == "") {
-        //        $(".required-problemName").removeClass("hide");
-        //        isValid = false;
-        //    }
-        //    else {
-        //        var id = TryParseInt(hdfProblemId.val(), 0);
-        //        if (ajaxBooleanChecker(JSON.stringify({ id: id, problemName: txtProblemName.val().trim() }), '/Common2/IsDuplicateProblemName', getToken()) == true) {
-        //            $(".duplicate-problemName").removeClass("hide");
-        //            isValid = false;
-        //        }
-        //    }
-        //    return isValid;
-        //}
+        function validateForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtServicesName.val()) == "") {
+                $(".required-servicesName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfServicesId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, servicesName: txtServicesName.val().trim() }), '/Common2/IsDuplicateServicesNameC', getToken()) == true) {
+                    $(".duplicate-servicesName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            $(".error").addClass("hide");
-            var data = JSON.stringify({ ServiceId: TryParseInt(hdfServicesId.val(), 0), ServiceName: txtServicesName.val(), ServiceCode: txtServicesCode.val(), Remarks: txtRemarks.val() });
-            console.log(data);
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveService', data, getToken())).then(function (res, status) {
-                console.log(status);
-                console.log(res);
-                if (res == true) {
-                    message("#msg1", "#tblServiceData");
-                }
-                else {
-                    message("#msg2");
-                }
-                enable("#btnSubmit");
-            }).fail(function (err) {
-                console.log(err);
-                enable("#btnSubmit");
-            });
-
+            if (validateForm() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ ServiceId: TryParseInt(hdfServicesId.val(), 0), ServiceName: txtServicesName.val(), ServiceCode: txtServicesCode.val(), Remarks: txtRemarks.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveService', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                        message("#msg1", "#tblServiceData");
+                    }
+                    else {
+                        message("#msg2");
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmit");
+                });
+            }
         })
 
         $(document).on("click", "a.data-edit-item", function (e) {

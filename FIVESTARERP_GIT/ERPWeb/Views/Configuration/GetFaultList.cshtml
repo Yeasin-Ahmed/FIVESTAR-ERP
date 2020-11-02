@@ -98,6 +98,7 @@
                             <label for="txtFaultName" class="control-label font-weight-bold">FaultName</label>
                             <input type="text" name="txtFaultName" value="" id="txtFaultName" class="form-control form-control-sm" />
                             <span class="error hide required-faultName font-weight-bold">Input FaultName Name!</span>
+                            <span class="error hide duplicate-faultName font-weight-bold">Already Fault Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -165,26 +166,27 @@
             OpenModal();
         })
 
-        //function validateForm() {
-        //    $(".error").addClass("hide");
-        //    var isValid = true;
-        //    if ($.trim(txtFaultCode.val()) == "") {
-        //        $(".required-problemName").removeClass("hide");
-        //        isValid = false;
-        //    }
-        //    else {
-        //        var id = TryParseInt(hdfProblemId.val(), 0);
-        //        if (ajaxBooleanChecker(JSON.stringify({ id: id, problemName: txtProblemName.val().trim() }), '/Common2/IsDuplicateProblemName', getToken()) == true) {
-        //            $(".duplicate-problemName").removeClass("hide");
-        //            isValid = false;
-        //        }
-        //    }
-        //    return isValid;
-        //}
+        function validateForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtFaultName.val()) == "") {
+                $(".required-faultName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfFaultId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, faultName: txtFaultName.val().trim() }), '/Common2/IsDuplicateFaultNameL', getToken()) == true) {
+                    $(".duplicate-faultName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            $(".error").addClass("hide");
+            if (validateForm() == true) {
+                $(".error").addClass("hide");
                 var data = JSON.stringify({ FaultId: TryParseInt(hdfFaultId.val(), 0), FaultName: txtFaultName.val(), FaultCode: txtFaultCode.val(), Remarks: txtRemarks.val() });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveFault', data, getToken())).then(function (res, status) {
@@ -201,7 +203,7 @@
                     console.log(err);
                     enable("#btnSubmit");
                 });
-
+            }
         })
 
         $(document).on("click", "a.data-edit-item", function (e) {

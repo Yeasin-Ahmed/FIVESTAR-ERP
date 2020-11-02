@@ -55,25 +55,104 @@ namespace ERPWeb.Controllers
             this._repairBusiness = repairBusiness;
         }
         #region tblAccessories
-        public ActionResult AccessoriesList()
+        public ActionResult AccessoriesList(string flag,string name)
         {
-            //IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Select(access => new AccessoriesDTO
-            //{
-            //    AccessoriesId = access.AccessoriesId,
-            //    AccessoriesName = access.AccessoriesName,
-            //    AccessoriesCode = access.AccessoriesCode,
-            //    Remarks = access.Remarks,
-            //    StateStatus = (access.IsActive == true ? "Active" : "Inactive"),
-            //    OrganizationId = access.OrganizationId,
-            //    EUserId = access.EUserId,
-            //    EntryDate = access.EntryDate,
-            //    UpUserId = access.UpUserId,
-            //    UpdateDate = access.UpdateDate,
-            //}).ToList();
-            var accessoriesDTO = _accessoriesBusiness.GetAccessoriesByOrgId(User.OrgId);
-            List<AccessoriesViewModel> viewModel = new List<AccessoriesViewModel>();
-            AutoMapper.Mapper.Map(accessoriesDTO , viewModel);
-            return View(viewModel);
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.UserPrivilege = UserPrivilege("Configuration", "AccessoriesList");
+                //return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "accessories")
+            {
+                IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.AccessoriesName.Contains(name))).Select(access => new AccessoriesDTO
+                {
+                    AccessoriesId = access.AccessoriesId,
+                    AccessoriesName = access.AccessoriesName,
+                    AccessoriesCode = access.AccessoriesCode,
+                    Remarks = access.Remarks,
+                    StateStatus = (access.IsActive == true ? "Active" : "Inactive"),
+                    OrganizationId = access.OrganizationId,
+                    EUserId = access.EUserId,
+                    EntryDate = access.EntryDate,
+                    UpUserId = access.UpUserId,
+                    UpdateDate = access.UpdateDate,
+                }).ToList();
+                List<AccessoriesViewModel> viewModel = new List<AccessoriesViewModel>();
+                AutoMapper.Mapper.Map(accessoriesDTO, viewModel);
+                return PartialView("_AccessoriesList", viewModel);
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag == "symptom")
+            {
+                IEnumerable<ClientProblemDTO> clientDTO = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.ProblemName.Contains(name))).Select(client => new ClientProblemDTO
+                {
+                    ProblemId = client.ProblemId,
+                    ProblemName = client.ProblemName,
+                    Remarks = client.Remarks,
+                    OrganizationId = client.OrganizationId,
+                    EUserId = client.EUserId,
+                    EntryDate = client.EntryDate,
+                    UpUserId = client.UpUserId,
+                    UpdateDate = client.UpdateDate,
+                }).ToList();
+                List<ClientProblemViewModel> viewModel = new List<ClientProblemViewModel>();
+                AutoMapper.Mapper.Map(clientDTO, viewModel);
+                return View("_HandsetSymptom", viewModel);
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag == "parts")
+            {
+                IEnumerable<MobilePartDTO> mobilePartDTO = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.MobilePartName.Contains(name) || s.MobilePartCode.Contains(name))).Select(part => new MobilePartDTO
+                {
+                    MobilePartId = part.MobilePartId,
+                    MobilePartName = part.MobilePartName,
+                    MobilePartCode = part.MobilePartCode,
+                    Remarks = part.Remarks,
+                    OrganizationId = part.OrganizationId,
+                    EUserId = part.EUserId,
+                    EntryDate = part.EntryDate,
+                    UpUserId = part.UpUserId,
+                    UpdateDate = part.UpdateDate,
+                }).ToList();
+                List<MobilePartViewModel> viewModel = new List<MobilePartViewModel>();
+                AutoMapper.Mapper.Map(mobilePartDTO, viewModel);
+                return PartialView("_MobileParts",viewModel);
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag == "fault")
+            {
+                IEnumerable<FaultDTO> faultDTO = _faultBusiness.GetAllFaultByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.FaultName.Contains(name) || s.FaultCode.Contains(name))).Select(fault => new FaultDTO
+                {
+                    FaultId = fault.FaultId,
+                    FaultName = fault.FaultName,
+                    FaultCode = fault.FaultCode,
+                    Remarks = fault.Remarks,
+                    OrganizationId = fault.OrganizationId,
+                    EUserId = fault.EUserId,
+                    EntryDate = fault.EntryDate,
+                    UpUserId = fault.UpUserId,
+                    UpdateDate = fault.UpdateDate,
+                }).ToList();
+                List<FaultViewModel> viewModel = new List<FaultViewModel>();
+                AutoMapper.Mapper.Map(faultDTO, viewModel);
+                return PartialView("_Fault",viewModel);
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag == "services")
+            {
+                IEnumerable<ServiceDTO> serviceDTO = _serviceBusiness.GetAllServiceByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.ServiceName.Contains(name) || s.ServiceCode.Contains(name))).Select(services => new ServiceDTO
+                {
+                    ServiceId = services.ServiceId,
+                    ServiceName = services.ServiceName,
+                    ServiceCode = services.ServiceCode,
+                    Remarks = services.Remarks,
+                    OrganizationId = services.OrganizationId,
+                    EUserId = services.EUserId,
+                    EntryDate = services.EntryDate,
+                    UpUserId = services.UpUserId,
+                    UpdateDate = services.UpdateDate,
+                }).ToList();
+                List<ServiceViewModel> viewModel = new List<ServiceViewModel>();
+                AutoMapper.Mapper.Map(serviceDTO, viewModel);
+                return PartialView("_Services",viewModel);
+            }
+            return View();
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveAccessories(AccessoriesViewModel accessoriesViewModel)

@@ -41,8 +41,9 @@ namespace ERPWeb.Controllers
         private readonly IInvoiceInfoBusiness _invoiceInfoBusiness;
         private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
+        public readonly IRepairBusiness _repairBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -62,6 +63,7 @@ namespace ERPWeb.Controllers
             this._invoiceInfoBusiness = invoiceInfoBusiness;
             this._invoiceDetailBusiness = invoiceDetailBusiness;
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
+            this._repairBusiness = repairBusiness;
         }
 
         #region Configuration Module
@@ -263,6 +265,24 @@ namespace ERPWeb.Controllers
         public ActionResult IsDuplicateServicesId(long id, long servicesId)
         {
             bool isExist = _jobOrderServiceBusiness.IsDuplicateServicesName(id, servicesId, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateFaultNameL(string faultName, long id)
+        {
+            bool isExist = _faultBusiness.IsDuplicateFaultName(faultName, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateServicesNameC(string servicesName,long id)
+        {
+            bool isExist = _serviceBusiness.IsDuplicateServiceName(servicesName,id,User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateRepairNameC(string repairName,long id)
+        {
+            bool isExist = _repairBusiness.IsDuplicateRepairName(repairName,id,User.OrgId);
             return Json(isExist);
         }
         #endregion
