@@ -8,22 +8,24 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.DomainModels
 {
-    [Table("tblDescriptions")]
-    public class Description
+    [Table("tblDistrict")]
+    public class District
     {
         [Key]
-        public long DescriptionId { get; set; }
+        public long DistrictId { get; set; }
         [StringLength(100)]
-        public string DescriptionName { get; set; }
+        public string DistrictName { get; set; }
         public bool IsActive { get; set; }
         [StringLength(200)]
         public string Remarks { get; set; }
+        public long? BranchId { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public long? CategoryId { get; set; }
-        public long? BrandId { get; set; }
+        [ForeignKey("Division")]
+        public long DivisionId { get; set; }
+        public Division Division { get; set; }
     }
 }

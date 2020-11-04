@@ -666,6 +666,18 @@
     <Compile Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.Designer.cs">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011020520110_SalesAndDistribution_AddCategoryAndBRandId.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011020520110_SalesAndDistribution_AddCategoryAndBRandId.Designer.cs">
+      <DependentUpon>202011020520110_SalesAndDistribution_AddCategoryAndBRandId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011030442158_SalesAndDistribution_AddRSM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011030442158_SalesAndDistribution_AddRSM.Designer.cs">
+      <DependentUpon>202011030442158_SalesAndDistribution_AddRSM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.Designer.cs">
+      <DependentUpon>202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1097,6 +1109,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.resx">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011020520110_SalesAndDistribution_AddCategoryAndBRandId.resx">
+      <DependentUpon>202011020520110_SalesAndDistribution_AddCategoryAndBRandId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011030442158_SalesAndDistribution_AddRSM.resx">
+      <DependentUpon>202011030442158_SalesAndDistribution_AddRSM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.resx">
+      <DependentUpon>202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -80,4 +80,36 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
+    public class RSMRepository : SalesAndDistributionBaseRepository<RSM>
+    {
+        public RSMRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class DivisionRepository : SalesAndDistributionBaseRepository<Division>
+    {
+        public DivisionRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class DistrictRepository : SalesAndDistributionBaseRepository<District>
+    {
+        public DistrictRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class ZoneRepository : SalesAndDistributionBaseRepository<Zone>
+    {
+        public ZoneRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
 }

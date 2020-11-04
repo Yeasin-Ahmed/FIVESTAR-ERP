@@ -8,22 +8,27 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.DomainModels
 {
-    [Table("tblDescriptions")]
-    public class Description
+    [Table("tblZone")]
+    public class Zone
     {
         [Key]
-        public long DescriptionId { get; set; }
-        [StringLength(100)]
-        public string DescriptionName { get; set; }
+        public long ZoneId { get; set; }
+        [StringLength(150)]
+        public string ZoneName { get; set; }
+        [StringLength(20)]
+        public string PostalCode { get; set; }
         public bool IsActive { get; set; }
         [StringLength(200)]
         public string Remarks { get; set; }
+        public long? BranchId { get; set; }
+        public long? DivisionId { get; set; }
         public long OrganizationId { get; set; }
         public long? EUserId { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public long? CategoryId { get; set; }
-        public long? BrandId { get; set; }
+        [ForeignKey("District")]
+        public long DistrictId { get; set; }
+        public District District { get; set; }
     }
 }

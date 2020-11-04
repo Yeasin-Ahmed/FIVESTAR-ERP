@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.SalesAndDistribution.Interface
 {
-    public interface ICategoryBusiness
+    public interface IDistrictBusiness
     {
-        Category GetCategoryById(long id, long orgId);
-        IEnumerable<Category> GetCategories(long orgId);
-        bool SaveCategory(CategoryDTO category, long userId,long branchId, long orgId);
+        IEnumerable<District> GetDistricts(long orgId);
+        District GetDistrictById(long districtId, long orgId);
+        bool SaveDistrict(DistrictDTO dto, long userId, long orgId);
     }
 }

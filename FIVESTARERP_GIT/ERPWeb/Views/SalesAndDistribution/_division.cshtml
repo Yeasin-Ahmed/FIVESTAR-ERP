@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DivisionViewModel>
+@{
+    int sl = 0;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y: scroll">
+        <table class="table table-sm table-striped table-bordered table-responsive-lg tblDivision" id="tblDivision">
+            <thead>
+                <tr>
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Division Name</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    string status = item.IsActive ? "Active" : "Inactive";
+                    string badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

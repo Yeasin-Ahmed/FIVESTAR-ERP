@@ -259,7 +259,6 @@ namespace ERPWeb.Controllers
                     BrandId = des.BrandId,
                     BrandName = ((des.BrandId == null || des.BrandId == 0) ? "" : _brandBusiness.GetBrandById(des.BrandId.Value, User.OrgId).BrandName),
                     Colors= _descriptionBusiness.GetModelColors(des.DescriptionId,User.OrgId)
-
                 }).OrderBy(des => des.DescriptionId).ToList();
 
                 // Pagination //

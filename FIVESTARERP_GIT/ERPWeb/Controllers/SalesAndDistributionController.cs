@@ -33,7 +33,9 @@ namespace ERPWeb.Controllers
         private readonly IColorBusiness _colorBusiness;
         private readonly IModelColorBusiness _modelColorBusiness;
         /// </summary>
-
+        private readonly IDivisionBusiness _divisionBusiness;
+        private readonly IDistrictBusiness _districtBusiness;
+        private readonly IZoneBusiness _zoneBusiness;
         #endregion
 
         #region Inventory
@@ -43,7 +45,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Inventory.Interface.IDescriptionBusiness _invModelBusiness;
         private readonly ERPBLL.Inventory.Interface.IColorBusiness _invColorBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness)
         {
             #region Sales & Distribution
             this._dealerBusiness = dealerBusiness;
@@ -57,6 +59,9 @@ namespace ERPWeb.Controllers
             this._modelBusiness = modelBusiness;
             this._colorBusiness = colorBusiness;
             this._modelColorBusiness = modelColorBusiness;
+            this._divisionBusiness = divisionBusiness;
+            this._districtBusiness = districtBusiness;
+            this._zoneBusiness = zoneBusiness;
             #endregion
 
             #region Inventory
@@ -74,6 +79,7 @@ namespace ERPWeb.Controllers
             {
                 ViewBag.ddlCategories = new SelectList(_categoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
                 ViewBag.ddlColors = new SelectList(_colorBusiness.GetColors(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlBrand = new SelectList(_brandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
                 return View();
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "dealer")
@@ -164,11 +170,68 @@ namespace ERPWeb.Controllers
                     EntryDate = DateTime.Now,
                     EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
                     UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    CategoryId = s.CategoryId,
+                    CategoryName = (s.CategoryId == null ? "" : _categoryBusiness.GetCategoryById(s.CategoryId.Value, User.OrgId).CategoryName),
+                    BrandId = s.BrandId,
+                    BrandName = ((s.BrandId == null || s.BrandId == 0) ? "" : _brandBusiness.GetBrandById(s.BrandId.Value, User.OrgId).BrandName),
                     ModelColors = _modelColorBusiness.GetModelColorsByModel(s.DescriptionId, User.OrgId)
                 }).ToList();
                 IEnumerable<DescriptionViewModel> viewModels = new List<DescriptionViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_model", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "division")
+            {
+                var dto = _divisionBusiness.GetDivisions(User.OrgId).Select(s => new DivisionDTO()
+                {
+                    DivisionId = s.DivisionId,
+                    DivisionName = s.DivisionName,
+                    OrganizationId = s.OrganizationId,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    IsActive = s.IsActive,
+                    Remarks = s.Remarks
+                }).ToList();
+                IEnumerable<DivisionViewModel> viewModels = new List<DivisionViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_division", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "district")
+            {
+                var dto = _districtBusiness.GetDistricts(User.OrgId).Select(s => new DistrictDTO()
+                {
+                    DistrictId = s.DistrictId,
+                    DistrictName = s.DistrictName,
+                    DivisionId = s.DivisionId,
+                    DivisionName = _divisionBusiness.GetDivisionById(s.DivisionId,User.OrgId).DivisionName,
+                    OrganizationId = s.OrganizationId,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    IsActive = s.IsActive,
+                    Remarks = s.Remarks
+                }).ToList();
+                IEnumerable<DistrictViewModel> viewModels = new List<DistrictViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_district", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "zone")
+            {
+                var dto = _zoneBusiness.GetZones(User.OrgId).Select(s => new ZoneDTO()
+                {
+                    ZoneId = s.ZoneId,
+                    ZoneName = _zoneBusiness.GetZoneById(s.ZoneId,User.OrgId).ZoneName,
+                    DistrictId = s.DistrictId,
+                    DistrictName = _districtBusiness.GetDistrictById(s.DistrictId,User.OrgId).DistrictName,
+                    DivisionId = s.DivisionId,
+                    OrganizationId = s.OrganizationId,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    IsActive = s.IsActive,
+                    Remarks = s.Remarks
+                }).ToList();
+                IEnumerable<ZoneViewModel> viewModels = new List<ZoneViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_zone", viewModels);
             }
             return View();
         }
@@ -225,7 +288,7 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
-        
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveModel(DescriptionViewModel model)
         {

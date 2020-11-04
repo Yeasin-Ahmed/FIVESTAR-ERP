@@ -582,23 +582,32 @@
                                     </div>
                                     <input type="text" name="txtModelName" value="" id="txtModelName" class="form-control form-control-sm" />
                                 </div>
-                                <span class="error hide required-color font-weight-bold">Input Color!</span>
+                                <span class="error hide required-model font-weight-bold">Input Model!</span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="txtColorRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <label for="ddlModelCategories" class="control-label font-weight-bold">Category</label>
+                                @Html.DropDownList("ddlModelCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
+                                <span class="error hide req-modelCategory">Input Category!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ddlModelBrand" class="control-label font-weight-bold">Brand</label>
+                                @Html.DropDownList("ddlModelBrand", (IEnumerable<SelectListItem>)ViewBag.ddlBrand, "---Select Brand---", new { @class = "form-control form-control-sm" })
+                                <span class="error hide req-modelBrand">Input Brand!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ddlModelColors" class="control-label font-weight-bold">Colors</label>
+                                @Html.DropDownList("ddlModelColors", (IEnumerable<SelectListItem>)ViewBag.ddlColors, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtModelRemarks" class="control-label font-weight-bold">Remarks</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">
                                             <i class="fas fa-comment"></i>
                                         </span>
                                     </div>
-                                    <input type="text" name="txtColorRemarks" value="" id="txtColorRemarks" class="form-control form-control-sm" />
+                                    <input type="text" name="txtModelRemarks" value="" id="txtModelRemarks" class="form-control form-control-sm" />
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                @Html.DropDownList("ddlModelColors", (IEnumerable<SelectListItem>)ViewBag.ddlColors, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })
                             </div>
                         </div>
                     </form>
@@ -651,6 +660,8 @@
         var txtModelRemarks = $("#txtModelRemarks");
         var chkModelStatestatus = $("#chkModelStatestatus");
         var ddlModelColors = $("#ddlModelColors");
+        var ddlModelCategories = $("#ddlModelCategories");
+        var ddlModelBrand = $("#ddlModelBrand");
 
         $(document).ready(function () {
 
@@ -1111,7 +1122,7 @@
             }
         })
 
-        //
+        // Model
 
         $("#btnAddNewModel").click(function (e) {
             e.preventDefault();
@@ -1130,7 +1141,9 @@
             hdfModelId.val("0");
             txtModelName.val('');
             txtModelRemarks.val('');
-            ddlModelColors.val('')
+            ddlModelBrand.val('');
+            ddlModelCategories.val('');
+            ddlModelColors.val('');
             ddlModelColors.trigger('change');
             chkModelStatestatus.prop("checked", false);
         }
@@ -1159,12 +1172,13 @@
                     })
                 }
 
-                var model = { DescriptionId: TryParseInt(hdfModelId.val(), 0), DescriptionName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val(), Colors: colors }
+                var model = { DescriptionId: TryParseInt(hdfModelId.val(), 0), DescriptionName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val(), CategoryId:TryParseInt(ddlModelCategories.val(),0), BrandId: TryParseInt(ddlModelBrand.val(),0), Colors: colors }
 
                 var data = JSON.stringify({
                     model: model
                     //colors: colors
                 });
+
                 disable("#btnSubmitModel");
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveModel', data, getToken())).then(function (res, status) {
                     if (res === true && status === "success") {
@@ -1185,7 +1199,30 @@
             }
         })
 
-        //data-model-edit
+        $(document).on('click', '.data-model-edit', function (e) {
+            e.preventDefault();
+            OpenModalModel();
+            var tds = $(this).parent().parents('tr').children('td');
+            $("#spanModalHeadModel").text("Update Model");
+            $("#spanSaveTextModel").text("Update");
+            hdfModelId.val(tds.eq(1).html());
+            txtModelName.val(tds.eq(2).html());
+            var selectedColors = tds.eq(3).attr("data-val");
+            if ($.trim(selectedColors) != "") {
+                var colors = selectedColors.indexOf(",") > 0 ? selectedColors.split(",") : [selectedColors];
+                ddlModelColors.val(colors);
+                ddlModelColors.trigger("change");
+            }
+            
+            ddlModelCategories.val(tds.eq(4).attr("data-val"));
+            ddlModelBrand.val(tds.eq(5).attr("data-val"))
+            var status = tds.eq(6).attr("data-val");
+            if (status == "True") {
+                chkModelStatestatus.prop("checked", true);
+            }
+            txtModelRemarks.val(tds.eq(7).html())
+        })
+
     </script>
 }
 
