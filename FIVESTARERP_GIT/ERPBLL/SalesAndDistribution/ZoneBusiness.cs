@@ -44,7 +44,7 @@ namespace ERPBLL.SalesAndDistribution
                     OrganizationId = orgId,
                     DivisionId = dto.DivisionId,
                     ZoneId = dto.ZoneId,
-                    ZoneName = dto.DistrictName
+                    ZoneName = dto.ZoneName
                 };
                 _zoneRepository.Insert(zone);
             }
@@ -52,7 +52,7 @@ namespace ERPBLL.SalesAndDistribution
                 var zoneInDb = _zoneRepository.GetOneByOrg(s => s.ZoneId == dto.ZoneId && s.OrganizationId == orgId);
                 if(zoneInDb != null)
                 {
-                    zoneInDb.ZoneName = dto.DistrictName;
+                    zoneInDb.ZoneName = dto.ZoneName;
                     zoneInDb.IsActive = dto.IsActive;
                     zoneInDb.Remarks = dto.Remarks;
                     zoneInDb.UpUserId = userId;

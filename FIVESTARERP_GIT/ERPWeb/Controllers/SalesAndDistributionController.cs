@@ -80,6 +80,8 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlCategories = new SelectList(_categoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
                 ViewBag.ddlColors = new SelectList(_colorBusiness.GetColors(User.OrgId), "ColorId", "ColorName");
                 ViewBag.ddlBrand = new SelectList(_brandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
+                ViewBag.ddlDivision = new SelectList(_divisionBusiness.GetDivisions(User.OrgId), "DivisionId", "DivisionName");
+                ViewBag.ddlDistrictWithDivision = new SelectList(_districtBusiness.GetDistrictWithDivision(User.OrgId), "value", "text");
                 return View();
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "dealer")
@@ -222,7 +224,8 @@ namespace ERPWeb.Controllers
                     ZoneName = _zoneBusiness.GetZoneById(s.ZoneId,User.OrgId).ZoneName,
                     DistrictId = s.DistrictId,
                     DistrictName = _districtBusiness.GetDistrictById(s.DistrictId,User.OrgId).DistrictName,
-                    DivisionId = s.DivisionId,
+                    DivisionId =s.DivisionId,
+                    DivisionName = (s.DivisionId != null && s.DivisionId.Value > 0) ? _divisionBusiness.GetDivisionById(s.DivisionId.Value,User.OrgId).DivisionName : "",
                     OrganizationId = s.OrganizationId,
                     EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
                     UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
@@ -301,6 +304,46 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDivision(DivisionViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                DivisionDTO dto = new DivisionDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _divisionBusiness.SaveDivision(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDistrict(DistrictViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                DistrictDTO dto = new DistrictDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _districtBusiness.SaveDistrict(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveZone(ZoneViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                ZoneDTO dto = new ZoneDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _zoneBusiness.SaveZone(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
 
         public ActionResult GetBTRCIMEI(string flag, string status, long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string imei, long modelId = 0, string fromDate = "", string toDate = "")
         {
@@ -383,5 +426,17 @@ namespace ERPWeb.Controllers
             return Json(new { rows = rows });
         }
 
+        public ActionResult SRHierarchy(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="")
+            {
+                       
+            }
+            return View();
+        }
     }
 }

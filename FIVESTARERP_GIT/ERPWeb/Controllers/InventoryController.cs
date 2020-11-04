@@ -210,8 +210,8 @@ namespace ERPWeb.Controllers
 
                 ViewBag.ddlBrand = new SelectList(_brandBusiness.GetClientMobileBrand("Five Star", User.OrgId), "BrandId", "BrandName");
                 var clientBrand = _brandBusiness.GetClientMobileBrand("Five Star", User.OrgId).FirstOrDefault();
-
-                ViewBag.ddlBrandCategory = new SelectList(_brandCategoriesBusiness.GetBrandAndCategories(clientBrand.BrandId, User.OrgId), "CategoryId", "CategoryName");
+                var clientBrandId = clientBrand == null ? 0 : clientBrand.BrandId;
+                ViewBag.ddlBrandCategory = new SelectList(_brandCategoriesBusiness.GetBrandAndCategories(clientBrandId, User.OrgId), "CategoryId", "CategoryName");
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "warehouse")
             {
@@ -2490,25 +2490,25 @@ namespace ERPWeb.Controllers
                                 item.Quantity = item.Quantity;
                                 item.UnitId = item.UnitId;
                                 warehouseStocks.Add(item);
-                                if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() != "" && !isItemPreparationExist && item.ConsumptionQty.HasValue && item.ConsumptionQty.Value > 0)
+                            }
+                            if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() != "" && !isItemPreparationExist && item.ConsumptionQty.HasValue && item.ConsumptionQty.Value > 0)
+                            {
+                                ItemPreparationDetailDTO itemPreparationDetail = new ItemPreparationDetailDTO()
                                 {
-                                    ItemPreparationDetailDTO itemPreparationDetail = new ItemPreparationDetailDTO()
-                                    {
-                                        ItemId = item.ItemId.Value,
-                                        ItemTypeId = item.ItemTypeId.Value,
-                                        WarehouseId = item.WarehouseId.Value,
-                                        Quantity = item.ConsumptionQty.Value,
-                                        UnitId = item.UnitId.Value
-                                    };
-                                    itemPreparationDetails.Add(itemPreparationDetail);
-                                }
+                                    ItemId = item.ItemId.Value,
+                                    ItemTypeId = item.ItemTypeId.Value,
+                                    WarehouseId = item.WarehouseId.Value,
+                                    Quantity = item.ConsumptionQty.Value,
+                                    UnitId = item.UnitId.Value
+                                };
+                                itemPreparationDetails.Add(itemPreparationDetail);
                             }
                         }
 
                         executionState.isSuccess = (warehouseStocks.Count() > 0 ? _warehouseStockDetailBusiness.SaveWarehouseStockIn(warehouseStocks, User.UserId, User.OrgId) : executionState.isSuccess);
 
                         if (!isItemPreparationExist && itemPreparationInfo != null && itemPreparationDetails.Count > 0)
-                            _itemPreparationInfoBusiness.SaveItemPreparations(itemPreparationInfo, itemPreparationDetails, User.UserId, User.OrgId);
+                            executionState.isSuccess= _itemPreparationInfoBusiness.SaveItemPreparations(itemPreparationInfo, itemPreparationDetails, User.UserId, User.OrgId);
 
                         //deleting excel file from folder  
                         if ((System.IO.File.Exists(pathToExcelFile)))

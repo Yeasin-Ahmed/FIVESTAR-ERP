@@ -678,6 +678,18 @@
     <Compile Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.Designer.cs">
       <DependentUpon>202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011041201597_SalesAndDistribution_UpdateRSM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011041201597_SalesAndDistribution_UpdateRSM.Designer.cs">
+      <DependentUpon>202011041201597_SalesAndDistribution_UpdateRSM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011041208237_SalesAndDistribution_AddRSM_EUserId.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011041208237_SalesAndDistribution_AddRSM_EUserId.Designer.cs">
+      <DependentUpon>202011041208237_SalesAndDistribution_AddRSM_EUserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.Designer.cs">
+      <DependentUpon>202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1118,6 +1130,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.resx">
       <DependentUpon>202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041201597_SalesAndDistribution_UpdateRSM.resx">
+      <DependentUpon>202011041201597_SalesAndDistribution_UpdateRSM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041208237_SalesAndDistribution_AddRSM_EUserId.resx">
+      <DependentUpon>202011041208237_SalesAndDistribution_AddRSM_EUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.resx">
+      <DependentUpon>202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

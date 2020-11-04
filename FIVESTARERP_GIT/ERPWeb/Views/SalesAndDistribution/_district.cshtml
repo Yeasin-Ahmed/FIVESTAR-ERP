@@ -1,15 +1,16 @@
-﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DivisionViewModel>
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DistrictViewModel>
 @{
     int sl = 0;
 }
 <div class="row">
     <div class="col-md-12" style="overflow-y: scroll">
-        <table class="table table-sm table-striped table-bordered table-responsive-lg tblDivision" id="tblDivision">
+        <table class="table table-sm table-striped table-bordered table-responsive-lg tblDistrict" id="tblDistrict">
             <thead class="btn-dark">
                 <tr class="text-center">
                     <th>#SL</th>
                     <th class="hide"></th>
-                    <th>Division Name</th>
+                    <th>District Name</th>
+                    <th>Division</th>
                     <th>Status</th>
                     <th>Remarks</th>
                     <th>Action</th>
@@ -23,23 +24,24 @@
                     string badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
-                        <td class="hide">@item.DivisionId</td>
-                        <td class="">@item.DivisionName</td>
+                        <td class="hide">@item.DistrictId</td>
+                        <td >@item.DistrictName</td>
+                        <td class="text-center" data-val="@item.DistrictId">@item.DivisionName</td>
                         <td class="text-center" data-val="@status">
                             <span class="@badge ">@status</span>
                         </td>
                         <td>@item.Remarks</td>
-                        <td  class="text-center">
-                            <a href="#" class="btn btn-sm btn-flat btn-warning data-division-edit" data-division-edit="@item.DivisionId">
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-flat btn-warning data-district-edit" data-district-edit="@item.DistrictId">
                                 <span class="fas fa-pen"></span> Edit
                             </a>
                         </td>
                     </tr>
                 }
-                @if(Model.Count() == 0)
+                @if (Model.Count() == 0)
                 {
                     <tr class="text-center">
-                        <td colspan="6">No data found in the table</td>
+                        <td colspan="7">No data found in the table</td>
                     </tr>
                 }
             </tbody>

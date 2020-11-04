@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ERPBLL.SalesAndDistribution.Interface;
+using ERPBO.Common;
 using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
@@ -27,9 +28,17 @@ namespace ERPBLL.SalesAndDistribution
         {
             return this._districtRepository.GetAll(s =>s.OrganizationId == orgId);
         }
+        public IEnumerable<Dropdown> GetDistrictWithDivision(long orgId)
+        {
+            return _salesAndDistribution.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select Cast(dis.DistrictId as Nvarchar(20)) +'#'+ Cast(div.DivisionId as Nvarchar(20)) 'value', 
+(dis.DistrictName +'- ['+div.DivisionName +']') 'text' 
+From tblDistrict dis
+Inner Join tblDivision div on dis.DivisionId = div.DivisionId
+Where dis.OrganizationId = {0} Order By div.DivisionName,dis.DistrictName", orgId)).ToList();
+        }
         public bool SaveDistrict(DistrictDTO dto, long userId, long orgId)
         {
-            if(dto.DivisionId == 0)
+            if(dto.DistrictId == 0)
             {
                 District district = new District()
                 {

@@ -792,7 +792,10 @@
     <Content Include="Views\Inventory\_brand.cshtml" />
     <Content Include="Views\Inventory\_color.cshtml" />
     <Content Include="Views\Configuration\GetRepairList.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_district.cshtml" />
     <Content Include="Views\SalesAndDistribution\_division.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_zone.cshtml" />
+    <Content Include="Views\SalesAndDistribution\SRHierarchy.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -24,6 +24,15 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-five-model-tab" data-toggle="pill" href="#custom-tabs-five-model" role="tab" aria-controls="custom-tabs-five-model" aria-selected="false">Model</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-six-division-tab" data-toggle="pill" href="#custom-tabs-six-division" role="tab" aria-controls="custom-tabs-six-division" aria-selected="false">Division</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-seven-district-tab" data-toggle="pill" href="#custom-tabs-seven-district" role="tab" aria-controls="custom-tabs-seven-district" aria-selected="false">District</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-eight-zone-tab" data-toggle="pill" href="#custom-tabs-eight-zone" role="tab" aria-controls="custom-tabs-eight-zone" aria-selected="false">Zone</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -257,6 +266,147 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" id="dataContainer5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-six-division" role="tabpanel" aria-labelledby="custom-tabs-five-division">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Division
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchDivision" id="searchByDivision" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDivision tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewDivision"><i class="fa fa-plus"></i> Create Division</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-seven-district" role="tabpanel" aria-labelledby="custom-tabs-seven-district">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of District
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchDistrict" id="searchByDistrict" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblDistrict tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewDistrict"><i class="fa fa-plus"></i> Create District</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer7">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-eight-zone" role="tabpanel" aria-labelledby="custom-tabs-eight-zone">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    List Of Zone
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchZone" id="searchByZone" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblZone tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewZone"><i class="fa fa-plus"></i> Create Zone</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer8">
                                         </div>
                                     </div>
                                 </div>
@@ -619,6 +769,186 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalDivision" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDivision">Add New Division</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmDealer">
+                        <input type="hidden" name="Id" id="hdfDivisionId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtDivisionName" class="control-label font-weight-bold">
+                                    Division
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkDivisionStatestatus" id="chkDivisionStatestatus" />
+                                        <label for="chkDivisionStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-list-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtDivisionName" value="" id="txtDivisionName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-division font-weight-bold">Input Division!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtDivisionRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtDivisionRemarks" value="" id="txtDivisionRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitDivision"><i class="far fa-save"></i> <span id="spanSaveTextDivision"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalDistrict" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadDistrict">Add New District</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmDealer">
+                        <input type="hidden" name="Id" id="hdfDistrictId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtDistrictName" class="control-label font-weight-bold">
+                                    District
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkDistrictStatestatus" id="chkDistrictStatestatus" />
+                                        <label for="chkDistrictStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-list-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtDistrictName" value="" id="txtDistrictName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-district font-weight-bold">Input District!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ddlDivision" class="control-label font-weight-bold">Division</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlDistrictDivision", (IEnumerable<SelectListItem>)ViewBag.ddlDivision, "---Select Division---", new { @class = "form-control form-control-sm" })
+                                </div>
+                                <span class="error hide required-district-division font-weight-bold">Input District Division!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtDistrictRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtDistrictRemarks" value="" id="txtDistrictRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitDistrict"><i class="far fa-save"></i> <span id="spanSaveTextDistrict"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalZone" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadZone">Add New Zone</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmDealer">
+                        <input type="hidden" name="Id" id="hdfZoneId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtZoneName" class="control-label font-weight-bold">
+                                    Zone
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkZoneStatestatus" id="chkZoneStatestatus" />
+                                        <label for="chkZoneStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-list-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtZoneName" value="" id="txtZoneName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-zone font-weight-bold">Input Zone!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ddlzoneDistrict" class="control-label font-weight-bold">District</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlzoneDistrict", (IEnumerable<SelectListItem>)ViewBag.ddlDistrictWithDivision, "---Select District---", new { @class = "form-control form-control-sm" })
+                                </div>
+                                <span class="error hide required-zone-district font-weight-bold">Input District!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtZoneRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtZoneRemarks" value="" id="txtZoneRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitZone"><i class="far fa-save"></i> <span id="spanSaveTextZone"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts{
@@ -648,7 +978,7 @@
         var chkBrandStatestatus = $("#chkBrandStatestatus");
         var txtBrandRemarks = $("#txtBrandRemarks");
 
-        //Color 
+        //Color
         var hdfColorId = $("#hdfColorId");
         var chkColorStatestatus = $("#chkColorStatestatus");
         var txtColorName = $("#txtColorName")
@@ -663,8 +993,28 @@
         var ddlModelCategories = $("#ddlModelCategories");
         var ddlModelBrand = $("#ddlModelBrand");
 
-        $(document).ready(function () {
+        // Division
 
+        var hdfDivisionId = $("#hdfDivisionId");
+        var chkDivisionStatestatus = $("#chkDivisionStatestatus");
+        var txtDivisionName = $("#txtDivisionName");
+        var txtDivisionRemarks = $("#txtDivisionRemarks");
+
+        // District
+        var hdfDistrictId = $("#hdfDistrictId");
+        var chkDistrictStatestatus = $("#chkDistrictStatestatus");
+        var txtDistrictName = $("#txtDistrictName");
+        var ddlDistrictDivision = $("#ddlDistrictDivision");
+        var txtDistrictRemarks = $("#txtDistrictRemarks");
+
+        // Zone
+        var hdfZoneId = $("#hdfZoneId");
+        var chkZoneStatestatus = $("#chkZoneStatestatus");
+        var txtZoneName = $("#txtZoneName");
+        var ddlzoneDistrict = $("#ddlzoneDistrict");
+        var txtZoneRemarks = $("#txtZoneRemarks");
+
+        $(document).ready(function () {
             $('.select2').select2();
 
             //Initialize Select2 Elements
@@ -688,6 +1038,9 @@
             loadBrandDataTable();
             loadColorDataTable();
             loadModelDataTable();
+            loadDivisionDataTable();
+            loadDistrictDataTable();
+            loadZoneDataTable();
         }
 
         function loadDealerDataTable() {
@@ -764,6 +1117,53 @@
                 consoleLog(error);
             })
         }
+
+        function loadDivisionDataTable() {
+            $("#searchByDivision").val('');
+            var data = { flag: "division" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer6").fadeOut('500', function () {
+                        $("#dataContainer6").empty();
+                        $("#dataContainer6").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadDistrictDataTable() {
+            $("#searchByDistrict").val('');
+            var data = { flag: "district" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer7").fadeOut('500', function () {
+                        $("#dataContainer7").empty();
+                        $("#dataContainer7").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function loadZoneDataTable() {
+            $("#searchByZone").val('');
+            var data = { flag: "zone" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/WorkStartUp', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer8").fadeOut('500', function () {
+                        $("#dataContainer8").empty();
+                        $("#dataContainer8").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        //#region Dealer
 
         $("#btnAddNewDealer").click(function (e) {
             e.preventDefault();
@@ -862,7 +1262,10 @@
             }
         })
 
-        // Category //
+        //#endregion
+
+        //#region Category
+
         $("#btnAddNewCategory").click(function (e) {
             e.preventDefault();
             OpenModalCategory();
@@ -940,7 +1343,9 @@
             }
         })
 
-        // Brand
+        //#endregion
+
+        //#region Brand
 
         $("#btnAddNewBrand").click(function (e) {
             e.preventDefault();
@@ -1032,7 +1437,7 @@
                 brandCategories.push(categories)
             }
             else if ($.trim(categories) !== "" && categories.indexOf(",") >= 0) {
-                brandCategories= $.trim(categories).split(",");
+                brandCategories = $.trim(categories).split(",");
             }
             //consoleLog("brandCategories")
             //consoleLog(brandCategories);
@@ -1043,8 +1448,9 @@
             }
             txtBrandRemarks.val(tds.eq(5).html());
         })
+        //#endregion
 
-        // Color
+        //#region Color
         $("#btnAddNewColor").click(function (e) {
             e.preventDefault();
             OpenModalColor();
@@ -1055,7 +1461,7 @@
             $("#spanModalHeadColor").text("Add New Color");
             $("#spanSaveTextColor").text("Save");
             $(".error").addClass("hide");
-            clearCategoryCtrl();
+            clearColorCtrl();
         }
 
         function clearColorCtrl() {
@@ -1083,7 +1489,7 @@
             if (validateColor()) {
 
                 var data = JSON.stringify({
-                    ColorId: TryParseInt(hdfColorId.val(),0),
+                    ColorId: TryParseInt(hdfColorId.val(), 0),
                     ColorName: $.trim(txtColorName.val()),
                     Remarks: $.trim(txtColorRemarks.val()),
                     IsActive: chkColorStatestatus.is(":checked")
@@ -1122,7 +1528,9 @@
             }
         })
 
-        // Model
+        //#endregion
+
+        //#region Model
 
         $("#btnAddNewModel").click(function (e) {
             e.preventDefault();
@@ -1172,7 +1580,7 @@
                     })
                 }
 
-                var model = { DescriptionId: TryParseInt(hdfModelId.val(), 0), DescriptionName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val(), CategoryId:TryParseInt(ddlModelCategories.val(),0), BrandId: TryParseInt(ddlModelBrand.val(),0), Colors: colors }
+                var model = { DescriptionId: TryParseInt(hdfModelId.val(), 0), DescriptionName: txtModelName.val(), IsActive: chkModelStatestatus.is(":checked"), Remarks: txtModelRemarks.val(), CategoryId: TryParseInt(ddlModelCategories.val(), 0), BrandId: TryParseInt(ddlModelBrand.val(), 0), Colors: colors }
 
                 var data = JSON.stringify({
                     model: model
@@ -1213,7 +1621,7 @@
                 ddlModelColors.val(colors);
                 ddlModelColors.trigger("change");
             }
-            
+
             ddlModelCategories.val(tds.eq(4).attr("data-val"));
             ddlModelBrand.val(tds.eq(5).attr("data-val"))
             var status = tds.eq(6).attr("data-val");
@@ -1223,6 +1631,269 @@
             txtModelRemarks.val(tds.eq(7).html())
         })
 
+        //#endregion
+
+        //#region Division
+
+        $("#btnAddNewDivision").click(function (e) {
+            e.preventDefault();
+            OpenModalDivision();
+        })
+
+        function OpenModalDivision() {
+            $("#modalDivision").modal("show");
+            $("#spanModalHeadDivision").text("Add New Division");
+            $("#spanSaveTextDivision").text("Save");
+            $(".error").addClass("hide");
+            clearDivisionCtrl();
+        }
+
+        function clearDivisionCtrl() {
+            hdfDivisionId.val("0");
+            txtDivisionName.val('');
+            txtDivisionRemarks.val('');
+            chkDivisionStatestatus.prop("checked", false);
+        }
+
+        function validateDivision() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtDivisionName.val()) == '') {
+                $(".required-division").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitDivision").click(function (e) {
+            e.preventDefault();
+            if (validateDivision()) {
+
+                var data = JSON.stringify({
+                    DivisionId: TryParseInt(hdfDivisionId.val(), 0),
+                    DivisionName: $.trim(txtDivisionName.val()),
+                    Remarks: $.trim(txtDivisionRemarks.val()),
+                    IsActive: chkDivisionStatestatus.is(":checked")
+                });
+                disable("#btnSubmitDivision");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDivision', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalDivision").modal("toggle");
+                        clearDivisionCtrl();
+                        loadDivisionDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitDivision");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitDivision");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-division-edit', function (e) {
+            e.preventDefault();
+            OpenModalDivision();
+            $("#spanModalHeadDivision").text("Update Division");
+            $("#spanSaveTextDivision").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfDivisionId.val(tds.eq(1).html());
+            txtDivisionName.val(tds.eq(2).html());
+            txtDivisionRemarks.val(tds.eq(4).html())
+            if (tds.eq(3).attr("data-val") == "Active") {
+                chkDivisionStatestatus.prop("checked", true);
+            }
+        })
+
+        //#endregion
+
+        //#region District
+
+        $("#btnAddNewDistrict").click(function (e) {
+            e.preventDefault();
+            OpenModalDistrict();
+        })
+
+        function OpenModalDistrict() {
+            $("#modalDistrict").modal("show");
+            $("#spanModalHeadDistrict").text("Add New District");
+            $("#spanSaveTextDistrict").text("Save");
+            $(".error").addClass("hide");
+            clearDistrictCtrl();
+        }
+
+        function clearDistrictCtrl() {
+            hdfDistrictId.val("0");
+            txtDistrictName.val('');
+            txtDistrictRemarks.val('');
+            ddlDistrictDivision.val('');
+            chkDistrictStatestatus.prop("checked", false);
+        }
+
+        function validateDistrict() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtDistrictName.val()) == '') {
+                $(".required-district").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            if (TryParseInt(ddlDistrictDivision.val(), 0) <= 0) {
+                $(".required-district-division").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitDistrict").click(function (e) {
+            e.preventDefault();
+            if (validateDistrict()) {
+
+                var data = JSON.stringify({
+                    DistrictId: TryParseInt(hdfDistrictId.val(), 0),
+                    DistrictName: $.trim(txtDistrictName.val()),
+                    DivisionId: TryParseInt(ddlDistrictDivision.val(), 0),
+                    Remarks: $.trim(txtDistrictRemarks.val()),
+                    IsActive: chkDistrictStatestatus.is(":checked")
+                });
+                disable("#btnSubmitDistrict");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDistrict', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalDistrict").modal("toggle");
+                        clearDistrictCtrl();
+                        loadDistrictDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitDistrict");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitDistrict");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-district-edit', function (e) {
+            e.preventDefault();
+            OpenModalDistrict();
+            $("#spanModalHeadDistrict").text("Update District");
+            $("#spanSaveTextDistrict").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfDistrictId.val(tds.eq(1).html());
+            txtDistrictName.val(tds.eq(2).html());
+            ddlDistrictDivision.val(tds.eq(3).attr("data-val"));
+            txtDistrictRemarks.val(tds.eq(5).html())
+            if (tds.eq(4).attr("data-val") == "Active") {
+                chkDistrictStatestatus.prop("checked", true);
+            }
+        })
+
+        //#endregion
+
+        //#region zone
+
+        $("#btnAddNewZone").click(function (e) {
+            e.preventDefault();
+            OpenModalZone();
+        })
+
+        function OpenModalZone() {
+            $("#modalZone").modal("show");
+            $("#spanModalHeadZone").text("Add New Zone");
+            $("#spanSaveTextZone").text("Save");
+            $(".error").addClass("hide");
+            clearZoneCtrl();
+        }
+
+        function clearZoneCtrl() {
+            hdfZoneId.val("0");
+            txtZoneName.val('');
+            txtZoneRemarks.val('');
+            ddlzoneDistrict.val('');
+            chkZoneStatestatus.prop("checked", false);
+        }
+
+        function validateZone() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if ($.trim(txtZoneName.val()) == '') {
+                $(".required-zone").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                // Duplicate Checking ...
+            }
+            if ($.trim(ddlzoneDistrict.val()) =="") {
+                $(".required-zone-district").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitZone").click(function (e) {
+            e.preventDefault();
+            if (validateZone()) {
+
+                var district = ddlzoneDistrict.val().split("#");
+                var data = JSON.stringify({
+                    ZoneId: TryParseInt(hdfZoneId.val(), 0),
+                    ZoneName: $.trim(txtZoneName.val()),
+                    DistrictId: district[0],
+                    DivisionId: district[1],
+                    Remarks: $.trim(txtZoneRemarks.val()),
+                    IsActive: chkZoneStatestatus.is(":checked")
+                });
+                disable("#btnSubmitZone");
+
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveZone', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalZone").modal("toggle");
+                        clearZoneCtrl();
+                        loadZoneDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitZone");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitZone");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-zone-edit', function (e) {
+            e.preventDefault();
+            OpenModalZone();
+            $("#spanModalHeadZone").text("Update Zone");
+            $("#spanSaveTextZone").text("Update");
+            var tds = $(this).parent().parents('tr').children('td');
+            hdfZoneId.val(tds.eq(1).html());
+            txtZoneName.val(tds.eq(2).html());
+            var disdiv = tds.eq(3).attr("data-val") + "#"+tds.eq(4).attr("data-val");
+            consoleLog(disdiv)
+            ddlzoneDistrict.val(disdiv);
+            ddlzoneDistrict.trigger("change");
+            if (tds.eq(5).attr("data-val") == "Active") {
+                chkZoneStatestatus.prop("checked", true);
+            }
+            txtZoneRemarks.val(tds.eq(6).html())
+        })
+
+    //#endregion
     </script>
 }
 
