@@ -230,6 +230,8 @@ namespace ERPWeb
             container.RegisterType<IDivisionBusiness, DivisionBusiness>();
             container.RegisterType<IDistrictBusiness, DistrictBusiness>();
             container.RegisterType<IZoneBusiness, ZoneBusiness>();
+            container.RegisterType<IRSMBusiness, RSMBusiness>();
+            container.RegisterType<IASMBusiness, ASMBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

@@ -1,4 +1,5 @@
-﻿using ERPBO.SalesAndDistribution.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace ERPBLL.SalesAndDistribution.Interface
         IEnumerable<Zone> GetZones(long orgId);
         Zone GetZoneById(long zoneId, long orgId);
         bool SaveZone(ZoneDTO dto, long userId, long orgId);
+        IEnumerable<Dropdown> GetZoneWithDistrictAndDivision(long orgId);
     }
 }

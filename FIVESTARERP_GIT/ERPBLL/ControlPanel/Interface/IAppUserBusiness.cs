@@ -14,6 +14,7 @@ namespace ERPBLL.ControlPanel.Interface
     {
         IEnumerable<AppUser> GetAllAppUserByOrgId(long orgId);
         bool SaveAppUser(AppUserDTO appUserDTO, long userId, long orgId);
+        bool SaveSRAppUser(AppUserDTO appUserDTO, long userId, long orgId, string role,out string srUserId);
         AppUser GetAppUserOneById(long id, long orgId);
         bool IsDuplicateEmployeeId(string employeeId, long id, long orgId);
         IEnumerable<AppUser> GetAllAppUsers();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ERPBLL.SalesAndDistribution.Interface;
+using ERPBO.Common;
 using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
@@ -28,6 +29,16 @@ namespace ERPBLL.SalesAndDistribution
         public IEnumerable<Zone> GetZones(long orgId)
         {
             return this._zoneRepository.GetAll(s =>s.OrganizationId == orgId);
+        }
+
+        public IEnumerable<Dropdown> GetZoneWithDistrictAndDivision(long orgId)
+        {
+            List<Dropdown> data = new List<Dropdown>();
+            data = _salesAndDistribution.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (Cast(z.ZoneId as Nvarchar(20))+'#'+Cast(dis.DistrictId as Nvarchar(20))+'#'+Cast(div.DivisionId as Nvarchar(20))) 'value',(z.ZoneName+' ['+dis.DistrictName+'-'+div.DivisionName+']') 'text' From tblZone z
+Inner Join tblDistrict dis on z.DistrictId = dis.DistrictId
+Inner Join tblDivision div on dis.DivisionId = div.DivisionId
+Where z.OrganizationId={0}",orgId)).ToList();
+            return data;
         }
 
         public bool SaveZone(ZoneDTO dto, long userId, long orgId)

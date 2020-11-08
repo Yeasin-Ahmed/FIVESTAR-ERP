@@ -848,3 +848,7 @@ function dropDownSelectedText(idName) {
     return $("#" + idName + " option:selected").text();
 }
 
+function getTblCells(row) {
+   return $(row).parent().parents('tr').children('td');
+}
+

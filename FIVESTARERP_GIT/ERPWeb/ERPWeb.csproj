@@ -199,6 +199,7 @@
     <Content Include="Content\dist\js\adminlte.min.js" />
     <Content Include="Content\Images\bgLoad.gif" />
     <Content Include="Content\Images\loader.gif" />
+    <Content Include="Content\Images\mycellLogo.png" />
     <Content Include="Content\Images\noImage.jpg" />
     <Content Include="Content\Images\pic1.png" />
     <Content Include="Content\Images\pic10.jpg" />
@@ -258,6 +259,7 @@
     <Content Include="Content\plugins\jquery\jquery.min.js" />
     <Content Include="Content\plugins\Toastr\toastr.css" />
     <Content Include="Content\plugins\Toastr\toastr.min.js" />
+    <Content Include="Content\print.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -362,6 +364,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\print.min.js" />
     <Content Include="Scripts\select2.full.min.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\sparkline.js" />
@@ -796,6 +799,9 @@
     <Content Include="Views\SalesAndDistribution\_division.cshtml" />
     <Content Include="Views\SalesAndDistribution\_zone.cshtml" />
     <Content Include="Views\SalesAndDistribution\SRHierarchy.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_rsm.cshtml" />
+    <Content Include="Views\Production\GetStickerOneData.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_asm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.SalesAndDistribution.Interface;
 using ERPBO.Common;
+using ERPBO.SalesAndDistribution.CommonModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPBO.SalesAndDistribution.ViewModels;
 using ERPWeb.Filters;
@@ -32,10 +33,11 @@ namespace ERPWeb.Controllers
         private readonly IModelBusiness _modelBusiness;
         private readonly IColorBusiness _colorBusiness;
         private readonly IModelColorBusiness _modelColorBusiness;
-        /// </summary>
         private readonly IDivisionBusiness _divisionBusiness;
         private readonly IDistrictBusiness _districtBusiness;
         private readonly IZoneBusiness _zoneBusiness;
+        private readonly IRSMBusiness _rSMBusiness;
+        private readonly IASMBusiness _aSMBusiness;
         #endregion
 
         #region Inventory
@@ -45,7 +47,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Inventory.Interface.IDescriptionBusiness _invModelBusiness;
         private readonly ERPBLL.Inventory.Interface.IColorBusiness _invColorBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness)
         {
             #region Sales & Distribution
             this._dealerBusiness = dealerBusiness;
@@ -62,6 +64,8 @@ namespace ERPWeb.Controllers
             this._divisionBusiness = divisionBusiness;
             this._districtBusiness = districtBusiness;
             this._zoneBusiness = zoneBusiness;
+            this._rSMBusiness = rSMBusiness;
+            this._aSMBusiness = aSMBusiness;
             #endregion
 
             #region Inventory
@@ -221,11 +225,11 @@ namespace ERPWeb.Controllers
                 var dto = _zoneBusiness.GetZones(User.OrgId).Select(s => new ZoneDTO()
                 {
                     ZoneId = s.ZoneId,
-                    ZoneName = _zoneBusiness.GetZoneById(s.ZoneId,User.OrgId).ZoneName,
+                    ZoneName = s.ZoneName,
                     DistrictId = s.DistrictId,
-                    DistrictName = _districtBusiness.GetDistrictById(s.DistrictId,User.OrgId).DistrictName,
+                    DistrictName = _districtBusiness.GetDistrictById(s.DistrictId, User.OrgId).DistrictName,
                     DivisionId =s.DivisionId,
-                    DivisionName = (s.DivisionId != null && s.DivisionId.Value > 0) ? _divisionBusiness.GetDivisionById(s.DivisionId.Value,User.OrgId).DivisionName : "",
+                    DivisionName = (s.DivisionId != null && s.DivisionId.Value > 0) ? _divisionBusiness.GetDivisionById(s.DivisionId.Value, User.OrgId).DivisionName : "",
                     OrganizationId = s.OrganizationId,
                     EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
                     UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
@@ -344,7 +348,6 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
-
         public ActionResult GetBTRCIMEI(string flag, string status, long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string imei, long modelId = 0, string fromDate = "", string toDate = "")
         {
             if (string.IsNullOrEmpty(flag))
@@ -430,13 +433,52 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.ddlDistrictWithDivision = new SelectList(_districtBusiness.GetDistrictWithDivision(User.OrgId), "value", "text");
+                ViewBag.ddlRSM = new SelectList(_rSMBusiness.GetRSMByOrg(User.OrgId), "RSMID", "FullName");
+                ViewBag.ddlZoneWithDistrictAndDivision = new SelectList(_zoneBusiness.GetZoneWithDistrictAndDivision(User.OrgId), "value", "text");
                 return View();
             }
-            else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="")
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="rsm")
             {
-                       
+                var dto =_rSMBusiness.GetRSMInformations(User.OrgId);
+                List<RSMViewModel> viewModels = new List<RSMViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_rsm", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "asm")
+            {
+                var dto = _aSMBusiness.GetASMInformations(User.OrgId);
+                List<ASMViewModel> viewModels = new List<ASMViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_asm", viewModels);
             }
             return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRSM(RSMViewModel model, SRUser sRUser)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                RSMDTO dto = new RSMDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _rSMBusiness.SaveRSM(dto,sRUser,User.UserId,User.BranchId,User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveASM(ASMViewModel model, SRUser sRUser)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                ASMDTO dto = new ASMDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _aSMBusiness.SaveASM(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
         }
     }
 }

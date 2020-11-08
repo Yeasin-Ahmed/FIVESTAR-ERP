@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.SalesAndDistribution.Interface
 {
-    public interface IRSMBusiness
+    public interface IASMBusiness
     {
-        IEnumerable<RSMDTO> GetRSMInformations(long orgId);
-        RSM GetRSMById(long id, long orgId);
-        bool SaveRSM(RSMDTO dto, SRUser sRUser, long userId, long branchId, long orgId);
-        IEnumerable<RSM> GetRSMByOrg(long orgId);
+        IEnumerable<ASMDTO> GetASMInformations(long orgId);
+        ASM GetASMById(long id, long orgId);
+        bool SaveASM(ASMDTO dto, SRUser sRUser, long userId, long branchId, long orgId);
     }
 }

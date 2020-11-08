@@ -112,4 +112,12 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
+    public class ASMRepository : SalesAndDistributionBaseRepository<ASM>
+    {
+        public ASMRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
 }

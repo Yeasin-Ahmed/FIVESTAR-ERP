@@ -20,9 +20,10 @@ namespace ERPBLL.SalesAndDistribution
             this._salesAndDistribution = salesAndDistribution;
             this._districtRepository = new DistrictRepository(this._salesAndDistribution);
         }
-        public District GetDistrictById(long divisionId, long orgId)
+        public District GetDistrictById(long districtId, long orgId)
         {
-            return this._districtRepository.GetOneByOrg(s => s.DivisionId == divisionId && s.OrganizationId == orgId);
+            var data = this._districtRepository.GetOneByOrg(s => s.DistrictId == districtId && s.OrganizationId == orgId);
+            return data;
         }
         public IEnumerable<District> GetDistricts(long orgId)
         {

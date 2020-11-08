@@ -27,5 +27,6 @@ namespace ERPDAL.SalesAndDistributionDAL
         public DbSet<Division> tblDivision { get; set; }
         public DbSet<District> tblDistrict { get; set; }
         public DbSet<Zone> tblZone { get; set; }
+        public DbSet<ASM> tblAZM { get; set; }
     }
 }

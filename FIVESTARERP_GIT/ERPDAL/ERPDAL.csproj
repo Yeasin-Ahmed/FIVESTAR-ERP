@@ -690,6 +690,10 @@
     <Compile Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.Designer.cs">
       <DependentUpon>202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011070937484_SalesAndDistribution_TblASM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011070937484_SalesAndDistribution_TblASM.Designer.cs">
+      <DependentUpon>202011070937484_SalesAndDistribution_TblASM.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1139,6 +1143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.resx">
       <DependentUpon>202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011070937484_SalesAndDistribution_TblASM.resx">
+      <DependentUpon>202011070937484_SalesAndDistribution_TblASM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

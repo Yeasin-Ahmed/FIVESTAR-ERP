@@ -561,6 +561,7 @@
     <Compile Include="Production\ViewModels\QCPassTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\QCPassTransferInformationViewModel.cs" />
     <Compile Include="Production\ViewModels\QRCodeProblemViewModel.cs" />
+    <Compile Include="Production\ViewModels\SetIMEIDataForHTML.cs" />
     <Compile Include="Production\ViewModels\StockItemReturnDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\StockItemReturnInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\TempQRCodeTraceViewModel.cs" />
@@ -615,6 +616,7 @@
     <Compile Include="ControlPanel\DomainModels\Organization.cs" />
     <Compile Include="Inventory\DomainModels\Warehouse.cs" />
     <Compile Include="SalesAndDistribution\CommonModels\SalesHierarchyCommonModel.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\ASM.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Brand.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\BrandCategories.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Category.cs" />
@@ -639,8 +641,10 @@
     <Compile Include="SalesAndDistribution\DTOModels\DivisionDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ItemStockDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ModelDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\ASMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\RSMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ZoneDTO.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\ASMViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandCategoriesViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BTRCApprovedIMEIViewModel.cs" />

@@ -402,7 +402,9 @@
     <Compile Include="SalesAndDistribution\BrandCategoriesBusiness.cs" />
     <Compile Include="SalesAndDistribution\BTRCApprovedIMEIBusiness.cs" />
     <Compile Include="SalesAndDistribution\CategoryBusiness.cs" />
+    <Compile Include="SalesAndDistribution\Interface\IASMBusiness.cs" />
     <Compile Include="SalesAndDistribution\Interface\IRSMBusiness.cs" />
+    <Compile Include="SalesAndDistribution\ASMBusiness.cs" />
     <Compile Include="SalesAndDistribution\RSMBusiness.cs" />
     <Compile Include="SalesAndDistribution\ZoneBusiness.cs" />
     <Compile Include="SalesAndDistribution\DistrictBusiness.cs" />
