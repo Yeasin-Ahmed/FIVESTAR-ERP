@@ -97,6 +97,12 @@ namespace ERPWeb.Controllers
                             serializeModel.BranchId = userInformation.BranchId;
                             serializeModel.BranchName = userInformation.BranchName;
                             serializeModel.AppType = userInformation.AppType;
+                            serializeModel.ZoneId = userInformation.ZoneId;
+                            serializeModel.ZoneName = userInformation.ZoneName;
+                            serializeModel.DistrictId = userInformation.DistrictId;
+                            serializeModel.DistrictName = userInformation.DistrictName;
+                            serializeModel.DivisionId = userInformation.DivisionId;
+                            serializeModel.DivisionName = userInformation.DivisionName;
                             #endregion
 
                             Session["UserDetail"] = serializeModel;

@@ -51,7 +51,13 @@ namespace ERPWeb
                         roles = model.roles,
                         BranchId = model.BranchId,
                         BranchName = model.BranchName,
-                        AppType = model.AppType
+                        AppType = model.AppType,
+                        ZoneId= model.ZoneId,
+                        ZoneName = model.ZoneName,
+                        DistrictId = model.DistrictId,
+                        DistrictName = model.DistrictName,
+                        DivisionId = model.DivisionId,
+                        DivisionName = model.DivisionName
                     };                    
                     HttpContext.Current.User = newUser;
                 }

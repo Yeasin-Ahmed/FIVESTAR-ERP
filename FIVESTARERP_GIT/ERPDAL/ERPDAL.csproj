@@ -670,6 +670,58 @@
     <Compile Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.Designer.cs">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011020520110_SalesAndDistribution_AddCategoryAndBRandId.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011020520110_SalesAndDistribution_AddCategoryAndBRandId.Designer.cs">
+      <DependentUpon>202011020520110_SalesAndDistribution_AddCategoryAndBRandId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011030442158_SalesAndDistribution_AddRSM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011030442158_SalesAndDistribution_AddRSM.Designer.cs">
+      <DependentUpon>202011030442158_SalesAndDistribution_AddRSM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.Designer.cs">
+      <DependentUpon>202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011041201597_SalesAndDistribution_UpdateRSM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011041201597_SalesAndDistribution_UpdateRSM.Designer.cs">
+      <DependentUpon>202011041201597_SalesAndDistribution_UpdateRSM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011041208237_SalesAndDistribution_AddRSM_EUserId.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011041208237_SalesAndDistribution_AddRSM_EUserId.Designer.cs">
+      <DependentUpon>202011041208237_SalesAndDistribution_AddRSM_EUserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.Designer.cs">
+      <DependentUpon>202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011070937484_SalesAndDistribution_TblASM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011070937484_SalesAndDistribution_TblASM.Designer.cs">
+      <DependentUpon>202011070937484_SalesAndDistribution_TblASM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011080545142_SalesAndDistribution_ASM_ZoneId.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011080545142_SalesAndDistribution_ASM_ZoneId.Designer.cs">
+      <DependentUpon>202011080545142_SalesAndDistribution_ASM_ZoneId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011080944504_SalesAndDistribution_AddTblTSE.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011080944504_SalesAndDistribution_AddTblTSE.Designer.cs">
+      <DependentUpon>202011080944504_SalesAndDistribution_AddTblTSE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011090506253_SalesAndDistribution_RenameColumns.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011090506253_SalesAndDistribution_RenameColumns.Designer.cs">
+      <DependentUpon>202011090506253_SalesAndDistribution_RenameColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011090614125_SalesAndDistribution_AddZoneDistrictDivisionInDealer.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011090614125_SalesAndDistribution_AddZoneDistrictDivisionInDealer.Designer.cs">
+      <DependentUpon>202011090614125_SalesAndDistribution_AddZoneDistrictDivisionInDealer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011090620081_SalesAndDistribution_AddRepresentativeInDealer.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011090620081_SalesAndDistribution_AddRepresentativeInDealer.Designer.cs">
+      <DependentUpon>202011090620081_SalesAndDistribution_AddRepresentativeInDealer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.Designer.cs">
+      <DependentUpon>202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1104,6 +1156,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.resx">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011020520110_SalesAndDistribution_AddCategoryAndBRandId.resx">
+      <DependentUpon>202011020520110_SalesAndDistribution_AddCategoryAndBRandId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011030442158_SalesAndDistribution_AddRSM.resx">
+      <DependentUpon>202011030442158_SalesAndDistribution_AddRSM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011030928439_SalesAndDistribution_AddDivisionDistrictZone.resx">
+      <DependentUpon>202011030928439_SalesAndDistribution_AddDivisionDistrictZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041201597_SalesAndDistribution_UpdateRSM.resx">
+      <DependentUpon>202011041201597_SalesAndDistribution_UpdateRSM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041208237_SalesAndDistribution_AddRSM_EUserId.resx">
+      <DependentUpon>202011041208237_SalesAndDistribution_AddRSM_EUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.resx">
+      <DependentUpon>202011041305410_SalesAndDistribution_AddRSM_EUserId_datatype.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011070937484_SalesAndDistribution_TblASM.resx">
+      <DependentUpon>202011070937484_SalesAndDistribution_TblASM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011080545142_SalesAndDistribution_ASM_ZoneId.resx">
+      <DependentUpon>202011080545142_SalesAndDistribution_ASM_ZoneId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011080944504_SalesAndDistribution_AddTblTSE.resx">
+      <DependentUpon>202011080944504_SalesAndDistribution_AddTblTSE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011090506253_SalesAndDistribution_RenameColumns.resx">
+      <DependentUpon>202011090506253_SalesAndDistribution_RenameColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011090614125_SalesAndDistribution_AddZoneDistrictDivisionInDealer.resx">
+      <DependentUpon>202011090614125_SalesAndDistribution_AddZoneDistrictDivisionInDealer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011090620081_SalesAndDistribution_AddRepresentativeInDealer.resx">
+      <DependentUpon>202011090620081_SalesAndDistribution_AddRepresentativeInDealer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.resx">
+      <DependentUpon>202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

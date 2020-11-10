@@ -35,5 +35,12 @@ namespace ERPBO.SalesAndDistribution.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long ZoneId { get; set; }
+        public long DistrictId { get; set; }
+        public long DivisionId { get; set; }
+        public long RepresentativeId { get; set; }
+        public long RepresentativeUserId { get; set; }
+        [StringLength(50)]
+        public string RepresentativeFlag { get; set; }
     }
 }

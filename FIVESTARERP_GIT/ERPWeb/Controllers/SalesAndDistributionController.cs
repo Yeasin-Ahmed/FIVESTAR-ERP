@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.SalesAndDistribution.Interface;
 using ERPBO.Common;
+using ERPBO.SalesAndDistribution.CommonModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPBO.SalesAndDistribution.ViewModels;
 using ERPWeb.Filters;
@@ -32,8 +33,12 @@ namespace ERPWeb.Controllers
         private readonly IModelBusiness _modelBusiness;
         private readonly IColorBusiness _colorBusiness;
         private readonly IModelColorBusiness _modelColorBusiness;
-        /// </summary>
-
+        private readonly IDivisionBusiness _divisionBusiness;
+        private readonly IDistrictBusiness _districtBusiness;
+        private readonly IZoneBusiness _zoneBusiness;
+        private readonly IRSMBusiness _rSMBusiness;
+        private readonly IASMBusiness _aSMBusiness;
+        private readonly ITSEBusiness _tSEBusiness;
         #endregion
 
         #region Inventory
@@ -43,7 +48,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Inventory.Interface.IDescriptionBusiness _invModelBusiness;
         private readonly ERPBLL.Inventory.Interface.IColorBusiness _invColorBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness, ITSEBusiness tSEBusiness)
         {
             #region Sales & Distribution
             this._dealerBusiness = dealerBusiness;
@@ -57,6 +62,12 @@ namespace ERPWeb.Controllers
             this._modelBusiness = modelBusiness;
             this._colorBusiness = colorBusiness;
             this._modelColorBusiness = modelColorBusiness;
+            this._divisionBusiness = divisionBusiness;
+            this._districtBusiness = districtBusiness;
+            this._zoneBusiness = zoneBusiness;
+            this._rSMBusiness = rSMBusiness;
+            this._aSMBusiness = aSMBusiness;
+            this._tSEBusiness = tSEBusiness;
             #endregion
 
             #region Inventory
@@ -74,27 +85,16 @@ namespace ERPWeb.Controllers
             {
                 ViewBag.ddlCategories = new SelectList(_categoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
                 ViewBag.ddlColors = new SelectList(_colorBusiness.GetColors(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlBrand = new SelectList(_brandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
+                ViewBag.ddlDivision = new SelectList(_divisionBusiness.GetDivisions(User.OrgId), "DivisionId", "DivisionName");
+                ViewBag.ddlDistrictWithDivision = new SelectList(_districtBusiness.GetDistrictWithDivision(User.OrgId), "value", "text");
+                ViewBag.ddlDealerRepresentative = new SelectList(_dealerBusiness.GetDealerRepresentatives(User.OrgId), "value", "text");
+                ViewBag.ddlZoneWithDistrictAndDivision = new SelectList(_zoneBusiness.GetZoneWithDistrictAndDivision(User.OrgId), "value", "text");
                 return View();
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "dealer")
             {
-                var dto = this._dealerBusiness.GetDealers(User.OrgId).Select(s => new DealerDTO
-                {
-                    DealerId = s.DealerId,
-                    DealerName = s.DealerName,
-                    Address = s.Address,
-                    TelephoneNo = s.TelephoneNo,
-                    MobileNo = s.MobileNo,
-                    Email = s.Email,
-                    ContactPersonName = s.ContactPersonName,
-                    ContactPersonMobile = s.ContactPersonMobile,
-                    Remarks = s.Remarks,
-                    IsActive = s.IsActive,
-                    EUserId = s.EUserId,
-                    EntryDate = DateTime.Now,
-                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
-                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
-                }).ToList();
+                var dto = _dealerBusiness.GetDealerInformations(User.OrgId);
                 IEnumerable<DealerViewModel> viewModels = new List<DealerViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_dealer", viewModels);
@@ -164,11 +164,69 @@ namespace ERPWeb.Controllers
                     EntryDate = DateTime.Now,
                     EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
                     UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    CategoryId = s.CategoryId,
+                    CategoryName = (s.CategoryId == null ? "" : _categoryBusiness.GetCategoryById(s.CategoryId.Value, User.OrgId).CategoryName),
+                    BrandId = s.BrandId,
+                    BrandName = ((s.BrandId == null || s.BrandId == 0) ? "" : _brandBusiness.GetBrandById(s.BrandId.Value, User.OrgId).BrandName),
                     ModelColors = _modelColorBusiness.GetModelColorsByModel(s.DescriptionId, User.OrgId)
                 }).ToList();
                 IEnumerable<DescriptionViewModel> viewModels = new List<DescriptionViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_model", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "division")
+            {
+                var dto = _divisionBusiness.GetDivisions(User.OrgId).Select(s => new DivisionDTO()
+                {
+                    DivisionId = s.DivisionId,
+                    DivisionName = s.DivisionName,
+                    OrganizationId = s.OrganizationId,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    IsActive = s.IsActive,
+                    Remarks = s.Remarks
+                }).ToList();
+                IEnumerable<DivisionViewModel> viewModels = new List<DivisionViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_division", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "district")
+            {
+                var dto = _districtBusiness.GetDistricts(User.OrgId).Select(s => new DistrictDTO()
+                {
+                    DistrictId = s.DistrictId,
+                    DistrictName = s.DistrictName,
+                    DivisionId = s.DivisionId,
+                    DivisionName = _divisionBusiness.GetDivisionById(s.DivisionId,User.OrgId).DivisionName,
+                    OrganizationId = s.OrganizationId,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    IsActive = s.IsActive,
+                    Remarks = s.Remarks
+                }).ToList();
+                IEnumerable<DistrictViewModel> viewModels = new List<DistrictViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_district", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "zone")
+            {
+                var dto = _zoneBusiness.GetZones(User.OrgId).Select(s => new ZoneDTO()
+                {
+                    ZoneId = s.ZoneId,
+                    ZoneName = s.ZoneName,
+                    DistrictId = s.DistrictId,
+                    DistrictName = _districtBusiness.GetDistrictById(s.DistrictId, User.OrgId).DistrictName,
+                    DivisionId =s.DivisionId,
+                    DivisionName = (s.DivisionId != null && s.DivisionId.Value > 0) ? _divisionBusiness.GetDivisionById(s.DivisionId.Value, User.OrgId).DivisionName : "",
+                    OrganizationId = s.OrganizationId,
+                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
+                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName,
+                    IsActive = s.IsActive,
+                    Remarks = s.Remarks
+                }).ToList();
+                IEnumerable<ZoneViewModel> viewModels = new List<ZoneViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_zone", viewModels);
             }
             return View();
         }
@@ -225,7 +283,7 @@ namespace ERPWeb.Controllers
             }
             return Json(IsSuccess);
         }
-        
+
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveModel(DescriptionViewModel model)
         {
@@ -235,6 +293,45 @@ namespace ERPWeb.Controllers
                 DescriptionDTO dto = new DescriptionDTO();
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = _modelBusiness.SaveModel(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDivision(DivisionViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                DivisionDTO dto = new DivisionDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _divisionBusiness.SaveDivision(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDistrict(DistrictViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                DistrictDTO dto = new DistrictDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _districtBusiness.SaveDistrict(dto, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveZone(ZoneViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                ZoneDTO dto = new ZoneDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _zoneBusiness.SaveZone(dto, User.UserId, User.OrgId);
             }
             return Json(IsSuccess);
         }
@@ -320,5 +417,76 @@ namespace ERPWeb.Controllers
             return Json(new { rows = rows });
         }
 
+        public ActionResult SRHierarchy(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlDistrictWithDivision = new SelectList(_districtBusiness.GetDistrictWithDivision(User.OrgId), "value", "text");
+                ViewBag.ddlRSM = new SelectList(_rSMBusiness.GetRSMByOrg(User.OrgId), "RSMID", "FullName");
+                ViewBag.ddlZoneWithDistrictAndDivision = new SelectList(_zoneBusiness.GetZoneWithDistrictAndDivision(User.OrgId), "value", "text");
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="rsm")
+            {
+                var dto =_rSMBusiness.GetRSMInformations(User.OrgId,User.UserId);
+                List<RSMViewModel> viewModels = new List<RSMViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_rsm", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "asm")
+            {
+                var dto = _aSMBusiness.GetASMInformations(User.OrgId,User.UserId);
+                List<ASMViewModel> viewModels = new List<ASMViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_asm", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "tse")
+            {
+                var dto = _tSEBusiness.GetTSEInformations(User.OrgId, User.UserId);
+                List<TSEViewModel> viewModels = new List<TSEViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_tse", viewModels);
+            }
+            return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveRSM(RSMViewModel model, SRUser sRUser)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                RSMDTO dto = new RSMDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _rSMBusiness.SaveRSM(dto,sRUser,User.UserId,User.BranchId,User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveASM(ASMViewModel model, SRUser sRUser)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                ASMDTO dto = new ASMDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _aSMBusiness.SaveASM(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveTSE(TSEViewModel model, SRUser sRUser)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                TSEDTO dto = new TSEDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _tSEBusiness.SaveTSE(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
     }
 }

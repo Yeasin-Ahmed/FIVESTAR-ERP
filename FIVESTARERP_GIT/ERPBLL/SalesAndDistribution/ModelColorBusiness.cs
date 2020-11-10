@@ -28,12 +28,12 @@ namespace ERPBLL.SalesAndDistribution
         {
             return _modelColorsRepository.GetAll(s => s.OrganizationId == orgId).ToList();
         }
-        public IEnumerable<ModelColorDTO> GetModelColorsByModel(long modelId, long orgId)
+        public IEnumerable<ModelColor> GetModelColorsByModel(long modelId, long orgId)
         {
             var query = string.Format(@"Select c.ColorId,c.ColorName From [SalesAndDistribution].dbo.tblColors c
 Inner Join [SalesAndDistribution].dbo.tblModelColors mc on c.ColorId = mc.ColorId and mc.DescriptionId={0}
 Where mc.OrganizationId = {1}", modelId, orgId);
-            return _salesAndDistribution.Db.Database.SqlQuery<ModelColorDTO>(query).ToList();
+            return _salesAndDistribution.Db.Database.SqlQuery<ModelColor>(query).ToList();
         }
         public IEnumerable<ModelColors> GetModelColorsByOrg(long orgId)
         {

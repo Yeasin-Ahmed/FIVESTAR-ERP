@@ -208,6 +208,7 @@ namespace ERPWeb
             container.RegisterType<IFrontDeskUnitOfWork, FrontDeskUnitOfWork>();
             #endregion
 
+            // Report Purpose
             #region Report
             container.RegisterType<IJobOrderReportBusiness, JobOrderReportBusiness>();
             container.RegisterType<IProductionReportBusiness, ProductionReportBusiness>();
@@ -215,6 +216,7 @@ namespace ERPWeb
             #endregion
 
             #region Sales & Distribution
+            // Sales & Distribution 
             container.RegisterType<ISalesAndDistributionUnitOfWork, SalesAndDistributionUnitOfWork>();
             container.RegisterType<IDealerBusiness, DealerBusiness>();
             container.RegisterType<IBTRCApprovedIMEIBusiness, BTRCApprovedIMEIBusiness>();
@@ -225,6 +227,12 @@ namespace ERPWeb
             container.RegisterType<IModelBusiness, ModelBusiness>();
             container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IColorBusiness, ERPBLL.SalesAndDistribution.ColorBusiness>();
             container.RegisterType<ERPBLL.SalesAndDistribution.Interface.IModelColorBusiness, ERPBLL.SalesAndDistribution.ModelColorBusiness>();
+            container.RegisterType<IDivisionBusiness, DivisionBusiness>();
+            container.RegisterType<IDistrictBusiness, DistrictBusiness>();
+            container.RegisterType<IZoneBusiness, ZoneBusiness>();
+            container.RegisterType<IRSMBusiness, RSMBusiness>();
+            container.RegisterType<IASMBusiness, ASMBusiness>();
+            container.RegisterType<ITSEBusiness, TSEBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

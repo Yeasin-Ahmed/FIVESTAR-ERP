@@ -21,13 +21,17 @@ namespace ERPBO.SalesAndDistribution.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? CategoryId { get; set; }
+        public long? BrandId { get; set; }
         // Custom Properties
         public List<long> Colors { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
-        public IEnumerable<ModelColorViewModel> ModelColors { get; set; }
+        public IEnumerable<ModelColor> ModelColors { get; set; }
+        public string CategoryName { get; set; }
+        public string BrandName { get; set; }
     }
-    public class ModelColorViewModel
+    public class ModelColor
     {
         public long ColorId { get; set; }
         public string ColorName { get; set; }

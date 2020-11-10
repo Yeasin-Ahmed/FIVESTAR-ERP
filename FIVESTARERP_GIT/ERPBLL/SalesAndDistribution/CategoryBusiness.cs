@@ -54,5 +54,9 @@ namespace ERPBLL.SalesAndDistribution
             }
             return _categoryRepository.Save();
         }
+        public Category GetCategoryById(long id, long orgId)
+        {
+            return _categoryRepository.GetOneByOrg(s => s.CategoryId == id && s.OrganizationId == orgId);
+        }
     }
 }

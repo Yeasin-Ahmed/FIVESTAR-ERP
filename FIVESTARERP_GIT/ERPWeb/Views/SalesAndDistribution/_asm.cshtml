@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.ASMViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg table-valign-middle tblASM">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>Full Name</th>
+                    <th>Zone</th>
+                    <th>District</th>
+                    <th>Division</th>
+                    <th>Address</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Login User</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    string status = item.IsActive ? "Active" : "Inactive";
+                    string statusBadge = item.IsActive ? "badge badge-success" : "badge badge-warning";
+                    string loginStatus = item.IsAllowToLogIn ? "Yes" : "No";
+                    string loginBadge = item.IsAllowToLogIn ? "badge badge-success" : "badge badge-warning";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td data-val="@item.ASMID" data-val-rsm="@item.RSMUserId">@item.FullName</td>
+                        <td data-val="@item.ZoneId">@item.ZoneName</td>
+                        <td data-val="@item.DistrictId">@item.DistrictName</td>
+                        <td data-val="@item.DivisionId">@item.DivisionName</td>
+                        <td>@item.Address</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.Email</td>
+                        <td class="text-center" data-val="@item.IsActive">
+                            <span class="@statusBadge">@status</span>
+                        </td>
+                        <td class="text-center" data-val="@item.IsAllowToLogIn" data-user="@item.UserId">
+                            <span class="@loginBadge">@loginStatus</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-flat btn-warning data-asm-edit" style="cursor:pointer" data-asm-edit="@item.ASMID">
+                                <span class="fas fa-pen"></span> Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center">
+                        <td colspan="14">No data found in the table</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

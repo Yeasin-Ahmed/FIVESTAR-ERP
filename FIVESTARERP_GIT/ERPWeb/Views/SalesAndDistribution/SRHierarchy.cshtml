@@ -1,0 +1,1040 @@
+﻿
+@{
+    ViewBag.Title = "Sales Representative Hierarchy";
+    
+}
+
+
+<div class="row text-sm">
+    <div class="col-md-12">
+        <div class="card card-navy card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item hide">
+                        <a class="nav-link" id="custom-tabs-one-dealer-tab" data-toggle="pill" href="#custom-tabs-one-dealer" role="tab" aria-controls="custom-tabs-one-dealer" aria-selected="true">Dealer Order Placement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-rsm-tab" data-toggle="pill" href="#custom-tabs-two-rsm" role="tab" aria-controls="custom-tabs-two-rsm" aria-selected="true">RSM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-asm-tab" data-toggle="pill" href="#custom-tabs-three-asm" role="tab" aria-controls="custom-tabs-three-asm" aria-selected="true">ASM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-tse-tab" data-toggle="pill" href="#custom-tabs-four-tse" role="tab" aria-controls="custom-tabs-four-tse" aria-selected="true">TSE</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-rsm" role="tabpanel" aria-labelledby="custom-tabs-two-rsm-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Regional Sales Manager
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchRSM" id="searchByRSM" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblRSM tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewRSM"><i class="fa fa-plus"></i> Create RSM</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-three-asm" role="tabpanel" aria-labelledby="custom-tabs-three-asm-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Area Sales Manager
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchASM" id="searchByASM" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblASM tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewASM"><i class="fa fa-plus"></i> Create ASM</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-four-tse" role="tabpanel" aria-labelledby="custom-tabs-four-tse-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    TSE
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="searchTSE" id="searchByTSE" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblTSE tbody tr',this)" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewTSE"><i class="fa fa-plus"></i> Create TSE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalRSM" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadRSM">Add New RSM</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmRSM">
+                        <input type="hidden" name="Id" id="hdfRSMId" />
+                        <input type="hidden" name="Id" id="hdfRSMUserId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtRSMFullName" class="control-label font-weight-bold">
+                                    Full Name
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkRSMStatestatus" id="chkRSMStatestatus" />
+                                        <label for="chkRSMStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRSMFullName" value="" id="txtRSMFullName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-rsm-fillName font-weight-bold">Input FullName !</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtRSMAddress" class="control-label font-weight-bold">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-home"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRSMAddress" value="" id="txtRSMAddress" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-rsm-address font-weight-bold">Input Adderess!</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtRSMMobile" class="control-label font-weight-bold">Moblie</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRSMMobile" value="" id="txtRSMMobile" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtRSMEmail" class="control-label font-weight-bold">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRSMEmail" value="" id="txtRSMEmail" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ddlRSMDistrict" class="control-label font-weight-bold">District</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-road"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlRSMDistrict", (IEnumerable<SelectListItem>)ViewBag.ddlDistrictWithDivision, "---Select District---", new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtRMSRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRMSRemarks" value="" id="txtRMSRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="form-control form-control-sm">
+                                    <input type="checkbox" name="chkIsAllowToLogin" id="chkIsAllowToLogin" /> Allow to login?
+                                    @*<span class="badge badge-info"> </span>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row hide" id="rsm-user">
+                            <div class="form-group col-md-6">
+                                <label for="txtRSMUserName" class="control-label font-weight-bold">User Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-cog"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRSMUserName" value="" id="txtRSMUserName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-rsm-userName font-weight-bold">Input User Name!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtRSMUserPassword" class="control-label font-weight-bold">Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtRSMUserPassword" value="" id="txtRSMUserPassword" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-rsm-password font-weight-bold">Input Password!</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitRSM"><i class="far fa-save"></i> <span id="spanSaveTextRSM"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalASM" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadASM">Add New ASM</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmRSM">
+                        <input type="hidden" name="Id" id="hdfASMId" />
+                        <input type="hidden" name="Id" id="hdfASMUserId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtASMFullName" class="control-label font-weight-bold">
+                                    Full Name
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkASMStatestatus" id="chkASMStatestatus" />
+                                        <label for="chkASMStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMFullName" value="" id="txtASMFullName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-asm-fillName font-weight-bold">Input FullName !</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtASMAddress" class="control-label font-weight-bold">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-home"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMAddress" value="" id="txtASMAddress" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-asm-address font-weight-bold">Input Adderess!</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtASMMobile" class="control-label font-weight-bold">Moblie</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMMobile" value="" id="txtASMMobile" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtASMEmail" class="control-label font-weight-bold">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMEmail" value="" id="txtASMEmail" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ddlZoneWithDistrictAndDivision" class="control-label font-weight-bold">Zone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-road"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlZoneWithDistrictAndDivision", (IEnumerable<SelectListItem>)ViewBag.ddlZoneWithDistrictAndDivision, "---Select District---", new { @class = "form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtASMRemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMRemarks" value="" id="txtASMRemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="form-control form-control-sm">
+                                    <input type="checkbox" name="chkIsASMAllowToLogin" id="chkIsASMAllowToLogin" /> Allow to login?
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row hide" id="asm-user">
+                            <div class="form-group col-md-6">
+                                <label for="txtASMUserName" class="control-label font-weight-bold">User Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-cog"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMUserName" value="" id="txtASMUserName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-asm-userName font-weight-bold">Input User Name!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtASMUserPassword" class="control-label font-weight-bold">Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtASMUserPassword" value="" id="txtASMUserPassword" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-asm-password font-weight-bold">Input Password!</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitASM"><i class="far fa-save"></i> <span id="spanSaveTextASM"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalTSE" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadTSE">Add New TSE</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmRSM">
+                        <input type="hidden" name="Id" id="hdfTSEId" />
+                        <input type="hidden" name="Id" id="hdfTSEUserId" />
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtTSEFullName" class="control-label font-weight-bold">
+                                    Full Name
+                                    <div class="checkbox d-inline icheck-emerland">
+                                        <input type="checkbox" name="chkTSEStatestatus" id="chkTSEStatestatus" />
+                                        <label for="chkTSEStatestatus" class="text-success">
+                                            Active
+                                        </label>
+                                    </div>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSEFullName" value="" id="txtTSEFullName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-asm-fillName font-weight-bold">Input FullName !</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtTSEAddress" class="control-label font-weight-bold">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-home"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSEAddress" value="" id="txtTSEAddress" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-tse-address font-weight-bold">Input Adderess!</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtTSEMobile" class="control-label font-weight-bold">Moblie</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-mobile"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSEMobile" value="" id="txtTSEMobile" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtTSEEmail" class="control-label font-weight-bold">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSEEmail" value="" id="txtTSEEmail" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="txtTSERemarks" class="control-label font-weight-bold">Remarks</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-comment"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSERemarks" value="" id="txtTSERemarks" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="chkIsTSEAllowToLogin" class="control-label font-weight-bold" style="visibility:hidden">Remarks</label>
+                                <div class="form-control form-control-sm">
+                                    <input type="checkbox" name="chkIsTSEAllowToLogin" id="chkIsTSEAllowToLogin" /> Allow to login?
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row hide" id="tse-user">
+                            <div class="form-group col-md-6">
+                                <label for="txtTSEUserName" class="control-label font-weight-bold">User Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-cog"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSEUserName" value="" id="txtTSEUserName" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-tse-userName font-weight-bold">Input User Name!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="txtTSEUserPassword" class="control-label font-weight-bold">Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="txtTSEUserPassword" value="" id="txtTSEUserPassword" class="form-control form-control-sm" />
+                                </div>
+                                <span class="error hide required-tse-password font-weight-bold">Input Password!</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer btn-light">
+                    <button type="button" class="btn btn-danger btn-flat float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                    <button type="submit" class="btn btn-success btn-flat float-right" id="btnSubmitTSE"><i class="far fa-save"></i> <span id="spanSaveTextTSE"> Save</span> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        // RSM
+        var hdfRSMUserId = $("#hdfRSMUserId");
+        var hdfRSMId = $("#hdfRSMId");
+        var txtRSMFullName = $("#txtRSMFullName");
+        var chkRSMStatestatus = $("#chkRSMStatestatus");
+        var txtRSMAddress = $("#txtRSMAddress");
+        var txtRSMMobile = $("#txtRSMMobile");
+        var txtRSMEmail = $("#txtRSMEmail");
+        var ddlRSMDistrict = $("#ddlRSMDistrict");
+        var txtRMSRemarks = $("#txtRMSRemarks");
+        var chkIsAllowToLogin = $("#chkIsAllowToLogin");
+        var txtRSMUserName = $("#txtRSMUserName");
+        var txtRSMUserPassword = $("#txtRSMUserPassword");
+
+        // ASM
+        var hdfASMId = $("#hdfASMId");
+        var hdfASMUserId = $("#hdfASMUserId");
+        var chkASMStatestatus = $("#chkASMStatestatus");
+        var txtASMFullName = $("#txtASMFullName");
+        var txtASMAddress = $("#txtASMAddress");
+        var txtASMMobile = $("#txtASMMobile");
+        var txtASMEmail = $('#txtASMEmail');
+        var ddlZoneWithDistrictAndDivision = $("#ddlZoneWithDistrictAndDivision");
+        var txtASMRemarks = $("#txtASMRemarks");
+        var chkIsASMAllowToLogin = $("#chkIsASMAllowToLogin");
+        var txtASMUserName = $("#txtASMUserName")
+        var txtASMUserPassword = $("#txtASMUserPassword");
+
+        // TSE
+        var hdfTSEId = $("#hdfTSEId");
+        var hdfTSEUserId = $("#hdfTSEUserId");
+        var chkTSEStatestatus = $("#chkTSEStatestatus");
+        var txtTSEFullName = $("#txtTSEFullName");
+        var txtTSEAddress = $("#txtTSEAddress");
+        var txtTSEMobile = $("#txtTSEMobile");
+        var txtTSEEmail = $('#txtTSEEmail');
+        var txtTSERemarks = $("#txtTSERemarks");
+        var chkIsTSEAllowToLogin = $("#chkIsTSEAllowToLogin");
+        var txtTSEUserName = $("#txtTSEUserName")
+        var txtTSEUserPassword = $("#txtTSEUserPassword");
+
+          
+        $(document).ready(function () {
+            loadDataInitializer();
+        })
+
+        function loadDataInitializer() {
+            loadRSMDataTable();
+            loadASMDataTable();
+            loadTSEDataTable();
+        }
+
+        //#region RSM
+        function loadRSMDataTable() {
+            var data = { flag: "rsm" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/SRHierarchy', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function OpenRSMModal() {
+            $("#modalRSM").modal('show');
+            $("#spanModalHeadRSM").text('Add New RSM');
+            $("#spanSaveTextRSM").text('Save');
+            clearRSMctrl();
+        }
+
+        function clearRSMctrl() {
+            hdfRSMUserId.val('0');
+            hdfRSMId.val('0');
+            txtRSMFullName.val('');
+            chkRSMStatestatus.prop("checked", false);
+            txtRSMEmail.val('');
+            txtRSMAddress.val('');
+            txtRSMMobile.val('');
+            ddlRSMDistrict.val('');
+            txtRMSRemarks.val('');
+            chkIsAllowToLogin.prop("checked", false);
+            txtRSMUserName.val('');
+            txtRSMUserPassword.val('');
+            $("#rsm-user").addClass("hide");
+        }
+
+        $("#btnAddNewRSM").click(function (e) {
+            e.preventDefault();
+            OpenRSMModal();
+        })
+
+        function validateRSM() {
+            var isValid = true;
+            return isValid;
+        }
+
+        chkIsAllowToLogin.change(function () {
+            if (chkIsAllowToLogin.is(":checked")) {
+                if (TryParseInt(hdfRSMUserId.val(), 0) <= 0) {
+                    $("#rsm-user").removeClass('hide');
+                }
+                //else {
+                //    //
+                   
+                //}
+            }
+            else {
+                $("#rsm-user").addClass('hide');
+            }
+        })
+
+        $("#btnSubmitRSM").click(function (e) {
+            e.preventDefault();
+            if (validateRSM()) {
+                disable("#btnSubmitRSM");
+                var district = ddlRSMDistrict.val().split("#");
+                var model = {
+                    RSMID: TryParseInt(hdfRSMId.val(),0),
+                    UserId: TryParseInt(hdfRSMUserId.val(),0),
+                    FullName: $.trim(txtRSMFullName.val()),
+                    IsActive: chkRSMStatestatus.is(":checked"),
+                    Address: txtRSMAddress.val(),
+                    MobileNo: txtRSMMobile.val(),
+                    Email: txtRSMEmail.val(),
+                    DistrictId: district[0],
+                    DivisionId: district[1],
+                    Remarks: txtRMSRemarks.val(),
+                    IsActive: chkRSMStatestatus.is(":checked"),
+                    IsAllowToLogIn: chkIsAllowToLogin.is(":checked")
+                };
+                var sRUser = {
+                    UserId: TryParseInt(hdfRSMUserId, 0),
+                    UserName: txtRSMUserName.val(),
+                    Password: txtRSMUserPassword.val()
+                };
+
+                var data = JSON.stringify({
+                    model: model,
+                    sRUser: sRUser
+                });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveRSM', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        clearRSMctrl();
+                        $("#modalRSM").modal("toggle");
+                        loadRSMDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitRSM");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitRSM");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-rsm-edit', function (e) {
+            e.preventDefault();
+            OpenRSMModal();
+            $("#spanModalHeadRSM").text('Update RSM');
+            $("#spanSaveTextRSM").text('Update');
+            var tds = getTblCells($(this));
+            hdfRSMId.val(tds.eq(1).attr('data-val'));
+            
+            txtRSMFullName.val(tds.eq(1).html())
+            var dis = tds.eq(2).attr("data-val") + "#" + tds.eq(3).attr("data-val");
+            ddlRSMDistrict.val(dis);
+            ddlRSMDistrict.trigger("change");
+            txtRSMAddress.val(tds.eq(4).html());
+            txtRSMMobile.val(tds.eq(5).html());
+            txtRSMEmail.val(tds.eq(6).html())
+            if (tds.eq(7).attr("data-val") == "True") {
+                chkRSMStatestatus.prop("checked", true);
+            }
+            
+            if (tds.eq(8).attr("data-val") == "True") {
+                chkIsAllowToLogin.prop("checked", true);
+            }
+            hdfRSMUserId.val(tds.eq(8).attr("data-user"))
+            txtRMSRemarks.val(tds.eq(9).html());
+        })
+        //#endregion
+
+        //#region ASM
+        function loadASMDataTable() {
+            var data = { flag: "asm" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/SRHierarchy', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function OpenASMModal() {
+            $("#modalASM").modal('show');
+            $("#spanModalHeadASM").text('Add New ASM');
+            $("#spanSaveTextASM").text('Save');
+            clearASMctrl();
+        }
+
+        function clearASMctrl() {
+            hdfASMUserId.val('0');
+            hdfASMId.val('0');
+            txtASMFullName.val('');
+            chkASMStatestatus.prop("checked", false);
+            txtASMEmail.val('');
+            txtASMAddress.val('');
+            txtASMMobile.val('');
+            ddlZoneWithDistrictAndDivision.val('');
+            txtASMRemarks.val('');
+            chkIsASMAllowToLogin.prop("checked", false);
+            txtASMUserName.val('');
+            txtASMUserPassword.val('');
+            $("#asm-user").addClass("hide");
+        }
+
+        $("#btnAddNewASM").click(function (e) {
+            e.preventDefault();
+            OpenASMModal();
+        })
+
+        function validateASM() {
+            var isValid = true;
+            return isValid;
+        }
+
+        chkIsASMAllowToLogin.change(function () {
+            if (chkIsASMAllowToLogin.is(":checked")) {
+                if (TryParseInt(hdfASMUserId.val(), 0) <= 0) {
+                    $("#asm-user").removeClass('hide');
+                }
+                //else {
+                //    //
+
+                //}
+            }
+            else {
+                $("#asm-user").addClass('hide');
+            }
+        })
+
+        $("#btnSubmitASM").click(function (e) {
+            e.preventDefault();
+            if (validateASM()) {
+                disable("#btnSubmitASM");
+                var zone = ddlZoneWithDistrictAndDivision.val().split("#");
+                var model = {
+                    ASMID: TryParseInt(hdfASMId.val(), 0),
+                    UserId: TryParseInt(hdfASMUserId.val(), 0),
+                    FullName: $.trim(txtASMFullName.val()),
+                    IsActive: chkASMStatestatus.is(":checked"),
+                    Address: txtASMAddress.val(),
+                    MobileNo: txtASMMobile.val(),
+                    Email: txtASMEmail.val(),
+                    ZoneId: zone[0],
+                    DistrictId: zone[1],
+                    DivisionId: zone[2],
+                    Remarks: txtASMRemarks.val(),
+                    IsActive: chkASMStatestatus.is(":checked"),
+                    IsAllowToLogIn: chkIsASMAllowToLogin.is(":checked")
+                };
+                var sRUser = {
+                    UserId: TryParseInt(hdfASMUserId, 0),
+                    UserName: txtASMUserName.val(),
+                    Password: txtASMUserPassword.val()
+                };
+
+                var data = JSON.stringify({
+                    model: model,
+                    sRUser: sRUser
+                });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveASM', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        clearASMctrl();
+                        $("#modalASM").modal("toggle");
+                        loadASMDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitASM");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitASM");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-asm-edit', function (e) {
+            e.preventDefault();
+            OpenASMModal();
+            $("#spanModalHeadASM").text('Update ASM');
+            $("#spanSaveTextASM").text('Update');
+            var tds = getTblCells($(this));
+            hdfASMId.val(tds.eq(1).attr('data-val'));
+            txtASMFullName.val(tds.eq(1).html())
+            var zone = tds.eq(2).attr("data-val") + "#" + tds.eq(3).attr("data-val") + "#" + tds.eq(4).attr("data-val");
+            ddlZoneWithDistrictAndDivision.val(zone);
+            ddlZoneWithDistrictAndDivision.trigger("change");
+            txtASMAddress.val(tds.eq(5).html());
+            txtASMMobile.val(tds.eq(6).html());
+            txtASMEmail.val(tds.eq(7).html())
+            if (tds.eq(8).attr("data-val") == "True") {
+                chkASMStatestatus.prop("checked", true);
+            }
+
+            if (tds.eq(9).attr("data-val") == "True") {
+                chkIsASMAllowToLogin.prop("checked", true);
+            }
+            hdfASMUserId.val(tds.eq(9).attr("data-user"))
+            txtASMRemarks.val(tds.eq(10).html());
+        })
+        //#endregion
+
+
+        //#region TSE
+        function loadTSEDataTable() {
+            var data = { flag: "tse" };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/SRHierarchy', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        function OpenTSEModal() {
+            $("#modalTSE").modal('show');
+            $("#spanModalHeadTSE").text('Add New TSE');
+            $("#spanSaveTextTSE").text('Save');
+            clearTSEctrl();
+        }
+
+        function clearTSEctrl() {
+            hdfTSEUserId.val('0');
+            hdfTSEId.val('0');
+            txtTSEFullName.val('');
+            chkTSEStatestatus.prop("checked", false);
+            txtTSEEmail.val('');
+            txtTSEAddress.val('');
+            txtTSEMobile.val('');
+            txtTSERemarks.val('');
+            chkIsTSEAllowToLogin.prop("checked", false);
+            txtTSEUserName.val('');
+            txtTSEUserPassword.val('');
+            $("#tse-user").addClass("hide");
+        }
+
+        $("#btnAddNewTSE").click(function (e) {
+            e.preventDefault();
+            OpenTSEModal();
+        })
+
+        function validateTSE() {
+            var isValid = true;
+            return isValid;
+        }
+
+        chkIsTSEAllowToLogin.change(function () {
+            if (chkIsTSEAllowToLogin.is(":checked")) {
+                if (TryParseInt(hdfTSEUserId.val(), 0) <= 0) {
+                    $("#tse-user").removeClass('hide');
+                }
+                //else {
+                //    //
+                //}
+            }
+            else {
+                $("#tse-user").addClass('hide');
+            }
+        })
+
+        $("#btnSubmitTSE").click(function (e) {
+            e.preventDefault();
+            if (validateTSE()) {
+                disable("#btnSubmitTSE");
+                var model = {
+                    TSEID: TryParseInt(hdfTSEId.val(), 0),
+                    UserId: TryParseInt(hdfTSEUserId.val(), 0),
+                    FullName: $.trim(txtTSEFullName.val()),
+                    IsActive: chkTSEStatestatus.is(":checked"),
+                    Address: txtTSEAddress.val(),
+                    MobileNo: txtTSEMobile.val(),
+                    Email: txtTSEEmail.val(),
+                    ZoneId: '@User.ZoneId',
+                    DistrictId: '@User.DistrictId',
+                    DivisionId: '@User.DivisionId',
+                    Remarks: txtTSERemarks.val(),
+                    IsActive: chkTSEStatestatus.is(":checked"),
+                    IsAllowToLogIn: chkIsTSEAllowToLogin.is(":checked")
+                };
+
+                var sRUser = {
+                    UserId: TryParseInt(hdfTSEUserId, 0),
+                    UserName: txtTSEUserName.val(),
+                    Password: txtTSEUserPassword.val()
+                };
+
+                var data = JSON.stringify({
+                    model: model,
+                    sRUser: sRUser
+                });
+
+                //consoleLog(data);
+                //return;
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveTSE', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        clearTSEctrl();
+                        $("#modalTSE").modal("toggle");
+                        loadTSEDataTable();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmitTSE");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmitTSE");
+                })
+            }
+        })
+
+        $(document).on('click', '.data-tse-edit', function (e) {
+            e.preventDefault();
+            OpenTSEModal();
+            $("#spanModalHeadTSE").text('Update TSE');
+            $("#spanSaveTextTSE").text('Update');
+            var tds = getTblCells($(this));
+            hdfTSEId.val(tds.eq(1).attr('data-val'));
+            txtTSEFullName.val(tds.eq(1).html())
+            txtTSEAddress.val(tds.eq(5).html());
+            txtTSEMobile.val(tds.eq(6).html());
+            txtTSEEmail.val(tds.eq(7).html())
+            if (tds.eq(8).attr("data-val") == "True") {
+                chkTSEStatestatus.prop("checked", true);
+            }
+
+            if (tds.eq(9).attr("data-val") == "True") {
+                chkIsTSEAllowToLogin.prop("checked", true);
+            }
+            hdfTSEUserId.val(tds.eq(9).attr("data-user"))
+            txtTSERemarks.val(tds.eq(10).html());
+        })
+
+        //#endregion
+    </script>
+}

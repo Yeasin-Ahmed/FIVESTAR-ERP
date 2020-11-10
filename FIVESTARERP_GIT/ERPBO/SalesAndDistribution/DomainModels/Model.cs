@@ -23,5 +23,7 @@ namespace ERPBO.SalesAndDistribution.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? CategoryId { get; set; }
+        public long? BrandId { get; set; }
     }
 }

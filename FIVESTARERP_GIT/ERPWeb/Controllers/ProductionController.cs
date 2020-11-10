@@ -5118,6 +5118,11 @@ namespace ERPWeb.Controllers
             return PartialView(viewModel);
         }
 
+        public ActionResult GetStickerOneData()
+        {
+            var data = Utility.StrickerOne(10, 2);
+            return View(data);
+        }
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

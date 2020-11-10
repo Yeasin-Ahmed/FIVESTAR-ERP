@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.SetIMEIDataForHTML>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sticker Print</title>
+    <link href="~/Content/print.min.css" rel="stylesheet" />
+</head>
+<body>
+    <form class="form">
+        @foreach (var item in Model)
+        {
+
+            <div class="" style="border:.25px solid #000000; float:left; margin: 5px; text-align: center; border-radius:5px;background:#fff;width:76.8px;height:67.2px;line-height:16px">
+                <img src="~/Content/Images/mycellLogo.png" style="width:50%;height:18%;margin:0;padding:0;filter: grayscale(100%)" />
+                <p style="font-size:6px;font-weight:bold;padding:0px 0px 0px 1.5px;margin:0;text-align:left;line-height:0px">MODEL : @item.ModelName</p>
+                @foreach (var m in item.IMEIImages)
+                {
+                    <img src="@m.Image" style="width:93%;height:13%;margin:0;line-height:0px" />
+                    <p style="font-size:6.3px;font-weight:bold;margin:0;line-height:2px">@m.Text</p>
+                }
+                <p style="font-size:5.5px;font-weight:bold;padding:0px;line-height:0px">MADE IN BANGLADESH</p>
+                <p style="font-size:5.5px;font-weight:bold;padding:0px;line-height:0px">MADE IN BANGLADESH</p>
+            </div>
+        }
+    </form>
+    <script src="~/Scripts/print.min.js"></script>
+</body>
+</html>
+
+
+
+

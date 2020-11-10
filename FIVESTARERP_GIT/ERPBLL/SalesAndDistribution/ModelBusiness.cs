@@ -36,6 +36,14 @@ namespace ERPBLL.SalesAndDistribution
             return this._modelRepository.GetAll(s => s.OrganizationId == orgId);
         }
 
+        public List<ModelColor> GetModelColors(long modelId, long orgId)
+        {
+            List<ModelColor> colors = _salesAndDistribution.Db.Database.SqlQuery<ModelColor>(string.Format(@"Select C.ColorId,C.ColorName From tblModelColors mc 
+Inner Join tblColors c on mc.ColorId = c.ColorId
+Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList();
+            return colors;
+        }
+
         public bool SaveModel(DescriptionDTO dto, long userId, long orgId)
         {
             bool IsSuccess = false;
@@ -49,7 +57,9 @@ namespace ERPBLL.SalesAndDistribution
                     Remarks=dto.Remarks,
                     OrganizationId = orgId,
                     EUserId = userId,
-                    EntryDate = DateTime.Now
+                    EntryDate = DateTime.Now,
+                    CategoryId= dto.CategoryId,
+                    BrandId= dto.BrandId
                 };
                 _modelRepository.Insert(model);
             }
@@ -63,6 +73,9 @@ namespace ERPBLL.SalesAndDistribution
                     model.Remarks = dto.Remarks;
                     model.UpdateDate = DateTime.Now;
                     model.UpUserId = dto.UpUserId;
+                    model.CategoryId = dto.CategoryId;
+                    model.BrandId = dto.BrandId;
+                    model.Remarks = dto.Remarks;
                 }
                 _modelRepository.Update(model);
             }

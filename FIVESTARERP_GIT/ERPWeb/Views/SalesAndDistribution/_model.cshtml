@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DescriptionViewModel>
-@{ 
+@{
     int sl = 0;
 }
 
@@ -12,6 +12,8 @@
                     <th class="hide"></th>
                     <th>Model</th>
                     <th>Colors</th>
+                    <th>Category</th>
+                    <th>Brand</th>
                     <th>StateStatus</th>
                     <th>Remark</th>
                     <th>Action</th>
@@ -21,7 +23,7 @@
                 @foreach (var item in Model)
                 {
                     sl = sl + 1;
-                    string colors = string.Join(",", item.ModelColors.Select(s => s.ColorName.ToString()).ToArray());
+                    string colors = string.Join(",", item.ModelColors.Select(s => s.ColorId.ToString()).ToArray());
                     string status = item.IsActive ? "Active" : "Inactive";
                     string badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
                     <tr>
@@ -34,6 +36,8 @@
                                 <span class="badge badge-primary">@i.ColorName</span>
                             }
                         </td>
+                        <td class="text-center" data-val="@item.CategoryId">@item.CategoryName</td>
+                        <td class="text-center" data-val="@item.BrandId">@item.BrandName</td>
                         <td class="text-center" data-val="@item.IsActive">
                             <span class="@badge">@status</span>
                         </td>

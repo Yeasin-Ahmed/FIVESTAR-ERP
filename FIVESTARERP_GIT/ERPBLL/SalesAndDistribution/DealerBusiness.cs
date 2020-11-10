@@ -1,4 +1,5 @@
 ﻿using ERPBLL.SalesAndDistribution.Interface;
+using ERPBO.Common;
 using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
@@ -28,6 +29,16 @@ namespace ERPBLL.SalesAndDistribution
             return _dealerRepository.GetOneByOrg(s => s.DealerId == id && s.OrganizationId == orgId);
         }
 
+        public IEnumerable<DealerDTO> GetDealerInformations(long orgId)
+        {
+            return this._salesAndDistributionDb.Db.Database.SqlQuery<DealerDTO>(string.Format(@"Exec spDealerInformation {0}",orgId)).ToList();
+        }
+
+        public IEnumerable<Dropdown> GetDealerRepresentatives(long orgId)
+        {
+            return _salesAndDistributionDb.Db.Database.SqlQuery<Dropdown>("Exec spDealerRepresentatives {0}",orgId).ToList();
+        }
+
         public IEnumerable<Dealer> GetDealers(long orgId)
         {
             return _dealerRepository.GetAll(s => s.OrganizationId == orgId).ToList();
@@ -51,7 +62,13 @@ namespace ERPBLL.SalesAndDistribution
                     IsActive = dealerDto.IsActive,
                     OrganizationId = orgId,
                     EUserId = userId,
-                    EntryDate = DateTime.Now
+                    EntryDate = DateTime.Now,
+                    RepresentativeId= dealerDto.RepresentativeId,
+                    RepresentativeUserId= dealerDto.RepresentativeUserId,
+                    RepresentativeFlag=dealerDto.RepresentativeFlag,
+                    ZoneId= dealerDto.ZoneId,
+                    DistrictId= dealerDto.DistrictId,
+                    DivisionId = dealerDto.DivisionId
                 };
                 _dealerRepository.Insert(dealer);
             }
@@ -71,6 +88,12 @@ namespace ERPBLL.SalesAndDistribution
                     dealerInDb.IsActive = dealerDto.IsActive;
                     dealerInDb.UpUserId= userId;
                     dealerInDb.UpdateDate= DateTime.Now;
+                    dealerInDb.RepresentativeId = dealerDto.RepresentativeId;
+                    dealerInDb.RepresentativeUserId = dealerDto.RepresentativeUserId;
+                    dealerInDb.RepresentativeFlag = dealerDto.RepresentativeFlag;
+                    dealerInDb.ZoneId = dealerDto.ZoneId;
+                    dealerInDb.DistrictId = dealerDto.DistrictId;
+                    dealerInDb.DivisionId = dealerDto.DivisionId;
                     _dealerRepository.Update(dealerInDb);
                 }
             }

@@ -10,11 +10,15 @@ using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Drawing;
 using System.Drawing.Imaging;
+using ERPBO.Production.ViewModels;
 
 namespace ERPBLL.Common
 {
     public class Utility
     {
+
+        private readonly static string _imagByte = string.Format(@"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIYAAAAMCAYAAACnUsUvAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIhSURBVFhHfYsBimUxDMP+/S89u4YnEK5bQUkiu7///OUFZsC3M+vG9T8/YF/erjPT2e1+ZcH3KwvuNatr57ky9rBysOvOzZnVYX7vDAO+nVk3rv/5Afvydp2Zzm73Kwu+X1lwr1ldO8+VsYeVg113bs6sDvN7Zxjw7cy6cf3PD9iXt+vMdHa7X1nw/cqCe83q2nmujD2sHOy6c3NmdZjfO8OAb2fWjet/fsC+vF1nprPb/cqC71cW3GtW185zZexh5WDXnZszq8P83hkGfDuzblz/8wP25e06M53d7lcWfL+y4F6zunaeK2MPKwe77tycWR3m984w4NuZdeP6nx+wL2/Xmensdr+y4PuVBfea1bXzXBl7WDnYdefmzOowv3eGAd/OrBvX//yAfXm7zkxnt/uVBd+vLLjXrK6d58rYw8rBrjs3Z1aH+b0zDPh2Zt24/ucH7MvbdWY6u92vLPh+ZcG9ZnXtPFfGHlYOdt25ObM6zO+dYcC3M+vG9T8/YF/erjPT2e1+ZcH3KwvuNatr57ky9rBysOvOzZnVYX7vDAO+nVk3rv/5Afvydp2Zzm73Kwu+X1lwr1ldO8+VsYeVg113bs6sDvN7Zxjw7cy6cf3PD9iXt+vMdHa7X1nw/cqCe83q2nmujD2sHOy6c3NmdZjfO8OAb2fWjet/fsC+vF1nprPb/cqC71cW3GtW185zZexh5WDXnZszq8P8/X5//wC5QfHT67yLDAAAAABJRU5ErkJggg==");
+
         public static IEnumerable<Dropdown> ListOfReqStatus()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>() {
@@ -197,6 +201,31 @@ namespace ERPBLL.Common
                 new Dropdown(){text=ApplicationType.Service,value=ApplicationType.Service}
             };
             return dropdowns;
+        }
+
+
+        public static IEnumerable<SetIMEIDataForHTML> StrickerOne(int stickerCount, int imeiNo)
+        {
+            List<SetIMEIDataForHTML> data = new List<SetIMEIDataForHTML>();
+
+            for (int i = 1; i <= stickerCount; i++)
+            {
+                SetIMEIDataForHTML setOne = new SetIMEIDataForHTML();
+                setOne.ModelName = "M4";
+                setOne.IMEIImages = new List<IMEIImage>();
+
+                for (int j = 1; j <= imeiNo; j++)
+                {
+                    IMEIImage setOneImg1 = new IMEIImage()
+                    {
+                        Text = "IMEI " + j.ToString() + ": 123456789012345",
+                        Image = _imagByte
+                    };
+                    setOne.IMEIImages.Add(setOneImg1);
+                }
+                data.Add(setOne);
+            }
+            return data;
         }
 
         public static int TryParseInt(string value)
