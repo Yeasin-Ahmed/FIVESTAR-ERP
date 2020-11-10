@@ -77,6 +77,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public string DestinationBranch { get; set; }
         public long? JobLocation { get; set; }
         public string JobLocationB { get; set; }
+        public bool? IsHandset { get; set; }
 
     }
 }

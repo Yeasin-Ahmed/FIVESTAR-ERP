@@ -4,6 +4,7 @@
     int sl = pagerData.Serial;
     string isWarrantyAvailable = string.Empty;
     string isWarrantyPaperEnclosed = string.Empty;
+    string isHandSet = string.Empty;
     string badge = string.Empty;
     string badge1 = string.Empty;
 }
@@ -15,8 +16,8 @@
                     <tr class="text-center text-sm">
                         <th class="hide"></th>
                         <th style="vertical-align:middle">#SL</th>
-                        <th style="vertical-align:middle">JobOrder</th>
-                        <th style="vertical-align:middle">JobLocation</th>
+                        <th style="vertical-align:middle">Job Order</th>
+                        <th style="vertical-align:middle">Job Location</th>
                         <th style="vertical-align:middle">Model</th>
                         <th style="vertical-align:middle">Type</th>
                         <th style="vertical-align:middle">IMEI1</th>
@@ -24,27 +25,28 @@
                         <th style="vertical-align:middle">Color</th>
                         <th style="vertical-align:middle">Symptoms</th>
                         <th style="vertical-align:middle">Accessories</th>
-                        <th style="vertical-align:middle">JobType</th>
+                        <th style="vertical-align:middle">Job Type</th>
                         <th style="vertical-align:middle">Customer Name</th>
                         <th style="vertical-align:middle">Mobile No</th>
                         <th style="vertical-align:middle">Customer Type</th>
                         @*<th style="vertical-align:middle">Address</th>*@
                         <th style="vertical-align:middle">Warrenty Paper</th>
-                        <th style="vertical-align:middle">WarrantyDate</th>
-                        <th style="vertical-align:middle">JobStatus</th>
-                        <th style="vertical-align:middle">TS WorkStatus</th>
-                        <th style="vertical-align:middle">Ref.Number</th>
-                        <th style="vertical-align:middle">TSName</th>
+                        <th style="vertical-align:middle">Warranty Date</th>
+                        <th style="vertical-align:middle">Job Status</th>
+                        <th style="vertical-align:middle">TS Work Status</th>
+                        <th style="vertical-align:middle">Ref. Number</th>
+                        <th style="vertical-align:middle">TS Name</th>
                         @*<th style="vertical-align:middle">TSWork</th>*@
                         @*<th style="vertical-align:middle">Remarks</th>*@
-                        <th style="vertical-align:middle">CourierName</th>
-                        <th style="vertical-align:middle">CourierNumber</th>
-                        <th style="vertical-align:middle">ApproxBill</th>
+                        <th style="vertical-align:middle">Courier Name</th>
+                        <th style="vertical-align:middle">Courier Number</th>
+                        <th style="vertical-align:middle">Approx Bill</th>
+                        @*<th style="vertical-align:middle">IsHandSet</th>*@
                         <th style="vertical-align:middle">Issued by</th>
                         <th style="vertical-align:middle">Close by</th>
-                        <th style="vertical-align:middle">CreateDate</th>
-                        <th style="vertical-align:middle">RepairDate</th>
-                        <th style="vertical-align:middle">CloseDate</th>
+                        <th style="vertical-align:middle">Create Date</th>
+                        <th style="vertical-align:middle">Repair Date</th>
+                        <th style="vertical-align:middle">Close Date</th>
                         <th style="vertical-align:middle" class="action">Invoice</th>
                         <th style="vertical-align:middle" class="action">Action</th>
                     </tr>
@@ -57,6 +59,7 @@
                         sl = sl + 1;
                         isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
                         isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
+                        //isHandSet = item.IsHandset.Value ? "DOA" : "DAP";
                         string strWarrentStartDate = item.WarrantyDate.HasValue ? item.WarrantyDate.Value.ToString("dd-MMM-yyy") : "";
                         string closeDate = item.CloseDate != null ? item.CloseDate.Value.ToString("dd-MMM-yyy") : "";
                         string repairDate = item.RepairDate != null ? item.RepairDate.Value.ToString("dd-MMM-yyy") : "";
@@ -91,6 +94,7 @@
                             <td>@item.CourierName</td>
                             <td>@item.CourierNumber</td>
                             <td>@item.ApproxBill</td>
+                            @*<td>@isHandSet</td>*@
                             @*<td>
                             @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone)
                             {

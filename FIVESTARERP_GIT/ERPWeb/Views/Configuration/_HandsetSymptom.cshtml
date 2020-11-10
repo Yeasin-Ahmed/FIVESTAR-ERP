@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Configuration.ViewModels.ClientProblemViewModel>
 @{ 
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
     Layout = null;
 }
 <div class="col-md-12 text-sm">
@@ -12,6 +13,7 @@
                 <th>Handset Symptom Name</th>
                 <th>Remarks</th>
                 <th>Entry Date</th>
+                <th>EntryUser</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -19,12 +21,14 @@
             @foreach (var client in Model)
             {
                 sl = sl + 1;
+                string entryDate = client.EntryDate != null ? client.EntryDate.Value.ToString("dd-MMM-yyy") : "";
                 <tr>
                     <td class="text-center" width="10%">@sl</td>
                     <td class="hide">@client.ProblemId</td>
                     <td>@client.ProblemName</td>
                     <td class="text-center">@client.Remarks</td>
-                    <td>@client.EntryDate</td>
+                    <td>@entryDate</td>
+                    <td>@client.EntryUser</td>
                     <td class="text-center">
                         <a href="#" class="btn btn-outline-warning btn-sm data-edit-item-symptom" title="Edit" data-edit-item-symptom="@client.ProblemId"><i class="fas fa-pencil-alt"></i> </a>
                         <a href="#" class="btn btn-outline-danger btn-sm data-del-item-symptom" title="Delete" data-del-item-symptom="@client.ProblemId"><i class="far fa-trash-alt"></i> </a>
@@ -41,4 +45,7 @@
             }
         </tbody>
     </table>
+</div>
+<div class="col-md-12 symptom">
+    @Html.Partial("_Pagination", pagerData)
 </div>

@@ -797,6 +797,7 @@
     <Content Include="Views\Configuration\_MobileParts.cshtml" />
     <Content Include="Views\Configuration\_Fault.cshtml" />
     <Content Include="Views\Configuration\_Services.cshtml" />
+    <Content Include="Views\Configuration\_Repair.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

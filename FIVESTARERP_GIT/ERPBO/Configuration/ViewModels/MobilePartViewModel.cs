@@ -20,5 +20,6 @@ namespace ERPBO.Configuration.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public string EntryUser { get; set; }
     }
 }

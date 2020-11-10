@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Configuration.ViewModels.AccessoriesViewModel>
 @{ 
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
 }
 <div class="col-md-12 text-sm">
     <table class="table table-bordered table-sm table-striped" id="tblAccessoriesData">
@@ -12,6 +13,7 @@
                 <th>AccessoriesCode</th>
                 <th>Remarks</th>
                 <th>Entry Date</th>
+                <th>EntryUser</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -19,13 +21,15 @@
             @foreach (var access in Model)
             {
                 sl = sl + 1;
+                string entryDate = access.EntryDate != null ? access.EntryDate.Value.ToString("dd-MMM-yyy") : "";
                 <tr>
                     <td class="text-center" width="10%">@sl</td>
                     <td class="hide">@access.AccessoriesId</td>
                     <td>@access.AccessoriesName</td>
                     <td class="text-center">@access.AccessoriesCode</td>
                     <td class="text-center">@access.Remarks</td>
-                    <td>@access.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                    <td>@entryDate</td>
+                    <td>@access.EntryUser</td>
                     <td class="text-center">
                         <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@access.AccessoriesId"><i class="fas fa-pencil-alt"></i> </a>
                         <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@access.AccessoriesId"><i class="far fa-trash-alt"></i> </a>
@@ -42,4 +46,7 @@
             }
         </tbody>
     </table>
+</div>
+<div class="col-md-12 accessories">
+    @Html.Partial("_Pagination", pagerData)
 </div>

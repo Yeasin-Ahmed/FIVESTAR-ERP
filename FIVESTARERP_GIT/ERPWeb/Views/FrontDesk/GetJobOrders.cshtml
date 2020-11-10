@@ -10,10 +10,10 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-jobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-jobOrderList" role="tab" aria-controls="custom-tabs-two-jobOrderList" aria-selected="true">JobOrder List</a>
+                        <a class="nav-link active" id="custom-tabs-two-jobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-jobOrderList" role="tab" aria-controls="custom-tabs-two-jobOrderList" aria-selected="true">Job Order List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-accessoriesSellsList-tab" data-toggle="pill" href="#custom-tabs-two-accessoriesSellsList" role="tab" aria-controls="custom-tabs-two-accessoriesSellsList" aria-selected="false">AccessoriesSells</a>
+                        <a class="nav-link" id="custom-tabs-two-accessoriesSellsList-tab" data-toggle="pill" href="#custom-tabs-two-accessoriesSellsList" role="tab" aria-controls="custom-tabs-two-accessoriesSellsList" aria-selected="false">Accessories Sells</a>
                     </li>
                 </ul>
             </div>
@@ -53,7 +53,7 @@
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
                                             <div class="col-md-2">
-                                                <label class="col-form-label">JobCode</label>
+                                                <label class="col-form-label">Job Code</label>
                                                 <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
                                             </div>
                                             <div class="col-md-2">
@@ -73,7 +73,7 @@
                                                 <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="col-form-label">JobStatus</label>
+                                                <label class="col-form-label">Job Status</label>
                                                 @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@
                                                 <input type="text" id="txtInvoice" class="form-control form-control-sm" placeholder="Search By Invoice" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">MobileNo</label>
+                                                <label class="control-label font-weight-bold">Mobile No</label>
                                                 <input type="text" id="txtMobileNo2" class="form-control form-control-sm" placeholder="Search By MobileNo" />
                                             </div>
                                             <div class="col-md-2">
@@ -292,7 +292,7 @@
             <div class="modal-header alert-secondary" style="height:60px">
                 @Html.AntiForgeryToken()
                 <input type="hidden" id="hdfJobOrderId" />
-                <h4 id="modalHeading" class="modal-title">JobOrder Details</h4>
+                <h4 id="modalHeading" class="modal-title">Job Order Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="dataContainer2">
@@ -668,7 +668,8 @@
             }
         })
         function changeJobOrderStatus(status) {
-            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val()});
+            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val() });
+            //return console.log(data);
 
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/GetJobOrderReceiptReport', data, getToken())).then(function (res, status) {
                 if (res.IsSuccess === true && status === "success") {
@@ -795,7 +796,7 @@
                             if (res == true) {
                                 $('.toastrDefaultSuccess').trigger('click');
                                 setTimeout(function () {
-                                    redirectPage('@Url.Action("GetJobOrders", new { tab = "AccessoriesSells" })');
+                                    redirectPage('@Url.Action("GetJobOrders")');
                                 }, 1000);
                             }
                             else {

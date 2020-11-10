@@ -33,7 +33,7 @@ namespace ERPBLL.FrontDesk
         {
             var data= this._frontDeskUnitOfWork.Db.Database.SqlQuery<InvoiceUsedPartsDTO>(
                 string.Format(@"Select *,UsedQty*Price 'Total' From(select tstock.PartsId,parts.MobilePartName,tstock.UsedQty,
-(select Top 1  info.SellPrice from [Configuration].dbo.tblMobilePartStockInfo info
+(select Top 1  tstock.SellPrice from [Configuration].dbo.tblMobilePartStockInfo info
 where info.MobilePartId=tstock.PartsId) 'Price'
 from [FrontDesk].dbo.tblTechnicalServicesStock tstock
 inner join [Configuration].dbo.tblMobileParts parts

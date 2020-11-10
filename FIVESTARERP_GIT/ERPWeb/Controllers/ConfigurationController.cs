@@ -55,16 +55,16 @@ namespace ERPWeb.Controllers
             this._repairBusiness = repairBusiness;
         }
         #region tblAccessories
-        public ActionResult AccessoriesList(string flag,string name)
+        public ActionResult AccessoriesList(string flag,string name,int page=1)
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.UserPrivilege = UserPrivilege("Configuration", "AccessoriesList");
+                //ViewBag.UserPrivilege = UserPrivilege("Configuration", "AccessoriesList");
                 //return View();
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "accessories")
             {
-                IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.AccessoriesName.Contains(name))).Select(access => new AccessoriesDTO
+                IEnumerable<AccessoriesDTO> accessoriesDTO = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.AccessoriesName.Contains(name) || s.AccessoriesCode.Contains(name))).Select(access => new AccessoriesDTO
                 {
                     AccessoriesId = access.AccessoriesId,
                     AccessoriesName = access.AccessoriesName,
@@ -76,8 +76,13 @@ namespace ERPWeb.Controllers
                     EntryDate = access.EntryDate,
                     UpUserId = access.UpUserId,
                     UpdateDate = access.UpdateDate,
+                    EntryUser = UserForEachRecord(access.EUserId.Value).UserName,
                 }).ToList();
                 List<AccessoriesViewModel> viewModel = new List<AccessoriesViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(accessoriesDTO.Count(), 10, page);
+                accessoriesDTO = accessoriesDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(accessoriesDTO, viewModel);
                 return PartialView("_AccessoriesList", viewModel);
             }
@@ -93,8 +98,13 @@ namespace ERPWeb.Controllers
                     EntryDate = client.EntryDate,
                     UpUserId = client.UpUserId,
                     UpdateDate = client.UpdateDate,
+                    EntryUser = UserForEachRecord(client.EUserId.Value).UserName,
                 }).ToList();
                 List<ClientProblemViewModel> viewModel = new List<ClientProblemViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(clientDTO.Count(), 10, page);
+                clientDTO = clientDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(clientDTO, viewModel);
                 return View("_HandsetSymptom", viewModel);
             }
@@ -111,8 +121,13 @@ namespace ERPWeb.Controllers
                     EntryDate = part.EntryDate,
                     UpUserId = part.UpUserId,
                     UpdateDate = part.UpdateDate,
+                    EntryUser = UserForEachRecord(part.EUserId.Value).UserName,
                 }).ToList();
                 List<MobilePartViewModel> viewModel = new List<MobilePartViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(mobilePartDTO.Count(), 10, page);
+                mobilePartDTO = mobilePartDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(mobilePartDTO, viewModel);
                 return PartialView("_MobileParts",viewModel);
             }
@@ -129,8 +144,13 @@ namespace ERPWeb.Controllers
                     EntryDate = fault.EntryDate,
                     UpUserId = fault.UpUserId,
                     UpdateDate = fault.UpdateDate,
+                    EntryUser = UserForEachRecord(fault.EUserId.Value).UserName,
                 }).ToList();
                 List<FaultViewModel> viewModel = new List<FaultViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(faultDTO.Count(), 10, page);
+                faultDTO = faultDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(faultDTO, viewModel);
                 return PartialView("_Fault",viewModel);
             }
@@ -147,10 +167,38 @@ namespace ERPWeb.Controllers
                     EntryDate = services.EntryDate,
                     UpUserId = services.UpUserId,
                     UpdateDate = services.UpdateDate,
+                    EntryUser = UserForEachRecord(services.EUserId.Value).UserName,
                 }).ToList();
                 List<ServiceViewModel> viewModel = new List<ServiceViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(serviceDTO.Count(), 10, page);
+                serviceDTO = serviceDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
                 AutoMapper.Mapper.Map(serviceDTO, viewModel);
                 return PartialView("_Services",viewModel);
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag == "repair")
+            {
+                IEnumerable<RepairDTO> repairDTO = _repairBusiness.GetAllRepairByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.RepairName.Contains(name) || r.RepairCode.Contains(name))).Select(repair => new RepairDTO
+                {
+                    RepairId = repair.RepairId,
+                    RepairName = repair.RepairName,
+                    RepairCode = repair.RepairCode,
+                    Remarks = repair.Remarks,
+                    OrganizationId = repair.OrganizationId,
+                    EUserId = repair.EUserId,
+                    EntryDate = repair.EntryDate,
+                    UpUserId = repair.UpUserId,
+                    UpdateDate = repair.UpdateDate,
+                    EntryUser = UserForEachRecord(repair.EUserId.Value).UserName,
+                }).ToList();
+                List<RepairViewModel> viewModels = new List<RepairViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(repairDTO.Count(), 10, page);
+                repairDTO = repairDTO.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(repairDTO, viewModels);
+                return PartialView("_Repair", viewModels);
             }
             return View();
         }

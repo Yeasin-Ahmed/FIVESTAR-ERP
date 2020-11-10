@@ -211,7 +211,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12 mt-2 text-sm" id="dataContainer3" style="overflow-y:scroll">
-                                                @{Html.RenderAction("TransferReceiveJobOrder", new { @flag = "view" });}
+                                                @*@{Html.RenderAction("TransferReceiveJobOrder", new { @flag = "view" });}*@
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +290,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12 text-sm text-sm" id="dataContainer4" style="overflow-y:scroll">
-                                                @{Html.RenderAction("ReceiveReturnJobOrder", new { @flag = "view" });}
+                                                @*@{Html.RenderAction("ReceiveReturnJobOrder", new { @flag = "view" });}*@
                                             </div>
                                         </div>
                                     </div>
@@ -521,7 +521,7 @@
             if (ddlTransferCondition.val() == "Transfer") {
                 LoadDataTableForTransferJob();
             }
-            if (ddlTransferCondition.val() == "Return") {
+            if (ddlTransferCondition.val() == "Return" && TryParseInt(ddlBranchName.val(),0) > 0) {
                 LoadDataTableForReturnJob();
             }
         })
@@ -529,6 +529,47 @@
         $("#ddlBranchName").change(function () {
             $("#ddlTransferCondition").trigger("change");
         })
+        //////return/////
+        var count2= 0
+        $(document).on('change', 'input[name="allJobOrder2"]', function () {
+            var isChecked2 = $('input[name="allJobOrder2"]').is(":checked");
+            $('input[name="jobOrderName2"]').prop("checked", isChecked2);
+            if (isChecked2) {
+                count2 = $(".tblTransferReceiveJob tbody tr").length;
+            }
+            else {
+                count2 = 0;
+            }
+           // alert("Count2 :"+count2)
+        })
+
+        $(document).on('change', 'input[name="jobOrderName2"]', function () {
+            count2 = 0;
+            $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="jobOrderName2"]').is(":checked")) {
+                    count2++;
+                }
+            });
+            var allChecked2 = $(".tblTransferReceiveJob tbody tr").length == count2;
+            $('input[name="allJobOrder2"]').prop("checked", allChecked2);
+            consoleLog("Count 2");
+            consoleLog(count2);
+           // consoleLog("Row Length")
+           // consoleLog($(".tblTransferReceiveJob tbody tr").length)
+        })
+        function ValidateSubmit2() {
+            var isValid = true;
+            if (ddlBranchName.val() === "") {
+                isValid = false;
+                bootbox.alert("Select a Branch");
+            }
+            if (count2 == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one JobOrder");
+            }
+            return isValid;
+        }
+        ////////
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
@@ -536,7 +577,7 @@
                 if (ValidateSubmit()) {
                     bootbox.confirm("Are you sure you want to Transfer these Job Orders", function (result) {
                         if (result) {
-                            disable("#btnSubmitJobTransfer");
+                            disable("#btnSubmit");
                             var transferId = TryParseInt(ddlBranchName.val(), 0);
                             var jobOrders = []; jobOrders.length = 0;
                             var cName = $(".tblJobOrderTransferList tbody tr").children('td').eq('11').children('input').val();
@@ -572,36 +613,50 @@
                                 else {
                                     $('.toastrDefaultError').trigger('click');
                                 }
-                                enable("#btnSubmitJobTransfer");
+                                enable("#btnSubmit");
                             }).fail(function (error) {
                                 console.log(error);
                                 $('.toastrDefaultError').trigger('click');
-                                enable("#btnSubmitJobTransfer");
+                                enable("#btnSubmit");
                             });
                         }
                     })
                 }
             }
-            else {
+            if (ddlTransferCondition.val() == "Return") {
                 if (ValidateSubmit2()) {
                 bootbox.confirm("Are you sure you want to Return these Job Orders", function (result) {
                     if (result) {
-                        disable("#btnSubmitReturnJob");
-                        var transferId = TryParseInt(ddlBranchName.val(), 0);
-                        var jobOrders = []; jobOrders.length = 0;
-                        var cName = $(".tblTransferReceiveJob tbody tr").children('td').eq('11').children('input').val();
-                        var cNumber = $(".tblTransferReceiveJob tbody tr").children('td').eq('12').children('input').val();
+                        disable("#btnSubmit");
+                        var returnId = TryParseInt(ddlBranchName.val(), 0);
+                        var jobOrders2 = []; jobOrders2.length = 0;
+                        var cName2 = $(".tblTransferReceiveJob tbody tr").children('td').eq('11').children('input').val();
+                        var cNumber2 = $(".tblTransferReceiveJob tbody tr").children('td').eq('12').children('input').val();
+                        //var count = 0;
+
+                        //$.each($(".tblTransferReceiveJob tbody"), function (index, item) {
+                        //    //consoleLog("Item");
+                        //    //consoleLog(item)
+                        //    //
+                        //    var checkBox2 = $(this).children('tr').eq(index).children('td').eq(1).children('input[name="jobOrderName2"]');
+                        //    if (checkBox2.is(":checked")) {
+                        //        jobOrders2.push(TryParseInt(checkBox2.attr("data-item-val2"), 0));
+                        //    }
+                        
+                            //count++;
+                        //});
                         $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
-                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName2"]');
-                            if (checkBox.is(":checked")) {
-                                jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                            var checkBox2 = $(this).children('td').eq(1).children('input[name="jobOrderName2"]');
+                            if (checkBox2.is(":checked")) {
+                                jobOrders2.push(TryParseInt(checkBox2.attr("data-item-val2"), 0));
                             }
                         });
-                        //console.log("JobOrders");
-                        //console.log(jobOrders);
+                       // alert("Count:" + count)
+                        console.log("JobOrders");
+                        console.log(jobOrders2);
 
-                        var data = JSON.stringify({ transferId: transferId, jobOrders: jobOrders, cName: cName, cNumber: cNumber });
-                       // return console.log(data);
+                        var data = JSON.stringify({ transferId: returnId, jobOrders: jobOrders2, cName: cName2, cNumber: cNumber2 });
+                        //return console.log(data);
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobReturn', data, getToken())).then(function (res, status) {
                             if (res.isSuccess === true && status === "success") {
                                 $('.toastrDefaultSuccess').trigger('click');
@@ -617,11 +672,11 @@
                             else {
                                 $('.toastrDefaultError').trigger('click');
                             }
-                            enable("#btnSubmitReturnJob");
+                            enable("#btnSubmit");
                         }).fail(function (error) {
                             console.log(error);
                             $('.toastrDefaultError').trigger('click');
-                            enable("#btnSubmitReturnJob");
+                            enable("#btnSubmit");
                         });
                     }
                 })
@@ -765,40 +820,8 @@
             })
         }
 
-        $(document).on('change', 'input[name="allJobOrder2"]', function () {
-            var isChecked = $('input[name="allJobOrder2"]').is(":checked");
-            $('input[name="jobOrderName2"]').prop("checked", isChecked);
-            if (isChecked) {
-                count = $(".tblTransferReceiveJob tbody tr").length;
-            }
-            else {
-                count = 0;
-            }
-        })
-
-        $(document).on('change', 'input[name="jobOrderName2"]', function () {
-            count = 0;
-            $.each($(".tblTransferReceiveJob tbody tr"), function (index, item) {
-                if ($(this).children('td').eq(1).children('input[name="jobOrderName2"]').is(":checked")) {
-                    count++;
-                }
-            });
-            var allChecked = $(".tblTransferReceiveJob tbody tr").length == count;
-            $('input[name="allJobOrder2"]').prop("checked", allChecked);
-        })
-        function ValidateSubmit2() {
-            var isValid = true;
-            if (ddlBranchName.val() === "") {
-                isValid = false;
-                bootbox.alert("Select a Branch");
-            }
-            if (count == 0) {
-                isValid = false;
-                bootbox.alert("Please check at least one JobOrder");
-            }
-            return isValid;
-        }
-        $("#btnSubmitReturnJob").click(function (e) {
+        
+        @*$("#btnSubmitReturnJob").click(function (e) {
             e.preventDefault();
             if (ValidateSubmit2()) {
                 bootbox.confirm("Are you sure you want to Return these Job Orders", function (result) {
@@ -843,7 +866,7 @@
                     }
                 })
             }
-        })
+        })*@
         //Receive Return JobOrder
         dptFromDate4.change(function () {
             LoadDataTableForReceiveReturnJob();
@@ -902,6 +925,7 @@
                     setTimeout(function () {
                             redirectPage('@Url.Action("GetJobTransferList",new {tab="ReceiveReturnJob" })');
                     }, 1000);
+                    
                 }
                 else {
                     $('.toastrDefaultError').trigger('click');

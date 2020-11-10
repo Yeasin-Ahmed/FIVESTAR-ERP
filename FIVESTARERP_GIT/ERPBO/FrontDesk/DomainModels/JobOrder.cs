@@ -65,5 +65,6 @@ namespace ERPBO.FrontDesk.DomainModels
         public bool? IsTransfer { get; set; }
         public long? TransferBranchId { get; set; }
         public bool? IsReturn { get; set; }
+        public bool? IsHandset { get; set; }
     }
 }

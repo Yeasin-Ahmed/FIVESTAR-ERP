@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Accessories List";
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-    int sl = 0;
+    string tab = Request.QueryString["tab"] != null ? Request.QueryString["tab"].ToString() : "";
 }
 <div class="row">
     <div class="col-md-12">
@@ -13,7 +13,7 @@
                         <a class="nav-link active" id="custom-tabs-two-accessoriesList-tab" data-toggle="pill" href="#custom-tabs-two-accessoriesList" role="tab" aria-controls="custom-tabs-two-accessoriesList" aria-selected="true">Accessories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-handsetSymtomList-tab" data-toggle="pill" href="#custom-tabs-two-handsetSymtomList" role="tab" aria-controls="custom-tabs-two-handsetSymtomList" aria-selected="false">HandsetSymptom</a>
+                        <a class="nav-link" id="custom-tabs-two-handsetSymtomList-tab" data-toggle="pill" href="#custom-tabs-two-handsetSymtomList" role="tab" aria-controls="custom-tabs-two-handsetSymtomList" aria-selected="false">Handset    Symptom</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-mobilePartsList-tab" data-toggle="pill" href="#custom-tabs-two-mobilePartsList" role="tab" aria-controls="custom-tabs-two-mobilePartsList" aria-selected="false">Spare Parts</a>
@@ -59,11 +59,11 @@
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="search" id="searchByAccessories" class="form-control form-control-sm" placeholder="Search By Accessories Name" />
+                                                <input type="text" name="search" id="searchByAccessories" class="form-control form-control-sm" placeholder="Search By Accessories Name Or Code" />
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Accessories</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right font-weight-bold" id="btnAddNew"><i class="fas fa-plus"></i> Create Accessories</button>
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewSymptom"><i class="fa fa-plus"></i> Create Symptom</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right font-weight-bold" id="btnAddNewSymptom"><i class="fa fa-plus"></i> Create Symptom</button>
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewParts"><i class="fa fa-plus"></i> Create Parts</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right font-weight-bold" id="btnAddNewParts"><i class="fa fa-plus"></i> Create Parts</button>
                                             </div>
                                         </div>
                                     </div>
@@ -207,7 +207,7 @@
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewFault"><i class="fa fa-plus"></i> Create Fault</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right font-weight-bold" id="btnAddNewFault"><i class="fas fa-plus"></i> Create Fault</button>
                                             </div>
                                         </div>
                                     </div>
@@ -245,9 +245,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row text-sm">
                             <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card card-navy">
+                                <div class="card shadow card-navy">
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -255,7 +255,7 @@
                                             </div>
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewServices"><i class="fa fa-plus"></i> Create Services</button>
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right font-weight-bold" id="btnAddNewServices"><i class="fas fa-plus"></i> Create Services</button>
                                             </div>
                                         </div>
                                     </div>
@@ -272,6 +272,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-repairList" role="tabpanel" aria-labelledby="custom-tabs-two-repairList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6"><h5 class="text-center text-bold">Repair List</h5></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="serch" id="searchByRepair" class="form-control form-control-sm" placeholder="Search By Repair Name Or Code" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewRepair"><i class="fas fa-plus"> Create Repair</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer6">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -279,83 +320,83 @@
 </div>
 <div>
     @*<div class="row">
-        <div class="col-md-12 text-center">
-            <div class="card card-gray shadow">
-                <div class="card-header">
-                    <h4>Accessories List</h4>
+            <div class="col-md-12 text-center">
+                <div class="card card-gray shadow">
+                    <div class="card-header">
+                        <h4>Accessories List</h4>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header">
-                    @Html.AntiForgeryToken()
-                    <div class="row text-sm">
-                        <div class="col-md-4">
-                            <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblAccessoriesData tbody tr',this)" />
-                        </div>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4 text-right">
-                            <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New</button>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        @Html.AntiForgeryToken()
+                        <div class="row text-sm">
+                            <div class="col-md-4">
+                                <input type="text" name="search" id="searchBy" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('#tblAccessoriesData tbody tr',this)" />
+                            </div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 text-sm">
-                            <table class="table table-bordered table-sm table-striped" id="tblAccessoriesData">
-                                <thead class="btn-dark">
-                                    <tr class="text-center">
-                                        <th>#SL</th>
-                                        <th class="hide"></th>
-                                        <th>AccessoriesName</th>
-                                        <th>AccessoriesCode</th>
-                                        <th>Remarks</th>
-                                        <th>Entry Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var access in Model)
-                                    {
-                                        sl = sl + 1;
-                                        <tr>
-                                            <td class="text-center" width="10%">@sl</td>
-                                            <td class="hide">@access.AccessoriesId</td>
-                                            <td>@access.AccessoriesName</td>
-                                            <td class="text-center">@access.AccessoriesCode</td>
-                                            <td class="text-center">@access.Remarks</td>
-                                            <td>@access.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@access.AccessoriesId"><i class="fas fa-pencil-alt"></i> </a>
-                                                <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@access.AccessoriesId"><i class="far fa-trash-alt"></i> </a>
-                                            </td>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-sm">
+                                <table class="table table-bordered table-sm table-striped" id="tblAccessoriesData">
+                                    <thead class="btn-dark">
+                                        <tr class="text-center">
+                                            <th>#SL</th>
+                                            <th class="hide"></th>
+                                            <th>AccessoriesName</th>
+                                            <th>AccessoriesCode</th>
+                                            <th>Remarks</th>
+                                            <th>Entry Date</th>
+                                            <th>Action</th>
                                         </tr>
-                                    }
-                                    @if (Model.Count() == 0)
-                                    {
-                                        <tr class="text-center empty-row">
-                                            <td colspan="5">
-                                                No Rows Found
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var access in Model)
+                                        {
+                                            sl = sl + 1;
+                                            <tr>
+                                                <td class="text-center" width="10%">@sl</td>
+                                                <td class="hide">@access.AccessoriesId</td>
+                                                <td>@access.AccessoriesName</td>
+                                                <td class="text-center">@access.AccessoriesCode</td>
+                                                <td class="text-center">@access.Remarks</td>
+                                                <td>@access.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                                                <td class="text-center">
+                                                    <a href="#" class="btn btn-outline-warning btn-sm data-edit-item" title="Edit" data-edit-item="@access.AccessoriesId"><i class="fas fa-pencil-alt"></i> </a>
+                                                    <a href="#" class="btn btn-outline-danger btn-sm data-del-item" title="Delete" data-del-item="@access.AccessoriesId"><i class="far fa-trash-alt"></i> </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        @if (Model.Count() == 0)
+                                        {
+                                            <tr class="text-center empty-row">
+                                                <td colspan="5">
+                                                    No Rows Found
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>*@
+        </div>*@
 </div>
 
 
@@ -437,10 +478,10 @@
 
             <div class="modal-footer btn-light">
                 <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
+                    <div id="msgSt" class="alert alert-success hide float-left">
                         Data has been saved Successful!
                     </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
+                    <div id="msgSt2" class="alert alert-danger hide float-left">
                         Data has been failed to save!
                     </div>
                 </div>
@@ -488,10 +529,10 @@
 
             <div class="modal-footer btn-light">
                 <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
+                    <div id="msgP" class="alert alert-success hide float-left">
                         Data has been saved Successful!
                     </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
+                    <div id="msgP2" class="alert alert-danger hide float-left">
                         Data has been failed to save!
                     </div>
                 </div>
@@ -539,10 +580,10 @@
 
             <div class="modal-footer btn-light">
                 <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
+                    <div id="msgF" class="alert alert-success hide float-left">
                         Data has been saved Successful!
                     </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
+                    <div id="msgF2" class="alert alert-danger hide float-left">
                         Data has been failed to save!
                     </div>
                 </div>
@@ -590,10 +631,10 @@
 
             <div class="modal-footer btn-light">
                 <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
+                    <div id="msgS" class="alert alert-success hide float-left">
                         Data has been saved Successful!
                     </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
+                    <div id="msgS2" class="alert alert-danger hide float-left">
                         Data has been failed to save!
                     </div>
                 </div>
@@ -604,6 +645,58 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalRepair" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add New Repair</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfRepairId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRepairName" class="control-label font-weight-bold">RepairName</label>
+                            <input type="text" name="txtRepairName" value="" id="txtRepairName" class="form-control form-control-sm" />
+                            <span class="error hide required-repairName font-weight-bold">Input Repair Name!</span>
+                            <span class="error hide duplicate-repairName font-weight-bold">Already Repair Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRepairCode" class="control-label font-weight-bold">Repair Code</label>
+                            <input type="text" name="txtRepairCode" value="" id="txtRepairCode" class="form-control form-control-sm" />
+                            <span class="error hide required-repairCode font-weight-bold">Input Repair Code!</span>
+                            <span class="error hide duplicate-repairCode font-weight-bold">Already Repair Code Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtRemarksRepair" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtRemarksRepair" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msgR" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msgR2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitRepair"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section scripts{
     <script type="text/javascript">
         //Accessories
@@ -612,6 +705,7 @@
         var txtAccessoriesCode = $("#txtAccessoriesCode");
         var txtRemarks = $("#txtRemarks");
         var searchByAccessories = $("#searchByAccessories");
+        var pageNo = 1;
         //Symptom
         var hdfProblemId = $("#hdfProblemId");
         var txtProblemName = $("#txtProblemName");
@@ -635,6 +729,12 @@
         var txtServicesCode = $("#txtServicesCode");
         var txtRemarksServices = $("#txtRemarksServices");
         var searchByServices = $("#searchByServices");
+        //Repair
+        var hdfRepairId = $("#hdfRepairId");
+        var txtRepairName = $("#txtRepairName");
+        var txtRepairCode = $("#txtRepairCode");
+        var txtRemarksRepair = $("#txtRemarksRepair");
+        var searchByRepair = $("#searchByRepair");
 
         $(document).ready(function () {
             $('.select2').select2();
@@ -644,6 +744,22 @@
                 theme: 'bootstrap4'
             });
             LoadDataInitializer();
+
+            if ('@tab' == "handsetsymptom") {
+                $("#custom-tabs-two-handsetSymtomList-tab").trigger('click');
+            }
+            if ('@tab' == "mobileparts") {
+                $("#custom-tabs-two-mobilePartsList-tab").trigger('click');
+            }
+            if ('@tab' == "fault") {
+                $("#custom-tabs-two-faultList-tab").trigger('click');
+            }
+            if ('@tab' == "services") {
+                $("#custom-tabs-two-servicesList-tab").trigger('click');
+            }
+            if ('@tab' == "repair") {
+                $("#custom-tabs-two-repairList-tab").trigger('click');
+            }
         })
 
         function LoadDataInitializer() {
@@ -652,13 +768,14 @@
             LoadMobilePartsDataTable();
             LoadFaultDataTable();
             LoadServicesDataTable();
+            LoadRepairDataTable();
         }
         searchByAccessories.keyup(function () {
             LoadAccessoriesDataTable()
         })
 
         function LoadAccessoriesDataTable() {
-            var data = { flag: "accessories", name: $.trim(searchByAccessories.val()) }
+            var data = { flag: "accessories", name: $.trim(searchByAccessories.val()), page: pageNo }
             $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
@@ -714,11 +831,20 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#modalAccessories");
-                    }
-                    else {
-                        message("#msg2");
-                    }
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList")');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                    //if (res == true) {
+                    //    message("#msg1", "#modalAccessories");
+                    //}
+                    //else {
+                    //    message("#msg2");
+                    //}
                     enable("#btnSubmit");
                 }).fail(function (err) {
                     console.log(err);
@@ -762,8 +888,8 @@
             var index = $(this).parent().parents('tr').index();
             bootbox.confirm('Are you sure you want to delete', function (result) {
                 if (result) {
-                    
-                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteAccessories', JSON.stringify({ id: id}), getToken())).then(function (res, status) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteAccessories', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
                         console.log(status);
                         console.log(res);
                         if (res === true) {
@@ -787,7 +913,7 @@
         })
 
         function LoadSymptomDataTable() {
-            var data = { flag: "symptom", name: $.trim(searchByHandsetSymptom.val()) }
+            var data = { flag: "symptom", name: $.trim(searchByHandsetSymptom.val()), page: pageNo }
             $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
@@ -838,15 +964,24 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#tblClientProblemData");
-                    }
-                    else {
-                        message("#msg2");
-                    }
-                    enable("#btnSubmit");
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "handsetsymptom" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                    //if (res == true) {
+                    //    message("#msgSt", "#tblClientProblemData");
+                    //}
+                    //else {
+                    //    message("#msgSt2");
+                    //}
+                    enable("#btnSubmitSymptom");
                 }).fail(function (err) {
                     console.log(err);
-                    enable("#btnSubmit");
+                    enable("#btnSubmitSymptom");
                 });
             }
 
@@ -907,7 +1042,7 @@
         })
 
         function LoadMobilePartsDataTable() {
-            var data = { flag: "parts", name: $.trim(searchByMobileParts.val()) }
+            var data = { flag: "parts", name: $.trim(searchByMobileParts.val()), page: pageNo }
             $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
@@ -967,15 +1102,24 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#tblMobilePartData");
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "mobileparts" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
                     }
-                    else {
-                        message("#msg2");
-                    }
-                    enable("#btnSubmit");
+                    //if (res == true) {
+                    //    message("#msgP", "#tblMobilePartData");
+                    //}
+                    //else {
+                    //    message("#msgP2");
+                    //}
+                    enable("#btnSubmitParts");
                 }).fail(function (err) {
                     console.log(err);
-                    enable("#btnSubmit");
+                    enable("#btnSubmitParts");
                 });
             }
 
@@ -1036,7 +1180,7 @@
         })
 
         function LoadFaultDataTable() {
-            var data = { flag: "fault", name: $.trim(searchByFault.val()) }
+            var data = { flag: "fault", name: $.trim(searchByFault.val()), page: pageNo }
             $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
@@ -1086,15 +1230,24 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#tblFaultData");
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "fault" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
                     }
-                    else {
-                        message("#msg2");
-                    }
-                    enable("#btnSubmit");
+                    //if (res == true) {
+                    //    message("#msgF", "#tblFaultData");
+                    //}
+                    //else {
+                    //    message("#msgF2");
+                    //}
+                    enable("#btnSubmitFault");
                 }).fail(function (err) {
                     console.log(err);
-                    enable("#btnSubmit");
+                    enable("#btnSubmitFault");
                 });
             }
         })
@@ -1156,7 +1309,7 @@
         })
 
         function LoadServicesDataTable() {
-            var data = { flag: "services", name: $.trim(searchByServices.val()) }
+            var data = { flag: "services", name: $.trim(searchByServices.val()), page: pageNo }
             $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
@@ -1207,15 +1360,24 @@
                     console.log(status);
                     console.log(res);
                     if (res == true) {
-                        message("#msg1", "#tblServiceData");
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "services" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
                     }
-                    else {
-                        message("#msg2");
-                    }
-                    enable("#btnSubmit");
+                    //if (res == true) {
+                    //    message("#msgS", "#tblServiceData");
+                    //}
+                    //else {
+                    //    message("#msgS2");
+                    //}
+                    enable("#btnSubmitServices");
                 }).fail(function (err) {
                     console.log(err);
-                    enable("#btnSubmit");
+                    enable("#btnSubmitServices");
                 });
             }
         })
@@ -1271,5 +1433,169 @@
                 }
             })
         })
+        ////////////Repair////////////////
+        searchByRepair.keyup(function () {
+            LoadRepairDataTable();
+        })
+
+        function LoadRepairDataTable() {
+            var data = { flag: "repair", name: $.trim(searchByRepair.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer6").empty();
+                    $("#dataContainer6").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+        function OpenModalRepair() {
+            clearCtrlRepair();
+            $("#spanModalHead").text('Add New Repair');
+            $("#spanSaveText").text('Save');
+            $("#modalRepair").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewRepair").click(function (e) {
+            e.preventDefault();
+            clearCtrlRepair();
+            OpenModalRepair();
+        })
+
+        function validateFormRepair() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtRepairName.val()) == "") {
+                $(".required-repairName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfRepairId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, repairName: txtRepairName.val().trim() }), '/Common2/IsDuplicateRepairNameC', getToken()) == true) {
+                    $(".duplicate-repairName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitRepair").click(function (e) {
+            e.preventDefault();
+            if (validateFormRepair() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ RepairId: TryParseInt(hdfRepairId.val(), 0), RepairName: txtRepairName.val(), RepairCode: txtRepairCode.val(), Remarks: txtRemarksRepair.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveRepair', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "repair" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                    }
+                    //if (res == true) {
+                    //    message("#msgR", "#tblRepairData");
+                    //}
+                    //else {
+                    //    message("#msgR2");
+                    //}
+                    enable("#btnSubmitRepair");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitRepair");
+                });
+            }
+        })
+
+        $(document).on("click", "a.data-edit-repair", function (e) {
+            e.preventDefault()
+            OpenModalRepair()
+            $("#spanModalHead").text('Update Repair');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+
+            hdfRepairId.val(td1);
+            txtRepairName.val(td2);
+            txtRepairCode.val(td3);
+            txtRemarksRepair.val(td4)
+
+        })
+
+        function clearCtrlRepair() {
+            hdfRepairId.val('0');
+            txtRepairName.val('');
+            txtRepairCode.val('');
+            txtRemarksRepair.val('');
+        }
+
+        //data-del-item
+
+        $(document).on('click', 'a.data-del-repair', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-del-repair');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/DeleteRepair', JSON.stringify({ id: id }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblRepairData", index);
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
+
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('accessories')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadAccessoriesDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('symptom')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadSymptomDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('parts')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadMobilePartsDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('fault')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadFaultDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('services')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadServicesDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('repair')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadRepairDataTable();
+                }
+            }
+        })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
     </script>
-    }
+}

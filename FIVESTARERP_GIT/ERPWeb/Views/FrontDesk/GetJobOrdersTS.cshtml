@@ -21,16 +21,16 @@
                 <div class="row text-sm">
                     <a href="~/Views/FrontDesk/_GetJobOrdersTS.cshtml"></a>
                     <div class="col-md-2">
+                        <label class="col-form-label">JobCode</label>
+                        <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
+                    </div>
+                    <div class="col-md-2">
                         <label class="col-form-label">Model</label>
                         @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "Select Model", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                     </div>
                     <div class="col-md-2">
                         <label class="col-form-label">Mobile No</label>
                         <input type="text" id="txtMobileNo" class="form-control form-control-sm" placeholder="Search By Mobile" />
-                    </div>
-                    <div class="col-md-2">
-                        <label class="col-form-label">JobCode</label>
-                        <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" />
                     </div>
                 </div>
 

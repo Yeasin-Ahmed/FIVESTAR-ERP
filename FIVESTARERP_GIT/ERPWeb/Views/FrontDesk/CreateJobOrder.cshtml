@@ -117,12 +117,14 @@
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
+                            <span class="error hide require-len-IMEI font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
                         </div>
                         <div class="col-md-3">
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2</label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                             <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
+                            <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI2 font-weight-bold">Already This IMEI2 Job Pending !</span>
                         </div>
                     </div>
@@ -299,6 +301,8 @@
         var txtApproxBill = $("#txtApproxBill");
         var txtSearchJobOrder = $("#txtSearchJobOrder");
         var chkHandset = $("#chkHandset");
+        var handsetDOA = $("#handsetDOA");
+        var handsetDAP = $("#handsetDAP");
 
         $(document).ready(function () {
             var date = new Date();
@@ -500,16 +504,6 @@
             });
         });
 
-        //function showHide() {
-        //    if (document.getElementById('ddlJobOrderType')) {
-        //        document.getElementById('warrantydate').style.visibility = 'visible';
-        //    }
-        //    else {
-
-        //        document.getElementById('warrantydate').style.visibility = 'hidden';
-        //    }
-        //}
-
         $(document).ready(function () {
             //ddlAccessories
             customerId.val('0');
@@ -625,52 +619,7 @@
         }
         //end
 
-        //Get Serch By IMEI2
-        //$("#SearchIMEI").click(function (e) {
-        //    e.preventDefault();
-        //    if ($.trim(txtSearchIMEI.val()) !== "") {
-        //        getIMEI2($.trim(txtSearchIMEI.val()));
-        //    }
-        //})
-        //function getIMEI2(imei2) {
-        //    var data = JSON.stringify({ imei2: imei2 });
-        //    $.when(postReqWithData(dataType.applicationJson, dataType.json, type.post, '/Common2/GetReferencesByIMEI2', data)).then(function (res, status) {
-        //        if (status === "success") {
-        //            if (res.JodOrderId > 0) {
-        //                txtIMEI.val(res.IMEI);
-        //                txtReferenceNumber.val(res.ReferenceNumber);
-        //                txtIMEI2.val(res.IMEI2);
-        //                ddlPhoneTypes.val(res.Type);
-        //                ddlPhoneTypes.trigger('change');
-        //                ddlModelColor.val(res.ModelColor); 
-        //                ddlModelColor.trigger('change');
-        //                ddlJobOrderType.val(res.JobOrderType);
-        //                ddlJobOrderType.trigger('change');
-        //                ddlCustomerType.val(res.CustomerType);
-        //                ddlCustomerType.trigger('change');
-        //                txtRemarks.val(res.Remarks);
-        //                if (ddlJobOrderType.val() == "Warrenty") {
-        //                    dptWarrantyDate.val(getDateFromJson(res.WarrantyDate));
-        //                }
-        //                ddlDescriptions.val(res.DescriptionId);
-        //                ddlDescriptions.trigger('change');
-        //                txtCustomer.val(res.CustomerName);
-        //                txtAddress.val(res.Address);
-        //                txtMobileNumber.val(res.MobileNo);
-        //                txtCourierName.val(res.CourierName);
-        //                txtCourierNumber.val(res.CourierNumber);
-        //                txtApproxBill.val(res.ApproxBill);
-
-        //            }
-        //            else {
-        //                //bootbox.alert('References is not found');
-        //            }
-        //        }
-        //    }).fail(function (error) {
-        //        console.log(error);
-        //    })
-        //}
-        //end
+       
 
         //Get Serch By JobOrder
         $("#searchJobOrder").click(function (e) {
@@ -787,6 +736,14 @@
                 $(".require-modelName").removeClass("hide"); 
                 isValid = false;
             }
+            if (txtIMEI.val().length !== 15) {
+                $(".require-len-IMEI").removeClass("hide");
+                isValid = false;
+            }
+            if (txtIMEI2.val().length !== 15) {
+                $(".require-len-IMEI2").removeClass("hide");
+                isValid = false;
+            }
             if (txtIMEI.val() === "") {
                 $(".require-IMEI").removeClass("hide");
                 isValid = false;
@@ -865,7 +822,7 @@
                     entryDate=   new Date(dptJobEntryDate.val());
                 }
 
-                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate, Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val(), CourierName: txtCourierName.val(), CourierNumber: txtCourierNumber.val(), ApproxBill: txtApproxBill.val() };
+                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsHandset: handsetDOA.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate, Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val(), CourierName: txtCourierName.val(), CourierNumber: txtCourierNumber.val(), ApproxBill: txtApproxBill.val() };
 
                 var aryAccessories = []; aryAccessories.length = 0;
                 var accessories = ddlAccessories.val();
@@ -885,6 +842,7 @@
 
                 var data = JSON.stringify({ jobOrder: jobOrder, jobOrderAccessories: aryAccessories, jobOrderProblems: aryProblems });
                 console.log(data);
+                //return console.log(data);
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrder', data, getToken())).then(function (res, status) {
                     if (res.IsSuccess === true && status === "success") {

@@ -159,7 +159,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dailyTransferDTO, dailyTransferView);
                 ViewBag.DashboardTotalTransferViewModel = dailyTransferView;
 
-                // Daily Job Transfer//25-10-2020
+                // Daily Job Receive//25-10-2020
                 IEnumerable<DashboardDailyReceiveJobOrderDTO> receiveJobDTO = _jobOrderBusiness.DashboardDailyReceiveJob(User.OrgId, User.BranchId);
                 IEnumerable<DashboardDailyReceiveJobOrderViewModel> receiveJOBView = new List<DashboardDailyReceiveJobOrderViewModel>();
                 AutoMapper.Mapper.Map(receiveJobDTO, receiveJOBView);

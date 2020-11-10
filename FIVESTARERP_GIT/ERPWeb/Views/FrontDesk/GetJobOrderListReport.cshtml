@@ -49,6 +49,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2">
+                                        <label class="control-label font-weight-bold">CustomerType</label>
+                                        @Html.DropDownList("ddlCustomerType", (IEnumerable<SelectListItem>)ViewBag.ddlCustomerType, "--Search By CustomerType--", new { @class = "form-control form-control-sm ctrl-changed " })
+                                    </div>
+                                    <div class="col-md-2">
                                         <label class="control-label font-weight-bold">From Date</label>
                                         <div class="input-group input-group-sm ">
                                             <input type="text" name="fromDate" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -101,6 +105,7 @@
         var hdfJobOrderId = $("#hdfJobOrderId");
         var txtIMEINo = $("#txtIMEINo");
         var txtIMEI2No = $("#txtIMEI2No");
+        var ddlCustomerType = $("#ddlCustomerType");
         //
         //
         var dptFromDate = $("#dptFromDate");
@@ -180,7 +185,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(modelId.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: jobstatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(modelId.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: jobstatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {

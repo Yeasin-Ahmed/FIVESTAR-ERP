@@ -174,7 +174,11 @@ order by EntryDate desc
 
         public bool SaveRequisitionStatus(long reqId, string status, long userId, long orgId, long branchId)
         {
-            var reqInfo = requsitionInfoForJobOrderRepository.GetOneByOrg(req => req.RequsitionInfoForJobOrderId == reqId && req.OrganizationId == orgId && req.BranchId == branchId);
+            var r = GetAllRequsitionInfoForJobOrderId(reqId, orgId);
+            var jobOrder = _jobOrderBusiness.GetJobOrderById(r.JobOrderId.Value, orgId);
+            var reqInfo = requsitionInfoForJobOrderRepository.GetOneByOrg(req => req.RequsitionInfoForJobOrderId == reqId && req.OrganizationId == orgId && req.BranchId == jobOrder.BranchId);
+
+             //reqInfo.JobOrderId
             if (reqInfo != null)
             {
                 reqInfo.StateStatus = status;

@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ERPBO.Configuration.ViewModels.MobilePartViewModel>
 @{ 
-    int sl = 0;
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
 }
 <div class="row">
     <div class="col-md-12 text-sm">
@@ -13,6 +14,7 @@
                     <th>Parts Code</th>
                     <th>Remarks</th>
                     <th>Entry Date</th>
+                    <th>EntryUser</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -20,13 +22,15 @@
                 @foreach (var part in Model)
                 {
                     sl = sl + 1;
+                    string entryDate = part.EntryDate != null ? part.EntryDate.Value.ToString("dd-MMM-yyy") : "";
                     <tr>
                         <td class="text-center" width="10%">@sl</td>
                         <td class="hide">@part.MobilePartId</td>
                         <td>@part.MobilePartName</td>
                         <td class="text-center">@part.MobilePartCode</td>
                         <td class="text-center">@part.Remarks</td>
-                        <td>@part.EntryDate</td>
+                        <td>@entryDate</td>
+                        <td>@part.EntryUser</td>
                         <td class="text-center">
                             <a href="#" class="btn btn-outline-warning btn-sm data-edit-parts" title="Edit" data-edit-parts="@part.MobilePartId"><i class="fas fa-pencil-alt"></i> </a>
                             <a href="#" class="btn btn-outline-danger btn-sm data-del-parts" title="Delete" data-del-parts="@part.MobilePartId"><i class="far fa-trash-alt"></i> </a>
@@ -44,4 +48,7 @@
             </tbody>
         </table>
     </div>
+</div>
+<div class="col-md-12 parts">
+    @Html.Partial("_Pagination", pagerData)
 </div>

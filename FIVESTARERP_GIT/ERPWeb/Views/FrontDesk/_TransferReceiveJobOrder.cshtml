@@ -6,67 +6,70 @@
     string isWarrantyPaperEnclosed = string.Empty;
     string badge = string.Empty;
 }
-<table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblTransferReceiveJob" id="tblTransferReceiveJob">
-    <thead class="btn-dark">
-        <tr class="text-center">
-            <th class="hide"></th>
-            <th style="vertical-align:middle">
-                <input type="checkbox" name="allJobOrder2" id="allJobOrder2" />
-            </th>
-            <th style="vertical-align:middle">#SL</th>
-            <th style="vertical-align:middle">JobCode</th>
-            <th style="vertical-align:middle">Model</th>
-            <th style="vertical-align:middle">Symptom</th>
-            <th style="vertical-align:middle">Accessories</th>
-            @*<th style="vertical-align:middle">Warrenty Available</th>*@
-            <th style="vertical-align:middle">Warrenty Paper</th>
-            <th style="vertical-align:middle">JobStatus</th>
-            <th style="vertical-align:middle">Issued by</th>
-            <th style="vertical-align:middle">CreateDate</th>
-            <th style="vertical-align:middle">Courier Name</th>
-            <th style="vertical-align:middle">Courier Number</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            badge = item.StateStatus == "Job-Initiated" ? "badge bg-success" : "badge bg-primary";
-            sl = sl + 1;
-            isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
-            isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-        <tr>
-            <td class="hide">@item.JodOrderId</td>
-            <td style="vertical-align:middle">
-                <input type="checkbox" name="jobOrderName2" data-item-val="@item.JodOrderId" data-code-val="@item.JobOrderCode" />
-            </td>
-            <td class="text-center text-bold">@sl</td>
-            <td class="text-center text-bold">@item.JobOrderCode</td>
-            <td>@item.ModelName</td>
-            <td>@item.Problems</td>
-            <td>@item.AccessoriesNames</td>
-            @*<td class="text-center">@isWarrantyAvailable</td>*@
-            <td class="text-center">@isWarrantyPaperEnclosed</td>
-            <td class="text-center" data-val="@item.StateStatus">
-                <span class="@badge">@item.StateStatus</span>
-            </td>
-            <td class="text-center text-bold">@item.EntryUser</td>
-            <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-            <td>
-                <input type="text" id="txtCourierName" class="form-control form-control-sm" value="@item.CourierName" />
-            </td>
-            <td>
-                <input type="text" id="txtCourierNumber" class="form-control form-control-sm" value="@item.CourierNumber" />
-            </td>
-        </tr>
-        }
-        @if (Model.Count() == 0)
-        {
-            <tr class="empty-row text-center">
-                <td colspan="14">No data found in the table</td>
+<div class="col-md-12">
+    <table class="table table-bordered table-sm table-striped table-responsive-lg text-sm tblTransferReceiveJob" id="tblTransferReceiveJob">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th class="hide"></th>
+                <th style="vertical-align:middle">
+                    <input type="checkbox" name="allJobOrder2" id="allJobOrder2" />
+                </th>
+                <th style="vertical-align:middle">#SL</th>
+                <th style="vertical-align:middle">Job Code</th>
+                <th style="vertical-align:middle">Model</th>
+                <th style="vertical-align:middle">Symptom</th>
+                <th style="vertical-align:middle">Accessories</th>
+                @*<th style="vertical-align:middle">Warrenty Available</th>*@
+                <th style="vertical-align:middle">Warrenty Paper</th>
+                <th style="vertical-align:middle">Job Status</th>
+                <th style="vertical-align:middle">Issued by</th>
+                <th style="vertical-align:middle">Create Date</th>
+                <th style="vertical-align:middle">Courier Name</th>
+                <th style="vertical-align:middle">Courier Number</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                badge = item.StateStatus == "Job-Initiated" ? "badge bg-success" : "badge bg-primary";
+                sl = sl + 1;
+                isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
+                isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
+                <tr>
+                    <td class="hide">@item.JodOrderId</td>
+                    <td style="vertical-align:middle">
+                        <input type="checkbox" name="jobOrderName2" data-item-val2="@item.JodOrderId" data-code-val2="@item.JobOrderCode" />
+                    </td>
+                    <td class="text-center text-bold">@sl</td>
+                    <td class="text-center text-bold">@item.JobOrderCode</td>
+                    <td>@item.ModelName</td>
+                    <td>@item.Problems</td>
+                    <td>@item.AccessoriesNames</td>
+                    @*<td class="text-center">@isWarrantyAvailable</td>*@
+                    <td class="text-center">@isWarrantyPaperEnclosed</td>
+                    <td class="text-center" data-val="@item.StateStatus">
+                        <span class="@badge">@item.StateStatus</span>
+                    </td>
+                    <td class="text-center text-bold">@item.EntryUser</td>
+                    <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                    <td>
+                        <input type="text" id="txtCourierName" class="form-control form-control-sm" value="@item.CourierName" />
+                    </td>
+                    <td>
+                        <input type="text" id="txtCourierNumber" class="form-control form-control-sm" value="@item.CourierNumber" />
+                    </td>
+                </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="empty-row text-center">
+                    <td colspan="14">No data found in the table</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 <div class="col-md-12 returnJob">
     @Html.Partial("_Pagination", pagerData)
 </div>

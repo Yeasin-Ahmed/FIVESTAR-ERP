@@ -342,6 +342,10 @@
     <Compile Include="FrontDeskContextMigrations\202010190548241_FrontDesk_JobLocation.Designer.cs">
       <DependentUpon>202010190548241_FrontDesk_JobLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202011090622355_FrontDesk_IsHandset_Columnadd.cs" />
+    <Compile Include="FrontDeskContextMigrations\202011090622355_FrontDesk_IsHandset_Columnadd.designer.cs">
+      <DependentUpon>202011090622355_FrontDesk_IsHandset_Columnadd.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -869,6 +873,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202010190548241_FrontDesk_JobLocation.resx">
       <DependentUpon>202010190548241_FrontDesk_JobLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202011090622355_FrontDesk_IsHandset_Columnadd.resx">
+      <DependentUpon>202011090622355_FrontDesk_IsHandset_Columnadd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

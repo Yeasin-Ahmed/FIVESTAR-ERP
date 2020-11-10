@@ -1,17 +1,17 @@
-﻿@model IEnumerable<ERPBO.Configuration.ViewModels.ServiceViewModel>
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.RepairViewModel>
 @{ 
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
 }
 <div class="row">
-    <div class="col-md-12 text-sm">
-        <table class="table table-bordered table-sm table-striped" id="tblServiceData">
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped" id="tblRepairData">
             <thead class="btn-dark">
                 <tr class="text-center">
                     <th>#SL</th>
                     <th class="hide"></th>
-                    <th>ServiceName</th>
-                    <th>Service Code</th>
+                    <th>RepairName</th>
+                    <th>RepairCode</th>
                     <th>Remarks</th>
                     <th>EntryDate</th>
                     <th>EntryUser</th>
@@ -19,21 +19,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var service in Model)
+                @foreach (var rep in Model)
                 {
                     sl = sl + 1;
-                    string entryDate = service.EntryDate != null ? service.EntryDate.Value.ToString("dd-MMM-yyy") : "";
+                    string entryDate = rep.EntryDate != null ? rep.EntryDate.Value.ToString("dd-MMM-yyy") : "";
                     <tr>
                         <td class="text-center" width="10%">@sl</td>
-                        <td class="hide">@service.ServiceId</td>
-                        <td>@service.ServiceName</td>
-                        <td>@service.ServiceCode</td>
-                        <td>@service.Remarks</td>
+                        <td class="hide">@rep.RepairId</td>
+                        <td>@rep.RepairName</td>
+                        <td>@rep.RepairCode</td>
+                        <td>@rep.Remarks</td>
                         <td>@entryDate</td>
-                        <td>@service.EntryUser</td>
+                        <td>@rep.EntryUser</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-services" title="Edit" data-edit-services="@service.ServiceId"><i class="fas fa-pencil-alt"></i> </a>
-                            <a href="#" class="btn btn-outline-danger btn-sm data-del-services" title="Delete" data-del-services="@service.ServiceId"><i class="far fa-trash-alt"></i> </a>
+                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-repair" title="Edit" data-edit-repair="@rep.RepairId"><i class="fas fa-pencil-alt"></i> </a>
+                            <a href="#" class="btn btn-outline-danger btn-sm data-del-repair" title="Delete" data-del-repair="@rep.RepairId"><i class="far fa-trash-alt"></i> </a>
                         </td>
                     </tr>
                 }
@@ -49,6 +49,6 @@
         </table>
     </div>
 </div>
-<div class="col-md-12 services">
+<div class="col-md-12 repair">
     @Html.Partial("_Pagination", pagerData)
 </div>
