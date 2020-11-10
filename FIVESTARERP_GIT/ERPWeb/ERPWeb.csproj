@@ -803,6 +803,12 @@
     <Content Include="Views\Production\GetStickerOneData.cshtml" />
     <Content Include="Views\SalesAndDistribution\_asm.cshtml" />
     <Content Include="Views\SalesAndDistribution\_tse.cshtml" />
+    <Content Include="Views\Configuration\_AccessoriesList.cshtml" />
+    <Content Include="Views\Configuration\_Fault.cshtml" />
+    <Content Include="Views\Configuration\_HandsetSymptom.cshtml" />
+    <Content Include="Views\Configuration\_MobileParts.cshtml" />
+    <Content Include="Views\Configuration\_Repair.cshtml" />
+    <Content Include="Views\Configuration\_Services.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
