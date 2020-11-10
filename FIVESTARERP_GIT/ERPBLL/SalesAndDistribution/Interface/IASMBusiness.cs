@@ -11,7 +11,7 @@ namespace ERPBLL.SalesAndDistribution.Interface
 {
     public interface IASMBusiness
     {
-        IEnumerable<ASMDTO> GetASMInformations(long orgId);
+        IEnumerable<ASMDTO> GetASMInformations(long orgId, long userId);
         ASM GetASMById(long id, long orgId);
         bool SaveASM(ASMDTO dto, SRUser sRUser, long userId, long branchId, long orgId);
     }

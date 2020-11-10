@@ -802,6 +802,7 @@
     <Content Include="Views\SalesAndDistribution\_rsm.cshtml" />
     <Content Include="Views\Production\GetStickerOneData.cshtml" />
     <Content Include="Views\SalesAndDistribution\_asm.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_tse.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

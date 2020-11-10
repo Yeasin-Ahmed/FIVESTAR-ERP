@@ -38,6 +38,7 @@ namespace ERPWeb.Controllers
         private readonly IZoneBusiness _zoneBusiness;
         private readonly IRSMBusiness _rSMBusiness;
         private readonly IASMBusiness _aSMBusiness;
+        private readonly ITSEBusiness _tSEBusiness;
         #endregion
 
         #region Inventory
@@ -47,7 +48,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Inventory.Interface.IDescriptionBusiness _invModelBusiness;
         private readonly ERPBLL.Inventory.Interface.IColorBusiness _invColorBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness, ITSEBusiness tSEBusiness)
         {
             #region Sales & Distribution
             this._dealerBusiness = dealerBusiness;
@@ -66,6 +67,7 @@ namespace ERPWeb.Controllers
             this._zoneBusiness = zoneBusiness;
             this._rSMBusiness = rSMBusiness;
             this._aSMBusiness = aSMBusiness;
+            this._tSEBusiness = tSEBusiness;
             #endregion
 
             #region Inventory
@@ -86,27 +88,13 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlBrand = new SelectList(_brandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
                 ViewBag.ddlDivision = new SelectList(_divisionBusiness.GetDivisions(User.OrgId), "DivisionId", "DivisionName");
                 ViewBag.ddlDistrictWithDivision = new SelectList(_districtBusiness.GetDistrictWithDivision(User.OrgId), "value", "text");
+                ViewBag.ddlDealerRepresentative = new SelectList(_dealerBusiness.GetDealerRepresentatives(User.OrgId), "value", "text");
+                ViewBag.ddlZoneWithDistrictAndDivision = new SelectList(_zoneBusiness.GetZoneWithDistrictAndDivision(User.OrgId), "value", "text");
                 return View();
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "dealer")
             {
-                var dto = this._dealerBusiness.GetDealers(User.OrgId).Select(s => new DealerDTO
-                {
-                    DealerId = s.DealerId,
-                    DealerName = s.DealerName,
-                    Address = s.Address,
-                    TelephoneNo = s.TelephoneNo,
-                    MobileNo = s.MobileNo,
-                    Email = s.Email,
-                    ContactPersonName = s.ContactPersonName,
-                    ContactPersonMobile = s.ContactPersonMobile,
-                    Remarks = s.Remarks,
-                    IsActive = s.IsActive,
-                    EUserId = s.EUserId,
-                    EntryDate = DateTime.Now,
-                    EntryUser = UserForEachRecord(s.EUserId.Value).UserName,
-                    UpdateUser = (s.UpUserId == null || s.UpUserId == 0) ? "" : UserForEachRecord(s.UpUserId.Value).UserName
-                }).ToList();
+                var dto = _dealerBusiness.GetDealerInformations(User.OrgId);
                 IEnumerable<DealerViewModel> viewModels = new List<DealerViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_dealer", viewModels);
@@ -440,17 +428,24 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="rsm")
             {
-                var dto =_rSMBusiness.GetRSMInformations(User.OrgId);
+                var dto =_rSMBusiness.GetRSMInformations(User.OrgId,User.UserId);
                 List<RSMViewModel> viewModels = new List<RSMViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_rsm", viewModels);
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "asm")
             {
-                var dto = _aSMBusiness.GetASMInformations(User.OrgId);
+                var dto = _aSMBusiness.GetASMInformations(User.OrgId,User.UserId);
                 List<ASMViewModel> viewModels = new List<ASMViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_asm", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "tse")
+            {
+                var dto = _tSEBusiness.GetTSEInformations(User.OrgId, User.UserId);
+                List<TSEViewModel> viewModels = new List<TSEViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_tse", viewModels);
             }
             return View();
         }
@@ -477,6 +472,19 @@ namespace ERPWeb.Controllers
                 ASMDTO dto = new ASMDTO();
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = _aSMBusiness.SaveASM(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveTSE(TSEViewModel model, SRUser sRUser)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                TSEDTO dto = new TSEDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _tSEBusiness.SaveTSE(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
             }
             return Json(IsSuccess);
         }

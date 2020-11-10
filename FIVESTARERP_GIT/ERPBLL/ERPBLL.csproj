@@ -405,7 +405,9 @@
     <Compile Include="SalesAndDistribution\Interface\IASMBusiness.cs" />
     <Compile Include="SalesAndDistribution\Interface\IRSMBusiness.cs" />
     <Compile Include="SalesAndDistribution\ASMBusiness.cs" />
+    <Compile Include="SalesAndDistribution\Interface\ITSEBusiness.cs" />
     <Compile Include="SalesAndDistribution\RSMBusiness.cs" />
+    <Compile Include="SalesAndDistribution\TSEBusiness.cs" />
     <Compile Include="SalesAndDistribution\ZoneBusiness.cs" />
     <Compile Include="SalesAndDistribution\DistrictBusiness.cs" />
     <Compile Include="SalesAndDistribution\DivisionBusiness.cs" />

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.ASMViewModel>
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.TSEViewModel>
 @{
     int sl = 0;
 }
@@ -34,7 +34,7 @@
                     string loginBadge = item.IsAllowToLogIn ? "badge badge-success" : "badge badge-warning";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
-                        <td data-val="@item.ASMID" data-val-rsm="@item.RSMUserId">@item.FullName</td>
+                        <td data-val="@item.TSEID" data-val-rsm="@item.ASMUserId">@item.FullName</td>
                         <td data-val="@item.ZoneId">@item.ZoneName</td>
                         <td data-val="@item.DistrictId">@item.DistrictName</td>
                         <td data-val="@item.DivisionId">@item.DivisionName</td>
@@ -51,7 +51,7 @@
                         <td class="text-center">@item.EntryUser</td>
                         <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                         <td class="text-center">
-                            <a class="btn btn-sm btn-flat btn-warning data-asm-edit" style="cursor:pointer" data-asm-edit="@item.ASMID">
+                            <a class="btn btn-sm btn-flat btn-warning data-tse-edit" style="cursor:pointer" data-tse-edit="@item.TSEID">
                                 <span class="fas fa-pen"></span> Edit
                             </a>
                         </td>

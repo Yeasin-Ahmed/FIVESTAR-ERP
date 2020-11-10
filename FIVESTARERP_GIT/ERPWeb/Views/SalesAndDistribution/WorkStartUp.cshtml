@@ -463,6 +463,32 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
+                                <label for="ddlDistrictWithDivisionDealer" class="control-label font-weight-bold">Zone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-road"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlDistrictWithDivisionDealer", (IEnumerable<SelectListItem>)ViewBag.ddlDistrictWithDivision, "---Select District---", new { @class = "form-control form-control-sm select2" })
+                                </div>
+                                <span class="error hide required-dealer-district font-weight-bold">Zone is required!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ddlZoneWithDistrictAndDivision" class="control-label font-weight-bold">Zone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-road"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlZoneWithDistrictAndDivision", (IEnumerable<SelectListItem>)ViewBag.ddlZoneWithDistrictAndDivision, "---Select Zone---", new { @class = "form-control form-control-sm" })
+                                </div>
+                                <span class="error hide required-dealer-zone font-weight-bold">Zone is required!</span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
                                 <label for="txtTelephone" class="control-label font-weight-bold">Telephone</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -531,6 +557,23 @@
                                     </div>
                                     <input type="text" name="txtRemarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ddlDealerRepresentative" class="control-label font-weight-bold">Representative</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-shield"></i>
+                                        </span>
+                                    </div>
+                                    @Html.DropDownList("ddlDealerRepresentative", (IEnumerable<SelectListItem>)ViewBag.ddlDealerRepresentative, "---Select Representative---", new { @class = "form-control form-control-sm" })
+                                </div>
+                                <span class="error hide required-dealer-rep font-weight-bold">Representative is required!</span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                
                             </div>
                         </div>
                     </form>
@@ -964,6 +1007,8 @@
         var txtContactPersonMobile = $("#txtContactPersonMobile");
         var txtRemarks = $("#txtRemarks");
         var chkStatestatus = $("#chkStatestatus");
+        var ddlDealerRepresentative = $("#ddlDealerRepresentative");
+        var ddlZoneWithDistrictAndDivision = $("#ddlZoneWithDistrictAndDivision");
 
         // Category
         var hdfCategoryId = $("#hdfCategoryId");
@@ -1190,6 +1235,8 @@
             txtRemarks.val('');
             chkStatestatus.prop("checked", false);
             txtDealerName.focus();
+            ddlDealerRepresentative.val('');
+            ddlZoneWithDistrictAndDivision.val('');
         }
 
         function validateDealer() {
@@ -1201,6 +1248,14 @@
             }
             if ($.trim(txtAddress.val()) == '') {
                 $(".required-address").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlDealerRepresentative.val() == '') {
+                $(".required-dealer-rep").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlZoneWithDistrictAndDivision.val() == '') {
+                $(".required-dealer-zone").removeClass("hide");
                 isValid = false;
             }
             return isValid;
@@ -1220,8 +1275,16 @@
             txtEmail.val(tds.eq(6).html());
             txtContactPersonName.val(tds.eq(7).html());
             txtContactPersonMobile.val(tds.eq(8).html());
-            txtRemarks.val(tds.eq(9).html())
-            if (tds.eq(10).attr("data-val") == "Active") {
+            var delRep = tds.eq(9).attr("data-val")+'#' + tds.eq(9).attr("data-user") +'#'+ tds.eq(9).attr("data-flag");
+            var delZone = tds.eq(10).attr("data-zone") +'#'+ tds.eq(10).attr("data-district") +'#'+ tds.eq(10).attr("data-division");
+            //consoleLog("Deal Rep")
+            //consoleLog(delRep);
+            //consoleLog("Deal Zone")
+            //consoleLog(delZone);
+            ddlDealerRepresentative.val(delRep);
+            ddlZoneWithDistrictAndDivision.val(delZone);
+            txtRemarks.val(tds.eq(11).html())
+            if (tds.eq(12).attr("data-val") == "Active") {
                 chkStatestatus.prop("checked", true);
             }
         })
@@ -1231,6 +1294,8 @@
             if (validateDealer()) {
 
                 disable("#btnSubmitDealer");
+                var rep = ddlDealerRepresentative.val().split("#");
+                var zone = ddlZoneWithDistrictAndDivision.val().split("#");
                 var data = JSON.stringify({
                     DealerId: hdfDealerId.val(),
                     DealerName: txtDealerName.val(),
@@ -1241,9 +1306,17 @@
                     ContactPersonName: txtContactPersonName.val(),
                     ContactPersonMobile: txtContactPersonMobile.val(),
                     Remarks: txtRemarks.val(),
-                    IsActive: chkStatestatus.is(":checked")
+                    IsActive: chkStatestatus.is(":checked"),
+                    RepresentativeId: rep[0],
+                    RepresentativeUserId: rep[1],
+                    RepresentativeFlag: rep[2],
+                    ZoneId: zone[0],
+                    DistrictId: zone[1],
+                    DivisionId: zone[2]
                 })
 
+                //consoleLog(data);
+                //return;
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDealer', data, getToken())).then(function (res, status) {
                     if (res === true && status === "success") {
                         toastrSuccessAlert(execuStatus.successSave);

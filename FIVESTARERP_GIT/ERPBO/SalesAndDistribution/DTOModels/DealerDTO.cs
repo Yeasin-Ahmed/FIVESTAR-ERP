@@ -33,11 +33,22 @@ namespace ERPBO.SalesAndDistribution.DTOModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long ZoneId { get; set; }
+        public long DistrictId { get; set; }
+        public long DivisionId { get; set; }
+        public long RepresentativeId { get; set; }
+        public long RepresentativeUserId { get; set; }
+        [StringLength(50)]
+        public string RepresentativeFlag { get; set; }
 
         // Custom Properties //
         [StringLength(100)]
         public string EntryUser { get; set; }
         [StringLength(100)]
         public string UpdateUser { get; set; }
+        public string ZoneName { get; set; }
+        public string DistrictName { get; set; }
+        public string DivisionName { get; set; }
+        public string RepresentativeName { get; set; }
     }
 }

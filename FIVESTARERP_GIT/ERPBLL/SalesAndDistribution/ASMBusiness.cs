@@ -29,15 +29,16 @@ namespace ERPBLL.SalesAndDistribution
         {
             return _aSMRepository.GetOneByOrg(s => s.ASMID == id && s.OrganizationId == orgId);
         }
-        public IEnumerable<ASMDTO> GetASMInformations(long orgId)
+        public IEnumerable<ASMDTO> GetASMInformations(long orgId,long userId)
         {
             return _salesAndDistributionDb.Db.Database.SqlQuery<ASMDTO>(string.Format(@"Select asm.ASMID,asm.FullName,asm.[Address],asm.MobileNo,asm.Email,asm.Remarks,asm.IsActive,asm.IsAllowToLogIn,
-asm.EntryDate,asm.EUserId,app.UserName 'EntryUser',asm.DivisionId,dv.DivisionName,asm.DistrictId,dis.DistrictName,ISNULL(asm.UserId,0) 'UserId'
+asm.EntryDate,asm.EUserId,app.UserName 'EntryUser',z.ZoneName,asm.ZoneId,asm.DivisionId,dv.DivisionName,asm.DistrictId,dis.DistrictName,ISNULL(asm.UserId,0) 'UserId'
 From tblASM asm
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on app.UserId = asm.EUserId
+Inner Join tblZone z on asm.ZoneId =z.ZoneId
 Inner Join tblDivision dv on asm.DivisionId =dv.DivisionId
 Inner Join tblDistrict dis on asm.DistrictId =dis.DistrictId
-Where 1=1 and asm.OrganizationId={0}", orgId)).ToList();
+Where 1=1 and asm.OrganizationId={0} and  asm.EUserId={1}", orgId,userId)).ToList();
         }
         public bool SaveASM(ASMDTO dto, SRUser sRUser, long userId, long branchId, long orgId)
         {
@@ -58,7 +59,10 @@ Where 1=1 and asm.OrganizationId={0}", orgId)).ToList();
                     EUserId = userId,
                     EntryDate = DateTime.Now,
                     OrganizationId = orgId,
-                    BranchId = branchId
+                    BranchId = branchId,
+                    RSMUserId = userId,
+                    ZoneId = dto.ZoneId,
+                    Remarks = dto.Remarks
                 };
                 if (dto.IsAllowToLogIn)
                 {
@@ -82,10 +86,12 @@ Where 1=1 and asm.OrganizationId={0}", orgId)).ToList();
                     asm.MobileNo = dto.MobileNo;
                     asm.IsActive = dto.IsActive;
                     asm.IsAllowToLogIn = dto.IsAllowToLogIn;
+                    asm.ZoneId = dto.ZoneId;
                     asm.DistrictId = dto.DistrictId;
                     asm.DivisionId = dto.DivisionId;
                     asm.UpUserId = userId;
                     asm.UpdateDate = DateTime.Now;
+                    asm.Remarks = dto.Remarks;
                     if (dto.IsAllowToLogIn && asm.UserId == 0)
                     {
                         SaveASMUser(dto, sRUser, userId, branchId, orgId, out asmUserId);

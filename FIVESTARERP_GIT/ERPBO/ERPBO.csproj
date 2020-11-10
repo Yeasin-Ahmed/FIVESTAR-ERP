@@ -616,6 +616,7 @@
     <Compile Include="ControlPanel\DomainModels\Organization.cs" />
     <Compile Include="Inventory\DomainModels\Warehouse.cs" />
     <Compile Include="SalesAndDistribution\CommonModels\SalesHierarchyCommonModel.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\TSE.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\ASM.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Brand.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\BrandCategories.cs" />
@@ -630,6 +631,7 @@
     <Compile Include="SalesAndDistribution\DomainModels\Model.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\ModelColors.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Zone.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\TSEDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BrandCategoriesDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BrandDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BTRCApprovedIMEIDTO.cs" />
@@ -644,6 +646,7 @@
     <Compile Include="SalesAndDistribution\DTOModels\ASMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\RSMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ZoneDTO.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\TSEViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\ASMViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandCategoriesViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandViewModel.cs" />

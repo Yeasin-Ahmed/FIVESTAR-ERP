@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace ERPBLL.SalesAndDistribution.Interface
 {
-    public interface IRSMBusiness
+    public interface ITSEBusiness
     {
-        IEnumerable<RSMDTO> GetRSMInformations(long orgId,long userId);
-        RSM GetRSMById(long id, long orgId);
-        bool SaveRSM(RSMDTO dto, SRUser sRUser, long userId, long branchId, long orgId);
-        IEnumerable<RSM> GetRSMByOrg(long orgId);
+        IEnumerable<TSEDTO> GetTSEInformations(long orgId, long userId);
+        TSE GetTSEById(long id, long orgId);
+        bool SaveTSE(TSEDTO dto, SRUser sRUser, long userId, long branchId, long orgId);
     }
 }

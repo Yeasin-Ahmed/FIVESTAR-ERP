@@ -43,5 +43,11 @@ namespace ERPWeb.Infrastructure
         public long BranchId { get; set; }
         public string BranchName { get; set; }
         public string AppType { get; set; }
+        public long ZoneId { get; set; }
+        public string ZoneName { get; set; }
+        public long DistrictId { get; set; }
+        public string DistrictName { get; set; }
+        public long DivisionId { get; set; }
+        public string DivisionName { get; set; }
     }
 }

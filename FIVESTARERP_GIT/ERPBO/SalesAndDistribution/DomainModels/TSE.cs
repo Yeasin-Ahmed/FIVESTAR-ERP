@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace ERPBO.SalesAndDistribution.DomainModels
 {
-    [Table("tblASM")]
-    public class ASM: SalesHierarchyCommonModel
+    [Table("tblTSE")]
+    public class TSE: SalesHierarchyCommonModel
     {
         [Key]
-        public long ASMID { get; set; }
-        public long RSMUserId { get; set; }
+        public long TSEID { get; set; }
+        public long ASMUserId { get; set; }
         public long ZoneId { get; set; }
     }
 }

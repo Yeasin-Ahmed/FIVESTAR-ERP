@@ -33,7 +33,7 @@ namespace ERPBLL.SalesAndDistribution
         {
             return _rSMRepository.GetAll(s => s.OrganizationId == orgId).ToList();
         }
-        public IEnumerable<RSMDTO> GetRSMInformations(long orgId)
+        public IEnumerable<RSMDTO> GetRSMInformations(long orgId, long userId)
         {
             return _salesAndDistributionDb.Db.Database.SqlQuery<RSMDTO>(string.Format(@"Select rsm.RSMID,rsm.FullName,rsm.[Address],rsm.MobileNo,rsm.Email,rsm.Remarks,rsm.IsActive,rsm.IsAllowToLogIn,
 rsm.EntryDate,rsm.EUserId,app.UserName 'EntryUser',rsm.DivisionId,dv.DivisionName,rsm.DistrictId,dis.DistrictName,ISNULL(rsm.UserId,0) 'UserId'
@@ -41,7 +41,7 @@ From tblRSM rsm
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on app.UserId = rsm.EUserId
 Inner Join tblDivision dv on rsm.DivisionId =dv.DivisionId
 Inner Join tblDistrict dis on rsm.DistrictId =dis.DistrictId
-Where 1=1 and rsm.OrganizationId={0}", orgId)).ToList();
+Where 1=1 and rsm.OrganizationId={0} and rsm.EUserId={1}", orgId,userId)).ToList();
         }
         public bool SaveRSM(RSMDTO dto, SRUser sRUser, long userId, long branchId, long orgId)
         {

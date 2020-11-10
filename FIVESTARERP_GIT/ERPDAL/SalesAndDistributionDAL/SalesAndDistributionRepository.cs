@@ -120,4 +120,12 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
+    public class TSERepository : SalesAndDistributionBaseRepository<TSE>
+    {
+        public TSERepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
 }

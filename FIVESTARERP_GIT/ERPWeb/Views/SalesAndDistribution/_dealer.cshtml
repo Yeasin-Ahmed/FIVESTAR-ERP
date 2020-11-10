@@ -20,6 +20,8 @@
                     <th>Email</th>
                     <th>Contact_Person</th>
                     <th>Contact_Mobile</th>
+                    <th>Representative</th>
+                    <th>Zone</th>
                     <th>Remarks</th>
                     <th>StateStaus</th>
                     <th>EntryUser</th>
@@ -33,6 +35,7 @@
                     sl = sl + 1;
                     badge = dealer.IsActive ? "badge bg-success" : "badge bg-danger";
                     string status = dealer.IsActive ? "Active" : "Inactive";
+                    string zoneName = dealer.ZoneName + " [" + dealer.DistrictName + "-" + dealer.DivisionName+"]";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
                         <td class="hide">@dealer.DealerId</td>
@@ -43,6 +46,10 @@
                         <td>@dealer.Email</td>
                         <td>@dealer.ContactPersonName</td>
                         <td>@dealer.ContactPersonMobile</td>
+                        <td class="text-center" data-val="@dealer.RepresentativeId" data-user="@dealer.RepresentativeUserId" data-flag="@dealer.RepresentativeFlag">@dealer.RepresentativeName</td>
+                        <td class="text-center" data-zone="@dealer.ZoneId" data-district="@dealer.DistrictId" data-division="@dealer.DivisionId">
+                            @zoneName
+                        </td>
                         <td>@dealer.Remarks</td>
                         <td class="text-center" data-val="@status">
                             <span class="@badge">@status</span>

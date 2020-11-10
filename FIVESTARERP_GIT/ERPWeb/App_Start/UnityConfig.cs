@@ -232,6 +232,7 @@ namespace ERPWeb
             container.RegisterType<IZoneBusiness, ZoneBusiness>();
             container.RegisterType<IRSMBusiness, RSMBusiness>();
             container.RegisterType<IASMBusiness, ASMBusiness>();
+            container.RegisterType<ITSEBusiness, TSEBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
