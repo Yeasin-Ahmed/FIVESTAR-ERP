@@ -45,12 +45,12 @@ namespace ERPBLL.FrontDesk
             return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.OrganizationId == orgId);
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType)
+        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType)).ToList();
         }
 
-        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType)
+        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -77,6 +77,10 @@ namespace ERPBLL.FrontDesk
                 if (!string.IsNullOrEmpty(customerType))
                 {
                     param += string.Format(@"and jo.CustomerType ='{0}'", customerType);
+                }
+                if (!string.IsNullOrEmpty(jobType))
+                {
+                    param += string.Format(@"and jo.JobOrderType ='{0}'", jobType);
                 }
                 if (!string.IsNullOrEmpty(jobCode))
                 {
@@ -172,7 +176,7 @@ Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.Descripti
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
 
-Where 1 = 1{0}) tbl Order By EntryDate desc
+Where 1 = 1{0}) tbl Order By JobOrderCode desc
 ", Utility.ParamChecker(param));
             return query;
         }

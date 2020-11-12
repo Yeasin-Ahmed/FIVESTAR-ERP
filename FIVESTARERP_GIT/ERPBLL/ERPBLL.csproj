@@ -99,6 +99,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\AccountsHeadBusiness.cs" />
+    <Compile Include="Accounts\Interface\IAccountsHeadBusiness.cs" />
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Configuration\AccessoriesBusiness.cs" />

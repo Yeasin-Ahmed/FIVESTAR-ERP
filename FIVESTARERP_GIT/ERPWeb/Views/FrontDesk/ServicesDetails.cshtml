@@ -41,7 +41,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 text-center">
-                                <b style="color:darkblue">JobOrder : @jobOrder.JobOrderCode</b>
+                                <b style="color:darkblue">Job Order : @jobOrder.JobOrderCode</b>
                             </div>
                             <div class="col-md-2"></div>
                             <div class="col-md-4">
@@ -59,7 +59,7 @@
                                         <tr>
                                             <td>Name: <b>@jobOrder.CustomerName</b></td>
                                             <td>Address: <b>@jobOrder.Address</b></td>
-                                            <td>MobileNo: <b>@jobOrder.MobileNo</b></td>
+                                            <td>Mobile No: <b>@jobOrder.MobileNo</b></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -89,7 +89,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <b>F.DeskRemarks:</b> @jobOrder.Remarks
+                                                <b>F.Desk Remarks:</b> @jobOrder.Remarks
                                             </td>
                                         </tr>
                                     </tbody>
@@ -186,7 +186,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <b>Repair: </b>@repair.RepairName
+                                                <b>Repair: </b><span id="repairName">@repair.RepairName</span> 
                                             </td>
                                         </tr>
                                     </tbody>
@@ -237,7 +237,7 @@
                                         <b style="color:darkblue">Parts Requsition </b>
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="#" class="btn btn-outline-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
+                                        <a href="#" class="btn btn-success btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Requsition</a>
                                     </div>
                                 </div>
                                 <hr />
@@ -306,16 +306,16 @@
                                             <th>#SL</th>
                                             <th class="hide"></th>
                                             <th class="hide"></th>
-                                            <th class="hide">SWarehouseName</th>
+                                            <th class="hide">SWarehouse Name</th>
                                             <th class="hide"></th>
-                                            <th>RequsitionCode</th>
+                                            <th>Requsition Code</th>
                                             <th class="hide"></th>
-                                            <th>PartsName</th>
-                                            <th>PartsCode</th>
+                                            <th>Parts Name</th>
+                                            <th>Parts Code</th>
                                             <th>Qty.</th>
-                                            <th class="hide">UsedQty</th>
-                                            <th class="hide">TotalQty</th>
-                                            <th class="hide">ReturnQty</th>
+                                            <th class="hide">Used Qty.</th>
+                                            <th class="hide">Total Qty.</th>
+                                            <th class="hide">Return Qty.</th>
                                             <th class="hide">Remarks</th>
                                         </tr>
                                     </thead>
@@ -347,10 +347,13 @@
                     </div>
 
                     <div class="col-md-1">
-                        <input class="btn btn-outline-primary btn-sm float-lg-right" value="Save" type="button" id="btnSave" onclick="window.close()" />
+                        <input class="btn btn-success btn-sm float-lg-right" value="Save" type="button" id="btnSave" onclick="window.close()" />
                         @*<a href="#" class="btn btn-outline-primary btn-sm float-lg-right" id="btnJobSave"><i></i> Save</a>*@
                     </div>
-                    <a href="#" class="btn btn-outline-danger btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
+                    <div id="btnjobsign">
+                        <a href="#" class="btn btn-danger btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -371,7 +374,7 @@
                     <input type="hidden" name="Id" id="hdfSymptomId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="ddlSymptomName" class="control-label font-weight-bold">Symptom Name</label>
+                            <label for="ddlSymptomName" class="control-label font-weight-bold">Symptom Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlSymptomName", (IEnumerable<SelectListItem>)ViewBag.ddlSymptomName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-Symptom font-weight-bold">Input Symptom!</span>
                             <span class="error hide duplicate-Symptom font-weight-bold">Alrady Symptom Exist!</span>
@@ -414,7 +417,7 @@
                     <input type="hidden" name="Id" id="hdfFaultId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="ddlFaultName" class="control-label font-weight-bold">Fault Name</label>
+                            <label for="ddlFaultName" class="control-label font-weight-bold">Fault Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlFaultName", (IEnumerable<SelectListItem>)ViewBag.ddlFaultName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-faultName font-weight-bold">Input Fault!</span>
                             <span class="error hide duplicate-faultName font-weight-bold">Alrady Fault Exist!</span>
@@ -457,7 +460,7 @@
                     <input type="hidden" name="Id" id="hdfServicesId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="ddlServiceName" class="control-label font-weight-bold">Service Name</label>
+                            <label for="ddlServiceName" class="control-label font-weight-bold">Service Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlServiceName", (IEnumerable<SelectListItem>)ViewBag.ddlServiceName, new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide required-ServiceName font-weight-bold">Input Service!</span>
                             <span class="error hide duplicate-servicesName font-weight-bold">Alrady Service Exist!</span>
@@ -500,7 +503,7 @@
                     <input type="hidden" name="Id" id="hdfRepairId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="ddlRepairName" class="control-label font-weight-bold">Repair Name</label>
+                            <label for="ddlRepairName" class="control-label font-weight-bold">Repair Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlRepairName", (IEnumerable<SelectListItem>)ViewBag.ddlRepairName, "--Select Repair--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide required-Repair font-weight-bold">Input Repair!</span>
                         </div>
@@ -541,7 +544,7 @@
                 <form id="frmCustomer">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtTSRemarks" class="control-label font-weight-bold">TSRemarks</label>
+                            <label for="txtTSRemarks" class="control-label font-weight-bold">TS Remarks</label>
                             <input type="text" name="remarks" value="" id="txtTSRemarks" class="form-control form-control-sm" />
                         </div>
                     </div>
@@ -582,18 +585,18 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4 hide">
-                            <label for="ddlServicesWarehouse" class="control-label font-weight-bold">S.Warehouse Name</label>
+                            <label for="ddlServicesWarehouse" class="control-label font-weight-bold">S.Warehouse Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm" })
                             <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="ddlMobilePart" class="control-label font-weight-bold">Parts Name</label>
+                            <label for="ddlMobilePart" class="control-label font-weight-bold">Parts Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlMobilePart", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-parts font-weight-bold">Parts is required !</span>
                             <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="txtStockInQty" class="control-label font-weight-bold">Quantity<span id="stockQty" class="font-weight-bold mt-2 stockQty" style="color:red"></span></label>
+                            <label for="txtStockInQty" class="control-label font-weight-bold">Quantity<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup><span id="stockQty" class="font-weight-bold mt-2 stockQty" style="color:red"></span></label>
                             <div class="input-group">
                                 <div class="col-sm-8">
                                     <input type="number" placeholder="Qty" name="quantity" id="txtStockInQty" class="form-control form-control-sm" />
@@ -621,7 +624,7 @@
                             <thead>
                                 <tr>
                                     <th colspan="9">
-                                        <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                                        <button class="btn btn-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
                                     </th>
                                 </tr>
                                 <tr class="btn-dark text-center">
@@ -655,7 +658,7 @@
                         <tr class="text-center">
                             <th>#SL</th>
                             <th class="hide"></th>
-                            <th>RequsitionCode</th>
+                            <th>Requsition Code</th>
                             <th class="hide"></th>
                             <th>Parts Name</th>
                             <th>Qty.</th>
@@ -676,7 +679,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-sm btn-success float-right" id="btnReturnStock"> <span id="spanSaveText">Speare Parts Return</span> </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnReturnStock"> <span id="spanSaveText">SignOut</span> </button>
             </div>
         </div>
     </div>
@@ -948,6 +951,14 @@
         var hdfRepairId = $("#hdfRepairId");
         var ddlRepairName = $("#ddlRepairName");
         var txtRepairRemarks = $("#txtRepairRemarks");
+       // var repairName = $("#repairName");
+        //var btnjobsign = $("#btnjobsign");
+
+        $(document).ready(function () {
+            if ($("#repairName").text() != "REPAIR AND RETURN" && $("#repairName").text() != "RETURN WITHOUT REPAIR") {
+                $("#btnjobsign").hide();
+            }
+        });
 
         function OpenRepairModal() {
             clearCtrlRepair();
@@ -1160,8 +1171,9 @@ $('.toastrDefaultError').trigger('click');
                             })
 
         $("#btnSubmit").click(function (e) {
-                                e.preventDefault();
-                                $(".error").addClass("hide");
+            e.preventDefault();
+            if ($("#tblRequsitionDetailForJobOrders tbody tr").length > 0) {
+                $(".error").addClass("hide");
                                 bootbox.confirm("Are you sure you want to save?", function (result) {
                                     if (result) {
                                         disable("#btnSubmit");
@@ -1209,6 +1221,8 @@ $('.toastrDefaultError').trigger('click');
                         enable("#btnSubmit");
                                 }
                             });
+            }
+                                
         });
         function clearCtrlTsRemarks() {
 

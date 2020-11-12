@@ -14,10 +14,10 @@
                         <a class="nav-link active" id="custom-tabs-two-jobTransferList-tab" data-toggle="pill" href="#custom-tabs-two-jobTransferList" role="tab" aria-controls="custom-tabs-two-jobTransferList" aria-selected="true">Job Transfer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-receiveJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-receiveJobOrderList" role="tab" aria-controls="custom-tabs-two-receiveJobOrderList" aria-selected="true">Receive JobOrder</a>
+                        <a class="nav-link" id="custom-tabs-two-receiveJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-receiveJobOrderList" role="tab" aria-controls="custom-tabs-two-receiveJobOrderList" aria-selected="true">Receive Job Order</a>
                     </li>
                     <li class="nav-item hide">
-                        <a class="nav-link " id="custom-tabs-two-returnJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-returnJobOrderList" role="tab" aria-controls="custom-tabs-two-returnJobOrderList" aria-selected="true">Return JobOrder</a>
+                        <a class="nav-link " id="custom-tabs-two-returnJobOrderList-tab" data-toggle="pill" href="#custom-tabs-two-returnJobOrderList" role="tab" aria-controls="custom-tabs-two-returnJobOrderList" aria-selected="true">Return Job Order</a>
                     </li>
                     <li class="nav-item hide">
                         <a class="nav-link" id="custom-tabs-two-receivedReturnJobList-tab" data-toggle="pill" href="#custom-tabs-two-receivedReturnJobList" role="tab" aria-controls="custom-tabs-two-receivedReturnJobList" aria-selected="false">Receive Return Job</a>
@@ -63,7 +63,7 @@
                                             </div>
                                             <div class="col-md-1"></div>
                                             <div class="col-md-5">
-                                                <button type="submit" id="btnSubmit" class="btn float-right btn-outline-primary"> Submit <i class="fas fa-paper-plane"></i></button>
+                                                <button type="submit" id="btnSubmit" class="btn float-right btn-success"> Submit <i class="fas fa-paper-plane"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    Receive JobOrder List
+                                                    Receive Job Order List
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -109,12 +109,12 @@
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">ReceiveCondition</label>
+                                                <label class="control-label font-weight-bold">Receive Condition<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                                                 @Html.DropDownList("ddlReceiveCondition", (IEnumerable<SelectListItem>)ViewBag.ddlReceiveCondition, "Select Condition", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                                                 <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">BranchName</label>
+                                                <label class="control-label font-weight-bold">Branch Name</label>
                                                 @Html.DropDownList("ddlBranchName2", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName2, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                                                 <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                                             </div>
@@ -123,11 +123,11 @@
                                                 <input type="text" id="txtTransferCode2" class="form-control form-control-sm" placeholder="Search By DO No" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">JobCode</label>
+                                                <label class="control-label font-weight-bold">Job Code</label>
                                                 <input type="text" id="txtJobCode2" class="form-control form-control-sm" placeholder="Search By JobCode" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">TransferStatus</label>
+                                                <label class="control-label font-weight-bold">Transfer Status</label>
                                                 @Html.DropDownList("ddlTransferStatus2", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus2, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                             <div class="col-md-2">
@@ -178,7 +178,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h5 class="text-center text-bold">
-                                                    Return JobOrder List
+                                                    Return Job Order List
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
@@ -246,20 +246,20 @@
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">RepairBranch</label>
+                                                <label class="control-label font-weight-bold">Repair Branch</label>
                                                 @Html.DropDownList("ddlBranchName4", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName4, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                                                 <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">TransferCode</label>
+                                                <label class="control-label font-weight-bold">Transfer Code</label>
                                                 <input type="text" id="txtTransferCode4" class="form-control form-control-sm" placeholder="Search By Code" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">JobCode</label>
+                                                <label class="control-label font-weight-bold">Job Code</label>
                                                 <input type="text" id="txtJobCode4" class="form-control form-control-sm" placeholder="Search By JobCode" />
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">TransferStatus</label>
+                                                <label class="control-label font-weight-bold">Transfer Status</label>
                                                 @Html.DropDownList("ddlTransferStatus4", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus4, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                             <div class="col-md-2">
@@ -310,7 +310,7 @@
             <div class="modal-header alert-secondary" style="height:60px">
                 @Html.AntiForgeryToken()
                 <input type="hidden" id="hdfJobOrderId" />
-                <h4 id="modalHeading" class="modal-title">JobOrder Details</h4>
+                <h4 id="modalHeading" class="modal-title">Job Order Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" id="dataContainer5">
@@ -602,7 +602,7 @@
                                     var pdfWindow = window.open("", "_blank")
                                     console.log(res.text);
                                     pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
-                                    download(res.text, "DeliveryChallan", "application/pdf"); // Download
+                                    //download(res.text, "DeliveryChallan", "application/pdf"); // Download
 
                                     count = 0;
                                     setTimeout(function () {
@@ -663,7 +663,7 @@
                                 var pdfWindow = window.open("", "_blank")
                                 console.log(res.text);
                                 pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
-                                download(res.text, "DeliveryChallan", "application/pdf"); // Download
+                                //download(res.text, "DeliveryChallan", "application/pdf"); // Download
                                 count = 0;
                                 setTimeout(function () {
                             redirectPage('@Url.Action("GetJobTransferList")');
@@ -785,9 +785,10 @@
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateReceiveJob', data, getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $('.toastrDefaultSuccess').trigger('click');
-                    setTimeout(function () {
+                    @*setTimeout(function () {
                             redirectPage('@Url.Action("GetJobTransferList", new { tab = "ReceiveJobOrder" })');
-                    }, 1000);
+                    }, 1000);*@
+                    LoadDataTableForReceiveJob();
                 }
                 else {
                     $('.toastrDefaultError').trigger('click');
@@ -922,10 +923,10 @@
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateReturnJob', data, getToken())).then(function (res, status) {
                 if (res === true && status === "success") {
                     $('.toastrDefaultSuccess').trigger('click');
-                    setTimeout(function () {
+                    @*setTimeout(function () {
                             redirectPage('@Url.Action("GetJobTransferList",new {tab="ReceiveReturnJob" })');
-                    }, 1000);
-                    
+                    }, 1000);*@
+                    LoadDataTableForReceiveReturnJob();
                 }
                 else {
                     $('.toastrDefaultError').trigger('click');

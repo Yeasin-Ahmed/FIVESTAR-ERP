@@ -1429,6 +1429,7 @@
             var id = TryParseInt($(this).attr("data-item-val"));
             hdfReturnInfoId.val(id);
             var data = { id: id };
+            //return console.log(data);
             $.when(getReqWithData(dataType.html, type.get, '/User/ReturnStockDetails', data)).then(function (res, status) {
                 if (status == "success") {
                     $("#dataContainer1").empty();
@@ -1557,6 +1558,19 @@
             })
         })
         //////////Warehouse Stock Out
+        $(document).on('click', ".btnPending", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.pending);
+        })
+        $(document).on('click', ".btnReject", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.reject);
+        })
+        $(document).on('click', ".btnIssue", function (e) {
+            e.preventDefault();
+            fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.approved);
+        })
+        //
         $(document).on('click', ".btnPending2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.pending);

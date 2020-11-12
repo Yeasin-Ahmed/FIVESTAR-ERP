@@ -1,3 +1,5 @@
+using ERPBLL.Accounts;
+using ERPBLL.Accounts.Interface;
 using ERPBLL.Configuration;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.ControlPanel;
@@ -14,6 +16,7 @@ using ERPBLL.ReportSS;
 using ERPBLL.ReportSS.Interface;
 using ERPBLL.SalesAndDistribution;
 using ERPBLL.SalesAndDistribution.Interface;
+using ERPDAL.AccountsDAL;
 using ERPDAL.ConfigurationDAL;
 using ERPDAL.ControlPanelDAL;
 using ERPDAL.FrontDeskDAL;
@@ -233,6 +236,11 @@ namespace ERPWeb
             container.RegisterType<IRSMBusiness, RSMBusiness>();
             container.RegisterType<IASMBusiness, ASMBusiness>();
             container.RegisterType<ITSEBusiness, TSEBusiness>();
+            #endregion
+
+            #region Accounts
+            container.RegisterType<IAccountsUnitOfWork, AccountsUnitOfWork>();
+            container.RegisterType<IAccountsHeadBusiness, AccountsHeadBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

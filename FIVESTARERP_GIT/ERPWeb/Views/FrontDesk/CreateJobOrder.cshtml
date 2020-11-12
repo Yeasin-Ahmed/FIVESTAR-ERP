@@ -82,46 +82,46 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="txtCustomer" class="control-label font-weight-bold">Customer Name</label>
+                            <label for="txtCustomer" class="control-label font-weight-bold">Customer Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" class="form-control form-control-sm" id="txtCustomer" />
                             <span class="error hide require-customer font-weight-bold">Customer name is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="txtMobileNumber" class="control-label font-weight-bold">Mobile Number</label>
+                            <label for="txtMobileNumber" class="control-label font-weight-bold">Mobile Number<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" class="form-control form-control-sm" id="txtMobileNumber" />
                             <span class="error hide require-mobile font-weight-bold">Mobile No is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="txtAddress" class="control-label font-weight-bold">Address</label>
+                            <label for="txtAddress" class="control-label font-weight-bold">Address<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <textarea id="txtAddress" class="form-control form-control-sm" cols="10" rows="1"></textarea>
                             <span class="error hide require-address font-weight-bold">Mobile No is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="ddlCustomerType" class="control-label font-weight-bold">CustomerType</label>
+                            <label for="ddlCustomerType" class="control-label font-weight-bold">Customer Type<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlCustomerType", (IEnumerable<SelectListItem>)ViewBag.ddlCustomerType, "--Select CustomerType--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-customerType font-weight-bold">Customer Type is required !</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="ddlDescriptions" class="control-label font-weight-bold">Model</label>
+                            <label for="ddlDescriptions" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-modelName font-weight-bold">Model is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type</label>
+                            <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlPhoneTypes", (IEnumerable<SelectListItem>)ViewBag.ddlPhoneTypes, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-Type font-weight-bold">Mobile Type is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="txtIMEI" class="control-label font-weight-bold">IMEI1</label>
+                            <label for="txtIMEI" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
                             <span class="error hide require-len-IMEI font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2</label>
+                            <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                             <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
                             <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
@@ -130,22 +130,22 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="ddlModelColor" class="control-label font-weight-bold">Color</label>
+                            <label for="ddlModelColor" class="control-label font-weight-bold">Color<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="ddlProblems" class="control-label font-weight-bold">Symptom</label>
+                            <label for="ddlProblems" class="control-label font-weight-bold">Symptom<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Symptom--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide require-problem font-weight-bold">Symptom is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="ddlAccessories" class="control-label font-weight-bold">Accessories</label>
+                            <label for="ddlAccessories" class="control-label font-weight-bold">Accessories<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
                             <span class="error hide require-accessories font-weight-bold">Accessories is required !</span>
                         </div>
                         <div class="col-md-3">
-                            <label for="ddlJobOrderType" class="control-label font-weight-bold">JobOrder Type</label>
+                            <label for="ddlJobOrderType" class="control-label font-weight-bold">JobOrder Type<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlJobOrderType", (IEnumerable<SelectListItem>)ViewBag.ddlJobOrderType, "Select JobOrder Type", new { @class = "form-control form-control-sm ddlJobOrderType" })
                             <span class="error hide require-type font-weight-bold">JobOrderType is required !</span>
                         </div>
@@ -847,7 +847,7 @@
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveJobOrder', data, getToken())).then(function (res, status) {
                     if (res.IsSuccess === true && status === "success") {
                         $('.toastrDefaultSuccess').trigger('click');
-                        download(res.file, res.FileName, "application/pdf"); // Download
+                        //download(res.file, res.FileName, "application/pdf"); // Download
                         var pdfWindow = window.open("", "_blank")
                         console.log(res.File);
                         pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.file + "'></embed >");

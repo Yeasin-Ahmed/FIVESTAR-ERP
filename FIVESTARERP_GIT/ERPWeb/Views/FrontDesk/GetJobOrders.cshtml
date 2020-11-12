@@ -79,6 +79,14 @@
                                         </div>
                                         <div class="row text-sm">
                                             <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Customer Type</label>
+                                                @Html.DropDownList("ddlCustomerType", (IEnumerable<SelectListItem>)ViewBag.ddlCustomerType, "--Search By CustomerType--", new { @class = "form-control form-control-sm ctrl-changed " })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Job Type</label>
+                                                @Html.DropDownList("ddlJobType", (IEnumerable<SelectListItem>)ViewBag.ddlJobType, "--Search By Job Type--", new { @class = "form-control form-control-sm ctrl-changed " })
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -97,7 +105,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -312,7 +319,7 @@
                 <form id="frmInvoice">
                     <div class="form-row">
                         <div class="form-group col-md-2">
-                            <label for="txtLabourCharge" class="control-label font-weight-bold">LabourCharge</label>
+                            <label for="txtLabourCharge" class="control-label font-weight-bold">Labour Charge</label>
                             <input type="number" name="labourCharge" value="" id="txtLabourCharge" class="form-control form-control-sm" />
                         </div>
                         <div class="form-group col-md-2">
@@ -377,6 +384,8 @@
         var dptToDate2 = $("#dptToDate2");
         var txtInvoice = $("#txtInvoice");
         var txtMobileNo2 = $("#txtMobileNo2");
+        var ddlCustomerType = $("#ddlCustomerType");
+        var ddlJobType = $("#ddlJobType");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -483,7 +492,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {
@@ -677,10 +686,12 @@
                     setTimeout(function () {
                                     redirectPage('@Url.Action("GetJobOrders")');
                                 }, 1000);
+                   // LoadDataTable();
+
                     var pdfWindow = window.open("", "_blank")
                     console.log(res.File);
                     pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
-                    download(res.File, res.FileName, "application/pdf"); // Download
+                    //download(res.File, res.FileName, "application/pdf"); // Download
                 }
             }).fail(function (error) {
                 console.log(error);
@@ -700,7 +711,7 @@
                     var pdfWindow = window.open("", "_blank")
                     console.log(res.File);
                     pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
-                    download(res.File, res.FileName, "application/pdf"); // Download
+                    //download(res.File, res.FileName, "application/pdf"); // Download
                 }
             }).fail(function (error) {
                 console.log(error);

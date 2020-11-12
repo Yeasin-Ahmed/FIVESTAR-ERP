@@ -121,8 +121,8 @@ namespace ERPBLL.Common
     {
         public static readonly string Warrenty = "Warrenty";
         public static readonly string Billing = "Billing";
-        public static readonly string WarrentyBounce = "Warrenty Bounce";
-        public static readonly string BillingBounce = "Billing Bounce";
+        //public static readonly string WarrentyBounce = "Warrenty Bounce";
+        //public static readonly string BillingBounce = "Billing Bounce";
     }
     public class PhoneTypes
     {

@@ -13,19 +13,19 @@
                 <tr class="text-center">
                     <th class="hide"></th>
                     <th style="vertical-align:middle">#SL</th>
-                    <th style="vertical-align:middle">JobCode</th>
-                    <th style="vertical-align:middle">CustomerName</th>
-                    <th style="vertical-align:middle">MobileNo</th>
-                    <th style="vertical-align:middle">Address</th>
+                    <th style="vertical-align:middle">Job Code</th>
+                    <th style="vertical-align:middle">Customer Name</th>
+                    <th style="vertical-align:middle">Mobile No</th>
+                    @*<th style="vertical-align:middle">Address</th>*@
                     <th style="vertical-align:middle">Model</th>
                     <th style="vertical-align:middle">Symptom</th>
                     <th style="vertical-align:middle">Accessories</th>
                     @*<th style="vertical-align:middle">Warrenty Available</th>*@
                     <th style="vertical-align:middle">Warrenty Paper</th>
-                    <th style="vertical-align:middle">JobStatus</th>
-                    <th style="vertical-align:middle">FromBranch</th>
+                    <th style="vertical-align:middle">Job Status</th>
+                    <th style="vertical-align:middle">From Branch</th>
                     <th style="vertical-align:middle">Issued by</th>
-                    <th style="vertical-align:middle">CreateDate</th>
+                    <th style="vertical-align:middle">Create Date</th>
                     <th style="vertical-align:middle">Action</th>
                 </tr>
             </thead>
@@ -42,7 +42,7 @@
                         <td class="text-center text-bold">@item.JobOrderCode</td>
                         <td>@item.CustomerName</td>
                         <td>@item.MobileNo</td>
-                        <td>@item.Address</td>
+                        @*<td>@item.Address</td>*@
                         <td>@item.ModelName</td>
                         <td>@item.Problems</td>
                         <td>@item.AccessoriesNames</td>
@@ -55,7 +55,7 @@
                         <td class="text-center text-bold">@item.EntryUser</td>
                         <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                         <td style="vertical-align:middle">
-                            <button href="#" class="btn btn-sm btn-info data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
+                            <button href="#" class="btn btn-sm btn-success data-item-pull" data-item-val="@item.JodOrderId" title="Pull">
                                 <i class="fas fa-download"> Pull</i>
                             </button>
                         </td>

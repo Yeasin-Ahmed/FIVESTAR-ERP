@@ -247,7 +247,7 @@ namespace ERPWeb.Controllers
 
             
         }
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
        
         public ActionResult ReturnStockDetails(long id)
         {

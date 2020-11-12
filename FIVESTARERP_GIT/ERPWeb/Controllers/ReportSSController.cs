@@ -50,10 +50,10 @@ namespace ERPWeb.Controllers
 
         #region JobOrderList
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate,string ddlCustomerType, string rptType)
+        public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate,string ddlCustomerType,string ddlJobType, string rptType)
         {
             bool IsSuccess = false;
-            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate,ddlCustomerType).ToList();
+            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate,ddlCustomerType, ddlJobType).ToList();
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);

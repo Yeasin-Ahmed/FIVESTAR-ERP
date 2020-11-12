@@ -188,8 +188,8 @@ namespace ERPBLL.Common
             {
                 new Dropdown(){text=JobOrderTypes.Warrenty,value=JobOrderTypes.Warrenty},
                 new Dropdown(){text=JobOrderTypes.Billing,value=JobOrderTypes.Billing},
-                new Dropdown(){text=JobOrderTypes.WarrentyBounce,value=JobOrderTypes.WarrentyBounce},
-                new Dropdown(){text=JobOrderTypes.BillingBounce,value=JobOrderTypes.BillingBounce}
+                //new Dropdown(){text=JobOrderTypes.WarrentyBounce,value=JobOrderTypes.WarrentyBounce},
+                //new Dropdown(){text=JobOrderTypes.BillingBounce,value=JobOrderTypes.BillingBounce}
             };
             return dropdowns;
         }

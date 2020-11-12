@@ -74,6 +74,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountsContextMigrations\202011110603211_Accounts_tblAccountsHead.cs" />
+    <Compile Include="AccountsContextMigrations\202011110603211_Accounts_tblAccountsHead.Designer.cs">
+      <DependentUpon>202011110603211_Accounts_tblAccountsHead.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountsContextMigrations\Configuration.cs" />
+    <Compile Include="AccountsDAL\AccountsBaseRepository.cs" />
+    <Compile Include="AccountsDAL\AccountsDbContext.cs" />
+    <Compile Include="AccountsDAL\AccountsRepository.cs" />
+    <Compile Include="AccountsDAL\AccountsUnitOfWork.cs" />
+    <Compile Include="AccountsDAL\IAccountsUnitOfWork.cs" />
     <Compile Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.cs" />
     <Compile Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.Designer.cs">
       <DependentUpon>202005310415074_Configuration_DbInitialize.cs</DependentUpon>
@@ -734,6 +744,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AccountsContextMigrations\202011110603211_Accounts_tblAccountsHead.resx">
+      <DependentUpon>202011110603211_Accounts_tblAccountsHead.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.resx">
       <DependentUpon>202005310415074_Configuration_DbInitialize.cs</DependentUpon>
     </EmbeddedResource>

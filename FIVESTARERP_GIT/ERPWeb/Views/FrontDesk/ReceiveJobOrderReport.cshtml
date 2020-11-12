@@ -51,20 +51,20 @@
                                                 <form method="get">
                                                     <div class="row text-sm">
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">BranchName</label>
+                                                            <label class="control-label font-weight-bold">Branch Name</label>
                                                             @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                                                             <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">TransferCode</label>
+                                                            <label class="control-label font-weight-bold">Transfer Code</label>
                                                             <input type="text" id="txtTransferCode" class="form-control form-control-sm" placeholder="Search By Code" name="transferCode" />
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">JobCode</label>
+                                                            <label class="control-label font-weight-bold">Job Code</label>
                                                             <input type="text" id="txtJobCode" class="form-control form-control-sm" placeholder="Search By JobCode" name="jobCode" />
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">TransferStatus</label>
+                                                            <label class="control-label font-weight-bold">Transfer Status</label>
                                                             @Html.DropDownList("ddlTransferStatus", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                                                         </div>
                                                         <div class="col-md-2">
@@ -144,20 +144,20 @@
                                                 <form method="get">
                                                     <div class="row text-sm">
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">RepairBranch</label>
+                                                            <label class="control-label font-weight-bold">Repair Branch</label>
                                                             @Html.DropDownList("ddlBranchName2", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName2, "--Select Branch--", new { @class = "form-control form-control-sm ctrl-changed select2 select2-danger ctrl-changed" })
                                                             <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">TransferCode</label>
+                                                            <label class="control-label font-weight-bold">Transfer Code</label>
                                                             <input type="text" id="txtTransferCode2" class="form-control form-control-sm" placeholder="Search By Code" />
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">JobCode</label>
+                                                            <label class="control-label font-weight-bold">Job Code</label>
                                                             <input type="text" id="txtJobCode2" class="form-control form-control-sm" placeholder="Search By JobCode" />
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <label class="control-label font-weight-bold">TransferStatus</label>
+                                                            <label class="control-label font-weight-bold">Transfer Status</label>
                                                             @Html.DropDownList("ddlTransferStatus2", (IEnumerable<SelectListItem>)ViewBag.ddlTransferStatus2, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                                                         </div>
                                                         <div class="col-md-2">
