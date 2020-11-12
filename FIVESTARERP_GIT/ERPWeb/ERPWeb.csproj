@@ -814,6 +814,7 @@
     <Content Include="Views\SalesAndDistribution\_invBrand.cshtml" />
     <Content Include="Views\SalesAndDistribution\_invColor.cshtml" />
     <Content Include="Views\SalesAndDistribution\_invModel.cshtml" />
+    <Content Include="Views\Accounts\GetAccountsHeadList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
