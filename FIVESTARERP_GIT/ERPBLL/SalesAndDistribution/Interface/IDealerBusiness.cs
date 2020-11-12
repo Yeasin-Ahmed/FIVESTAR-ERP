@@ -1,4 +1,5 @@
 ﻿using ERPBO.Common;
+using ERPBO.SalesAndDistribution.CommonModels;
 using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using System;
@@ -14,7 +15,7 @@ namespace ERPBLL.SalesAndDistribution.Interface
         IEnumerable<Dealer> GetDealers(long orgId);
         IEnumerable<DealerDTO> GetDealerInformations(long orgId);
         Dealer GetDealerById(long id, long orgId);
-        bool SaveDealer(DealerDTO dealer, long userId, long orgId);
+        bool SaveDealer(DealerDTO dealer, SRUser user, long userId,long branchId, long orgId);
         IEnumerable<Dropdown> GetDealerRepresentatives(long orgId);
     }
 }

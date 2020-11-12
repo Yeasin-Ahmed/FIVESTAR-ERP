@@ -1,0 +1,54 @@
+﻿
+@model IEnumerable<ERPBO.Inventory.ViewModels.ColorViewModel>
+@{
+    ViewBag.Title = "Colors";
+    int sl = 0;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-striped table-bordered table-sm table-responsive-lg tblColors" id="tblColors">
+            <thead class="text-center">
+                <tr class="btn-dark">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Color</th>
+                    <th>StateStatus</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+
+                    string status = item.IsActive ? "Active" : "Inactive";
+                    string badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.ColorId</td>
+                        <td>@item.ColorName</td>
+                        <td class="text-center" data-val="@item.IsActive">
+                            <span class="@badge">@status</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-warning btn-flat data-color-edit" data-color-edit="@item.ColorId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center text-bold empty-row">
+                        <td colspan="10">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

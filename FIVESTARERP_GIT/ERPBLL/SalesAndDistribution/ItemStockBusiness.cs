@@ -1,6 +1,6 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.SalesAndDistribution.Interface;
-using ERPBO.SalesAndDistribution.DomainModels;
+using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
 using System;
 using System.Collections.Generic;

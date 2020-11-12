@@ -40,6 +40,8 @@ namespace ERPBO.SalesAndDistribution.DTOModels
         public long RepresentativeUserId { get; set; }
         [StringLength(50)]
         public string RepresentativeFlag { get; set; }
+        public bool IsAllowToLogIn { get; set; }
+        public long? UserId { get; set; }
 
         // Custom Properties //
         [StringLength(100)]

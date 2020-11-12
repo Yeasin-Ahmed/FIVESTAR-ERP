@@ -236,6 +236,7 @@ namespace ERPWeb
             container.RegisterType<IRSMBusiness, RSMBusiness>();
             container.RegisterType<IASMBusiness, ASMBusiness>();
             container.RegisterType<ITSEBusiness, TSEBusiness>();
+            container.RegisterType<ISalesRepresentativeBusiness, SalesRepresentativeBusiness>();
             #endregion
 
             #region Accounts

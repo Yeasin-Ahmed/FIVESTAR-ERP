@@ -402,6 +402,14 @@
     <Compile Include="InventoryContextMigrations\202011010430514_Inventory_ModelColor.Designer.cs">
       <DependentUpon>202011010430514_Inventory_ModelColor.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202011111200482_Inventory_AddCostPriceAndSalePriceAndFlagInModel.cs" />
+    <Compile Include="InventoryContextMigrations\202011111200482_Inventory_AddCostPriceAndSalePriceAndFlagInModel.Designer.cs">
+      <DependentUpon>202011111200482_Inventory_AddCostPriceAndSalePriceAndFlagInModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.cs" />
+    <Compile Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.Designer.cs">
+      <DependentUpon>202011120949407_Inventory_Add_tbl_HandSetStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -732,6 +740,42 @@
     <Compile Include="SalesAndDistributionContextMigrations\202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.Designer.cs">
       <DependentUpon>202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011100757233_SalesAndDistribution_AddZoneIdInRSM.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011100757233_SalesAndDistribution_AddZoneIdInRSM.Designer.cs">
+      <DependentUpon>202011100757233_SalesAndDistribution_AddZoneIdInRSM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011100804400_SalesAndDistribution_AddReportingSRInASMandTSE.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011100804400_SalesAndDistribution_AddReportingSRInASMandTSE.Designer.cs">
+      <DependentUpon>202011100804400_SalesAndDistribution_AddReportingSRInASMandTSE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011100843022_SalesAndDistribution_tbl_SalesRepresentative.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011100843022_SalesAndDistribution_tbl_SalesRepresentative.Designer.cs">
+      <DependentUpon>202011100843022_SalesAndDistribution_tbl_SalesRepresentative.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011110935393_SalesAndDistribution_AddIsAllowToLoginInDealer.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011110935393_SalesAndDistribution_AddIsAllowToLoginInDealer.Designer.cs">
+      <DependentUpon>202011110935393_SalesAndDistribution_AddIsAllowToLoginInDealer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011111204313_SalesAndDistribution_AddCostPriceAndSalePriceAndFlagInModel.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011111204313_SalesAndDistribution_AddCostPriceAndSalePriceAndFlagInModel.Designer.cs">
+      <DependentUpon>202011111204313_SalesAndDistribution_AddCostPriceAndSalePriceAndFlagInModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011120133071_SalesAndDistribution_AddFlagInModel.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011120133071_SalesAndDistribution_AddFlagInModel.Designer.cs">
+      <DependentUpon>202011120133071_SalesAndDistribution_AddFlagInModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011120158534_SalesAndDistribution_UpdateItemStockTbl.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011120158534_SalesAndDistribution_UpdateItemStockTbl.Designer.cs">
+      <DependentUpon>202011120158534_SalesAndDistribution_UpdateItemStockTbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011120226167_SalesAndDistribution_Add_tbl_StoreMasterStock.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011120226167_SalesAndDistribution_Add_tbl_StoreMasterStock.Designer.cs">
+      <DependentUpon>202011120226167_SalesAndDistribution_Add_tbl_StoreMasterStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.Designer.cs">
+      <DependentUpon>202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -972,6 +1016,12 @@
     <EmbeddedResource Include="InventoryContextMigrations\202011010430514_Inventory_ModelColor.resx">
       <DependentUpon>202011010430514_Inventory_ModelColor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202011111200482_Inventory_AddCostPriceAndSalePriceAndFlagInModel.resx">
+      <DependentUpon>202011111200482_Inventory_AddCostPriceAndSalePriceAndFlagInModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.resx">
+      <DependentUpon>202011120949407_Inventory_Add_tbl_HandSetStock.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1208,6 +1258,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.resx">
       <DependentUpon>202011090624568_SalesAndDistribution_AddRepresentativeFlagInDealer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011100757233_SalesAndDistribution_AddZoneIdInRSM.resx">
+      <DependentUpon>202011100757233_SalesAndDistribution_AddZoneIdInRSM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011100804400_SalesAndDistribution_AddReportingSRInASMandTSE.resx">
+      <DependentUpon>202011100804400_SalesAndDistribution_AddReportingSRInASMandTSE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011100843022_SalesAndDistribution_tbl_SalesRepresentative.resx">
+      <DependentUpon>202011100843022_SalesAndDistribution_tbl_SalesRepresentative.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011110935393_SalesAndDistribution_AddIsAllowToLoginInDealer.resx">
+      <DependentUpon>202011110935393_SalesAndDistribution_AddIsAllowToLoginInDealer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011111204313_SalesAndDistribution_AddCostPriceAndSalePriceAndFlagInModel.resx">
+      <DependentUpon>202011111204313_SalesAndDistribution_AddCostPriceAndSalePriceAndFlagInModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011120133071_SalesAndDistribution_AddFlagInModel.resx">
+      <DependentUpon>202011120133071_SalesAndDistribution_AddFlagInModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011120158534_SalesAndDistribution_UpdateItemStockTbl.resx">
+      <DependentUpon>202011120158534_SalesAndDistribution_UpdateItemStockTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011120226167_SalesAndDistribution_Add_tbl_StoreMasterStock.resx">
+      <DependentUpon>202011120226167_SalesAndDistribution_Add_tbl_StoreMasterStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.resx">
+      <DependentUpon>202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

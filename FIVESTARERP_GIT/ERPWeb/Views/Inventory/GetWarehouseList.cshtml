@@ -1292,7 +1292,7 @@
             if (validateDescriptionTAC()) {
                 disable("#btnSubmitDescription");
                 var colors = ddlColors.val().length > 0 ? ddlColors.val() : [];
-                var data = JSON.stringify({ DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), DescriptionName: txtModel.val(), TAC: txtTACNo.val(), StartPoint: TryParseInt(txtStartPoint.val(), 0), EndPoint: TryParseInt(txtEndPoint.val(), 0), Color: colors, Remarks: txtRemarksDescription.val(), IsActive: chkStatestatusDescription.is(":checked"), CategoryId: TryParseInt(ddlModelCategories.val(), 0), BrandId: TryParseInt(ddlModelBrand.val(), 0) })
+                var data = JSON.stringify({ DescriptionId: TryParseInt(hdfDescriptionId.val(), 0), DescriptionName: txtModel.val(), TAC: txtTACNo.val(), StartPoint: TryParseInt(txtStartPoint.val(), 0), EndPoint: TryParseInt(txtEndPoint.val(), 0), Color: colors, Remarks: txtRemarksDescription.val(), IsActive: chkStatestatusDescription.is(":checked"), CategoryId: TryParseInt(ddlModelCategories.val(), 0), BrandId: TryParseInt(ddlModelBrand.val(), 0), Flag:"Internal" })
 
                 console.log(data);
                 //return;

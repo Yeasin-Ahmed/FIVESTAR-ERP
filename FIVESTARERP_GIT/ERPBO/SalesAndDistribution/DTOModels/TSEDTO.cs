@@ -7,7 +7,7 @@ namespace ERPBO.SalesAndDistribution.DTOModels
     {
         public long TSEID { get; set; }
         public long ASMUserId { get; set; }
-        public long ZoneId { get; set; }
+        public long ASMId { get; set; }
         // Customer Properties
         public string ZoneName { get; set; }
         public List<SRUser> SRUsers { get; set; }

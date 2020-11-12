@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.SalesAndDistribution.DomainModels
+namespace ERPBO.SalesAndDistribution.DTOModels
 {
     public class ItemStockDTO
     {
@@ -24,6 +24,12 @@ namespace ERPBO.SalesAndDistribution.DomainModels
         public string AllIMEI { get; set; }
         [StringLength(100)]
         public string StockStatus { get; set; }
+        public long CartoonId { get; set; }
+        [StringLength(100)]
+        public string CartoonNo { get; set; }
+        public Nullable<DateTime> SaleDate { get; set; }
+        [StringLength(200)]
+        public string ReferenceNumber { get; set; }
         [StringLength(100)]
         public string Remarks { get; set; }
         public long? BranchId { get; set; }
@@ -36,11 +42,11 @@ namespace ERPBO.SalesAndDistribution.DomainModels
         [StringLength(150)]
         public string WarehouseName { get; set; }
         [StringLength(150)]
-        public string ModelName { get; set; }
-        [StringLength(150)]
         public string ItemTypeName { get; set; }
         [StringLength(150)]
         public string ItemName { get; set; }
+        [StringLength(150)]
+        public string ModelName { get; set; }
         [StringLength(150)]
         public string ColorName { get; set; }
         [StringLength(150)]

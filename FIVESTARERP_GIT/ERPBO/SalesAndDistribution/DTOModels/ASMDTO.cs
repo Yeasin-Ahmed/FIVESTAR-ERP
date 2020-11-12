@@ -6,8 +6,8 @@ namespace ERPBO.SalesAndDistribution.DTOModels
     public class ASMDTO : SalesHierarchyCommonModel
     {
         public long ASMID { get; set; }
+        public long RSMId { get; set; }
         public long RSMUserId { get; set; }
-        public long ZoneId { get; set; }
         // Customer Properties
         public string ZoneName { get; set; }
         public List<SRUser> SRUsers { get; set; }

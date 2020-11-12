@@ -15,6 +15,7 @@ namespace ERPBLL.Production
 {
     public class FinishGoodsSendToWarehouseInfoBusiness : IFinishGoodsSendToWarehouseInfoBusiness
     {
+        // Business cls
         private readonly IProductionUnitOfWork _productionDb; // database
         private readonly TempQRCodeTraceBusiness _tempQRCodeTraceBusiness;
         private readonly QRCodeTraceBusiness _qRCodeTraceBusiness;
@@ -304,6 +305,59 @@ Inner Join [Inventory].dbo.tblWarehouses w on fgs.WarehouseId = w.Id
 Inner Join [Inventory].dbo.tblDescriptions de on fgs.DescriptionId = de.DescriptionId
 Where 1=1 and fgs.TotalQty > 0 and fgs.OrganizationId={0} {1} Order by fgs.SendId desc", orgId,Utility.ParamChecker(param));
             return query;
+        }
+
+        public IEnumerable<FinishGoodsSendToWarehouseInfoDTO> GetFinishGoodSendInfomations(long? lineId, long? warehouseId, long? modelId, string status, string fromDate, string toDate, string refNo, long orgId)
+        {
+            string param = string.Empty;
+            string query = string.Empty;
+            if(lineId != null && lineId.Value > 0)
+            {
+                param += string.Format(@" and fsi.LineId={0}",lineId);
+            }
+            if (warehouseId != null && warehouseId.Value > 0)
+            {
+                param += string.Format(@" and fsi.WarehouseId={0}", warehouseId);
+            }
+            if (modelId != null && modelId.Value > 0)
+            {
+                param += string.Format(@" and fsi.DescriptionId={0}", modelId);
+            }
+            if (!string.IsNullOrEmpty(status) && status.Trim() !="")
+            {
+                param += string.Format(@" and fsi.StateStatus='{0}'", status.Trim());
+            }
+            if (!string.IsNullOrEmpty(refNo) && refNo.Trim() != "")
+            {
+                param += string.Format(@" and CartoonNo LIKE '%{0}%'", refNo.Trim());
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(fsi.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(fsi.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(fsi.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select fsi.SendId,fsi.LineId,pl.LineNumber,fsi.WarehouseId,w.WarehouseName,fsi.DescriptionId,de.DescriptionName 'ModelName',fsi.Remarks,fsi.Flag,fsi.StateStatus,fsi.EUserId,fsi.EntryDate,app.UserName 'EntryUser',fsi.UpUserId,fsi.UpdateDate,
+(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId=ISNULL(fsi.UpUserId,0)) 'UpdateUser',fsi.CartoonNo,fsi.Width,fsi.Height,fsi.GrossWeight,fsi.NetWeight,fsi.TotalQty
+From tblFinishGoodsSendToWarehouseInfo fsi
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on fsi.EUserId= app.UserId
+Inner Join tblProductionLines pl  on fsi.LineId =pl.LineId
+Inner Join tblPackagingLine pac on fsi.PackagingLineId =pac.PackagingLineId
+Inner Join [Inventory].dbo.tblWarehouses w on fsi.WarehouseId =w.Id
+Inner Join [Inventory].dbo.tblDescriptions de on fsi.DescriptionId =de.DescriptionId
+Where 1=1 and fsi.OrganizationId={0} {1}",orgId,Utility.ParamChecker(param));
+            return _productionDb.Db.Database.SqlQuery<FinishGoodsSendToWarehouseInfoDTO>(query).ToList();
         }
     }
 }

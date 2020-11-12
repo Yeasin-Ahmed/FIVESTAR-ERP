@@ -26,6 +26,12 @@ namespace ERPBO.SalesAndDistribution.DomainModels
         public string AllIMEI { get; set; }
         [StringLength(100)]
         public string StockStatus { get; set; }
+        public long CartoonId { get; set; }
+        [StringLength(100)]
+        public string CartoonNo { get; set; }
+        public Nullable<DateTime> SaleDate { get; set; }
+        [StringLength(200)]
+        public string ReferenceNumber { get; set; }
         [StringLength(100)]
         public string Remarks { get; set; }
         public long? BranchId { get; set; }

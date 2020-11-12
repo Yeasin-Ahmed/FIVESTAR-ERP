@@ -128,4 +128,20 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
+    public class SalesRepresentativeRepository : SalesAndDistributionBaseRepository<SalesRepresentative>
+    {
+        public SalesRepresentativeRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class StoreMasterStockRepository : SalesAndDistributionBaseRepository<StoreMasterStock>
+    {
+        public StoreMasterStockRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
 }
