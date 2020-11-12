@@ -11,6 +11,7 @@ namespace ERPBLL.Production.Interface
     public interface IFinishGoodsSendToWarehouseInfoBusiness
     {
         IEnumerable<FinishGoodsSendToWarehouseInfo> GetFinishGoodsSendToWarehouseList(long orgId);
+        IEnumerable<FinishGoodsSendToWarehouseInfoDTO> GetFinishGoodSendInfomations(long? lineId, long? warehouseId, long? modelId, string status, string fromDate, string toDate, string refNo, long orgId);
         FinishGoodsSendToWarehouseInfo GetFinishGoodsSendToWarehouseById(long id,long orgId);
         bool SaveFinishGoodsSendToWarehouse(FinishGoodsSendToWarehouseInfoDTO info, List<FinishGoodsSendToWarehouseDetailDTO> detail, long userId, long orgId );
         bool SaveFinishGoodsStatus(long sendId, long userId, long orgId);

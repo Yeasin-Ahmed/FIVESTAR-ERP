@@ -125,7 +125,7 @@ Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).FirstOrDefault(
                 appUser.Desigation = appUserDTO.Desigation;
                 appUser.UserName = appUserDTO.UserName;
                 appUser.Password = appUserDTO.Password;
-                appUser.ConfirmPassword = appUserDTO.ConfirmPassword;
+                appUser.ConfirmPassword = appUserDTO.Password;
                 appUser.IsActive = appUserDTO.IsActive;
                 appUser.IsRoleActive = appUserDTO.IsRoleActive;
                 appUser.EUserId = userId;
@@ -147,7 +147,7 @@ Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).FirstOrDefault(
                 appUser.Desigation = appUserDTO.Desigation;
                 appUser.UserName = appUserDTO.UserName;
                 appUser.Password = appUserDTO.Password;
-                appUser.ConfirmPassword = appUserDTO.ConfirmPassword;
+                appUser.ConfirmPassword = appUserDTO.Password;
                 appUser.IsActive = appUserDTO.IsActive;
                 appUser.IsRoleActive = appUserDTO.IsRoleActive;
                 appUser.UpUserId = userId;
@@ -196,7 +196,7 @@ Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).FirstOrDefault(
                 appUser.Desigation = appUserDTO.Desigation;
                 appUser.UserName = appUserDTO.UserName;
                 appUser.Password = appUserDTO.Password;
-                appUser.ConfirmPassword = appUserDTO.ConfirmPassword;
+                appUser.ConfirmPassword = appUserDTO.Password;
                 appUser.IsActive = appUserDTO.IsActive;
                 appUser.IsRoleActive = appUserDTO.IsRoleActive;
                 appUser.UpUserId = userId;
@@ -228,7 +228,7 @@ Where a.OrganizationId = {1} and a.UserId = {0}", userId,orgId)).FirstOrDefault(
                 appUser.Desigation = appUserDTO.Desigation;
                 appUser.UserName = appUserDTO.UserName;
                 appUser.Password = appUserDTO.Password;
-                appUser.ConfirmPassword = appUserDTO.ConfirmPassword;
+                appUser.ConfirmPassword = appUserDTO.Password;
                 appUser.IsActive = appUserDTO.IsActive;
                 appUser.IsRoleActive = appUserDTO.IsRoleActive;
                 appUser.EUserId = userId;

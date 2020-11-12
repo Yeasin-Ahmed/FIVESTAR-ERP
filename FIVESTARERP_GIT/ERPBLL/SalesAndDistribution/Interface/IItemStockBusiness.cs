@@ -1,4 +1,4 @@
-﻿using ERPBO.SalesAndDistribution.DomainModels;
+﻿using ERPBO.SalesAndDistribution.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

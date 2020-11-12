@@ -13,6 +13,7 @@ namespace ERPBO.SalesAndDistribution.CommonModels
         public string FullName { get; set; }
         public long DivisionId { get; set; }
         public long DistrictId { get; set; }
+        public long ZoneId { get; set; }
         public bool IsAllowToLogIn { get; set; }
         [StringLength(150)]
         public string Email { get; set; }

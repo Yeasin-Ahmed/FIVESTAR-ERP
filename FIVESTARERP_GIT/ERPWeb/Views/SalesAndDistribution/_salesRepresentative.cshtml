@@ -1,0 +1,85 @@
+﻿@model  IEnumerable<ERPBO.SalesAndDistribution.ViewModels.SalesRepresentativeViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row text-sm">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped table-responsive-lg tblSalesRepresentative table-valign-middle" id="tblSalesRepresentative">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>JOB</th>
+                    <th>Reporting SR</th>
+                    <th>Division/District/Zone</th>
+                    <th>Status</th>
+                    <th>Is Login User</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                    <th>Update User</th>
+                    <th>Update Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    long reportingSR = item.ReportingSRId.HasValue ? item.ReportingSRId.Value : 0;
+                    string area = item.DivisionName + "-" + item.DistrictName + "[" + item.ZoneName + "]";
+                    string status = item.IsActive ? "Active" : "Inactive";
+                    string statusBadge = item.IsActive ? "badge badge-success" : "badge badge-danger";
+                    string loginStatus = item.IsAllowToLogIn ? "Yes" : "No";
+                    string loginBadge = item.IsAllowToLogIn ? "badge badge-success" : "badge badge-danger";
+                    string updateDate = item.UpdateDate.HasValue ? item.UpdateDate.Value.ToString("dd-MMM-yyyy") : "";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td data-val="@item.SRID" data-rep-val="@reportingSR">@item.FullName</td>
+                        <td>@item.Address</td>
+                        <td>@item.Email</td>
+                        <td>@item.MobileNo</td>
+                        <td class="text-center" data-val="@item.SRType">
+                            <span class="badge badge-primary">
+                                @item.SRType
+                            </span> 
+                        </td>
+                        <td>
+                            <span class="badge badge-info">@item.ReportingSRName</span> 
+                        </td>
+                        <td data-div="@item.DivisionId" data-dis="@item.DistrictId" data-zn="@item.ZoneId">@area</td>
+                        <td class="text-center" data-val="@item.IsActive">
+                            <span class="@statusBadge">@status</span>
+                        </td>
+                        <td class="text-center" data-val="@item.IsAllowToLogIn" data-user-val="@item.UserId">
+                            <span class="@loginBadge">@loginStatus</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td>@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td>@item.UpdateUser</td>
+                        <td>@updateDate</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-flat btn-warning data-sr-edit" data-sr-edit="@item.SRID" title="EDIT">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                @if(Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="20">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -11,8 +11,7 @@
         <table class="table table-bordered table-sm table-striped table-responsive-lg tblDealers table-valign-middle" id="tblDealers">
             <thead class="btn-dark">
                 <tr class="text-center">
-                    <th>#SL </th>
-                    <th class="hide"></th>
+                    <th>#SL</th>
                     <th>Dealer Name</th>
                     <th>Address</th>
                     <th>Telephone</th>
@@ -23,7 +22,8 @@
                     <th>Representative</th>
                     <th>Zone</th>
                     <th>Remarks</th>
-                    <th>StateStaus</th>
+                    <th>Status</th>
+                    <th>Loging User</th>
                     <th>EntryUser</th>
                     <th>EntryDate</th>
                     <th>Action</th>
@@ -36,10 +36,11 @@
                     badge = dealer.IsActive ? "badge bg-success" : "badge bg-danger";
                     string status = dealer.IsActive ? "Active" : "Inactive";
                     string zoneName = dealer.ZoneName + " [" + dealer.DistrictName + "-" + dealer.DivisionName+"]";
+                    string loginStatus = dealer.IsAllowToLogIn ? "Yes" : "No";
+                    string loginBadge= dealer.IsAllowToLogIn ? "badge bg-success" : "badge bg-danger";
                     <tr>
                         <td class="text-center text-bold">@sl</td>
-                        <td class="hide">@dealer.DealerId</td>
-                        <td>@dealer.DealerName</td>
+                        <td data-val="@dealer.DealerId">@dealer.DealerName</td>
                         <td>@dealer.Address</td>
                         <td>@dealer.TelephoneNo</td>
                         <td>@dealer.MobileNo</td>
@@ -54,17 +55,20 @@
                         <td class="text-center" data-val="@status">
                             <span class="@badge">@status</span>
                         </td>
+                        <td class="text-center" data-val="@dealer.IsAllowToLogIn" data-user-val="@dealer.UserId">
+                            <span class="@loginBadge">@loginStatus</span>
+                        </td>
                         <td class="text-center">@dealer.EntryUser</td>
                         <td class="text-center">@dealer.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-warning btn-sm btn-flat data-dealer-edit" data-dealer-edit="@dealer.DealerId"><i class="fa fa-pen"></i> Edit</a>
+                            <a href="#" class="btn btn-warning btn-sm btn-flat data-dealer-edit" data-dealer-edit="@dealer.DealerId" title="Edit"><i class="fa fa-pen"></i> </a>
                         </td>
                     </tr>
                 }
                 @if (Model.Count() == 0)
                 {
                     <tr class="text-center empty-row">
-                        <td colspan="14">
+                        <td colspan="15">
                             No data found in the table
                         </td>
                     </tr>

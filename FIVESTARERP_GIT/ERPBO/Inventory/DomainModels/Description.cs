@@ -30,5 +30,8 @@ namespace ERPBO.Inventory.DomainModels
         public long? BrandId { get; set; }
         public string ColorId { get; set; }
         public long StartPoint { get; set; }
+        public string Flag { get; set; }
+        public double CostPrice { get; set; }
+        public double SalePrice { get; set; }
     }
 }

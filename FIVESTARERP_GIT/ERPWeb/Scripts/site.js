@@ -209,7 +209,10 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
                 });
-                elementId.val(defaultvalue);
+                if (defaultvalue !== null && defaultvalue.toString() !== "") {
+                    elementId.val(defaultvalue);
+                }
+               
 
             },
             error: function (err) {
@@ -230,7 +233,10 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
                 });
-                elementId.val(defaultvalue);
+                if (defaultvalue !== null && defaultvalue.toString() !== "") {
+                    elementId.val(defaultvalue);
+                }
+                //elementId.val(defaultvalue);
             },
             error: function (err) {
                 console.log(err);

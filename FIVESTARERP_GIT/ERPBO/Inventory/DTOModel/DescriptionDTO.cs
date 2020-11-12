@@ -27,6 +27,9 @@ namespace ERPBO.Inventory.DTOModel
         public long? CategoryId { get; set; }
         public long? BrandId { get; set; }
         public string ColorId { get; set; }
+        public string Flag { get; set; }
+        public double CostPrice { get; set; }
+        public double SalePrice { get; set; }
         //custom
         public List<long> Color { get; set; }
         public string StateStatus { get; set; }

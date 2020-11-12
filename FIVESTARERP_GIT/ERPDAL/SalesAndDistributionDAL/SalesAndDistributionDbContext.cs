@@ -29,5 +29,7 @@ namespace ERPDAL.SalesAndDistributionDAL
         public DbSet<Zone> tblZone { get; set; }
         public DbSet<ASM> tblAZM { get; set; }
         public DbSet<TSE> tblTSE { get; set; }
+        public DbSet<SalesRepresentative> tblSalesRepresentatives { get; set; }
+        public DbSet<StoreMasterStock> tblStoreMasterStock { get; set; }
     }
 }

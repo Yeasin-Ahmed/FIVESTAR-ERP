@@ -127,4 +127,12 @@ namespace ERPDAL.InventoryDAL
 
         }
     }
+    public class HandSetStockRepository : InventoryBaseRepository<HandSetStock>
+    {
+        public HandSetStockRepository(IInventoryUnitOfWork inventoryUnitOfWork) :
+            base(inventoryUnitOfWork)
+        {
+
+        }
+    }
 }

@@ -13,7 +13,7 @@ namespace ERPBO.SalesAndDistribution.DomainModels
     {
         [Key]
         public long ZoneId { get; set; }
-        [StringLength(150)]
+        [StringLength(500)]
         public string ZoneName { get; set; }
         [StringLength(20)]
         public string PostalCode { get; set; }

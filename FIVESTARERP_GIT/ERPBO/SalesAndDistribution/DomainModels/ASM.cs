@@ -14,7 +14,7 @@ namespace ERPBO.SalesAndDistribution.DomainModels
     {
         [Key]
         public long ASMID { get; set; }
+        public long RSMId { get; set; }
         public long RSMUserId { get; set; }
-        public long ZoneId { get; set; }
     }
 }

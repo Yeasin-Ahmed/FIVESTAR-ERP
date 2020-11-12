@@ -6,8 +6,8 @@ namespace ERPBO.SalesAndDistribution.ViewModels
     public class ASMViewModel : SalesHierarchyCommonModel
     {
         public long ASMID { get; set; }
+        public long RSMId { get; set; }
         public long RSMUserId { get; set; }
-        public long ZoneId { get; set; }
         // Customer Properties
         public List<SRUser> SRUsers { get; set; }
         public string ZoneName { get; set; }

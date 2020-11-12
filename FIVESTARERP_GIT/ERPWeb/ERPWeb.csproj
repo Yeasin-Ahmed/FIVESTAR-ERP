@@ -809,6 +809,11 @@
     <Content Include="Views\Configuration\_MobileParts.cshtml" />
     <Content Include="Views\Configuration\_Repair.cshtml" />
     <Content Include="Views\Configuration\_Services.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_salesRepresentative.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_invCategory.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_invBrand.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_invColor.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_invModel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

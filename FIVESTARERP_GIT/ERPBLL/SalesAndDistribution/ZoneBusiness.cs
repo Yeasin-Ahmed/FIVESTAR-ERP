@@ -21,6 +21,11 @@ namespace ERPBLL.SalesAndDistribution
             this._zoneRepository = new ZoneRepository(this._salesAndDistribution);
         }
 
+        public IEnumerable<Dropdown> GetRepresentativesByZone(long zoneId, long orgId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Zone GetZoneById(long zoneId, long orgId)
         {
             return this._zoneRepository.GetOneByOrg(s => s.ZoneId == zoneId && s.OrganizationId == orgId);
@@ -29,6 +34,11 @@ namespace ERPBLL.SalesAndDistribution
         public IEnumerable<Zone> GetZones(long orgId)
         {
             return this._zoneRepository.GetAll(s =>s.OrganizationId == orgId);
+        }
+
+        public IEnumerable<Dropdown> GetZonesByDistrict(long districtId, long orgId)
+        {
+            return _zoneRepository.GetAll(s => s.DistrictId == districtId && s.OrganizationId == orgId).OrderBy(s=> s.ZoneName).Select(s => new Dropdown() {text=s.ZoneName,value=s.ZoneId.ToString() }).ToList();
         }
 
         public IEnumerable<Dropdown> GetZoneWithDistrictAndDivision(long orgId)

@@ -82,6 +82,9 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
                 description.OrganizationId = orgId;
                 description.CategoryId = model.CategoryId;
                 description.BrandId = model.BrandId;
+                description.Flag = model.Flag;
+                description.SalePrice = model.SalePrice;
+                description.CostPrice = model.CostPrice;
                 descriptionRepository.Insert(description);
                 
             }
@@ -97,6 +100,9 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
                 description.EndPoint = model.EndPoint;
                 description.UpUserId = userId;
                 description.UpdateDate = DateTime.Now;
+                description.Flag = model.Flag;
+                description.SalePrice = model.SalePrice;
+                description.CostPrice = model.CostPrice;
 
                 if (description.CategoryId == null || description.CategoryId == 0)
                 {
@@ -106,7 +112,7 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
                 {
                     description.BrandId = model.BrandId;
                 }
-                
+                descriptionRepository.Update(description);
             }
             if (descriptionRepository.Save())
             {
@@ -134,41 +140,48 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
                 Item item = new Item();
                 List<Item> itemList = new List<Item>();
                 var GetHandSet = _itemTypeBusiness.GetAllItemTypeByOrgId(orgId).Where(s => s.ItemName == "Handset").FirstOrDefault();
-                var unit = _unitBusiness.GetAllUnitByOrgId(orgId).Where(s => s.UnitName == "Piece").FirstOrDefault();
+               
                 List<long> insertedColor = null;
                 if (_modelColorBusiness.SaveModelColors(description.DescriptionId, colors, userId, orgId, out insertedColor))
                 {
-                    if (GetHandSet != null && unit != null && insertedColor.Count > 0)
+                    if (GetHandSet != null && insertedColor.Count > 0 && description.Flag =="Internal")
                     {
-                        string strColors = string.Join(",", colors);
-                        List<ModelColorDTO> modelColors = new List<ModelColorDTO>();
-                        modelColors = _inventoryDb.Db.Database.SqlQuery<ModelColorDTO>(
-                            string.Format(@"Select ColorId,ColorName From tblColors
+                        var unit = _unitBusiness.GetAllUnitByOrgId(orgId).Where(s => s.UnitName == "Piece").FirstOrDefault();
+                        if(unit != null) {
+                            string strColors = string.Join(",", colors);
+                            List<ModelColorDTO> modelColors = new List<ModelColorDTO>();
+                            modelColors = _inventoryDb.Db.Database.SqlQuery<ModelColorDTO>(
+                                string.Format(@"Select ColorId,ColorName From tblColors
                                 Where ColorId IN ({0}) and OrganizationId={1}", strColors, orgId)).ToList();
-                        if (modelColors.Count > 0)
-                        {
-                            foreach (var itemColor in modelColors)
+                            if (modelColors.Count > 0)
                             {
-                                var itemInDb = _itemBusiness.GetItemsByQuery(null, null, null, null, (description.DescriptionName + " " + itemColor.ColorName), null, orgId).FirstOrDefault();
-                                if(itemInDb == null)
+                                foreach (var itemColor in modelColors)
                                 {
-                                    Item newItem = new Item
+                                    var itemInDb = _itemBusiness.GetItemsByQuery(null, null, null, null, (description.DescriptionName + " " + itemColor.ColorName), null, orgId).FirstOrDefault();
+                                    if (itemInDb == null)
                                     {
-                                        IsActive = description.IsActive,
-                                        ItemName = description.DescriptionName + " " + itemColor.ColorName,
-                                        ItemTypeId = GetHandSet.ItemId,
-                                        ItemCode = GenerateItemCode(orgId, GetHandSet.ItemId),
-                                        Remarks = description.Remarks,
-                                        OrganizationId = orgId,
-                                        UnitId = unit.UnitId,
-                                        ColorId = Convert.ToInt64(itemColor.ColorId),
-                                        DescriptionId = description.DescriptionId,
-                                    };
-                                    itemList.Add(newItem);
+                                        Item newItem = new Item
+                                        {
+                                            IsActive = description.IsActive,
+                                            ItemName = description.DescriptionName + " " + itemColor.ColorName,
+                                            ItemTypeId = GetHandSet.ItemId,
+                                            ItemCode = GenerateItemCode(orgId, GetHandSet.ItemId),
+                                            Remarks = description.Remarks,
+                                            OrganizationId = orgId,
+                                            UnitId = unit.UnitId,
+                                            ColorId = Convert.ToInt64(itemColor.ColorId),
+                                            DescriptionId = description.DescriptionId,
+                                        };
+                                        itemList.Add(newItem);
+                                    }
                                 }
+                                itemRepository.InsertAll(itemList);
+                                return itemRepository.Save();
                             }
-                            itemRepository.InsertAll(itemList);
-                            return itemRepository.Save();
+                            else
+                            {
+                                return true;
+                            }
                         }
                         else
                         {

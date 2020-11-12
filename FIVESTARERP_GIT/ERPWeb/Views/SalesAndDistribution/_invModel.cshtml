@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ERPBO.Inventory.ViewModels.DescriptionViewModel>
+@{
+    string badge = string.Empty;
+    int sl = 0;
+    string colors = "";
+}
+
+<div class="row text-sm">
+    <div class="col-md-12 mt-2 " style="overflow-y:scroll">
+        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblModel" id="tblModel">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Model</th>
+                    <th>Colors</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Cost Price</th>
+                    <th>Sale Price</th>
+                    <th>StateStatus</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    colors = item.ColorId = item.Colors.Count > 0 ? string.Join(",", item.Colors.Select(s => s.ColorId).ToArray()) : "";
+                    string status = item.IsActive ? "Active" : "Inactive";
+                    badge = item.IsActive ? "badge badge-success" : "badge badge-danger";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@item.DescriptionId</td>
+                        <td>@item.DescriptionName</td>
+                        <td class="text-center" data-val="@colors">
+                            @foreach (var i in item.Colors)
+                            {
+                                <span class="badge badge-primary">@i.ColorName</span>
+                            }
+                        </td>
+                        <td class="text-center" data-val="@item.CategoryId">@item.CategoryName</td>
+                        <td class="text-center" data-val="@item.BrandId">@item.BrandName</td>
+                        <td class="text-center">@item.CostPrice</td>
+                        <td class="text-center">@item.SalePrice</td>
+                        <td class="text-center" data-val="@item.IsActive">
+                            <span class="@badge">@status</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-warning btn-flat data-model-edit" data-model-edit="@item.DescriptionId"><i class="fa fa-pen"></i> Edit</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="15">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

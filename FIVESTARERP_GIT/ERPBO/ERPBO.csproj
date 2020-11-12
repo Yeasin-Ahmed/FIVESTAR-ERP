@@ -252,6 +252,7 @@
     <Compile Include="Inventory\DomainModels\BrandCategories.cs" />
     <Compile Include="Inventory\DomainModels\Category.cs" />
     <Compile Include="Inventory\DomainModels\Color.cs" />
+    <Compile Include="Inventory\DomainModels\HandSetStock.cs" />
     <Compile Include="Inventory\DomainModels\IQC.cs" />
     <Compile Include="Inventory\DomainModels\IQCItemReqDetailList.cs" />
     <Compile Include="Inventory\DomainModels\IQCItemReqInfoList.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="Inventory\DTOModel\IQCStockDetailDTO.cs" />
     <Compile Include="Inventory\DTOModel\IQCStockInfoDTO.cs" />
     <Compile Include="Inventory\DTOModel\ItemDetailDTO.cs" />
+    <Compile Include="Inventory\DTOModel\HandSetStockDTO.cs" />
     <Compile Include="Inventory\DTOModel\ModelColorDTO.cs" />
     <Compile Include="Inventory\ReportModels\DailyStock.cs" />
     <Compile Include="Inventory\ReportModels\StockExcelUploaderData.cs" />
@@ -279,6 +281,7 @@
     <Compile Include="Inventory\ViewModels\CategoryViewModel.cs" />
     <Compile Include="Inventory\ViewModels\ColorViewModel.cs" />
     <Compile Include="Inventory\ViewModels\CommitGeneratedIMEIViewModel.cs" />
+    <Compile Include="Inventory\ViewModels\HandSetStockViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqDetailListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCItemReqInfoListViewModel.cs" />
     <Compile Include="Inventory\ViewModels\IQCStockDetailViewModel.cs" />
@@ -616,6 +619,8 @@
     <Compile Include="ControlPanel\DomainModels\Organization.cs" />
     <Compile Include="Inventory\DomainModels\Warehouse.cs" />
     <Compile Include="SalesAndDistribution\CommonModels\SalesHierarchyCommonModel.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\SalesRepresentative.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\StoreMasterStock.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\TSE.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\ASM.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Brand.cs" />
@@ -631,6 +636,8 @@
     <Compile Include="SalesAndDistribution\DomainModels\Model.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\ModelColors.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Zone.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\SalesRepresentativeDTO.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\StoreMasterStockDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\TSEDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BrandCategoriesDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\BrandDTO.cs" />
@@ -646,6 +653,8 @@
     <Compile Include="SalesAndDistribution\DTOModels\ASMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\RSMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ZoneDTO.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\SalesRepresentativeViewModel.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\StoreMasterStockViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\TSEViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\ASMViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\BrandCategoriesViewModel.cs" />

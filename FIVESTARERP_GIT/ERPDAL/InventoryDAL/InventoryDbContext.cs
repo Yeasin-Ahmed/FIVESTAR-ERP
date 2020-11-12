@@ -36,5 +36,6 @@ namespace ERPDAL.InventoryDAL
         public DbSet<BrandCategories> tblBrandCategories { get; set; }
         public DbSet<Color> tblColors { get; set; }
         public DbSet<ModelColors> tblModelColors { get; set; }
+        public DbSet<HandSetStock> tblHandSetStock { get; set; }
     }
 }

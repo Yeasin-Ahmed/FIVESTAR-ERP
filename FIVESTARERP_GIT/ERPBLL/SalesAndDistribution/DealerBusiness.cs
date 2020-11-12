@@ -1,5 +1,9 @@
-﻿using ERPBLL.SalesAndDistribution.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.ControlPanel.Interface;
+using ERPBLL.SalesAndDistribution.Interface;
 using ERPBO.Common;
+using ERPBO.ControlPanel.DTOModels;
+using ERPBO.SalesAndDistribution.CommonModels;
 using ERPBO.SalesAndDistribution.DomainModels;
 using ERPBO.SalesAndDistribution.DTOModels;
 using ERPDAL.SalesAndDistributionDAL;
@@ -17,11 +21,13 @@ namespace ERPBLL.SalesAndDistribution
         private readonly ISalesAndDistributionUnitOfWork _salesAndDistributionDb;
         // Repo
         private readonly DealerRepository _dealerRepository;
+        private readonly IAppUserBusiness _appUserBusiness;
 
-        public DealerBusiness(ISalesAndDistributionUnitOfWork salesAndDistributionDb)
+        public DealerBusiness(ISalesAndDistributionUnitOfWork salesAndDistributionDb, IAppUserBusiness appUserBusiness)
         {
             this._salesAndDistributionDb = salesAndDistributionDb;
             this._dealerRepository = new DealerRepository(this._salesAndDistributionDb);
+            this._appUserBusiness = appUserBusiness;
         }
 
         public Dealer GetDealerById(long id, long orgId)
@@ -44,9 +50,9 @@ namespace ERPBLL.SalesAndDistribution
             return _dealerRepository.GetAll(s => s.OrganizationId == orgId).ToList();
         }
 
-        public bool SaveDealer(DealerDTO dealerDto, long userId, long orgId)
+        public bool SaveDealer(DealerDTO dealerDto, SRUser user, long userId, long branchId, long orgId)
         {
-            
+            string srUserId = "0";
             if (dealerDto.DealerId == 0)
             {
                 Dealer dealer = new Dealer
@@ -70,6 +76,15 @@ namespace ERPBLL.SalesAndDistribution
                     DistrictId= dealerDto.DistrictId,
                     DivisionId = dealerDto.DivisionId
                 };
+                if(dealerDto.IsAllowToLogIn)
+                {
+                    SaveSRUser(dealerDto, user, userId, branchId, orgId, out srUserId);
+                    dealerDto.UserId = Convert.ToInt64(srUserId);
+                }
+                else
+                {
+                    dealerDto.UserId = 0;
+                }
                 _dealerRepository.Insert(dealer);
             }
             else
@@ -94,10 +109,38 @@ namespace ERPBLL.SalesAndDistribution
                     dealerInDb.ZoneId = dealerDto.ZoneId;
                     dealerInDb.DistrictId = dealerDto.DistrictId;
                     dealerInDb.DivisionId = dealerDto.DivisionId;
+                    dealerInDb.IsAllowToLogIn = dealerDto.IsAllowToLogIn;
+                    if (dealerDto.IsAllowToLogIn && dealerInDb.UserId == 0)
+                    {
+                        SaveSRUser(dealerDto, user, userId, branchId, orgId, out srUserId);
+                        dealerInDb.UserId = Convert.ToInt64(srUserId);
+                    }
                     _dealerRepository.Update(dealerInDb);
                 }
             }
             return _dealerRepository.Save();
+        }
+
+        private void SaveSRUser(DealerDTO dto, SRUser sRUser, long userId, long branchId, long orgId, out string srUserId)
+        {
+            AppUserDTO appUser = new AppUserDTO()
+            {
+                FullName = dto.DealerName,
+                EmployeeId = (DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")).ToString(),
+                Address = dto.Address,
+                BranchId = branchId,
+                OrganizationId = orgId,
+                Email = dto.Email,
+                MobileNo = dto.MobileNo,
+                IsActive = dto.IsActive,
+                EUserId = userId,
+                EntryDate = DateTime.Now,
+                UserName = sRUser.UserName,
+                Password = Utility.Encrypt(sRUser.Password),
+                ConfirmPassword = Utility.Encrypt(sRUser.Password),
+                IsRoleActive = true
+            };
+            _appUserBusiness.SaveSRAppUser(appUser, userId, orgId, "Dealer", out srUserId);
         }
     }
 }

@@ -237,7 +237,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "description")
             {
-                IEnumerable<DescriptionDTO> dto = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.DescriptionName.Contains(name))).Select(des => new DescriptionDTO
+                IEnumerable<DescriptionDTO> dto = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Where(s => s.Flag== "Internal" && (name == "" || name == null) || (s.DescriptionName.Contains(name))).Select(des => new DescriptionDTO
                 {
                     DescriptionId = des.DescriptionId,
                     DescriptionName = des.DescriptionName,
@@ -258,7 +258,9 @@ namespace ERPWeb.Controllers
                     CategoryName = (des.CategoryId == null ? "" : _categoryBusiness.GetCategoryById(des.CategoryId.Value, User.OrgId).CategoryName),
                     BrandId = des.BrandId,
                     BrandName = ((des.BrandId == null || des.BrandId == 0) ? "" : _brandBusiness.GetBrandById(des.BrandId.Value, User.OrgId).BrandName),
-                    Colors= _descriptionBusiness.GetModelColors(des.DescriptionId,User.OrgId)
+                    Colors= _descriptionBusiness.GetModelColors(des.DescriptionId,User.OrgId),
+                    CostPrice = des.CostPrice,
+                    SalePrice = des.SalePrice
                 }).OrderBy(des => des.DescriptionId).ToList();
 
                 // Pagination //
@@ -786,7 +788,7 @@ namespace ERPWeb.Controllers
 
         #region Warehouse Stock Info -Table
         [HttpGet]
-        public ActionResult GetWarehouseStockInfoList(string tab, string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, long? floorId, long? packagingLineId, long? returnId, string returnCode, string status, string fromDate, string toDate, int page = 1)
+        public ActionResult GetWarehouseStockInfoList(string tab, string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, long? floorId, long? packagingLineId, long? returnId, string returnCode, string status, string fromDate, string toDate, long? lineId, string refNo, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -795,26 +797,19 @@ namespace ERPWeb.Controllers
                     Text = ware.WarehouseName,
                     Value = ware.Id.ToString()
                 }).ToList();
-
                 ViewBag.ddlStateStatus = Utility.ListOfReqStatus().Select(s => new SelectListItem
                 {
                     Text = s.text,
                     Value = s.value
                 }).ToList();
-
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
-
                 ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseStockInfoList");
-
                 ViewBag.tab = tab;
-
                 ViewBag.ddlReturnStateStatus = Utility.ListOfFinishGoodsSendStatus().Select(s => new SelectListItem()
                 {
                     Text = s.text,
                     Value = s.value
                 }).ToList();
-
-
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "search")
             {
@@ -836,6 +831,15 @@ namespace ERPWeb.Controllers
                 List<StockItemReturnInfoViewModel> viewModels = new List<StockItemReturnInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetStockReturnList", viewModels);
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag.Trim() !="" && flag == "finishGoods")
+            {
+                var dto =_finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodSendInfomations(lineId, warehouseId, modelId, status, fromDate, toDate, refNo, User.OrgId);
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, listOfFinishGoodsSendToWarehouseInfoViewModels);
+                return PartialView("_GetFinishGoodsSendToWarehouse", listOfFinishGoodsSendToWarehouseInfoViewModels);
             }
             return View();
         }

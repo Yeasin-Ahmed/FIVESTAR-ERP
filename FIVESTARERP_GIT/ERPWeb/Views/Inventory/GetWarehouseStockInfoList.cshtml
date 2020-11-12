@@ -16,6 +16,9 @@
                         <a class="nav-link active" id="custom-tabs-two-warehouseStockInfoList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockInfoList" role="tab" aria-controls="custom-tabs-two-warehouseStockInfoList" aria-selected="true">Warehouse Stock Info List</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-receivefinishgoods-tab" data-toggle="pill" href="#custom-tabs-two-receivefinishgoods" role="tab" aria-controls="custom-tabs-two-receivefinishgoods" aria-selected="true">Finish Goods Cartoon</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-stockReturnList-tab" data-toggle="pill" href="#custom-tabs-two-stockReturnList" role="tab" aria-controls="custom-tabs-two-stockReturnList" aria-selected="true">Stock Return List</a>
                     </li>
                     <li class="nav-item">
@@ -115,7 +118,78 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-receivefinishgoods" role="tabpanel" aria-labelledby="custom-tabs-two-receivefinishgoods-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Receive Finish Goods
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlWarehouseForReceiveFinishGoods" class="control-label font-weight-bold">Warehouse Name</label>
+                                                @Html.DropDownList("ddlWarehouseForReceiveFinishGoods", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelNameForReceiveFinishGoods" class="control-label font-weight-bold">Model Name</label>
+                                                @Html.DropDownList("ddlModelNameForReceiveFinishGoods", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">State Status</label>
+                                                <select class="form-control form-control-sm" id="ddlReceiveFinishGoodsStatus">
+                                                    <option value="">--Select Status--</option>
+                                                    <option value="Send">Send</option>
+                                                    <option value="Receive">Receive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="text-center hide" id="loader5">
+                                                <h6 class="text-bold">Loading....</h6>
+                                            </div>
+                                            <div class="col-md-12" id="dataContainer5">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-pane fade show" id="custom-tabs-two-stockReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-stockReturnList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -148,7 +222,7 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label class="control-label font-weight-bold" for="txtReturnCode">Return Code</label>
-                                                <input type="text" id="txtReturnCode" class="form-control form-control-sm" placeholder="Search By Return Code"/>
+                                                <input type="text" id="txtReturnCode" class="form-control form-control-sm" placeholder="Search By Return Code" />
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold" for="ddlReturnStateStatus">State Status</label>
@@ -420,6 +494,9 @@
         var ddlWarehouseForIQCReturn = $("#ddlWarehouseForIQCReturn");
         var ddlStateStatusForIQCReturn = $("#ddlStateStatusForIQCReturn");
         var ddlModelNameForIQCReturn = $("#ddlModelNameForIQCReturn");
+
+        // Receive Finish Goods//
+
 
         $(document).ready(function () {
             //Initialize Select2 Elements
