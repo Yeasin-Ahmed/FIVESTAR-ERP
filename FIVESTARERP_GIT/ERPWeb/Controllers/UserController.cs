@@ -247,11 +247,9 @@ namespace ERPWeb.Controllers
 
             
         }
-        [HttpPost, ValidateJsonAntiForgeryToken]
        
         public ActionResult ReturnStockDetails(long id)
         {
-            
             var info = _tsStockReturnInfoBusiness.GetAllReturnId(id, User.OrgId,User.BranchId);
             var jobOrderInfo = _jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId, User.BranchId, User.OrgId);
             var jobOrder = new RequsitionInfoForJobOrderViewModel();

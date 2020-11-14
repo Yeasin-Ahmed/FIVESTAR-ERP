@@ -18,5 +18,8 @@ namespace ERPBO.Accounts.DTOModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public bool IsGroupHead { get; set; }
+        public string AccountType { get; set; }
+        public string AncestorId { get; set; }
     }
 }

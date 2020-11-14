@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Accounts.Interface;
+using ERPBLL.Common;
 using ERPBO.Accounts.DTOModels;
 using ERPBO.Accounts.ViewModels;
 using ERPWeb.Filters;
@@ -22,6 +23,10 @@ namespace ERPWeb.Controllers
         [HttpGet]
         public ActionResult GetAccountsHeadList()
         {
+            ViewBag.ddlAncestorName = _accountsHeadBusiness.AccountsHeadList(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.AHeadName, Value = mobile.AHeadId.ToString() }).ToList();
+
+            ViewBag.ddlAccountsType = Utility.ListOfAccountsType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
             var dto = _accountsHeadBusiness.AccountsHeadList(User.OrgId);
             List<AccountsHeadViewModel> viewModels = new List<AccountsHeadViewModel>();
             AutoMapper.Mapper.Map(dto, viewModels);

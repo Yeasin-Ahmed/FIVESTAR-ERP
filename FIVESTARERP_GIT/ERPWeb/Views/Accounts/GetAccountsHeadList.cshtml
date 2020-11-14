@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ERPBO.Accounts.ViewModels.AccountsHeadViewModel>
 @{
-    ViewBag.Title = "Accounts Head List";
+    ViewBag.Title = "Accounts List";
     int sl = 0;
 }
 <div class="row">
     <div class="col-md-12 text-center">
         <div class="card card-gray shadow">
             <div class="card-header">
-                <h4>List Of Accounts Head</h4>
+                <h4>List Of Account</h4>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-md-4"></div>
                     <div class="col-md-4 text-right">
-                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Accounts</button>
+                        <button class="btn btn-primary btn-sm" style="background-color:darkblue" id="btnAddNew"><i class="fa fa-plus"></i> Add New Account</button>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,8 @@
                                 <tr class="text-center">
                                     <th>#SL</th>
                                     <th class="hide"></th>
-                                    <th>Accounts Head Name</th>
+                                    <th>Account Name</th>
+                                    <th>Account Type</th>
                                     <th>Code</th>
                                     <th>Remarks</th>
                                 </tr>
@@ -58,6 +59,7 @@
                                         <td class="text-center" width="10%">@sl</td>
                                         <td class="hide">@acc.AHeadId</td>
                                         <td>@acc.AHeadName</td>
+                                        <td>@acc.AccountType</td>
                                         <td>@acc.AHeadCode</td>
                                         <td>@acc.Remarks</td>
                                     </tr>
@@ -83,7 +85,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header alert-secondary" style="height:60px">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add A Head</span></h4>
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Add Account</span></h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -91,21 +93,33 @@
                     <input type="hidden" name="Id" id="hdfAHeadId" />
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="txtAccountHeadName" class="control-label font-weight-bold">Accounts Head Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <label for="txtAccountHeadName" class="control-label font-weight-bold">Account Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" name="txtAccountHeadName" value="" id="txtAccountHeadName" class="form-control form-control-sm" />
                             <span class="error hide required-aHeadName font-weight-bold">Input Accounts Head Name!</span>
                             <span class="error hide duplicate-aHeadName font-weight-bold">Already Accounts Head Name Exist!</span>
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="form-control text-sm">
+                                <b>Check if Group Head</b> <input type="checkbox" id="chkGroupHead" /> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" id="ancestorName">
                         <div class="form-group col-md-12">
-                            <label for="txtAHeadCode" class="control-label font-weight-bold">Accounts Head Code<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <input type="text" name="txtAHeadCode" value="" id="txtAHeadCode" class="form-control form-control-sm" />
-                            <span class="error hide required-aHeadCode font-weight-bold">Input Accounts Head Code!</span>
-                            <span class="error hide duplicate-aHeadCode font-weight-bold">Already Accounts Head Code Exist!</span>
+                            <label for="txtAncestorName" class="control-label font-weight-bold">Ancestor Name</label>
+                            @Html.DropDownList("ddlAncestorName", (IEnumerable<SelectListItem>)ViewBag.ddlAncestorName, "Select Ancestor", new { @class = "form-control form-control-sm select2 select2-danger" })
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlAccountsType" class="control-label font-weight-bold">Accounts Type</label>
+                            @Html.DropDownList("ddlAccountsType", (IEnumerable<SelectListItem>)ViewBag.ddlAccountsType, "--Select Accounts Type--", new { @class = "form-control form-control-sm" })
+                            <span class="error hide required-accountsType font-weight-bold">Required Accounts Type!</span>
+                        </div>
+                    </div>
+                    <div class="form-row hide">
                         <div class="form-group col-md-12">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
@@ -133,15 +147,30 @@
     <script type="text/javascript">
         var hdfAHeadId = $("#hdfAHeadId");
         var txtAccountHeadName = $("#txtAccountHeadName");
-        var txtAHeadCode = $("#txtAHeadCode");
+        var ddlAncestorName = $("#ddlAncestorName");
         var txtRemarks = $("#txtRemarks");
+        var chkGroupHead = $("#chkGroupHead");
+        var ddlAccountsType = $("#ddlAccountsType");
 
         function OpenAHeadModal() {
-            $("#spanModalHead").text('Add A Head');
+            $("#spanModalHead").text('Add Account');
             $("#spanSaveText").text('Save');
             $("#modalAccountsHead").modal("show");
             $(".error").addClass("hide");
         }
+
+        chkGroupHead.change(function () {
+            enable("#ddlAncestorName");
+            ddlAncestorName.val("");
+            ddlAncestorName.trigger("change");
+            if (chkGroupHead.is(":checked")) {
+                disable("#ddlAncestorName");
+            }
+        })
+
+        $(document).ready(function () {
+            $('.select2').select2();
+        })
         $("#btnAddNew").click(function (e) {
             e.preventDefault();
             //clearCtrl();
@@ -150,9 +179,10 @@
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-                $(".error").addClass("hide");
-            var data = JSON.stringify({ AHeadId: TryParseInt(hdfAHeadId.val(), 0), AHeadName: txtAccountHeadName.val(), AHeadCode: txtAHeadCode.val(), Remarks: txtRemarks.val() });
-                console.log(data);
+            $(".error").addClass("hide");
+            var data = JSON.stringify({ AHeadName: txtAccountHeadName.val(), IsGroupHead: chkGroupHead.is(":checked"), AncestorId: ddlAncestorName.val(), AccountType: ddlAccountsType.val(), Remarks: txtRemarks.val() });
+            console.log("Account Info");
+            //return console.log(data);
             $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveAccountsHead', data, getToken())).then(function (res, status) {
                     console.log(status);
                     console.log(res);

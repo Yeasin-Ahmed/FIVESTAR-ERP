@@ -1337,8 +1337,8 @@
                                 @foreach (var stock in (IEnumerable<DashbordTsPartsReturnViewModel>)ViewBag.ReturnPartsViewModel)
                                 {
                                     <tr>
-                                        <td class="hide">@stock.JobOrderId</td>
-                                        <td class="hide">@stock.ReturnInfoId</td>
+                                        <td class="hide" jorOrderId="@stock.JobOrderId">@stock.JobOrderId</td>
+                                        <td class="hide" >@stock.ReturnInfoId</td>
                                         <td class="text-center">@stock.JobOrderCode</td>
                                         <td class="text-center"><a href="#" class="text-bold btnPartsReturn" data-item-val="@stock.ReturnInfoId.ToString()">@stock.RequsitionCode</a></td>
                                         <td class="text-center">@stock.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
@@ -1427,6 +1427,7 @@
             hdfReturnInfoId.val('0');
 
             var id = TryParseInt($(this).attr("data-item-val"));
+            //var job = TryParseInt($(this).attr("jorOrderId"));
             hdfReturnInfoId.val(id);
             var data = { id: id };
             //return console.log(data);
@@ -1451,7 +1452,7 @@
                             var tds = $(this).children('td');
                             var partsId = tds.eq('3').html();
                             var partsName = tds.eq('4').html();
-                            var qty = tds.eq('5').html();
+                            var qty = tds.eq('6').html();
 
                             details.push({
                                 MobilePartId: TryParseInt(partsId,0),
@@ -1461,8 +1462,7 @@
                         });
                         var data = JSON.stringify({ models: details, returnInfoId: hdfReturnInfoId.val(), status: status });
                         console.log("stock-In Quantity");
-                        console.log(data);
-                        //return;
+                        //return console.log(data);
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveReturnPartsStockIn', data, getToken())).then(function (res, status) {
                             console.log(res);
                             console.log(status);

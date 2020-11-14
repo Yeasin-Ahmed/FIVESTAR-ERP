@@ -27,6 +27,11 @@ namespace ERPBLL.Common
         public static readonly string FreshStock = "FreshStock";
         public static readonly string FaultyStock = "FaultyStock";
     }
+    public class AccountsType
+    {
+        public static readonly string BalanceSheed = "Balance Sheet";
+        public static readonly string PNL = "PNL";
+    }
     public class JobOrderTransferStatus
     {
         public static readonly string Received = "Received";

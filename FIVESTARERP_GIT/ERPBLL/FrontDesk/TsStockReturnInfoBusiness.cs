@@ -14,11 +14,13 @@ namespace ERPBLL.FrontDesk
     {
         private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
         private readonly TsStockReturnInfoRepository _tsStockReturnInfoRepository;
+        private readonly IJobOrderBusiness _jobOrderBusiness;
 
-        public TsStockReturnInfoBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork)
+        public TsStockReturnInfoBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork,IJobOrderBusiness jobOrderBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._tsStockReturnInfoRepository = new TsStockReturnInfoRepository(this._frontDeskUnitOfWork);
+            this._jobOrderBusiness = jobOrderBusiness;
         }
 
         public IEnumerable<DashbordTsPartsReturnDTO> DashboardReturnParts(long orgId, long branchId)
@@ -37,6 +39,7 @@ namespace ERPBLL.FrontDesk
         public bool SaveTsReturnStock(List<TsStockReturnInfoDTO> returnInfoList, long userId, long orgId, long branchId)
         {
             //bool IsSuccess = false;
+            var jobId = _jobOrderBusiness.GetJobOrderById(returnInfoList.LastOrDefault().JobOrderId, orgId);
             List<TsStockReturnInfo> returnInfoLists = new List<TsStockReturnInfo>();
             foreach(var item in returnInfoList)
             {
@@ -48,7 +51,7 @@ namespace ERPBLL.FrontDesk
                 info.EUserId = userId;
                 info.EntryDate = DateTime.Now;
                 info.OrganizationId = orgId;
-                info.BranchId = branchId;
+                info.BranchId = jobId.BranchId;
                 List<TsStockReturnDetail> detail = new List<TsStockReturnDetail>();
                 foreach(var details in item.TsStockReturnDetails)
                 {
@@ -58,7 +61,7 @@ namespace ERPBLL.FrontDesk
                     d.RequsitionCode = details.RequsitionCode;
                     d.PartsId = details.PartsId;
                     d.Quantity = details.Quantity;
-                    d.BranchId = branchId;
+                    d.BranchId = jobId.BranchId;
                     d.OrganizationId = orgId;
                     d.EUserId = userId;
                     d.EntryDate = DateTime.Now;

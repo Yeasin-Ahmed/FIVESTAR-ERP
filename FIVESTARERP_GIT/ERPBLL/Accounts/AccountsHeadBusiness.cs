@@ -38,29 +38,33 @@ namespace ERPBLL.Accounts
 
         public bool SaveAccountsHead(AccountsHeadDTO accountsHeadDTO, long userId, long orgId)
         {
-            AccountsHead head = new AccountsHead(); ;
+            var mainHeadId = string.Empty;
+            var ancestorId = string.Empty;
+            string mainAncestorIdfull = "";
+            if (!accountsHeadDTO.IsGroupHead)
+            {
+                long aheadId = Convert.ToInt64(accountsHeadDTO.AncestorId);
+                var data = accountsHeadRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.AHeadId == aheadId);
+                mainHeadId = data != null ? data.AHeadId.ToString() : "0";
+                ancestorId = data != null ? (string.IsNullOrEmpty(data.AncestorId) ? "0": data.AncestorId) : "0";
+                mainAncestorIdfull= ","+mainHeadId + "," + ancestorId +",";
+                mainAncestorIdfull = mainAncestorIdfull.Replace(",,", ",");
+            }
+            
+            AccountsHead head = new AccountsHead();
             if (accountsHeadDTO.AHeadId == 0)
             {
                 head.AHeadName = accountsHeadDTO.AHeadName;
                 head.AHeadCode = accountsHeadDTO.AHeadCode;
+                head.AncestorId = mainAncestorIdfull;
+                head.IsGroupHead = accountsHeadDTO.IsGroupHead;
+                head.AccountType = accountsHeadDTO.AccountType;
                 head.Remarks = accountsHeadDTO.Remarks;
                 head.OrganizationId = orgId;
                 head.BranchId = accountsHeadDTO.BranchId;
                 head.EUserId = userId;
                 head.EntryDate = DateTime.Now;
                 accountsHeadRepository.Insert(head);
-            }
-            else
-            {
-                head = GetAccountsHeadOneByOrgId(accountsHeadDTO.AHeadId,orgId);
-                head.AHeadName = accountsHeadDTO.AHeadName;
-                head.AHeadCode = accountsHeadDTO.AHeadCode;
-                head.Remarks = accountsHeadDTO.Remarks;
-                head.OrganizationId = orgId;
-                head.BranchId = accountsHeadDTO.BranchId;
-                head.UpUserId = userId;
-                head.UpdateDate = DateTime.Now;
-                accountsHeadRepository.Update(head);
             }
             return accountsHeadRepository.Save();
         }

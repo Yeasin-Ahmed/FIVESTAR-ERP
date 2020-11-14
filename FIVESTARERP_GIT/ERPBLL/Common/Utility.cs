@@ -54,6 +54,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfAccountsType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=AccountsType.BalanceSheed,value=AccountsType.BalanceSheed},
+                new Dropdown(){text=AccountsType.PNL,value=AccountsType.PNL}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfTransferStatus()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
