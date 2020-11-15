@@ -1000,6 +1000,20 @@ namespace ERPWeb.Controllers
             bool isExists = _iQCBusiness.IsDuplicateIQCName(iqcId, User.OrgId, iqcName);
             return Json(isExists);
         }
+        [HttpPost]
+        public ActionResult GetBrandModels(long brandId)
+        {
+            var data =_descriptionBusiness.GetModelsByBrand(brandId, User.OrgId);
+            return Json(data);
+        }
+        [HttpPost]
+        public ActionResult GetModelsByBrand(long brandId)
+        {
+            return Json(_descriptionBusiness.GetModelsByBrand(brandId, User.OrgId).Select(s=> new Dropdown() {
+                text=s.text,
+                value=s.value
+            }).ToList());
+        }
 
         #region DropdownList
 

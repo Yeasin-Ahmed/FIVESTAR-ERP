@@ -371,5 +371,10 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
             }
             return newCode;
         }
+
+        public IEnumerable<Dropdown> GetModelsByBrand(long brandId, long orgId)
+        {
+            return descriptionRepository.GetAll(s => s.BrandId == brandId && s.OrganizationId == orgId).Select(s => new Dropdown() { value = s.DescriptionId.ToString(), text = s.DescriptionName }).ToList();
+        }
     }
 }

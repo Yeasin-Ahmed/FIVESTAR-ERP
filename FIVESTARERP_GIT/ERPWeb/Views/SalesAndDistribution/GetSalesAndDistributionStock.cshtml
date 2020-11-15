@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "BTRC Approved IMEI";
+    ViewBag.Title = "Sales & Distribution Stocks";
 }
 <div class="row text-sm" style="margin-top:-20px">
     <div class="col-md-12">
@@ -14,8 +14,8 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-stock-tab" data-toggle="pill" href="#custom-tabs-two-stock" role="tab" aria-controls="custom-tabs-two-stock" aria-selected="true">Item Stock</a>
                     </li>
-                    <li class="nav-item hide">
-                        <a class="nav-link" id="custom-tabs-three-qc-tab" data-toggle="pill" href="#custom-tabs-three-qc" role="tab" aria-controls="custom-tabs-three-qc" aria-selected="false">Quality Control</a>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-modelcolorStock-tab" data-toggle="pill" href="#custom-tabs-three-modelcolorStock" role="tab" aria-controls="custom-tabs-three-modelcolorStockS" aria-selected="false">Model & Color Wise Stock</a>
                     </li>
                     <li class="nav-item hide">
                         <a class="nav-link" id="custom-tabs-four-repair-tab" data-toggle="pill" href="#custom-tabs-four-repair" role="tab" aria-controls="custom-tabs-four-repair" aria-selected="false">Repair Line</a>
@@ -30,25 +30,6 @@
                     <div class="tab-pane fade show active" id="custom-tabs-one-IMEIList" role="tabpanel" aria-labelledby="custom-tabs-one-IMEIList">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">
-                                                    List Of BTRC IMEI
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
                                         <div class="row">
@@ -77,25 +58,6 @@
                     <div class="tab-pane fade show" id="custom-tabs-two-stock" role="tabpanel" aria-labelledby="custom-tabs-two-stock">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">
-                                                    Item Stocks
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
                                         <div class="row">
@@ -112,47 +74,47 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <label for="txtIMEI" class="control-label font-weight-bold">
+                                                <label for="txtIMEIForItemStock" class="control-label font-weight-bold">
                                                     IMEI
                                                 </label>
-                                                <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Search By IMEI" />
+                                                <input type="text" class="form-control form-control-sm" id="txtIMEIForItemStock" placeholder="Search By IMEI" />
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="ddlCategories" class="control-label font-weight-bold">
+                                                <label for="ddlCategoriesForItemStock" class="control-label font-weight-bold">
                                                     Category
                                                 </label>
-                                                @Html.DropDownList("ddlCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlCategoriesForItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="ddlMobileBrand" class="control-label font-weight-bold">
+                                                <label for="ddlMobileBrandForItemStock" class="control-label font-weight-bold">
                                                     Brand
                                                 </label>
-                                                @Html.DropDownList("ddlMobileBrand", (IEnumerable<SelectListItem>)ViewBag.ddlMobileBrand, "---Select Brand---", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlMobileBrandForItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlMobileBrand, "---Select Brand---", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="ddlModels" class="control-label font-weight-bold">
+                                                <label for="ddlModelsForItemStock" class="control-label font-weight-bold">
                                                     Model
                                                 </label>
-                                                @Html.DropDownList("ddlModels", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "---Select Model---", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                @Html.DropDownList("ddlModelsForItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "---Select Model---", new { @class = "form-control form-control-sm select2 select2-danger" })
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <label for="ddlStockStatus" class="control-label font-weight-bold">
+                                                <label for="ddlStockStatusForItemStock" class="control-label font-weight-bold">
                                                     Status
                                                 </label>
-                                                @Html.DropDownList("ddlStockStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "---Select Status---", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlStockStatusForItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlStockStatus, "---Select Status---", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="ddlColors" class="control-label font-weight-bold">
+                                                <label for="ddlColorsForItemStock" class="control-label font-weight-bold">
                                                     Color
                                                 </label>
-                                                @Html.DropDownList("ddlColors", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "---Select Color---", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlColorsForItemStock", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "---Select Color---", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateForItemStock" />
                                                     <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
                                                         <span class="input-group-text">&#10008;</span>
                                                     </div>
@@ -161,7 +123,7 @@
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">To Date</label>
                                                 <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateForItemStock" />
                                                     <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
                                                         <span class="input-group-text">&#10008;</span>
                                                     </div>
@@ -181,38 +143,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show " id="custom-tabs-three-qc" role="tabpanel" aria-labelledby="custom-tabs-three-qc">
+                    <div class="tab-pane fade show " id="custom-tabs-three-modelcolorStock" role="tabpanel" aria-labelledby="custom-tabs-three-modelcolorStock">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
-                                <div class="card card-gray-dark">
-                                    <div class="card-header">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">
-                                                    List Of Quality Control
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card card-navy">
                                     <div class="card-header">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <input type="text" name="searchQC" id="searchByQC" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblQCLine tbody tr',this)" />
+                                                <input type="text" name="searchModelColorStock" id="searchByModelColorStock" class="form-control form-control-sm" placeholder="Search By Anything" onkeyup="tableFilter('.tblModelAndColorWiseStock tbody tr',this)" />
                                             </div>
                                             <div class="col-md-4">
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewQC"><i class="fa fa-plus"></i> Create QC</button>
                                             </div>
                                         </div>
                                     </div>
@@ -370,14 +312,14 @@
         var FileUpload = $("#FileUpload");
 
         // Item Stock
-        var txtIMEI = $("#txtIMEI")
-        var ddlCategories = $("#ddlCategories");
-        var ddlMobileBrand = $("#ddlMobileBrand")
-        var ddlModels = $("#ddlModels") 
-        var ddlStockStatus = $("#ddlStockStatus");
-        var ddlColors = $("#ddlColors");
-        var dptFromDate = $("#dptFromDate");
-        var dptToDate = $("#dptToDate");
+        var txtIMEIForItemStock = $("#txtIMEIForItemStock")
+        var ddlCategoriesForItemStock = $("#ddlCategoriesForItemStock");
+        var ddlMobileBrandForItemStock = $("#ddlMobileBrandForItemStock")
+        var ddlModelsForItemStock = $("#ddlModelsForItemStock")
+        var ddlStockStatusForItemStock = $("#ddlStockStatusForItemStock");
+        var ddlColorsForItemStock = $("#ddlColorsForItemStock");
+        var dptFromDateForItemStock = $("#dptFromDateForItemStock");
+        var dptToDateForItemStock = $("#dptToDateForItemStock");
 
         $(document).ready(function () {
             $('.select2').select2();
@@ -387,24 +329,24 @@
                 theme: 'bootstrap4'
             });
 
-            dptFromDate.prop('readonly', true);
-            dptToDate.prop('readonly', true);
-            dptFromDate.css("background-color", "#fff");
-            dptToDate.css("background-color", "#fff");
-            $('#dptFromDate').datepicker({
+            dptFromDateForItemStock.prop('readonly', true);
+            dptToDateForItemStock.prop('readonly', true);
+            dptFromDateForItemStock.css("background-color", "#fff");
+            dptToDateForItemStock.css("background-color", "#fff");
+            $('#dptFromDateForItemStock').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
                 todayHighlight: true
             }).on('change', function () {
                 $('.datepicker').hide();
             });
-            $('#dptToDate').datepicker({
+            $('#dptToDateForItemStock').datepicker({
                 format: "dd MM yyyy",
                 orientation: "bottom auto",
                 todayHighlight: true
             }).on('change', function () {
                 $('.datepicker').hide();
-                });
+            });
 
             loadDataInitializer();
         })
@@ -417,6 +359,7 @@
         function loadDataInitializer() {
             loadBTRCApprovedDataTable();
             loadItemStockDataTable();
+            loadModelAndColorWiseStockDataTable();
         }
 
         function OpenModalIMEI() {
@@ -426,7 +369,7 @@
         function loadBTRCApprovedDataTable() {
             $("#searchByIMEI").val('');
             var data = { flag: "list" };
-            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetBTRCIMEI', data)).then(function (res, status) {
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetSalesAndDistributionStock', data)).then(function (res, status) {
                 if (status === "success") {
                     $("#dataContainer1").fadeOut('500', function () {
                         $("#dataContainer1").empty();
@@ -438,19 +381,6 @@
             })
         }
 
-        function loadItemStockDataTable() {
-            var data = { flag: "stock" };
-            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetBTRCIMEI', data)).then(function (res, status) {
-                if (status === "success") {
-                    $("#dataContainer2").fadeOut('500', function () {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
-                    });
-                }
-            }).fail(function (error) {
-                consoleLog(error);
-            })
-        }
 
         $("#btnSubmitIMEI").click(function (e) {
             e.preventDefault();
@@ -502,5 +432,78 @@
                 }
             })
         })
+
+        
+
+        // Item Stock
+        txtIMEIForItemStock.keyup(function () {
+            loadItemStockDataTable();
+        })
+
+        ddlCategoriesForItemStock.change(function () {
+            loadItemStockDataTable();
+        })
+
+        ddlMobileBrandForItemStock.change(function () {
+            loadItemStockDataTable();
+        })
+
+        ddlModelsForItemStock.change(function () {
+            loadItemStockDataTable();
+        })
+
+        ddlStockStatusForItemStock.change(function () {
+            loadItemStockDataTable();
+        })
+
+        ddlColorsForItemStock.change(function () {
+            loadItemStockDataTable();
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateForItemStock.val() !== '') {
+                    dptToDateForItemStock.val('');
+                    loadItemStockDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateForItemStock.val() !== '') {
+                    dptFromDateForItemStock.val('');
+                    loadItemStockDataTable();
+                }
+            }
+        })
+
+        function loadItemStockDataTable() {
+
+            var data = { flag: "stock", status: ddlStockStatusForItemStock.val(), categoryId: TryParseInt(ddlCategoriesForItemStock.val(), 0), brandId: TryParseInt(ddlMobileBrandForItemStock.val(), 0), warehouseId: 0, itemTypeId: 0, itemId: 0, colorId: TryParseInt(ddlColorsForItemStock.val(), 0), imei: $.trim(txtIMEIForItemStock.val()), modelId: TryParseInt(ddlModelsForItemStock.val(), 0), fromDate: dptFromDateForItemStock.val(), toDate: dptToDateForItemStock.val() };
+
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetSalesAndDistributionStock', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        // Model & Color Wise Stock
+        function loadModelAndColorWiseStockDataTable() {
+            var data = { flag: "modelandColorStock"};
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/GetSalesAndDistributionStock', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
     </script>
 }

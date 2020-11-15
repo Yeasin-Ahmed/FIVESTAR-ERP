@@ -62,6 +62,7 @@ namespace ERPWeb
             container.RegisterType <ERPBLL.Inventory.Interface.IBrandCategoriesBusiness, ERPBLL.Inventory.BrandCategoriesBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.IColorBusiness, ERPBLL.Inventory.ColorBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.IModelColorBusiness, ERPBLL.Inventory.ModelColorBusiness>();
+            container.RegisterType<IHandSetStockBusiness, HandSetStockBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
 

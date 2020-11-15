@@ -191,10 +191,12 @@
     <Compile Include="Inventory\BrandCategoriesBusiness.cs" />
     <Compile Include="Inventory\CategoryBusiness.cs" />
     <Compile Include="Inventory\ColorBusiness.cs" />
+    <Compile Include="Inventory\HandSetStockBusiness.cs" />
     <Compile Include="Inventory\Interface\IBrandBusiness.cs" />
     <Compile Include="Inventory\Interface\IBrandCategoriesBusiness.cs" />
     <Compile Include="Inventory\Interface\ICategoryBusiness.cs" />
     <Compile Include="Inventory\Interface\IColorBusiness.cs" />
+    <Compile Include="Inventory\Interface\IHandSetStockBusiness.cs" />
     <Compile Include="Inventory\Interface\IInventoryReportBusiness.cs" />
     <Compile Include="Inventory\Interface\IIQCBusiness.cs" />
     <Compile Include="Inventory\Interface\IIQCItemReqDetailList.cs" />

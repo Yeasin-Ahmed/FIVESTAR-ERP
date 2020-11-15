@@ -1,36 +1,23 @@
 ﻿using ERPBLL.Inventory.Interface;
-using ERPBO.ControlPanel.DomainModels;
 using ERPBO.Inventory.DTOModel;
 using ERPBO.Inventory.DTOModels;
-using ERPBO.Inventory.DomainModels;
 using ERPBO.Inventory.ViewModels;
 using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ERPBO.Production.DTOModel;
 using ERPBLL.Production.Interface;
 using ERPBO.Production.ViewModels;
 using ERPBLL.Common;
 using System.Data.Entity;
-using ERPBO.Production.DomainModels;
 using ERPBO.Common;
 using PagedList;
-using ERPBO.ControlPanel.ViewModels;
 using ERPBO.Inventory.DomainModel;
-using ERPWeb.Infrastructure;
-using System.Threading.Tasks;
-using System.IO;
 using System.Data;
-using System.Data.SqlClient;
-using System.Reflection;
-using ERPDAL.InventoryDAL;
-using System.Configuration;
 using System.Data.OleDb;
 using LinqToExcel;
-using System.Data.Entity.Validation;
 using Microsoft.Reporting.WebForms;
 
 namespace ERPWeb.Controllers
@@ -69,6 +56,7 @@ namespace ERPWeb.Controllers
         private readonly IBrandBusiness _brandBusiness;
         private readonly IBrandCategoriesBusiness _brandCategoriesBusiness;
         private readonly IColorBusiness _colorBusiness;
+        private readonly IHandSetStockBusiness _handSetStockBusiness;
         #endregion
 
         #region Production
@@ -82,7 +70,7 @@ namespace ERPWeb.Controllers
         private readonly IStockItemReturnDetailBusiness _stockItemReturnDetailBusiness;
         #endregion
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoriesBusiness, IColorBusiness colorBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoriesBusiness, IColorBusiness colorBusiness, IHandSetStockBusiness handSetStockBusiness)
         {
             #region Inventory
             this._warehouseBusiness = warehouseBusiness;
@@ -113,6 +101,7 @@ namespace ERPWeb.Controllers
             this._brandBusiness = brandBusiness;
             this._brandCategoriesBusiness = brandCategoriesBusiness;
             this._colorBusiness = colorBusiness;
+            this._handSetStockBusiness = handSetStockBusiness;
             #endregion
 
             #region Production
@@ -788,7 +777,7 @@ namespace ERPWeb.Controllers
 
         #region Warehouse Stock Info -Table
         [HttpGet]
-        public ActionResult GetWarehouseStockInfoList(string tab, string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, long? floorId, long? packagingLineId, long? returnId, string returnCode, string status, string fromDate, string toDate, long? lineId, string refNo, int page = 1)
+        public ActionResult GetWarehouseStockInfoList(string tab, string flag, long? warehouseId, long? modelId, long? itemTypeId, long? itemId, string lessOrEq, long? floorId, long? packagingLineId, long? returnId, string returnCode, string status, string fromDate, string toDate, long? lineId, string refNo, long? categoryId, long? brandId, long? colorId, string imei, string cartoonNo, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -810,6 +799,9 @@ namespace ERPWeb.Controllers
                     Text = s.text,
                     Value = s.value
                 }).ToList();
+                ViewBag.ddlCategories = new SelectList(_categoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
+                ViewBag.ddlBrands= new SelectList(_brandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
+                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "search")
             {
@@ -832,7 +824,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_GetStockReturnList", viewModels);
             }
-            else if(!string.IsNullOrEmpty(flag) && flag.Trim() !="" && flag == "finishGoods")
+            else if(!string.IsNullOrEmpty(flag) && flag.Trim() !="" && flag == "receivefinishGoods")
             {
                 var dto =_finishGoodsSendToWarehouseInfoBusiness.GetFinishGoodSendInfomations(lineId, warehouseId, modelId, status, fromDate, toDate, refNo, User.OrgId);
                 ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
@@ -840,6 +832,15 @@ namespace ERPWeb.Controllers
                 List<FinishGoodsSendToWarehouseInfoViewModel> listOfFinishGoodsSendToWarehouseInfoViewModels = new List<FinishGoodsSendToWarehouseInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, listOfFinishGoodsSendToWarehouseInfoViewModels);
                 return PartialView("_GetFinishGoodsSendToWarehouse", listOfFinishGoodsSendToWarehouseInfoViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "handsetStock")
+            {
+                var dto = _handSetStockBusiness.GetHandSetStocks(User.OrgId, categoryId, brandId, modelId, colorId, warehouseId, itemTypeId, itemId, status, imei, fromDate, toDate, cartoonNo);
+                ViewBag.PagerData = GetPagerData(dto.Count(), pageSize, page);
+                dto = dto.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                List<HandSetStockViewModel> viewModels = new List<HandSetStockViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_handSetStock", viewModels);
             }
             return View();
         }
@@ -1481,7 +1482,8 @@ namespace ERPWeb.Controllers
                     WarehouseName = _warehouseBusiness.GetWarehouseOneByOrgId(info.WarehouseId, User.OrgId).WarehouseName,
                     DescriptionId = info.DescriptionId,
                     ModelName = _descriptionBusiness.GetDescriptionOneByOrdId(info.DescriptionId, User.OrgId).DescriptionName,
-                    StateStatus = info.StateStatus
+                    StateStatus = info.StateStatus,
+                    CartoonNo=info.CartoonNo
                 };
 
                 ViewBag.FinishGoodsSendInfo = infoViewModel;
@@ -1504,8 +1506,7 @@ namespace ERPWeb.Controllers
         public ActionResult SaveFinishGoodsItems(long sendId)
         {
             bool IsSuccess = false;
-            var privilege = UserPrivilege("Inventory", "GetFinishGoodsSendToWarehouse");
-            if (sendId > 0 && privilege.Edit)
+            if (sendId > 0)
             {
                 IsSuccess = _finishGoodsSendToWarehouseInfoBusiness.SaveFinishGoodsStatus(sendId, User.UserId, User.OrgId);
             }

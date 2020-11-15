@@ -59,7 +59,7 @@ namespace ERPBLL.Inventory
         public bool SaveWarehouseStockIn(List<WarehouseStockDetailDTO> warehouseStockDetailDTO, long userId, long orgId)
         {
             List<WarehouseStockDetail> warehouseStockDetails = new List<WarehouseStockDetail>();
-
+            List<WarehouseStockInfo> warehouseStockInfos = new List<WarehouseStockInfo>();
             foreach (var item in warehouseStockDetailDTO)
             {
                 WarehouseStockDetail stockDetail = new WarehouseStockDetail();
@@ -96,28 +96,65 @@ namespace ERPBLL.Inventory
                 else
                 {
                     WarehouseStockInfo warehouseStockInfo = new WarehouseStockInfo();
-                    warehouseStockInfo.WarehouseId = item.WarehouseId;
-                    warehouseStockInfo.DescriptionId = item.DescriptionId;
-                    warehouseStockInfo.ItemTypeId = item.ItemTypeId;
-                    warehouseStockInfo.ItemId = item.ItemId;
-                    warehouseStockInfo.UnitId = stockDetail.UnitId;
-                    warehouseStockInfo.StockInQty = item.Quantity;
-                    warehouseStockInfo.StockOutQty = 0;
-                    warehouseStockInfo.OrganizationId = orgId;
-                    warehouseStockInfo.EUserId = userId;
-                    warehouseStockInfo.Remarks = item.Remarks;
-                    if (item.EntryDate != null)
+                    if (warehouseStockInfos.Count > 0)
                     {
-                        warehouseStockInfo.EntryDate = item.EntryDate;
+                        var warehouseStockInfoInQueue= warehouseStockInfos.FirstOrDefault(s => s.DescriptionId == item.DescriptionId && s.ItemId == item.ItemId);
+                        if(warehouseStockInfoInQueue != null)
+                        {
+                            warehouseStockInfoInQueue.StockInQty += item.Quantity;
+                        }
+                        else
+                        {
+                            warehouseStockInfo.WarehouseId = item.WarehouseId;
+                            warehouseStockInfo.DescriptionId = item.DescriptionId;
+                            warehouseStockInfo.ItemTypeId = item.ItemTypeId;
+                            warehouseStockInfo.ItemId = item.ItemId;
+                            warehouseStockInfo.UnitId = stockDetail.UnitId;
+                            warehouseStockInfo.StockInQty = item.Quantity;
+                            warehouseStockInfo.StockOutQty = 0;
+                            warehouseStockInfo.OrganizationId = orgId;
+                            warehouseStockInfo.EUserId = userId;
+                            warehouseStockInfo.Remarks = item.Remarks;
+                            if (item.EntryDate != null)
+                            {
+                                warehouseStockInfo.EntryDate = item.EntryDate;
+                            }
+                            else
+                            {
+                                warehouseStockInfo.EntryDate = DateTime.Now;
+                            }
+                            warehouseStockInfos.Add(warehouseStockInfo);
+                        }
                     }
                     else
                     {
-                        warehouseStockInfo.EntryDate = DateTime.Now;
+                        warehouseStockInfo.WarehouseId = item.WarehouseId;
+                        warehouseStockInfo.DescriptionId = item.DescriptionId;
+                        warehouseStockInfo.ItemTypeId = item.ItemTypeId;
+                        warehouseStockInfo.ItemId = item.ItemId;
+                        warehouseStockInfo.UnitId = stockDetail.UnitId;
+                        warehouseStockInfo.StockInQty = item.Quantity;
+                        warehouseStockInfo.StockOutQty = 0;
+                        warehouseStockInfo.OrganizationId = orgId;
+                        warehouseStockInfo.EUserId = userId;
+                        warehouseStockInfo.Remarks = string.Empty;
+                        if (item.EntryDate != null)
+                        {
+                            warehouseStockInfo.EntryDate = item.EntryDate;
+                        }
+                        else
+                        {
+                            warehouseStockInfo.EntryDate = DateTime.Now;
+                        }
+                        warehouseStockInfos.Add(warehouseStockInfo);
                     }
-
-                    warehouseStockInfoRepository.Insert(warehouseStockInfo);
+                    //warehouseStockInfoRepository.Insert(warehouseStockInfo);
                 }
                 warehouseStockDetails.Add(stockDetail);
+            }
+            if(warehouseStockInfos.Count > 0)
+            {
+                warehouseStockInfoRepository.InsertAll(warehouseStockInfos);
             }
             warehouseStockDetailRepository.InsertAll(warehouseStockDetails);
             return warehouseStockDetailRepository.Save();

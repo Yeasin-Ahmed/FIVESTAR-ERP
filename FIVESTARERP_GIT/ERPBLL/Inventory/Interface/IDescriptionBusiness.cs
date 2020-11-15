@@ -17,8 +17,8 @@ namespace ERPBLL.Inventory.Interface
         List<ModelColor> GetModelColors(long modelId, long orgId);
         IEnumerable<Dropdown> GetAllDescriptionsInProductionStock(long orgId);
         bool UpdateDescriptionTAC(DescriptionDTO model, long userId, long orgId);
-
         bool SaveDescription(DescriptionDTO model, long userId, long orgId);
+        IEnumerable<Dropdown> GetModelsByBrand(long brandId, long orgId);
 
     }
 }

@@ -442,7 +442,7 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
-        public ActionResult GetBTRCIMEI(string flag, string status, long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string imei, long modelId = 0, string fromDate = "", string toDate = "")
+        public ActionResult GetSalesAndDistributionStock(string flag, string status, long? categoryId, long? brandId, long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string imei, long modelId = 0, string fromDate = "", string toDate = "")
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -462,11 +462,19 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "stock")
             {
-                //var dto = _itemStockBusiness.GetItemStocks(User.BranchId, User.OrgId, modelId, warehouseId, itemTypeId, itemId, colorId, status, imei, fromDate, toDate);
+                var dto = _itemStockBusiness.GetItemStocks(User.BranchId, User.OrgId,categoryId,brandId, modelId, warehouseId, itemTypeId, itemId, colorId, status, imei, fromDate, toDate);
                 IEnumerable<ItemStockViewModel> viewModels = new List<ItemStockViewModel>();
-                //AutoMapper.Mapper.Map(dto, viewModels);
+                AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_itemStock", viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "modelandColorStock")
+            {
+                var dto = _itemStockBusiness.GetModelAndColorWiseItemStocks(User.OrgId, categoryId, brandId, modelId, warehouseId, itemTypeId, itemId, colorId);
+                IEnumerable<ModelAndColorWiseItemStockViewModel> viewModels = new List<ModelAndColorWiseItemStockViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_modelColorStock", viewModels);
+            }
+
             return View();
         }
 
@@ -532,8 +540,15 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IMEIProcess()
         {
-            var rows = _itemStockBusiness.RunProcess(User.OrgId, User.UserId, User.BranchId);
-            return Json(new { rows = rows });
+            try
+            {
+                var rows = _itemStockBusiness.RunProcess(User.OrgId, User.UserId, User.BranchId);
+                return Json(new { rows = rows });
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public ActionResult SRHierarchy(string flag)

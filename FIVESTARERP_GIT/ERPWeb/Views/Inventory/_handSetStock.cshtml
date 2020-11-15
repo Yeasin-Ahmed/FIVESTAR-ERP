@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ERPBO.Inventory.ViewModels.HandSetStockViewModel>
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+}
+<div class="row">
+    <div class="col-md-12 mt-2" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg tblHandSetStock" id="tblHandSetStock">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Color</th>
+                    <th>IMEI</th>
+                    <th>Status</th>
+                    <th>Cartoon</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                    <th>Update User</th>
+                    <th>Update Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    string badge = item.StockStatus == "Stock-In" ? "badge badge-success" : "badge badge-danger";
+                    string updateDate = item.UpdateDate.HasValue ? item.UpdateDate.Value.ToString("dd-MMM-yyyy") : "";
+                    <tr>
+                        <td class="text-center text-bold" data-val="@item.StockId">@sl</td>
+                        <td data-val="@item.CategoryId">@item.CategoryName</td>
+                        <td data-val="@item.BrandId">@item.BrandName</td>
+                        <td data-val="@item.ModelId">@item.ModelName</td>
+                        <td data-val="@item.ColorId">@item.ColorName</td>
+                        <td class="text-center">@item.AllIMEI</td>
+                        <td class="text-center" data-val="@item.StockStatus"><span class="@badge">@item.StockStatus</span></td>
+                        <td class="text-center" data-val="@item.CartoonId">@item.CartoonNo</td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td class="text-center">@item.UpdateUser</td>
+                        <td class="text-center">@updateDate</td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="13">
+                            No data available in table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="handSetStock">
+    @Html.Partial("_Pagination", pagerData)
+</div>
