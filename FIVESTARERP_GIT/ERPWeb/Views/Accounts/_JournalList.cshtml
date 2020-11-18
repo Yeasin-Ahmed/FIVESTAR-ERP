@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ERPBO.Accounts.ViewModels.JournalViewModel>
+@{ 
+    Layout = null;
+    int sl = 0;
+    double debit = 0;
+    double credit = 0;
+}
+<div class="col-md-12 text-sm">
+    <table class="table table-bordered table-sm table-striped" id="tblJournalList">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th>Journal Date</th>
+                <th>Account Name</th>
+                <th>References Num.</th>
+                <th>Narration</th>
+                <th>Remarks</th>
+                <th>Dr.</th>
+                <th>Cr.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var jor in Model)
+            {
+                sl = sl + 1;
+                debit +=jor.Debit;
+                credit += jor.Credit;
+                string journaldate = jor.JournalDate != null ? jor.JournalDate.Value.ToString("dd-MMM-yyy") : "";
+                <tr>
+                    <td class="text-center">@sl</td>
+                    <td>@journaldate</td>
+                    <td>@jor.AccountName</td>
+                    <td>@jor.ReferenceNum</td>
+                    <td >@jor.Narration</td>
+                    <td >@jor.Remarks</td>
+                    <td class="text-center">@jor.Debit</td>
+                    <td class="text-center">@jor.Credit</td>
+                </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="6">
+                        No Rows Found
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot style="background-color:dimgray">
+            <tr class="text-white">
+                <th colspan="6" class="text-right">Total</th>
+                <td class="text-center font-weight-bold">@debit</td>
+                <td class="text-center font-weight-bold">@credit</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

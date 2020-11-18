@@ -54,6 +54,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfJournalType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=JournalType.Dr,value=JournalType.Dr},
+                new Dropdown(){text=JournalType.Cr,value=JournalType.Cr}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfAccountsType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>

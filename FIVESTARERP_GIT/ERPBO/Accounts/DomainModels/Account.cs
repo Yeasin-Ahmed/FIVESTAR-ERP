@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Accounts.DomainModels
 {
-    [Table("tblAccountsHead")]
-   public class AccountsHead
+    [Table("tblAccount")]
+   public class Account
     {
         [Key]
-        public long AHeadId { get; set; }
-        public string AHeadName { get; set; }
-        public string AHeadCode { get; set; }
+        public long AccountId { get; set; }
+        public string AccountName { get; set; }
+        public string AccountCode { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
         public long? BranchId { get; set; }

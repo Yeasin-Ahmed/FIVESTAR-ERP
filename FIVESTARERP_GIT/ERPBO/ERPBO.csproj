@@ -74,9 +74,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounts\DomainModels\AccountsHead.cs" />
-    <Compile Include="Accounts\DTOModels\AccountsHeadDTO.cs" />
-    <Compile Include="Accounts\ViewModels\AccountsHeadViewModel.cs" />
+    <Compile Include="Accounts\DomainModels\Account.cs" />
+    <Compile Include="Accounts\DomainModels\Journal.cs" />
+    <Compile Include="Accounts\DTOModels\AccountDTO.cs" />
+    <Compile Include="Accounts\DTOModels\JournalDTO.cs" />
+    <Compile Include="Accounts\ViewModels\AccountViewModel.cs" />
+    <Compile Include="Accounts\ViewModels\JournalViewModel.cs" />
     <Compile Include="Common\DailySellsChart.cs" />
     <Compile Include="Common\DayAndModelWiseProductionChart.cs" />
     <Compile Include="Common\DaysAndLineWiseProductionChart.cs" />

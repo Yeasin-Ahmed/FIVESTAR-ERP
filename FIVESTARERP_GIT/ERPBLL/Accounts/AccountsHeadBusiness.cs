@@ -20,23 +20,29 @@ namespace ERPBLL.Accounts
             this._accountsDb = accountsDb;
             accountsHeadRepository = new AccountsHeadRepository(this._accountsDb);
         }
-        public IEnumerable<AccountsHeadDTO> AccountsHeadList(long orgId)
+        public IEnumerable<AccountDTO> AccountList(long orgId)
         {
-            return this._accountsDb.Db.Database.SqlQuery<AccountsHeadDTO>(
-                string.Format(@"Select *from tblAccountsHead Where OrganizationId={0}", orgId)).ToList();
+            return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
+                string.Format(@"Select *from tblAccount Where OrganizationId={0}", orgId)).ToList();
         }
 
-        public AccountsHead GetAccountsHeadOneByOrgId(long id, long orgId)
+        public Account GetAccountOneByOrgId(long id, long orgId)
         {
-            return accountsHeadRepository.GetOneByOrg(h => h.AHeadId == id && h.OrganizationId == orgId);
+            return accountsHeadRepository.GetOneByOrg(h => h.AccountId == id && h.OrganizationId == orgId);
         }
 
-        public bool IsDuplicateAHeadCode(string code, long id, long orgId)
+        public AccountDTO GetCashHeadId(long orgId)
         {
-            return accountsHeadRepository.GetOneByOrg(h => h.AHeadCode == code && h.AHeadId != id && h.OrganizationId == orgId) != null ? true : false;
+            return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
+                string.Format(@"Select * from tblAccount Where AccountName='Cash' and OrganizationId={0}", orgId)).FirstOrDefault();
         }
 
-        public bool SaveAccountsHead(AccountsHeadDTO accountsHeadDTO, long userId, long orgId)
+        public bool IsDuplicateAaccountCode(string code, long id, long orgId)
+        {
+            return accountsHeadRepository.GetOneByOrg(h => h.AccountCode == code && h.AccountId != id && h.OrganizationId == orgId) != null ? true : false;
+        }
+
+        public bool SaveAccount(AccountDTO accountsHeadDTO, long userId, long orgId)
         {
             var mainHeadId = string.Empty;
             var ancestorId = string.Empty;
@@ -44,18 +50,18 @@ namespace ERPBLL.Accounts
             if (!accountsHeadDTO.IsGroupHead)
             {
                 long aheadId = Convert.ToInt64(accountsHeadDTO.AncestorId);
-                var data = accountsHeadRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.AHeadId == aheadId);
-                mainHeadId = data != null ? data.AHeadId.ToString() : "0";
+                var data = accountsHeadRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.AccountId == aheadId);
+                mainHeadId = data != null ? data.AccountId.ToString() : "0";
                 ancestorId = data != null ? (string.IsNullOrEmpty(data.AncestorId) ? "0": data.AncestorId) : "0";
                 mainAncestorIdfull= ","+mainHeadId + "," + ancestorId +",";
                 mainAncestorIdfull = mainAncestorIdfull.Replace(",,", ",");
             }
             
-            AccountsHead head = new AccountsHead();
-            if (accountsHeadDTO.AHeadId == 0)
+            Account head = new Account();
+            if (accountsHeadDTO.AccountId == 0)
             {
-                head.AHeadName = accountsHeadDTO.AHeadName;
-                head.AHeadCode = accountsHeadDTO.AHeadCode;
+                head.AccountName = accountsHeadDTO.AccountName;
+                head.AccountCode = accountsHeadDTO.AccountCode;
                 head.AncestorId = mainAncestorIdfull;
                 head.IsGroupHead = accountsHeadDTO.IsGroupHead;
                 head.AccountType = accountsHeadDTO.AccountType;

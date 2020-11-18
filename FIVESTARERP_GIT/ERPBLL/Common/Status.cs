@@ -27,6 +27,11 @@ namespace ERPBLL.Common
         public static readonly string FreshStock = "FreshStock";
         public static readonly string FaultyStock = "FaultyStock";
     }
+    public class JournalType
+    {
+        public static readonly string Dr = "Dr";
+        public static readonly string Cr = "Cr";
+    }
     public class AccountsType
     {
         public static readonly string BalanceSheed = "Balance Sheet";

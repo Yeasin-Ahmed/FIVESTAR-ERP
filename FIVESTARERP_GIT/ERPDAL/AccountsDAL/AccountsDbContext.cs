@@ -14,6 +14,7 @@ namespace ERPDAL.AccountsDAL
         {
 
         }
-        public DbSet<AccountsHead> tblAccountsHeads { get; set; }
+        public DbSet<Account> tblAccount { get; set; }
+        public DbSet<Journal> tblJournal { get; set; }
     }
 }

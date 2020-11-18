@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ERPBO.Accounts.ViewModels.AccountsHeadViewModel>
+﻿@model IEnumerable<ERPBO.Accounts.ViewModels.AccountViewModel>
 @{
     ViewBag.Title = "Accounts List";
     int sl = 0;
@@ -57,10 +57,10 @@
                                     sl = sl + 1;
                                     <tr>
                                         <td class="text-center" width="10%">@sl</td>
-                                        <td class="hide">@acc.AHeadId</td>
-                                        <td>@acc.AHeadName</td>
+                                        <td class="hide">@acc.AccountId</td>
+                                        <td>@acc.AccountName</td>
                                         <td>@acc.AccountType</td>
-                                        <td>@acc.AHeadCode</td>
+                                        <td>@acc.AccountCode</td>
                                         <td>@acc.Remarks</td>
                                     </tr>
                                 }
@@ -102,7 +102,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <div class="form-control text-sm">
-                                <b>Check if Group Head</b> <input type="checkbox" id="chkGroupHead" /> 
+                                <b>Check if Group Head</b> <input type="checkbox" id="chkGroupHead" />
                             </div>
                         </div>
                     </div>
@@ -180,10 +180,10 @@
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");
-            var data = JSON.stringify({ AHeadName: txtAccountHeadName.val(), IsGroupHead: chkGroupHead.is(":checked"), AncestorId: ddlAncestorName.val(), AccountType: ddlAccountsType.val(), Remarks: txtRemarks.val() });
+            var data = JSON.stringify({ AccountName: txtAccountHeadName.val(), IsGroupHead: chkGroupHead.is(":checked"), AncestorId: ddlAncestorName.val(), AccountType: ddlAccountsType.val(), Remarks: txtRemarks.val() });
             console.log("Account Info");
             //return console.log(data);
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveAccountsHead', data, getToken())).then(function (res, status) {
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveAccount', data, getToken())).then(function (res, status) {
                     console.log(status);
                     console.log(res);
                     if (res == true) {
@@ -199,4 +199,5 @@
                 });
         })
     </script>
-    }
+}
+

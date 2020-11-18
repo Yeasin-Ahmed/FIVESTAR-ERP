@@ -242,6 +242,7 @@ namespace ERPWeb
             #region Accounts
             container.RegisterType<IAccountsUnitOfWork, AccountsUnitOfWork>();
             container.RegisterType<IAccountsHeadBusiness, AccountsHeadBusiness>();
+            container.RegisterType<IJournalBusiness, JournalBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

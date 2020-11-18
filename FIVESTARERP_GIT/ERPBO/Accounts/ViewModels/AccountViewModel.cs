@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Accounts.DTOModels
+namespace ERPBO.Accounts.ViewModels
 {
-   public class AccountsHeadDTO
+   public class AccountViewModel
     {
-        public long AHeadId { get; set; }
-        public string AHeadName { get; set; }
-        public string AHeadCode { get; set; }
+        public long AccountId { get; set; }
+        public string AccountName { get; set; }
+        public string AccountCode { get; set; }
         public string Remarks { get; set; }
         public long OrganizationId { get; set; }
         public long? BranchId { get; set; }

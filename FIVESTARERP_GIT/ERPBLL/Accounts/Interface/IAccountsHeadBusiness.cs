@@ -11,9 +11,10 @@ namespace ERPBLL.Accounts.Interface
 {
    public interface IAccountsHeadBusiness
     {
-        IEnumerable<AccountsHeadDTO> AccountsHeadList(long orgId);
-        bool SaveAccountsHead(AccountsHeadDTO accountsHeadDTO, long userId, long orgId);
-        AccountsHead GetAccountsHeadOneByOrgId(long id, long orgId);
-        bool IsDuplicateAHeadCode(string code, long id, long orgId);
+        IEnumerable<AccountDTO> AccountList(long orgId);
+        bool SaveAccount(AccountDTO accountsHeadDTO, long userId, long orgId);
+        Account GetAccountOneByOrgId(long id, long orgId);
+        bool IsDuplicateAaccountCode(string code, long id, long orgId);
+        AccountDTO GetCashHeadId(long orgId);
     }
 }

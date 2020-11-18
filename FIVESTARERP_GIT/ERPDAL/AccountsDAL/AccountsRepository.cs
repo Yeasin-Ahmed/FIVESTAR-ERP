@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace ERPDAL.AccountsDAL
 {
-    public class AccountsHeadRepository : AccountsBaseRepository<AccountsHead>
+    public class AccountsHeadRepository : AccountsBaseRepository<Account>
     {
         public AccountsHeadRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
+    }
+    public class JournalRepository : AccountsBaseRepository<Journal>
+    {
+        public JournalRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
     }
 }
