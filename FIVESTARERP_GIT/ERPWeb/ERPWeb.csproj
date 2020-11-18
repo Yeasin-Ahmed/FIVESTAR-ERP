@@ -821,6 +821,11 @@
     <Content Include="Views\SalesAndDistribution\DealerOperations.cshtml" />
     <Content Include="Views\SalesAndDistribution\_dealerRequisitions.cshtml" />
     <Content Include="Views\SalesAndDistribution\SROperations.cshtml" />
+    <Content Include="Views\Accounts\GetAccountList.cshtml" />
+    <Content Include="Views\Accounts\GetJournalList.cshtml" />
+    <Content Include="Views\Accounts\JournalList.cshtml" />
+    <Content Include="Views\Accounts\_CashVoucherList.cshtml" />
+    <Content Include="Views\Accounts\_JournalList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
