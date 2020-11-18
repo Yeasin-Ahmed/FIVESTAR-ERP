@@ -13,6 +13,7 @@ namespace ERPBLL.SalesAndDistribution.Interface
     public interface IDealerBusiness
     {
         IEnumerable<Dealer> GetDealers(long orgId);
+        Dealer GetDealerByUserId(long userId, long orgId);
         IEnumerable<DealerDTO> GetDealerInformations(long orgId);
         Dealer GetDealerById(long id, long orgId);
         bool SaveDealer(DealerDTO dealer, SRUser user, long userId,long branchId, long orgId);

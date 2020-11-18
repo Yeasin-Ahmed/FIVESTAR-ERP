@@ -624,7 +624,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ControlPanel\DomainModels\Organization.cs" />
     <Compile Include="Inventory\DomainModels\Warehouse.cs" />
+    <Compile Include="SalesAndDistribution\CommonModels\HandSetItemInfo.cs" />
     <Compile Include="SalesAndDistribution\CommonModels\SalesHierarchyCommonModel.cs" />
+    <Compile Include="SalesAndDistribution\DomainModels\DealerRequisition.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\SalesRepresentative.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\StoreMasterStock.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\TSE.cs" />
@@ -642,6 +644,8 @@
     <Compile Include="SalesAndDistribution\DomainModels\Model.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\ModelColors.cs" />
     <Compile Include="SalesAndDistribution\DomainModels\Zone.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\DealerRequisition.cs" />
+    <Compile Include="SalesAndDistribution\DTOModels\ModelAndColorWiseItemStockDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\SalesRepresentativeDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\StoreMasterStockDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\TSEDTO.cs" />
@@ -659,6 +663,8 @@
     <Compile Include="SalesAndDistribution\DTOModels\ASMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\RSMDTO.cs" />
     <Compile Include="SalesAndDistribution\DTOModels\ZoneDTO.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\DealerRequisition.cs" />
+    <Compile Include="SalesAndDistribution\ViewModels\ModelAndColorWiseItemStockViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\SalesRepresentativeViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\StoreMasterStockViewModel.cs" />
     <Compile Include="SalesAndDistribution\ViewModels\TSEViewModel.cs" />

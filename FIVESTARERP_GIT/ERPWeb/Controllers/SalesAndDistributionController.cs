@@ -42,6 +42,7 @@ namespace ERPWeb.Controllers
         private readonly IASMBusiness _aSMBusiness;
         private readonly ITSEBusiness _tSEBusiness;
         private readonly ISalesRepresentativeBusiness _salesRepresentativeBusiness;
+        private readonly IDealerRequisitionInfoBusiness _dealerRequisitionInfoBusiness;
         #endregion
 
         #region Inventory
@@ -51,7 +52,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Inventory.Interface.IDescriptionBusiness _invModelBusiness;
         private readonly ERPBLL.Inventory.Interface.IColorBusiness _invColorBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness, ITSEBusiness tSEBusiness, ISalesRepresentativeBusiness salesRepresentativeBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness, ITSEBusiness tSEBusiness, ISalesRepresentativeBusiness salesRepresentativeBusiness, IDealerRequisitionInfoBusiness dealerRequisitionInfoBusiness)
         {
             #region Sales & Distribution
             this._dealerBusiness = dealerBusiness;
@@ -72,6 +73,7 @@ namespace ERPWeb.Controllers
             this._aSMBusiness = aSMBusiness;
             this._tSEBusiness = tSEBusiness;
             this._salesRepresentativeBusiness = salesRepresentativeBusiness;
+            this._dealerRequisitionInfoBusiness = dealerRequisitionInfoBusiness;
             #endregion
 
             #region Inventory
@@ -96,7 +98,7 @@ namespace ERPWeb.Controllers
                 #region Inventory
                 ViewBag.ddlCategories = new SelectList(_invCategoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
                 ViewBag.ddlColors = new SelectList(_invColorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
-                ViewBag.ddlBrand = new SelectList(_invBrandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName"); 
+                ViewBag.ddlBrand = new SelectList(_invBrandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
                 #endregion
 
                 ViewBag.ddlDivision = new SelectList(_divisionBusiness.GetDivisions(User.OrgId), "DivisionId", "DivisionName");
@@ -250,7 +252,7 @@ namespace ERPWeb.Controllers
                 #endregion
 
                 #region Inventory
-                var dto = this._invModelBusiness.GetDescriptionByOrgId(User.OrgId).Where(s=> s.Flag== "External").Select(s => new ERPBO.Inventory.DTOModel.DescriptionDTO
+                var dto = this._invModelBusiness.GetDescriptionByOrgId(User.OrgId).Where(s => s.Flag == "External").Select(s => new ERPBO.Inventory.DTOModel.DescriptionDTO
                 {
                     DescriptionId = s.DescriptionId,
                     DescriptionName = s.DescriptionName,
@@ -265,8 +267,8 @@ namespace ERPWeb.Controllers
                     BrandId = s.BrandId,
                     BrandName = ((s.BrandId == null || s.BrandId == 0) ? "" : _invBrandBusiness.GetBrandById(s.BrandId.Value, User.OrgId).BrandName),
                     Colors = _invModelBusiness.GetModelColors(s.DescriptionId, User.OrgId),
-                    CostPrice=s.CostPrice,
-                    SalePrice=s.SalePrice
+                    CostPrice = s.CostPrice,
+                    SalePrice = s.SalePrice
                 }).ToList();
                 IEnumerable<ERPBO.Inventory.ViewModels.DescriptionViewModel> viewModels = new List<ERPBO.Inventory.ViewModels.DescriptionViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
@@ -345,7 +347,7 @@ namespace ERPWeb.Controllers
             {
                 DealerDTO dto = new DealerDTO();
                 AutoMapper.Mapper.Map(model, dto);
-                IsSuccess = _dealerBusiness.SaveDealer(dto, sRUser, User.UserId,User.BranchId, User.OrgId);
+                IsSuccess = _dealerBusiness.SaveDealer(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
             }
             return Json(IsSuccess);
         }
@@ -442,7 +444,7 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
-        public ActionResult GetBTRCIMEI(string flag, string status, long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string imei, long modelId = 0, string fromDate = "", string toDate = "")
+        public ActionResult GetSalesAndDistributionStock(string flag, string status, long? categoryId, long? brandId, long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string imei, long modelId = 0, string fromDate = "", string toDate = "")
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -451,6 +453,7 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlModels = new SelectList(_invModelBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
                 ViewBag.ddlColors = new SelectList(_invColorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
                 ViewBag.ddlStockStatus = new SelectList(Utility.ListOfStockStatus(), "value", "text");
+                ViewBag.ddlRequisitionStatus = new SelectList(Utility.ListOfReqStatus(), "value", "text");
                 return View();
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "list")
@@ -462,11 +465,19 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "stock")
             {
-                //var dto = _itemStockBusiness.GetItemStocks(User.BranchId, User.OrgId, modelId, warehouseId, itemTypeId, itemId, colorId, status, imei, fromDate, toDate);
+                var dto = _itemStockBusiness.GetItemStocks(User.BranchId, User.OrgId, categoryId, brandId, modelId, warehouseId, itemTypeId, itemId, colorId, status, imei, fromDate, toDate);
                 IEnumerable<ItemStockViewModel> viewModels = new List<ItemStockViewModel>();
-                //AutoMapper.Mapper.Map(dto, viewModels);
+                AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_itemStock", viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "modelandColorStock")
+            {
+                var dto = _itemStockBusiness.GetModelAndColorWiseItemStocks(User.OrgId, categoryId, brandId, modelId, warehouseId, itemTypeId, itemId, colorId);
+                IEnumerable<ModelAndColorWiseItemStockViewModel> viewModels = new List<ModelAndColorWiseItemStockViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_modelColorStock", viewModels);
+            }
+
             return View();
         }
 
@@ -516,7 +527,7 @@ namespace ERPWeb.Controllers
             return Json(executionState);
         }
 
-        [HttpPost,ValidateJsonAntiForgeryToken]
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveSalesRepresentative(SalesRepresentativeViewModel model, SRUser sRUser)
         {
             bool IsSuccess = false;
@@ -524,7 +535,7 @@ namespace ERPWeb.Controllers
             {
                 SalesRepresentativeDTO dto = new SalesRepresentativeDTO();
                 AutoMapper.Mapper.Map(model, dto);
-                IsSuccess = _salesRepresentativeBusiness.SaveSalesRepresentative(dto,sRUser,User.UserId,User.BranchId,User.OrgId);
+                IsSuccess = _salesRepresentativeBusiness.SaveSalesRepresentative(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
             }
             return Json(IsSuccess);
         }
@@ -532,8 +543,15 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IMEIProcess()
         {
-            var rows = _itemStockBusiness.RunProcess(User.OrgId, User.UserId, User.BranchId);
-            return Json(new { rows = rows });
+            try
+            {
+                var rows = _itemStockBusiness.RunProcess(User.OrgId, User.UserId, User.BranchId);
+                return Json(new { rows = rows });
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public ActionResult SRHierarchy(string flag)
@@ -606,6 +624,65 @@ namespace ERPWeb.Controllers
                 IsSuccess = _tSEBusiness.SaveTSE(dto, sRUser, User.UserId, User.BranchId, User.OrgId);
             }
             return Json(IsSuccess);
+        }
+
+        public ActionResult DealerOperations(string flag, string refNum, string status, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlCategories = new SelectList(_invCategoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
+                ViewBag.ddlMobileBrand = new SelectList(_invBrandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
+                ViewBag.ddlModels = new SelectList(_invModelBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlColors = new SelectList(_invColorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlStockStatus = new SelectList(Utility.ListOfStockStatus(), "value", "text");
+                ViewBag.ddlRequisitionStatus = new SelectList(Utility.ListOfReqStatus(), "value", "text");
+                var dealer = _dealerBusiness.GetDealerByUserId(User.UserId, User.OrgId);
+                ViewBag.DealerId = dealer != null ? dealer.DealerId.ToString() : "0";
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "dealerRequisitionsInfo")
+            {
+                var dto = _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(User.UserId, null,User.DistrictId, User.ZoneId, refNum, status, fromDate, toDate, "dealer", User.OrgId,User.RoleName, User.UserId);
+                List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_dealerRequisitions", viewModels);
+            }
+            return View();
+        }
+
+        public ActionResult SROperations(string flag,long? dealerId, long? srId,long? districtId,long? zoneId,string refNum,string status,string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlCategories = new SelectList(_invCategoryBusiness.GetCategories(User.OrgId), "CategoryId", "CategoryName");
+                ViewBag.ddlMobileBrand = new SelectList(_invBrandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
+                ViewBag.ddlModels = new SelectList(_invModelBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlColors = new SelectList(_invColorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlStockStatus = new SelectList(Utility.ListOfStockStatus(), "value", "text");
+                ViewBag.ddlRequisitionStatus = new SelectList(Utility.ListOfReqStatus(), "value", "text");
+                ViewBag.ddlZone = new SelectList(_zoneBusiness.GetZonesByDistrict(User.DistrictId, User.OrgId), "value", "text");
+                ViewBag.ddlSubordinates = new SelectList(_salesRepresentativeBusiness.GetSalesRepresentativesBySeniorId(User.UserId, User.OrgId),"value","text");
+
+                return View();
+            }
+            if (!string.IsNullOrEmpty(flag) && flag.Trim() == "dealerRequisitionsInfo")
+            {
+               var dto= _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(dealerId, srId, User.DistrictId, zoneId, refNum, status, fromDate, toDate, "SR", User.OrgId, User.RoleName,User.UserId);
+            }
+            return View();
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDealerRequisition(DealerRequisitionInfoViewModel model)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                DealerRequisitionInfoDTO dto = new DealerRequisitionInfoDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                isSuccess = _dealerRequisitionInfoBusiness.SaveDealerRequisition(dto, User.UserId, User.OrgId);
+            }
+            return Json(isSuccess);
         }
     }
 }

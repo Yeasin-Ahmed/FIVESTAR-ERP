@@ -13,5 +13,6 @@ namespace ERPBLL.Inventory.Interface
         IEnumerable<BrandAndCategoriesDTO> GetBrandAndCategories(long brandId, long orgId);
         BrandCategories GetBrandCategoriesByIds(long brandId, long categoryId, long orgId);
         bool SaveBrandCategories(long brandId,long[] brandCategories, long userId, long branchId, long orgId);
+        IEnumerable<BrandDTO> GetBrandsByCategory(long categoryId, long orgId);
     }
 }

@@ -31,5 +31,7 @@ namespace ERPDAL.SalesAndDistributionDAL
         public DbSet<TSE> tblTSE { get; set; }
         public DbSet<SalesRepresentative> tblSalesRepresentatives { get; set; }
         public DbSet<StoreMasterStock> tblStoreMasterStock { get; set; }
+        public DbSet<DealerRequisitionInfo> tblDealerRequisitionInfo { get; set; }
+        public DbSet<DealerRequisitionDetail> tblDealerRequisitionDetail { get; set; }
     }
 }

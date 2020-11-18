@@ -50,6 +50,12 @@ textarea {
     background-color: #6c757d;
 }
 
+.tabHead {
+    padding: 5px 0px 5px 0px;
+    background-color:#22293b;
+    border-radius:5px;
+    color:#fff;
+}
 /*.select2 {
     width: 100% !important;
 }*/

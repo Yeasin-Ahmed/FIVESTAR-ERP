@@ -9,7 +9,8 @@ namespace ERPBLL.SalesAndDistribution.Interface
 {
     public interface IItemStockBusiness
     {
-        IEnumerable<ItemStockDTO> GetItemStocks(long branchId, long orgId,long? modelId,long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string status, string imei,string fromDate, string toDate);
-        int RunProcess(long orgId,long userId,long branchId); 
+        IEnumerable<ItemStockDTO> GetItemStocks(long branchId, long orgId, long? categoryId, long? brandId, long? modelId,long? warehouseId, long? itemTypeId, long? itemId, long? colorId, string status, string imei,string fromDate, string toDate);
+        int RunProcess(long orgId,long userId,long branchId);
+        IEnumerable<ModelAndColorWiseItemStockDTO> GetModelAndColorWiseItemStocks(long orgId, long? categoryId, long? brandId, long? modelId, long? warehouseId, long? itemTypeId, long? itemId, long? colorId);
     }
 }

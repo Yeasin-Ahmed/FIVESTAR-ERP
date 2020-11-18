@@ -106,14 +106,14 @@ function LoadDropDown(url, type, elementId, contextKey) {
             type: type,
             url: url,
             success: function (result) {
-                console.log(result);
+                consoleLog(result);
                 $.each(result, function (index, item) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
                 });
             },
             error: function (err) {
-                console.log(err);
+                consoleLog(err);
             }
         });
     }
@@ -125,14 +125,14 @@ function LoadDropDown(url, type, elementId, contextKey) {
             url: url,
             data: contextKey,
             success: function (result) {
-                console.log(result);
+                consoleLog(result);
                 $.each(result, function (index, item) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
                 });
             },
             error: function (err) {
-                console.log(err);
+                consoleLog(err);
             }
         });
     }
@@ -145,7 +145,7 @@ function LoadDropDown2(url, type, elementId, contextKey) {
             type: type,
             url: url,
             success: function (result) {
-                console.log(result);
+                consoleLog(result);
                 $.each(result, function (index, item) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
@@ -154,7 +154,7 @@ function LoadDropDown2(url, type, elementId, contextKey) {
                 elementId.trigger('change');
             },
             error: function (err) {
-                console.log(err);
+                consoleLog(err);
             }
         });
     }
@@ -166,10 +166,10 @@ function LoadDropDown2(url, type, elementId, contextKey) {
             url: url,
             data: contextKey,
             success: function (result) {
-                console.log(result);
+                consoleLog(result);
             },
             error: function (err) {
-                console.log(err);
+                consoleLog(err);
             }
         });
     }
@@ -182,7 +182,7 @@ function LoadDropDown3(url, type, elementId, defaultvalue) {
         type: type,
         url: url,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             $.each(result, function (index, item) {
                 var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                 elementId.append(option);
@@ -190,7 +190,7 @@ function LoadDropDown3(url, type, elementId, defaultvalue) {
             elementId.val(defaultvalue);
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
 
@@ -203,8 +203,8 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
             type: type,
             url: url,
             success: function (result) {
-                console.log(result);
-                //console.log("default value :" + defaultvalue);
+                consoleLog(result);
+                //consoleLog("default value :" + defaultvalue);
                 $.each(result, function (index, item) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
@@ -216,7 +216,7 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
 
             },
             error: function (err) {
-                console.log(err);
+                consoleLog(err);
             }
         });
     }
@@ -228,7 +228,7 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
             url: url,
             data: contextKey,
             success: function (result) {
-                console.log(result);
+                consoleLog(result);
                 $.each(result, function (index, item) {
                     var option = "<option value='" + item.value + "'>" + item.text + "</option>";
                     elementId.append(option);
@@ -239,7 +239,7 @@ function LoadDropDown4(url, type, elementId, contextKey, defaultvalue) {
                 //elementId.val(defaultvalue);
             },
             error: function (err) {
-                console.log(err);
+                consoleLog(err);
             }
         });
     }
@@ -257,11 +257,11 @@ function IsUserExist(username, id, isEdit) {
         async: false,
         data: JSON.stringify({ username: username, id: id, isEdit: isEdit }),
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -279,11 +279,11 @@ function IsEmailExist(id, email, isEdit) {
         async: false,
         data: JSON.stringify({ id: id, email: email, isEdit: isEdit }),
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -298,10 +298,10 @@ function getReqWithData(dataType, type, url, data) {
         url: url,
         data: data,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
 }
@@ -316,11 +316,11 @@ function postReqWithData(contentType, dataType, type, url, data) {
         url: url,
         data: data,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             //alert(result);
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
 }
@@ -336,11 +336,11 @@ function postReqWithToken(contentType, dataType, type, url, data, token) {
         headers: token,
         data: data,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             //alert(result);
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
 }
@@ -349,7 +349,7 @@ function postReqWithToken(contentType, dataType, type, url, data, token) {
 // All the Parameters are required
 function fnSaveWhen(obj) {
     $.when(obj).then(function (res) {
-        console.log(res);
+        consoleLog(res);
         if (res === true) {
             alert(execuStatus.successSave);
             fnReloadPage(true);
@@ -358,7 +358,7 @@ function fnSaveWhen(obj) {
             alert(execuStatus.fail);
         }
     }).fail(function (err) {
-        console.log(err);
+        consoleLog(err);
     });
 }
 
@@ -366,7 +366,7 @@ function fnSaveWhen(obj) {
 // All the Parameters are required
 function fnDeleteWhen(obj, tblId, rowIndex) {
     $.when(obj).then(function (res) {
-        console.log(res);
+        consoleLog(res);
         if (res === true) {
             alert(execuStatus.successDelete);
             removeTableRow(tblId, rowIndex);
@@ -375,7 +375,7 @@ function fnDeleteWhen(obj, tblId, rowIndex) {
             alert(execuStatus.fail);
         }
     }).fail(function (err) {
-        console.log(err);
+        consoleLog(err);
     });
 }
 
@@ -414,7 +414,7 @@ function UIReloading(url) {
             //while (myNode.firstChild) {
             //    myNode.removeChild(myNode.firstChild);
             //}
-            //console.log(data);
+            //consoleLog(data);
             $("div#renderBody").html(data);
         }
     });
@@ -437,11 +437,11 @@ function ajaxBooleanChecker(data, url, token) {
         data: data,
         headers: token,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -457,11 +457,11 @@ function ajaxBooleanChecker2(data, url) {
         async: false,
         data: data,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -478,11 +478,11 @@ function ajaxValueReturnable(data, url, token) {
         data: data,
         headers: token,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -493,9 +493,9 @@ function fnModalHeadChange(HeadText) {
     if ($.trim(HeadText) !== '') {
         $("#modalHeading").empty();
         $("#modalHeading").text(HeadText);
-        //console.log($("div.modal-header:contains('Update')"));
+        //consoleLog($("div.modal-header:contains('Update')"));
         var btnText = HeadText.indexOf("Update") > -1 ? 'Update' : 'Save';
-        //console.log(btnText);
+        //consoleLog(btnText);
         $("#btnSubmit").empty();
         $("#btnSubmit").text(btnText);
     }
@@ -622,7 +622,7 @@ function getMonthName(monthNo, format) {
 // Count the tbody trs of a table
 function fntableRowCount(tableId, countElementId) {
     var rowCount = $("#" + tableId + " tbody tr").length;
-    console.log("rowcount: " + rowCount);
+    consoleLog("rowcount: " + rowCount);
     if (rowCount === 1) {
         if (!($("#" + tableId + " tbody tr:first-child").hasClass("empty-row"))) {
             $("#" + countElementId).text(rowCount);
@@ -640,7 +640,7 @@ function fntableRowCount(tableId, countElementId) {
 function fnRemoveARowFromTbody(tableId, rowIndex) {
     if ($(tableId + " tbody tr").length > 0) {
 
-        $(tableId + " tbody tr").eq(rowIndex).css("background-color", "#ff6347").fadeOut(800,
+        $(tableId + " tbody tr").eq(rowIndex).css("background-color", "#ff6347").fadeOut(500,
             function () {
                 $(tableId + " tbody tr").eq(rowIndex).remove();
             });
@@ -719,7 +719,7 @@ function reloadPage() {
 
 // client side table filtering
 function tableFilter(tableId, senderObj) {
-    //console.log('KeyUp');
+    //consoleLog('KeyUp');
     var value = $(senderObj).val().toLowerCase();
     $(tableId).filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
@@ -777,11 +777,11 @@ function ajaxValueChecker(data, url, token) {
         data: data,
         headers: token,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -798,11 +798,11 @@ function ajaxValueChecker2(data, url, token) {
         data: data,
         headers: token,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
             returnVal = result;
         },
         error: function (err) {
-            console.log(err);
+            consoleLog(err);
         }
     });
     return returnVal;
@@ -810,7 +810,7 @@ function ajaxValueChecker2(data, url, token) {
 
 
 function consoleLog(log) {
-    console.log(log);
+    //console.log(log);
 }
 
 function alerting(alt) {
@@ -818,7 +818,7 @@ function alerting(alt) {
 }
 
 function readImg(file, elementId) {
-    console.log(file.id);
+    consoleLog(file.id);
     if (file.files && file.files[0] && file.files[0].name !== '') {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -842,10 +842,10 @@ function postReqWithFile(dataType, type, url, data, token) {
         contentType: false,
         headers: token,
         success: function (result) {
-            console.log(result);
+            consoleLog(result);
         },
         error: function (result) {
-            console.log(result);
+            consoleLog(result);
         }
     });
 }

@@ -785,7 +785,7 @@
     <Content Include="Views\Production\_packaging.cshtml" />
     <Content Include="Views\SalesAndDistribution\_dealer.cshtml" />
     <Content Include="Views\SalesAndDistribution\WorkStartUp.cshtml" />
-    <Content Include="Views\SalesAndDistribution\GetBTRCIMEI.cshtml" />
+    <Content Include="Views\SalesAndDistribution\GetSalesAndDistributionStock.cshtml" />
     <Content Include="Views\SalesAndDistribution\_BTRCIMEIList.cshtml" />
     <Content Include="Views\SalesAndDistribution\_itemStock.cshtml" />
     <Content Include="Views\SalesAndDistribution\_category.cshtml" />
@@ -815,11 +815,12 @@
     <Content Include="Views\SalesAndDistribution\_invBrand.cshtml" />
     <Content Include="Views\SalesAndDistribution\_invColor.cshtml" />
     <Content Include="Views\SalesAndDistribution\_invModel.cshtml" />
-    <Content Include="Views\Accounts\GetAccountList.cshtml" />
-    <Content Include="Views\Accounts\GetJournalList.cshtml" />
-    <Content Include="Views\Accounts\_JournalList.cshtml" />
-    <Content Include="Views\Accounts\JournalList.cshtml" />
-    <Content Include="Views\Accounts\_CashVoucherList.cshtml" />
+    <Content Include="Views\Accounts\GetAccountsHeadList.cshtml" />
+    <Content Include="Views\Inventory\_handSetStock.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_modelColorStock.cshtml" />
+    <Content Include="Views\SalesAndDistribution\DealerOperations.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_dealerRequisitions.cshtml" />
+    <Content Include="Views\SalesAndDistribution\SROperations.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -3,17 +3,16 @@
 @{
     int sl = 0;
     FinishGoodsSendToWarehouseInfoViewModel info = ((FinishGoodsSendToWarehouseInfoViewModel)ViewBag.FinishGoodsSendInfo);
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
 
 <table class="table table-bordered table-striped table-sm table-responsive-lg" id="tblInfo">
     <tbody>
         <tr>
             <td class="hide">@info.SendId</td>
-            <td style="width:15%">Ref Num
-            <td style="width:35%"><b>@info.RefferenceNumber</b></td>
+            <td style="width:15%">Cartoon No
+            <td style="width:35%"><b>@info.CartoonNo</b></td>
             <td class="hide">@info.LineId</td>
-            <td style="width:15%">Line Number</td>
+            <td style="width:15%">Floor</td>
             <td style="width:35%"><b>@info.LineNumber</b></td>
         </tr>
         <tr>
@@ -58,10 +57,10 @@
     </tbody>
 </table>
 
-@if (info.StateStatus == "Send" && privilege.Edit)
+@if (info.StateStatus == "Send")
 {
     <div class="modal-footer">
-        <button type="submit" class="btn btn-sm btn-outline-success btnSubmit"> Receive <i class="fas fa-ship"></i></button>
+        <button type="submit" class="btn btn-sm btn-outline-success btnSubmitFinishGoods"> Receive <i class="fas fa-ship"></i></button>
     </div>
 }
 

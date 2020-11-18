@@ -44,6 +44,14 @@ namespace ERPBLL.SalesAndDistribution
             return _salesAndDistribution.Db.Database.SqlQuery<SalesRepresentativeDTO>(string.Format(@"Exec spSalesRepresentativeInformation {0}", orgId)).ToList();
         }
 
+        public IEnumerable<Dropdown> GetSalesRepresentativesBySeniorId(long userId, long orgId)
+        {
+            string query = string.Format(@"Declare @srId bigint=0
+Select @srId=ISNULL(SRID,0) From tblSalesRepresentatives Where UserId={0} and OrganizationId={1}
+Select (Cast(SRID as Nvarchar(20))+'#'+Cast(ISNULL(UserId,0) as Nvarchar(20))) 'value',FullName 'text' From tblSalesRepresentatives Where ReportingSRId=@srId and OrganizationId={1}", userId,orgId);
+            return _salesAndDistribution.Db.Database.SqlQuery<Dropdown>(query).ToList();
+        }
+
         public IEnumerable<SalesRepresentative> GetSalesRepresentativesByType(string srType, long orgId)
         {
             return _salesRepresentativeRepository.GetAll(s => s.SRType == srType && s.OrganizationId == orgId);

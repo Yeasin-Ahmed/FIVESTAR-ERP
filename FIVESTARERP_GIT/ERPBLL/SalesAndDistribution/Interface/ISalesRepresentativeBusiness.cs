@@ -13,6 +13,7 @@ namespace ERPBLL.SalesAndDistribution.Interface
     public interface ISalesRepresentativeBusiness
     {
         IEnumerable<SalesRepresentativeDTO> GetSalesRepresentatives(long orgId);
+        IEnumerable<Dropdown> GetSalesRepresentativesBySeniorId(long userId, long orgId);
         SalesRepresentative GetSalesRepresentativeById(long id, long orgId);
         IEnumerable<SalesRepresentative> GetSalesRepresentativesByType(string srType, long orgId);
         bool SaveSalesRepresentative(SalesRepresentativeDTO dto, SRUser sRUser, long userId, long branchId, long orgId);

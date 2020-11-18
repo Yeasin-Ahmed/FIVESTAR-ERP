@@ -16,7 +16,10 @@
                         <a class="nav-link active" id="custom-tabs-two-warehouseStockInfoList-tab" data-toggle="pill" href="#custom-tabs-two-warehouseStockInfoList" role="tab" aria-controls="custom-tabs-two-warehouseStockInfoList" aria-selected="true">Warehouse Stock Info List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-receivefinishgoods-tab" data-toggle="pill" href="#custom-tabs-two-receivefinishgoods" role="tab" aria-controls="custom-tabs-two-receivefinishgoods" aria-selected="true">Finish Goods Cartoon</a>
+                        <a class="nav-link" id="custom-tabs-two-receivefinishgoods-tab" data-toggle="pill" href="#custom-tabs-two-receivefinishgoods" role="tab" aria-controls="custom-tabs-two-receivefinishgoods" aria-selected="true">Receive Finish Goods</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-mobilestock-tab" data-toggle="pill" href="#custom-tabs-two-mobilestock" role="tab" aria-controls="custom-tabs-two-mobilestock" aria-selected="true">Mobile Stock</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-stockReturnList-tab" data-toggle="pill" href="#custom-tabs-two-stockReturnList" role="tab" aria-controls="custom-tabs-two-stockReturnList" aria-selected="true">Stock Return List</a>
@@ -170,6 +173,24 @@
                                                     <option value="Receive">Receive</option>
                                                 </select>
                                             </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateReceiveFinishGoods" />
+                                                    <div class="input-group-prepend cursor-pointer remove-rfg-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateReceiveFinishGoods" />
+                                                    <div class="input-group-prepend remove-rfg-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -182,6 +203,116 @@
                                                 <h6 class="text-bold">Loading....</h6>
                                             </div>
                                             <div class="col-md-12" id="dataContainer5">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-mobilestock" role="tabpanel" aria-labelledby="custom-tabs-two-mobilestock-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Mobile Stock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="txtIMEIForMobileStock" class="control-label font-weight-bold">IMEI</label>
+                                                <input type="text" id="txtIMEIForMobileStock" name="txtIMEIForMobileStock" class="form-control form-control-sm" placeholder="Search By IMEI"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtCartoonForMobileStock" class="control-label font-weight-bold">Cartoon</label>
+                                                <input type="text" id="txtCartoonForMobileStock" name="txtCartoonForMobileStock" class="form-control form-control-sm" placeholder="Search By Cartoon No"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlCategoriesForMobileStock" class="control-label font-weight-bold">Category</label>
+                                                @Html.DropDownList("ddlCategoriesForMobileStock", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "--Select Category--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlBrandsForMobileStock" class="control-label font-weight-bold">Brand</label>
+                                                @Html.DropDownList("ddlBrandsForMobileStock", (IEnumerable<SelectListItem>)ViewBag.ddlBrands, "--Select Brand--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelsForMobileStock" class="control-label font-weight-bold">Model</label>
+                                                <select id="ddlModelsForMobileStock" class="form-control form-control-sm">
+                                                    <option value="">--Select Model---</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlColorsForMobileStock" class="control-label font-weight-bold">Colors</label>
+                                                @Html.DropDownList("ddlColorsForMobileStock", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="ddlStatusMobileStock" class="control-label font-weight-bold">State Status</label>
+                                                <select class="form-control form-control-sm" id="ddlStatusMobileStock">
+                                                    <option value="">--Select Status--</option>
+                                                    <option value="Stock-In">Stock-In</option>
+                                                    <option value="Stock-Out">Stock-Out</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="dptFromDateMobileStock" class="control-label">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateMobileStock" />
+                                                    <div class="input-group-prepend cursor-pointer remove-ms-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="dptToDateMobileStock" class="control-label">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateMobileStock" />
+                                                    <div class="input-group-prepend remove-ms-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12">
+                                            <div class="text-center hide" id="loader6">
+                                                <h6 class="text-bold">Loading....</h6>
+                                            </div>
+                                            <div class="col-md-12" id="dataContainer6">
 
                                             </div>
                                         </div>
@@ -251,7 +382,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="tab-pane fade show" id="custom-tabs-two-IQCItemReqInfoList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCItemReqInfoList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -327,7 +457,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="tab-pane fade show" id="custom-tabs-two-IQCItemReturnList" role="tabpanel" aria-labelledby="custom-tabs-two-IQCItemReturnList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
@@ -463,6 +592,20 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalSendDetails" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <input type="hidden" id="hdfSendInfoId" />
+                <h4 id="modalHeading" class="modal-title">Finish Goods Item Details</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body text-sm" id="modalContainer4">
+
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
 
     <script type="text/javascript">
@@ -496,7 +639,23 @@
         var ddlModelNameForIQCReturn = $("#ddlModelNameForIQCReturn");
 
         // Receive Finish Goods//
+        var ddlWarehouseForReceiveFinishGoods = $("#ddlWarehouseForReceiveFinishGoods");
+        var ddlModelNameForReceiveFinishGoods = $("#ddlModelNameForReceiveFinishGoods");
+        var ddlReceiveFinishGoodsStatus = $("#ddlReceiveFinishGoodsStatus");
+        var dptFromDateReceiveFinishGoods = $("#dptFromDateReceiveFinishGoods")
+        var dptToDateReceiveFinishGoods = $("#dptToDateReceiveFinishGoods");
 
+        //Mobile Stock //
+        var hdfSendInfoId = $("#hdfSendInfoId");
+        var txtIMEIForMobileStock = $("#txtIMEIForMobileStock");
+        var txtCartoonForMobileStock = $("#txtCartoonForMobileStock");
+        var ddlCategoriesForMobileStock = $("#ddlCategoriesForMobileStock");
+        var ddlBrandsForMobileStock = $("#ddlBrandsForMobileStock");
+        var ddlModelsForMobileStock = $("#ddlModelsForMobileStock");
+        var ddlColorsForMobileStock = $("#ddlColorsForMobileStock");
+        var ddlStatusMobileStock = $("#ddlStatusMobileStock");
+        var dptFromDateMobileStock = $("#dptFromDateMobileStock");
+        var dptToDateMobileStock = $("#dptToDateMobileStock");
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -505,9 +664,31 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
-
+            $('#dptFromDateMobileStock').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptFromDateMobileStock').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptFromDateReceiveFinishGoods').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose:true
+            });
+            $('#dptToDateReceiveFinishGoods').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose:true
+            });
             $("#btnReacive").hide();
-
             if ('@tab' =="IQC") {
                 $("#custom-tabs-two-IQCItemReqInfoList-tab").trigger('click');
             }
@@ -522,6 +703,8 @@
             LoadDataTableStockReturn();
             LoadDataTableForIQCReq();
             LoadDataTableForIQCReturn();
+            LoadReceiveFinishGoodsDataTable();
+            LoadMobileStockDataTable(); 
         }
 
         //#region Stock List
@@ -593,7 +776,6 @@
             });
         }
 
-
         $("#btnExcelImport").click(function (e) {
             e.preventDefault();
             $.when(getReqWithData('html', 'GET', '/Inventory/CreateExcel', null)).then(function (res, status) {
@@ -636,7 +818,6 @@
                     if (res.text != '' && res.text != null) {
                         toastr.info(res.text).fadeOut(10000);
                     }
-
                     //removeTableRow("#tblWarehouseStockInfo tbody", index);
                     setTimeout(function () {
                         LoadDataTable();
@@ -671,6 +852,10 @@
                 else if ($(this).parent().parents('div').hasClass('IQCReqPage')) {
                     pageNo = $(this).attr('data-page-no');
                     LoadDataTableForIQCReq();
+                }
+                else if ($(this).parent().parents('div').hasClass('handSetStock')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadMobileStockDataTable();
                 }
             }
         })
@@ -903,6 +1088,193 @@
                 })
             }
         }
+
+        //#region Receive Finish Goods
+        ddlWarehouseForReceiveFinishGoods.change(function () {
+            LoadReceiveFinishGoodsDataTable();
+        })
+
+        ddlModelNameForReceiveFinishGoods.change(function () {
+            LoadReceiveFinishGoodsDataTable();
+        })
+
+        ddlReceiveFinishGoodsStatus.change(function () {
+            LoadReceiveFinishGoodsDataTable();
+        })
+
+        dptFromDateReceiveFinishGoods.change(function () {
+            LoadReceiveFinishGoodsDataTable();
+        })
+
+        dptToDateReceiveFinishGoods.change(function () {
+            LoadReceiveFinishGoodsDataTable();
+        })
+
+        $(document).on('click', 'div.remove-rfg-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateReceiveFinishGoods.val() !== '') {
+                    dptToDateReceiveFinishGoods.val('');
+                    LoadReceiveFinishGoodsDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateReceiveFinishGoods.val() !== '') {
+                    dptFromDateReceiveFinishGoods.val('');
+                    LoadReceiveFinishGoodsDataTable();
+                }
+            }
+        })
+
+        function LoadReceiveFinishGoodsDataTable() {
+            $("#loader5").removeClass("hide");
+            var data = { flag: "receivefinishGoods", warehouseId: TryParseInt(ddlWarehouseForReceiveFinishGoods.val(), 0), modelId: TryParseInt(ddlModelNameForReceiveFinishGoods.val(), 0), itemTypeId: 0, itemId: 0,fromDate:dptFromDateReceiveFinishGoods.val(),toDate:dptToDateReceiveFinishGoods.val(), page: pageNo };
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+
+                    });
+                }
+                $("#loader5").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader5").addClass("hide");
+            });
+            pageNo = 1;
+        }
+
+        function OpenFinishGoodsModal() {
+            $("#modalSendDetails").modal('show');
+            enable(".btnSubmitFinishGoods");
+            hdfSendInfoId.val('0')
+            hdfRowIndex.val('');
+        }
+
+        $(document).on('click', '.data-finishgoods-item', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-finishgoods-item');
+            if (TryParseInt(id, 0) > 0) {
+                $.when(getReqWithData(dataType.html, type.get, '/Inventory/GetFinishGoodsSendItemDetail', { sendId: id })).then(function (res, status) {
+                    if (status === 'success') {
+                        $("#modalContainer4").empty();
+                        $("#modalContainer4").append(res);
+                        OpenFinishGoodsModal();
+                        hdfSendInfoId.val(id);
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                })
+            }
+        })
+
+        //btnSubmitFinishGoods
+        $(document).on('click', '.btnSubmitFinishGoods', function (e) {
+            e.preventDefault();
+            console.log('Submit');
+            if (TryParseInt(hdfSendInfoId.val(), 0) > 0) {
+                bootbox.confirm("Are you sure you want to Receive goods?", function (result) {
+                    if (result === true) {
+                        disable(".btnSubmitFinishGoods");
+                        var id = TryParseInt(hdfSendInfoId.val(), 0);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveFinishGoodsItems', JSON.stringify({ sendId: id }), getToken())).then(function (res, status) {
+                            if (res === true && status === 'success') {
+                                toastrSuccessAlert(execuStatus.successSave);
+                                $("#modalSendDetails").modal('toggle');
+                                LoadReceiveFinishGoodsDataTable();
+                            }
+                            else {
+                                toastrErrorAlert(execuStatus.fail);
+                            }
+                            enable(".btnSubmitFinishGoods");
+                        }).fail(function (error) {
+                            toastrErrorAlert(execuStatus.fail);
+                            enable(".btnSubmitFinishGoods");
+                        })
+                        
+                    }
+                })
+            }
+        })
+        //#endregion
+
+        //#region Mobile Stock
+        $(document).on('click', 'div.remove-ms-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateMobileStock.val() !== '') {
+                    dptToDateMobileStock.val('');
+                    LoadMobileStockDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateMobileStock.val() !== '') {
+                    dptFromDateMobileStock.val('');
+                    LoadMobileStockDataTable();
+                }
+            }
+        })
+        ddlCategoriesForMobileStock.change(function () {
+            LoadMobileStockDataTable();
+        })
+
+        ddlBrandsForMobileStock.change(function () {
+            clearDropdown("ddlModelsForMobileStock");
+            if (TryParseInt(ddlBrandsForMobileStock.val(),0) >0) {
+                var data = JSON.stringify({ brandId: ddlBrandsForMobileStock.val()});
+                LoadDropDown("/Common/GetModelsByBrand", type.post, ddlModelsForMobileStock, data);
+            }
+            LoadMobileStockDataTable();
+        })
+
+        ddlModelsForMobileStock.change(function () {
+            LoadMobileStockDataTable();
+        })
+
+        ddlColorsForMobileStock.change(function () {
+            LoadMobileStockDataTable();
+        })
+
+        txtIMEIForMobileStock.keyup(function () {
+            LoadMobileStockDataTable();
+        })
+
+        ddlStatusMobileStock.change(function () {
+            LoadMobileStockDataTable();
+        })
+
+        dptFromDateMobileStock.change(function () {
+            LoadMobileStockDataTable();
+        })
+
+        dptToDateMobileStock.change(function () {
+            LoadMobileStockDataTable();
+        })
+
+        txtCartoonForMobileStock.keyup(function () {
+            LoadMobileStockDataTable();
+        })
+
+        function LoadMobileStockDataTable() {
+            $("#loader6").removeClass("hide");
+            var data = { flag: "handsetStock", categoryId: TryParseInt(ddlCategoriesForMobileStock.val(), 0), brandId: TryParseInt(ddlBrandsForMobileStock.val(), 0), modelId: TryParseInt(ddlModelsForMobileStock.val(), 0), colorId: TryParseInt(ddlColorsForMobileStock.val(), 0),warehouseId:0,itemTypeId:0,itemId:0,status:ddlStatusMobileStock.val(),imei:$.trim(txtIMEIForMobileStock.val()),fromDate:dptFromDateMobileStock.val(),toDate:dptToDateMobileStock.val(),cartoonNo:$.trim(txtCartoonForMobileStock.val())};
+            $.when(getReqWithData('html', 'GET', '/Inventory/GetWarehouseStockInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer6").fadeOut('500', function () {
+                        $("#dataContainer6").empty();
+                        $("#dataContainer6").append(res).fadeIn('500');
+                    });
+                }
+                $("#loader6").addClass("hide");
+            }).fail(function (error) {
+                console.log(error);
+                $("#loader6").addClass("hide");
+            });
+            pageNo = 1;
+        }
+
+        //#endregion
 
         function redirectPage(page) {
             window.location.replace(page);

@@ -697,13 +697,13 @@
             if ($(this).hasClass("dptToDate")) {
                 if (dptToDateReceiveItem.val() !== '') {
                     dptToDateReceiveItem.val('');
-                    LoadMiniStockTransferListDataTable();
+                    LoadDataTableMiniStockTransferList();
                 }
             }
             if ($(this).hasClass("dptFromDate")) {
                 if (dptFromDateReceiveItem.val() !== '') {
                     dptFromDateReceiveItem.val('');
-                    LoadMiniStockTransferListDataTable();
+                    LoadDataTableMiniStockTransferList();
                 }
             }
         })
@@ -793,8 +793,8 @@
                     $("#modalContainer1").empty();
                     fnRemoveARowFromTbody(".tblMSTInfo", hdfRowIndex.val());
                     setTimeout(function () {
-                        LoadMiniStockTransferListDataTable();
-                        LoadPackagingItemStockDataTable();
+                        LoadDataTableMiniStockTransferList();
+                        LoadDataTablePackagingItemStock();
                     }, 1300);
                     enable(".btnReceiveMiniStock");
                 }

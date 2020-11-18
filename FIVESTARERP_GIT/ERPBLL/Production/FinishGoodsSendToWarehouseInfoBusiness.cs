@@ -2,6 +2,7 @@
 using ERPBLL.Inventory.Interface;
 using ERPBLL.Production.Interface;
 using ERPBO.Inventory.DTOModel;
+using ERPBO.Inventory.DTOModels;
 using ERPBO.Production.DomainModels;
 using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
@@ -23,9 +24,10 @@ namespace ERPBLL.Production
         private readonly IItemBusiness _itemBusiness;
         private readonly IFinishGoodsSendToWarehouseDetailBusiness _finishGoodsSendToWarehouseDetailBusiness;
         private readonly IWarehouseStockDetailBusiness _warehouseStockDetailBusiness;
+        private readonly IHandSetStockBusiness _handSetStockBusiness;
         // Repository //
         public readonly FinishGoodsSendToWarehouseInfoRepository _finishGoodsSendToWarehouseInfoRepository;
-        public FinishGoodsSendToWarehouseInfoBusiness(IProductionUnitOfWork productionDb, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IItemBusiness itemBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness,TempQRCodeTraceBusiness tempQRCodeTraceBusiness, QRCodeTraceBusiness qRCodeTraceBusiness)
+        public FinishGoodsSendToWarehouseInfoBusiness(IProductionUnitOfWork productionDb, IFinishGoodsStockDetailBusiness finishGoodsStockDetailBusiness, IItemBusiness itemBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness,TempQRCodeTraceBusiness tempQRCodeTraceBusiness, QRCodeTraceBusiness qRCodeTraceBusiness, IHandSetStockBusiness handSetStockBusiness)
         {
             this._productionDb = productionDb;
             this._finishGoodsSendToWarehouseInfoRepository = new FinishGoodsSendToWarehouseInfoRepository(this._productionDb);
@@ -35,6 +37,7 @@ namespace ERPBLL.Production
             this._warehouseStockDetailBusiness = warehouseStockDetailBusiness;
             this._tempQRCodeTraceBusiness = tempQRCodeTraceBusiness;
             this._qRCodeTraceBusiness = qRCodeTraceBusiness;
+            this._handSetStockBusiness = handSetStockBusiness;
         }
 
         public IEnumerable<FinishGoodsSendToWarehouseInfo> GetFinishGoodsSendToWarehouseList(long orgId)
@@ -114,6 +117,7 @@ namespace ERPBLL.Production
             bool IsSuccess = false;
             var info = GetFinishGoodsSendToWarehouseById(sendId, orgId);
             List<WarehouseStockDetailDTO> detailDTOs = new List<WarehouseStockDetailDTO>();
+            List<HandSetStockDTO> handSetStocks = new List<HandSetStockDTO>();
             if (info != null)
             {
                 info.StateStatus = FinishGoodsSendStatus.Received;
@@ -135,15 +139,39 @@ namespace ERPBLL.Production
                         OrganizationId = orgId,
                         EntryDate = DateTime.Now,
                         RefferenceNumber = info.RefferenceNumber,
-                        Remarks = info.Remarks,
+                        Remarks = info.CartoonNo,
                         StockStatus = StockStatus.StockIn
                     };
                     detailDTOs.Add(warehouse);
+
+                    HandSetStockDTO handSetStock = new HandSetStockDTO()
+                    {
+                        CartoonId = info.SendId,
+                        CartoonNo = info.CartoonNo,
+                        WarehouseId = info.WarehouseId,
+                        ItemTypeId = item.ItemTypeId,
+                        ItemId = item.ItemId,
+                        CategoryId = 0,
+                        BrandId = 0,
+                        ModelId = info.DescriptionId,
+                        ColorId = 0,
+                        IMEI = item.IMEI,
+                        AllIMEI = item.AllIMEI,
+                        OrganizationId = orgId,
+                        BranchId = 0,
+                        EntryDate = DateTime.Now,
+                        EUserId = userId,
+                        Remarks = "Stock In By Finish Goods",
+                        StockStatus = StockStatus.StockIn
+                    };
+                    handSetStocks.Add(handSetStock);
                 }
             }
             if (_finishGoodsSendToWarehouseInfoRepository.Save() == true)
             {
-                IsSuccess = _warehouseStockDetailBusiness.SaveWarehouseStockIn(detailDTOs, userId, orgId);
+                if (_warehouseStockDetailBusiness.SaveWarehouseStockIn(detailDTOs, userId, orgId)) {
+                    IsSuccess = _handSetStockBusiness.SaveHandSetItemStockIn(handSetStocks,userId,0,orgId);
+                };
             }
             return IsSuccess;
         }
