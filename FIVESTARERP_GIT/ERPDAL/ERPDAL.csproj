@@ -776,6 +776,10 @@
     <Compile Include="SalesAndDistributionContextMigrations\202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.Designer.cs">
       <DependentUpon>202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesAndDistributionContextMigrations\202011161122573_SalesAndDistribution_Add_tbl_DealerRequisition.cs" />
+    <Compile Include="SalesAndDistributionContextMigrations\202011161122573_SalesAndDistribution_Add_tbl_DealerRequisition.Designer.cs">
+      <DependentUpon>202011161122573_SalesAndDistribution_Add_tbl_DealerRequisition.cs</DependentUpon>
+    </Compile>
     <Compile Include="SalesAndDistributionContextMigrations\Configuration.cs" />
     <Compile Include="SalesAndDistributionDAL\ISalesAndDistributionUnitOfWork.cs" />
     <Compile Include="SalesAndDistributionDAL\SalesAndDistributionUnitOfWork.cs" />
@@ -1285,6 +1289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.resx">
       <DependentUpon>202011120953177_SalesAndDistribution_Add_Column_tblItemStock_CartoonId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011161122573_SalesAndDistribution_Add_tbl_DealerRequisition.resx">
+      <DependentUpon>202011161122573_SalesAndDistribution_Add_tbl_DealerRequisition.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

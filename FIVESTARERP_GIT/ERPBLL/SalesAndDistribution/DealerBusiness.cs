@@ -35,6 +35,11 @@ namespace ERPBLL.SalesAndDistribution
             return _dealerRepository.GetOneByOrg(s => s.DealerId == id && s.OrganizationId == orgId);
         }
 
+        public Dealer GetDealerByUserId(long userId, long orgId)
+        {
+            return _dealerRepository.GetOneByOrg(s => s.UserId == userId && s.OrganizationId == orgId);
+        }
+
         public IEnumerable<DealerDTO> GetDealerInformations(long orgId)
         {
             return this._salesAndDistributionDb.Db.Database.SqlQuery<DealerDTO>(string.Format(@"Exec spDealerInformation {0}",orgId)).ToList();

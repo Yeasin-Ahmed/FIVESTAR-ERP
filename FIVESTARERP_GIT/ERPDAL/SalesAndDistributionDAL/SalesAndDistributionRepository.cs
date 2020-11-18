@@ -144,4 +144,20 @@ namespace ERPDAL.SalesAndDistributionDAL
 
         }
     }
+    public class DealerRequisitionInfoRepository : SalesAndDistributionBaseRepository<DealerRequisitionInfo>
+    {
+        public DealerRequisitionInfoRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
+    public class DealerRequisitionDetailRepository : SalesAndDistributionBaseRepository<DealerRequisitionDetail>
+    {
+        public DealerRequisitionDetailRepository(ISalesAndDistributionUnitOfWork salesAndDistributionUnitOfWork) :
+            base(salesAndDistributionUnitOfWork)
+        {
+
+        }
+    }
 }

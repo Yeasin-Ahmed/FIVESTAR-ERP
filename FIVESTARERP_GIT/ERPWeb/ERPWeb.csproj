@@ -818,6 +818,9 @@
     <Content Include="Views\Accounts\GetAccountsHeadList.cshtml" />
     <Content Include="Views\Inventory\_handSetStock.cshtml" />
     <Content Include="Views\SalesAndDistribution\_modelColorStock.cshtml" />
+    <Content Include="Views\SalesAndDistribution\DealerOperations.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_dealerRequisitions.cshtml" />
+    <Content Include="Views\SalesAndDistribution\SROperations.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DealerRequisitionInfoViewModel>
+@{
+    int sl = 0;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-striped table-responsive-lg">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>Requisition Code</th>
+                    <th>Dealer Name</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl += 1;
+                    string badge = item.StateStatus == "Pending" ? "badge badge-warning" : "badge badge-success";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td data-val="@item.DREQInfoId">@item.RequisitionCode</td>
+                        <td data-val="@item.DealerId">@item.DealerName</td>
+                        <td class="text-center" data-val="@item.StateStatus">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>@item.Remarks</td>
+                        <td class="text-center">@item.EntryUser</td>
+                        <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-flat btn-outline-secondary data-req-detail" data-req-detail="@item.DREQInfoId" title="View Detail">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

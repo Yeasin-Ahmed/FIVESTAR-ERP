@@ -1,0 +1,517 @@
+﻿@{
+    ViewBag.Title = "Dealer Operations";
+}
+
+<div class="row text-sm" style="margin-top:-15px">
+    <div class="col-md-12">
+        <div class="card card-navy shadow card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs text-bold" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-dealerReqList-tab" data-toggle="pill" href="#custom-tabs-one-dealerReqList" role="tab" aria-controls="custom-tabs-one-dealerReqList" aria-selected="true">Dealer Requisition List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link hide" id="custom-tabs-two-addDealerReq-tab" data-toggle="pill" href="#custom-tabs-two-addDealerReq" role="tab" aria-controls="custom-tabs-two-addDealerReq" aria-selected="true">Add Dealer Requisition</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-one-dealerReqList" role="tabpanel" aria-labelledby="custom-tabs-one-dealerReqList">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header card-navy">
+                                        <div class="row tabHead">
+                                            <div class="col-6">
+                                                <h5>Search By:</h5>
+                                            </div>
+                                            <div class="col-6">
+                                                <button type="button" id="btnAddNewDealerReq" class="btn btn-sm btn-flat btn-outline-primary float-right">
+                                                    <i class="fas fa-plus"> Requisition</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1 hide">
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlCategoriesForReqList">Category</label>
+                                                @Html.DropDownList("ddlCategoriesForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3 mt-1">
+                                                <label class="control-label font-weight-bold" for="ddlMobileBrandForReqList">Brand</label>
+                                                @Html.DropDownList("ddlMobileBrandForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlMobileBrand, "---Select Brand---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlModelsForReqList">Model</label>
+                                                @Html.DropDownList("ddlModelsForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "---Select Model---", new { @class = "form-control form-control-sm select2" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlColorsForReqList">Color</label>
+                                                @Html.DropDownList("ddlColorsForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "---Select Color---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="txtRequisitionNum">Req Num.</label>
+                                                <input type="text" name="txtRequisitionNum" id="txtRequisitionNum" class="form-control form-control-sm" placeholder="Search By Req Num"/>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlRequisitionStatus">Status</label>
+                                                @Html.DropDownList("ddlRequisitionStatus", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionStatus, "---Select Status---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="dptFromDateForReqList">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateForReqList" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="dptToDateForReqList">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateForReqList" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-addDealerReq" role="tabpanel" aria-labelledby="custom-tabs-two-addDealerReq">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="row tabHead">
+                                            <div class="col-3">
+                                               <a href="#" class="btn btn-sm btn-flat btn-info" title="Back To List" onclick="redirectToAnotherTab('#custom-tabs-one-dealerReqList-tab')"><i class="fas fa-arrow-circle-left"></i></a>
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                <h5 class="text-bold">Add New Requisition</h5>
+                                            </div>
+                                            <div class="col-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <input type="hidden" id="hdfDealerId" value="@ViewBag.DealerId" />
+                                            <div class="col-md-4">
+                                                <div class="card card-secondary shadow">
+                                                    @*<div class="card-header text-bold">
+                                                        <h6 class="text-bold">Mobile Detail</h6>
+                                                    </div>*@
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label class="control-label font-weight-bold" for="ddlCategoriesForNewReq">Category<span class="text-danger">*</span></label>
+                                                                @Html.DropDownList("ddlCategoriesForNewReq", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
+                                                                <span class="error hide req-category">Category is required</span>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label class="control-label font-weight-bold" for="ddlBrandForNewReq">Brand<span class="text-danger">*</span></label>
+                                                                <select id="ddlBrandForNewReq" class="form-control form-control-sm">
+                                                                    <option value="">---Select Brand---</option>
+                                                                </select>
+                                                                <span class="error hide req-brand">Brand is required</span>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label class="control-label font-weight-bold" for="ddlModelsForNewReq">Model<span class="text-danger">*</span></label>
+                                                                <select class="form-control form-control-sm select2" id="ddlModelsForNewReq">
+                                                                    <option value="">---Select Model---</option>
+                                                                </select>
+                                                                <span class="error hide req-model">Model is required</span>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label class="control-label font-weight-bold" for="ddlColorsForNewReq">Color<span class="text-danger">*</span></label>
+                                                                <select id="ddlColorsForNewReq" class="form-control form-control-sm">
+                                                                    <option value="">---Select Color---</option>
+                                                                </select>
+                                                                <span class="error hide req-color">Color is required</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                            <div class="col-7">
+                                                                <input type="number" name="txtQuantityForNewReq" id="txtQuantityForNewReq" class="form-control form-control-sm" placeholder="Enter Quantity" />
+                                                                <span class="error hide req-qty">Input Quntity</span>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <button type="button" id="btnAddToList" class="btn btn-sm btn-flat btn-warning float-right">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card card-secondary shadow">
+                                                    @*<div class="card-header">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <h6 class="text-bold">Seleted Mobile Items</h6>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <table class="table table-sm table-striped table-bordered table-responsive-lg" id="tblData">
+                                                                    <thead class="btn-dark">
+                                                                        <tr>
+                                                                            <th colspan="7">
+                                                                                <button type="submit" id="btnSubmit" class="btn btn-sm btn-flat btn-success float-right">
+                                                                                    <i class="fas fa-paper-plane"></i> Save..
+                                                                                </button>
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr class="text-center">
+                                                                            <th>#SL</th>
+                                                                            <th>Category</th>
+                                                                            <th>Brand</th>
+                                                                            <th>Model</th>
+                                                                            <th>Color</th>
+                                                                            <th>Qty</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    </tbody>
+                                                                    <tfoot class="btn-secondary">
+                                                                        <tr class="text-bold">
+                                                                            <td class="text-right" colspan="5">
+                                                                                Total Qty
+                                                                            </td>
+                                                                            <td class="text-center">0</td>
+                                                                            <td></td>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        // Requisition List
+        var ddlCategoriesForReqList = $("#ddlCategoriesForReqList");
+        var ddlMobileBrandForReqList = $("#ddlMobileBrandForReqList");
+        var ddlModelsForReqList = $("#ddlModelsForReqList");
+        var ddlColorsForReqList = $("#ddlColorsForReqList");
+        var txtRequisitionNum = $("#txtRequisitionNum");
+        var ddlRequisitionStatus = $("#ddlRequisitionStatus");
+        var dptFromDateForReqList = $("#dptFromDateForReqList");
+        var dptToDateForReqList = $("#dptToDateForReqList");
+        // Add New Req
+        var hdfDealerId = $("#hdfDealerId");
+        var ddlCategoriesForNewReq = $("#ddlCategoriesForNewReq");
+        var ddlBrandForNewReq = $("#ddlBrandForNewReq");
+        var ddlModelsForNewReq = $("#ddlModelsForNewReq");
+        var ddlColorsForNewReq = $("#ddlColorsForNewReq");
+        var txtQuantityForNewReq = $("#txtQuantityForNewReq");
+
+        $(document).ready(function () {
+            loadDataInitializer();
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptFromDateForReqList.prop('readonly', true);
+            dptToDateForReqList.prop('readonly', true);
+            dptFromDateForReqList.css("background-color", "#fff");
+            dptToDateForReqList.css("background-color", "#fff");
+            $('#dptFromDateForReqList').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+            $('#dptToDateForReqList').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+        })
+
+        function loadDataInitializer() {
+            loadRequisitionListDataTable();
+        }
+
+        //#region Requisition List
+
+        ddlCategoriesForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        ddlBrandForNewReq.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        ddlMobileBrandForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        ddlColorsForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        ddlRequisitionStatus.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        txtRequisitionNum.keyup(function () {
+            loadRequisitionListDataTable();
+        })
+
+        dptFromDateForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        dptToDateForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateForReqList.val() !== '') {
+                    dptToDateForReqList.val('');
+                    loadRequisitionListDataTable();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateForReqList.val() !== '') {
+                    dptFromDateForReqList.val('');
+                    loadRequisitionListDataTable();
+                }
+            }
+        })
+        function loadRequisitionListDataTable() {
+            var data = { flag: "dealerRequisitionsInfo", refNum: $.trim(txtRequisitionNum.val()), status: ddlRequisitionStatus.val(), fromDate: dptFromDateForReqList.val(), toDate: dptToDateForReqList.val() };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/DealerOperations', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        //#endregion
+
+        //#region Add Requisition
+        ddlCategoriesForNewReq.change(function () {
+            clearDropdown("ddlBrandForNewReq");
+            clearDropdown("ddlModelsForNewReq");
+            clearDropdown("ddlColorsForNewReq");
+            if (TryParseInt(ddlCategoriesForNewReq.val(), 0) > 0) {
+                var data = JSON.stringify({ categoryId: ddlCategoriesForNewReq.val() });
+                LoadDropDown('/Common/GetBrandsByCategory', type.post, ddlBrandForNewReq, data);
+            }
+        })
+
+        ddlBrandForNewReq.change(function () {
+            clearDropdown("ddlModelsForNewReq");
+            clearDropdown("ddlColorsForNewReq");
+            if (TryParseInt(ddlBrandForNewReq.val(), 0) > 0 && TryParseInt(ddlCategoriesForNewReq.val(), 0) > 0) {
+                var data = JSON.stringify({ brandId: ddlBrandForNewReq.val(), categoryId: ddlCategoriesForNewReq.val() });
+                LoadDropDown('/Common/GetModelsByBrandAndCategory', type.post, ddlModelsForNewReq, data);
+            }
+        })
+
+        ddlModelsForNewReq.change(function () {
+            clearDropdown("ddlColorsForNewReq");
+            if (TryParseInt(ddlModelsForNewReq.val(), 0) > 0) {
+                var data = JSON.stringify({ modelId: ddlModelsForNewReq.val() });
+                LoadDropDown('/Common/GetColorsByModel', type.post, ddlColorsForNewReq, data);
+            }
+        })
+
+        $("#btnAddNewDealerReq").click(function (e) {
+            e.preventDefault();
+            $("#custom-tabs-one-dealerReqList-tab").addClass("hide");
+            $("#custom-tabs-two-addDealerReq-tab").removeClass("hide");
+            $("#custom-tabs-two-addDealerReq-tab").trigger("click");
+        })
+
+        function validateAddToList() {
+            var isValid = true;
+            var duplicate = false;
+            $(".error").addClass('hide');
+            if (TryParseInt(ddlCategoriesForNewReq.val(), 0) <= 0) {
+                $(".req-category").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(ddlBrandForNewReq.val(), 0) <= 0) {
+                $(".req-brand").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(ddlModelsForNewReq.val(), 0) <= 0) {
+                $(".req-model").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(ddlColorsForNewReq.val(), 0) <= 0) {
+                $(".req-color").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(txtQuantityForNewReq.val(), 0) <= 0) {
+                $(".req-qty").removeClass('hide');
+                isValid = false;
+            }
+            if (TryParseInt(ddlModelsForNewReq.val(), 0) > 0 && TryParseInt(ddlColorsForNewReq.val(), 0) > 0) {
+                if ($("#tblData tbody tr").length > 0) {
+                    $.each($("#tblData tbody tr"), function (index, item) {
+                        var tds = $(this).children('td');
+                        if ((tds.eq(3).attr("data-val") == ddlModelsForNewReq.val()) && (tds.eq(4).attr("data-val") == ddlColorsForNewReq.val())) {
+                            isValid = false;
+                            duplicate = true;
+                        }
+                    });
+                }
+                if (duplicate) {
+                    toastrErrorAlert("Item is already added into the list");
+                }
+            }
+
+            return isValid;
+        }
+
+        function validateReq() {
+            var isValid = true;
+            if ($("#tblData tbody tr").length == 0) {
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateAddToList()) {
+
+                var td1 = "<td class='text-center text-bold'>" + ($("#tblData tbody tr").length + 1).toString() + "</td>";
+                var td2 = "<td class='text-center' data-val='" + ddlCategoriesForNewReq.val() + "'>" + dropDownSelectedText("ddlCategoriesForNewReq") + "</td>";
+                var td3 = "<td class='text-center' data-val='" + ddlBrandForNewReq.val() + "'>" + dropDownSelectedText("ddlBrandForNewReq") + "</td>";
+                var td4 = "<td class='text-center' data-val='" + ddlModelsForNewReq.val() + "'>" + dropDownSelectedText("ddlModelsForNewReq") + "</td>";
+                var td5 = "<td class='text-center' data-val='" + ddlColorsForNewReq.val() + "'>" + dropDownSelectedText("ddlColorsForNewReq") + "</td>";
+                var td6 = "<td class='text-center' data-val='" + txtQuantityForNewReq.val() + "'>" + txtQuantityForNewReq.val() + "</td>";
+                var td7 = "<td class='text-center'><a href='#' class='btn btn-sm btn-warning btn-flat data-onfly-edit hide' title='Edit this item'><i class='fas fa-pen'></i></a> <a href='#' class='btn btn-sm btn-danger btn-flat data-onfly-del' title='Remove this item'><i class='fa fa-trash'></i></a></td>";
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + "</tr>";
+                $("#tblData tbody").append(tr);
+                fnCalculateTotalQty();
+            }
+        })
+
+        function fnCalculateTotalQty() {
+            var totalQty = 0;
+            $.each($("#tblData tbody tr"), function (index, item) {
+                var qty = TryParseInt($(this).children('td').eq(5).attr("data-val"), 0);
+                totalQty += qty;
+            })
+            $("#tblData tfoot tr").children('td').eq(1).html(totalQty);
+        }
+
+        $(document).on('click', 'a.data-onfly-del', function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tr').index();
+            fnRemoveARowFromTbody("#tblData", index);
+            fnFixTheTbodyRowSerial("#tblData", index);
+            setTimeout(function () {
+                fnCalculateTotalQty();
+            }, 1000);
+
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateReq()) {
+                disable("#btnSubmit");
+                var model = { Flag: "Dealer" };
+                var details = []; details.length = 0;
+                $.each($("#tblData tbody tr"), function (index, item) {
+                    var tds = $(this).children('td');
+                    details.push({
+                        CategoryId: tds.eq(1).attr("data-val"),
+                        BrandId: tds.eq(2).attr("data-val"),
+                        ModelId: tds.eq(3).attr("data-val"),
+                        ColorId: tds.eq(4).attr("data-val"),
+                        Quantity: tds.eq(5).attr("data-val")
+                    })
+                })
+                model.DealerRequisitionDetails = details;
+                var data = JSON.stringify({ model: model });
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveDealerRequisition', data, getToken())).then(function (res, status) {
+                    if (res === true && status === "success") {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        clearNewReqCtrl();
+                        $("#custom-tabs-two-addDealerReq-tab").addClass("hide");
+                        redirectToAnotherTab("#custom-tabs-one-dealerReqList-tab");
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                    enable("#btnSubmit");
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnSubmit");
+                })
+            }
+        })
+
+        function clearNewReqCtrl() {
+            ddlCategoriesForNewReq.val('');
+            ddlCategoriesForNewReq.trigger("change");
+            $("#tblData tbody").empty();
+            txtQuantityForNewReq.val('0');
+            setTimeout(function () {
+                fnCalculateTotalQty();
+            }, 1000);
+        }
+
+        function redirectToAnotherTab(tabId) {
+            clearNewReqCtrl();
+            $(tabId).removeClass("hide");
+            $(tabId).trigger("click");
+            if (tabId == "#custom-tabs-one-dealerReqList-tab") {
+                $("#custom-tabs-two-addDealerReq-tab").addClass("hide");
+            }
+        }
+        //#endregion 
+        
+    </script>
+}
+
+

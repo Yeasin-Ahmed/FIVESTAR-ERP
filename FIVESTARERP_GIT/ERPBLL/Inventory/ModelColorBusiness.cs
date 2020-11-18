@@ -33,7 +33,7 @@ namespace ERPBLL.Inventory
         {
             var query = string.Format(@"Select c.ColorId,c.ColorName From [Inventory].dbo.tblColors c
 Inner Join [Inventory].dbo.tblModelColors mc on c.ColorId = mc.ColorId and mc.DescriptionId={0}
-Where c.OrgnarizationId = {1}", modelId, orgId);
+Where c.OrganizationId = {1}", modelId, orgId);
             return _inventoryDb.Db.Database.SqlQuery<ModelColorDTO>(query).ToList();
         }
         public IEnumerable<ModelColors> GetModelColorsByOrg(long orgId)
