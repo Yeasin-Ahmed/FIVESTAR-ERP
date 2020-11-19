@@ -16,5 +16,6 @@ namespace ERPBLL.Accounts.Interface
         Account GetAccountOneByOrgId(long id, long orgId);
         bool IsDuplicateAaccountCode(string code, long id, long orgId);
         AccountDTO GetCashHeadId(long orgId);
+        AccountDTO GetAccountName(long accountId, long orgId);
     }
 }

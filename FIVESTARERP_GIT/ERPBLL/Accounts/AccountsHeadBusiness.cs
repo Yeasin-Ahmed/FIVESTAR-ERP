@@ -26,6 +26,13 @@ namespace ERPBLL.Accounts
                 string.Format(@"Select *from tblAccount Where OrganizationId={0}", orgId)).ToList();
         }
 
+        public AccountDTO GetAccountName(long accountId, long orgId)
+        {
+            return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
+                string.Format(@"select AccountName from tblAccount 
+ where AccountId={0} and OrganizationId={1}", accountId, orgId)).FirstOrDefault();
+        }
+
         public Account GetAccountOneByOrgId(long id, long orgId)
         {
             return accountsHeadRepository.GetOneByOrg(h => h.AccountId == id && h.OrganizationId == orgId);
@@ -46,7 +53,10 @@ namespace ERPBLL.Accounts
         {
             var mainHeadId = string.Empty;
             var ancestorId = string.Empty;
+            var accountName = string.Empty;
             string mainAncestorIdfull = "";
+            //long aheadId2 = Convert.ToInt64(accountsHeadDTO.AncestorId);
+
             if (!accountsHeadDTO.IsGroupHead)
             {
                 long aheadId = Convert.ToInt64(accountsHeadDTO.AncestorId);
@@ -55,12 +65,21 @@ namespace ERPBLL.Accounts
                 ancestorId = data != null ? (string.IsNullOrEmpty(data.AncestorId) ? "0": data.AncestorId) : "0";
                 mainAncestorIdfull= ","+mainHeadId + "," + ancestorId +",";
                 mainAncestorIdfull = mainAncestorIdfull.Replace(",,", ",");
+                accountName = GetAccountName(aheadId, orgId).AccountName;
             }
             
+
             Account head = new Account();
             if (accountsHeadDTO.AccountId == 0)
             {
-                head.AccountName = accountsHeadDTO.AccountName;
+                if (!accountsHeadDTO.IsGroupHead)
+                {
+                    head.AccountName = accountName+"_"+ accountsHeadDTO.AccountName;
+                }
+                else
+                {
+                    head.AccountName = accountsHeadDTO.AccountName;
+                }
                 head.AccountCode = accountsHeadDTO.AccountCode;
                 head.AncestorId = mainAncestorIdfull;
                 head.IsGroupHead = accountsHeadDTO.IsGroupHead;

@@ -57,7 +57,7 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region tblJournal
+        #region Journal/Debit/Credit Entry
         public ActionResult GetJournalList()
         {
             ViewBag.UserPrivilege = UserPrivilege("Accounts", "GetJournalList");
@@ -128,7 +128,9 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
+        #endregion
 
+        #region Cashbook/Journalbook list
         public ActionResult JournalList(string flag_, string fromDate, string toDate)
         {
             if (string.IsNullOrEmpty(flag_))
@@ -137,25 +139,44 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _journalBusiness.GetJournalList(User.OrgId,fromDate,toDate);
+                var dto = _journalBusiness.GetJournalList(User.OrgId, fromDate, toDate);
                 List<JournalViewModel> viewModels = new List<JournalViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
-                return PartialView("_JournalList",viewModels);
+                return PartialView("_JournalList", viewModels);
             }
         }
         public ActionResult CashVoucherList(string flag_, string fromDate, string toDate)
         {
-            if (string.IsNullOrEmpty(flag_) && flag_=="cash")
+            if (string.IsNullOrEmpty(flag_) && flag_ == "cash")
             {
                 return View();
             }
             else
             {
-                var dto = _journalBusiness.CashVoucherList(User.OrgId,fromDate,toDate);
+                var dto = _journalBusiness.CashVoucherList(User.OrgId, fromDate, toDate);
                 List<JournalViewModel> viewModels = new List<JournalViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_CashVoucherList", viewModels);
             }
+        }
+        #endregion
+
+        #region Ledger
+        public ActionResult GetLadgerList(string _flag, long? accountId, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(_flag))
+            {
+                ViewBag.ddlLedgerAccountName = _accountsHeadBusiness.AccountList(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.AccountName, Value = mobile.AccountId.ToString() }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _journalBusiness.LedgerList(accountId, User.OrgId, fromDate, toDate);
+                List<JournalViewModel> viewModels = new List<JournalViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_GetLadgerList", viewModels);
+            }
+
         }
         #endregion
     }

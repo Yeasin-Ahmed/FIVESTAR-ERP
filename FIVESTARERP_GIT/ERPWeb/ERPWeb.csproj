@@ -826,6 +826,8 @@
     <Content Include="Views\Accounts\JournalList.cshtml" />
     <Content Include="Views\Accounts\_CashVoucherList.cshtml" />
     <Content Include="Views\Accounts\_JournalList.cshtml" />
+    <Content Include="Views\Accounts\GetLadgerList.cshtml" />
+    <Content Include="Views\Accounts\_GetLadgerList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

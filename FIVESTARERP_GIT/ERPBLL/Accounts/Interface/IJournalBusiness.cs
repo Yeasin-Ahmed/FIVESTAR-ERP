@@ -14,5 +14,6 @@ namespace ERPBLL.Accounts.Interface
         bool SaveJournalVouchar(List<JournalDTO> journalDTO, long userId, long orgId);
         IEnumerable<JournalDTO> GetJournalList(long orgId, string fromDate, string toDate);
         IEnumerable<JournalDTO> CashVoucherList(long orgId, string fromDate, string toDate);
+        IEnumerable<JournalDTO> LedgerList(long? accountId,long orgId, string fromDate, string toDate);
     }
 }

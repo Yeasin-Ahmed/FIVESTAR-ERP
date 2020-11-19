@@ -3,6 +3,12 @@
     int sl = 0;
     double debit = 0;
     double credit = 0;
+    double d = 0;
+    double c = 0;
+    double totalD = 0;
+    double totalC = 0;
+    double g = 0;
+
     Layout = null;
 }
 <div class="col-md-12 text-sm">
@@ -25,6 +31,10 @@
                 sl = sl + 1;
                 debit += jor.Debit;
                 credit += jor.Credit;
+                d = debit - credit;
+                c = credit - debit;
+                totalD = debit + c;
+                totalC = credit + d;
                 string journaldate = jor.JournalDate != null ? jor.JournalDate.Value.ToString("dd-MMM-yyy") : "";
                 <tr>
                     <td class="text-center">@sl</td>
@@ -46,11 +56,63 @@
                 </tr>
             }
         </tbody>
-        <tfoot style="background-color:dimgray">
-            <tr class="text-white">
+        <tfoot style="background-color:#bfbfbf">
+            <tr class="">
                 <th colspan="6" class="text-right">Total</th>
+                <td class="text-center font-weight-bold">
+                    @if (debit <= totalD)
+                    {
+                        @totalD;
+                    }
+                    else {
+                        @debit;
+                    }
+
+                </td>
+                <td class="text-center font-weight-bold">
+                    @if (credit <= totalC)
+                    {
+                        @totalC;
+                    }
+                    else
+                    {
+                        @credit;
+                    }
+
+                </td>
+            </tr>
+        </tfoot>
+        <tfoot style="background-color:#bfbfbf">
+            <tr class="">
+                <th colspan="6" class="text-right"></th>
                 <td class="text-center font-weight-bold">@debit</td>
                 <td class="text-center font-weight-bold">@credit</td>
+            </tr>
+        </tfoot>
+        <tfoot style="background-color:#bfbfbf">
+            <tr class="">
+                <th colspan="6" class="text-right">Closing Balance</th>
+                <td class="text-center font-weight-bold">
+                    @if (c > 0)
+                    {
+                        @c;
+                    }
+                    else
+                    {
+                        @g;
+                    }
+
+                </td>
+                <td class="text-center font-weight-bold">
+                    @if (d > 0)
+                    {
+                        @d;
+                    }
+                    else
+                    {
+                        @g;
+                    }
+                </td>
             </tr>
         </tfoot>
     </table>

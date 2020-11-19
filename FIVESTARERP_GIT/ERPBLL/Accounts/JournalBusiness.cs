@@ -25,7 +25,11 @@ namespace ERPBLL.Accounts
 
         public IEnumerable<JournalDTO> CashVoucherList(long orgId, string fromDate, string toDate)
         {
-            return this._accountsDb.Db.Database.SqlQuery<JournalDTO>(QueryForCashBookList(orgId, fromDate, toDate)).ToList();
+            fromDate = fromDate != null && fromDate.Trim() != "" ? Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") : "";
+            toDate = toDate != null && toDate.Trim() != "" ? Convert.ToDateTime(toDate).ToString("yyyy-MM-dd") : "";
+            //fromDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+            string query = string.Format(@"Exec [dbo].[spCashbook] '{0}','{1}',{2}", fromDate, toDate, orgId);
+            return this._accountsDb.Db.Database.SqlQuery<JournalDTO>(query).ToList();
         }
         private string QueryForCashBookList(long orgId, string fromDate, string toDate)
         {
@@ -90,7 +94,7 @@ namespace ERPBLL.Accounts
             }
 
             query = string.Format(@"Select AccountName,j.ReferenceNum,j.Narration,j.JournalDate,j.Remarks,j.Debit,j.Credit from tblJournal j
-inner join tblAccount a on j.AccountId=a.AccountId where 1=1{0}", Utility.ParamChecker(param));
+inner join tblAccount a on j.AccountId=a.AccountId where Flag='Journal' and 1=1{0}", Utility.ParamChecker(param));
             return query;
         }
 
@@ -233,6 +237,16 @@ inner join tblAccount a on j.AccountId=a.AccountId where 1=1{0}", Utility.ParamC
             }
             journalRepository.InsertAll(journals);
             return journalRepository.Save();
+        }
+
+        public IEnumerable<JournalDTO> LedgerList(long? accountId, long orgId, string fromDate, string toDate)
+        {
+            fromDate = fromDate != null && fromDate.Trim() != "" ? Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd") : "";
+            toDate = toDate != null && toDate.Trim() != "" ? Convert.ToDateTime(toDate).ToString("yyyy-MM-dd") : "";
+            //accountId = accountId.ToString() != null && accountId.ToString() != "" ? accountId.ToString() : "";
+            //fromDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+            string query = string.Format(@"Exec [dbo].[spLadger] {0},'{1}','{2}',{3}", accountId.Value, fromDate, toDate, orgId);
+            return this._accountsDb.Db.Database.SqlQuery<JournalDTO>(query).ToList();
         }
     }
 }
