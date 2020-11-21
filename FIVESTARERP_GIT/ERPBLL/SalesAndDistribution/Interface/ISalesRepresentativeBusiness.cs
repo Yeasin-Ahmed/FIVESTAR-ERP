@@ -18,5 +18,7 @@ namespace ERPBLL.SalesAndDistribution.Interface
         IEnumerable<SalesRepresentative> GetSalesRepresentativesByType(string srType, long orgId);
         bool SaveSalesRepresentative(SalesRepresentativeDTO dto, SRUser sRUser, long userId, long branchId, long orgId);
         IEnumerable<Dropdown> GetReportingSR(long orgId, long districtId, long zoneId, string srtype);
+        IEnumerable<Dropdown> GetSRByDistrict(long districtId, long orgId);
+        IEnumerable<Dropdown> GetSRByZone(long zoneId, long orgId);
     }
 }

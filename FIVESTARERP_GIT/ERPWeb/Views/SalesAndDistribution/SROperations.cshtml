@@ -8,10 +8,10 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs text-bold" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-one-dealerReqList-tab" data-toggle="pill" href="#custom-tabs-one-dealerReqList" role="tab" aria-controls="custom-tabs-one-dealerReqList" aria-selected="true">Dealer Requisition List</a>
+                        <a class="nav-link active" id="custom-tabs-one-dealerReqList-tab" data-toggle="pill" href="#custom-tabs-one-dealerReqList" role="tab" aria-controls="custom-tabs-one-dealerReqList" aria-selected="true">Dealer PO List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link hide" id="custom-tabs-two-addDealerReq-tab" data-toggle="pill" href="#custom-tabs-two-addDealerReq" role="tab" aria-controls="custom-tabs-two-addDealerReq" aria-selected="true">Add Dealer Requisition</a>
+                        <a class="nav-link hide" id="custom-tabs-two-addDealerReq-tab" data-toggle="pill" href="#custom-tabs-two-addDealerReq" role="tab" aria-controls="custom-tabs-two-addDealerReq" aria-selected="true">Add Dealer PO</a>
                     </li>
                 </ul>
             </div>
@@ -28,9 +28,12 @@
                                                 <h5>Search By:</h5>
                                             </div>
                                             <div class="col-6">
-                                                <button type="button" id="btnAddNewDealerReq" class="btn btn-sm btn-flat btn-outline-primary float-right">
-                                                    <i class="fas fa-plus"> Requisition</i>
-                                                </button>
+                                                @if (User.RoleName == "RSM" || User.RoleName == "ASM" || User.RoleName == "TSE")
+                                                {
+                                                    <button type="button" id="btnAddNewDealerReq" class="btn btn-sm btn-flat btn-outline-primary float-right">
+                                                        <i class="fas fa-plus"> Dealer PO</i>
+                                                    </button>
+                                                }
                                             </div>
                                         </div>
                                         <div class="row mt-1 hide">
@@ -38,7 +41,7 @@
                                                 <label class="control-label font-weight-bold" for="ddlCategoriesForReqList">Category</label>
                                                 @Html.DropDownList("ddlCategoriesForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
                                             </div>
-                                            <div class="col-md-3 mt-1">
+                                            <div class="col-md-3">
                                                 <label class="control-label font-weight-bold" for="ddlMobileBrandForReqList">Brand</label>
                                                 @Html.DropDownList("ddlMobileBrandForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlMobileBrand, "---Select Brand---", new { @class = "form-control form-control-sm" })
                                             </div>
@@ -53,14 +56,18 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <label class="control-label font-weight-bold" for="txtRequisitionNum">Req Num.</label>
-                                                <input type="text" name="txtRequisitionNum" id="txtRequisitionNum" class="form-control form-control-sm" placeholder="Search By Req Num"/>
+                                                <label class="control-label font-weight-bold" for="ddlDealerForReqList">Dealer</label>
+                                                @Html.DropDownList("ddlDealerForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlDealer, "---Select Dealer---", new { @class = "form-control form-control-sm" })
                                             </div>
                                             <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="txtRequisitionNum">Req Num.</label>
+                                                <input type="text" name="txtRequisitionNum" id="txtRequisitionNum" class="form-control form-control-sm" placeholder="Search By Req Num" />
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold" for="ddlRequisitionStatus">Status</label>
                                                 @Html.DropDownList("ddlRequisitionStatus", (IEnumerable<SelectListItem>)ViewBag.ddlRequisitionStatus, "---Select Status---", new { @class = "form-control form-control-sm" })
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold" for="dptFromDateForReqList">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateForReqList" />
@@ -69,7 +76,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold" for="dptToDateForReqList">To Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateForReqList" />
@@ -77,6 +84,16 @@
                                                         <span class="input-group-text">&#10008;</span>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlZoneForReqList">Zone</label>
+                                                @Html.DropDownList("ddlZoneForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlZone, "---Select Zone---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlSubordinatesForReqList">Subordinates</label>
+                                                @Html.DropDownList("ddlSubordinatesForReqList", (IEnumerable<SelectListItem>)ViewBag.ddlSubordinates, "---Select Subordinates---", new { @class = "form-control form-control-sm" })
                                             </div>
                                         </div>
                                     </div>
@@ -99,23 +116,27 @@
                                     <div class="card-header">
                                         <div class="row tabHead">
                                             <div class="col-3">
-                                               <a href="#" class="btn btn-sm btn-flat btn-info" title="Back To List" onclick="redirectToAnotherTab('#custom-tabs-one-dealerReqList-tab')"><i class="fas fa-arrow-circle-left"></i></a>
+                                                <a href="#" class="btn btn-sm btn-flat btn-info" title="Back To List" onclick="redirectToAnotherTab('#custom-tabs-one-dealerReqList-tab')"><i class="fas fa-arrow-circle-left"></i></a>
                                             </div>
                                             <div class="col-6 text-center">
-                                                <h5 class="text-bold">Add New Requisition</h5>
+                                                <h5 class="text-bold">Add New Dealer PO</h5>
                                             </div>
                                             <div class="col-3">
                                             </div>
                                         </div>
                                         <div class="row mt-1">
-                                            <input type="hidden" id="hdfDealerId" value="@ViewBag.DealerId" />
                                             <div class="col-md-4">
                                                 <div class="card card-secondary shadow">
                                                     @*<div class="card-header text-bold">
-                                                        <h6 class="text-bold">Mobile Detail</h6>
-                                                    </div>*@
+                                                            <h6 class="text-bold">Mobile Detail</h6>
+                                                        </div>*@
                                                     <div class="card-body">
                                                         <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label class="control-label font-weight-bold" for="ddlDealerByThisSR">Dealer<span class="text-danger">*</span></label>
+                                                                @Html.DropDownList("ddlDealerByThisSR", (IEnumerable<SelectListItem>)ViewBag.ddlDealerByThisSR, "---Select Dealer---", new { @class = "form-control form-control-sm" })
+                                                                <span class="error hide req-dealer">Dealer is required</span>
+                                                            </div>
                                                             <div class="col-md-12">
                                                                 <label class="control-label font-weight-bold" for="ddlCategoriesForNewReq">Category<span class="text-danger">*</span></label>
                                                                 @Html.DropDownList("ddlCategoriesForNewReq", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
@@ -160,27 +181,31 @@
                                             <div class="col-md-8">
                                                 <div class="card card-secondary shadow">
                                                     @*<div class="card-header">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <h6 class="text-bold">Seleted Mobile Items</h6>
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <h6 class="text-bold">Seleted Mobile Items</h6>
+                                                                </div>
+                                                                <div class="col-6">
+
+                                                                </div>
                                                             </div>
-                                                            <div class="col-6">
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </div>*@
+                                                        </div>*@
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <table class="table table-sm table-striped table-bordered table-responsive-lg" id="tblData">
                                                                     <thead class="btn-dark">
-                                                                        <tr>
-                                                                            <th colspan="7">
-                                                                                <button type="submit" id="btnSubmit" class="btn btn-sm btn-flat btn-success float-right">
-                                                                                    <i class="fas fa-paper-plane"></i> Save..
-                                                                                </button>
-                                                                            </th>
-                                                                        </tr>
+                                                                        @if (User.RoleName == "RSM" || User.RoleName == "ASM" || User.RoleName == "TSE")
+                                                                        {
+                                                                            <tr>
+                                                                                <th colspan="7">
+                                                                                    <button type="submit" id="btnSubmit" class="btn btn-sm btn-flat btn-success float-right">
+                                                                                        <i class="fas fa-paper-plane"></i> Save..
+                                                                                    </button>
+                                                                                </th>
+                                                                            </tr>
+                                                                        }
+
                                                                         <tr class="text-center">
                                                                             <th>#SL</th>
                                                                             <th>Category</th>
@@ -191,8 +216,7 @@
                                                                             <th>Action</th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
-                                                                    </tbody>
+                                                                    <tbody></tbody>
                                                                     <tfoot class="btn-secondary">
                                                                         <tr class="text-bold">
                                                                             <td class="text-right" colspan="5">
@@ -218,6 +242,21 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalDPO" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Dealer Purchase Order</span></h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12" id="modalDataContainer1">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts{
@@ -231,14 +270,17 @@
         var ddlRequisitionStatus = $("#ddlRequisitionStatus");
         var dptFromDateForReqList = $("#dptFromDateForReqList");
         var dptToDateForReqList = $("#dptToDateForReqList");
+        var ddlDealerForReqList = $("#ddlDealerForReqList")
+        var ddlZoneForReqList = $("#ddlZoneForReqList");
+        var ddlSubordinatesForReqList = $("#ddlSubordinatesForReqList");
         // Add New Req
-        var hdfDealerId = $("#hdfDealerId");
+        var ddlDealerByThisSR = $("#ddlDealerByThisSR");
         var ddlCategoriesForNewReq = $("#ddlCategoriesForNewReq");
         var ddlBrandForNewReq = $("#ddlBrandForNewReq");
         var ddlModelsForNewReq = $("#ddlModelsForNewReq");
         var ddlColorsForNewReq = $("#ddlColorsForNewReq");
         var txtQuantityForNewReq = $("#txtQuantityForNewReq");
-
+        var i = '@Session.Timeout';
         $(document).ready(function () {
             loadDataInitializer();
             $('.select2').select2();
@@ -303,6 +345,19 @@
         dptToDateForReqList.change(function () {
             loadRequisitionListDataTable();
         })
+
+        ddlDealerForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        ddlSubordinatesForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
+        ddlZoneForReqList.change(function () {
+            loadRequisitionListDataTable();
+        })
+
         $(document).on('click', 'div.remove-date', function () {
             if ($(this).hasClass("dptToDate")) {
                 if (dptToDateForReqList.val() !== '') {
@@ -317,8 +372,12 @@
                 }
             }
         })
+
         function loadRequisitionListDataTable() {
-            var data = { flag: "dealerRequisitionsInfo", refNum: $.trim(txtRequisitionNum.val()), status: ddlRequisitionStatus.val(), fromDate: dptFromDateForReqList.val(), toDate: dptToDateForReqList.val() };
+            //string flag,long? dealerId, long? srId,long? districtId,long? zoneId,string refNum,string status,string fromDate, string toDate
+            var srId = ddlSubordinatesForReqList.val() != "" ? ddlSubordinatesForReqList.val().split("#") : ["0", "0"];
+            var zoneId = ddlZoneForReqList.val() != "" ? ddlZoneForReqList.val().split("#") : ["0", "0"];
+            var data = { flag: "dealerRequisitionsInfo", refNum: $.trim(txtRequisitionNum.val()), status: ddlRequisitionStatus.val(), fromDate: dptFromDateForReqList.val(), toDate: dptToDateForReqList.val(), dealerId: TryParseInt(ddlDealerForReqList.val(), 0), srId: srId[0], zoneId: zoneId[0] };
             $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/SROperations', data)).then(function (res, status) {
                 if (status === "success") {
                     $("#dataContainer1").fadeOut('500', function () {
@@ -412,7 +471,12 @@
 
         function validateReq() {
             var isValid = true;
+            $(".error").addClass('hide');
             if ($("#tblData tbody tr").length == 0) {
+                isValid = false;
+            }
+            if (TryParseInt(ddlDealerByThisSR.val(), 0) <= 0) {
+                $(".req-dealer").removeClass('hide');
                 isValid = false;
             }
             return isValid;
@@ -459,7 +523,7 @@
             e.preventDefault();
             if (validateReq()) {
                 disable("#btnSubmit");
-                var model = { Flag: "Dealer" };
+                var model = { Flag: "SR",DealerId: ddlDealerByThisSR.val(),Remarks:"PO By SR"};
                 var details = []; details.length = 0;
                 $.each($("#tblData tbody tr"), function (index, item) {
                     var tds = $(this).children('td');
@@ -479,6 +543,7 @@
                         clearNewReqCtrl();
                         $("#custom-tabs-two-addDealerReq-tab").addClass("hide");
                         redirectToAnotherTab("#custom-tabs-one-dealerReqList-tab");
+                        loadRequisitionListDataTable();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -492,6 +557,7 @@
         })
 
         function clearNewReqCtrl() {
+            ddlDealerByThisSR.val("");
             ddlCategoriesForNewReq.val('');
             ddlCategoriesForNewReq.trigger("change");
             $("#tblData tbody").empty();
@@ -509,8 +575,29 @@
                 $("#custom-tabs-two-addDealerReq-tab").addClass("hide");
             }
         }
-        //#endregion 
-        
+            //#endregion
+
+        //#region DPO Details
+        $(document).on('click', '.data-po-detail', function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-po-detail");
+            $("#modalDataContainer1").empty();
+            if (TryParseInt(id, 0) > 0) {
+                var data = { flag:"dealerRequisitionsDetail",reqInfoId: id };
+                $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/SROperations', data)).then(function (res,status) {
+                    if (status === "success") {
+                        $("#modalDPO").modal("show");
+                        $("#modalDataContainer1").append(res);
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+        })
+        //#endregion
     </script>
 }
 

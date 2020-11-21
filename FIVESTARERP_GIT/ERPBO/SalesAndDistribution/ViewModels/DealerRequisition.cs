@@ -26,16 +26,18 @@ namespace ERPBO.SalesAndDistribution.ViewModels
         public List<DealerRequisitionDetailViewModel> DealerRequisitionDetails { get; set; }
         // Custom Properties
         public string DealerName { get; set; }
-        public string Division { get; set; }
-        public string District { get; set; }
-        public string Zone { get; set; }
+        public string DivisionName { get; set; }
+        public string DistrictName { get; set; }
+        public string ZoneName { get; set; }
         public string Address { get; set; }
-        public string Mobile { get; set; }
+        public string MobileNo { get; set; }
         public string EntryUser { get; set; }
         public string UpdateUser { get; set; }
         public string ApprovedUser { get; set; }
         [Required]
         public string Flag { get; set; }
+        public long SRID { get; set; }
+        public string SRName { get; set; }
     }
     public class DealerRequisitionDetailViewModel
     {

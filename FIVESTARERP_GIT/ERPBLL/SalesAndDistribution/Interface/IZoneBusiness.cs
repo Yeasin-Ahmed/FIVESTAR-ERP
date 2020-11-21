@@ -17,5 +17,6 @@ namespace ERPBLL.SalesAndDistribution.Interface
         IEnumerable<Dropdown> GetZoneWithDistrictAndDivision(long orgId);
         IEnumerable<Dropdown> GetZonesByDistrict(long districtId, long orgId);
         IEnumerable<Dropdown> GetRepresentativesByZone(long zoneId, long orgId);
+        IEnumerable<Dropdown> GetZonesWithDistrict(long? districtId, long orgId);
     }
 }

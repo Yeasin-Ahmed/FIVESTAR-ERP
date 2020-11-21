@@ -240,6 +240,7 @@ namespace ERPWeb
             container.RegisterType<ITSEBusiness, TSEBusiness>();
             container.RegisterType<ISalesRepresentativeBusiness, SalesRepresentativeBusiness>();
             container.RegisterType<IDealerRequisitionInfoBusiness, DealerRequisitionInfoBusiness>();
+            container.RegisterType<IDealerRequisitionDetailBusiness, DealerRequisitionDetailBusiness>();            
             #endregion
 
             #region Accounts

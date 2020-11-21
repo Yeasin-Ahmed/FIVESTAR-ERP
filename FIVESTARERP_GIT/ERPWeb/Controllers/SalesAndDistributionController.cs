@@ -43,6 +43,7 @@ namespace ERPWeb.Controllers
         private readonly ITSEBusiness _tSEBusiness;
         private readonly ISalesRepresentativeBusiness _salesRepresentativeBusiness;
         private readonly IDealerRequisitionInfoBusiness _dealerRequisitionInfoBusiness;
+        private readonly IDealerRequisitionDetailBusiness _dealerRequisitionDetailBusiness;
         #endregion
 
         #region Inventory
@@ -52,7 +53,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Inventory.Interface.IDescriptionBusiness _invModelBusiness;
         private readonly ERPBLL.Inventory.Interface.IColorBusiness _invColorBusiness;
         #endregion
-        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness, ITSEBusiness tSEBusiness, ISalesRepresentativeBusiness salesRepresentativeBusiness, IDealerRequisitionInfoBusiness dealerRequisitionInfoBusiness)
+        public SalesAndDistributionController(IDealerBusiness dealerBusiness, IBTRCApprovedIMEIBusiness bTRCApprovedIMEIBusiness, IItemStockBusiness itemStockBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness invCategoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness invBrandBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness invBrandCategoryBusiness, ERPBLL.Inventory.Interface.IDescriptionBusiness invModelBusiness, ERPBLL.Inventory.Interface.IColorBusiness invColorBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoryBusiness, IModelBusiness modelBusiness, IColorBusiness colorBusiness, IModelColorBusiness modelColorBusiness, IDivisionBusiness divisionBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, IRSMBusiness rSMBusiness, IASMBusiness aSMBusiness, ITSEBusiness tSEBusiness, ISalesRepresentativeBusiness salesRepresentativeBusiness, IDealerRequisitionInfoBusiness dealerRequisitionInfoBusiness, IDealerRequisitionDetailBusiness dealerRequisitionDetailBusiness)
         {
             #region Sales & Distribution
             this._dealerBusiness = dealerBusiness;
@@ -74,6 +75,7 @@ namespace ERPWeb.Controllers
             this._tSEBusiness = tSEBusiness;
             this._salesRepresentativeBusiness = salesRepresentativeBusiness;
             this._dealerRequisitionInfoBusiness = dealerRequisitionInfoBusiness;
+            this._dealerRequisitionDetailBusiness = dealerRequisitionDetailBusiness;
             #endregion
 
             #region Inventory
@@ -626,7 +628,7 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
 
-        public ActionResult DealerOperations(string flag, string refNum, string status, string fromDate, string toDate)
+        public ActionResult DealerOperations(string flag, string refNum, string status, string fromDate, string toDate, long? reqInfoId)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -642,15 +644,21 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "dealerRequisitionsInfo")
             {
-                var dto = _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(User.UserId, null,User.DistrictId, User.ZoneId, refNum, status, fromDate, toDate, "dealer", User.OrgId,User.RoleName, User.UserId);
+                var dto = _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(User.UserId, null, User.DistrictId, User.ZoneId, refNum, status, fromDate, toDate, "dealer", User.OrgId, User.RoleName, User.UserId, reqInfoId??0);
                 List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_dealerRequisitions", viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "dealerRequisitionsDetail")
+            {
+                var dto = _dealerRequisitionDetailBusiness.GetDealerRequisitionDetails(reqInfoId ?? 0, User.OrgId);
+                List<DealerRequisitionDetailViewModel> viewModels = new List<DealerRequisitionDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_dealerRequisitionsDetail", viewModels);
+            }
             return View();
         }
-
-        public ActionResult SROperations(string flag,long? dealerId, long? srId,long? districtId,long? zoneId,string refNum,string status,string fromDate, string toDate)
+        public ActionResult SROperations(string flag, long? dealerId, long? srId, long? districtId, long? zoneId, string refNum, string status, string fromDate, string toDate, long? reqInfoId)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -660,16 +668,105 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlColors = new SelectList(_invColorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
                 ViewBag.ddlStockStatus = new SelectList(Utility.ListOfStockStatus(), "value", "text");
                 ViewBag.ddlRequisitionStatus = new SelectList(Utility.ListOfReqStatus(), "value", "text");
-                ViewBag.ddlZone = new SelectList(_zoneBusiness.GetZonesByDistrict(User.DistrictId, User.OrgId), "value", "text");
-                ViewBag.ddlSubordinates = new SelectList(_salesRepresentativeBusiness.GetSalesRepresentativesBySeniorId(User.UserId, User.OrgId),"value","text");
+                ViewBag.ddlDealer = new SelectList(_dealerBusiness.GetDealersByRepresentative(User.UserId, User.OrgId), "value", "text");
+
+                ViewBag.ddlZone = (User.RoleName == "RSM" || User.RoleName == "ASM" || User.RoleName == "TSE") ? (new SelectList(_zoneBusiness.GetZonesWithDistrict(User.DistrictId, User.OrgId), "value", "text")) : (new SelectList(_zoneBusiness.GetZonesWithDistrict(0, User.OrgId), "value", "text"));
+
+                ViewBag.ddlSubordinates = (User.RoleName == "RSM" || User.RoleName == "ASM" || User.RoleName == "TSE") ?
+                    (new SelectList(_salesRepresentativeBusiness.GetSalesRepresentativesBySeniorId(User.UserId, User.OrgId), "value", "text")) : new SelectList(_salesRepresentativeBusiness.GetSalesRepresentatives(User.OrgId).Select(s => new Dropdown() { value = (s.SRID.ToString() + "#" + s.UserId.ToString()), text = s.FullName }).ToList(), "value", "text");
+
+                ViewBag.ddlDealerByThisSR = new SelectList(_dealerBusiness.GetDealerByIndividualSRUserId(User.UserId, User.OrgId), "value", "text");
 
                 return View();
             }
             if (!string.IsNullOrEmpty(flag) && flag.Trim() == "dealerRequisitionsInfo")
             {
-               var dto= _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(dealerId, srId, User.DistrictId, zoneId, refNum, status, fromDate, toDate, "SR", User.OrgId, User.RoleName,User.UserId);
+                var dto = _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(dealerId ?? 0, srId ?? 0, User.DistrictId, zoneId ?? 0, refNum, status, fromDate, toDate, "SR", User.OrgId, User.RoleName, User.UserId,reqInfoId??0);
+                List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_dealerRequisitionsForSR", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "dealerRequisitionsDetail")
+            {
+                var infoDTO = _dealerRequisitionInfoBusiness.GetDealerRequisitionInfos(0,0,0,0,null,null,null,null,"dealer",User.OrgId,null,0,reqInfoId??0).FirstOrDefault();
+                var dto = _dealerRequisitionDetailBusiness.GetDealerRequisitionDetails(reqInfoId ?? 0, User.OrgId);
+                DealerRequisitionInfoViewModel info = new DealerRequisitionInfoViewModel();
+                AutoMapper.Mapper.Map(infoDTO, info);
+                ViewBag.info = info;
+                List<DealerRequisitionDetailViewModel> viewModels = new List<DealerRequisitionDetailViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_dealerRequisitionsDetail", viewModels);
             }
             return View();
+        }
+        public ActionResult VerificationOfDPO(string flag,long? dealerId,long? zoneId, long? districtId, long? divisionId,string refNum,string fromDate,string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlDistrict = new SelectList(_districtBusiness.GetDistricts(User.OrgId),"DistrictId","DistrictName");
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "verified")
+            {
+                var dto = _dealerRequisitionInfoBusiness.GetDealerVerifiedPO(User.OrgId, dealerId??0, districtId??0, zoneId??0, refNum, fromDate, toDate);
+                List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_verifiedDPO", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() =="unverified")
+            {
+                var dto =_dealerRequisitionInfoBusiness.GetDealerUnVerifiedPO(User.OrgId, dealerId??0, districtId??0, zoneId??0, refNum, fromDate, toDate);
+                List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_unVerifiedDPO", viewModels);
+            }
+            return View();
+        }
+
+        public ActionResult ApprovalOfDPO(string flag, long? dealerId, long? zoneId, long? districtId, long? divisionId, string refNum, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlDistrict = new SelectList(_districtBusiness.GetDistricts(User.OrgId), "DistrictId", "DistrictName");
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "approved")
+            {
+                var dto = _dealerRequisitionInfoBusiness.GetDealerApprovedPO(User.OrgId, dealerId ?? 0, districtId ?? 0, zoneId ?? 0, refNum, fromDate, toDate);
+                List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_approvedDPO", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "unapproved")
+            {
+                var dto = _dealerRequisitionInfoBusiness.GetDealerUnApprovedPO(User.OrgId, dealerId ?? 0, districtId ?? 0, zoneId ?? 0, refNum, fromDate, toDate);
+                List<DealerRequisitionInfoViewModel> viewModels = new List<DealerRequisitionInfoViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_unApprovedDPO", viewModels);
+            }
+            return View();
+        }
+
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveVerifiedDPO(long[] id)
+        {
+            bool IsSuccess = false;
+            if(id.Length > 0)
+            {
+                IsSuccess=_dealerRequisitionInfoBusiness.SaveVerifiedDPO(id, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveApprovedDPO(long[] id)
+        {
+            bool IsSuccess = false;
+            if (id.Length > 0)
+            {
+                IsSuccess = _dealerRequisitionInfoBusiness.SaveApprovalDPO(id, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]

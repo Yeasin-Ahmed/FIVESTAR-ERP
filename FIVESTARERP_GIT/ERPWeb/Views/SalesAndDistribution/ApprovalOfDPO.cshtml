@@ -1,0 +1,500 @@
+﻿
+@{
+    ViewBag.Title = "Approval Of DPO";
+}
+<div class="row text-sm">
+    <div class="col-md-12" style="margin-top:-15px">
+        <div class="card card-navy card-tabs">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-approved-tab" data-toggle="pill" href="#custom-tabs-one-approved" role="tab" aria-controls="custom-tabs-one-approved" aria-selected="true">Approved DPO</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link hide" id="custom-tabs-two-approval-tab" data-toggle="pill" href="#custom-tabs-two-approval" role="tab" aria-controls="custom-tabs-two-approval" aria-selected="true">Approval of DPO</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-approved" role="tabpanel" aria-labelledby="custom-tabs-one-approved">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow">
+                                    <div class="card-header">
+                                        <div class="row tabHead">
+                                            <div class="col-6">
+                                                <h5>Search By:</h5>
+                                            </div>
+                                            <div class="col-6">
+                                                <button type="button" id="btnAddApproval" class="btn btn-sm btn-flat btn-outline-primary float-right">
+                                                    <i class="fas fa-plus">Approval of DPO</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="txtRequisitionNumForApproved">Req Num.</label>
+                                                <input type="text" name="txtRequisitionNumForApproved" id="txtRequisitionNumForApproved" class="form-control form-control-sm" placeholder="Search By Req Num" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="ddlDistrictForApproved">District</label>
+                                                @Html.DropDownList("ddlDistrictForApproved", (IEnumerable<SelectListItem>)ViewBag.ddlDistrict, "---Select District---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="ddlZoneForApproved">Zone</label>
+                                                <select class="form-control form-control-sm" id="ddlZoneForApproved">
+                                                    <option value="">---Select Zone---</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="ddlDealerForApproved">Dealer</label>
+                                                <select class="form-control form-control-sm" id="ddlDealerForApproved">
+                                                    <option value="">---Select Dealer---</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlSRForApproved">Sales Person</label>
+                                                <select class="form-control form-control-sm" id="ddlSRForApproved">
+                                                    <option value="">---Select SR---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptFromDateForApproved">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateForApproved" />
+                                                    <div class="input-group-prepend cursor-pointer remove-list-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptToDateForApproved">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateForApproved" />
+                                                    <div class="input-group-prepend remove-list-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-approval" role="tabpanel" aria-labelledby="custom-tabs-two-approval">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow">
+                                    <div class="card-header">
+                                        <div class="row tabHead">
+                                            <div class="col-3">
+                                                <a href="#" class="btn btn-sm btn-flat btn-info" title="Back To List" onclick="redirectToAnotherTab('#custom-tabs-one-approved-tab')"><i class="fas fa-arrow-circle-left"></i></a>
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                <h5 class="text-bold">Approval Of DPO</h5>
+                                            </div>
+                                            <div class="col-3">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="txtRequisitionNumForApproval">Req Num.</label>
+                                                <input type="text" name="txtRequisitionNumForApproval" id="txtRequisitionNumForApproval" class="form-control form-control-sm" placeholder="Search By Req Num" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="ddlDistrictForApproval">District</label>
+                                                @Html.DropDownList("ddlDistrictForApproval", (IEnumerable<SelectListItem>)ViewBag.ddlDistrict, "---Select District---", new { @class = "form-control form-control-sm" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="ddlZoneForApproval">Zone</label>
+                                                <select class="form-control form-control-sm" id="ddlZoneForApproval">
+                                                    <option value="">---Select Zone---</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="ddlDealerForApproval">Dealer</label>
+                                                <select class="form-control form-control-sm" id="ddlDealerForApproval">
+                                                    <option value="">---Select Dealer---</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" for="ddlSRForApproval">Sales Person</label>
+                                                <select class="form-control form-control-sm" id="ddlSRForApproval">
+                                                    <option value="">---Select SR---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptFromDateForApproval">From Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDateForApproval" />
+                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" for="dptToDateForApproval">To Date</label>
+                                                <div class="input-group input-group-sm ">
+                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDateForApproval" />
+                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                        <span class="input-group-text">&#10008;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label font-weight-bold" style="visibility:hidden">Submit</label>
+                                                <div class="clearfix">
+                                                    <button class="btn btn-flat btn-sm btn-primary float-left" title="Submit" id="btnSubmit">
+                                                        <i class="fas fa-paper-plane"></i> Submit..
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var txtRequisitionNumForApproved = $("#txtRequisitionNumForApproved");
+        var ddlDistrictForApproved = $("#ddlDistrictForApproved");
+        var ddlZoneForApproved = $("#ddlZoneForApproved");
+        var ddlDealerForApproved = $("#ddlDealerForApproved");
+        var ddlSRForApproved = $("#ddlSRForApproved");
+        var dptFromDateForApproved = $("#dptFromDateForApproved");
+        var dptToDateForApproved = $("#dptToDateForApproved");
+
+        var txtRequisitionNumForApproval = $("#txtRequisitionNumForApproval");
+        var ddlDistrictForApproval = $("#ddlDistrictForApproval");
+        var ddlZoneForApproval = $("#ddlZoneForApproval");
+        var ddlDealerForApproval = $("#ddlDealerForApproval");
+        var ddlSRForApproval = $("#ddlSRForApproval");
+        var dptFromDateForApproval = $("#dptFromDateForApproval");
+        var dptToDateForApproval = $("#dptToDateForApproval");
+        var count = 0;
+
+        $(document).ready(function () {
+            $('.select2').select2();
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptFromDateForApproval.prop('readonly', true);
+            dptToDateForApproval.prop('readonly', true);
+            dptFromDateForApproval.css("background-color", "#fff");
+            dptToDateForApproval.css("background-color", "#fff");
+            $('#dptFromDateForApproval').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+            $('#dptToDateForApproval').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+
+            dptFromDateForApproved.prop('readonly', true);
+            dptToDateForApproved.prop('readonly', true);
+            dptFromDateForApproved.css("background-color", "#fff");
+            dptToDateForApproved.css("background-color", "#fff");
+            $('#dptFromDateForApproved').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+            $('#dptToDateForApproved').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+            loadDataInitializer();
+        })
+
+        function loadDataInitializer() {
+            loadApprovedDPO();
+            loadUnApprovedDPO();
+        }
+
+        //#region Approved DPO
+        $(document).on('click', 'div.remove-list-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateForApproved.val() !== '') {
+                    dptToDateForApproved.val('');
+                    loadApprovedDPO();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateForApproved.val() !== '') {
+                    dptFromDateForApproved.val('');
+                    loadApprovedDPO();
+                }
+            }
+        })
+
+        dptFromDateForApproved.change(function () {
+            loadApprovedDPO();
+        })
+
+        dptToDateForApproved.change(function () {
+            loadApprovedDPO();
+        })
+
+        function loadApprovedDPO() {
+            var data = { flag: "approved", refNum: $.trim(txtRequisitionNumForApproved.val()), dealerId: TryParseInt(ddlDealerForApproved.val(), 0), districtId: TryParseInt(ddlDistrictForApproved.val(), 0), zoneId: TryParseInt(ddlZoneForApproved.val(), 0), fromDate:dptFromDateForApproved.val(),toDate:dptToDateForApproved.val() };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/ApprovalOfDPO', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer1").fadeOut('500', function () {
+                        $("#dataContainer1").empty();
+                        $("#dataContainer1").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        txtRequisitionNumForApproved.keyup(function () {
+            loadApprovedDPO();
+        })
+
+        ddlDistrictForApproved.change(function () {
+            clearDropdown("ddlZoneForApproved");
+            clearDropdown("ddlDealerForApproved");
+            clearDropdown("ddlSRForApproved");
+            if (ddlDistrictForApproved.val() != "") {
+                var data = JSON.stringify({ districtId: ddlDistrictForApproved.val() });
+                LoadDropDown('/Common/GetZonesByDistrict', type.post, ddlZoneForApproved, data);
+                LoadDropDown('/Common/GetDealerByDistrict', type.post, ddlDealerForApproved, data);
+                LoadDropDown('/Common/GetSRByDistrict', type.post, ddlSRForApproved, data);
+            }
+            loadApprovedDPO();
+        })
+
+        ddlZoneForApproved.change(function () {
+            clearDropdown("ddlDealerForApproved");
+            clearDropdown("ddlSRForApproved");
+            if (ddlZoneForApproved.val() != "") {
+                var data = JSON.stringify({ zoneId: ddlZoneForApproved.val() });
+                LoadDropDown('/Common/GetDealerByZone', type.post, ddlDealerForApproved, data);
+                LoadDropDown('/Common/GetSRByZone', type.post, ddlSRForApproved, data);
+            }
+            loadApprovedDPO();
+        })
+
+        ddlDealerForApproved.change(function () {
+            loadApprovedDPO();
+        })
+
+        ddlSRForApproved.change(function () {
+            loadApprovedDPO();
+        })
+        //endregion
+
+        //#region Approval Of DPO
+        $("#btnAddApproval").click(function (e) {
+            e.preventDefault();
+            $("#custom-tabs-one-approved-tab").addClass("hide");
+            $("#custom-tabs-two-approval-tab").removeClass("hide");
+            $("#custom-tabs-two-approval-tab").trigger("click");
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDateForReqList.val() !== '') {
+                    dptToDateForReqList.val('');
+                    loadUnApprovedDPO();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDateForApproval.val() !== '') {
+                    dptFromDateForApproval.val('');
+                    loadUnApprovedDPO();
+                }
+            }
+        })
+
+        ddlDistrictForApproval.change(function () {
+            clearDropdown("ddlZoneForApproval");
+            clearDropdown("ddlDealerForApproval");
+            clearDropdown("ddlSRForApproval");
+            if (ddlDistrictForApproval.val() != "") {
+                var data = JSON.stringify({ districtId: ddlDistrictForApproval.val() });
+                LoadDropDown('/Common/GetZonesByDistrict', type.post, ddlZoneForApproval, data);
+                LoadDropDown('/Common/GetDealerByDistrict', type.post, ddlDealerForApproval, data);
+                LoadDropDown('/Common/GetSRByDistrict', type.post, ddlSRForApproval, data);
+            }
+            loadUnApprovedDPO();
+        })
+
+        ddlSRForApproval.change(function () {
+            loadUnApprovedDPO();
+        })
+
+        ddlDealerForApproval.change(function () {
+            loadUnApprovedDPO();
+        })
+
+        ddlZoneForApproval.change(function () {
+            clearDropdown("ddlDealerForApproval");
+            clearDropdown("ddlSRForApproval");
+            if (ddlZoneForApproval.val() != "") {
+                var data = JSON.stringify({ zoneId: ddlZoneForApproval.val() });
+                LoadDropDown('/Common/GetDealerByZone', type.post, ddlDealerForApproval, data);
+                LoadDropDown('/Common/GetSRByZone', type.post, ddlSRForApproval, data);
+            }
+            loadUnApprovedDPO();
+        })
+
+        dptFromDateForApproval.change(function () {
+            loadUnApprovedDPO();
+        })
+
+        dptToDateForApproval.change(function () {
+            loadUnApprovedDPO();
+        })
+
+        function loadUnApprovedDPO() {
+            var data = { flag: "unapproved", refNum: $.trim(txtRequisitionNumForApproval.val()), dealerId: TryParseInt(ddlDealerForApproval.val(), 0), districtId: TryParseInt(ddlDistrictForApproval.val(), 0), zoneId: TryParseInt(ddlZoneForApproval.val(), 0), fromDate: dptFromDateForApproval.val(), toDate: dptToDateForApproval.val() };
+            $.when(getReqWithData(dataType.html, type.get, '/SalesAndDistribution/ApprovalOfDPO', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer2").fadeOut('500', function () {
+                        $("#dataContainer2").empty();
+                        $("#dataContainer2").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                consoleLog(error);
+            })
+        }
+
+        $(document).on('change', 'input[name="chkAll"]', function () {
+            var isChecked = $('input[name="chkAll"]').is(":checked");
+            $('input[name="chkItem"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblUnapprovedDPO tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+
+        $(document).on('change', 'input[name="chkItem"]', function () {
+            count = 0;
+            $.each($(".tblUnapprovedDPO tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(0).children('input[name="chkItem"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblUnapprovedDPO tbody tr").length == count;
+            $('input[name="chkAll"]').prop("checked", allChecked);
+        })
+
+        txtRequisitionNumForApproval.keyup(function () {
+            loadUnApprovedDPO();
+        })
+
+        function validateApproval() {
+            var isValid = true;
+            count = 0;
+            $.each($(".tblUnapprovedDPO tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(0).children('input[name="chkItem"]').is(":checked")) {
+                    count++;
+                }
+            });
+            if (count == 0) {
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (validateApproval()) {
+                bootbox.confirm("Are you sure you want to Approved this DPO?", function (result) {
+                    if (result) {
+                        disable("#btnSubmit")
+                        var data = JSON.stringify({ id: fnGetSelectedDPO() });
+                        //consoleLog(data);
+                        //return;
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/SalesAndDistribution/SaveApprovedDPO', data, getToken())).then(function (res, status) {
+                            if (status === "success" && res === true) {
+                                toastrSuccessAlert(execuStatus.successSave)
+                                $("#custom-tabs-two-approval-tab").addClass("hide");
+                                redirectToAnotherTab("#custom-tabs-one-approved-tab");
+                                loadDataInitializer();
+                            }
+                            else {
+                                toastrErrorAlert(execuStatus.fail);
+                            }
+                            enable("#btnSubmit")
+                        }).fail(function (error) {
+                            consoleLog(error);
+                            toastrErrorAlert(execuStatus.fail);
+                            enable("#btnSubmit");
+                        })
+                    }
+                })
+            }
+        })
+
+        function redirectToAnotherTab(tabId) {
+            $(tabId).removeClass("hide");
+            $(tabId).trigger("click");
+            if (tabId == "#custom-tabs-one-approved-tab") {
+                $("#custom-tabs-two-approval-tab").addClass("hide");
+            }
+        }
+
+        function fnGetSelectedDPO() {
+            var dpo = [];
+            $.each($(".tblUnapprovedDPO tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(0).children('input[name="chkItem"]').is(":checked")) {
+                    var id = $(this).children('td').eq(2).attr("data-val");
+                    dpo.push(id);
+                }
+            })
+            return dpo;
+        }
+
+            //#endregion
+    </script>
+}

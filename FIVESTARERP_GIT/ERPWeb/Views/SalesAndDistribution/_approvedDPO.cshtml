@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DealerRequisitionInfoViewModel>
+@{
+    int sl = 0;
+}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-striped table-bordered table-responsive-lg tblApprovedDPO" id="tblApprovedDPO">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>PO Code</th>
+                    <th>Dealer Name</th>
+                    <th>Zone</th>
+                    <th>Address</th>
+                    <th>Mobile</th>
+                    <th>SR</th>
+                    <th>Status</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                    <th>Update User</th>
+                    <th>Update Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl += 1;
+                    item.ZoneName += " [" + item.DistrictName + "]";
+                    string badge = item.StateStatus == "Approved" ? "badge badge-primary" : "badge badge-info";
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="text-center" data-val="@item.DREQInfoId">@item.RequisitionCode</td>
+                        <td data-val="@item.DealerId">@item.DealerName</td>
+                        <td>@item.ZoneName</td>
+                        <td>@item.Address</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.SRName</td>
+                        <td class="text-center">
+                            <span class="@badge">@item.StateStatus</span>
+                        </td>
+                        <td>@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMm-yyyy")</td>
+                        <td>@item.UpdateUser</td>
+                        <td>@item.UpdateDate.Value.ToString("dd-MMm-yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

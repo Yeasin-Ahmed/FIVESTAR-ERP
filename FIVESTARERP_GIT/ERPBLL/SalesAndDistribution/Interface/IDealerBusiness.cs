@@ -18,5 +18,9 @@ namespace ERPBLL.SalesAndDistribution.Interface
         Dealer GetDealerById(long id, long orgId);
         bool SaveDealer(DealerDTO dealer, SRUser user, long userId,long branchId, long orgId);
         IEnumerable<Dropdown> GetDealerRepresentatives(long orgId);
+        IEnumerable<Dropdown> GetDealersByRepresentative(long representativeUserId, long orgId);
+        IEnumerable<Dropdown> GetDealerByIndividualSRUserId(long userId, long orgId);
+        IEnumerable<Dropdown> GetDealersByDistrict(long districtId, long orgId);
+        IEnumerable<Dropdown> GetDealersByZone(long zoneId, long orgId);
     }
 }

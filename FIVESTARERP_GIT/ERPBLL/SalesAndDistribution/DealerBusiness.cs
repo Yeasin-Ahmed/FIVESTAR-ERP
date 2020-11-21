@@ -55,6 +55,24 @@ namespace ERPBLL.SalesAndDistribution
             return _dealerRepository.GetAll(s => s.OrganizationId == orgId).ToList();
         }
 
+        public IEnumerable<Dropdown> GetDealersByRepresentative(long representativeUserId, long orgId)
+        {
+            string query = string.Format(@"Declare @orgId bigint={0},@userId bigint={1},@srId bigint = 0
+Set @srId = (Select SRID From tblSalesRepresentatives Where UserId =@userId and OrganizationId=@orgId)
+Select Cast(d.DealerId as Nvarchar(20)) 'value',d.DealerName 'text' From tblDealer d
+Where (RepresentativeId=@srId OR RepresentativeId In (Select SRID From tblSalesRepresentatives Where ReportingSRId=@srId)) and OrganizationId={0}", orgId,representativeUserId);
+            return _salesAndDistributionDb.Db.Database.SqlQuery<Dropdown>(query).ToList();
+        }
+
+        public IEnumerable<Dropdown> GetDealerByIndividualSRUserId(long userId,long orgId)
+        {
+            string query = string.Format(@"Declare @orgId bigint={0},@userId bigint={1},@srId bigint = 0
+Set @srId = (Select SRID From tblSalesRepresentatives Where UserId =@userId and OrganizationId=@orgId)
+Select Cast(d.DealerId as Nvarchar(20)) 'value',d.DealerName 'text' From tblDealer d
+Where RepresentativeId=@srId and OrganizationId={0}", orgId, userId);
+            return _salesAndDistributionDb.Db.Database.SqlQuery<Dropdown>(query).ToList();
+        }
+
         public bool SaveDealer(DealerDTO dealerDto, SRUser user, long userId, long branchId, long orgId)
         {
             string srUserId = "0";
@@ -146,6 +164,23 @@ namespace ERPBLL.SalesAndDistribution
                 IsRoleActive = true
             };
             _appUserBusiness.SaveSRAppUser(appUser, userId, orgId, "Dealer", out srUserId);
+        }
+
+        public IEnumerable<Dropdown> GetDealersByDistrict(long districtId, long orgId)
+        {
+            return _dealerRepository.GetAll(s => s.DistrictId == districtId && s.OrganizationId == orgId).Select(s => new Dropdown() {
+                text= s.DealerName,
+                value=s.DealerId.ToString()
+            }).ToList();
+        }
+
+        public IEnumerable<Dropdown> GetDealersByZone(long zoneId, long orgId)
+        {
+            return _dealerRepository.GetAll(s => s.ZoneId == zoneId && s.OrganizationId == orgId).Select(s => new Dropdown()
+            {
+                text = s.DealerName,
+                value = s.DealerId.ToString()
+            }).ToList();
         }
     }
 }

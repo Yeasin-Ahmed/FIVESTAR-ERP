@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DealerRequisitionInfoViewModel>
+@{
+    int sl = 0;
+}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-striped table-bordered table-responsive-lg tblUnverifiedDPO" id="tblUnverifiedDPO">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th class="text-center">
+                        <input type="checkbox" name="chkAll" class="chkAll" title="All Check"/>
+                    </th>
+                    <th>#SL</th>
+                    <th>PO Code</th>
+                    <th>Dealer Name</th>
+                    <th>Zone</th>
+                    <th>Address</th>
+                    <th>Mobile</th>
+                    <th>SR</th>
+                    <th>Status</th>
+                    <th>Entry User</th>
+                    <th>Entry Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl += 1;
+                    item.ZoneName += " [" + item.DistrictName + "]";
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" name="chkItem" class="chkItem" title="Check This Item"/>
+                        </td>
+                        <td class="text-center text-bold">@sl</td>    
+                        <td class="text-center" data-val="@item.DREQInfoId">@item.RequisitionCode</td>
+                        <td data-val="@item.DealerId">@item.DealerName</td>
+                        <td>@item.ZoneName</td>
+                        <td>@item.Address</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.SRName</td>
+                        <td class="text-center">
+                            <span class="badge badge-warning">@item.StateStatus</span>
+                        </td>
+                        <td>@item.EntryUser</td>
+                        <td>@item.EntryDate.Value.ToString("dd-MMm-yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
