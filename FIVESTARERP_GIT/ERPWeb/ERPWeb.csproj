@@ -834,6 +834,9 @@
     <Content Include="Views\SalesAndDistribution\ApprovalOfDPO.cshtml" />
     <Content Include="Views\SalesAndDistribution\_approvedDPO.cshtml" />
     <Content Include="Views\SalesAndDistribution\_unApprovedDPO.cshtml" />
+    <Content Include="Views\Accounts\GetFinanceYearList.cshtml" />
+    <Content Include="Views\Accounts\GetLadgerList.cshtml" />
+    <Content Include="Views\Accounts\_GetLadgerList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
