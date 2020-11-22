@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ERPBO.SalesAndDistribution.ViewModels.DealerRequisitionDetailViewModel>
+@{
+    int sl = 0;
+    var info =(ERPBO.SalesAndDistribution.ViewModels.DealerRequisitionInfoViewModel)ViewBag.info;
+    string badge = info.StateStatus == "Pending" ? "badge badge-warning" : "badge badge-info";
+}
+
+<div class="col-md-12">
+  <table class="table table-sm table-striped table-bordered table-responsive-lg tblPOInfo" id="tblPOInfo">
+        <tr class="text-bold">
+            <td>PO Code</td>
+            <td>@info.RequisitionCode</td>
+            <td>Dealer Name</td>
+            <td>@info.DealerName</td>
+        </tr>
+        <tr class="text-bold">
+            <td>Status</td>
+            <td><span class="@badge">@info.StateStatus</span></td>
+            <td>Entry Date</td>
+            <td>@info.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+        </tr>
+    </table> <table class="table table-sm table-bordered table-striped table-responsive-lg tblPODetail" id="tblPODetail">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                sl += 1;
+                <tr>
+                    <td class="text-center text-bold">@sl</td>
+                    <td data-val="@item.CategoryId">@item.CategoryName</td>
+                    <td data-val="@item.BrandId">@item.BrandName</td>
+                    <td data-val="@item.ModelId" class="text-center">@item.ModelName</td>
+                    <td data-val="@item.ColorId" class="text-center">@item.ColorName</td>
+                    <td class="text-center text-bold">@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

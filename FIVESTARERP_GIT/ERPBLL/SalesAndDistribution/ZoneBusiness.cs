@@ -41,6 +41,16 @@ namespace ERPBLL.SalesAndDistribution
             return _zoneRepository.GetAll(s => s.DistrictId == districtId && s.OrganizationId == orgId).OrderBy(s=> s.ZoneName).Select(s => new Dropdown() {text=s.ZoneName,value=s.ZoneId.ToString() }).ToList();
         }
 
+        public IEnumerable<Dropdown> GetZonesWithDistrict(long? districtId, long orgId)
+        {
+            List<Dropdown> data = new List<Dropdown>();
+            data = _salesAndDistribution.Db.Database.SqlQuery<Dropdown>(string.Format(@"Declare @districtId bigint={1}
+Select (Cast(zn.ZoneId as Nvarchar(20))+'#'+Cast(ISNULL(dis.DistrictId,0) as Nvarchar(20))) 'value',(zn.ZoneName+' ['+dis.DistrictName+']') 'text' From tblZone zn
+Left Join tblDistrict dis on zn.DistrictId =dis.DistrictId and zn.OrganizationId = dis.OrganizationId
+Where zn.OrganizationId = {0} and ((@districtId = 0) OR (zn.DistrictId=@districtId))", orgId, districtId??0)).ToList();
+            return data;
+        }
+
         public IEnumerable<Dropdown> GetZoneWithDistrictAndDivision(long orgId)
         {
             List<Dropdown> data = new List<Dropdown>();

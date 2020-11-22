@@ -459,7 +459,7 @@
             e.preventDefault();
             if (validateReq()) {
                 disable("#btnSubmit");
-                var model = { Flag: "Dealer" };
+                var model = { Flag: "Dealer", Remarks: "PO By Dealer"};
                 var details = []; details.length = 0;
                 $.each($("#tblData tbody tr"), function (index, item) {
                     var tds = $(this).children('td');

@@ -57,6 +57,16 @@ Select (Cast(SRID as Nvarchar(20))+'#'+Cast(ISNULL(UserId,0) as Nvarchar(20))) '
             return _salesRepresentativeRepository.GetAll(s => s.SRType == srType && s.OrganizationId == orgId);
         }
 
+        public IEnumerable<Dropdown> GetSRByDistrict(long districtId, long orgId)
+        {
+            return _salesRepresentativeRepository.GetAll(s => s.DistrictId == districtId && s.OrganizationId == orgId).Select(s => new Dropdown() { text = s.FullName + "-" + s.SRType, value = s.SRID.ToString() }).ToList();
+        }
+
+        public IEnumerable<Dropdown> GetSRByZone(long zoneId, long orgId)
+        {
+            return _salesRepresentativeRepository.GetAll(s => s.ZoneId == zoneId && s.OrganizationId == orgId).Select(s => new Dropdown() { text = s.FullName + "-" + s.SRType, value = s.SRID.ToString() }).ToList();
+        }
+
         public bool SaveSalesRepresentative(SalesRepresentativeDTO dto, SRUser sRUser, long userId, long branchId, long orgId)
         {
             SalesRepresentative sr = null;

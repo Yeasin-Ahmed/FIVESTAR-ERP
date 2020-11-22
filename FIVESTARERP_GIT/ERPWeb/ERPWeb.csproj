@@ -826,9 +826,14 @@
     <Content Include="Views\Accounts\JournalList.cshtml" />
     <Content Include="Views\Accounts\_CashVoucherList.cshtml" />
     <Content Include="Views\Accounts\_JournalList.cshtml" />
-    <Content Include="Views\Accounts\GetLadgerList.cshtml" />
-    <Content Include="Views\Accounts\_GetLadgerList.cshtml" />
-    <Content Include="Views\Accounts\GetFinanceYearList.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_dealerRequisitionsForSR.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_dealerRequisitionsDetail.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_unVerifiedDPO.cshtml" />
+    <Content Include="Views\SalesAndDistribution\VerificationOfDPO.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_verifiedDPO.cshtml" />
+    <Content Include="Views\SalesAndDistribution\ApprovalOfDPO.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_approvedDPO.cshtml" />
+    <Content Include="Views\SalesAndDistribution\_unApprovedDPO.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

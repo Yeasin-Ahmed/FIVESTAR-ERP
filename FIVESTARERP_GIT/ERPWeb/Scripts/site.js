@@ -810,7 +810,7 @@ function ajaxValueChecker2(data, url, token) {
 
 
 function consoleLog(log) {
-    //console.log(log);
+    console.log(log);
 }
 
 function alerting(alt) {
