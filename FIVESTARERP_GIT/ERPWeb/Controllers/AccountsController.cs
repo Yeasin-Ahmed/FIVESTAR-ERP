@@ -16,11 +16,13 @@ namespace ERPWeb.Controllers
     {
         private readonly IAccountsHeadBusiness _accountsHeadBusiness;
         private readonly IJournalBusiness _journalBusiness;
+        private readonly IFinanceYearBusiness _financeYearBusiness;
         // GET: Accounts
-        public AccountsController(IAccountsHeadBusiness accountsHeadBusiness, IJournalBusiness journalBusiness)
+        public AccountsController(IAccountsHeadBusiness accountsHeadBusiness, IJournalBusiness journalBusiness, IFinanceYearBusiness financeYearBusiness)
         {
             this._accountsHeadBusiness = accountsHeadBusiness;
             this._journalBusiness = journalBusiness;
+            this._financeYearBusiness = financeYearBusiness;
         }
 
         #region tblAccount
@@ -177,6 +179,35 @@ namespace ERPWeb.Controllers
                 return PartialView("_GetLadgerList", viewModels);
             }
 
+        }
+        #endregion
+
+        #region FinanceYear
+        public ActionResult GetFinanceYearList()
+        {
+            var dto = _financeYearBusiness.GetAllFinanceList(User.OrgId);
+            List<FinanceYearViewModel> viewModels = new List<FinanceYearViewModel>();
+            AutoMapper.Mapper.Map(dto, viewModels);
+            return View( viewModels);
+        }
+        [HttpPost,ValidateJsonAntiForgeryToken]
+        public ActionResult SaveFinanceYear(FinanceYearViewModel financeYearViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    FinanceYearDTO dto = new FinanceYearDTO();
+                    AutoMapper.Mapper.Map(financeYearViewModel, dto);
+                    isSuccess = _financeYearBusiness.SaveYear(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         #endregion
     }

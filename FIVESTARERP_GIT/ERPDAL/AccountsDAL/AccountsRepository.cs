@@ -15,4 +15,8 @@ namespace ERPDAL.AccountsDAL
     {
         public JournalRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
     }
+    public class FinanceYearRepository : AccountsBaseRepository<FinanceYear>
+    {
+        public FinanceYearRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
+    }
 }

@@ -55,7 +55,6 @@ namespace ERPBLL.Accounts
             var ancestorId = string.Empty;
             var accountName = string.Empty;
             string mainAncestorIdfull = "";
-            //long aheadId2 = Convert.ToInt64(accountsHeadDTO.AncestorId);
 
             if (!accountsHeadDTO.IsGroupHead)
             {
@@ -65,21 +64,22 @@ namespace ERPBLL.Accounts
                 ancestorId = data != null ? (string.IsNullOrEmpty(data.AncestorId) ? "0": data.AncestorId) : "0";
                 mainAncestorIdfull= ","+mainHeadId + "," + ancestorId +",";
                 mainAncestorIdfull = mainAncestorIdfull.Replace(",,", ",");
-                accountName = GetAccountName(aheadId, orgId).AccountName;
+                //accountName = GetAccountName(aheadId, orgId).AccountName;
             }
             
 
             Account head = new Account();
             if (accountsHeadDTO.AccountId == 0)
             {
-                if (!accountsHeadDTO.IsGroupHead)
-                {
-                    head.AccountName = accountName+"_"+ accountsHeadDTO.AccountName;
-                }
-                else
-                {
-                    head.AccountName = accountsHeadDTO.AccountName;
-                }
+                //if (!accountsHeadDTO.IsGroupHead)
+                //{
+                //    head.AccountName = accountName+"_"+ accountsHeadDTO.AccountName;
+                //}
+                //else
+                //{
+                //    head.AccountName = accountsHeadDTO.AccountName;
+                //}
+                head.AccountName = accountsHeadDTO.AccountName;
                 head.AccountCode = accountsHeadDTO.AccountCode;
                 head.AncestorId = mainAncestorIdfull;
                 head.IsGroupHead = accountsHeadDTO.IsGroupHead;

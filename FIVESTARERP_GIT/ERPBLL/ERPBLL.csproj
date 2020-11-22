@@ -100,7 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\AccountsHeadBusiness.cs" />
+    <Compile Include="Accounts\FinanceYearBusiness.cs" />
     <Compile Include="Accounts\Interface\IAccountsHeadBusiness.cs" />
+    <Compile Include="Accounts\Interface\IFinanceYearBusiness.cs" />
     <Compile Include="Accounts\Interface\IJournalBusiness.cs" />
     <Compile Include="Accounts\JournalBusiness.cs" />
     <Compile Include="Common\Status.cs" />

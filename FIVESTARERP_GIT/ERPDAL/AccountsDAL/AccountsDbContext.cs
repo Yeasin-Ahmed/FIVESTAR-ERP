@@ -16,5 +16,6 @@ namespace ERPDAL.AccountsDAL
         }
         public DbSet<Account> tblAccount { get; set; }
         public DbSet<Journal> tblJournal { get; set; }
+        public DbSet<FinanceYear> tblFinanceYear { get; set; }
     }
 }

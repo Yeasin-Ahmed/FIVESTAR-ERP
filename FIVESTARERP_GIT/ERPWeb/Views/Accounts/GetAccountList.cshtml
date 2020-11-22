@@ -39,7 +39,6 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 text-sm">
-
                         <table class="table table-bordered table-sm table-striped" id="tblAccountsHead">
                             <thead class="btn-dark">
                                 <tr class="text-center">
@@ -95,7 +94,7 @@
                         <div class="form-group col-md-12">
                             <label for="txtAccountHeadName" class="control-label font-weight-bold">Account Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" name="txtAccountHeadName" value="" id="txtAccountHeadName" class="form-control form-control-sm" />
-                            <span class="error hide required-aHeadName font-weight-bold">Input Accounts Head Name!</span>
+                            <span class="error hide required-aHeadName font-weight-bold">Input Accounts Name!</span>
                             <span class="error hide duplicate-aHeadName font-weight-bold">Already Accounts Head Name Exist!</span>
                         </div>
                     </div>
@@ -176,14 +175,28 @@
             //clearCtrl();
             OpenAHeadModal();
         })
+        function validateAccountForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtAccountHeadName.val()) == "") {
+                $(".required-aHeadName").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(ddlAccountsType.val()) == "") {
+                $(".required-accountsType").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            $(".error").addClass("hide");
-            var data = JSON.stringify({ AccountName: txtAccountHeadName.val(), IsGroupHead: chkGroupHead.is(":checked"), AncestorId: ddlAncestorName.val(), AccountType: ddlAccountsType.val(), Remarks: txtRemarks.val() });
-            console.log("Account Info");
-            //return console.log(data);
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveAccount', data, getToken())).then(function (res, status) {
+            if (validateAccountForm() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ AccountName: txtAccountHeadName.val(), IsGroupHead: chkGroupHead.is(":checked"), AncestorId: ddlAncestorName.val(), AccountType: ddlAccountsType.val(), Remarks: txtRemarks.val() });
+                console.log("Account Info");
+                //return console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveAccount', data, getToken())).then(function (res, status) {
                     console.log(status);
                     console.log(res);
                     if (res == true) {
@@ -197,6 +210,7 @@
                     console.log(err);
                     enable("#btnSubmit");
                 });
+            }
         })
     </script>
 }

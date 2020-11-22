@@ -90,6 +90,14 @@
     <Compile Include="AccountsContextMigrations\202011151035336_Accounts_JournalDate.Designer.cs">
       <DependentUpon>202011151035336_Accounts_JournalDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="AccountsContextMigrations\202011210557038_Accounts_tblFinance.cs" />
+    <Compile Include="AccountsContextMigrations\202011210557038_Accounts_tblFinance.Designer.cs">
+      <DependentUpon>202011210557038_Accounts_tblFinance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountsContextMigrations\202011211137295_Accounts_tblFinanceYear.cs" />
+    <Compile Include="AccountsContextMigrations\202011211137295_Accounts_tblFinanceYear.Designer.cs">
+      <DependentUpon>202011211137295_Accounts_tblFinanceYear.cs</DependentUpon>
+    </Compile>
     <Compile Include="AccountsContextMigrations\Configuration.cs" />
     <Compile Include="AccountsDAL\AccountsBaseRepository.cs" />
     <Compile Include="AccountsDAL\AccountsDbContext.cs" />
@@ -815,6 +823,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AccountsContextMigrations\202011151035336_Accounts_JournalDate.resx">
       <DependentUpon>202011151035336_Accounts_JournalDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsContextMigrations\202011210557038_Accounts_tblFinance.resx">
+      <DependentUpon>202011210557038_Accounts_tblFinance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsContextMigrations\202011211137295_Accounts_tblFinanceYear.resx">
+      <DependentUpon>202011211137295_Accounts_tblFinanceYear.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.resx">
       <DependentUpon>202005310415074_Configuration_DbInitialize.cs</DependentUpon>

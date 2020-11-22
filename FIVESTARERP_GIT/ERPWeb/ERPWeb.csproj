@@ -828,6 +828,7 @@
     <Content Include="Views\Accounts\_JournalList.cshtml" />
     <Content Include="Views\Accounts\GetLadgerList.cshtml" />
     <Content Include="Views\Accounts\_GetLadgerList.cshtml" />
+    <Content Include="Views\Accounts\GetFinanceYearList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

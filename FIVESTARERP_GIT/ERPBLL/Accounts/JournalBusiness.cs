@@ -100,7 +100,7 @@ inner join tblAccount a on j.AccountId=a.AccountId where Flag='Journal' and 1=1{
 
         public bool SaveCreditVouchar(List<JournalDTO> journalDTO, long userId, long orgId)
         {
-            var refnumberCredit = ("Cr-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            var refnumberCredit = ("CCV-" + DateTime.Now.ToString("yy")+"-"+ DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
             var cashId = _accountsHeadBusiness.GetCashHeadId(orgId).AccountId;
             string sDate = journalDTO.FirstOrDefault().JournalDate.ToString();
             DateTime datevalue = (Convert.ToDateTime(sDate.ToString()));
@@ -152,7 +152,7 @@ inner join tblAccount a on j.AccountId=a.AccountId where Flag='Journal' and 1=1{
 
         public bool SaveDebitVouchar(List<JournalDTO> journalDTO, long userId, long orgId)
         {
-            var refnumberDebit = ("Dr-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            var refnumberDebit = ("CDV-" + DateTime.Now.ToString("yy") + "-" + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
             var cashId = _accountsHeadBusiness.GetCashHeadId(orgId).AccountId;
             string sDate = journalDTO.FirstOrDefault().JournalDate.ToString();
             DateTime datevalue = (Convert.ToDateTime(sDate.ToString()));
@@ -206,7 +206,7 @@ inner join tblAccount a on j.AccountId=a.AccountId where Flag='Journal' and 1=1{
 
         public bool SaveJournalVouchar(List<JournalDTO> journalDTO, long userId, long orgId)
         {
-            var refnumber= ("Jv-" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            var refnumber= ("JV-" + DateTime.Now.ToString("yy") + "-" + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")); ;
             string sDate = journalDTO.FirstOrDefault().JournalDate.ToString();
             DateTime datevalue = (Convert.ToDateTime(sDate.ToString()));
 
