@@ -243,6 +243,15 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
                 for (int j = 0; j < reqItemDto[i].Quantity; j++)
                 {
                     itemCount++;
+                    var year = Convert.ToInt32(DateTime.Now.ToString("yy"));
+                    var month = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                    var day = Convert.ToInt32(DateTime.Now.ToString("dd"));
+                    var hour = Convert.ToInt32(DateTime.Now.ToString("hh"));
+                    var min = Convert.ToInt32(DateTime.Now.ToString("mm"));
+                    var sec = Convert.ToInt32(DateTime.Now.ToString("ss"));
+                    var mili = Convert.ToInt32(DateTime.Now.ToString("fffffff"));
+                    var val = (year + month + day + hour + min + sec + mili + j + userId).ToString();
+                    val = val.PadLeft(10, '0');
                     QRCodeTraceDTO qRCode = new QRCodeTraceDTO
                     {
                         ProductionFloorId = reqItemDto[i].FloorId,
@@ -263,7 +272,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
                         ItemTypeName = reqItemDto[i].ItemTypeName,
                         ItemName = reqItemDto[i].ItemName,
                         ProductionFloorName = reqItemDto[i].FloorName,
-                        CodeNo = (prefix + itemCount.ToString()),//reqItemDto[i].ModelName + "-" + tCode + "-" + sl.ToString(),
+                        CodeNo = val,//(prefix + itemCount.ToString()),//reqItemDto[i].ModelName + "-" + tCode + "-" + sl.ToString(),
                         AssemblyId = reqItemDto[i].AssemblyLineId,
                         AssemblyLineName = reqItemDto[i].AssemblyLineName
                     };

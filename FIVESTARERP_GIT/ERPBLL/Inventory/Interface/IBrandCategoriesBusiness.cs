@@ -1,4 +1,5 @@
-﻿using ERPBO.Inventory.DomainModels;
+﻿using ERPBO.Common;
+using ERPBO.Inventory.DomainModels;
 using ERPBO.Inventory.DTOModels;
 using System;
 using System.Collections.Generic;

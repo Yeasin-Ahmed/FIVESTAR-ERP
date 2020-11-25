@@ -231,7 +231,7 @@
         txtProblem.change(function () {
             if ($.trim(txtProblem.val()) !== "") {
                 var prob = jQuery.grep(problemsObj, function (item) {
-                    return item.ProblemDescription === $.trim(txtProblem.val());
+                    return item.CaseId == $.trim(txtProblem.val());
                 })
                 if (prob.length > 0) {
                     if (!fnIsProbExist(prob)) {

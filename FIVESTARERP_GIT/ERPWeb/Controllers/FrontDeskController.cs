@@ -1342,11 +1342,11 @@ namespace ERPWeb.Controllers
         #region Accessories Invoice
         public ActionResult AccessoriesSells( string flag,string fromDate,string toDate, string invoice = "",string mobileNo="", int page=1)
         {
-            if (string.IsNullOrEmpty(flag) && flag=="sell")
+            if (string.IsNullOrEmpty(flag))
             {
                 return View();
             }
-            else
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() == "sell")
             {
                 var dto = _invoiceInfoBusiness.GetSellsAccessories(User.OrgId, User.BranchId, fromDate, toDate,invoice,mobileNo);
                 List<InvoiceInfoViewModel> viewModels = new List<InvoiceInfoViewModel>();
@@ -1357,6 +1357,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_AccessoriesSells",viewModels);
             }
+            return Content("");
         }
         public ActionResult CreateAccessoriesInvoice()
         {

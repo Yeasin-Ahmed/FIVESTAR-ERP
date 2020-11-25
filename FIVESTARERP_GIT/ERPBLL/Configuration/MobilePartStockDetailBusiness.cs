@@ -88,6 +88,7 @@ namespace ERPBLL.Configuration
                 StockDetail.MobilePartStockDetailId = item.MobilePartStockDetailId;
                 StockDetail.MobilePartId = item.MobilePartId;
                 StockDetail.SWarehouseId = item.SWarehouseId;
+                StockDetail.DescriptionId = item.DescriptionId;
                 StockDetail.CostPrice = item.CostPrice;
                 StockDetail.SellPrice = item.SellPrice;
                 StockDetail.Quantity = item.Quantity;
@@ -100,7 +101,8 @@ namespace ERPBLL.Configuration
                 StockDetail.BranchFrom = item.BranchFrom;
                 StockDetail.ReferrenceNumber = item.ReferrenceNumber;
 
-                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(o => o.MobilePartId == item.MobilePartId && o.CostPrice == item.CostPrice).FirstOrDefault();
+                var warehouseInfo = _mobilePartStockInfoBusiness.GetMobilePartStockInfoByModelAndMobilePartsAndCostPrice(item.DescriptionId.Value,item.MobilePartId.Value, item.CostPrice, orgId, branchId);
+                
                 if (warehouseInfo != null)
                 {
                     warehouseInfo.StockInQty += item.Quantity;
@@ -112,6 +114,7 @@ namespace ERPBLL.Configuration
                     MobilePartStockInfo mobilePartStockInfo = new MobilePartStockInfo();
                     mobilePartStockInfo.SWarehouseId = item.SWarehouseId;
                     mobilePartStockInfo.MobilePartId = item.MobilePartId;
+                    mobilePartStockInfo.DescriptionId = item.DescriptionId;
                     mobilePartStockInfo.CostPrice = item.CostPrice;
                     mobilePartStockInfo.SellPrice = item.SellPrice;
                     mobilePartStockInfo.StockInQty = item.Quantity;
@@ -148,7 +151,7 @@ namespace ERPBLL.Configuration
                 StockDetail.StockStatus = StockStatus.StockOut;
                 StockDetail.ReferrenceNumber = item.ReferrenceNumber;
 
-                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoById(orgId, branchId).Where(o => item.SWarehouseId == item.SWarehouseId && o.MobilePartId == item.MobilePartId && o.CostPrice == item.CostPrice).FirstOrDefault();
+                var warehouseInfo = _mobilePartStockInfoBusiness.GetMobilePartStockInfoByModelAndMobilePartsAndCostPrice(item.DescriptionId.Value,item.MobilePartId.Value,item.CostPrice,orgId,branchId);  //_mobilePartStockInfoBusiness.GetAllMobilePartStockInfoById(orgId, branchId).Where(o => item.SWarehouseId == item.SWarehouseId && o.MobilePartId == item.MobilePartId && o.CostPrice == item.CostPrice).FirstOrDefault();
                 warehouseInfo.StockOutQty += item.Quantity;
                 warehouseInfo.UpUserId = userId;
                 mobilePartStockInfoRepository.Update(warehouseInfo);

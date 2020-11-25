@@ -309,7 +309,7 @@ namespace ERPWeb.Controllers
                     RoleId = user.RoleId,
                     RoleName = (_roleBusiness.GetRoleOneById(user.RoleId, user.OrganizationId).RoleName),
                     EntryUser = UserForEachRecord(user.EUserId.Value).UserName,
-                    UpdateUser = (user.UpUserId == null || user.UpUserId == 0) ? "" : UserForEachRecord(user.UpUserId.Value).UserName
+                    UpdateUser = !user.UpUserId.HasValue ? "" : UserForEachRecord(user.UpUserId.Value).UserName
                 }).OrderBy(user => user.UserId).ToList();
                 return PartialView("_GetUsers", appUserViewModels);
             }

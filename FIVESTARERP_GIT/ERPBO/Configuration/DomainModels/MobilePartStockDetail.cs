@@ -24,6 +24,7 @@ namespace ERPBO.Configuration.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
+        public long? DescriptionId { get; set; }
         //
         public long? BranchFrom { get; set; }
         public string ReferrenceNumber { get; set; }

@@ -52,7 +52,6 @@ namespace ERPBLL.Inventory
             string query = string.Empty;
             string param = string.Empty;
 
-            param += string.Format(@" and wsi.OrganizationId={0}", orgId);
             if (warehouseId != null && warehouseId > 0)
             {
                 param += string.Format(@" and wh.Id={0}", warehouseId);
@@ -71,7 +70,7 @@ namespace ERPBLL.Inventory
             }
             if (!string.IsNullOrEmpty(lessOrEq) && lessOrEq.Trim() != "")
             {
-                param += string.Format(@" and (wsi.StockInQty - wsi.StockOutQty)='{0}'", lessOrEq);
+                param += string.Format(@" and (wsi.StockInQty - wsi.StockOutQty)<='{0}'", lessOrEq);
             }
 
             query = string.Format(@"Select wsi.StockInfoId,wh.WarehouseName 'Warehouse',de.DescriptionName 'ModelName',it.ItemName 'ItemType',i.ItemName 'Item',u.UnitSymbol 'Unit',wsi.StockInQty,wsi.StockOutQty,wsi.Remarks
@@ -82,7 +81,7 @@ Left Join tblItemTypes it on wsi.ItemTypeId = it.ItemId
 Left Join tblItems i on wsi.ItemId  = i.ItemId
 Left Join tblUnits u on wsi.UnitId= u.UnitId      
 Left Join [ControlPanel].dbo.tblApplicationUsers au on wsi.EUserId = au.UserId
-Where 1=1 {0}", Utility.ParamChecker(param));
+Where 1=1 and wsi.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
             return query;
         }
     }

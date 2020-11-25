@@ -80,9 +80,9 @@
                                                 <label for="ddlWarehouse" class="control-label font-weight-bold">Warehouse Name</label>
                                                 @Html.DropDownList("ddlWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlWarehouse, "--Select Warehouse--", new { @class = "form-control form-control-sm" })
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-3">
                                                 <label for="ddlModelName" class="control-label font-weight-bold">Model Name</label>
-                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2" })
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="ddlItemType" class="control-label font-weight-bold">ItemType Name</label>
@@ -803,10 +803,12 @@
             var ddlModelNameForFileUpolad = TryParseInt($("#DescriptionId option:selected").val(),0);
             var ddlSupplierNameForFileUpolad = TryParseInt($("#SupplierId option:selected").val(),0);
             var ddlBomItemForFileUpload = $("#BomItemId option:selected").val();
+            var bomType = $("#ddlBomType option:selected").val();
             var formData = new FormData();
             formData.append("DescriptionId", ddlModelNameForFileUpolad);
             formData.append("SupplierId", ddlSupplierNameForFileUpolad);
             formData.append("BomItemId", ddlBomItemForFileUpload);
+            formData.append("BomType", bomType);
             formData.append("FileUpload", excelFile);
             console.log(formData);
             $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res, status) {

@@ -1034,6 +1034,13 @@ namespace ERPWeb.Controllers
             bool isExists = _iQCBusiness.IsDuplicateIQCName(iqcId, User.OrgId, iqcName);
             return Json(isExists);
         }
+
+        [HttpPost]
+        public ActionResult GetCategoriesByBrand(long brandId)
+        {
+            return Json(_brandCategoriesBusiness.GetBrandAndCategories(brandId, User.OrgId).Select(s => new Dropdown() { value = s.CategoryId.ToString(), text = s.CategoryName }).ToList());
+        }
+
         [HttpPost]
         public ActionResult GetBrandsByCategory(long categoryId)
         {

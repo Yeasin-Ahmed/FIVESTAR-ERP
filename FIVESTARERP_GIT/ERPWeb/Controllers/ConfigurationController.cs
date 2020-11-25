@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.ControlPanel.Interface;
+using ERPBLL.Inventory.Interface;
 using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
 using ERPWeb.Filters;
@@ -34,7 +35,10 @@ namespace ERPWeb.Controllers
         private readonly IWorkShopBusiness _workShopBusiness;
         private readonly IRepairBusiness _repairBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness)
+        // Inventory //
+        private readonly IDescriptionBusiness _descriptionBusiness;
+
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -53,9 +57,13 @@ namespace ERPWeb.Controllers
             this._serviceBusiness = serviceBusiness;
             this._workShopBusiness = workShopBusiness;
             this._repairBusiness = repairBusiness;
+
+            #region Inventory
+            this._descriptionBusiness = descriptionBusiness;
+            #endregion
         }
         #region tblAccessories
-        public ActionResult AccessoriesList(string flag,string name,int page=1)
+        public ActionResult AccessoriesList(string flag, string name, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
@@ -86,7 +94,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(accessoriesDTO, viewModel);
                 return PartialView("_AccessoriesList", viewModel);
             }
-            else if(!string.IsNullOrEmpty(flag) && flag == "symptom")
+            else if (!string.IsNullOrEmpty(flag) && flag == "symptom")
             {
                 IEnumerable<ClientProblemDTO> clientDTO = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.ProblemName.Contains(name))).Select(client => new ClientProblemDTO
                 {
@@ -108,7 +116,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(clientDTO, viewModel);
                 return View("_HandsetSymptom", viewModel);
             }
-            else if(!string.IsNullOrEmpty(flag) && flag == "parts")
+            else if (!string.IsNullOrEmpty(flag) && flag == "parts")
             {
                 IEnumerable<MobilePartDTO> mobilePartDTO = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.MobilePartName.Contains(name) || s.MobilePartCode.Contains(name))).Select(part => new MobilePartDTO
                 {
@@ -129,9 +137,9 @@ namespace ERPWeb.Controllers
                 mobilePartDTO = mobilePartDTO.Skip((page - 1) * 10).Take(10).ToList();
                 //-----------------//
                 AutoMapper.Mapper.Map(mobilePartDTO, viewModel);
-                return PartialView("_MobileParts",viewModel);
+                return PartialView("_MobileParts", viewModel);
             }
-            else if(!string.IsNullOrEmpty(flag) && flag == "fault")
+            else if (!string.IsNullOrEmpty(flag) && flag == "fault")
             {
                 IEnumerable<FaultDTO> faultDTO = _faultBusiness.GetAllFaultByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.FaultName.Contains(name) || s.FaultCode.Contains(name))).Select(fault => new FaultDTO
                 {
@@ -152,9 +160,9 @@ namespace ERPWeb.Controllers
                 faultDTO = faultDTO.Skip((page - 1) * 10).Take(10).ToList();
                 //-----------------//
                 AutoMapper.Mapper.Map(faultDTO, viewModel);
-                return PartialView("_Fault",viewModel);
+                return PartialView("_Fault", viewModel);
             }
-            else if(!string.IsNullOrEmpty(flag) && flag == "services")
+            else if (!string.IsNullOrEmpty(flag) && flag == "services")
             {
                 IEnumerable<ServiceDTO> serviceDTO = _serviceBusiness.GetAllServiceByOrgId(User.OrgId).Where(s => (name == "" || name == null) || (s.ServiceName.Contains(name) || s.ServiceCode.Contains(name))).Select(services => new ServiceDTO
                 {
@@ -175,9 +183,9 @@ namespace ERPWeb.Controllers
                 serviceDTO = serviceDTO.Skip((page - 1) * 10).Take(10).ToList();
                 //-----------------//
                 AutoMapper.Mapper.Map(serviceDTO, viewModel);
-                return PartialView("_Services",viewModel);
+                return PartialView("_Services", viewModel);
             }
-            else if(!string.IsNullOrEmpty(flag) && flag == "repair")
+            else if (!string.IsNullOrEmpty(flag) && flag == "repair")
             {
                 IEnumerable<RepairDTO> repairDTO = _repairBusiness.GetAllRepairByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.RepairName.Contains(name) || r.RepairCode.Contains(name))).Select(repair => new RepairDTO
                 {
@@ -359,7 +367,7 @@ namespace ERPWeb.Controllers
         #region tblCustomers
         public ActionResult CustomerList()
         {
-            IEnumerable<CustomerDTO> customerDTO = _customerBusiness.GetAllCustomerByOrgId(User.OrgId,User.BranchId).Select(cus => new CustomerDTO
+            IEnumerable<CustomerDTO> customerDTO = _customerBusiness.GetAllCustomerByOrgId(User.OrgId, User.BranchId).Select(cus => new CustomerDTO
             {
                 CustomerId = cus.CustomerId,
                 CustomerName = cus.CustomerName,
@@ -387,7 +395,7 @@ namespace ERPWeb.Controllers
                 {
                     CustomerDTO dto = new CustomerDTO();
                     AutoMapper.Mapper.Map(customerViewModel, dto);
-                    isSuccess = _customerBusiness.SaveCustomer(dto, User.UserId, User.OrgId,User.BranchId);
+                    isSuccess = _customerBusiness.SaveCustomer(dto, User.UserId, User.OrgId, User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -405,7 +413,7 @@ namespace ERPWeb.Controllers
             {
                 try
                 {
-                    isSuccess = _customerBusiness.DeleteCustomer(id, User.OrgId,User.BranchId);
+                    isSuccess = _customerBusiness.DeleteCustomer(id, User.OrgId, User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -419,7 +427,7 @@ namespace ERPWeb.Controllers
         #region T.S.
         public ActionResult TechnicalServiceEngList()
         {
-            IEnumerable<TechnicalServiceEngDTO> engDTO = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId,User.BranchId).Select(ts => new TechnicalServiceEngDTO
+            IEnumerable<TechnicalServiceEngDTO> engDTO = _technicalServiceBusiness.GetAllTechnicalServiceByOrgId(User.OrgId, User.BranchId).Select(ts => new TechnicalServiceEngDTO
             {
                 EngId = ts.EngId,
                 Name = ts.Name,
@@ -449,7 +457,7 @@ namespace ERPWeb.Controllers
                 {
                     TechnicalServiceEngDTO dto = new TechnicalServiceEngDTO();
                     AutoMapper.Mapper.Map(technicalServiceEngViewModel, dto);
-                    isSuccess = _technicalServiceBusiness.SaveTechnicalService(dto, User.UserId, User.OrgId,User.BranchId);
+                    isSuccess = _technicalServiceBusiness.SaveTechnicalService(dto, User.UserId, User.OrgId, User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -466,7 +474,7 @@ namespace ERPWeb.Controllers
             {
                 try
                 {
-                    isSuccess = _technicalServiceBusiness.DeleteTechnicalServiceEng(id, User.OrgId,User.BranchId);
+                    isSuccess = _technicalServiceBusiness.DeleteTechnicalServiceEng(id, User.OrgId, User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -602,6 +610,8 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
+            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+
             return View();
         }
 
@@ -611,26 +621,30 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
+            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+
             return View();
         }
-        public ActionResult MobilePartStockInfoPartialList(long? SwerehouseId, long? MobilePartId, string lessOrEq,int page=1)
+        public ActionResult MobilePartStockInfoPartialList(long? SwerehouseId, long? MobilePartId,long? modelId, string lessOrEq, int page = 1)
         {
-            IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(info => new MobilePartStockInfoDTO
-            {
-                MobilePartStockInfoId = info.MobilePartStockInfoId,
-                SWarehouseId = info.SWarehouseId,
-                ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
-                MobilePartId = info.MobilePartId,
-                MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
-                PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartCode),
-                CostPrice =info.CostPrice,
-                SellPrice=info.SellPrice,
-                StockInQty = info.StockInQty,
-                StockOutQty = info.StockOutQty,
-                Remarks = info.Remarks,
-                OrganizationId = info.OrganizationId
-            }).AsEnumerable();
-            partStockInfoDTO = partStockInfoDTO.Where(s => (SwerehouseId == null || SwerehouseId == 0 || s.SWarehouseId == SwerehouseId) && (MobilePartId == null || MobilePartId == 0 || s.MobilePartId == MobilePartId) && (string.IsNullOrEmpty(lessOrEq) || (s.StockInQty - s.StockOutQty) <= Convert.ToInt32(lessOrEq))).ToList();
+            //IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(info => new MobilePartStockInfoDTO
+            //{
+            //    MobilePartStockInfoId = info.MobilePartStockInfoId,
+            //    SWarehouseId = info.SWarehouseId,
+            //    ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+            //    MobilePartId = info.MobilePartId,
+            //    MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartName),
+            //    PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(info.MobilePartId.Value, User.OrgId).MobilePartCode),
+            //    CostPrice = info.CostPrice,
+            //    SellPrice = info.SellPrice,
+            //    StockInQty = info.StockInQty,
+            //    StockOutQty = info.StockOutQty,
+            //    Remarks = info.Remarks,
+            //    OrganizationId = info.OrganizationId
+            //}).AsEnumerable();
+            //partStockInfoDTO = partStockInfoDTO.Where(s => (SwerehouseId == null || SwerehouseId == 0 || s.SWarehouseId == SwerehouseId) && (MobilePartId == null || MobilePartId == 0 || s.MobilePartId == MobilePartId) && (string.IsNullOrEmpty(lessOrEq) || (s.StockInQty - s.StockOutQty) <= Convert.ToInt32(lessOrEq))).ToList();
+
+            IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetMobilePartsStockInformations(SwerehouseId ?? 0,  modelId ?? 0,MobilePartId ?? 0, lessOrEq, User.OrgId);
 
             List<MobilePartStockInfoViewModel> warehouseStockInfoViews = new List<MobilePartStockInfoViewModel>();
             // Pagination //
@@ -662,12 +676,12 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
 
-        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate,int page=1)
+        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
-            
+
                 ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
                 ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
@@ -687,15 +701,15 @@ namespace ERPWeb.Controllers
                     MobilePartId = detail.MobilePartId,
                     MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
                     PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartCode),
-                    CostPrice =detail.CostPrice,
-                    SellPrice=detail.SellPrice,
+                    CostPrice = detail.CostPrice,
+                    SellPrice = detail.SellPrice,
                     Quantity = detail.Quantity,
                     StockStatus = detail.StockStatus,
                     Remarks = detail.Remarks,
                     EUserId = detail.EUserId,
                     EntryDate = detail.EntryDate,
 
-                }).OrderByDescending(e=>e.EntryDate).AsEnumerable();
+                }).OrderByDescending(e => e.EntryDate).AsEnumerable();
                 // Search start from here..
                 partStockDetailDTO = partStockDetailDTO.Where(f => 1 == 1 &&
                          (swarehouseId == null || swarehouseId <= 0 || f.SWarehouseId == swarehouseId) &&
@@ -727,7 +741,7 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveReturnPartsStockIn(List<MobilePartStockDetailViewModel> models,long returnInfoId,string status)
+        public ActionResult SaveReturnPartsStockIn(List<MobilePartStockDetailViewModel> models, long returnInfoId, string status)
         {
             bool isSuccess = false;
             if (ModelState.IsValid && models.Count > 0)
@@ -736,7 +750,7 @@ namespace ERPWeb.Controllers
                 {
                     List<MobilePartStockDetailDTO> dtos = new List<MobilePartStockDetailDTO>();
                     AutoMapper.Mapper.Map(models, dtos);
-                    isSuccess = _mobilePartStockDetailBusiness.SaveReturnPartsStockIn(dtos, returnInfoId, status, User.UserId, User.OrgId,User.BranchId);
+                    isSuccess = _mobilePartStockDetailBusiness.SaveReturnPartsStockIn(dtos, returnInfoId, status, User.UserId, User.OrgId, User.BranchId);
                 }
                 catch (Exception ex)
                 {
@@ -824,7 +838,7 @@ namespace ERPWeb.Controllers
                 SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(trans.WarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                 Remarks = trans.Remarks,
                 OrganizationId = trans.OrganizationId,
-                StateStatus=trans.StateStatus
+                StateStatus = trans.StateStatus
             }).AsEnumerable();
 
             transferInfoDTO = transferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.SWarehouseId == sWerehouseId)).ToList();
@@ -842,7 +856,7 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
-            ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId,User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
+            ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
 
             //ViewBag.ddlSellPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
 
@@ -870,8 +884,8 @@ namespace ERPWeb.Controllers
                 TransferDetailId = details.TransferDetailId,
                 PartsId = details.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(details.PartsId.Value, User.OrgId).MobilePartName),
-                CostPrice=details.CostPrice,
-                SellPrice=details.SellPrice,
+                CostPrice = details.CostPrice,
+                SellPrice = details.SellPrice,
                 Quantity = details.Quantity,
                 Remarks = details.Remarks,
                 OrganizationId = details.OrganizationId,
@@ -931,8 +945,8 @@ namespace ERPWeb.Controllers
                 TransferDetailId = details.TransferDetailId,
                 PartsId = details.PartsId,
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(details.PartsId.Value, User.OrgId).MobilePartName),
-                CostPrice=details.CostPrice,
-                SellPrice=details.SellPrice,
+                CostPrice = details.CostPrice,
+                SellPrice = details.SellPrice,
                 Quantity = details.Quantity,
                 Remarks = details.Remarks,
                 OrganizationId = details.OrganizationId,
@@ -1078,12 +1092,12 @@ namespace ERPWeb.Controllers
             IEnumerable<WorkShopDTO> workShopDTO = _workShopBusiness.GetAllWorkShopByOrgId(User.OrgId, User.BranchId).Select(shop => new WorkShopDTO
             {
                 WorkShopId = shop.WorkShopId,
-                WorkShopName=shop.WorkShopName,
-                Remarks=shop.Remarks,
-                OrganizationId=shop.OrganizationId,
-                BranchId=shop.BranchId,
-                EUserId=shop.EUserId,
-                EntryDate=shop.EntryDate
+                WorkShopName = shop.WorkShopName,
+                Remarks = shop.Remarks,
+                OrganizationId = shop.OrganizationId,
+                BranchId = shop.BranchId,
+                EUserId = shop.EUserId,
+                EntryDate = shop.EntryDate
             }).ToList();
             List<WorkShopViewModel> workShopViewModels = new List<WorkShopViewModel>();
             AutoMapper.Mapper.Map(workShopDTO, workShopViewModels);
@@ -1187,7 +1201,7 @@ namespace ERPWeb.Controllers
         #region Reports
 
         [HttpGet]
-        public ActionResult GetCurrentStockReport(string flag,int page=1)
+        public ActionResult GetCurrentStockReport(string flag, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {

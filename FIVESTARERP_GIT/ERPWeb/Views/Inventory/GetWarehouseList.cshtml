@@ -790,12 +790,17 @@
                             <span class="error hide req-endPoint">Input End Point!</span>
                         </div>
                         <div class="form-group col-md-6">
+                            <label for="ddlModelBrand" class="control-label font-weight-bold">Brand</label>
+                            @Html.DropDownList("ddlModelBrand", (IEnumerable<SelectListItem>)ViewBag.ddlBrand,"---Select Brand---", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide req-modelBrand">Input Category!</span>
+                        </div>
+                        <div class="form-group col-md-6">
                             <label for="ddlModelCategories" class="control-label font-weight-bold">Category</label>
-                            @Html.DropDownList("ddlModelCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, "---Select Category---", new { @class = "form-control form-control-sm" })
+                            @*@Html.DropDownList("ddlModelCategories", (IEnumerable<SelectListItem>)ViewBag.ddlBrandCategory, "---Select Category---", new { @class = "form-control form-control-sm" })*@
+                            <select id="ddlModelCategories" class = "form-control form-control-sm">
+                                <option value="">---Select Category---</option>
+                            </select>
                             <span class="error hide req-modelCategory">Input Category!</span>
-                            <div class="hide">
-                                @Html.DropDownList("ddlModelBrand", (IEnumerable<SelectListItem>)ViewBag.ddlBrand, new { @class = "form-control form-control-sm select2 select2-danger" })
-                            </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ddlColors" class="control-label font-weight-bold">Color</label>
@@ -1199,6 +1204,7 @@
             e.preventDefault();
             OpenDescriptionModel();
         })
+
         function OpenDescriptionModel() {
             clearCtrlDescription();
             $("#spanModalHeadDescription").text('Add New Model');
@@ -1206,6 +1212,15 @@
             $(".error").addClass('hide');
             $("#modalDescription").modal("show");
         }
+
+        var modelCategory = "";
+        ddlModelBrand.change(function () {
+            clearDropdown("ddlModelCategories");
+            if (TryParseInt(ddlModelBrand.val(), 0) > 0) {
+                var data = JSON.stringify({ brandId:ddlModelBrand.val()});
+                LoadDropDown4("/Common/GetCategoriesByBrand", type.post, ddlModelCategories, data, modelCategory);
+            }
+        })
 
         function clearCtrlDescription() {
             txtModel.val('');
@@ -1218,6 +1233,9 @@
             txtRemarksDescription.val('');
             ddlModelCategories.val('');
             chkStatestatusDescription.prop("checked", false);
+            ddlModelBrand.val("");
+            ddlModelBrand.trigger("change");
+            modelCategory = "";
         }
 
         searchByDescription.keyup(function () {
@@ -1246,13 +1264,17 @@
             console.log(td);
             chkStatestatusDescription.prop("checked", false);
 
+            
+
             if (td.toLowerCase() === 'active') {
                 chkStatestatusDescription.prop("checked", true);
             }
-
-            if (TryParseInt(tds.eq(10).attr("data-val"), 0) > 0) {
-                ddlModelCategories.val(tds.eq(10).attr("data-val"));
-            }
+            modelCategory = TryParseInt(tds.eq(10).attr("data-val"), 0) > 0 ? (TryParseInt(tds.eq(10).attr("data-val"), 0)).toString() : "";
+            ddlModelBrand.val(tds.eq(9).attr("data-val"))
+            ddlModelBrand.trigger("change");
+            //if (TryParseInt(tds.eq(10).attr("data-val"), 0) > 0) {
+            //    ddlModelCategories.val(tds.eq(10).attr("data-val"));
+            //}
         })
 
         function validateDescriptionTAC() {
@@ -1278,6 +1300,7 @@
                 //}
             }
             if (TryParseInt(ddlModelBrand.val(), 0) <= 0) {
+                $(".req-modelBrand").removeClass('hide');
                 isValid = false;
             }
             if (TryParseInt(ddlModelCategories.val(), 0) <= 0) {

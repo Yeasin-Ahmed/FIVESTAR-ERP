@@ -736,6 +736,7 @@
                     if (res === true) {
                         toastrSuccessAlert(execuStatus.successSave);
                         //location.reload();
+                        $("#modalAssembly").modal("toggle");
                         loadAssemblyDataTable();
                     }
                     else {
@@ -828,6 +829,7 @@
                         toastrSuccessAlert(execuStatus.successSave);
                         //location.reload();
                         loadQCDataTable();
+                        $("#modalQC").modal("toggle");
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -916,7 +918,7 @@
                     console.log(status);
                     console.log(res);
                     if (res === true) {
-
+                        $("#modalRl").modal("toggle");
                         toastrSuccessAlert(execuStatus.successSave);
                         //location.reload();
                         loadRepairDataTable();
@@ -1008,6 +1010,7 @@
                     console.log(status);
                     console.log(res);
                     if (res === true) {
+                        $("#modalPl").modal("toggle");
                         toastrSuccessAlert(execuStatus.successSave);
                         loadPackagingDataTable();
                     }

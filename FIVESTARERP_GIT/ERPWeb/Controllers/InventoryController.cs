@@ -2466,18 +2466,17 @@ namespace ERPWeb.Controllers
                         List<ItemPreparationDetailDTO> itemPreparationDetails = new List<ItemPreparationDetailDTO>();
                         var isItemPreparationExist = false;
 
-
                         if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() != "")
                         {
                             string[] bomKeys = models.BomItemId.Split('#');
-                            isItemPreparationExist = _itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(ItemPreparationType.Production, models.DescriptionId.Value, Utility.TryParseInt(bomKeys[0]), User.OrgId);
+                            isItemPreparationExist = _itemPreparationInfoBusiness.IsItemPreparationExistWithThistype(models.BomType, models.DescriptionId.Value, Utility.TryParseInt(bomKeys[0]), User.OrgId);
                             if (!isItemPreparationExist)
                             {
                                 itemPreparationInfo.DescriptionId = models.DescriptionId.Value;
                                 itemPreparationInfo.WarehouseId = Utility.TryParseInt(bomKeys[2]);
                                 itemPreparationInfo.ItemTypeId = Utility.TryParseInt(bomKeys[1]);
                                 itemPreparationInfo.ItemId = Utility.TryParseInt(bomKeys[0]);
-                                itemPreparationInfo.PreparationType = ItemPreparationType.Production;
+                                itemPreparationInfo.PreparationType = models.BomType;
                                 itemPreparationInfo.OrganizationId = User.OrgId;
                                 itemPreparationInfo.UnitId = _itemBusiness.GetItemById(itemPreparationInfo.ItemId, User.OrgId).UnitId;
                             }
@@ -2498,11 +2497,12 @@ namespace ERPWeb.Controllers
                             }
                             if (!string.IsNullOrEmpty(models.BomItemId) && models.BomItemId.Trim() != "" && !isItemPreparationExist && item.ConsumptionQty.HasValue && item.ConsumptionQty.Value > 0)
                             {
+                                var values = dbValues.FirstOrDefault(s => s.ItemId == item.ItemId);
                                 ItemPreparationDetailDTO itemPreparationDetail = new ItemPreparationDetailDTO()
                                 {
                                     ItemId = item.ItemId.Value,
-                                    ItemTypeId = item.ItemTypeId.Value,
-                                    WarehouseId = item.WarehouseId.Value,
+                                    ItemTypeId = values.ItemTypeId.Value,
+                                    WarehouseId = values.WarehouseId.Value,
                                     Quantity = item.ConsumptionQty.Value,
                                     UnitId = item.UnitId.Value
                                 };

@@ -41,6 +41,14 @@ namespace ERPBLL.Configuration
             return mobilePartStockInfoRepository.GetOneByOrg(info =>info.SWarehouseId==warehouseId && info.MobilePartId==partsId && info.CostPrice == cprice && info.OrganizationId == orgId && info.BranchId == branchId);
         }
 
+        public MobilePartStockInfo GetMobilePartStockInfoByModelAndMobilePartsAndCostPrice(long modelId, long mobilePartsId,double costprice, long orgId, long branchId)
+        {
+            var data = mobilePartStockInfoRepository.GetOneByOrg(info => info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId == modelId && info.MobilePartId == mobilePartsId && info.CostPrice ==costprice);
+            return data;
+        }
+
+
+
         public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoByOrgId(long orgId,long branchId)
         {
             var  data = mobilePartStockInfoRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId).ToList();
@@ -77,6 +85,40 @@ group by MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.Mob
 
 ", Utility.ParamChecker(param));
             return query;
+        }
+
+        public IEnumerable<MobilePartStockInfoDTO> GetMobilePartsStockInformations(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if(warehouseId != null && warehouseId.Value > 0)
+            {
+                param += string.Format(@" and stock.SWarehouseId={0}", warehouseId);
+            }
+            if (modelId != null && modelId.Value > 0)
+            {
+                param += string.Format(@" and stock.DescriptionId={0}", modelId);
+            }
+            if (partsId != null && partsId.Value > 0)
+            {
+                param += string.Format(@" and stock.MobilePartId={0}", partsId);
+            }
+            if (!string.IsNullOrEmpty(lessOrEq) && lessOrEq.Trim() != "")
+            {
+                param += string.Format(@" and (stock.StockInQty - stock.StockOutQty)<={0}", lessOrEq);
+            }
+
+            query = string.Format(@"Select stock.MobilePartStockInfoId,stock.SWarehouseId,w.ServicesWarehouseName,stock.MobilePartId
+,parts.MobilePartName,parts.MobilePartCode 'PartsCode',stock.CostPrice,stock.SellPrice,stock.StockInQty
+,stock.StockOutQty,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName' 
+From tblMobilePartStockInfo stock
+Left Join tblServiceWarehouses w on stock.SWarehouseId = w.SWarehouseId and stock.OrganizationId =w.OrganizationId
+Left Join tblMobileParts parts on stock.MobilePartId = parts.MobilePartId and stock.OrganizationId =parts.OrganizationId
+Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
+Where 1=1 and stock.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
+
+            return _configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(query).ToList();
         }
     }
 }

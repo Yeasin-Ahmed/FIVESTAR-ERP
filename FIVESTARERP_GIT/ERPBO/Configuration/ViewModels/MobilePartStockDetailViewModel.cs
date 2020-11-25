@@ -22,7 +22,7 @@ namespace ERPBO.Configuration.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-
+        public long? DescriptionId { get; set; }
         //Custom p
         [StringLength(100)]
         public string MobilePartName { get; set; }
@@ -30,6 +30,7 @@ namespace ERPBO.Configuration.ViewModels
         public string ServicesWarehouseName { get; set; }
         public long? BranchFrom { get; set; }
         public string ReferrenceNumber { get; set; }
+        public string ModelName { get; set; }
 
         //
         public double CostPrice { get; set; }
