@@ -611,6 +611,7 @@
                     console.log(res);
                     if (res == true) {
                         toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalLine").modal("toggle");
                         loadFloorDataTable();
                         //location.reload();
                     }

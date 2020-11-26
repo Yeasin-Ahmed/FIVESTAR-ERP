@@ -1328,7 +1328,11 @@
                         txtEndPoint.val('');
                         $("#modalDescription").modal("toggle");
                         toastrSuccessAlert(execuStatus.successSave);
-                        LoadDescriptionDataTable();
+                        setInterval(function () {
+                            LoadDescriptionDataTable();
+                            LoadItemDataTable();
+                        },1000)
+                       
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);

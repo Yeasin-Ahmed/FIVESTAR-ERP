@@ -197,7 +197,7 @@ namespace ERPWeb.Controllers
                     Text = s.ColorName
                 }).ToList();
 
-                ViewBag.ddlBrand = new SelectList(_brandBusiness.GetClientMobileBrand("Five Star", User.OrgId), "BrandId", "BrandName");
+                ViewBag.ddlBrand = new SelectList(_brandBusiness.GetBrands(User.OrgId), "BrandId", "BrandName");
                 var clientBrand = _brandBusiness.GetClientMobileBrand("Five Star", User.OrgId).FirstOrDefault();
                 var clientBrandId = clientBrand == null ? 0 : clientBrand.BrandId;
                 ViewBag.ddlBrandCategory = new SelectList(_brandCategoriesBusiness.GetBrandAndCategories(clientBrandId, User.OrgId), "CategoryId", "CategoryName");

@@ -815,7 +815,6 @@
     <Content Include="Views\SalesAndDistribution\_invBrand.cshtml" />
     <Content Include="Views\SalesAndDistribution\_invColor.cshtml" />
     <Content Include="Views\SalesAndDistribution\_invModel.cshtml" />
-    <Content Include="Views\Accounts\GetAccountsHeadList.cshtml" />
     <Content Include="Views\Inventory\_handSetStock.cshtml" />
     <Content Include="Views\SalesAndDistribution\_modelColorStock.cshtml" />
     <Content Include="Views\SalesAndDistribution\DealerOperations.cshtml" />

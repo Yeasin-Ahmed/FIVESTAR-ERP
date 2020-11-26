@@ -64,7 +64,7 @@ namespace ERPBLL.Production
             return this._productionDb.Db.Database.SqlQuery<Dropdown>(string.Format(@"Select (pac.PackagingLineName+' ['+pl.LineNumber+']') 'text'
 , Cast(pac.PackagingLineId as Nvarchar(50))+'#'+Cast(pl.LineId as Nvarchar(50)) 'value'
 From [Production].dbo.tblPackagingLine pac
-Inner Join  [Production].dbo.tblProductionLines pl on pl.LineId = pac.PackagingLineId
+Inner Join  [Production].dbo.tblProductionLines pl on pl.LineId = pac.ProductionLineId
 Where 1=1 and pac.OrganizationId={0}", orgId)).ToList();
         }
     }
