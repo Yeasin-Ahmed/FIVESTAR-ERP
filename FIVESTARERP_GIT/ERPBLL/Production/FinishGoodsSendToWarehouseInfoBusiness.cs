@@ -188,8 +188,8 @@ namespace ERPBLL.Production
                 {
                     DescriptionId = dto.DescriptionId,
                     WarehouseId = dto.WarehouseId,
-                    PackagingLineId = dto.PackagingLineId,
-                    LineId = dto.LineId,
+                    PackagingLineId = qrCodeInDb.FirstOrDefault().PackagingLineId.Value,
+                    LineId = qrCodeInDb.FirstOrDefault().ProductionFloorId.Value,
                     TotalQty = qrCodeInDb.Count(),
                     CartoonNo = dto.CartoonNo,
                     StateStatus = FinishGoodsSendStatus.Send,

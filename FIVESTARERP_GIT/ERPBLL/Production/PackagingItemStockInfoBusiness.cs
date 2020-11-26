@@ -74,7 +74,7 @@ namespace ERPBLL.Production
             query = string.Format(@"Select pis.PItemStockInfoId,pl.LineNumber 'ProductionFloorName', pis.PackagingLineId,pac.PackagingLineName,
 pis.DescriptionId,de.DescriptionName 'ModelName',pis.WarehouseId,w.WarehouseName,pis.ItemTypeId,it.ItemName 'ItemTypeName',pis.ItemId,i.ItemName,pis.Quantity,pis.TransferQty
 From [Production].dbo.tblPackagignItemStockInfo pis
-Inner Join [Production].dbo.tblProductionLines pl on pis.PackagingLineId = pl.LineId
+Inner Join [Production].dbo.tblProductionLines pl on pis.ProductionFloorId = pl.LineId
 Left Join [Production].dbo.tblPackagingLine pac on pis.PackagingLineId = pac.PackagingLineId
 Left Join [Inventory].dbo.tblDescriptions de on pis.DescriptionId = de.DescriptionId
 Left Join [Inventory].dbo.tblWarehouses w on pis.WarehouseId = w.Id
