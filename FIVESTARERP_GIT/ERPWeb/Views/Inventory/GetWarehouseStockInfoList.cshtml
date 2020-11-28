@@ -799,6 +799,7 @@
 
         $("#btnExcelSubmit").click(function (e) {
             e.preventDefault();
+            disable("#btnExcelSubmit");
             var excelFile = $(".FileUpload").prop('files')[0];
             var ddlModelNameForFileUpolad = TryParseInt($("#DescriptionId option:selected").val(),0);
             var ddlSupplierNameForFileUpolad = TryParseInt($("#SupplierId option:selected").val(),0);
@@ -824,11 +825,13 @@
                     setTimeout(function () {
                         LoadDataTable();
                         @* redirectPage('@Url.Action("GetWarehouseStockInfoList")');*@
-                        }, 1500);
+                    }, 1500);
+                    enable("#btnExcelSubmit");
                 }
 
                 else {
                     toastrErrorAlert(execuStatus.fail);
+                    enable("#btnExcelSubmit");
                     if (res.text != '' && res.text != null) {
                         toastr.info(res.text).fadeOut(10000);
                     }

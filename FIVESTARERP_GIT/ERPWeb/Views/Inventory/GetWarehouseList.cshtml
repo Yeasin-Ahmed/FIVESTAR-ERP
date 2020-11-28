@@ -791,14 +791,14 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ddlModelBrand" class="control-label font-weight-bold">Brand</label>
-                            @Html.DropDownList("ddlModelBrand", (IEnumerable<SelectListItem>)ViewBag.ddlBrand,"---Select Brand---", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            @*@Html.DropDownList("ddlModelBrand", (IEnumerable<SelectListItem>)ViewBag.ddlBrand, "---Select Brand---", new { @class = "form-control form-control-sm select2 select2-danger" })*@
+                            <select id="ddlModelBrand" class="form-control form-control-sm select2 select2-danger"></select>
                             <span class="error hide req-modelBrand">Input Category!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ddlModelCategories" class="control-label font-weight-bold">Category</label>
                             @*@Html.DropDownList("ddlModelCategories", (IEnumerable<SelectListItem>)ViewBag.ddlBrandCategory, "---Select Category---", new { @class = "form-control form-control-sm" })*@
-                            <select id="ddlModelCategories" class = "form-control form-control-sm">
-                                <option value="">---Select Category---</option>
+                            <select id="ddlModelCategories" class = "form-control form-control-sm select2 select2-danger">
                             </select>
                             <span class="error hide req-modelCategory">Input Category!</span>
                         </div>
@@ -922,7 +922,9 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            @Html.DropDownList("ddlBrandCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })
+                            @*@Html.DropDownList("ddlBrandCategories", (IEnumerable<SelectListItem>)ViewBag.ddlCategories, null, new { @class = "form-control form-control-sm js-example-placeholder-multiple js-states form-control", @multiple = "multiple" })*@
+                            <select id="ddlBrandCategories" class="form-control form-control-sm select2 select2-danger" , multiple="multiple"></select>
+                            <span class="error hide req-category">Input Category!</span>
                         </div>
                     </div>
                 </form>
@@ -1065,6 +1067,19 @@
         var hdfIQCId = $("#hdfIQCId");
 
         $(document).ready(function () {
+
+            //Nishad
+            LoadDropDown('/Common/GetCategories', type.post, ddlBrandCategories, null);
+            $("#ddlBrandCategories").attr("data-placeholder", "Select Categories");
+
+            LoadDropDown('/Common/GetBrands', type.post, ddlModelBrand, null);
+            $("#ddlModelBrand").attr("data-placeholder", "Select Brand");
+
+            $("#ddlModelCategories").attr("data-placeholder", "Select Category");
+
+            LoadDropDown('/Common/GetColors', type.post, ddlColors, null);
+            $("#ddlColors").attr("data-placeholder", "Select Colors");
+
             $('.select2').select2();
 
             //Initialize Select2 Elements
@@ -1072,10 +1087,10 @@
                 theme: 'bootstrap4'
             });
 
-            $(".js-example-placeholder-multiple").select2({
-                placeholder: "Select Categories"
-            });
-            LoadDropDown('/Common/GetColors', type.post, ddlColors, null);
+            //$(".js-example-placeholder-multiple").select2({
+            //    placeholder: "Select Categories"
+            //});
+
             LoadDataInitializer();
         })
 
@@ -1215,14 +1230,14 @@
 
         var modelCategory = "";
         ddlModelBrand.change(function () {
-            clearDropdown("ddlModelCategories");
+            clearDropdown2("ddlModelCategories");
             if (TryParseInt(ddlModelBrand.val(), 0) > 0) {
-                var data = JSON.stringify({ brandId:ddlModelBrand.val()});
-                LoadDropDown4("/Common/GetCategoriesByBrand", type.post, ddlModelCategories, data, modelCategory);
+                LoadDropDown4('/Common/GetCategoriesByBrand', type.post, ddlModelCategories, JSON.stringify({ brandId: TryParseInt(ddlModelBrand.val(), 0) }), modelCategory);
             }
         })
 
         function clearCtrlDescription() {
+            clearDropdown2("ddlModelCategories");
             txtModel.val('');
             hdfDescriptionId.val('0');
             txtTACNo.val('');
@@ -1233,6 +1248,8 @@
             txtRemarksDescription.val('');
             ddlModelCategories.val('');
             chkStatestatusDescription.prop("checked", false);
+            ddlModelCategories.val('');
+            ddlModelCategories.trigger("change");
             ddlModelBrand.val("");
             ddlModelBrand.trigger("change");
             modelCategory = "";
@@ -1272,6 +1289,10 @@
             modelCategory = TryParseInt(tds.eq(10).attr("data-val"), 0) > 0 ? (TryParseInt(tds.eq(10).attr("data-val"), 0)).toString() : "";
             ddlModelBrand.val(tds.eq(9).attr("data-val"))
             ddlModelBrand.trigger("change");
+            //if (TryParseInt(tds.eq(10).attr("data-val"), 0) > 0) {
+            //    ddlModelCategories.val(tds.eq(10).attr("data-val"));
+            //    ddlModelCategories.trigger("change");
+            //}
             //if (TryParseInt(tds.eq(10).attr("data-val"), 0) > 0) {
             //    ddlModelCategories.val(tds.eq(10).attr("data-val"));
             //}
@@ -1328,10 +1349,10 @@
                         txtEndPoint.val('');
                         $("#modalDescription").modal("toggle");
                         toastrSuccessAlert(execuStatus.successSave);
-                        setInterval(function () {
+                        //setInterval(function () {
                             LoadDescriptionDataTable();
                             LoadItemDataTable();
-                        },1000)
+                        //},1000)
                        
                     }
                     else {
@@ -1938,6 +1959,9 @@
                         $("#modalCategory").modal("toggle");
                         clearCategoryCtrl();
                         LoadCategoryDataTable();
+                        clearDropdown2("ddlBrandCategories");
+                        LoadDropDown('/Common/GetCategories', type.post, ddlBrandCategories, null);
+                        ddlBrandCategories.trigger("change");
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -1999,6 +2023,10 @@
             else {
                 // Duplicate Brand Checking //
             }
+            if (TryParseInt(ddlBrandCategories.val(),0) <= 0) {
+                $(".req-category").removeClass("hide");
+                isValid = false;
+            }
             return isValid;
         }
 
@@ -2027,6 +2055,9 @@
                         $("#modalBrand").modal("toggle");
                         clearBrandCtrl();
                         LoadBrandDataTable();
+                        clearDropdown2("ddlModelBrand");
+                        LoadDropDown('/Common/GetBrands', type.post, ddlModelBrand, null);
+                        ddlModelBrand.trigger("change");
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
@@ -2136,6 +2167,9 @@
                         $("#modalColor").modal("toggle");
                         clearColorCtrl();
                         LoadColorDataTable();
+                        clearDropdown2("ddlColors");
+                        LoadDropDown('/Common/GetColors', type.post, ddlColors, null);
+                        ddlColors.trigger("change");
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
