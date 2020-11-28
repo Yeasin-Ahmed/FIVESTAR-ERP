@@ -1,10 +1,8 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Warehouse Startup Process";
     string badge = string.Empty;
     var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
 }
-
 
 <div class="row text-sm">
     <div class="col-md-12">
@@ -771,20 +769,20 @@
                             </label>
                             <input type="text" name="Model" value="" id="txtModel" class="form-control form-control-sm" />
                             <span class="error hide required-descriptionName font-weight-bold">Input Description Name!</span>
-                            <span class="error hide duplicate-descriptionName font-weight-bold">Already DescriptionName Exist!</span>
+                            <span class="error hide duplicate-model font-weight-bold">Duplicate Model!</span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 hide">
                             <label for="txtTACNo" class="control-label font-weight-bold">TAC No</label>
                             <input type="number" name="TACNo" value="" id="txtTACNo" class="form-control form-control-sm" />
                             <span class="error hide req-tac font-weight-bold">Input TAC!</span>
                             <span class="error hide dup-tac font-weight-bold">Already TAC Exist!</span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 hide">
                             <label for="txtStartPoint" class="control-label font-weight-bold">Start Point</label>
                             <input type="number" name="StartPoint" value="" id="txtStartPoint" class="form-control form-control-sm" />
                             <span class="error hide req-startPoint">Input Start Point!</span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 hide">
                             <label for="txtEndPoint" class="control-label font-weight-bold">End Point</label>
                             <input type="number" name="EndPoint" value="" id="txtEndPoint" class="form-control form-control-sm" />
                             <span class="error hide req-endPoint">Input End Point!</span>
@@ -854,6 +852,7 @@
                                 <input type="text" name="txtCategoryName" value="" id="txtCategoryName" class="form-control form-control-sm" />
                             </div>
                             <span class="error hide required-category font-weight-bold">Input Category!</span>
+                            <span class="error hide duplicate-category font-weight-bold">Duplicate Category!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -907,6 +906,7 @@
                                 <input type="text" name="txtBrandName" value="" id="txtBrandName" class="form-control form-control-sm" />
                             </div>
                             <span class="error hide required-brand font-weight-bold">Input Brand!</span>
+                            <span class="error hide duplicate-brandName font-weight-bold">Duplicate Brand!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtBrandRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -966,7 +966,8 @@
                                 </div>
                                 <input type="text" name="txtColorName" value="" id="txtColorName" class="form-control form-control-sm" />
                             </div>
-                            <span class="error hide required-color font-weight-bold">Input Category!</span>
+                            <span class="error hide required-color font-weight-bold">Input Color!</span>
+                            <span class="error hide duplicate-color font-weight-bold">Duplicate Color!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtColorRemarks" class="control-label font-weight-bold">Remarks</label>
@@ -1138,7 +1139,7 @@
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            console.log("btnsubmit click");
+            //console.log("btnsubmit click");
             $(".error").addClass("hide");
             if (validateForm() == true) {
                 var data = JSON.stringify({ Id: TryParseInt(hdfWarehouseId.val(), 0), WarehouseName: txtWarehouseName.val(), Remarks: txtRemarks.val(), IsActive: chkStatestatus.is(":checked") });
@@ -1237,6 +1238,7 @@
         })
 
         function clearCtrlDescription() {
+            enable("#ddlModelBrand");
             clearDropdown2("ddlModelCategories");
             txtModel.val('');
             hdfDescriptionId.val('0');
@@ -1281,14 +1283,13 @@
             console.log(td);
             chkStatestatusDescription.prop("checked", false);
 
-            
-
             if (td.toLowerCase() === 'active') {
                 chkStatestatusDescription.prop("checked", true);
             }
             modelCategory = TryParseInt(tds.eq(10).attr("data-val"), 0) > 0 ? (TryParseInt(tds.eq(10).attr("data-val"), 0)).toString() : "";
             ddlModelBrand.val(tds.eq(9).attr("data-val"))
             ddlModelBrand.trigger("change");
+            disable("#ddlModelBrand");
             //if (TryParseInt(tds.eq(10).attr("data-val"), 0) > 0) {
             //    ddlModelCategories.val(tds.eq(10).attr("data-val"));
             //    ddlModelCategories.trigger("change");
@@ -1314,11 +1315,11 @@
                 isValid = false;
             }
             else {
-                //var id = TryParseInt(hdfDescriptionId.val(), 0);
-                //if (ajaxBooleanChecker(JSON.stringify({ id: id, descriptionName: txtModel.val().trim() }), '/Common/IsDuplicateDescriptionName', getToken()) == true) {
-                //    $(".duplicate-descriptionName").removeClass("hide");
-                //    isValid = false;
-                //}
+                var id = TryParseInt(hdfDescriptionId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, modelName: txtModel.val().trim() }), '/Common/IsDuplicateModel', getToken()) == true) {
+                    $(".duplicate-model").removeClass("hide");
+                    isValid = false;
+                }
             }
             if (TryParseInt(ddlModelBrand.val(), 0) <= 0) {
                 $(".req-modelBrand").removeClass('hide');
@@ -1922,7 +1923,11 @@
                 isValid = false;
             }
             else {
-                // Duplicate Checking ...
+                var id = TryParseInt(hdfCategoryId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ Id: id, CategoryName: $.trim(txtCategoryName.val()) }), '/Common/IsDuplicateCategory', getToken()) == true) {
+                    $(".duplicate-category").removeClass("hide");
+                    isValid = false;
+                }
             }
             return isValid;
         }
@@ -2021,9 +2026,13 @@
                 isValid = false;
             }
             else {
-                // Duplicate Brand Checking //
+                var id = TryParseInt(hdfBrandId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ Id: id, BrandName: txtBrandName.val().trim() }), '/Common/IsDuplicateBrand', getToken()) == true) {
+                    $(".duplicate-brandName").removeClass("hide");
+                    isValid = false;
+                }
             }
-            if (TryParseInt(ddlBrandCategories.val(),0) <= 0) {
+            if (ddlBrandCategories.val().length <= 0) {
                 $(".req-category").removeClass("hide");
                 isValid = false;
             }
@@ -2047,6 +2056,7 @@
                     model: model,
                     categories: categories
                 });
+
                 disable("#btnSubmitBrand");
 
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Inventory/SaveBrand', data, getToken())).then(function (res, status) {
@@ -2144,7 +2154,11 @@
                 isValid = false;
             }
             else {
-                // Duplicate Checking ...
+                var id = TryParseInt(hdfColorId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ Id: id, ColorName: txtColorName.val().trim() }), '/Common/IsDuplicateColor', getToken()) == true) {
+                    $(".duplicate-color").removeClass("hide");
+                    isValid = false;
+                }
             }
             return isValid;
         }

@@ -133,7 +133,7 @@ Order By w.WarehouseName,i.ItemName", orgId, modelId, itemId, type)).ToList();
 
             return this._inventoryDb.Db.Database.SqlQuery<ItemDomainDTO>(string.Format(@"SELECT i.ItemId,i.ItemName,i.ItemTypeId 'ItemTypeId', it.ItemName 'ItemTypeName',i.IsActive,u.UnitId,u.UnitSymbol 'UnitName',i.ItemCode,app.UserName 'EntryUser',i.EntryDate,
 (Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId = i.UpUserId)'UpdateUser', i.UpdateDate,
-(Case When i.IsActive = 'True' then 'Active' else 'Inactive' end) 'StateStatus'  
+(Case When i.IsActive = 'True' then 'Active' else 'Inactive' end) 'StateStatus',i.DescriptionId,i.ColorId
 From tblItems i
 Inner Join tblItemTypes it on i.ItemTypeId = it.ItemId
 Left Join tblUnits u on i.UnitId = u.UnitId

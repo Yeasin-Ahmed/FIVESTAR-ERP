@@ -183,7 +183,7 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("Inventory", "GetWarehouseList");
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
+                ViewBag.ddlItemTypeName = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).Where(i=> i.ItemName !="Handset").Select(itemtype => new SelectListItem { Text = itemtype.ItemName, Value = itemtype.ItemId.ToString() }).ToList();
 
                 ViewBag.ddlUnitName = _unitBusiness.GetAllUnitByOrgId(User.OrgId).Select(unit => new SelectListItem { Text = unit.UnitName, Value = unit.UnitId.ToString() }).ToList();
 
@@ -1676,7 +1676,6 @@ namespace ERPWeb.Controllers
                 new SelectListItem(){ Text = ItemPreparationType.Production,Value= ItemPreparationType.Production },
                 new SelectListItem(){ Text = ItemPreparationType.Packaging,Value= ItemPreparationType.Packaging }
             }.ToList();
-
             return View();
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

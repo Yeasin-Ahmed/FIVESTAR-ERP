@@ -778,6 +778,7 @@
 
         $("#btnExcelImport").click(function (e) {
             e.preventDefault();
+            $(".error").addClass("hide");
             $.when(getReqWithData('html', 'GET', '/Inventory/CreateExcel', null)).then(function (res, status) {
                 if (status == "success") {
                     OpenModalExcel();
@@ -795,48 +796,73 @@
             })
         })
 
+        function validateFileUpload() {
+            var isValid = true;
+            $(".error").addClass("hide");
+            if (TryParseInt($(".DescriptionId").val(), 0) <= 0) {
+                $(".req-xls-model").removeClass("hide");
+                isValid = false;
+            }
+            if (TryParseInt($(".SupplierId").val(), 0) <= 0) {
+                $(".req-xls-supplier").removeClass("hide");
+                isValid = false;
+            }
+            if ($(".BomItemId").val() =="") {
+                $(".req-xls-item").removeClass("hide");
+                isValid = false;
+            }
+            if (($(".FileUpload").prop('files')[0]) == null || ($(".FileUpload").prop('files')[0]) == undefined) {
+                $(".req-xls-file").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
         var FileUpload = $(".FileUpload");
 
         $("#btnExcelSubmit").click(function (e) {
             e.preventDefault();
-            disable("#btnExcelSubmit");
-            var excelFile = $(".FileUpload").prop('files')[0];
-            var ddlModelNameForFileUpolad = TryParseInt($("#DescriptionId option:selected").val(),0);
-            var ddlSupplierNameForFileUpolad = TryParseInt($("#SupplierId option:selected").val(),0);
-            var ddlBomItemForFileUpload = $("#BomItemId option:selected").val();
-            var bomType = $("#ddlBomType option:selected").val();
-            var formData = new FormData();
-            formData.append("DescriptionId", ddlModelNameForFileUpolad);
-            formData.append("SupplierId", ddlSupplierNameForFileUpolad);
-            formData.append("BomItemId", ddlBomItemForFileUpload);
-            formData.append("BomType", bomType);
-            formData.append("FileUpload", excelFile);
-            console.log(formData);
-            $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res, status) {
-                console.log(res);
-                console.log(status);
-                if (res.isSuccess === true && status === 'success') {
-                    toastrSuccessAlert(execuStatus.successSave);
-                    $("#modalExcelImport").modal("toggle").toggle("fast");
-                    if (res.text != '' && res.text != null) {
-                        toastr.info(res.text).fadeOut(10000);
-                    }
-                    //removeTableRow("#tblWarehouseStockInfo tbody", index);
-                    setTimeout(function () {
-                        LoadDataTable();
-                        @* redirectPage('@Url.Action("GetWarehouseStockInfoList")');*@
+            if (validateFileUpload()) {
+                return;
+                disable("#btnExcelSubmit");
+                var excelFile = $(".FileUpload").prop('files')[0];
+                var ddlModelNameForFileUpolad = TryParseInt($("#DescriptionId option:selected").val(), 0);
+                var ddlSupplierNameForFileUpolad = TryParseInt($("#SupplierId option:selected").val(), 0);
+                var ddlBomItemForFileUpload = $("#BomItemId option:selected").val();
+                var bomType = $("#ddlBomType option:selected").val();
+                var formData = new FormData();
+                formData.append("DescriptionId", ddlModelNameForFileUpolad);
+                formData.append("SupplierId", ddlSupplierNameForFileUpolad);
+                formData.append("BomItemId", ddlBomItemForFileUpload);
+                formData.append("BomType", bomType);
+                formData.append("FileUpload", excelFile);
+                console.log(formData);
+                $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res, status) {
+                    console.log(res);
+                    console.log(status);
+                    if (res.isSuccess === true && status === 'success') {
+                        toastrSuccessAlert(execuStatus.successSave);
+                        $("#modalExcelImport").modal("toggle").toggle("fast");
+                        if (res.text != '' && res.text != null) {
+                            toastr.info(res.text).fadeOut(10000);
+                        }
+                        //removeTableRow("#tblWarehouseStockInfo tbody", index);
+                        setTimeout(function () {
+                            LoadDataTable();
+                            @* redirectPage('@Url.Action("GetWarehouseStockInfoList")');*@
                     }, 1500);
-                    enable("#btnExcelSubmit");
-                }
-
-                else {
-                    toastrErrorAlert(execuStatus.fail);
-                    enable("#btnExcelSubmit");
-                    if (res.text != '' && res.text != null) {
-                        toastr.info(res.text).fadeOut(10000);
+                        enable("#btnExcelSubmit");
                     }
-                }
-            })
+
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                        enable("#btnExcelSubmit");
+                        if (res.text != '' && res.text != null) {
+                            toastr.info(res.text).fadeOut(10000);
+                        }
+                    }
+                })
+            }
         })
         //#endregion
 

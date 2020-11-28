@@ -49,10 +49,10 @@
                         <td class="text-center">@item.EntryUser</td>
                         <td class="text-center">@item.UpdateUser</td>
                         <td class="text-center">
-                            @*@if (privilege.Edit)
-                                {*@
-                            <a href="#" class="btn btn-warning btn-sm data-edit-item-Item" style="line-height:1" data-edit-item-Item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
-                            @*}*@
+                            @if (item.DescriptionId == null)
+                            {
+                                <a href="#" class="btn btn-warning btn-sm data-edit-item-Item" style="line-height:1" data-edit-item-Item="@item.ItemId"><i class="fa fa-pen"></i> Edit</a>
+                            }
                         </td>
                     </tr>
                 }

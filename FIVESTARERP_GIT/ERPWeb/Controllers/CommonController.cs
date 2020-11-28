@@ -309,6 +309,34 @@ namespace ERPWeb.Controllers
         #endregion
 
         [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateCategory(string categoryName, long id)
+        {
+            bool isExist = _categoryBusiness.IsDuplicateCategory(id,categoryName, User.OrgId);
+            return Json(isExist);
+        }
+        
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateBrand(string brandName, long id)
+        {
+            bool isExist = _brandBusiness.IsDuplicateBrand(id, brandName, User.OrgId);
+            return Json(isExist);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateColor(string colorName, long id)
+        {
+            bool isExist = _colorBusiness.IsDuplicateColor(id, colorName, User.OrgId);
+            return Json(isExist);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateModel(string modelName, long id)
+        {
+            bool isExist = _descriptionBusiness.IsDuplicateModel(id, modelName, User.OrgId);
+            return Json(isExist);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateItemTypeName(string itemTypeName, long id, long warehouseId)
         {
             bool isExist = _itemTypeBusiness.IsDuplicateItemTypeName(itemTypeName, id, User.OrgId, warehouseId);
