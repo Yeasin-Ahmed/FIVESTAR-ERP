@@ -1541,32 +1541,34 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag == Flag.View)
             {
-                var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).ToList();
-                var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).ToList();
-                var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
-                var units = _unitBusiness.GetAllUnitByOrgId(User.OrgId).ToList();
-                var mobileModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).ToList();
+                //var warehouses = _warehouseBusiness.GetAllWarehouseByOrgId(User.OrgId).ToList();
+                //var itemTypes = _itemTypeBusiness.GetAllItemTypeByOrgId(User.OrgId).ToList();
+                //var items = _itemBusiness.GetAllItemByOrgId(User.OrgId).ToList();
+                //var units = _unitBusiness.GetAllUnitByOrgId(User.OrgId).ToList();
+                //var mobileModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).ToList();
 
-                var dto = _itemPreparationInfoBusiness.GetItemPreparationInfosByOrgId(User.OrgId).Where(i => 1 == 1 &&
-                    (modelId == null || modelId <= 0 || modelId == i.DescriptionId) &&
-                    (warehouseId == null || warehouseId <= 0 || warehouseId == i.WarehouseId) &&
-                    (itemTypeId == null || itemTypeId <= 0 || itemTypeId == i.ItemTypeId) &&
-                    (itemId == null || itemId <= 0 || itemId == i.ItemId) &&
-                    (string.IsNullOrEmpty(type) || type.Trim() == "" || type == i.PreparationType)
-                ).Select(i => new ItemPreparationInfoDTO
-                {
-                    PreparationInfoId = i.PreparationInfoId,
-                    PreparationType = i.PreparationType,
-                    WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
-                    ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == i.ItemTypeId).ItemName,
-                    ItemName = items.FirstOrDefault(it => it.ItemId == i.ItemId).ItemName,
-                    UnitName = units.FirstOrDefault(it => it.UnitId == i.UnitId).UnitSymbol,
-                    ModelName = mobileModels.FirstOrDefault(it => it.DescriptionId == i.DescriptionId).DescriptionName,
-                    ItemCount = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(i.PreparationInfoId, User.OrgId).Count(),
-                    EntryDate = i.EntryDate,
-                    EntryUser = UserForEachRecord(i.EUserId.Value).UserName,
-                    UpdateUser = (i.UpUserId == null || i.UpUserId == 0) ? "" : UserForEachRecord(i.UpUserId.Value).UserName
-                }).ToList();
+                var dto = _itemPreparationInfoBusiness.GetItemPreparationInfos(User.OrgId, modelId ?? 0, itemTypeId ?? 0, itemId ?? 0, warehouseId ?? 0, type ?? "");
+                    
+                //    _itemPreparationInfoBusiness.GetItemPreparationInfosByOrgId(User.OrgId).Where(i => 1 == 1 &&
+                //    (modelId == null || modelId <= 0 || modelId == i.DescriptionId) &&
+                //    (warehouseId == null || warehouseId <= 0 || warehouseId == i.WarehouseId) &&
+                //    (itemTypeId == null || itemTypeId <= 0 || itemTypeId == i.ItemTypeId) &&
+                //    (itemId == null || itemId <= 0 || itemId == i.ItemId) &&
+                //    (string.IsNullOrEmpty(type) || type.Trim() == "" || type == i.PreparationType)
+                //).Select(i => new ItemPreparationInfoDTO
+                //{
+                //    PreparationInfoId = i.PreparationInfoId,
+                //    PreparationType = i.PreparationType,
+                //    WarehouseName = warehouses.FirstOrDefault(w => w.Id == i.WarehouseId).WarehouseName,
+                //    ItemTypeName = itemTypes.FirstOrDefault(it => it.ItemId == i.ItemTypeId).ItemName,
+                //    ItemName = items.FirstOrDefault(it => it.ItemId == i.ItemId).ItemName,
+                //    UnitName = units.FirstOrDefault(it => it.UnitId == i.UnitId).UnitSymbol,
+                //    ModelName = mobileModels.FirstOrDefault(it => it.DescriptionId == i.DescriptionId).DescriptionName,
+                //    ItemCount = _itemPreparationDetailBusiness.GetItemPreparationDetailsByInfoId(i.PreparationInfoId, User.OrgId).Count(),
+                //    EntryDate = i.EntryDate,
+                //    EntryUser = UserForEachRecord(i.EUserId.Value).UserName,
+                //    UpdateUser = (i.UpUserId == null || i.UpUserId == 0) ? "" : UserForEachRecord(i.UpUserId.Value).UserName
+                //}).ToList();
 
                 // Pagination //
                 ViewBag.PagerData = GetPagerData(dto.Count(), 15, page);

@@ -823,7 +823,6 @@
         $("#btnExcelSubmit").click(function (e) {
             e.preventDefault();
             if (validateFileUpload()) {
-                return;
                 disable("#btnExcelSubmit");
                 var excelFile = $(".FileUpload").prop('files')[0];
                 var ddlModelNameForFileUpolad = TryParseInt($("#DescriptionId option:selected").val(), 0);
@@ -861,7 +860,10 @@
                             toastr.info(res.text).fadeOut(10000);
                         }
                     }
-                })
+                }).fail(function (error) {
+                    consoleLog(error);
+                    enable("#btnExcelSubmit");
+                })    
             }
         })
         //#endregion

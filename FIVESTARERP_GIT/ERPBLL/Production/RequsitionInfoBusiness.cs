@@ -300,23 +300,27 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
         }
         public IEnumerable<DashBoardAssemblyProgressDTO> GetDashBoardAssemblyProgresses(long? floorId, long? assemblyId, long orgId)
         {
-            var data = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyProgressDTO>(string.Format(@"Select pl.LineId 'ProductionFloorId',pl.LineNumber 'ProductionFloorName',al.AssemblyLineId,al.AssemblyLineName,
+            var q = string.Format(@"Select pl.LineId 'ProductionFloorId',pl.LineNumber 'ProductionFloorName',al.AssemblyLineId,al.AssemblyLineName,
 (Select ISNULL(SUM(Quantity),0) From tblRequisitionItemInfo req 
 Inner Join tblRequsitionInfo r on r.ReqInfoId = req.ReqInfoId And r.StateStatus='Accepted'
 Where r.OrganizationId={0} and r.AssemblyLineId=al.AssemblyLineId and Cast(req.EntryDate as date)= Cast(GETDATE() as date)) 'TargetQuantity',
 
-(Select COUNT(*) From tblTempQRCodeTrace 
-Where AssemblyId=al.AssemblyLineId and OrganizationId={0} and StateStatus='MiniStock' and Cast(EntryDate as date)= Cast(GETDATE() as date)) 'CompleteQunatity',
+--(Select COUNT(*) From tblTempQRCodeTrace 
+--Where AssemblyId=al.AssemblyLineId and OrganizationId={0} and StateStatus='MiniStock' and Cast(EntryDate as date)= Cast(GETDATE() as date)) 'CompleteQuantity',
+ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where AssemblyLineId=al.AssemblyLineId and OrganizationId={0} and Cast(EntryDate as date)= Cast(GETDATE() as date)),0) 'CompleteQuantity',
+ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where StateStatus='Received By Production' and  AssemblyLineId=al.AssemblyLineId and OrganizationId={0} and Cast(EntryDate as date)= Cast(GETDATE() as date)),0) 'MiniStockReceivedQty',
+ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where StateStatus='Send By QC' and  AssemblyLineId=al.AssemblyLineId and OrganizationId={0} and Cast(EntryDate as date)= Cast(GETDATE() as date)),0) 'MiniStockNotReceivedQty',
 --and StateStatus IN('Send','Received')
 (Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0}  and Cast(EntryDate as date)= Cast(GETDATE() as date) and AssemblyLineId=al.AssemblyLineId) 'RepairIn',
 
 (Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0} and StateStatus ='Repair-Done' and Cast(EntryDate as date)= Cast(GETDATE() as date) and AssemblyLineId=al.AssemblyLineId) 'RepairOut'
 
 From tblRequsitionInfo ri
-Inner Join [Production].dbo.tblAssemblyLines al on ri.AssemblyLineId =al.AssemblyLineId
+Inner Join [Production].dbo.tblAssemblyLines al on ri.AssemblyLineId =al.AssemblyLineId and ri.OrganizationId=al.OrganizationId and ISNULL(ri.AssemblyLineId,0) > 0
 Inner Join [Production].dbo.tblProductionLines pl on al.ProductionLineId = pl.LineId
-Where al.OrganizationId={0} and Cast(ri.EntryDate as date)= Cast(GETDATE() as date)
-Group By pl.LineId,pl.LineNumber,al.AssemblyLineId,al.AssemblyLineName", orgId)).ToList();
+Where al.OrganizationId={0} and Cast(ri.EntryDate as date)= Cast(GETDATE() as date) and ri.StateStatus='Accepted'
+Group By pl.LineId,pl.LineNumber,al.AssemblyLineId,al.AssemblyLineName", orgId);
+            var data = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyProgressDTO>(q).ToList();
 
             foreach (var item in data)
             {

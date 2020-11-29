@@ -22,5 +22,6 @@ namespace ERPBLL.Inventory.Interface
         ItemPreparationInfo GetPreparationInfoByModelAndItemAndType(string type,long modelId, long itemId, long orgId);
         Task<ItemPreparationInfo> GetPreparationInfoByModelAndItemAndTypeAsync(string type, long modelId, long itemId, long orgId);
         bool IsItemPreparationExistWithThistype(string type,long modelId, long itemId, long orgId);
+        IEnumerable<ItemPreparationInfoDTO> GetItemPreparationInfos(long orgId, long? modelId, long? itemTypeId, long? itemId, long? warehouseId, string type);
     }
 }

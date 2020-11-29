@@ -6,6 +6,7 @@ using ERPBO.Inventory.ViewModels;
 using ERPDAL.InventoryDAL;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,6 +108,11 @@ namespace ERPBLL.Inventory
         public async Task<ItemPreparationInfo> GetPreparationInfoByModelAndItemAndTypeAsync(string type, long modelId, long itemId, long orgId)
         {
             return await _itemPreparationInfoRepository.GetOneByOrgAsync(i => i.DescriptionId == modelId && i.ItemId == itemId && i.PreparationType == type && i.OrganizationId == orgId);
+        }
+
+        public IEnumerable<ItemPreparationInfoDTO> GetItemPreparationInfos(long orgId, long? modelId, long? itemTypeId, long? itemId, long? warehouseId, string type)
+        {
+            return _inventoryDb.Db.Database.SqlQuery<ItemPreparationInfoDTO>(string.Format(@"Exec spItemPreparationInfo @orgId,@modelId,@itemType,@item,@warehouseId,@type"), new SqlParameter("orgId", orgId), new SqlParameter("modelId", modelId ?? 0), new SqlParameter("itemType", itemTypeId ?? 0), new SqlParameter("item", itemId ?? 0), new SqlParameter("@warehouseId", warehouseId ?? 0), new SqlParameter("type", type ?? "")).ToList();
         }
     }
 }

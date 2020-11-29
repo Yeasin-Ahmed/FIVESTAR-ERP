@@ -377,14 +377,14 @@ Where 1=1 and fgs.TotalQty > 0 and fgs.OrganizationId={0} {1} Order by fgs.SendI
             }
 
             query = string.Format(@"Select fsi.SendId,fsi.LineId,pl.LineNumber,fsi.WarehouseId,w.WarehouseName,fsi.DescriptionId,de.DescriptionName 'ModelName',fsi.Remarks,fsi.Flag,fsi.StateStatus,fsi.EUserId,fsi.EntryDate,app.UserName 'EntryUser',fsi.UpUserId,fsi.UpdateDate,
-(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId=ISNULL(fsi.UpUserId,0)) 'UpdateUser',fsi.CartoonNo,fsi.Width,fsi.Height,fsi.GrossWeight,fsi.NetWeight,fsi.TotalQty
+(Select UserName From [ControlPanel].dbo.tblApplicationUsers Where UserId=ISNULL(fsi.UpUserId,0)) 'UpdateUser',fsi.CartoonNo,fsi.Width,fsi.Height,fsi.GrossWeight,fsi.NetWeight,(Select Count(*) From tblFinishGoodsSendToWarehouseDetail Where SendId=fsi.SendId and OrganizationId={0}) as 'TotalQty'
 From tblFinishGoodsSendToWarehouseInfo fsi
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on fsi.EUserId= app.UserId
 Inner Join tblProductionLines pl  on fsi.LineId =pl.LineId
 Inner Join tblPackagingLine pac on fsi.PackagingLineId =pac.PackagingLineId
 Inner Join [Inventory].dbo.tblWarehouses w on fsi.WarehouseId =w.Id
 Inner Join [Inventory].dbo.tblDescriptions de on fsi.DescriptionId =de.DescriptionId
-Where 1=1 and fsi.OrganizationId={0} {1}",orgId,Utility.ParamChecker(param));
+Where 1=1 and fsi.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
             return _productionDb.Db.Database.SqlQuery<FinishGoodsSendToWarehouseInfoDTO>(query).ToList();
         }
     }
