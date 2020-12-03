@@ -42,8 +42,10 @@ namespace ERPWeb.Controllers
         private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         public readonly IRepairBusiness _repairBusiness;
+        //Nishad
+        private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -64,6 +66,7 @@ namespace ERPWeb.Controllers
             this._invoiceDetailBusiness = invoiceDetailBusiness;
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
             this._repairBusiness = repairBusiness;
+            this._handSetStockBusiness = handSetStockBusiness;
         }
 
         #region Configuration Module
@@ -200,6 +203,13 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Duplicate Check
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateHandsetStockIMEI(string imei, long id)
+        {
+            bool isExist = _handSetStockBusiness.IsDuplicateHandsetStockIMEI(imei, id, User.OrgId);
+            return Json(isExist);
+        }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateAccessoriesName(string accessoriesName, long id)
         {

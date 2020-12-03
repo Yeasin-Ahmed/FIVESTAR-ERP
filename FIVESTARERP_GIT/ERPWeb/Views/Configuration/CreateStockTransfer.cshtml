@@ -30,6 +30,11 @@
             <div class="card-header">
                 @Html.AntiForgeryToken()
                 <div class="row text-sm">
+                    <div class="col-md-2">
+                        <label for="ddlModels" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                        @Html.DropDownList("ddlModels", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
+                        <span class="error hide require-warehouse font-weight-bold">S.Warehouse is required !</span>
+                    </div>
                     <div class="col-md-2 hide">
                         <label for="ddlServicesWarehouse" class="control-label font-weight-bold">Services Warehouse<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                         @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm" })
@@ -37,18 +42,18 @@
                     </div>
                     <div class="col-md-2">
                         <label for="ddlBranchName" class="control-label font-weight-bold">Branch Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm" })
+                        @Html.DropDownList("ddlBranchName", (IEnumerable<SelectListItem>)ViewBag.ddlBranchName, "--Select Branch--", new { @class = "form-control form-control-sm select2" })
                         <span class="error hide require-branch font-weight-bold">Branch is required !</span>
                     </div>
                     <div class="col-md-2">
                         <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                        @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select MobileParts--", new { @class = "form-control form-control-sm" })
+                        @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select MobileParts--", new { @class = "form-control form-control-sm select2" })
                         <span class="error hide require-parts font-weight-bold">Parts is required !</span>
                         <span class="error hide duplicate-parts font-weight-bold">This parts is already exist !</span>
                     </div>
                     <div class="col-md-2">
                         <label for="ddlCostPrice" class="control-label font-weight-bold">Cost Price<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                        @Html.DropDownList("ddlCostPrice", (IEnumerable<SelectListItem>)ViewBag.ddlCostPrice, "--Select CostPrice--", new { @class = "form-control form-control-sm" })
+                        @Html.DropDownList("ddlCostPrice", (IEnumerable<SelectListItem>)ViewBag.ddlCostPrice, "--Select CostPrice--", new { @class = "form-control form-control-sm select2" })
                         <span class="error hide require-costPrice font-weight-bold">CostPrice is required !</span>
                     </div>
                     <div class="col-md-2">
@@ -74,10 +79,8 @@
                             <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-2">
-                        @*<label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>*@
+                        <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
                         <div class="clearfix">
                             <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="Save"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
                         </div>
@@ -122,6 +125,7 @@
 
 @section scripts{
     <script>
+        var ddlModels = $("#ddlModels");
         var ddlServicesWarehouse = $("#ddlServicesWarehouse");
         var ddlBranchName = $("#ddlBranchName");
         var ddlMobileParts = $("#ddlMobileParts");
@@ -132,6 +136,13 @@
         var txtSellPrice = $("#txtSellPrice");
         var txtRemarks = $("#txtRemarks");
         //var ddlSellPrice = $("#ddlSellPrice");
+
+        $(document).ready(function () {
+            $('.select2').select2();
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
 
         $("#btnReset").click(function (e) {
             e.preventDefault();
@@ -284,7 +295,8 @@
                         disable("#btnSubmit");
                         var info = {
                             SWarehouseId: ddlServicesWarehouse.val(),
-                            BranchTo: ddlBranchName.val()
+                            BranchTo: ddlBranchName.val(),
+                            DescriptionId: TryParseInt(ddlModels.val(), 0)
                         };
 
                         var details = []; details.length = 0;

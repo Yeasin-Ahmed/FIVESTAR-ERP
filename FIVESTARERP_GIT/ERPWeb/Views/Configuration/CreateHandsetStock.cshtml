@@ -1,0 +1,386 @@
+﻿
+@{
+    ViewBag.Title = "Handset Stock";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0 text-sm">
+                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-createHandsetStock-tab" data-toggle="pill" href="#custom-tabs-two-createHandsetStock" role="tab" aria-controls="custom-tabs-two-createHandsetStock" aria-selected="true">Handset Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-handsetStockList-tab" data-toggle="pill" href="#custom-tabs-two-handsetStockList" role="tab" aria-controls="custom-tabs-two-handsetStockList" aria-selected="true">Handset Stock List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body shadow">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+                    <div class="tab-pane fade show active" id="custom-tabs-two-createHandsetStock" role="tabpanel" aria-labelledby="custom-tabs-two-createHandsetStock-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray shadow">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Handset Stock Entry
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-body text-sm">
+                                        <div class="row text-sm">
+                                            <div class="row col-md-7">
+                                                <div class="col-md-4">
+                                                    <label for="ddlModels" class="control-label font-weight-bold">Model</label>
+                                                    @Html.DropDownList("ddlModels", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
+                                                    <span class="error hide req-model">Input Model!</span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="ddlColors" class="control-label font-weight-bold">Color</label>
+                                                    @Html.DropDownList("ddlColors", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm select2" })
+                                                    <span class="error hide req-color">Input Color!</span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="ddlStockType" class="control-label font-weight-bold">Stock Type</label>
+                                                    <select class="form-control form-control-sm select2" id="ddlStockType">
+                                                        <option value="">--Select Type--</option>
+                                                        <option value="Good">Good</option>
+                                                        <option value="DOA">DOA</option>
+                                                    </select>
+                                                    <span class="error hide req-stockType">Input Stock Type!</span>
+                                                </div>
+                                            </div>
+                                            <div class="row col-md-5">
+                                                <h5 class="col-md-12" style="border-bottom:2px solid #70cf44">SCANING</h5>
+                                                <div class="col-md-12">
+                                                    <input type="text" id="txtHandsetIMEI" class="form-control form-control-sm" placeholder="IMEI SCANNING" />
+                                                    <span class="error hide dup-imei">IMEI Already Exists!</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-handsetStockList" role="tabpanel" aria-labelledby="custom-tabs-two-handsetStockList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray shadow">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Handset Stock List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-header text-sm">
+                                        <div class="row text-sm">
+                                            <div class=" row col-md-4 card-title">
+                                                <h5>Search By</h5>
+                                            </div>
+                                            <div class="row col-md-8">
+                                                <div class="col-md-4">
+                                                    @*<label for="ddlModelsSearch" class="control-label font-weight-bold">Model</label>*@
+                                                    @Html.DropDownList("ddlModelsSearch", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @*<label for="ddlColorsSearch" class="control-label font-weight-bold">Color</label>*@
+                                                    @Html.DropDownList("ddlColorsSearch", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm select2" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @*<label for="ddlStockTypeSearch" class="control-label font-weight-bold">Stock Type</label>*@
+                                                    <select class="form-control form-control-sm select2" id="ddlStockTypeSearch">
+                                                        <option value="">--Select Type--</option>
+                                                        <option value="Good">Good</option>
+                                                        <option value="DOA">DOA</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm" id="dataContainer">
+                                                @{Html.RenderAction("CreateHandsetStock",new { @flag = "StockList"});}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalHandsetStock" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadHandsetStock">Update</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmHandsetStock">
+                    <input type="hidden" name="Id" id="hdfHandsetStockId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlModelsEdit" class="control-label font-weight-bold">Model</label>
+                            @Html.DropDownList("ddlModelsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-model">Input Model!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlColorsEdit" class="control-label font-weight-bold">Color</label>
+                            @Html.DropDownList("ddlColorsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-color">Input Color!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlStockTypeEdit" class="control-label font-weight-bold">Stock Type</label>
+                            <select class="form-control form-control-sm select2" id="ddlStockTypeEdit">
+                                <option value="">--Select Type--</option>
+                                <option value="Good">Good</option>
+                                <option value="DOA">DOA</option>
+                            </select>
+                            <span class="error hide req-stockType">Input Stock Type!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtHandsetIMEIEdit" class="control-label font-weight-bold">IMEI</label>
+                            <input type="text" id="txtHandsetIMEIEdit" class="form-control form-control-sm" />
+                            <span class="error hide dup-imei">IMEI Already Exists!</span>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer btn-default">
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmititemType"><i class="fas fa-paper-plane"></i> <span id="spanSaveHandsetStock">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        //Create Handset Stock
+        var ddlModels = $("#ddlModels");
+        var ddlColors = $("#ddlColors");
+        var ddlStockType = $("#ddlStockType");
+        var txtHandsetIMEI = $("#txtHandsetIMEI");
+
+        // Handset Stock List
+        var ddlModelsSearch = $("#ddlModelsSearch");
+        var ddlColorsSearch = $("#ddlColorsSearch");
+        var ddlStockTypeSearch = $("#ddlStockTypeSearch");
+        var pageNo = 1;
+
+        //Edit
+
+        var ddlModelsEdit = $("#ddlModelsEdit");
+        var ddlColorsEdit = $("#ddlColorsEdit");
+        var ddlStockTypeEdit = $("#ddlStockTypeEdit");
+        var txtHandsetIMEIEdit = $("#txtHandsetIMEIEdit");
+        var hdfHandSetStockId = $("#hdfHandsetStockId");
+        $(document).ready(function () {
+            $('.select2').select2();
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        })
+        function validateUI() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            if (TryParseInt(ddlModels.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-model").removeClass("hide");
+            }
+            if (TryParseInt(ddlColors.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-color").removeClass("hide");
+            }
+            if (ddlStockType.val() == "") {
+                isValid = false;
+                $(".req-stockType").removeClass("hide");
+            }
+            if ($.trim(txtHandsetIMEI.val()) != "" && $.trim(txtHandsetIMEI.val()).length == 15) {
+                var id = 0/*TryParseInt(hdfHandSetStockId.val(), 0)*/;
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, imei: $.trim(txtHandsetIMEI.val())}), '/Common2/IsDuplicateHandsetStockIMEI', getToken()) == true) {
+                    $(".dup-imei").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+        txtHandsetIMEI.change(function () {
+            if (validateUI() == true) {
+                $('.error').addClass('hide');
+                if ($.trim(txtHandsetIMEI.val()) != "" && $.trim(txtHandsetIMEI.val()).length == 15) {
+                    var data = JSON.stringify({ /*HandSetStockId: TryParseInt(hdfHandSetStockId.val(), 0),*/DescriptionId: TryParseInt(ddlModels.val(), 0), ColorId: TryParseInt(ddlColors.val(), 0), IMEI: $.trim(txtHandsetIMEI.val()), StockType: ddlStockType.val() });
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveHandsetStock', data, getToken())).then(function (res, status) {
+                        consoleLog(status);
+                        consoleLog(res);
+                        if (status === "success" && res === true) {
+                            toastrSuccessAlert(execuStatus.successSave);
+                            txtHandsetIMEI.val('');
+                            txtHandsetIMEI.focus();
+                            LoadDataTable();
+                        }
+                        else {
+                            toastrErrorAlert(execuStatus.fail);
+                            txtHandsetIMEI.val('');
+                            txtHandsetIMEI.focus();
+                        }
+                    })
+                }
+                else {
+                    toastrErrorAlert("IMEI is not valid!");
+                    txtHandsetIMEI.val('');
+                    txtHandsetIMEI.focus();
+                }
+            }
+            else {
+                txtHandsetIMEI.val('');
+                txtHandsetIMEI.focus();
+            }
+        })
+
+        //Stock List
+
+        ddlModelsSearch.change(function () {
+            LoadDataTable();
+        })
+        ddlColorsSearch.change(function () {
+            LoadDataTable();
+        })
+        ddlStockTypeSearch.change(function () {
+            LoadDataTable();
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "StockList", modelId: TryParseInt(ddlModelsSearch.val(), 0), colorId: TryParseInt(ddlColorsSearch.val(), 0), stockType: ddlStockTypeSearch.val(), page: pageNo };
+            $.when(getReqWithData('html', 'GET', '/Configuration/CreateHandsetStock', data)).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('handsetStock')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTable(); 
+                }
+            }
+        })
+
+        $(document).on('click', 'a.data-edit-item', function (e) {
+            e.preventDefault();
+            $("#modalHandsetStock").modal('show');
+            var tds = $(this).parent().parents('tr').children('td');
+            txtHandsetIMEIEdit.val(tds.eq(4).html());
+            ddlModelsEdit.val(tds.eq(5).attr("data-val"));
+            ddlModelsEdit.trigger("change");
+            ddlColorsEdit.val(tds.eq(6).attr("data-val"));
+            ddlColorsEdit.trigger("change");
+            ddlStockTypeEdit.val(tds.eq(7).html());
+            ddlStockTypeEdit.trigger("change");
+            hdfHandSetStockId.val(tds.eq(1).html());
+        })
+
+        function validateForm() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            if (TryParseInt(ddlModelsEdit.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-model").removeClass("hide");
+            }
+            if (TryParseInt(ddlColorsEdit.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-color").removeClass("hide");
+            }
+            if (ddlStockTypeEdit.val() == "") {
+                isValid = false;
+                $(".req-stockType").removeClass("hide");
+            }
+            if ($.trim(txtHandsetIMEIEdit.val()) != "" && $.trim(txtHandsetIMEIEdit.val()).length == 15) {
+                var id = TryParseInt(hdfHandSetStockId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, imei: $.trim(txtHandsetIMEIEdit.val()) }), '/Common2/IsDuplicateHandsetStockIMEI', getToken()) == true) {
+                    $(".dup-imei").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+        $("#spanSaveHandsetStock").click(function (e) {
+            e.preventDefault();
+            if (validateForm() == true) {
+                $('.error').addClass('hide');
+                if ($.trim(txtHandsetIMEIEdit.val()) != "" && $.trim(txtHandsetIMEIEdit.val()).length == 15) {
+                    var data = JSON.stringify({ HandSetStockId: TryParseInt(hdfHandSetStockId.val(), 0), DescriptionId: TryParseInt(ddlModelsEdit.val(), 0), ColorId: TryParseInt(ddlColorsEdit.val(), 0), IMEI: $.trim(txtHandsetIMEIEdit.val()), StockType: ddlStockTypeEdit.val() });
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveHandsetStock', data, getToken())).then(function (res, status) {
+                        consoleLog(status);
+                        consoleLog(res);
+                        if (status === "success" && res === true) {
+                            $("#modalHandsetStock").modal('toggle');
+                            toastrSuccessAlert(execuStatus.successSave);
+                            LoadDataTable();
+                        }
+                        else {
+                            toastrErrorAlert(execuStatus.fail);
+                        }
+                    })
+                }
+                else {
+                    toastrErrorAlert("IMEI is not valid!");
+                }
+            }
+        })
+    </script>
+}
+

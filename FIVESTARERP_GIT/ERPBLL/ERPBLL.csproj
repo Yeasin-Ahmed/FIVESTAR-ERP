@@ -113,12 +113,19 @@
     <Compile Include="Configuration\CustomerBusiness.cs" />
     <Compile Include="Configuration\CustomerServiceBusiness.cs" />
     <Compile Include="Configuration\FaultBusiness.cs" />
+    <Compile Include="Configuration\FaultyStockDetailBusiness.cs" />
+    <Compile Include="Configuration\FaultyStockInfoBusiness.cs" />
+    <Compile Include="Configuration\HandSetStockBusiness.cs" />
     <Compile Include="Configuration\Interface\IAccessoriesBusiness.cs" />
     <Compile Include="Configuration\Interface\IBranchBusiness2.cs" />
     <Compile Include="Configuration\Interface\IClientProblemBusiness.cs" />
     <Compile Include="Configuration\Interface\ICustomerBusiness.cs" />
     <Compile Include="Configuration\Interface\ICustomerServiceBusiness.cs" />
     <Compile Include="Configuration\Interface\IFaultBusiness.cs" />
+    <Compile Include="Configuration\Interface\IFaultyStockDetailBusiness.cs" />
+    <Compile Include="Configuration\Interface\IFaultyStockInfoBusiness.cs" />
+    <Compile Include="Configuration\Interface\IHandSetStockBusiness.cs" />
+    <Compile Include="Configuration\Interface\IMissingStockBusiness.cs" />
     <Compile Include="Configuration\Interface\IMobilePartBusiness.cs" />
     <Compile Include="Configuration\Interface\IMobilePartStockDetailBusiness.cs" />
     <Compile Include="Configuration\Interface\IMobilePartStockInfoBusiness.cs" />
@@ -129,6 +136,7 @@
     <Compile Include="Configuration\Interface\ITransferDetailBusiness.cs" />
     <Compile Include="Configuration\Interface\ITransferInfoBusiness.cs" />
     <Compile Include="Configuration\Interface\IWorkShopBusiness.cs" />
+    <Compile Include="Configuration\MissingStockBusiness.cs" />
     <Compile Include="Configuration\MobilePartBusiness.cs" />
     <Compile Include="Configuration\MobilePartStockDetailBusiness.cs" />
     <Compile Include="Configuration\MobilePartStockInfoBusiness.cs" />

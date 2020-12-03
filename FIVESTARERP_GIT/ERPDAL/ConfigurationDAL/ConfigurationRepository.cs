@@ -71,4 +71,32 @@ namespace ERPDAL.ConfigurationDAL
     {
         public WorkShopRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
+    public class FaultyStockDetailRepository : ConfigurationBaseRepository<FaultyStockDetails>
+    {
+        public FaultyStockDetailRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+
+        }
+    }
+    public class FaultyStockInfoRepository : ConfigurationBaseRepository<FaultyStockInfo>
+    {
+        public FaultyStockInfoRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+
+        }
+    }
+    public class HandSetStockRepository : ConfigurationBaseRepository<HandSetStock>
+    {
+        public HandSetStockRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+
+        }
+    }
+    public class MissingStockRepository : ConfigurationBaseRepository<MissingStock>
+    {
+        public MissingStockRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+
+        }
+    }
 }

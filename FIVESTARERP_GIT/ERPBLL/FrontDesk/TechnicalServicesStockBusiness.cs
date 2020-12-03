@@ -1,4 +1,5 @@
 ﻿using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
@@ -20,8 +21,9 @@ namespace ERPBLL.FrontDesk
         private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
         private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
         private readonly IJobOrderBusiness _jobOrderBusiness;
+        private readonly IFaultyStockDetailBusiness _faultyStockDetailBusiness;
 
-        public TechnicalServicesStockBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IJobOrderBusiness jobOrderBusiness)
+        public TechnicalServicesStockBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IJobOrderBusiness jobOrderBusiness, IFaultyStockDetailBusiness faultyStockDetailBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this.technicalServicesStockRepository = new TechnicalServicesStockRepository(this._frontDeskUnitOfWork);
@@ -30,6 +32,7 @@ namespace ERPBLL.FrontDesk
             this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
             this._jobOrderTSBusiness = jobOrderTSBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
+            this._faultyStockDetailBusiness = faultyStockDetailBusiness;
         }
 
         public IEnumerable<TechnicalServicesStock> GetAllTechnicalServicesStock(long id, long orgId, long branchId)
@@ -114,6 +117,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                 {
                     List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
                     List<TsStockReturnDetailDTO> returnStocks = new List<TsStockReturnDetailDTO>();
+                    List<FaultyStockDetailsDTO> faultyStockDetailsDTOs = new List<FaultyStockDetailsDTO>();
 
                     foreach (var item in dto.StockDetails)
                     {
@@ -141,7 +145,26 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                             };
                             returnStocks.Add(returnStock); // 
                         }
-
+                        if (servicesInfo.UsedQty > 0)
+                        {
+                            FaultyStockDetailsDTO faulty = new FaultyStockDetailsDTO()
+                            {
+                                JobOrderId = servicesInfo.JobOrderId,
+                                SWarehouseId = servicesInfo.SWarehouseId,
+                                SellPrice = servicesInfo.SellPrice,
+                                StateStatus = StockStatus.StockIn,
+                                CostPrice = servicesInfo.CostPrice,
+                                BranchId = branchId,
+                                EntryDate = DateTime.Now,
+                                EUserId = userId,
+                                OrganizationId = orgId,
+                                PartsId = servicesInfo.PartsId,
+                                Quantity = item.UsedQty,
+                                TSId = dto.TSId,
+                                DescriptionId = _jobOrderBusiness.GetJobOrderById(servicesInfo.JobOrderId.Value, orgId).DescriptionId,
+                            };
+                            faultyStockDetailsDTOs.Add(faulty);
+                        }
                     }
                     if(returnStocks.Count > 0)
                     {
@@ -168,6 +191,11 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                         {
                             // Done - JobOrder - Repair-Done // Not Done -- JobOrder - Customer-Approved
                             IsSuccess = _tsStockReturnInfoBusiness.SaveTsReturnStock(returnInfoList, userId, orgId, branchId);
+                            //Nishad//
+                            //if (IsSuccess)
+                            //{
+                            //    IsSuccess = _faultyStockDetailBusiness.SaveFaultyStockIn(faultyStockDetailsDTOs, userId, orgId, branchId);
+                            //}                           
                         }
                         else
                         {
@@ -177,9 +205,20 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                     else
                     {
                         IsSuccess= technicalServicesStockRepository.Save(); // update used qty
+                        //Nishad//
+                        //if (IsSuccess)
+                        //{
+                        //    IsSuccess = _faultyStockDetailBusiness.SaveFaultyStockIn(faultyStockDetailsDTOs, userId, orgId, branchId);
+                        //}
                     }
-                    
-
+                    //Nishad//
+                    if (faultyStockDetailsDTOs.Count > 0)
+                    {
+                        if (IsSuccess)
+                        {
+                            IsSuccess = _faultyStockDetailBusiness.SaveFaultyStockIn(faultyStockDetailsDTOs, userId, orgId, branchId);
+                        }
+                    }
                 }// Stock-End
 
                 if (IsSuccess== true && _jobOrderTSBusiness.UpdateJobOrderTsStatus(dto.JobOrderId, userId, orgId, branchId) == true)

@@ -836,6 +836,11 @@
     <Content Include="Views\Accounts\GetFinanceYearList.cshtml" />
     <Content Include="Views\Accounts\GetLadgerList.cshtml" />
     <Content Include="Views\Accounts\_GetLadgerList.cshtml" />
+    <Content Include="Views\Configuration\_FaultyStockInfoList.cshtml" />
+    <Content Include="Views\Configuration\CreateHandsetStock.cshtml" />
+    <Content Include="Views\Configuration\_HandsetStockList.cshtml" />
+    <Content Include="Views\Configuration\CreateMissingStock.cshtml" />
+    <Content Include="Views\Configuration\_MissingStockList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -25,7 +25,8 @@ namespace ERPBLL.Configuration
         private readonly IRequsitionDetailForJobOrderBusiness _requsitionDetailForJobOrderBusiness;
         private readonly ITechnicalServicesStockBusiness _technicalServicesStockBusiness;
         private readonly ITsStockReturnInfoBusiness _tsStockReturnInfoBusiness;
-        public MobilePartStockDetailBusiness(IConfigurationUnitOfWork configurationDb, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness)
+        private readonly IJobOrderBusiness _jobOrderBusiness;
+        public MobilePartStockDetailBusiness(IConfigurationUnitOfWork configurationDb, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, IJobOrderBusiness jobOrderBusiness)
         {
             this._configurationDb = configurationDb;
             mobilePartStockDetailRepository = new MobilePartStockDetailRepository(this._configurationDb);
@@ -37,7 +38,7 @@ namespace ERPBLL.Configuration
             this._requsitionDetailForJobOrderBusiness = requsitionDetailForJobOrderBusiness;
             this._technicalServicesStockBusiness = technicalServicesStockBusiness;
             this._tsStockReturnInfoBusiness = tsStockReturnInfoBusiness;
-
+            this._jobOrderBusiness = jobOrderBusiness;
         }
 
         public IEnumerable<MobilePartStockDetail> GelAllMobilePartStockDetailByOrgId(long orgId, long branchId)
@@ -150,6 +151,7 @@ namespace ERPBLL.Configuration
                 StockDetail.EntryDate = DateTime.Now;
                 StockDetail.StockStatus = StockStatus.StockOut;
                 StockDetail.ReferrenceNumber = item.ReferrenceNumber;
+                StockDetail.DescriptionId = item.DescriptionId; //Nishad
 
                 var warehouseInfo = _mobilePartStockInfoBusiness.GetMobilePartStockInfoByModelAndMobilePartsAndCostPrice(item.DescriptionId.Value,item.MobilePartId.Value,item.CostPrice,orgId,branchId);  //_mobilePartStockInfoBusiness.GetAllMobilePartStockInfoById(orgId, branchId).Where(o => item.SWarehouseId == item.SWarehouseId && o.MobilePartId == item.MobilePartId && o.CostPrice == item.CostPrice).FirstOrDefault();
                 warehouseInfo.StockOutQty += item.Quantity;
@@ -166,6 +168,7 @@ namespace ERPBLL.Configuration
         {
             bool IsSuccess = false;
             var reqInfo = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(reqId, orgId);
+            var modelId = _jobOrderBusiness.GetJobOrdersByIdWithBranch(reqInfo.JobOrderId.Value, reqInfo.BranchId.Value, orgId).DescriptionId;//Nishad//
             var reqDetails = _requsitionDetailForJobOrderBusiness.GetAllRequsitionDetailForJobOrderId(reqId, orgId, reqInfo.BranchId.Value);
             List<MobilePartStockDetail> stockDetails = new List<MobilePartStockDetail>();
             List<TechnicalServicesStockDTO> servicesStockDTOs = new List<TechnicalServicesStockDTO>();
@@ -173,7 +176,7 @@ namespace ERPBLL.Configuration
             foreach (var item in reqDetails)
             {
                 var reqQty = item.Quantity;
-                var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, reqInfo.BranchId.Value).Where(i => i.MobilePartId == item.PartsId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
+                var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByModelAndBranch(orgId, modelId, reqInfo.BranchId.Value).Where(i => i.MobilePartId == item.PartsId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
 
                 if (partsInStock.Count() > 0)
                 {
@@ -199,6 +202,7 @@ namespace ERPBLL.Configuration
 
                         MobilePartStockDetail stockDetail = new MobilePartStockDetail()
                         {
+                            DescriptionId = modelId,//Nishad//
                             SWarehouseId = item.SWarehouseId,
                             MobilePartId = item.PartsId,
                             CostPrice = stock.CostPrice,

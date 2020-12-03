@@ -97,6 +97,10 @@
     <Compile Include="Configuration\DomainModels\Customer.cs" />
     <Compile Include="Configuration\DomainModels\CustomerService.cs" />
     <Compile Include="Configuration\DomainModels\Fault.cs" />
+    <Compile Include="Configuration\DomainModels\FaultyStockDetails.cs" />
+    <Compile Include="Configuration\DomainModels\FaultyStockInfo.cs" />
+    <Compile Include="Configuration\DomainModels\HandSetStock.cs" />
+    <Compile Include="Configuration\DomainModels\MissingStock.cs" />
     <Compile Include="Configuration\DomainModels\MobilePart.cs" />
     <Compile Include="Configuration\DomainModels\MobilePartStockDetail.cs" />
     <Compile Include="Configuration\DomainModels\MobilePartStockInfo.cs" />
@@ -113,6 +117,10 @@
     <Compile Include="Configuration\DTOModels\CustomerDTO.cs" />
     <Compile Include="Configuration\DTOModels\CustomerServiceDTO.cs" />
     <Compile Include="Configuration\DTOModels\FaultDTO.cs" />
+    <Compile Include="Configuration\DTOModels\FaultyStockDetailDTO.cs" />
+    <Compile Include="Configuration\DTOModels\FaultyStockInfoDTO.cs" />
+    <Compile Include="Configuration\DTOModels\HandSetStockDTO.cs" />
+    <Compile Include="Configuration\DTOModels\MissingStockDTO.cs" />
     <Compile Include="Configuration\DTOModels\MobilePartDTO.cs" />
     <Compile Include="Configuration\DTOModels\MobilePartStockDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\MobilePartStockInfoDTO.cs" />
@@ -129,6 +137,10 @@
     <Compile Include="Configuration\ViewModels\CustomerServiceViewModel.cs" />
     <Compile Include="Configuration\ViewModels\CustomerViewModel.cs" />
     <Compile Include="Configuration\ViewModels\FaultViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\FaultyStockDetailViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\FaultyStockInfoViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\HandSetStockViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\MissingStockViewModel.cs" />
     <Compile Include="Configuration\ViewModels\MobilePartStockDetailViewModel.cs" />
     <Compile Include="Configuration\ViewModels\MobilePartStockInfoViewModel.cs" />
     <Compile Include="Configuration\ViewModels\MobilePartViewModel.cs" />
@@ -212,6 +224,7 @@
     <Compile Include="FrontDesk\DTOModels\DashboardRequestSparePartsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardSellsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\FaultyStockDetailsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceInfoDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceUsedPartsDTO.cs" />
@@ -239,6 +252,7 @@
     <Compile Include="FrontDesk\ViewModels\DashboardRequestSparePartsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardSellsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="FrontDesk\ViewModels\FaultyStockDetailsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceInfoViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceUsedPartsViewModel.cs" />

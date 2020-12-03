@@ -32,6 +32,7 @@ namespace ERPBO.Configuration.ViewModels
         public long? BranchTo { get; set; }
         public double CostPrice { get; set; }
         public double SellPrice { get; set; }
-
+        //Nishad
+        public long? DescriptionId { get; set; }
     }
 }

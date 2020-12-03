@@ -204,6 +204,22 @@
     <Compile Include="ConfigurationContextMigrations\202011240851488_Configuration_AddModelInMobilePartsStock.Designer.cs">
       <DependentUpon>202011240851488_Configuration_AddModelInMobilePartsStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202011261215003_Configuration_add_prop_in_TransferInfo_Detail.cs" />
+    <Compile Include="ConfigurationContextMigrations\202011261215003_Configuration_add_prop_in_TransferInfo_Detail.Designer.cs">
+      <DependentUpon>202011261215003_Configuration_add_prop_in_TransferInfo_Detail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202011301326370_Configuration_add_tblFaultyStockInfo_And_Details.cs" />
+    <Compile Include="ConfigurationContextMigrations\202011301326370_Configuration_add_tblFaultyStockInfo_And_Details.Designer.cs">
+      <DependentUpon>202011301326370_Configuration_add_tblFaultyStockInfo_And_Details.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202012030432147_Configuration_add_tblHandsetStock.cs" />
+    <Compile Include="ConfigurationContextMigrations\202012030432147_Configuration_add_tblHandsetStock.Designer.cs">
+      <DependentUpon>202012030432147_Configuration_add_tblHandsetStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202012031057078_Configuration_add_tblMissingStock.cs" />
+    <Compile Include="ConfigurationContextMigrations\202012031057078_Configuration_add_tblMissingStock.Designer.cs">
+      <DependentUpon>202012031057078_Configuration_add_tblMissingStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -908,6 +924,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202011240851488_Configuration_AddModelInMobilePartsStock.resx">
       <DependentUpon>202011240851488_Configuration_AddModelInMobilePartsStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202011261215003_Configuration_add_prop_in_TransferInfo_Detail.resx">
+      <DependentUpon>202011261215003_Configuration_add_prop_in_TransferInfo_Detail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202011301326370_Configuration_add_tblFaultyStockInfo_And_Details.resx">
+      <DependentUpon>202011301326370_Configuration_add_tblFaultyStockInfo_And_Details.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202012030432147_Configuration_add_tblHandsetStock.resx">
+      <DependentUpon>202012030432147_Configuration_add_tblHandsetStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202012031057078_Configuration_add_tblMissingStock.resx">
+      <DependentUpon>202012031057078_Configuration_add_tblMissingStock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

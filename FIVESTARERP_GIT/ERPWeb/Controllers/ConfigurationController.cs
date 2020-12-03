@@ -34,11 +34,16 @@ namespace ERPWeb.Controllers
         private readonly IServiceBusiness _serviceBusiness;
         private readonly IWorkShopBusiness _workShopBusiness;
         private readonly IRepairBusiness _repairBusiness;
+        //Nishad
+        private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
+        private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
+        private readonly IMissingStockBusiness _missingStockBusiness;
 
         // Inventory //
         private readonly IDescriptionBusiness _descriptionBusiness;
+        private readonly IColorBusiness _colorBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -57,6 +62,10 @@ namespace ERPWeb.Controllers
             this._serviceBusiness = serviceBusiness;
             this._workShopBusiness = workShopBusiness;
             this._repairBusiness = repairBusiness;
+            this._faultyStockInfoBusiness = faultyStockInfoBusiness;
+            this._colorBusiness = colorBusiness;
+            this._handSetStockBusiness = handSetStockBusiness;
+            this._missingStockBusiness = missingStockBusiness;
 
             #region Inventory
             this._descriptionBusiness = descriptionBusiness;
@@ -654,6 +663,7 @@ namespace ERPWeb.Controllers
             AutoMapper.Mapper.Map(partStockInfoDTO, warehouseStockInfoViews);
             return PartialView("_MobilePartStockInfoList", warehouseStockInfoViews);
         }
+
         [HttpPost]
         public ActionResult SaveMobilePartStockIn(List<MobilePartStockDetailViewModel> models)
         {
@@ -761,6 +771,98 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
+        #region Faulty Stock
+        //Nishad
+        public ActionResult FaultyStockInfoList(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
+        {
+            //if (! string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
+            //{
+
+            //}
+            IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId);
+
+            List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
+            // Pagination //
+            ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+            dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+            //-----------------//
+            AutoMapper.Mapper.Map(dto, ViewModels);
+            return PartialView("_FaultyStockInfoList", ViewModels);
+        }
+        #endregion
+
+        #region Handset Stock
+        //Nishad
+        public ActionResult CreateHandsetStock(string flag, long? modelId, long? colorId, string stockType, int page = 1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
+            {
+                var dto = _handSetStockBusiness.GetHandsetStockInformationsByQuery(modelId, colorId, stockType, User.OrgId);
+
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList().OrderByDescending(s=> s.HandSetStockId);
+                
+                List<HandSetStockViewModel> ViewModels = new List<HandSetStockViewModel>();
+                AutoMapper.Mapper.Map(dto, ViewModels);
+                return PartialView("_HandsetStockList", ViewModels);
+            }
+            return View();
+        }
+
+        public ActionResult SaveHandsetStock(HandSetStockViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                HandSetStockDTO dto = new HandSetStockDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _handSetStockBusiness.SaveHandSetStock(dto,User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
+        #region Missing Stock
+        //Nishad
+        public ActionResult CreateMissingStock(string flag, long? modelId, long? colorId, long? partsId,string stockType, int page = 1)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlMobilePart = new SelectList(_mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId), "MobilePartId", "MobilePartName");
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
+            {
+                var dto = _missingStockBusiness.GetMissingStockInfoByQuery(modelId, colorId, partsId, stockType, User.OrgId);
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList().OrderByDescending(s => s.MissingStockId);
+
+                List<MissingStockViewModel> ViewModels = new List<MissingStockViewModel>();
+                AutoMapper.Mapper.Map(dto, ViewModels);
+                return PartialView("_MissingStockList", ViewModels);
+            }
+            return View();
+        }
+
+        public ActionResult SaveMissingStock(MissingStockViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                MissingStockDTO dto = new MissingStockDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _missingStockBusiness.SaveMissingStock(dto, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        #endregion
+
         #region tblBranch
         public ActionResult BranchList()
         {
@@ -859,7 +961,8 @@ namespace ERPWeb.Controllers
             ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
 
             //ViewBag.ddlSellPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
-
+            //Nishad//
+            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
             return View();
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

@@ -862,7 +862,11 @@ namespace ERPWeb.Controllers
             //IEnumerable<RequsitionDetailForJobOrderViewModel> itemReturnDetailViews = new List<RequsitionDetailForJobOrderViewModel>();
             //AutoMapper.Mapper.Map(requsitionDetailsDto, itemReturnDetailViews);
             //return PartialView("TSRequsitionForJobOrderDetails", itemReturnDetailViews);
-            IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, User.BranchId);
+
+            //Nishad//
+            //IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, User.BranchId);
+            //Nishad//
+            IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetModelWiseAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, jobOrderInfo.BranchId.Value, jobOrderInfo.DescriptionId);
             IEnumerable<RequsitionDetailForJobOrderViewModel> returnViewModels = new List<RequsitionDetailForJobOrderViewModel>();
             AutoMapper.Mapper.Map(returnDTO, returnViewModels);
             ViewBag.AvailableQtyByRequsition = returnViewModels;
@@ -972,7 +976,10 @@ namespace ERPWeb.Controllers
             ViewBag.RequisitionStatus = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(requsitionInfoId.Value, User.OrgId).StateStatus;
             ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "AnotherBranchRequsition");
 
-            IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, jobOrderInfo.BranchId.Value);
+            //Nishad//
+            //IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, User.BranchId);
+            //Nishad//
+            IEnumerable<RequsitionDetailForJobOrderDTO> returnDTO = _requsitionDetailForJobOrderBusiness.GetModelWiseAvailableQtyByRequsition(requsitionInfoId.Value, User.OrgId, jobOrderInfo.BranchId.Value,jobOrderInfo.DescriptionId);
             IEnumerable<RequsitionDetailForJobOrderViewModel> returnViewModels = new List<RequsitionDetailForJobOrderViewModel>();
             AutoMapper.Mapper.Map(returnDTO, returnViewModels);
             ViewBag.AvailableQtyByRequsition = returnViewModels;

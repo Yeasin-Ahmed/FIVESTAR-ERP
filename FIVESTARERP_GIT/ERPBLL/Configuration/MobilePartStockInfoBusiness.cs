@@ -46,8 +46,12 @@ namespace ERPBLL.Configuration
             var data = mobilePartStockInfoRepository.GetOneByOrg(info => info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId == modelId && info.MobilePartId == mobilePartsId && info.CostPrice ==costprice);
             return data;
         }
-
-
+        //Nishad//
+        public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoByModelAndBranch(long orgId, long modelId, long branchId)
+        {
+            var data = mobilePartStockInfoRepository.GetAll(info => info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId == modelId).ToList();
+            return data;
+        }
 
         public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoByOrgId(long orgId,long branchId)
         {

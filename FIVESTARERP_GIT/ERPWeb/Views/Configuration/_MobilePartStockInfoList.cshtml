@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<ERPBO.Configuration.ViewModels.MobilePartStockInfoViewModel>
-@{ 
+@{
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
     int stock = 0;
@@ -13,6 +13,7 @@
                 <th class="hide"></th>
                 <th class="hide">Services Warehouse</th>
                 <th class="hide"></th>
+                <th>Model</th>
                 <th>Parts Name</th>
                 <th>Parts Code</th>
                 <th>Cost Price</th>
@@ -35,6 +36,7 @@
                     <td class="hide">@info.SWarehouseId</td>
                     <td class="hide">@info.ServicesWarehouseName</td>
                     <td class="hide">@info.MobilePartId</td>
+                    <td>@info.ModelName</td>
                     <td>@info.MobilePartName</td>
                     <td>@info.PartsCode</td>
                     <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
@@ -55,7 +57,7 @@
             }
         </tbody>
     </table>
-    <div class="col-md-12">
-        @Html.Partial("_Pagination", pagerData)
-    </div>
+</div>
+<div class="partsStock">
+    @Html.Partial("_Pagination", pagerData)
 </div>

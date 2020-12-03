@@ -62,7 +62,7 @@ namespace ERPWeb
             container.RegisterType<ERPBLL.Inventory.Interface.IBrandCategoriesBusiness, ERPBLL.Inventory.BrandCategoriesBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.IColorBusiness, ERPBLL.Inventory.ColorBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.IModelColorBusiness, ERPBLL.Inventory.ModelColorBusiness>();
-            container.RegisterType<IHandSetStockBusiness, HandSetStockBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.IHandSetStockBusiness, ERPBLL.Inventory.HandSetStockBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.IBrandCategoriesBusiness, ERPBLL.Inventory.BrandCategoriesBusiness>();
             container.RegisterType<IInventoryUnitOfWork, InventoryUnitOfWork>(); // database 
             #endregion
@@ -173,6 +173,10 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IMissingStockBusiness, MissingStockBusiness>();
+            container.RegisterType<ERPBLL.Configuration.Interface.IHandSetStockBusiness, ERPBLL.Configuration.HandSetStockBusiness>();
+            container.RegisterType<IFaultyStockDetailBusiness, FaultyStockDetailBusiness>();
+            container.RegisterType<IFaultyStockInfoBusiness, FaultyStockInfoBusiness>();
             container.RegisterType<IWorkShopBusiness, WorkShopBusiness>();
             container.RegisterType<IRepairBusiness, RepairBusiness>();
             container.RegisterType<IServiceBusiness, ServiceBusiness>();

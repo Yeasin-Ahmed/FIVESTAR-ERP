@@ -96,6 +96,7 @@ namespace ERPBLL.Configuration
             bool IsSuccess = false;
             TransferInfo transferInfo = new TransferInfo
             {
+                DescriptionId = info.DescriptionId, //Nishad
                 TransferInfoId = info.TransferInfoId,
                 BranchTo = info.BranchTo,
                 BranchId = branchId,
@@ -124,6 +125,7 @@ namespace ERPBLL.Configuration
                     OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now,
+                    DescriptionId = info.DescriptionId // Nishad
                 };
                 details.Add(detail);
                 MobilePartStockDetailDTO stockOutItem = new MobilePartStockDetailDTO
@@ -139,7 +141,8 @@ namespace ERPBLL.Configuration
                     EntryDate = DateTime.Now,
                     EUserId = userId,
                     BranchId = branchId,
-                    ReferrenceNumber= transferInfo.TransferCode
+                    ReferrenceNumber= transferInfo.TransferCode,
+                    DescriptionId = info.DescriptionId //Nishad
                 };
                 TransferStockOutItems.Add(stockOutItem);
             }

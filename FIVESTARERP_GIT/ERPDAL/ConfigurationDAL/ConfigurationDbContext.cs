@@ -14,6 +14,8 @@ namespace ERPDAL.ConfigurationDAL
         {
 
         }
+        public DbSet<MissingStock> tblMissingStock { get; set; }
+        public DbSet<HandSetStock> tblHandSetStock { get; set; }
         public DbSet<Accessories> tblAccessories { get; set; }
         public DbSet<ClientProblem> tblClientProblems { get; set; }
         public DbSet<MobilePart> tblMobileParts { get; set; }
@@ -30,5 +32,7 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<Service> tblServices { get; set; }
         public DbSet<Repair> tblRepair { get; set; }
         public DbSet<WorkShop> tblWorkShop { get; set; }
+        public DbSet<FaultyStockDetails> tblFaultyStockDetails { get; set; }
+        public DbSet<FaultyStockInfo> tblFaultyStockInfo { get; set; }
     }
 }

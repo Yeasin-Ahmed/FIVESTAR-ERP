@@ -28,5 +28,7 @@ namespace ERPBO.Configuration.DomainModels
         //
         public long? ABWarehouse { get; set; }
         public long? WarehouseIdTo { get; set; }
+        //Nishad
+        public long? DescriptionId { get; set; }
     }
 }

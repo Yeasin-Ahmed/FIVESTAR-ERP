@@ -34,5 +34,7 @@ namespace ERPBO.Configuration.ViewModels
         public string BranchToName { get; set; }
         public int? ItemCount { get; set; }
         public long? WarehouseIdTo { get; set; }
+        //Nishad
+        public long? DescriptionId { get; set; }
     }
 }
