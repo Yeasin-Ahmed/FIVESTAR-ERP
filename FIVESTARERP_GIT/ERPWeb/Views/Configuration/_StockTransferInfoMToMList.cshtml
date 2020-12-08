@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.StockTransferInfoModelToModelViewModel>
+@{
+    int sl = 0;
+    string badge = string.Empty;
+}
+<table class="table table-bordered table-sm table-striped" id="tblStockTransferMMInfo">
+    <thead class="btn-dark">
+        <tr class="text-center">
+            <th>#SL</th>
+            <th class="hide"></th>
+            <th>Transfer Code</th>
+            <th class="hide"></th>
+            <th>Model From</th>
+            <th class="hide"></th>
+            <th>Model To</th>
+            <th class="hide"></th>
+            <th>Branch</th>
+            <th class="hide"></th>
+            <th>Services Warehouse</th>
+            <th>State Status</th>
+            <th>Remarks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trans in Model)
+        {
+            badge = trans.StateStatus == "Approved" ? "badge bg-success" : "badge bg-primary";
+            sl = sl + 1;
+        <tr>
+            <td class="text-center text-bold">@sl</td>
+            <td class="hide">@trans.TransferInfoModelToModelId</td>
+            <td class="text-center">@trans.TransferCode</td>
+            <td class="hide">@trans.DescriptionId</td>
+            <td class="text-center">@trans.FromModelName</td>
+            <td class="hide">@trans.ToDescriptionId</td>
+            <td class="text-center">@trans.ToModelName</td>
+            <td class="hide">@trans.BranchId</td>
+            <td class="text-center">@trans.BranchName</td>
+            <td class="hide">@trans.WarehouseId</td>
+            <td class="text-center">@trans.SWarehouseName</td>
+            <td class="text-center" data-val="@trans.StateStatus">
+                <span class="@badge">@trans.StateStatus</span>
+            </td>
+            <td>@trans.Remarks</td>
+            <td class="text-center">
+                <a href="#" class="btn btn-sm btn-outline-secondary data-item-MM-details" title="View Details" data-item-MM-details="@trans.TransferInfoModelToModelId"><i class="fas fa-eye"></i></a>
+            </td>
+        </tr>
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr class="text-center empty-row">
+                <td colspan="13">
+                    No data available in table
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

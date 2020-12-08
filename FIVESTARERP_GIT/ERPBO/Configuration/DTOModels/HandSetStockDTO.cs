@@ -24,6 +24,7 @@ namespace ERPBO.Configuration.DTOModels
         //Custom
         public string ModelName { get; set; }
         public string ColorName { get; set; }
+        public string ModelId { get; set; }
 
     }
 }

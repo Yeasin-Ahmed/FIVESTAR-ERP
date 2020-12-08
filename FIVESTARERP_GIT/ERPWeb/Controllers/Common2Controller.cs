@@ -1,4 +1,5 @@
-﻿using ERPBLL.Configuration.Interface;
+﻿using ERPBLL.Common;
+using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Inventory.Interface;
 using ERPBO.Common;
@@ -44,8 +45,9 @@ namespace ERPWeb.Controllers
         public readonly IRepairBusiness _repairBusiness;
         //Nishad
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
+        private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -67,6 +69,7 @@ namespace ERPWeb.Controllers
             this._servicesWarehouseBusiness = servicesWarehouseBusiness;
             this._repairBusiness = repairBusiness;
             this._handSetStockBusiness = handSetStockBusiness;
+            this._faultyStockInfoBusiness = faultyStockInfoBusiness;
         }
 
         #region Configuration Module
@@ -205,6 +208,12 @@ namespace ERPWeb.Controllers
         #region Duplicate Check
 
         [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsExistsInHandsetStock(string imei)
+        {
+            bool isExist = _handSetStockBusiness.IsExistsHandsetStockIMEI(imei, User.OrgId, StockStatus.StockIn);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateHandsetStockIMEI(string imei, long id)
         {
             bool isExist = _handSetStockBusiness.IsDuplicateHandsetStockIMEI(imei, id, User.OrgId);
@@ -342,7 +351,17 @@ namespace ERPWeb.Controllers
             }
             return Json(stock);
         }
-
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetFaultyStockForAccessoriesSells(long partsId)
+        {
+            var warehouse = _servicesWarehouseBusiness.GetWarehouseOneByOrgId(User.OrgId, User.BranchId);
+            var stock = _faultyStockInfoBusiness.GetAllFaultyMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            if (stock == 0)
+            {
+                stock = 0;
+            }
+            return Json(stock);
+        }
         [HttpPost]
         public ActionResult GetCostPriceForDDL(long partsId)
         {
@@ -357,7 +376,13 @@ namespace ERPWeb.Controllers
             var dropDown = sell.Where(i => i.MobilePartId == partsId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
             return Json(dropDown);
         }
-
+        [HttpPost]
+        public ActionResult GetFaultyStockSellPriceForDDL(long partsId)
+        {
+            var sell = _faultyStockInfoBusiness.GetAllFaultyStockInfoByOrgId(User.OrgId, User.BranchId).AsEnumerable();
+            var dropDown = sell.Where(i => i.PartsId == partsId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
+            return Json(dropDown);
+        }
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult GetPartsStockByPrice(long warehouseId, long partsId, double cprice)
         {
@@ -371,13 +396,13 @@ namespace ERPWeb.Controllers
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetSellPriceByCostPrice(long warehouseId, long partsId, double sprice)
+        public ActionResult GetSellPriceByCostPrice(long warehouseId, long partsId, double cprice)
         {
-            var price = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoBySellPrice(warehouseId, partsId, sprice, User.OrgId, User.BranchId);
-            MobilePartStockDetailDTO detailDTO = new MobilePartStockDetailDTO();
-            price.MobilePartStockInfoId = detailDTO.MobilePartStockDetailId;
-            price.SellPrice = detailDTO.SellPrice;
-            return Json(detailDTO);
+            var price = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoBySellPrice(warehouseId, partsId, cprice, User.OrgId, User.BranchId);
+            //MobilePartStockDetailDTO detailDTO = new MobilePartStockDetailDTO();
+            //price.MobilePartStockInfoId = detailDTO.MobilePartStockDetailId;
+            //price.SellPrice = detailDTO.SellPrice;
+            return Json(price.SellPrice);
         }
         #endregion
     }

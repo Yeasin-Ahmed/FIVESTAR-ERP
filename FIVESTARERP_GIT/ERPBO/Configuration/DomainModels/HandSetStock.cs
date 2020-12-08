@@ -17,6 +17,7 @@ namespace ERPBO.Configuration.DomainModels
         public long DescriptionId { get; set; }
         public long ColorId { get; set; }
         public string StockType { get; set; }
+        public string StateStatus { get; set; }
         public long OrganizationId { get; set; }
         public long BranchId { get; set; }
         public string Remarks { get; set; }

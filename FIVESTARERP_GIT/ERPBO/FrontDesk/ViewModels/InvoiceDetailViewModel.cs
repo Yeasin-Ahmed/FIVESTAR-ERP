@@ -10,8 +10,8 @@ namespace ERPBO.FrontDesk.ViewModels
    public class InvoiceDetailViewModel
     {
         public long InvoiceDetailId { get; set; }
-        [Range(1, long.MaxValue)]
-        public long PartsId { get; set; }
+        //[Range(1, long.MaxValue)]
+        public long? PartsId { get; set; }
         [StringLength(100)]
         public string PartsName { get; set; }
         public int Quantity { get; set; }
@@ -28,5 +28,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> UpdateDate { get; set; }
         //[Range(1, long.MaxValue)]
         public long InvoiceInfoId { get; set; }
+        public string SalesType { get; set; }
+        public string IMEI { get; set; }
     }
 }

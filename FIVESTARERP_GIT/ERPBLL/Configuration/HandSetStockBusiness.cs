@@ -20,6 +20,14 @@ namespace ERPBLL.Configuration
             this._configurationDb = configurationDb;
             _handSetStockRepository = new HandSetStockRepository(this._configurationDb);
         }
+        public IEnumerable<HandSetStock> GetAllHansetStockByOrgId(long orgId)
+        {
+            return _handSetStockRepository.GetAll(s => s.OrganizationId == orgId).ToList();
+        }
+        public IEnumerable<HandSetStock> GetAllHansetStockByOrgIdAndBranchId(long orgId, long branchId)
+        {
+            return _handSetStockRepository.GetAll(s => s.OrganizationId == orgId && s.BranchId == branchId).ToList();
+        }
         public HandSetStock GetHandsetOneInfoById(long id, long orgId)
         {
             return _handSetStockRepository.GetOneByOrg(s => s.HandSetStockId == id && s.OrganizationId == orgId);
@@ -33,9 +41,10 @@ namespace ERPBLL.Configuration
                     DescriptionId = dto.DescriptionId,
                     BranchId = branchId,
                     ColorId = dto.ColorId,
-                    StockType = dto.StockType,
                     IMEI = dto.IMEI,
-                    Remarks = "",
+                    StateStatus = StockStatus.StockIn,
+                    StockType = dto.StockType,
+                    Remarks = "StockIn",
                     OrganizationId = orgId,
                     EUserId = userId,
                     EntryDate = DateTime.Now,
@@ -46,7 +55,6 @@ namespace ERPBLL.Configuration
             {
                 var handsetInfo = GetHandsetOneInfoById(dto.HandSetStockId, orgId);
                 handsetInfo.StockType = dto.StockType;
-                handsetInfo.IMEI = dto.IMEI;
                 handsetInfo.ColorId = dto.ColorId;
                 handsetInfo.DescriptionId = dto.DescriptionId;
                 handsetInfo.UpUserId = userId;
@@ -85,6 +93,19 @@ Where 1=1 and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param))
         public bool IsDuplicateHandsetStockIMEI(string imei, long id, long orgId)
         {
             return _handSetStockRepository.GetOneByOrg(s => s.IMEI == imei && s.OrganizationId == orgId && s.HandSetStockId != id) != null ? true : false;
+        }
+        public bool IsExistsHandsetStockIMEI(string imei,long orgId, string status)
+        {
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI == imei && s.OrganizationId == orgId && s.StateStatus == status) != null ? true : false;
+        }
+        public IEnumerable<HandSetStockDTO> GetAllHansetModelAndColor(long orgId)
+        {
+            return this._configurationDb.Db.Database.SqlQuery<HandSetStockDTO>(
+                string.Format(@"SELECT (Cast(hst.DescriptionId as nvarchar(100)) + '#' + Cast(hst.ColorId as nvarchar(100))) 'ModelId',(des.DescriptionName +'-'+ clr.ColorName)'ModelName'
+FROM [Configuration].dbo.tblHandsetStock hst
+Inner Join [Inventory].dbo.tblDescriptions des on hst.DescriptionId = des.DescriptionId and hst.OrganizationId = des.OrganizationId
+Inner Join [Inventory].dbo.tblColors clr on hst.ColorId = clr.ColorId and hst.OrganizationId = clr.OrganizationId
+where hst.OrganizationId={0}", orgId)).ToList();
         }
     }
 }

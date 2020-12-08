@@ -38,12 +38,14 @@ namespace ERPWeb.Controllers
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
         private readonly IMissingStockBusiness _missingStockBusiness;
+        private readonly IStockTransferDetailModelToModelBusiness _stockTransferDetailModelToModelBusiness;
+        private readonly IStockTransferInfoModelToModelBusiness _stockTransferInfoModelToModelBusiness;
 
         // Inventory //
         private readonly IDescriptionBusiness _descriptionBusiness;
         private readonly IColorBusiness _colorBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -66,6 +68,8 @@ namespace ERPWeb.Controllers
             this._colorBusiness = colorBusiness;
             this._handSetStockBusiness = handSetStockBusiness;
             this._missingStockBusiness = missingStockBusiness;
+            this._stockTransferInfoModelToModelBusiness = stockTransferInfoModelToModelBusiness;
+            this._stockTransferDetailModelToModelBusiness = stockTransferDetailModelToModelBusiness;
 
             #region Inventory
             this._descriptionBusiness = descriptionBusiness;
@@ -921,10 +925,113 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region tblPartsTransfer B-B
-        public ActionResult TransferInfoList()
+        #region Stock Transfer Model To Model
+        //Nishad//
+        public ActionResult CreateStockTransferModelToModel()
         {
             ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+
+            ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+            ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
+
+            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+
+            return View();
+        }
+
+        public ActionResult SaveStockTransferModelToModel(StockTransferInfoModelToModelViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                StockTransferInfoModelToModelDTO dto = new StockTransferInfoModelToModelDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _stockTransferInfoModelToModelBusiness.SaveStockTransferModelToModel(dto, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+
+        public ActionResult StockTransferMMDetails(long transferId)
+        {
+            var info = _stockTransferInfoModelToModelBusiness.GetStockTransferMMInfoById(transferId, User.OrgId);
+            IEnumerable<StockTransferDetailModelToModelDTO> infoDTO = _stockTransferDetailModelToModelBusiness.GetAllTransferDetailMMByInfoId(transferId, User.OrgId).Select(details => new StockTransferDetailModelToModelDTO
+            {
+                TransferDetailModelToModelId = details.TransferDetailModelToModelId,
+                PartsId = details.PartsId,
+                PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(details.PartsId.Value, User.OrgId).MobilePartName),
+                CostPrice = details.CostPrice,
+                SellPrice = details.SellPrice,
+                Quantity = details.Quantity,
+                Remarks = details.Remarks,
+                OrganizationId = details.OrganizationId,
+                EUserId = details.EUserId,
+                EntryDate = details.EntryDate,
+            }).ToList();
+
+            List<StockTransferDetailModelToModelViewModel> viewModel = new List<StockTransferDetailModelToModelViewModel>();
+            AutoMapper.Mapper.Map(infoDTO, viewModel);
+            return PartialView("_StockTransferMMDetails", viewModel);
+        }
+        #endregion
+
+        #region tblPartsTransfer B-B
+        public ActionResult TransferInfoList(string flag, long? sWerehouseId, string tab)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+                ViewBag.tab = tab;
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockTranferB-B")
+            {
+                IEnumerable<TransferInfoDTO> transferInfoDTO = _transferInfoBusiness.GetAllStockTransferByOrgIdAndBranch(User.OrgId, User.BranchId).Select(trans => new TransferInfoDTO
+                {
+                    TransferInfoId = trans.TransferInfoId,
+                    TransferCode = trans.TransferCode,
+                    BranchTo = trans.BranchTo.Value,
+                    BranchId = trans.BranchId,
+                    BranchName = (_branchBusinesss.GetBranchOneByOrgId(trans.BranchId.Value, User.OrgId).BranchName),
+                    SWarehouseId = trans.WarehouseId,
+                    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(trans.WarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+                    Remarks = trans.Remarks,
+                    OrganizationId = trans.OrganizationId,
+                    StateStatus = trans.StateStatus
+                }).AsEnumerable();
+
+                transferInfoDTO = transferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.SWarehouseId == sWerehouseId)).ToList();
+
+                List<TransferInfoViewModel> transferInfoViewModels = new List<TransferInfoViewModel>();
+                AutoMapper.Mapper.Map(transferInfoDTO, transferInfoViewModels);
+
+                return PartialView("_StockTransferInfoPartialList", transferInfoViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockTranferM-M")
+            {
+                IEnumerable<StockTransferInfoModelToModelDTO> stockTransferInfoDTO = _stockTransferInfoModelToModelBusiness.GetAllStockTransferInfoModelToModelByOrgIdAndBranch(User.OrgId, User.BranchId).Select(trans => new StockTransferInfoModelToModelDTO
+                {
+                    TransferInfoModelToModelId = trans.TransferInfoModelToModelId,
+                    TransferCode = trans.TransferCode,
+                    BranchId = trans.BranchId,
+                    BranchName = (_branchBusinesss.GetBranchOneByOrgId(trans.BranchId.Value, User.OrgId).BranchName),
+                    WarehouseId = trans.WarehouseId,
+                    SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(trans.WarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+                    Remarks = trans.Remarks,
+                    OrganizationId = trans.OrganizationId,
+                    StateStatus = trans.StateStatus,
+                    DescriptionId = trans.DescriptionId,
+                    ToDescriptionId = trans.ToDescriptionId,
+                    FromModelName = _descriptionBusiness.GetDescriptionOneByOrdId(trans.DescriptionId.Value, User.OrgId).DescriptionName,
+                    ToModelName = _descriptionBusiness.GetDescriptionOneByOrdId(trans.ToDescriptionId.Value, User.OrgId).DescriptionName,
+                }).AsEnumerable();
+
+                stockTransferInfoDTO = stockTransferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.WarehouseId == sWerehouseId)).ToList();
+
+                List<StockTransferInfoModelToModelViewModel> ViewModels = new List<StockTransferInfoModelToModelViewModel>();
+                AutoMapper.Mapper.Map(stockTransferInfoDTO, ViewModels);
+
+                return PartialView("_StockTransferInfoMToMList", ViewModels);
+            }
             return View();
         }
         public ActionResult StockTransferInfoPartialList(long? sWerehouseId)

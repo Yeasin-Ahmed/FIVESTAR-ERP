@@ -114,19 +114,25 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="ddlMobilePartsEdit" class="control-label font-weight-bold">Mobile Parts</label>
-                            @Html.DropDownList("ddlMobilePartsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2" })
-                            <span class="error hide req-parts">Input Parts!</span>
-                        </div>
-                        <div class="form-group col-md-6">
                             <label for="ddlStockTypeEdit" class="control-label font-weight-bold">Stock Type</label>
                             <select class="form-control form-control-sm select2" id="ddlStockTypeEdit">
                                 <option value="">--Select Type--</option>
                                 <option value="Good">Good</option>
+                                <option value="Faulty">Faulty</option>
                                 <option value="DOA">DOA</option>
-                                <option value="Parts">Parts</option>
                             </select>
                             <span class="error hide req-stockType">Input Stock Type!</span>
+                        </div>
+                        <div class="form-group col-md-6" id="divParts">
+                            <label for="ddlMobilePartsEdit" class="control-label font-weight-bold">Mobile Parts</label>
+                            @Html.DropDownList("ddlMobilePartsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-parts">Input Parts!</span>
+                        </div>
+                        <div class="form-group col-md-6" id="divIMEI">
+                            <label for="txtIMEIEdit" class="control-label font-weight-bold">IMEI</label>
+                            <input type="text" id="txtIMEIEdit" class="form-control form-control-sm" />
+                            <span class="error hide req-imei">Input IMEI!</span>
+                            <span class="error hide req-imei-range">Input 15 Digits IMEI!</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -163,14 +169,47 @@
         var ddlStockTypeEdit = $("#ddlStockTypeEdit");
         var txtQuantityEdit = $("#txtQuantityEdit");
         var hdfMissingStockId = $("#hdfMissingStockId");
+        var txtIMEIEdit = $("#txtIMEIEdit");
+
         $(document).ready(function () {
             $('.select2').select2();
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+            //disable("#ddlMobilePartsEdit");
+            //disable("#txtIMEIEdit");
+            $("#divParts").hide();
+            $("#divIMEI").hide();
         })
         //Stock List
 
+        ddlStockTypeEdit.change(function () {
+            if (ddlStockTypeEdit.val() === "") {
+                //disable("#ddlMobilePartsEdit");
+                //disable("#txtIMEIEdit");
+                $("#divParts").hide();
+                $("#divIMEI").hide();
+                ddlMobilePartsEdit.val('');
+                ddlMobilePartsEdit.trigger("change");
+                txtIMEIEdit.val('');
+            }
+            else if (ddlStockTypeEdit.val() === "DOA") {
+                //disable("#ddlMobilePartsEdit");
+                //enable("#txtIMEIEdit");
+                $("#divParts").hide();
+                $("#divIMEI").show();
+                ddlMobilePartsEdit.val('');
+                ddlMobilePartsEdit.trigger("change");
+            }
+            else {
+                //enable("#ddlMobilePartsEdit");
+                //disable("#txtIMEIEdit");
+                $("#divParts").show();
+                $("#divIMEI").hide();
+                txtIMEIEdit.val('');
+            }
+        })
+        
         ddlModelsSearch.change(function () {
             LoadDataTable();
         })
@@ -212,6 +251,8 @@
         // Missing Stock Entry
         function OpenModal() {
             $("#modalMissingStock").modal("show");
+            $("#spanModalHeadMissingStock").text('Add New');
+            $("#spanSaveMissingStock").text('Save');
             $(".error").addClass("hide");
         }
         $("#btnAddNew").click(function (e) {
@@ -247,9 +288,10 @@
             ddlColorsEdit.trigger("change");
             ddlMobilePartsEdit.val(tds.eq(7).attr("data-val"));
             ddlMobilePartsEdit.trigger("change");
-            ddlStockTypeEdit.val(tds.eq(8).html());
+            ddlStockTypeEdit.val(tds.eq(9).html());
             ddlStockTypeEdit.trigger("change");
-            txtQuantityEdit.val(tds.eq(9).html());
+            txtQuantityEdit.val(tds.eq(10).html());
+            txtIMEIEdit.val(tds.eq(8).html());
         })
 
         function validateForm() {
@@ -267,21 +309,46 @@
                 isValid = false;
                 $(".req-stockType").removeClass("hide");
             }
+            else if (ddlStockTypeEdit.val() == "Good" || ddlStockTypeEdit.val() == "Faulty") {
+                if (TryParseInt(ddlMobilePartsEdit.val(), 0) <= 0) {
+                    isValid = false;
+                    $(".req-parts").removeClass("hide");
+                }
+            }
+            else if (ddlStockTypeEdit.val() == "DOA") {
+                if ($.trim(txtIMEIEdit.val()) == "") {
+                    isValid = false;
+                    $(".req-imei").removeClass("hide");
+                }
+                else if ($.trim(txtIMEIEdit.val()).length != 15) {
+                    isValid = false;
+                    $(".req-imei-range").removeClass("hide");
+                }
+            }
             if (TryParseInt(txtQuantityEdit.val(), 0) <= 0) {
                 isValid = false;
                 $(".req-qty").removeClass("hide");
             }
-            if (TryParseInt(ddlMobilePartsEdit.val(), 0) <= 0) {
-                isValid = false;
-                $(".req-parts").removeClass("hide");
-            }
+            //if (TryParseInt(ddlMobilePartsEdit.val(), 0) <= 0) {
+            //    isValid = false;
+            //    $(".req-parts").removeClass("hide");
+            //}
+            
+            //if ($.trim(txtIMEIEdit.val()) == "") {
+            //    isValid = false;
+            //    $(".req-imei").removeClass("hide");
+            //}
+            //else if ($.trim(txtIMEIEdit.val()).length != 15) {
+            //    isValid = false;
+            //    $(".req-imei-range").removeClass("hide");
+            //}
             return isValid;
         }
         $("#spanSaveMissingStock").click(function (e) {
             e.preventDefault();
             if (validateForm() == true) {
                 $('.error').addClass('hide');
-                var data = JSON.stringify({ MissingStockId: TryParseInt(hdfMissingStockId.val(), 0), DescriptionId: TryParseInt(ddlModelsEdit.val(), 0), ColorId: TryParseInt(ddlColorsEdit.val(), 0), Quantity: TryParseInt(txtQuantityEdit.val(), 0), StockType: ddlStockTypeEdit.val(), PartsId: TryParseInt(ddlMobilePartsEdit.val(), 0) });
+                var data = JSON.stringify({ MissingStockId: TryParseInt(hdfMissingStockId.val(), 0), DescriptionId: TryParseInt(ddlModelsEdit.val(), 0), ColorId: TryParseInt(ddlColorsEdit.val(), 0), Quantity: TryParseInt(txtQuantityEdit.val(), 0), StockType: ddlStockTypeEdit.val(), PartsId: TryParseInt(ddlMobilePartsEdit.val(), 0), IMEI: $.trim(txtIMEIEdit.val()) });
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveMissingStock', data, getToken())).then(function (res, status) {
                     if (status === "success" && res === true) {
                         $("#modalMissingStock").modal('toggle');

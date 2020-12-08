@@ -99,4 +99,18 @@ namespace ERPDAL.ConfigurationDAL
 
         }
     }
+    public class StockTransferInfoModelToModelRepository : ConfigurationBaseRepository<StockTransferInfoModelToModel>
+    {
+        public StockTransferInfoModelToModelRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+
+        }
+    }
+    public class StockTransferDetailModelToModelRepository : ConfigurationBaseRepository<StockTransferDetailModelToModel>
+    {
+        public StockTransferDetailModelToModelRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+
+        }
+    }
 }

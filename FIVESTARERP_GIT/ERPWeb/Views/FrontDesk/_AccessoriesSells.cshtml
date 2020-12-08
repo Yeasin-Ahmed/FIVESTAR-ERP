@@ -39,7 +39,7 @@
                 <tr>
                     <td class="text-center">@sl</td>
                     <td class="action">
-                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= inv.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2 " style="color:blue;line-height:5px" id="btnReport" title="Download Invoice">@inv.InvoiceCode</a>
+                        <a href="@Url.Action("InvoiceReport","ReportSS", new {infoId= inv.InvoiceInfoId})" target="_blank" class="btn text-bold data-report-item2" style="color:blue;line-height:5px" @*id="btnReport"*@ title="Download Invoice">@inv.InvoiceCode</a>
                     </td>
                     <td>@inv.CustomerName</td>
                     <td>@inv.CustomerPhone</td>

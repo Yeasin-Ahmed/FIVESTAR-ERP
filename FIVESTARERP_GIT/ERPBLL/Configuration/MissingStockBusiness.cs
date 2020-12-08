@@ -62,6 +62,7 @@ namespace ERPBLL.Configuration
                         PartsId = dto.PartsId,
                         Quantity = dto.Quantity,
                         StockType = dto.StockType,
+                        IMEI = dto.IMEI,
                         Remarks = "",
                     };
                     _missingStockRepository.Insert(stock);
@@ -73,6 +74,7 @@ namespace ERPBLL.Configuration
                     missingStock.Quantity = dto.Quantity;
                     missingStock.Remarks = dto.Remarks;
                     missingStock.StockType = dto.StockType;
+                    missingStock.IMEI = dto.IMEI;
                     missingStock.UpdateDate = DateTime.Now;
                     missingStock.UpUserId = userId;
                     missingStock.DescriptionId = dto.DescriptionId;
@@ -106,7 +108,7 @@ namespace ERPBLL.Configuration
             }
 
             query = string.Format(@"Select stock.MissingStockId,stock.ColorId,co.ColorName,stock.Quantity,
-stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName',mp.MobilePartName 'PartsName', stock.PartsId 
+stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName',mp.MobilePartName 'PartsName', stock.PartsId, stock.IMEI 
 From tblMissingStock stock
 Left Join [Inventory].dbo.tblColors co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
 Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId

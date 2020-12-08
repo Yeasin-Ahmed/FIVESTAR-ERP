@@ -14,7 +14,7 @@ namespace ERPBO.FrontDesk.DomainModels
     {
         [Key]
         public long InvoiceDetailId { get; set; }
-        public long PartsId { get; set; }
+        public long? PartsId { get; set; }
         public string PartsName { get; set; }
         public int Quantity { get; set; }
         public double CostPrice { get; set; }
@@ -31,5 +31,7 @@ namespace ERPBO.FrontDesk.DomainModels
         [ForeignKey("InvoiceInfo")]
         public long InvoiceInfoId { get; set; }
         public InvoiceInfo InvoiceInfo { get; set; }
+        public string SalesType { get; set; }
+        public string IMEI { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace ERPBLL.Configuration
 
         public MobilePartStockInfo GetAllMobilePartStockInfoBySellPrice(long warehouseId, long partsId, double sprice, long orgId, long branchId)
         {
-            return mobilePartStockInfoRepository.GetOneByOrg(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.SellPrice == sprice && info.OrganizationId == orgId && info.BranchId == branchId);
+            return mobilePartStockInfoRepository.GetOneByOrg(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.CostPrice == sprice && info.OrganizationId == orgId && info.BranchId == branchId);
         }
 
         public IEnumerable<MobilePartStockInfoDTO> GetCurrentStock(long orgId, long branchId)
@@ -123,6 +123,14 @@ Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.Descri
 Where 1=1 and stock.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(query).ToList();
+        }
+        public IEnumerable<MobilePartStockInfoDTO> GetAllGoodMobilePartsAndCode(long orgId)
+        {
+            return this._configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(
+                string.Format(@"SELECT DISTINCT mpsi.MobilePartId,CAST(mp.MobilePartName AS VARCHAR(25)) +'-'+ CAST(mp.MobilePartCode AS VARCHAR(10)) 'MobilePartName'
+FROM [Configuration].dbo.tblMobilePartStockInfo mpsi
+Inner Join [Configuration].dbo.tblMobileParts mp On mpsi.MobilePartId = mp.MobilePartId and mpsi.OrganizationId = mp.OrganizationId
+where mpsi.OrganizationId={0}", orgId)).ToList();
         }
     }
 }

@@ -220,6 +220,18 @@
     <Compile Include="ConfigurationContextMigrations\202012031057078_Configuration_add_tblMissingStock.Designer.cs">
       <DependentUpon>202012031057078_Configuration_add_tblMissingStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202012051200428_Configuration_add_tblStockTransferModelToModel.cs" />
+    <Compile Include="ConfigurationContextMigrations\202012051200428_Configuration_add_tblStockTransferModelToModel.Designer.cs">
+      <DependentUpon>202012051200428_Configuration_add_tblStockTransferModelToModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202012070759040_Configuration_add_prop_tblMissingStock.cs" />
+    <Compile Include="ConfigurationContextMigrations\202012070759040_Configuration_add_prop_tblMissingStock.Designer.cs">
+      <DependentUpon>202012070759040_Configuration_add_prop_tblMissingStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202012080526248_Configuration_add_prop_tblHandset.cs" />
+    <Compile Include="ConfigurationContextMigrations\202012080526248_Configuration_add_prop_tblHandset.Designer.cs">
+      <DependentUpon>202012080526248_Configuration_add_prop_tblHandset.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -395,6 +407,14 @@
     <Compile Include="FrontDeskContextMigrations\202011090622355_FrontDesk_IsHandset_Columnadd.cs" />
     <Compile Include="FrontDeskContextMigrations\202011090622355_FrontDesk_IsHandset_Columnadd.designer.cs">
       <DependentUpon>202011090622355_FrontDesk_IsHandset_Columnadd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012081024414_FrontDesk_add_prop_tblInvoiceDetail.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012081024414_FrontDesk_add_prop_tblInvoiceDetail.Designer.cs">
+      <DependentUpon>202012081024414_FrontDesk_add_prop_tblInvoiceDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.Designer.cs">
+      <DependentUpon>202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
@@ -937,6 +957,15 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202012031057078_Configuration_add_tblMissingStock.resx">
       <DependentUpon>202012031057078_Configuration_add_tblMissingStock.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202012051200428_Configuration_add_tblStockTransferModelToModel.resx">
+      <DependentUpon>202012051200428_Configuration_add_tblStockTransferModelToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202012070759040_Configuration_add_prop_tblMissingStock.resx">
+      <DependentUpon>202012070759040_Configuration_add_prop_tblMissingStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202012080526248_Configuration_add_prop_tblHandset.resx">
+      <DependentUpon>202012080526248_Configuration_add_prop_tblHandset.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1059,6 +1088,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202011090622355_FrontDesk_IsHandset_Columnadd.resx">
       <DependentUpon>202011090622355_FrontDesk_IsHandset_Columnadd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012081024414_FrontDesk_add_prop_tblInvoiceDetail.resx">
+      <DependentUpon>202012081024414_FrontDesk_add_prop_tblInvoiceDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.resx">
+      <DependentUpon>202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

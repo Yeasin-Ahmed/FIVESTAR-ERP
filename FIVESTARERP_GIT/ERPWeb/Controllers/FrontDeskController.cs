@@ -36,6 +36,8 @@ namespace ERPWeb.Controllers
         private readonly IFaultBusiness _faultBusiness;
         private readonly IServiceBusiness _serviceBusiness;
         private readonly IRepairBusiness _repairBusiness;
+        private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
+        private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness; 
         // Warehouse
         private readonly IDescriptionBusiness _descriptionBusiness;
         //ControlPanel
@@ -60,8 +62,9 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderReturnDetailBusiness _jobOrderReturnDetailBusiness;
         private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness)
         {
+            this._handSetStockBusiness = handSetStockBusiness;
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
             this._descriptionBusiness = descriptionBusiness;
@@ -93,6 +96,7 @@ namespace ERPWeb.Controllers
             this._jobOrderTransferDetailBusiness = jobOrderTransferDetailBusiness;
             this._jobOrderReturnDetailBusiness = jobOrderReturnDetailBusiness;
             this._jobOrderTSBusiness = jobOrderTSBusiness;
+            this._faultyStockInfoBusiness = faultyStockInfoBusiness;
         }
 
         #region JobOrder
@@ -1368,9 +1372,14 @@ namespace ERPWeb.Controllers
         }
         public ActionResult CreateAccessoriesInvoice()
         {
-            ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+            ViewBag.ddlMobileParts = _mobilePartStockInfoBusiness.GetAllGoodMobilePartsAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+            ViewBag.ddlFaultyMobileParts = _faultyStockInfoBusiness.GetAllFaultyMobilePartsAndCode(User.OrgId).Select(s => new SelectListItem { Text = s.MobilePartName, Value = s.PartsId.ToString() }).ToList();
 
             ViewBag.ddlsellsPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
+
+            ViewBag.ddlHandset = _handSetStockBusiness.GetAllHansetModelAndColor(User.OrgId).Select(s => new SelectListItem { Text = s.ModelName, Value = s.ModelId.ToString() }).ToList();
+
             return View();
         }
 

@@ -132,6 +132,8 @@
     <Compile Include="Configuration\Interface\IRepairBusiness.cs" />
     <Compile Include="Configuration\Interface\IServiceBusiness.cs" />
     <Compile Include="Configuration\Interface\IServicesWarehouseBusiness.cs" />
+    <Compile Include="Configuration\Interface\IStockTransferDetailModelToModelBusiness.cs" />
+    <Compile Include="Configuration\Interface\IStockTransferInfoModelToModelBusiness.cs" />
     <Compile Include="Configuration\Interface\ITechnicalServiceBusiness.cs" />
     <Compile Include="Configuration\Interface\ITransferDetailBusiness.cs" />
     <Compile Include="Configuration\Interface\ITransferInfoBusiness.cs" />
@@ -143,6 +145,8 @@
     <Compile Include="Configuration\RepairBusiness.cs" />
     <Compile Include="Configuration\ServiceBusiness.cs" />
     <Compile Include="Configuration\ServicesWarehouseBusiness.cs" />
+    <Compile Include="Configuration\StockTransferDetailModelToModelBusiness.cs" />
+    <Compile Include="Configuration\StockTransferInfoModelToModelBusiness.cs" />
     <Compile Include="Configuration\TechnicalServiceBusiness.cs" />
     <Compile Include="Configuration\TransferDetailBusiness.cs" />
     <Compile Include="Configuration\TransferInfoBusiness.cs" />

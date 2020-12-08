@@ -173,6 +173,8 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IStockTransferInfoModelToModelBusiness, StockTransferInfoModelToModelBusiness>();
+            container.RegisterType<IStockTransferDetailModelToModelBusiness, StockTransferDetailModelToModelBusiness>();
             container.RegisterType<IMissingStockBusiness, MissingStockBusiness>();
             container.RegisterType<ERPBLL.Configuration.Interface.IHandSetStockBusiness, ERPBLL.Configuration.HandSetStockBusiness>();
             container.RegisterType<IFaultyStockDetailBusiness, FaultyStockDetailBusiness>();

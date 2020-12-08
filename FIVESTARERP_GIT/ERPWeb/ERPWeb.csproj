@@ -841,6 +841,9 @@
     <Content Include="Views\Configuration\_HandsetStockList.cshtml" />
     <Content Include="Views\Configuration\CreateMissingStock.cshtml" />
     <Content Include="Views\Configuration\_MissingStockList.cshtml" />
+    <Content Include="Views\Configuration\CreateStockTransferModelToModel.cshtml" />
+    <Content Include="Views\Configuration\_StockTransferInfoMToMList.cshtml" />
+    <Content Include="Views\Configuration\_StockTransferMMDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

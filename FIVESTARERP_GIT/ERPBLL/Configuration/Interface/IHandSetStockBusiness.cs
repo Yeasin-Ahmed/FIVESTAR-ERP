@@ -14,5 +14,9 @@ namespace ERPBLL.Configuration.Interface
         bool SaveHandSetStock(HandSetStockDTO dto, long userId, long branchId, long orgId);
         IEnumerable<HandSetStockDTO> GetHandsetStockInformationsByQuery(long? modelId, long? colorId, string stockType, long orgId);
         bool IsDuplicateHandsetStockIMEI(string imei, long id, long orgId);
+        IEnumerable<HandSetStock> GetAllHansetStockByOrgId(long orgId);
+        IEnumerable<HandSetStockDTO> GetAllHansetModelAndColor(long orgId);
+        IEnumerable<HandSetStock> GetAllHansetStockByOrgIdAndBranchId(long orgId, long branchId);
+        bool IsExistsHandsetStockIMEI(string imei, long orgId, string status);
     }
 }

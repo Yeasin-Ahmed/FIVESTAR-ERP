@@ -62,5 +62,18 @@ Where 1=1 and fs.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<FaultyStockInfoDTO>(query).ToList();
         }
+
+        public IEnumerable<FaultyStockInfoDTO> GetAllFaultyMobilePartsAndCode(long orgId)
+        {
+            return this._configurationDb.Db.Database.SqlQuery<FaultyStockInfoDTO>(
+                string.Format(@"SELECT DISTINCT fsi.PartsId,CAST(mp.MobilePartName AS VARCHAR(25)) +'-'+ CAST(mp.MobilePartCode AS VARCHAR(10)) 'MobilePartName'
+FROM [Configuration].dbo.tblFaultyStockInfo fsi
+Inner Join [Configuration].dbo.tblMobileParts mp On fsi.PartsId = mp.MobilePartId and fsi.OrganizationId = mp.OrganizationId
+where fsi.OrganizationId={0}", orgId)).ToList();
+        }
+        public IEnumerable<FaultyStockInfo> GetAllFaultyMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId)
+        {
+            return _faultyStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.PartsId == partsId && info.OrganizationId == orgId && info.BranchId == branchId).ToList();
+        }
     }
 }

@@ -107,6 +107,8 @@
     <Compile Include="Configuration\DomainModels\Repair.cs" />
     <Compile Include="Configuration\DomainModels\Service.cs" />
     <Compile Include="Configuration\DomainModels\ServiceWarehouse.cs" />
+    <Compile Include="Configuration\DomainModels\StockTransferDetailModelToModel.cs" />
+    <Compile Include="Configuration\DomainModels\StockTransferInfoModelToModel.cs" />
     <Compile Include="Configuration\DomainModels\TechnicalServiceEng.cs" />
     <Compile Include="Configuration\DomainModels\TransferDetail.cs" />
     <Compile Include="Configuration\DomainModels\TransferInfo.cs" />
@@ -127,6 +129,8 @@
     <Compile Include="Configuration\DTOModels\RepairDTO.cs" />
     <Compile Include="Configuration\DTOModels\ServiceDTO.cs" />
     <Compile Include="Configuration\DTOModels\ServicesWarehouseDTO.cs" />
+    <Compile Include="Configuration\DTOModels\StockTransferDetailModelToModelDTO.cs" />
+    <Compile Include="Configuration\DTOModels\StockTransferInfoModelToModelDTO.cs" />
     <Compile Include="Configuration\DTOModels\TechnicalServiceEngDTO.cs" />
     <Compile Include="Configuration\DTOModels\TransferDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\TransferInfoDTO.cs" />
@@ -147,6 +151,8 @@
     <Compile Include="Configuration\ViewModels\RepairViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ServicesWarehouseViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ServiceViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\StockTransferDetailModelToModelViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\StockTransferInfoModelToModelViewModel.cs" />
     <Compile Include="Configuration\ViewModels\TechnicalServiceEngViewModel.cs" />
     <Compile Include="Configuration\ViewModels\TransferDetailViewModel.cs" />
     <Compile Include="Configuration\ViewModels\TransferInfoViewModel.cs" />
