@@ -1,0 +1,66 @@
+﻿
+@model IEnumerable<ERPBO.Configuration.ViewModels.FaultyStockInfoViewModel>
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+    int stock = 0;
+}
+<div class="row">
+    <table class="table table-bordered table-sm table-striped tblFaultyStockAssignItem" id="tblFaultyStockAssignItem">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th style="vertical-align:middle">
+                    <input type="checkbox" name="allFaultyStockAssignItem" id="allFaultyStockAssignItem" />
+                </th>
+                <th>#SL</th>
+                <th class="hide"></th>
+                <th class="hide"></th>
+                <th class="hide">Services Warehouse</th>
+                <th class="hide"></th>
+                <th>Model</th>
+                <th>Parts Name</th>
+                <th>Parts Code</th>
+                <th>Cost Price</th>
+                <th>Sell Price</th>
+                <th>Stock Qty</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tbody>
+            @foreach (var info in Model)
+            {
+                sl = sl + 1;
+                stock = (info.StockInQty - info.StockOutQty);
+            <tr>
+                <td class="text-center">
+                    <input type="checkbox" name="faultyStockAssignItem" data-item-val="@info.FaultyStockInfoId"/>
+                </td>
+                <td class="text-center text-bold">@sl</td>
+                <td class="hide">@info.FaultyStockInfoId</td>
+                <td class="hide">@info.SWarehouseId</td>
+                <td class="hide">@info.ServicesWarehouseName</td>
+                <td class="hide">@info.PartsId</td>
+                <td class="text-center">@info.ModelName</td>
+                <td class="text-center">@info.MobilePartName</td>
+                <td class="text-center">@info.PartsCode</td>
+                <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
+                <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
+                <td class="text-center">@stock</td>
+            </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="13">
+                        No data available in table
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="FaultyStockAssignItem">
+    @Html.Partial("_Pagination", pagerData)
+</div>
+
+

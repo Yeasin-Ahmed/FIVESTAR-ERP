@@ -105,6 +105,8 @@
     <Compile Include="Configuration\DomainModels\MobilePartStockDetail.cs" />
     <Compile Include="Configuration\DomainModels\MobilePartStockInfo.cs" />
     <Compile Include="Configuration\DomainModels\Repair.cs" />
+    <Compile Include="Configuration\DomainModels\ScrapStockDetail.cs" />
+    <Compile Include="Configuration\DomainModels\ScrapStockInfo.cs" />
     <Compile Include="Configuration\DomainModels\Service.cs" />
     <Compile Include="Configuration\DomainModels\ServiceWarehouse.cs" />
     <Compile Include="Configuration\DomainModels\StockTransferDetailModelToModel.cs" />
@@ -127,6 +129,8 @@
     <Compile Include="Configuration\DTOModels\MobilePartStockDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\MobilePartStockInfoDTO.cs" />
     <Compile Include="Configuration\DTOModels\RepairDTO.cs" />
+    <Compile Include="Configuration\DTOModels\ScrapStockDetailDTO.cs" />
+    <Compile Include="Configuration\DTOModels\ScrapStockInfoDTO.cs" />
     <Compile Include="Configuration\DTOModels\ServiceDTO.cs" />
     <Compile Include="Configuration\DTOModels\ServicesWarehouseDTO.cs" />
     <Compile Include="Configuration\DTOModels\StockTransferDetailModelToModelDTO.cs" />
@@ -149,6 +153,8 @@
     <Compile Include="Configuration\ViewModels\MobilePartStockInfoViewModel.cs" />
     <Compile Include="Configuration\ViewModels\MobilePartViewModel.cs" />
     <Compile Include="Configuration\ViewModels\RepairViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\ScrapStockDetailViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\ScrapStockInfoViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ServicesWarehouseViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ServiceViewModel.cs" />
     <Compile Include="Configuration\ViewModels\StockTransferDetailModelToModelViewModel.cs" />
@@ -206,6 +212,7 @@
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInRepairRequisitionAttr.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
+    <Compile Include="FrontDesk\DomainModels\FaultyStockAssignTS.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceInfo.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
@@ -230,6 +237,7 @@
     <Compile Include="FrontDesk\DTOModels\DashboardRequestSparePartsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardSellsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\FaultyStockAssignTSDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockDetailsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceInfoDTO.cs" />
@@ -258,6 +266,7 @@
     <Compile Include="FrontDesk\ViewModels\DashboardRequestSparePartsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardSellsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="FrontDesk\ViewModels\FaultyStockAssignTSViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockDetailsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceInfoViewModel.cs" />

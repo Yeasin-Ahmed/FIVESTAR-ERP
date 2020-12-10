@@ -75,5 +75,9 @@ where fsi.OrganizationId={0}", orgId)).ToList();
         {
             return _faultyStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.PartsId == partsId && info.OrganizationId == orgId && info.BranchId == branchId).ToList();
         }
+        public FaultyStockInfo GetStockInfoOneById(long id, long orgId)
+        {
+            return _faultyStockInfoRepository.GetOneByOrg(s => s.FaultyStockInfoId == id && s.OrganizationId == orgId);
+        }
     }
 }

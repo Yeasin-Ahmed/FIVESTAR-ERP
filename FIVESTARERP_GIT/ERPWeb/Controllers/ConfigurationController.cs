@@ -1,9 +1,12 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.ControlPanel.Interface;
+using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Inventory.Interface;
 using ERPBO.Configuration.DTOModels;
 using ERPBO.Configuration.ViewModels;
+using ERPBO.FrontDesk.DTOModels;
+using ERPBO.FrontDesk.ViewModels;
 using ERPWeb.Filters;
 using System;
 using System.Collections.Generic;
@@ -40,12 +43,17 @@ namespace ERPWeb.Controllers
         private readonly IMissingStockBusiness _missingStockBusiness;
         private readonly IStockTransferDetailModelToModelBusiness _stockTransferDetailModelToModelBusiness;
         private readonly IStockTransferInfoModelToModelBusiness _stockTransferInfoModelToModelBusiness;
+        private readonly IScrapStockInfoBusiness _scrapStockInfoBusiness;
 
         // Inventory //
         private readonly IDescriptionBusiness _descriptionBusiness;
         private readonly IColorBusiness _colorBusiness;
+        //ControlPanel
+        private readonly IRoleBusiness _roleBusiness;
+        //Front Desk
+        private readonly IFaultyStockAssignTSBusiness _faultyStockAssignTSBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -70,7 +78,9 @@ namespace ERPWeb.Controllers
             this._missingStockBusiness = missingStockBusiness;
             this._stockTransferInfoModelToModelBusiness = stockTransferInfoModelToModelBusiness;
             this._stockTransferDetailModelToModelBusiness = stockTransferDetailModelToModelBusiness;
-
+            this._roleBusiness = roleBusiness;
+            this._faultyStockAssignTSBusiness = faultyStockAssignTSBusiness;
+            this._scrapStockInfoBusiness = scrapStockInfoBusiness;
             #region Inventory
             this._descriptionBusiness = descriptionBusiness;
             #endregion
@@ -617,14 +627,53 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region MobilePartStock
-        public ActionResult MobilePartStockInfoList()
+        public ActionResult MobilePartStockInfoList(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
         {
-            ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
 
-            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+                ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
-            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            }
+            
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
+            {
+                IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId);
 
+                List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, ViewModels);
+                return PartialView("_FaultyStockInfoList", ViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStockRepaired")
+            {
+                IEnumerable<FaultyStockAssignTSDTO> dto = _faultyStockAssignTSBusiness.GetFaultyStockAssignTsByOrgId(User.OrgId, User.BranchId).Where(s => s.StateStatus == "Received");
+
+                List<FaultyStockAssignTSViewModel> ViewModels = new List<FaultyStockAssignTSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, ViewModels);
+                return PartialView("_FaultyStockRepairedList", ViewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStockScrap")
+            {
+                IEnumerable<ScrapStockInfoDTO> dto = _scrapStockInfoBusiness.GetScrapStockByOrgId(User.OrgId, User.BranchId);
+
+                List<ScrapStockInfoViewModel> ViewModels = new List<ScrapStockInfoViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, ViewModels);
+                return PartialView("_FaultyStockScrapList", ViewModels);
+            }
             return View();
         }
 
@@ -777,21 +826,97 @@ namespace ERPWeb.Controllers
 
         #region Faulty Stock
         //Nishad
-        public ActionResult FaultyStockInfoList(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
+        //public ActionResult FaultyStockInfoList(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
+        //{
+        //    if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
+        //    {
+        //        IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId);
+
+        //        List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
+        //        // Pagination //
+        //        ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+        //        dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+        //        //-----------------//
+        //        AutoMapper.Mapper.Map(dto, ViewModels);
+        //        return PartialView("_FaultyStockInfoList", ViewModels);
+        //    }
+        //    else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
+        //    {
+        //        IEnumerable<FaultyStockAssignTSDTO> dto = _faultyStockAssignTSBusiness.GetFaultyStockAssignTsByOrgId(User.OrgId,User.BranchId).Where(s=> s.StateStatus == "Received");
+
+        //        List<FaultyStockAssignTSViewModel> ViewModels = new List<FaultyStockAssignTSViewModel>();
+        //        // Pagination //
+        //        ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+        //        dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+        //        //-----------------//
+        //        AutoMapper.Mapper.Map(dto, ViewModels);
+        //        return PartialView("_FaultyStockAssignTSList", ViewModels);
+        //    }
+            
+        //}
+
+        public ActionResult CreateFaultyAssignTS(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
         {
-            //if (! string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
-            //{
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlTechnicalServicesName = _roleBusiness.GetRoleByTechnicalServicesId(string.Empty, User.OrgId, User.BranchId).Select(d => new SelectListItem { Text = d.UserName, Value = d.UserId.ToString() }).ToList();
+            }
+            else if(!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "AssignList")
+            {
+                IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId).Where(s=> (s.StockInQty - s.StockOutQty) > 0);
 
-            //}
-            IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId);
+                List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dto, ViewModels);
+                return PartialView("_FaultyStockTSAssignItem", ViewModels);
+            }
+            return View();
+        }
+        public ActionResult SaveFaultyStockAssignTS(long ts, long[] jobAssign)
+        {
+            bool IsSuccess = false;
+            if (ts > 0 && jobAssign.Count() > 0)
+            {
+                IsSuccess = _faultyStockAssignTSBusiness.SaveFaultyStockAssignTS(ts, jobAssign, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+        public ActionResult CreateFaultyStockRepairedTS(string flag,int page = 1)
+        {
+            if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "AssignList")
+            {
+                var dto = _faultyStockAssignTSBusiness.GetFaultyStockAssignTsByOrgId(User.OrgId, User.BranchId).Where(s => s.Quantity > 0 && s.StateStatus == "Send");
+                ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
+                dto = dto.Skip((page - 1) * 10).Take(10).ToList();
+                List<FaultyStockAssignTSViewModel> viewModels = new List<FaultyStockAssignTSViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_FaultyStockAssignTSList", viewModels);
+            }
+            return View();
+        }
+        public ActionResult SaveFaultyStockItemsByAssignTS(List<FaultyStockAssignTSViewModel> model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                List<FaultyStockAssignTSDTO> dto = new List<FaultyStockAssignTSDTO>();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _faultyStockAssignTSBusiness.SaveFaultyStockItemsByAssignTS(dto,User.UserId,User.OrgId,User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
 
-            List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
-            // Pagination //
-            ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
-            dto = dto.Skip((page - 1) * 10).Take(10).ToList();
-            //-----------------//
-            AutoMapper.Mapper.Map(dto, ViewModels);
-            return PartialView("_FaultyStockInfoList", ViewModels);
+        public ActionResult SaveFaultyStockRepairedItems(List<int> model)
+        {
+            bool IsSuccess = false;
+            if (model.Count > 0)
+            {
+                IsSuccess = _faultyStockAssignTSBusiness.SaveFaultyStockRepairedItems(model, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
         }
         #endregion
 

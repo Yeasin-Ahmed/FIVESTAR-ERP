@@ -173,6 +173,8 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IScrapStockDetailBusiness, ScrapStockDetailBusiness>();
+            container.RegisterType<IScrapStockInfoBusiness, ScrapStockInfoBusiness>();
             container.RegisterType<IStockTransferInfoModelToModelBusiness, StockTransferInfoModelToModelBusiness>();
             container.RegisterType<IStockTransferDetailModelToModelBusiness, StockTransferDetailModelToModelBusiness>();
             container.RegisterType<IMissingStockBusiness, MissingStockBusiness>();
@@ -200,6 +202,7 @@ namespace ERPWeb
 
             // FrontDesk Database
             #region FrontDesk
+            container.RegisterType<IFaultyStockAssignTSBusiness, FaultyStockAssignTSBusiness>();
             container.RegisterType<IJobOrderReturnDetailBusiness, JobOrderReturnDetailBusiness>();
             container.RegisterType<IJobOrderTransferDetailBusiness, JobOrderTransferDetailBusiness>();
             container.RegisterType<IInvoiceDetailBusiness, InvoiceDetailBusiness>();

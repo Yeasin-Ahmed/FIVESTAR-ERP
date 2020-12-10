@@ -110,6 +110,20 @@ namespace ERPDAL.ConfigurationDAL
     {
         public StockTransferDetailModelToModelRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
         {
+            
+        }
+    }
+    public class ScrapStockDetailRepository : ConfigurationBaseRepository<ScrapStockDetail>
+    {
+        public ScrapStockDetailRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
+            
+        }
+    }
+    public class ScrapStockInfoRepository : ConfigurationBaseRepository<ScrapStockInfo>
+    {
+        public ScrapStockInfoRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork)
+        {
 
         }
     }

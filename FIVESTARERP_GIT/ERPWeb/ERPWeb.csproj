@@ -844,6 +844,12 @@
     <Content Include="Views\Configuration\CreateStockTransferModelToModel.cshtml" />
     <Content Include="Views\Configuration\_StockTransferInfoMToMList.cshtml" />
     <Content Include="Views\Configuration\_StockTransferMMDetails.cshtml" />
+    <Content Include="Views\Configuration\CreateFaultyAssignTS.cshtml" />
+    <Content Include="Views\Configuration\_FaultyStockTSAssignItem.cshtml" />
+    <Content Include="Views\Configuration\CreateFaultyStockRepairedTS.cshtml" />
+    <Content Include="Views\Configuration\_FaultyStockAssignTSList.cshtml" />
+    <Content Include="Views\Configuration\_FaultyStockRepairedList.cshtml" />
+    <Content Include="Views\Configuration\_FaultyStockScrapList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

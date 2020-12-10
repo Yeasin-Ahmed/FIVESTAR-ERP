@@ -232,6 +232,10 @@
     <Compile Include="ConfigurationContextMigrations\202012080526248_Configuration_add_prop_tblHandset.Designer.cs">
       <DependentUpon>202012080526248_Configuration_add_prop_tblHandset.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202012101245161_Configuration_tblScrap.cs" />
+    <Compile Include="ConfigurationContextMigrations\202012101245161_Configuration_tblScrap.Designer.cs">
+      <DependentUpon>202012101245161_Configuration_tblScrap.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -415,6 +419,14 @@
     <Compile Include="FrontDeskContextMigrations\202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.cs" />
     <Compile Include="FrontDeskContextMigrations\202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.Designer.cs">
       <DependentUpon>202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012091102003_FrontDesk_add_tblFaultyStockAssignTS.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012091102003_FrontDesk_add_tblFaultyStockAssignTS.Designer.cs">
+      <DependentUpon>202012091102003_FrontDesk_add_tblFaultyStockAssignTS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.Designer.cs">
+      <DependentUpon>202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.cs</DependentUpon>
     </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
@@ -966,6 +978,9 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202012080526248_Configuration_add_prop_tblHandset.resx">
       <DependentUpon>202012080526248_Configuration_add_prop_tblHandset.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202012101245161_Configuration_tblScrap.resx">
+      <DependentUpon>202012101245161_Configuration_tblScrap.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1094,6 +1109,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.resx">
       <DependentUpon>202012081117380_FrontDesk_edit_dataType_tblInvoiceDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012091102003_FrontDesk_add_tblFaultyStockAssignTS.resx">
+      <DependentUpon>202012091102003_FrontDesk_add_tblFaultyStockAssignTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.resx">
+      <DependentUpon>202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

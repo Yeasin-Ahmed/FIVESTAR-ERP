@@ -15,6 +15,7 @@ namespace ERPDAL.FrontDeskDAL
         {
 
         }
+        public DbSet<FaultyStockAssignTS> tblFaultyStockAssignTS { get; set; }
         public DbSet<JobOrder> tblJobOrders { get; set; }
         public DbSet<JobOrderAccessories> tblJobOrderAccessories { get; set; }
         public DbSet<JobOrderProblem> tblJobOrderProblems { get; set; }

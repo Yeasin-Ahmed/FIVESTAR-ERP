@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.FaultyStockAssignTSViewModel>
+
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+    int stock = 0;
+}
+<div class="row">
+    <table class="table table-bordered table-sm table-striped tblFaultyStockRepaired" id="tblFaultyStockRepaired">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th style="vertical-align:middle">
+                    <input type="checkbox" id="chkAll" class="chkAll" name="allItem" />
+                </th>
+                <th>#SL</th>
+                <th class="hide"></th>
+                <th class="hide"></th>
+                <th>Model</th>
+                <th>Parts Name</th>
+                <th>Cost Price</th>
+                <th>Sell Price</th>
+                <th>Repaired Qty.</th>
+                <th>Scraped Qty.</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tbody>
+            @foreach (var info in Model)
+            {
+                sl = sl + 1;
+                <tr data-item-row="notSelected">
+                    <td class="btn-dark text-center" style="vertical-align:middle;width:5%">
+                        <input type="checkbox" class="chkItem" name="item" />
+                    </td>
+                    <td class="text-center text-bold">@sl</td>
+                    <td class="hide">@info.FaultyStockAssignTSId</td>
+                    <td class="hide">@info.PartsId</td>
+                    <td class="text-center">@info.ModelName</td>
+                    <td class="text-center">@info.MobilePartName</td>
+                    <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
+                    <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
+                    <td class="text-center">
+                        @info.RepairedQuantity
+                    </td>
+                    <td class="text-center">
+                        @info.ScrapQuantity
+                    </td>
+                </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="13">
+                        No data available in table
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="FaultyStockRepaired">
+    @Html.Partial("_Pagination", pagerData)
+</div>
+
+
+
+

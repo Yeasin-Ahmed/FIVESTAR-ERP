@@ -15,5 +15,6 @@ namespace ERPBLL.Configuration.Interface
         IEnumerable<FaultyStockInfoDTO> GetFaultyStockInfoByQuery(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId);
         IEnumerable<FaultyStockInfoDTO> GetAllFaultyMobilePartsAndCode(long orgId);
         IEnumerable<FaultyStockInfo> GetAllFaultyMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId);
+        FaultyStockInfo GetStockInfoOneById(long id, long orgId);
     }
 }

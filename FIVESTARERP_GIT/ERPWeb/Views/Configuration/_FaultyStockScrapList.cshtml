@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.ScrapStockInfoViewModel>
+
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+}
+<div class="row">
+    <table class="table table-bordered table-sm table-striped tblFaultyStockScrap" id="tblFaultyStockScrap">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th class="hide"></th>
+                <th class="hide"></th>
+                <th>Model</th>
+                <th>Parts Name</th>
+                <th>Cost Price</th>
+                <th>Sell Price</th>
+                <th>Scraped Qty.</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tbody>
+            @foreach (var info in Model)
+            {
+                sl = sl + 1;
+                <tr data-item-row="notSelected">
+                    <td class="text-center text-bold">@sl</td>
+                    <td class="hide">@info.ScrapStockInfoId</td>
+                    <td class="hide">@info.PartsId</td>
+                    <td class="text-center">@info.ModelName</td>
+                    <td class="text-center">@info.PartsName</td>
+                    <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
+                    <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
+                    <td class="text-center">
+                        @info.ScrapQuantity
+                    </td>
+                </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="13">
+                        No data available in table
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="FaultyStockScrap">
+    @Html.Partial("_Pagination", pagerData)
+</div>
+
+
+
+
+
+

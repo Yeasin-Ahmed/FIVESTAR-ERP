@@ -14,6 +14,8 @@ namespace ERPDAL.ConfigurationDAL
         {
 
         }
+        public DbSet<ScrapStockInfo> tblScrapStockInfo { get; set; }
+        public DbSet<ScrapStockDetail> tblScrapStockDetail { get; set; }
         public DbSet<StockTransferInfoModelToModel> tblStockTransferInfoModelToModel { get; set; }
         public DbSet<StockTransferDetailModelToModel> tblStockTransferDetailModelToModel { get; set; }
         public DbSet<MissingStock> tblMissingStock { get; set; }

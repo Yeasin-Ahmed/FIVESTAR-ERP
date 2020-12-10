@@ -108,6 +108,7 @@ namespace ERPBLL.Configuration
                 {
                     warehouseInfo.StockInQty += item.Quantity;
                     warehouseInfo.UpUserId = userId;
+                    warehouseInfo.UpdateDate = DateTime.Now;
                     mobilePartStockInfoRepository.Update(warehouseInfo);
                 }
                 else

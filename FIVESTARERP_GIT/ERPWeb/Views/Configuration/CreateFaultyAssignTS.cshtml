@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "Faulty AssignTS";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class=" col-md-3 text-left">
+                        <a href="/Configuration/MobilePartStockInfoList" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6 text-center"><h5>Assign To TS</h5></div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select T.S--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-6">
+                        <button type="submit" id="btnSubmit" class="btn float-right btn-success"><i class="fas fa-plus-circle"></i> Assign</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row text-sm">
+                    <div class="col-md-12 text-sm" id="dataContainer">
+                        @{Html.RenderAction("CreateFaultyAssignTS", new { @flag = "AssignList" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+        var count = 0;
+
+        $(document).on('change', 'input[name="allFaultyStockAssignItem"]', function () {
+            var isChecked = $('input[name="allFaultyStockAssignItem"]').is(":checked");
+            $('input[name="faultyStockAssignItem"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblFaultyStockAssignItem tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+        //consoleLog(count);
+        $(document).on('change', 'input[name="faultyStockAssignItem"]', function () {
+            count = 0;
+            $.each($(".tblFaultyStockAssignItem tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(0).children('input[name="faultyStockAssignItem"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblFaultyStockAssignItem tbody tr").length;
+            if (allChecked == count) {
+                consoleLog(allChecked);
+                $('input[name="allFaultyStockAssignItem"]').prop("checked", allChecked);
+            }
+        })
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit()) {
+                bootbox.confirm("Are you sure you want to pushing these Job Orders", function (result) {
+                    if (result)
+                    {
+                        disable("#btnSubmit");
+                        var ts = TryParseInt(ddlTechnicalServicesName.val(), 0);
+                        var jobAssign = []; jobAssign.length = 0;
+                        $.each($(".tblFaultyStockAssignItem tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(0).children('input[name="faultyStockAssignItem"]');
+                            if (checkBox.is(":checked")) {
+                                jobAssign.push(TryParseInt(checkBox.attr("data-item-val"),0));
+                            }
+                        });
+
+                        var data = JSON.stringify({ ts: ts, jobAssign: jobAssign });
+                        //console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveFaultyStockAssignTS', data, getToken())).then(function (res, status) {
+                            if (res === true && status === "success") {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                LoadDataTable();
+                                count = 0;
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmit");
+                        });
+                    }
+                })
+            }
+        })
+
+        function LoadDataTable() {
+            var data = { flag: "AssignList"};
+            $.when(getReqWithData('html', 'GET', '/Configuration/CreateFaultyAssignTS', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        }
+
+        function ValidateSubmit() {
+            var isValid = true;
+            if (ddlTechnicalServicesName.val() === "") {
+                isValid = false;
+                bootbox.alert("Select a T.S");
+            }
+            //if (count == 0) {
+            //    isValid = false;
+            //    toastr.error("Please check at least one row", null, { timeOut: 1000 });
+            //}
+            var totalCheckedItems = 0;
+            if ($(".tblFaultyStockAssignItem tbody").length > 0) {
+                $.each($(".tblFaultyStockAssignItem tbody tr"), function (index, item) {
+                    if ($(this).children('td').eq(0).children('input[name="faultyStockAssignItem"]').is(":checked")) {
+                        totalCheckedItems++;
+                    }
+                });
+                if (totalCheckedItems == 0) {
+                    isValid = false;
+                    toastr.error("Please checked at least one item", null, { timeOut: 1000 });
+                }
+            }
+            return isValid;
+        }
+
+    </script>
+}

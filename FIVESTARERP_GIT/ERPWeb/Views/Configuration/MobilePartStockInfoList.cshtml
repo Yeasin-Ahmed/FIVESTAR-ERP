@@ -14,6 +14,12 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-partsFalultyStock-tab" data-toggle="pill" href="#custom-tabs-two-partsFalultyStock" role="tab" aria-controls="custom-tabs-two-partsFalultyStock" aria-selected="true">Faulty Stock</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-faultyStockRepairedList-tab" data-toggle="pill" href="#custom-tabs-two-faultyStockRepairedList" role="tab" aria-controls="custom-tabs-two-faultyStockRepairedList" aria-selected="true">Faulty Stock Repaired</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-faultyStockScrapedList-tab" data-toggle="pill" href="#custom-tabs-two-faultyStockScrapedList" role="tab" aria-controls="custom-tabs-two-faultyStockScrapedList" aria-selected="true">Faulty Stock Scraped</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body shadow">
@@ -35,7 +41,7 @@
                                                     Parts Stock List
                                                 </h5>
                                             </div>
-                                           
+
                                             <div class="col-md-3">
                                                 <a href="/Configuration/CreateMobilePartStock" style="background-color:darkblue" class="btn btn-outline-primary btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Parts Stock-In</a>
                                             </div>
@@ -96,6 +102,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
+                                                <a href="/Configuration/CreateFaultyAssignTS" style="background-color:darkblue" class="btn btn-outline-primary btn-sm float-lg-right" id="btnFaultyStockAssign"><i class="fa fa-plus"></i> Assign TS</a>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +139,80 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12 text-sm" id="dataContainer2">
-                                                @{ Html.RenderAction("FaultyStockInfoList");}
+                                                @{ Html.RenderAction("MobilePartStockInfoList", new { flag = "FaultyStock" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-faultyStockRepairedList" role="tabpanel" aria-labelledby="custom-tabs-two-faultyStockRepairedList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray shadow">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Faulty Stock Repaired List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm">
+                                                <button type="button" class="btn btn-outline-success btn-sm float-right" id="btnSaveFaultyRepaired"><i class="fas fa-paper-plane"></i> Receive</button>
+                                            </div>
+                                            <br />
+                                            <br />
+                                            <div class="col-md-12 text-sm" id="dataContainer3">
+                                                @{ Html.RenderAction("MobilePartStockInfoList", new { flag = "FaultyStockRepaired" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-faultyStockScrapedList" role="tabpanel" aria-labelledby="custom-tabs-two-faultyStockScrapedList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray shadow">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Faulty Stock Scraped List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 text-sm" id="dataContainer4">
+                                                @{ Html.RenderAction("MobilePartStockInfoList", new { flag = "FaultyStockScrap" });}
                                             </div>
                                         </div>
                                     </div>
@@ -289,7 +369,7 @@
             var data = { flag: "FaultyStock", SwerehouseId: TryParseInt(ddlFaultyServicesWarehouse.val(), 0), MobilePartId: TryParseInt(ddlFaultyMobilePart.val(), 0), modelId: TryParseInt(ddlFaultyModels.val(), 0), lessOrEq: txtLessOrEqFaulty.val(), page: pageNo };
 
             //console.log(data);
-            $.when(getReqWithData('html', 'GET', '/Configuration/FaultyStockInfoList', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/Configuration/MobilePartStockInfoList', data)).then(function (res, status) {
                 //console.log(status);
                 if (status === "success") {
                     $("#dataContainer2").fadeOut('500', function () {
@@ -309,6 +389,149 @@
                 if ($(this).parent().parents('div').hasClass('FaultyStock')) {
                     pageNo = $(this).attr('data-page-no');
                     LoadDataTableFaulty();
+                }
+            }
+        })
+        //Faulty Stock Repaired
+        function LoadDataTableFaultyRepaired() {
+            var data = { flag: "FaultyStockRepaired",page: pageNo };
+
+            //console.log(data);
+            $.when(getReqWithData('html', 'GET', '/Configuration/MobilePartStockInfoList', data)).then(function (res, status) {
+                //console.log(status);
+                if (status === "success") {
+                    $("#dataContainer3").fadeOut('500', function () {
+                        $("#dataContainer3").empty();
+                        $("#dataContainer3").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('FaultyStockRepaired')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableFaultyRepaired();
+                }
+            }
+        })
+
+        $(document).on('change', 'input[name="allItem"]', function () {
+            var isChecked = $('input[name="allItem"]').is(":checked");
+            $('input[name="item"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblFaultyStockRepaired tbody tr").length;
+                $(".tblFaultyStockRepaired tbody tr").attr("data-item-row", "selected")
+            }
+            else {
+                count = 0;
+                $("input[type='number']").removeClass("error-border");
+                $(".tblFaultyStockRepaired tbody tr").attr("data-item-row", "notSelected")
+            }
+        })
+
+        $(document).on('change', 'input[name="item"]', function () {
+            count = 0;
+            $.each($(".tblFaultyStockRepaired tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(0).children('input[name="item"]').is(":checked")) {
+                    count++;
+                    $(this).attr("data-item-row", "selected");
+                }
+                else {
+                    $(this).attr("data-item-row", "notSelected");
+                }
+            });
+            var allChecked = $(".tblFaultyStockRepaired tbody tr").length == count;
+            $('input[name="allItem"]').prop("checked", allChecked);
+        })
+        function validateSubmit() {
+            var isValid = true;
+            var totalCheckedItems = 0;
+            var invalidValue = 0;
+            if ($(".tblFaultyStockRepaired tbody").length > 0) {
+                $.each($(".tblFaultyStockRepaired tbody tr"), function (index, item) {
+                    if ($(this).children('td').eq(0).children('input[name="item"]').is(":checked")) {
+                        totalCheckedItems++;
+                    }
+                });
+                if (totalCheckedItems == 0) {
+                    isValid = false;
+                    toastr.error("Please checked at least one item", null, { timeOut: 1000 });
+                }
+            }
+            else {
+                toastr.error("Item Not Found", null, { timeOut: 1000 });
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSaveFaultyRepaired").click(function (e) {
+            e.preventDefault();
+            if (validateSubmit()) {
+                bootbox.confirm("Are you sure you want to complete job?", function (result) {
+                    if (result) {
+                        disable("#btnSaveFaultyRepaired");
+                        var selectedRows = $(".tblFaultyStockRepaired tbody tr[data-item-row='selected']");
+                        var items = []; items.length = 0;
+                        $.each(selectedRows, function (index, item) {
+                            var tds = $(this).children('td');
+                            items.push(
+                                tds.eq('2').html(),
+                            )
+                        })
+
+                        var data = JSON.stringify({ model: items });
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveFaultyStockRepairedItems', data, getToken())).then(function (res, status) {
+                            if (res == true && status === "success") {
+                                toastrSuccessAlert(execuStatus.successSave);
+                                LoadDataTableFaultyRepaired();
+                                LoadDataTableFaultyScrap();
+                            }
+                            else {
+                                toastrErrorAlert(execuStatus.fail);
+                            }
+                            enable("#btnSaveFaultyRepaired");
+                        }).fail(function (error) {
+                            console.log(error);
+                            toastrErrorAlert(execuStatus.fail);
+                            enable("#btnSaveFaultyRepaired");
+                        })
+                    } // result
+                }) // bootbox
+            }// validate
+        })
+
+        //Faulty Stock Scraped
+        function LoadDataTableFaultyScrap() {
+            var data = { flag: "FaultyStockScrap", page: pageNo };
+
+            //console.log(data);
+            $.when(getReqWithData('html', 'GET', '/Configuration/MobilePartStockInfoList', data)).then(function (res, status) {
+                //console.log(status);
+                if (status === "success") {
+                    $("#dataContainer4").fadeOut('500', function () {
+                        $("#dataContainer4").empty();
+                        $("#dataContainer4").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+            pageNo = 1;
+        }
+        // Pagination
+        $(document).on('click', 'a.page-link', function (e) {
+            e.preventDefault();
+            if (!$(this).hasClass('current-page')) {
+                if ($(this).parent().parents('div').hasClass('FaultyStockScrap')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadDataTableFaultyScrap();
                 }
             }
         })
