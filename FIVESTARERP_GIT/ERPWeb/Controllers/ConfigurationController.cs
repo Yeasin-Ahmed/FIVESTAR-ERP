@@ -759,8 +759,8 @@ namespace ERPWeb.Controllers
                 IEnumerable<MobilePartStockDetailDTO> partStockDetailDTO = _mobilePartStockDetailBusiness.GelAllMobilePartStockDetailByOrgId(User.OrgId, User.BranchId).Select(detail => new MobilePartStockDetailDTO
                 {
                     MobilePartStockDetailId = detail.MobilePartStockDetailId,
-                    SWarehouseId = detail.SWarehouseId,
-                    ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(detail.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
+                    //SWarehouseId = detail.SWarehouseId,
+                    //ServicesWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(detail.SWarehouseId.Value, User.OrgId, User.BranchId).ServicesWarehouseName),
                     MobilePartId = detail.MobilePartId,
                     MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
                     PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartCode),
