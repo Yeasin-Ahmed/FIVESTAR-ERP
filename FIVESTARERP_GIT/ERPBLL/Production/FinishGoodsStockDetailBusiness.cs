@@ -394,7 +394,7 @@ Where 1=1 {0}", Utility.ParamChecker(param));
                 List<FinishGoodsStockDetailDTO> finishGoodsStocks = new List<FinishGoodsStockDetailDTO>() {
                     new FinishGoodsStockDetailDTO()
                 {
-                    LineId = imeiInDb.PackagingLineId,
+                    LineId = imeiInDb.ProductionFloorId,
                     PackagingLineId = imeiInDb.PackagingLineId,
                     WarehouseId = imeiInDb.WarehouseId,
                     ItemTypeId = imeiInDb.ItemTypeId,

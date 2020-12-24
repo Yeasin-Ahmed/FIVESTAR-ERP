@@ -14,5 +14,6 @@ namespace ERPBLL.Inventory.Interface
         bool IsDuplicateColorName(string colorName, long id, long orgId);
         IEnumerable<Color> GetAllColorByOrgId(long orgId);
         Color GetColorOneByOrgId(long id, long orgId);
+        bool IsDuplicateColor(long colorId, string colorName, long orgId);
     }
 }

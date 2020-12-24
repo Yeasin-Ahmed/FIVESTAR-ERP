@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\FIVESTARERP_GIT",
+    "\\FIVESTARERP_GIT\\ERPBLL\\SalesAndDistribution",
+    "\\FIVESTARERP_GIT\\ERPWeb\\Controllers",
+    "\\FIVESTARERP_GIT\\ERPWeb\\Reports",
+    "\\FIVESTARERP_GIT\\ERPWeb\\Views"
   ],
+  "SelectedNode": "\\FIVESTARERP_GIT\\.gitattributes",
   "PreviewInSolutionExplorer": false
 }

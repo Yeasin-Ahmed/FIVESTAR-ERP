@@ -71,45 +71,92 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="row" style="margin-top:-15px">
-                                            <div class="col-md-6">
-                                                <h5 style="border-bottom:2px solid #70cf44">SCANING</h5>
-                                                <div class="row">
-                                                    <div class="col-md-12 mb-2">
-                                                        <input type="text" id="txtItemQRCode" placeholder="SCAN ITEM BY QR CODE HERE" class="form-control" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 mb-2">
-                                                        <input type="text" id="txtProblemQRCode" placeholder="SCAN PROBLEM BY QR CODE HERE" class="form-control" />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
 
+                                    <div class="card-body">
+            <div class="row" style="margin-top:-15px">
+                <div class="col-md-6">
+                    <h5 style="border-bottom:2px solid #70cf44">QC PASS</h5>
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <input type="text" id="txtItemQRCode" placeholder="SCAN ITEM BY QR CODE HERE" class="form-control" />
+                        </div>
+                    </div>
+                    @*<div class="row hide">
+                        <div class="col-md-12 mb-2">
+                            <input type="text" id="txtProblemQRCode" placeholder="SCAN PROBLEM BY QR CODE HERE" class="form-control" />
+                        </div>
+                    </div>*@
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <ul>
+                                <li class="error hide floor">Floor is required</li>
+                                <li class="error hide qc">QC is required</li>
+                                <li class="error hide repair">Repair is required</li>
+                                <li class="error hide qrCode">QRCode is required</li>
+                                <li class="error hide invalid-qrCode">Invalid QRCode</li>
+                                <li class="error hide prob-notFound">Add Problems</li>
+                                <li class="error hide qc-not-for-pdn">This QRCode is not belongs to this Floor</li>
+                                <li class="error hide duplicate-QrCode">This QRCode already has been transfered</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-sm btn-lg btn-flat btn-primary" id="btnSubmit">
+                                <i class="fas fa-paper-plane"></i> SUBMIT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5 style="border-bottom:2px solid #ee4f4f">PROBLEMS</h5>
+                    <div class="row">
+                        @*<div class="col-md-6 mb-2">
+                            <input type="text" id="txtItemQRCode" placeholder="SCAN ITEM BY QR CODE HERE" class="form-control" />
+                        </div>*@
+                        <div class="col-md-12 mb-2">
+                            <input type="text" id="txtProblemQRCode" placeholder="SCAN PROBLEM BY QR CODE HERE" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm table-bordered table-striped table-responsive-lg" id="tblProb">
+                                <thead class="btn-dark">
+                                    <tr class="text-center text-bold">
+                                        <th style="width:10%">#SL</th>
+                                        <th style="width:75%">Problems</th>
+                                        <th style="width:15%">Action</th>
+                                        <th class="hide"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                    @*<div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-4" style="border-right:2px solid #f6eaaa">
+                                                <h5 style="border-bottom:2px solid #46824d ">                                           QC  Pass</h5>
+                                                <div class="row">
                                                     <div class="col-md-12">
-                                                        <ul>
-                                                            <li class="error hide floor">Floor is required</li>
-                                                            <li class="error hide qc">QC is required</li>
-                                                            <li class="error hide repair">Repair is required</li>
-                                                            <li class="error hide qrCode">QRCode is required</li>
-                                                            <li class="error hide invalid-qrCode">Invalid QRCode</li>
-                                                            <li class="error hide prob-notFound">Add Problems</li>
-                                                            <li class="error hide qc-not-for-pdn">This QRCode is not belongs to this Floor</li>
-                                                            <li class="error hide duplicate-QrCode">This QRCode already has been transfered</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <button type="button" class="btn btn-sm btn-lg btn-flat btn-primary" id="btnSubmit">
-                                                            <i class="fas fa-paper-plane"></i> SUBMIT
-                                                        </button>
+                                                        <input type="text" id="txtItemQRCode" class="form-control text-bold" placeholder="Enter IMEI Here" style="border-radius:0" />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <h5 style="border-bottom:2px solid #ee4f4f">PROBLEMS</h5>
+                                            <div class="col-md-8">
+                                                <h5 style="border-bottom:2px solid #e03c3c">QC Fail</h5>
                                                 <div class="row">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="txtItemQRCode" class="form-control text-bold" placeholder="Enter IMEI Here" style="border-radius:0" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="txtProblemQRCode" class="form-control text-bold" placeholder="Enter Problem Here" style="border-radius:0" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 mt-2">
                                                         <table class="table table-sm table-bordered table-striped table-responsive-lg" id="tblProb">
                                                             <thead class="btn-dark">
                                                                 <tr class="text-center text-bold">
@@ -123,9 +170,23 @@
                                                         </table>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 mt-2">
+                                                        <ul>
+                                                            <li class="error hide invalid">This IMEI may has been transfered/Invalid</li>
+                                                            <li class="error hide prob-notFound">This IMEI may has been transfered/Invalid</li>
+                                                            <li class="error hide req-imei">Input IMEI!</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-sm btn-primary btn-flat float-right" id="btnSubmitQCFail">
+                                            Submit <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -239,7 +300,6 @@
         function validateQRCodeInRepair() {
             return ajaxBooleanChecker(JSON.stringify({ qrCode: $.trim(txtItemQRCode.val()) }), '/Common/IsExistInAssembly', getToken()) == true;
         }
-
         txtItemQRCode.change(function () {
             qrCodeDataObj = {};
             if ($.trim(txtItemQRCode.val()) !== "") {
@@ -267,6 +327,50 @@
                 }
             }
         })
+        // QC pass //
+
+        //txtItemQRCode.change(function myfunction() {
+        //    if ($.trim(txtItemQRCode.val()).length != 0) {
+        //        fnQCPassData($.trim(txtItemQRCode.val()));
+        //    }
+        //    else {
+        //        txtItemQRCode.val('');
+        //        txtItemQRCode.focus();
+        //    }
+        //})
+        
+
+        //function fnQCPassData() {
+        //    if (validateQRCodeInRepair() == true) {
+
+        //        var info = { FloorId: TryParseInt(ddlProductionFloor.val(), 0), QCLineId: TryParseInt(ddlQCLine.val(), 0), RepairLineId: TryParseInt(ddlRepairLine.val(), 0), QRCode: txtItemQRCode.val(), AssemblyLineId: qrCodeDataObj.Assembly, DescriptionId: qrCodeDataObj.Model, ItemId: qrCodeDataObj.Item, ItemTypeId: qrCodeDataObj.ItemType, WarehouseId: qrCodeDataObj.Warehouse };
+
+        //        var data = JSON.stringify({ model: info })
+        //        console.log(data);
+        //        //return console.log(data);
+
+        //        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQRCodeWiseQcItemTransfer', data, getToken())).then(function (res, status) {
+        //            console.log(res);
+        //            if (res.isSuccess) {
+        //                toastrSuccessAlert(execuStatus.successSave);
+        //                txtItemQRCode.val('');
+        //                txtItemQRCode.focus();
+        //            }
+        //            else {
+        //                toastrErrorAlert(res.text);
+        //            }
+        //        }).fail(function (error) {
+        //            console.log(error);
+        //            toastrErrorAlert(execuStatus.fail);
+        //        })
+        //    }
+        //    else {
+        //        toastr.error("This IEMI may has been transfered", null, { timeOut: 2000 })
+        //    }
+        //}
+        //QC Pass End
+
+        
 
         txtProblemQRCode.change(function () {
             if ($.trim(txtProblemQRCode.val()) !== "") {
@@ -360,10 +464,6 @@
                     isValid = false;
                 }
             }
-            //if ($("#tblProb tbody tr").length === 0) {
-            //    $(".prob-notFound").removeClass("hide");
-            //    isValid = false;
-            //}
             if ($.trim(txtItemQRCode.val()) === "") {
                 $(".qrCode").removeClass("hide");
                 isValid = false;
@@ -382,12 +482,6 @@
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
-            //console.log("qrCodeDataObj");
-            //console.log(qrCodeDataObj);
-            //console.log("problemsObj");
-            //console.log(problemsObj);
-            //alert('submit')
-            //var qrCodeData = new { Floor=(data != null ? data.ProductionFloorId : 0), Assembly=(data != null ? data.AssemblyId : 0), Model=(data != null ? data.DescriptionId : 0), Item= (data != null ? data.ItemId : 0) };
 
             if (validationForm()) {
 

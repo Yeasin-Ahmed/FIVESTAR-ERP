@@ -16,6 +16,8 @@ namespace ERPBO.Production.DTOModel
         public int CompleteQuantity { get; set; }
         public int RepairIn { get; set; }
         public int RepairOut { get; set; }
+        public int MiniStockReceivedQty { get; set; }
+        public int MiniStockNotReceivedQty { get; set; }
         public List<DashBoardAssemblyFaultyDTO> AssemblyFaultys { get; set; }
         public List<DashBoardAssemblyProblemDTO> AssemblyProblems { get; set; }
     }

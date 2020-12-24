@@ -14,6 +14,8 @@ namespace ERPBO.Production.ViewModels
         public string AssemblyLineName { get; set; }
         public int TargetQuantity { get; set; }
         public int CompleteQuantity { get; set; }
+        public int MiniStockReceivedQty { get; set; }
+        public int MiniStockNotReceivedQty { get; set; }
         public int RepairIn { get; set; }
         public int RepairOut { get; set; }
         public List<DashBoardAssemblyFaultyViewModel> AssemblyFaultys { get; set; }

@@ -13,5 +13,6 @@ namespace ERPBLL.Inventory.Interface
         Category GetCategoryById(long id, long orgId);
         IEnumerable<Category> GetCategories(long orgId);
         bool SaveCategory(CategoryDTO category, long userId,long branchId, long orgId);
+        bool IsDuplicateCategory(long categoryId,string categoryName, long orgId);
     }
 }

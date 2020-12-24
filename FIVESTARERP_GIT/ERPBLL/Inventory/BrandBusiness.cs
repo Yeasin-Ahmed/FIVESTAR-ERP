@@ -29,7 +29,6 @@ namespace ERPBLL.Inventory
         {
             return _brandRepository.GetAll(s => s.OrganizationId == orgId).ToList();
         }
-
         public IEnumerable<Brand> GetClientMobileBrand(string clientMobileBrandName, long orgId)
         {
             return _brandRepository.GetAll(s => s.OrganizationId == orgId && (string.IsNullOrEmpty(clientMobileBrandName) || s.BrandName == clientMobileBrandName.Trim()));
@@ -77,6 +76,10 @@ namespace ERPBLL.Inventory
                 }
             }
             return IsSuccess;
+        }
+        public bool IsDuplicateBrand(long brandId, string brandName, long orgId)
+        {
+            return _brandRepository.GetOneByOrg(b => b.BrandName == brandName && b.BrandId != brandId && b.OrganizationId == orgId) != null ? true : false;
         }
     }
 }

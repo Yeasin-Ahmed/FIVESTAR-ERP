@@ -92,7 +92,7 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
             {
                 // Update
                 description = GetDescriptionOneByOrdId(model.DescriptionId, orgId);
-                description.DescriptionName = model.DescriptionName;
+                //description.DescriptionName = model.DescriptionName;
                 description.IsActive = model.IsActive;
                 description.Remarks = model.Remarks;
                 description.TAC = model.TAC;
@@ -380,6 +380,11 @@ Where mc.DescriptionId = {0} and mc.OrganizationId={1}", modelId, orgId)).ToList
         public IEnumerable<Dropdown> GetModelsByBrandAndCategory(long brandId, long categoryId, long orgId)
         {
             return descriptionRepository.GetAll(s => s.BrandId == brandId && s.CategoryId == categoryId && s.OrganizationId == orgId).Select(s => new Dropdown() { value = s.DescriptionId.ToString(), text = s.DescriptionName }).ToList();
+        }
+
+        public bool IsDuplicateModel(long id, string modelName, long orgId)
+        {
+            return descriptionRepository.GetOneByOrg(m => m.DescriptionName == modelName && m.DescriptionId != id && m.OrganizationId == orgId) != null ? true : false;
         }
     }
 }

@@ -857,4 +857,7 @@ function dropDownSelectedText(idName) {
 function getTblCells(row) {
    return $(row).parent().parents('tr').children('td');
 }
+function clearDropdown2(eletementId) {
+    $('#' + eletementId + ' option').remove();
+}
 

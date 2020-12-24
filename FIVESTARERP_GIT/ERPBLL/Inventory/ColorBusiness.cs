@@ -24,12 +24,10 @@ namespace ERPBLL.Inventory
         {
             return colorRepository.GetAll(s => s.OrganizationId == orgId);
         }
-
         public bool IsDuplicateColorName(string colorName, long id, long orgId)
         {
             return colorRepository.GetOneByOrg(s => s.ColorName == colorName && s.ColorId != id && s.OrganizationId == orgId) != null ? true : false;
         }
-
         public bool SaveColor(ColorDTO dto, long userId, long orgId)
         {
             Color color = new Color();
@@ -56,10 +54,13 @@ namespace ERPBLL.Inventory
             }
             return colorRepository.Save();
         }
-
         public Color GetColorOneByOrgId(long id, long orgId)
         {
             return colorRepository.GetOneByOrg(s => s.ColorId == id && s.OrganizationId == orgId);
+        }
+        public bool IsDuplicateColor(long colorId, string colorName, long orgId)
+        {
+            return colorRepository.GetOneByOrg(c => c.ColorName == colorName && c.ColorId != colorId && c.OrganizationId == orgId) != null ? true : false;
         }
     }
 }

@@ -20,6 +20,6 @@ namespace ERPBLL.Inventory.Interface
         bool SaveDescription(DescriptionDTO model, long userId, long orgId);
         IEnumerable<Dropdown> GetModelsByBrand(long brandId, long orgId);
         IEnumerable<Dropdown> GetModelsByBrandAndCategory(long brandId,long categoryId, long orgId);
-
+        bool IsDuplicateModel(long id, string modelName, long orgId);
     }
 }

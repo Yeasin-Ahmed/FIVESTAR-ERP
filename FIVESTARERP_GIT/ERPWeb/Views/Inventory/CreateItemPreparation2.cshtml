@@ -437,6 +437,7 @@
                                 @*setTimeout(function () {
                                     redirectPage('@Url.Action("GetItemPreparation")');
                                 }, 1000);*@
+                                resetUI();
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
@@ -475,9 +476,14 @@
             ddlWarehouseSource.val("");
             enable("#ddlItemTgt");
             clearDropdown("ddlItemSrc");
+            //clearDropdown("ddlItemTgt");
             txtQty.val("0");
             txtRemarks.val("");
             $("#tblList tbody").empty();
+            ddlItemPreparationType.val('');
+            ddlItemPreparationType.trigger("change");
+            ddlItemTgt.val('');
+            ddlItemTgt.trigger("change");
         }
 
         function redirectPage(page) {

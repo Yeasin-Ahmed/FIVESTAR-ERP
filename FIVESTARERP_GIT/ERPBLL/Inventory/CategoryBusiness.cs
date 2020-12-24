@@ -58,5 +58,10 @@ namespace ERPBLL.Inventory
             }
             return _categoryRepository.Save();
         }
+
+        public bool IsDuplicateCategory(long categoryId, string categoryName, long orgId)
+        {
+            return _categoryRepository.GetOneByOrg(c => c.CategoryName == categoryName && c.CategoryId != categoryId && c.OrganizationId == orgId) != null ? true : false;
+        }
     }
 }

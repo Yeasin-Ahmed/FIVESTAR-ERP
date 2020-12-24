@@ -9,24 +9,29 @@
 <div class="form-vertical row">
     <div class="form-group col-md-12">
         <label for="ddlModelName" class="control-label">Model Name</label>
-        @Html.DropDownList("DescriptionId", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+        @Html.DropDownList("DescriptionId", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger DescriptionId" })
+        <span class="error hide req-xls-model">Model is require</span>
     </div>
     <div class="form-group col-md-12">
         <label for="ddlSupplierName" class="control-label">Supplier Name</label>
-        @Html.DropDownList("SupplierId", (IEnumerable<SelectListItem>)ViewBag.ddlSupplierName, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger" })
+        @Html.DropDownList("SupplierId", (IEnumerable<SelectListItem>)ViewBag.ddlSupplierName, "--Select Supplier--", new { @class = "form-control form-control-sm select2 select2-danger SupplierId" })
+        <span class="error hide req-xls-supplier">Supplier is require</span>
     </div>
     <div class="form-group col-md-12">
-        <label for="ddlBomItem" class="control-label">BOM Item
+        <label for="ddlBomItem" class="control-label">
+            BOM Item
             <select id="ddlBomType" class="ddlBomType">
                 <option value="Production">Production</option>
                 <option value="Packaging">Packaging</option>
             </select>
         </label>
-        @Html.DropDownList("BomItemId", (IEnumerable<SelectListItem>)ViewBag.ddlBomItem, "--Select Target Item--", new { @class = "form-control form-control-sm select2 select2-danger" })
+        @Html.DropDownList("BomItemId", (IEnumerable<SelectListItem>)ViewBag.ddlBomItem, "--Select Target Item--", new { @class = "form-control form-control-sm select2 select2-danger BomItemId" })
+        <span class="error hide req-xls-item">Item is require</span>
     </div>
     <div class="form-group col-md-12">
         <label class="control-label">Select File</label>
         <input type="file" id="FileUpload" name="FileUpload" class="form-control FileUpload" />
+        <span class="error hide req-xls-file">File is require</span>
     </div>
 </div>
 }
