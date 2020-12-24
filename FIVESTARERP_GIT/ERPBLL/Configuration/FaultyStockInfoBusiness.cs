@@ -29,7 +29,7 @@ namespace ERPBLL.Configuration
         {
             return _faultyStockInfoRepository.GetOneByOrg(s => s.DescriptionId == modelId && s.PartsId == partsId && s.CostPrice == cprice && s.OrganizationId == orgId && s.BranchId == branchId);
         }
-        public IEnumerable<FaultyStockInfoDTO> GetFaultyStockInfoByQuery(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId)
+        public IEnumerable<FaultyStockInfoDTO> GetFaultyStockInfoByQuery(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId, long branchId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -58,7 +58,7 @@ From tblFaultyStockInfo fs
 Left Join tblServiceWarehouses w on fs.SWarehouseId = w.SWarehouseId and fs.OrganizationId =w.OrganizationId
 Left Join tblMobileParts parts on fs.PartsId = parts.MobilePartId and fs.OrganizationId =parts.OrganizationId
 Left Join [Inventory].dbo.tblDescriptions de  on fs.DescriptionId = de.DescriptionId and fs.OrganizationId =de.OrganizationId
-Where 1=1 and fs.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
+Where 1=1 and fs.OrganizationId={0} and fs.BranchId= {1} {2}", orgId, branchId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<FaultyStockInfoDTO>(query).ToList();
         }

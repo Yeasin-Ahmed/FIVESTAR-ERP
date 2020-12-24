@@ -91,7 +91,7 @@ group by MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.Mob
             return query;
         }
 
-        public IEnumerable<MobilePartStockInfoDTO> GetMobilePartsStockInformations(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId)
+        public IEnumerable<MobilePartStockInfoDTO> GetMobilePartsStockInformations(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId, long branchId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -120,7 +120,7 @@ From tblMobilePartStockInfo stock
 Left Join tblServiceWarehouses w on stock.SWarehouseId = w.SWarehouseId and stock.OrganizationId =w.OrganizationId
 Left Join tblMobileParts parts on stock.MobilePartId = parts.MobilePartId and stock.OrganizationId =parts.OrganizationId
 Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
-Where 1=1 and stock.OrganizationId={0} {1}", orgId,Utility.ParamChecker(param));
+Where 1=1 and stock.OrganizationId={0} and stock.BranchId= {1} {2}", orgId, branchId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(query).ToList();
         }

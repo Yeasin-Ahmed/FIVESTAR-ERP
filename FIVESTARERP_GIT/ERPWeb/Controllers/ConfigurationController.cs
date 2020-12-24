@@ -640,7 +640,7 @@ namespace ERPWeb.Controllers
             
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
             {
-                IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId);
+                IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId, User.BranchId);
 
                 List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
                 // Pagination //
@@ -706,7 +706,7 @@ namespace ERPWeb.Controllers
             //}).AsEnumerable();
             //partStockInfoDTO = partStockInfoDTO.Where(s => (SwerehouseId == null || SwerehouseId == 0 || s.SWarehouseId == SwerehouseId) && (MobilePartId == null || MobilePartId == 0 || s.MobilePartId == MobilePartId) && (string.IsNullOrEmpty(lessOrEq) || (s.StockInQty - s.StockOutQty) <= Convert.ToInt32(lessOrEq))).ToList();
 
-            IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetMobilePartsStockInformations(SwerehouseId ?? 0,  modelId ?? 0,MobilePartId ?? 0, lessOrEq, User.OrgId);
+            IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetMobilePartsStockInformations(SwerehouseId ?? 0,  modelId ?? 0,MobilePartId ?? 0, lessOrEq, User.OrgId, User.BranchId);
 
             List<MobilePartStockInfoViewModel> warehouseStockInfoViews = new List<MobilePartStockInfoViewModel>();
             // Pagination //
@@ -863,7 +863,7 @@ namespace ERPWeb.Controllers
             }
             else if(!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "AssignList")
             {
-                IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId).Where(s=> (s.StockInQty - s.StockOutQty) > 0);
+                IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId, User.BranchId).Where(s=> (s.StockInQty - s.StockOutQty) > 0);
 
                 List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
                 // Pagination //

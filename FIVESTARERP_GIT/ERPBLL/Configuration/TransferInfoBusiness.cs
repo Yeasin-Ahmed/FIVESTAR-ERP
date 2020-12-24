@@ -67,6 +67,7 @@ namespace ERPBLL.Configuration
                         {
                             MobilePartStockDetailDTO detailItem = new MobilePartStockDetailDTO()
                             {
+                                DescriptionId = item.DescriptionId,
                                 BranchFrom = info.BranchId,
                                 BranchId = info.BranchTo.Value,
                                 SWarehouseId = swarehouse,

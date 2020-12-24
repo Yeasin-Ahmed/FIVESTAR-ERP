@@ -12,7 +12,7 @@ namespace ERPBLL.Configuration.Interface
     {
         IEnumerable<FaultyStockInfo> GetAllFaultyStockInfoByOrgId(long orgId, long branchId);
         FaultyStockInfo GetAllFaultyStockInfoByModelAndPartsIdAndCostPrice(long modelId, long partsId, double cprice, long orgId, long branchId);
-        IEnumerable<FaultyStockInfoDTO> GetFaultyStockInfoByQuery(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId);
+        IEnumerable<FaultyStockInfoDTO> GetFaultyStockInfoByQuery(long? warehouseId, long? modelId, long? partsId, string lessOrEq, long orgId, long branchId);
         IEnumerable<FaultyStockInfoDTO> GetAllFaultyMobilePartsAndCode(long orgId);
         IEnumerable<FaultyStockInfo> GetAllFaultyMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId);
         FaultyStockInfo GetStockInfoOneById(long id, long orgId);

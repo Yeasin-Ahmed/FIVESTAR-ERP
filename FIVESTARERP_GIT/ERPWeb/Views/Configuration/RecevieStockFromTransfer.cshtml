@@ -11,7 +11,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+@*<div class="row">
     <div class="col-md-12">
         <div class="card shadow">
             <div class="card-header">
@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <div class="row">
     <div class="col-md-12">
         <div class="card shadow">
@@ -45,6 +45,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header alert-secondary">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" id="hdfTransferInfoId" />
                     <input type="hidden" id="hdfRowIndex" />
                     <h4 id="modalHeading" class="modal-title">Transfer Details</h4>

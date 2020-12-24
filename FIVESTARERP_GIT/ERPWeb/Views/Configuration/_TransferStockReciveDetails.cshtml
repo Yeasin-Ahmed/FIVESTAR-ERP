@@ -7,10 +7,10 @@
 }
 @if (status == ERPBLL.Common.RequisitionStatus.Approved)
 {
-    <div class="row">
+    <div class="row hide">
         <div class="col-md-4">
             <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
-            @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm ddlServicesWarehouse" })
+            @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm ddlServicesWarehouse" })
             <span class="error hide require-warehouse">Warehouse is required</span>
         </div>
     </div>
