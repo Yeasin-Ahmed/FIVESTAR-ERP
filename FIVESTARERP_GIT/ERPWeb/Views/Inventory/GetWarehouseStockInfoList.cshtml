@@ -835,6 +835,7 @@
                 formData.append("BomItemId", ddlBomItemForFileUpload);
                 formData.append("BomType", bomType);
                 formData.append("FileUpload", excelFile);
+                //return console.log(formData);
                 console.log(formData);
                 $.when(postReqWithFile(dataType.json, type.post, '/Inventory/UploadExcel', formData, getToken())).then(function (res, status) {
                     console.log(res);
