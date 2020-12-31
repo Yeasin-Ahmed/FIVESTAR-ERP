@@ -213,6 +213,7 @@
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInRepairRequisitionAttr.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
     <Compile Include="FrontDesk\DomainModels\FaultyStockAssignTS.cs" />
+    <Compile Include="FrontDesk\DomainModels\HandsetChangeTrace.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceDetail.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceInfo.cs" />
     <Compile Include="FrontDesk\DomainModels\JobOrder.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockAssignTSDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockDetailsDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\HandsetChangeTraceDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceInfoDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceUsedPartsDTO.cs" />
@@ -268,6 +270,7 @@
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockAssignTSViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockDetailsViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\HandsetChangeTraceViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceInfoViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceUsedPartsViewModel.cs" />

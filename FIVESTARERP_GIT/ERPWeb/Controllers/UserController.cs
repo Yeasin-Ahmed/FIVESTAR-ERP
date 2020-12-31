@@ -147,6 +147,12 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dailysellDTO, dailyView);
                 ViewBag.DashboardDailySellsViewModel = dailyView;
 
+                // Not Assign Job//29-12-2020
+                IEnumerable<DashboardDailyReceiveJobOrderDTO> notAssignDTO = _jobOrderBusiness.DashboardNotAssignJob(User.OrgId, User.BranchId);
+                IEnumerable<DashboardDailyReceiveJobOrderViewModel> notAssignView = new List<DashboardDailyReceiveJobOrderViewModel>();
+                AutoMapper.Mapper.Map(notAssignDTO, notAssignView);
+                ViewBag.DashboardNotAssignJobViewModel = notAssignView;
+
                 // Total Sells//25-10-2020
                 IEnumerable<DashboardSellsDTO> totalDTO = _jobOrderBusiness.DashboardTotalSells(User.OrgId, User.BranchId);
                 IEnumerable<DashboardSellsViewModel> totalView = new List<DashboardSellsViewModel>();
@@ -260,7 +266,7 @@ namespace ERPWeb.Controllers
                     RequsitionCode = info.RequsitionCode,
                     JobOrderCode = (jobOrderInfo.JobOrderCode),
                     Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId, User.BranchId, User.OrgId).Type),
-                    ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                    ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(info.ModelId.Value, User.OrgId).DescriptionName),
                     ModelColor= jobOrderInfo.ModelColor,
                     Requestby = UserForEachRecord(info.EUserId.Value).UserName,
                     EntryDate = info.EntryDate,
@@ -276,6 +282,8 @@ namespace ERPWeb.Controllers
                 PartsName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.PartsId, User.OrgId).MobilePartName),
                 PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.PartsId, User.OrgId).MobilePartCode),
                 Quantity = detail.Quantity,
+                ModelId=detail.ModelId.Value,
+                
             }).ToList();
             List<TsStockReturnDetailViewModel> detailViewModels = new List<TsStockReturnDetailViewModel>();
             AutoMapper.Mapper.Map(tsStock, detailViewModels);

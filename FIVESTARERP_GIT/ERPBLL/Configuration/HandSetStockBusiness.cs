@@ -86,7 +86,7 @@ stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.Descri
 From tblHandSetStock stock
 Left Join [Inventory].dbo.tblColors co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
 Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
-Where 1=1 and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
+Where 1=1 and stock.StateStatus='Stock-In' and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<HandSetStockDTO>(query).ToList();
         }

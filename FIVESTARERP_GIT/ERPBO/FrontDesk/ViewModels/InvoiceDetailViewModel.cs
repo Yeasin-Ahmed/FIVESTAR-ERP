@@ -30,5 +30,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public long InvoiceInfoId { get; set; }
         public string SalesType { get; set; }
         public string IMEI { get; set; }
+        public long? ModelId { get; set; }
+        public string ModelName { get; set; }
     }
 }

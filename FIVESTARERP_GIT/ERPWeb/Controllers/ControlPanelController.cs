@@ -556,7 +556,6 @@ namespace ERPWeb.Controllers
                     ParentSubmenuName = (sub.ParentSubMenuId > 0 ? _subMenuBusiness.GetSubMenuOneById(sub.ParentSubMenuId.Value).SubMenuName : ""),
                     MMId = sub.MMId,
                     MenuName = (_maniMenuBusiness.GetMainMenuOneById(sub.MMId).MenuName),
-
                     EntryUser = UserForEachRecord(sub.EUserId.Value).UserName,
                     UpdateUser = (sub.UpUserId == null || sub.UpUserId == 0) ? "" : UserForEachRecord(sub.UpUserId.Value).UserName
                 }).ToList();

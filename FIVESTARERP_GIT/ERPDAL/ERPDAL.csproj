@@ -428,6 +428,26 @@
     <Compile Include="FrontDeskContextMigrations\202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.Designer.cs">
       <DependentUpon>202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012270815534_FrontDesk_TSStockModelId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012270815534_FrontDesk_TSStockModelId.Designer.cs">
+      <DependentUpon>202012270815534_FrontDesk_TSStockModelId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012270911021_FrontDesk_TSStockModelId_.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012270911021_FrontDesk_TSStockModelId_.Designer.cs">
+      <DependentUpon>202012270911021_FrontDesk_TSStockModelId_.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012270954243_FrontDesk_ReturnStock_ModelId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012270954243_FrontDesk_ReturnStock_ModelId.Designer.cs">
+      <DependentUpon>202012270954243_FrontDesk_ReturnStock_ModelId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012280644223_FrontDesk_InvoiceInfo&amp;Details_ModelId.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012280644223_FrontDesk_InvoiceInfo&amp;Details_ModelId.Designer.cs">
+      <DependentUpon>202012280644223_FrontDesk_InvoiceInfo&amp;Details_ModelId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202012300628165_FrontDesk_HandsetChangeTrace.cs" />
+    <Compile Include="FrontDeskContextMigrations\202012300628165_FrontDesk_HandsetChangeTrace.Designer.cs">
+      <DependentUpon>202012300628165_FrontDesk_HandsetChangeTrace.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -1115,6 +1135,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.resx">
       <DependentUpon>202012100730546_FrontDesk_add_prop_tblFaultyStockAssignTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012270815534_FrontDesk_TSStockModelId.resx">
+      <DependentUpon>202012270815534_FrontDesk_TSStockModelId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012270911021_FrontDesk_TSStockModelId_.resx">
+      <DependentUpon>202012270911021_FrontDesk_TSStockModelId_.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012270954243_FrontDesk_ReturnStock_ModelId.resx">
+      <DependentUpon>202012270954243_FrontDesk_ReturnStock_ModelId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012280644223_FrontDesk_InvoiceInfo&amp;Details_ModelId.resx">
+      <DependentUpon>202012280644223_FrontDesk_InvoiceInfo&amp;Details_ModelId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202012300628165_FrontDesk_HandsetChangeTrace.resx">
+      <DependentUpon>202012300628165_FrontDesk_HandsetChangeTrace.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

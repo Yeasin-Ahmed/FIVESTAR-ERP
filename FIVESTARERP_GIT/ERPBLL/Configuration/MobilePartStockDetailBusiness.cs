@@ -248,7 +248,7 @@ namespace ERPBLL.Configuration
             mobilePartStockDetailRepository.InsertAll(stockDetails);
             if (mobilePartStockDetailRepository.Save())
             {
-                IsSuccess = _technicalServicesStockBusiness.SaveTechnicalServicesStockIn(servicesStockDTOs, userId, orgId, branchId);
+                IsSuccess = _technicalServicesStockBusiness.SaveTechnicalServicesStockIn(servicesStockDTOs, userId, orgId, branchId, modelId);
                 if (IsSuccess == true)
                 {
                     return _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(reqId, status, userId, orgId, reqInfo.BranchId.Value);
@@ -323,7 +323,7 @@ namespace ERPBLL.Configuration
             List<MobilePartStockDetail> mobilePartStockDetails = new List<MobilePartStockDetail>();
             foreach (var item in mobilePartStockDetailDTO)
             {
-                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(o => o.MobilePartId == item.MobilePartId).LastOrDefault();
+                var warehouseInfo = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(o => o.MobilePartId == item.MobilePartId && o.DescriptionId == item.DescriptionId).FirstOrDefault();
                 warehouseInfo.StockInQty += item.Quantity;
                 warehouseInfo.UpUserId = userId;
                 warehouseInfo.UpdateDate = DateTime.Now;
@@ -332,6 +332,7 @@ namespace ERPBLL.Configuration
                 MobilePartStockDetail StockDetail = new MobilePartStockDetail();
                 StockDetail.MobilePartId = item.MobilePartId;
                 StockDetail.SWarehouseId = warehouseInfo.SWarehouseId;
+                StockDetail.DescriptionId = warehouseInfo.DescriptionId;
                 StockDetail.CostPrice = warehouseInfo.CostPrice;
                 StockDetail.SellPrice = warehouseInfo.SellPrice;
                 StockDetail.Quantity = item.Quantity;

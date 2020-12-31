@@ -24,6 +24,7 @@ namespace ERPBO.FrontDesk.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public ICollection<TsStockReturnDetail> TsStockReturnDetails { get; set; }
+        public long? ModelId { get; set; }
 
     }
 }

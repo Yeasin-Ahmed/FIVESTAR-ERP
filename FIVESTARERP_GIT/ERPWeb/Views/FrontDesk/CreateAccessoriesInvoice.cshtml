@@ -61,23 +61,29 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="ddlSellType" class="control-label font-weight-bold">Sale Type<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <select class="form-control form-control-sm select2" id="ddlSellType">
-                                <option value="">--Select Type--</option>
+                                <option value="">--Select--</option>
                                 <option value="Good">Good</option>
                                 <option value="Faulty">Faulty</option>
                                 <option value="Handset">Handset</option>
                             </select>
                             <span class="error hide req-sellType">Input Sale Type!</span>
                         </div>
-                        <div class="col-md-3" id="divParts">
+                        <div class="col-md-2" id="partsModel">
+                            <label for="ddlPartsModelName" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlPartsModelName", (IEnumerable<SelectListItem>)ViewBag.ddlPartsModelName, "--Select--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide require-partsModel font-weight-bold">Model is required !</span>
+                            <span class="error hide require-duplicate-parts font-weight-bold">Parts is Added!</span>
+                        </div>
+                        <div class="col-md-2" id="divParts">
                             <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm select2" })
                             <span class="error hide require-mobileParts font-weight-bold">Parts is required !</span>
                             <span class="error hide require-duplicate-parts font-weight-bold">Parts is Added!</span>
                         </div>
-                        <div class="col-md-3" id="divFaultyParts">
+                        <div class="col-md-2" id="divFaultyParts">
                             <label for="ddlFaultyMobileParts" class="control-label font-weight-bold">Parts Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlFaultyMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlFaultyMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm select2" })
                             <span class="error hide require-mobileParts font-weight-bold">Parts is required !</span>
@@ -112,8 +118,8 @@
                             </div>
                             <span class="error hide required-qty font-weight-bold">Qty. is required !</span>
                         </div>
-                        <div class="col-md-2">
-                            <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>
+                        <div class="col-md-1">
+                            <label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add</label>
                             <div class="clearfix">
                                 <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="ADD TO LIST"><i class="fas fa-plus"></i></button>
                             </div>
@@ -132,6 +138,7 @@
                                                         <th>#SL</th>
                                                         <th class="hide"></th>
                                                         <th class="hide"></th>
+                                                        <th>Model</th>
                                                         <th>Parts/IMEI</th>
                                                         <th>SalesPrice</th>
                                                         <th>Qty.</th>
@@ -219,6 +226,7 @@
         var stockQty = $("#stockQty");
         var modelId = '';
         var colorId = '';
+        var ddlPartsModelName = $("#ddlPartsModelName");
 
         $(document).ready(function () {
 
@@ -296,6 +304,7 @@
                 txtSellPriceForHandset.val('');
                 txtQty.val('');
                 enable("#txtQty");
+                
             }
             else if (ddlSellType.val() === "Good") {
                 $("#divFaultyParts").hide();
@@ -334,7 +343,7 @@
         ddlMobileParts.change(function () {
             $("#stockQty").text('');
             if (ddlMobileParts.val() != "") {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetStockForAccessoriesSells', JSON.stringify({ partsId: ddlMobileParts.val()}), getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetStockForAccessoriesSells', JSON.stringify({ partsId: ddlMobileParts.val(), modelId: ddlPartsModelName.val() }), getToken())).then(function (res, status) {
                     console.log(res);
                     console.log(status);
                     if (status == "success") {
@@ -351,19 +360,19 @@
         ddlMobileParts.change(function () {
             clearDropdown("ddlsellsPrice");
             if (ddlMobileParts.val() != "") {
-                LoadDropDown('/Common2/GetSellPriceForDDL', 'POST', ddlsellsPrice, JSON.stringify({ partsId: ddlMobileParts.val() }));
+                LoadDropDown('/Common2/GetSellPriceForDDL', 'POST', ddlsellsPrice, JSON.stringify({ partsId: ddlMobileParts.val(), modelId: ddlPartsModelName.val() }));
             }
         })
         ddlFaultyMobileParts.change(function () {
             clearDropdown("ddlsellsPrice");
             if (ddlFaultyMobileParts.val() != "") {
-                LoadDropDown('/Common2/GetFaultyStockSellPriceForDDL', 'POST', ddlsellsPrice, JSON.stringify({ partsId: TryParseInt(ddlFaultyMobileParts.val(), 0) }));
+                LoadDropDown('/Common2/GetFaultyStockSellPriceForDDL', 'POST', ddlsellsPrice, JSON.stringify({ partsId: TryParseInt(ddlFaultyMobileParts.val(), 0), modelId: ddlPartsModelName.val() }));
             }
         })
         ddlFaultyMobileParts.change(function () {
             $("#stockQty").text('');
             if (ddlFaultyMobileParts.val() != "") {
-                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetFaultyStockForAccessoriesSells', JSON.stringify({ partsId: TryParseInt(ddlFaultyMobileParts.val(),0) }), getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetFaultyStockForAccessoriesSells', JSON.stringify({ partsId: TryParseInt(ddlFaultyMobileParts.val(), 0), modelId: ddlPartsModelName.val() }), getToken())).then(function (res, status) {
                     if (status == "success") {
                         $("#stockQty").text('(' + res + ')');
                     }
@@ -402,6 +411,10 @@
             }
             if ($.trim(txtMobileNumber.val()) == "") {
                 $(".require-mobile").removeClass("hide");
+                isValid = false;
+            }
+            if ($.trim(ddlPartsModelName.val()) == "") {
+                $(".require-partsModel").removeClass("hide");
                 isValid = false;
             }
             if (TryParseInt(txtMobileNumber.val(), 0) <= 0) {
@@ -500,6 +513,8 @@
                 disable("#txtMobileNumber");
                 disable("#txtEmail");
                 disable("#txtAddress");
+                disable("#ddlSellType");
+                disable("#ddlPartsModelName");
                 var sl = $("#tblAccessorieSells tbody tr").length;
                 var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
                 var td2 = "<td class='hide'>" + ddlMobileParts.val() + "</td>";
@@ -514,8 +529,11 @@
                 var td11 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> </a></td>";
                 var td12 = "<td class='text-center hide'>" + ddlSellType.val() + "</td>";
 
+                var td13 = "<td class='hide'>" + ddlPartsModelName.val() + "</td>";
+                var td14 = "<td class='text-center'>" + $("#ddlPartsModelName option:selected").text() + "</td>";
+
                 if (TryParseInt(ddlMobileParts.val(), 0) > 0) {
-                    var tr = "<tr>" + td1 + td12 + td2 + td3 + td8 + td10 + td6 + td11 + "</tr>";
+                    var tr = "<tr>" + td1 + td12 + td13 + td14 + td2 + td3 + td8 + td10 + td6 + td11 + "</tr>";
                     if ($("#tblAccessorieSells tbody tr").length == 0) {
                         $("#tblAccessorieSells tbody").append(tr);
                     }
@@ -525,7 +543,7 @@
                     clearCtrl();
                 }
                 if (TryParseInt(ddlFaultyMobileParts.val(), 0) > 0) {
-                    var tr = "<tr>" + td1 + td12 + td4 + td5 + td8 + td10 + td6 + td11 + "</tr>";
+                    var tr = "<tr>" + td1 + td12 + td13 + td14 + td4 + td5 + td8 + td10 + td6 + td11 + "</tr>";
                     if ($("#tblAccessorieSells tbody tr").length == 0) {
                         $("#tblAccessorieSells tbody").append(tr);
                     }
@@ -535,7 +553,7 @@
                     clearCtrl();
                 }
                 if ($.trim(txtIMEI.val()) != "" && $.trim(txtIMEI.val()).length == 15) {
-                    var tr = "<tr>" + td1 + td12 + td6 + td7 + td9 + td10+ td6 + td11 + "</tr>";
+                    var tr = "<tr>" + td1 + td12 + td13 + td14 + td6 + td7 + td9 + td10+ td6 + td11 + "</tr>";
                     if ($("#tblAccessorieSells tbody tr").length == 0) {
                         $("#tblAccessorieSells tbody").append(tr);
                     }
@@ -561,8 +579,11 @@
             ddlFaultyMobileParts.val('');
             ddlFaultyMobileParts.trigger("change");
             ddlsellsPrice.val('');
-            //txtQty.val('');
-            stockQty.val('');
+            //ddlPartsModelName.val('');
+            //ddlPartsModelName.trigger("change");
+            
+            txtQty.val('');
+            stockQty.val('0');
             txtIMEI.val('');
             txtIMEI.focus();
             txtSellPriceForHandset.val('');
@@ -601,23 +622,27 @@
                             $.each($("#tblAccessorieSells tbody tr"), function (index, item) {
                                 var tds = $(this).children('td');
                                 var saleType = tds.eq('1').html();
+                                var pModelId = tds.eq('2').html();
+                                var pModelName = tds.eq('3').html();
                                 if (saleType == "Handset") {
-                                    var imei = tds.eq('2').html();
+                                    var imei = tds.eq('4').html();
                                     var partsId = "";
-                                    var pName = "IMEI: " + tds.eq('3').html();
+                                    var pName = "IMEI: " + tds.eq('5').html();
                                 }
                                 else {
-                                    var partsId = tds.eq('2').html();
+                                    var partsId = tds.eq('4').html();
                                     var imei = "";
-                                    var pName = tds.eq('3').html();
+                                    var pName = tds.eq('5').html();
                                 }                               
-                                var price = tds.eq('4').html();
-                                var qty = tds.eq('5').html();
+                                var price = tds.eq('6').html();
+                                var qty = tds.eq('7').html();
                                 details.push({
                                     InvoiceDetailId: 0,
                                     SalesType: saleType,
                                     PartsId: TryParseInt(partsId, 0),
                                     PartsName: pName,
+                                    ModelId: TryParseInt(pModelId, 0),
+                                    ModelName: pModelName,
                                     IMEI: imei,
                                     Quantity: TryParseInt(qty, 0),
                                     SellPrice: TryParseFloat(price, 0),
@@ -630,7 +655,7 @@
                         var data = JSON.stringify({ info: info, details: details});
                         console.log("Invoice");
                         console.log(data);
-                     // return console.log(data);
+                      //return console.log(data);
                         $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveInvoiceForAccessoriesSells', data, getToken())).then(function (res, status) {
                             console.log(res);
                             console.log(status);

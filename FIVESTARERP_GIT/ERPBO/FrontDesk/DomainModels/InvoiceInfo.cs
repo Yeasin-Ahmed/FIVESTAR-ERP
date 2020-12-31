@@ -39,6 +39,9 @@ namespace ERPBO.ControlPanel.DomainModels
         public string Address { get; set; }
         public int? WarrentyFor {get;set;}
         public string InvoiceType { get; set; }
+        //
+        public long? ModelId { get; set; }
+        public string ModelName { get; set; }
 
     }
 }

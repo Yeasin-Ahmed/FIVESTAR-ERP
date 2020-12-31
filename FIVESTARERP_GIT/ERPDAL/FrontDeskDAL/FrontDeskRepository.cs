@@ -72,6 +72,10 @@ namespace ERPDAL.FrontDeskDAL
     {
         public JobOrderReturnDetailRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
     }
+    public class HandsetChangeTraceRepository : FrontDeskBaseRepository<HandsetChangeTrace>
+    {
+        public HandsetChangeTraceRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base(frontDeskUnitOfWork) { }
+    }
     public class FaultyStockAssignTSRepository : FrontDeskBaseRepository<FaultyStockAssignTS>
     {
         public FaultyStockAssignTSRepository(IFrontDeskUnitOfWork frontDeskUnitOfWork) : base (frontDeskUnitOfWork)

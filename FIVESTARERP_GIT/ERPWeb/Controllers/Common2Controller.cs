@@ -43,11 +43,12 @@ namespace ERPWeb.Controllers
         private readonly IInvoiceDetailBusiness _invoiceDetailBusiness;
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         public readonly IRepairBusiness _repairBusiness;
+        private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
         //Nishad
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -70,6 +71,7 @@ namespace ERPWeb.Controllers
             this._repairBusiness = repairBusiness;
             this._handSetStockBusiness = handSetStockBusiness;
             this._faultyStockInfoBusiness = faultyStockInfoBusiness;
+            this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
         }
 
         #region Configuration Module
@@ -304,6 +306,22 @@ namespace ERPWeb.Controllers
             bool isExist = _repairBusiness.IsDuplicateRepairName(repairName,id,User.OrgId);
             return Json(isExist);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult ExistJobOrderForIMEI(long jobId)
+        {
+            bool isExist = _handsetChangeTraceBusiness.ExitJobOrderForIMEI(jobId, User.OrgId,User.BranchId);
+            return Json(isExist);
+        }
+        public ActionResult IsDuplicateIMEI1(long jobId,string imei1)
+        {
+            bool isExist = _handsetChangeTraceBusiness.IsDuplicateIMEI1(jobId, imei1, User.OrgId, User.BranchId);
+            return Json(isExist);
+        }
+        public ActionResult IsDuplicateIMEI2(long jobId, string imei2)
+        {
+            bool isExist = _handsetChangeTraceBusiness.IsDuplicateIMEI2(jobId, imei2, User.OrgId, User.BranchId);
+            return Json(isExist);
+        }
         #endregion
 
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -333,7 +351,7 @@ namespace ERPWeb.Controllers
         {
             var jobOrder = _jobOrderBusiness.GetJobOrderById(jobOrderId,User.OrgId);
             var warehouse = _servicesWarehouseBusiness.GetWarehouseOneByOrgId(User.OrgId, jobOrder.BranchId.Value);
-            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId, jobOrder.DescriptionId).Select(s => s.StockInQty - s.StockOutQty).Sum();
             if (stock == null)
             {
                 stock = 0;
@@ -341,10 +359,11 @@ namespace ERPWeb.Controllers
             return Json(stock);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetStockForAccessoriesSells(long partsId)
+        public ActionResult GetStockForAccessoriesSells(long partsId,long modelId)
         {
+           // var jobOrder = _jobOrderBusiness.GetJobOrderById(jobOrderId, User.OrgId);
             var warehouse = _servicesWarehouseBusiness.GetWarehouseOneByOrgId(User.OrgId, User.BranchId);
-            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            var stock = _mobilePartStockInfoBusiness.GetAllMobilePartStockByPartsSales(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId,modelId).Select(s => s.StockInQty - s.StockOutQty).Sum();
             if (stock == null)
             {
                 stock = 0;
@@ -352,10 +371,10 @@ namespace ERPWeb.Controllers
             return Json(stock);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetFaultyStockForAccessoriesSells(long partsId)
+        public ActionResult GetFaultyStockForAccessoriesSells(long partsId,long modelId)
         {
             var warehouse = _servicesWarehouseBusiness.GetWarehouseOneByOrgId(User.OrgId, User.BranchId);
-            var stock = _faultyStockInfoBusiness.GetAllFaultyMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId).Select(s => s.StockInQty - s.StockOutQty).Sum();
+            var stock = _faultyStockInfoBusiness.GetAllFaultyMobilePartStockByParts(warehouse.SWarehouseId, partsId, User.OrgId, warehouse.BranchId,modelId).Select(s => s.StockInQty - s.StockOutQty).Sum();
             if (stock == 0)
             {
                 stock = 0;
@@ -370,17 +389,17 @@ namespace ERPWeb.Controllers
             return Json(dropDown);
         }
         [HttpPost]
-        public ActionResult GetSellPriceForDDL(long partsId)
+        public ActionResult GetSellPriceForDDL(long partsId,long modelId)
         {
             var sell = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).AsEnumerable();
-            var dropDown = sell.Where(i => i.MobilePartId == partsId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
+            var dropDown = sell.Where(i => i.MobilePartId == partsId && i.DescriptionId==modelId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
             return Json(dropDown);
         }
         [HttpPost]
-        public ActionResult GetFaultyStockSellPriceForDDL(long partsId)
+        public ActionResult GetFaultyStockSellPriceForDDL(long partsId, long modelId)
         {
             var sell = _faultyStockInfoBusiness.GetAllFaultyStockInfoByOrgId(User.OrgId, User.BranchId).AsEnumerable();
-            var dropDown = sell.Where(i => i.PartsId == partsId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
+            var dropDown = sell.Where(i => i.PartsId == partsId && i.DescriptionId==modelId).Select(i => new Dropdown { text = i.SellPrice.ToString(), value = i.SellPrice.ToString() }).ToList();
             return Json(dropDown);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

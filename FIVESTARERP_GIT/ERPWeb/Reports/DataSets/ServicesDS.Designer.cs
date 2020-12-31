@@ -3009,6 +3009,8 @@ namespace ERPWeb.Reports.DataSets {
             
             private global::System.Data.DataColumn columnInvoiceInfoId;
             
+            private global::System.Data.DataColumn columnModelName;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public InvoiceDetailsDataTable() {
@@ -3124,6 +3126,14 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ModelNameColumn {
+                get {
+                    return this.columnModelName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3159,7 +3169,7 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public InvoiceDetailsRow AddInvoiceDetailsRow(long InvoiceDetailId, long PartsId, string PartsName, int Quantity, double CostPrice, double SellPrice, double Discount, double Total, string Remarks, long InvoiceInfoId) {
+            public InvoiceDetailsRow AddInvoiceDetailsRow(long InvoiceDetailId, long PartsId, string PartsName, int Quantity, double CostPrice, double SellPrice, double Discount, double Total, string Remarks, long InvoiceInfoId, string ModelName) {
                 InvoiceDetailsRow rowInvoiceDetailsRow = ((InvoiceDetailsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         InvoiceDetailId,
@@ -3171,7 +3181,8 @@ namespace ERPWeb.Reports.DataSets {
                         Discount,
                         Total,
                         Remarks,
-                        InvoiceInfoId};
+                        InvoiceInfoId,
+                        ModelName};
                 rowInvoiceDetailsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowInvoiceDetailsRow);
                 return rowInvoiceDetailsRow;
@@ -3204,6 +3215,7 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnTotal = base.Columns["Total"];
                 this.columnRemarks = base.Columns["Remarks"];
                 this.columnInvoiceInfoId = base.Columns["InvoiceInfoId"];
+                this.columnModelName = base.Columns["ModelName"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3229,6 +3241,8 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnRemarks);
                 this.columnInvoiceInfoId = new global::System.Data.DataColumn("InvoiceInfoId", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInvoiceInfoId);
+                this.columnModelName = new global::System.Data.DataColumn("ModelName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModelName);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3890,6 +3904,8 @@ namespace ERPWeb.Reports.DataSets {
             
             private global::System.Data.DataColumn columnQuantity;
             
+            private global::System.Data.DataColumn columnModelName;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public CurrentStockDataTable() {
@@ -3965,6 +3981,14 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ModelNameColumn {
+                get {
+                    return this.columnModelName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4000,14 +4024,15 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public CurrentStockRow AddCurrentStockRow(long MobilePartStockInfoId, long MobilePartId, string MobilePartName, string PartsCode, int Quantity) {
+            public CurrentStockRow AddCurrentStockRow(long MobilePartStockInfoId, long MobilePartId, string MobilePartName, string PartsCode, int Quantity, string ModelName) {
                 CurrentStockRow rowCurrentStockRow = ((CurrentStockRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         MobilePartStockInfoId,
                         MobilePartId,
                         MobilePartName,
                         PartsCode,
-                        Quantity};
+                        Quantity,
+                        ModelName};
                 rowCurrentStockRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCurrentStockRow);
                 return rowCurrentStockRow;
@@ -4035,6 +4060,7 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnMobilePartName = base.Columns["MobilePartName"];
                 this.columnPartsCode = base.Columns["PartsCode"];
                 this.columnQuantity = base.Columns["Quantity"];
+                this.columnModelName = base.Columns["ModelName"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4050,6 +4076,8 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnPartsCode);
                 this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuantity);
+                this.columnModelName = new global::System.Data.DataColumn("ModelName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModelName);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -12924,6 +12952,22 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ModelName {
+                get {
+                    try {
+                        return ((string)(this[this.tableInvoiceDetails.ModelNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ModelName\' in table \'InvoiceDetails\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoiceDetails.ModelNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsInvoiceDetailIdNull() {
                 return this.IsNull(this.tableInvoiceDetails.InvoiceDetailIdColumn);
             }
@@ -13040,6 +13084,18 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetInvoiceInfoIdNull() {
                 this[this.tableInvoiceDetails.InvoiceInfoIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsModelNameNull() {
+                return this.IsNull(this.tableInvoiceDetails.ModelNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetModelNameNull() {
+                this[this.tableInvoiceDetails.ModelNameColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -13687,6 +13743,22 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ModelName {
+                get {
+                    try {
+                        return ((string)(this[this.tableCurrentStock.ModelNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ModelName\' in table \'CurrentStock\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCurrentStock.ModelNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsMobilePartStockInfoIdNull() {
                 return this.IsNull(this.tableCurrentStock.MobilePartStockInfoIdColumn);
             }
@@ -13743,6 +13815,18 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetQuantityNull() {
                 this[this.tableCurrentStock.QuantityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsModelNameNull() {
+                return this.IsNull(this.tableCurrentStock.ModelNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetModelNameNull() {
+                this[this.tableCurrentStock.ModelNameColumn] = global::System.Convert.DBNull;
             }
         }
         

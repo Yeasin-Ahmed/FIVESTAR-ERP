@@ -176,7 +176,9 @@
     <Compile Include="ControlPanel\UserAuthorizationBusiness.cs" />
     <Compile Include="ControlPanel\SubMenuBusiness.cs" />
     <Compile Include="FrontDesk\FaultyStockAssignTSBusiness.cs" />
+    <Compile Include="FrontDesk\HandsetChangeTraceBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IFaultyStockAssignTSBusiness.cs" />
+    <Compile Include="FrontDesk\Interface\IHandsetChangeTraceBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IInvoiceDetailBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IInvoiceInfoBusiness.cs" />
     <Compile Include="FrontDesk\Interface\IJobOrderAccessoriesBusiness.cs" />

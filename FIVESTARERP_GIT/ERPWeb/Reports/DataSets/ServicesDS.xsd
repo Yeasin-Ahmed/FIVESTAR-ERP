@@ -123,6 +123,7 @@
               <xs:element name="Total" msprop:Generator_ColumnVarNameInTable="columnTotal" msprop:Generator_ColumnPropNameInRow="Total" msprop:Generator_ColumnPropNameInTable="TotalColumn" msprop:Generator_UserColumnName="Total" type="xs:double" minOccurs="0" />
               <xs:element name="Remarks" msprop:Generator_ColumnVarNameInTable="columnRemarks" msprop:Generator_ColumnPropNameInRow="Remarks" msprop:Generator_ColumnPropNameInTable="RemarksColumn" msprop:Generator_UserColumnName="Remarks" type="xs:string" minOccurs="0" />
               <xs:element name="InvoiceInfoId" msprop:Generator_ColumnVarNameInTable="columnInvoiceInfoId" msprop:Generator_ColumnPropNameInRow="InvoiceInfoId" msprop:Generator_ColumnPropNameInTable="InvoiceInfoIdColumn" msprop:Generator_UserColumnName="InvoiceInfoId" type="xs:long" minOccurs="0" />
+              <xs:element name="ModelName" msprop:Generator_ColumnVarNameInTable="columnModelName" msprop:Generator_ColumnPropNameInRow="ModelName" msprop:Generator_ColumnPropNameInTable="ModelNameColumn" msprop:Generator_UserColumnName="ModelName" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -159,6 +160,7 @@
               <xs:element name="MobilePartName" msprop:Generator_ColumnVarNameInTable="columnMobilePartName" msprop:Generator_ColumnPropNameInRow="MobilePartName" msprop:Generator_ColumnPropNameInTable="MobilePartNameColumn" msprop:Generator_UserColumnName="MobilePartName" type="xs:string" minOccurs="0" />
               <xs:element name="PartsCode" msprop:Generator_ColumnVarNameInTable="columnPartsCode" msprop:Generator_ColumnPropNameInRow="PartsCode" msprop:Generator_ColumnPropNameInTable="PartsCodeColumn" msprop:Generator_UserColumnName="PartsCode" type="xs:string" minOccurs="0" />
               <xs:element name="Quantity" msprop:Generator_ColumnVarNameInTable="columnQuantity" msprop:Generator_ColumnPropNameInRow="Quantity" msprop:Generator_ColumnPropNameInTable="QuantityColumn" msprop:Generator_UserColumnName="Quantity" type="xs:int" minOccurs="0" />
+              <xs:element name="ModelName" msprop:Generator_ColumnVarNameInTable="columnModelName" msprop:Generator_ColumnPropNameInRow="ModelName" msprop:Generator_ColumnPropNameInTable="ModelNameColumn" msprop:Generator_UserColumnName="ModelName" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

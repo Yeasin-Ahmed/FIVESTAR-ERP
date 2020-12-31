@@ -15,12 +15,14 @@ namespace ERPBLL.FrontDesk
         private readonly IFrontDeskUnitOfWork _frontDeskUnitOfWork;
         private readonly TsStockReturnInfoRepository _tsStockReturnInfoRepository;
         private readonly IJobOrderBusiness _jobOrderBusiness;
+        private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
 
-        public TsStockReturnInfoBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork,IJobOrderBusiness jobOrderBusiness)
+        public TsStockReturnInfoBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork,IJobOrderBusiness jobOrderBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._tsStockReturnInfoRepository = new TsStockReturnInfoRepository(this._frontDeskUnitOfWork);
             this._jobOrderBusiness = jobOrderBusiness;
+            this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
         }
 
         public IEnumerable<DashbordTsPartsReturnDTO> DashboardReturnParts(long orgId, long branchId)
@@ -40,6 +42,16 @@ namespace ERPBLL.FrontDesk
         {
             //bool IsSuccess = false;
             var jobId = _jobOrderBusiness.GetJobOrderById(returnInfoList.LastOrDefault().JobOrderId, orgId);
+            long modelId;
+            if (jobId.TsRepairStatus == "MODULE SWAP")
+            {
+                modelId = _handsetChangeTraceBusiness.GetOneJobByOrgId(jobId.JodOrderId, orgId).ModelId;
+            }
+            else
+            {
+                modelId = _jobOrderBusiness.GetJobOrderById(jobId.JodOrderId, orgId).DescriptionId;
+            }
+
             List<TsStockReturnInfo> returnInfoLists = new List<TsStockReturnInfo>();
             foreach(var item in returnInfoList)
             {
@@ -52,6 +64,7 @@ namespace ERPBLL.FrontDesk
                 info.EntryDate = DateTime.Now;
                 info.OrganizationId = orgId;
                 info.BranchId = jobId.BranchId;
+                info.ModelId = modelId;
                 List<TsStockReturnDetail> detail = new List<TsStockReturnDetail>();
                 foreach(var details in item.TsStockReturnDetails)
                 {
@@ -61,6 +74,7 @@ namespace ERPBLL.FrontDesk
                     d.RequsitionCode = details.RequsitionCode;
                     d.PartsId = details.PartsId;
                     d.Quantity = details.Quantity;
+                    d.ModelId = modelId;
                     d.BranchId = jobId.BranchId;
                     d.OrganizationId = orgId;
                     d.EUserId = userId;

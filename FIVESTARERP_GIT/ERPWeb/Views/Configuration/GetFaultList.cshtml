@@ -169,7 +169,8 @@
         function validateForm() {
             $(".error").addClass("hide");
             var isValid = true;
-            if ($.trim(txtFaultName.val()) == "") {
+            if ($.trim(txtFaultName.val()) == "")
+            {
                 $(".required-faultName").removeClass("hide");
                 isValid = false;
             }

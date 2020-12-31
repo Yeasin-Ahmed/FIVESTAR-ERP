@@ -28,5 +28,6 @@ namespace ERPBO.FrontDesk.DomainModels
         [ForeignKey("TsStockReturnInfo")]
         public long ReturnInfoId { get; set; }
         public TsStockReturnInfo TsStockReturnInfo { get; set; }
+        public long? ModelId { get; set; }
     }
 }

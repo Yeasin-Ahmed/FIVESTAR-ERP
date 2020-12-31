@@ -20,5 +20,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public List<TsStockReturnDetailDTO> TsStockReturnDetails { get; set; }
+        public long ModelId { get; set; }
     }
 }

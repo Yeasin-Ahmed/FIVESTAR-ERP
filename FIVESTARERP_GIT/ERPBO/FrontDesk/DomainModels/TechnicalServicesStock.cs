@@ -33,5 +33,6 @@ namespace ERPBO.FrontDesk.DomainModels
         public long TSId { get; set; }
         public string StateStatus { get; set; }
         //
+        public long? ModelId { get; set; }
     }
 }

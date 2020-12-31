@@ -1184,8 +1184,8 @@
             $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
                 console.log(res);
                 if (status === "success") {
-                    $("#dataContainer4").empty();
-                    $("#dataContainer4").append(res);
+                    $("#dataContainer3").empty();
+                    $("#dataContainer3").append(res);
                 }
             }).fail(function (err) { console.log(err) })
         }

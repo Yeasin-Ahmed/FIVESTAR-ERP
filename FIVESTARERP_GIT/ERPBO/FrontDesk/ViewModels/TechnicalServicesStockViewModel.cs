@@ -44,5 +44,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public string MobilePartCode { get; set; }
         public string UserName { get; set; }
         public string JobOrderCode { get; set; }
+        public long ModelId { get; set; }
     }
 }

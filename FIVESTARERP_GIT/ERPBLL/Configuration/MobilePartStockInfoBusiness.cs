@@ -26,9 +26,9 @@ namespace ERPBLL.Configuration
             return mobilePartStockInfoRepository.GetOneByOrg(info => info.OrganizationId == orgId && info.BranchId == branchId);
         }
 
-        public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId)
+        public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId,long modelId)
         {
-            return mobilePartStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.OrganizationId == orgId && info.BranchId == branchId).ToList();
+            return mobilePartStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId==modelId).ToList();
         }
 
         public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockInfoById(long orgId, long branchId)
@@ -81,12 +81,13 @@ namespace ERPBLL.Configuration
                 param += string.Format(@"and stock.BranchId={0}", branchId);
             }
 
-            query = string.Format(@"select MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode 'PartsCode',
+            query = string.Format(@"select MobilePartStockInfoId,d.DescriptionName 'ModelName',stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode 'PartsCode',
 sum(StockInQty-StockOutQty) 'Quantity' from tblMobilePartStockInfo stock
 left join tblMobileParts parts on stock.MobilePartId=parts.MobilePartId
-where 1=1 {0}
-group by MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode
-
+left join [Inventory].dbo.tblDescriptions d on stock.DescriptionId=d.DescriptionId
+where 1=1{0}
+group by MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode,d.DescriptionName
+order by d.DescriptionName
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -120,7 +121,7 @@ From tblMobilePartStockInfo stock
 Left Join tblServiceWarehouses w on stock.SWarehouseId = w.SWarehouseId and stock.OrganizationId =w.OrganizationId
 Left Join tblMobileParts parts on stock.MobilePartId = parts.MobilePartId and stock.OrganizationId =parts.OrganizationId
 Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
-Where 1=1 and stock.OrganizationId={0} and stock.BranchId= {1} {2}", orgId, branchId, Utility.ParamChecker(param));
+Where stock.OrganizationId={0} and stock.BranchId= {1} order by DescriptionName", orgId, branchId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(query).ToList();
         }
@@ -131,6 +132,11 @@ Where 1=1 and stock.OrganizationId={0} and stock.BranchId= {1} {2}", orgId, bran
 FROM [Configuration].dbo.tblMobilePartStockInfo mpsi
 Inner Join [Configuration].dbo.tblMobileParts mp On mpsi.MobilePartId = mp.MobilePartId and mpsi.OrganizationId = mp.OrganizationId
 where mpsi.OrganizationId={0}", orgId)).ToList();
+        }
+
+        public IEnumerable<MobilePartStockInfo> GetAllMobilePartStockByPartsSales(long warehouseId, long partsId, long orgId, long branchId,long modelId)
+        {
+            return mobilePartStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId==modelId).ToList();
         }
     }
 }

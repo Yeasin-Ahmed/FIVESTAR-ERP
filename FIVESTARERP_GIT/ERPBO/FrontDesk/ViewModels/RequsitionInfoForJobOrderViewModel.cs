@@ -42,5 +42,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public long? UserBranchId { get; set; }
         public string BranchName { get; set; }
         public string JobCode { get; set; }
+        //
+        //public long ModelId { get; set; }
     }
 }

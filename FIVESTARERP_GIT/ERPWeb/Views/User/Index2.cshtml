@@ -341,6 +341,25 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="col-sm-12 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner" style="height:115px">
+                        <p><b><i>Not-Assign</i></b></p>
+                        <h3>
+                            @foreach (var assign in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardNotAssignJobViewModel)
+                            {
+                                <b><i>@assign.Total</i></b>
+                            }
+                        </h3>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <a href="#" class="small-box-footer"></a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -985,6 +1004,31 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow" style="height:125px">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-info">
+                            <div class="inner" style="height:115px">
+                                <p><b><i>Not-Assign</i></b></p>
+                                <h3>
+                                    @foreach (var assign in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardNotAssignJobViewModel)
+                                    {
+                                        <b><i>@assign.Total</i></b>
+                                    }
+                                </h3>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 @if (User.RoleName == "Head Of Technical Services")
 {
@@ -1125,6 +1169,31 @@
                             </div>
                             <div class="icon">
                                 <i class="fas fa-download"></i>
+                            </div>
+                            <a href="#" class="small-box-footer"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow" style="height:125px">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="small-box bg-info">
+                            <div class="inner" style="height:115px">
+                                <p><b><i>Not-Assign</i></b></p>
+                                <h3>
+                                    @foreach (var assign in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardNotAssignJobViewModel)
+                                    {
+                                        <b><i>@assign.Total</i></b>
+                                    }
+                                </h3>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-flag-checkered"></i>
                             </div>
                             <a href="#" class="small-box-footer"></a>
                         </div>
@@ -1453,11 +1522,13 @@
                             var partsId = tds.eq('3').html();
                             var partsName = tds.eq('4').html();
                             var qty = tds.eq('6').html();
+                            var mId = tds.eq('7').html();
 
                             details.push({
                                 MobilePartId: TryParseInt(partsId,0),
                                 MobilePartName: partsName,
                                 Quantity: TryParseInt(qty, 0),
+                                DescriptionId: TryParseInt(mId, 0),
                             })
                         });
                         var data = JSON.stringify({ models: details, returnInfoId: hdfReturnInfoId.val(), status: status });

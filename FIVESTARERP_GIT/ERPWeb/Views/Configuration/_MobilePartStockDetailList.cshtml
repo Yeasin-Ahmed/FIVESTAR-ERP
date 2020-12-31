@@ -9,6 +9,8 @@
         <tr class="text-center">
             <th>#SL</th>
             <th class="hide">Services Werehouse</th>
+            <th class="hide"></th>
+            <th>Model</th>
             <th>Parts Name</th>
             <th>Parts Code</th>
             <th>Cost Price</th>
@@ -26,6 +28,8 @@
         <tr>
             <td class="text-center"><b>@sl</b></td>
             <td class="hide">@item.ServicesWarehouseName</td>
+            <td class="hide">@item.DescriptionId</td>
+            <td>@item.ModelName</td>
             <td>@item.MobilePartName</td>
             <td>@item.PartsCode</td>
             <td class="text-center">@item.CostPrice.ToString("0.00 Tk")</td>

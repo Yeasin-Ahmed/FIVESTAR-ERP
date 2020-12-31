@@ -31,6 +31,7 @@ namespace ERPBO.FrontDesk.ViewModels
         [Required,StringLength(100)]
         public string EntryUser { get; set; }
         public string JobOrderCode { get; set; }
+        public long ModelId { get; set; }
 
     }
 }

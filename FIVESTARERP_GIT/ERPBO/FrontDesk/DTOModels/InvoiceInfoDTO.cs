@@ -33,5 +33,8 @@ namespace ERPBO.FrontDesk.DTOModels
         public int? WarrentyFor { get; set; }
         public string InvoiceType { get; set; }
         public string UserName { get; set; }
+        //
+        public long? ModelId { get; set; }
+        public string ModelName { get; set; }
     }
 }

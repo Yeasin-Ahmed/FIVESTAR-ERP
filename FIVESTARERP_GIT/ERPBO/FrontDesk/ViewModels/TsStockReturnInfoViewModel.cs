@@ -23,5 +23,6 @@ namespace ERPBO.FrontDesk.ViewModels
         public Nullable<DateTime> EntryDate { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
         public List<TsStockReturnDetailViewModel> TsStockReturnDetails { get; set; }
+        public long ModelId { get; set; }
     }
 }

@@ -71,9 +71,9 @@ FROM [Configuration].dbo.tblFaultyStockInfo fsi
 Inner Join [Configuration].dbo.tblMobileParts mp On fsi.PartsId = mp.MobilePartId and fsi.OrganizationId = mp.OrganizationId
 where fsi.OrganizationId={0}", orgId)).ToList();
         }
-        public IEnumerable<FaultyStockInfo> GetAllFaultyMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId)
+        public IEnumerable<FaultyStockInfo> GetAllFaultyMobilePartStockByParts(long warehouseId, long partsId, long orgId, long branchId, long modelId)
         {
-            return _faultyStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.PartsId == partsId && info.OrganizationId == orgId && info.BranchId == branchId).ToList();
+            return _faultyStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.PartsId == partsId && info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId==modelId).ToList();
         }
         public FaultyStockInfo GetStockInfoOneById(long id, long orgId)
         {

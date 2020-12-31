@@ -209,7 +209,9 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
             double spamount = 0;
             spamount = detailsdto.Select(t => t.Total).Sum();
             netamount = ((spamount + infodto.VAT + infodto.Tax) - infodto.Discount);
-           
+           var modelId = detailsdto.FirstOrDefault().ModelId;
+            //var modelName= detailsdto.FirstOrDefault().ModelName;
+
             //var jobOrder = _jobOrderBusiness.GetJobOrdersByIdWithBranch(infodto.JobOrderId, branchId, orgId);
             InvoiceInfo invoiceInfo = new InvoiceInfo();
             if (infodto.InvoiceInfoId == 0)
@@ -218,6 +220,8 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 invoiceInfo.JobOrderId = 0;
                 invoiceInfo.JobOrderCode = null;
                 invoiceInfo.InvoiceType = InvoiceTypeStatus.Sells;
+                invoiceInfo.ModelId = modelId;
+                invoiceInfo.ModelName = infodto.ModelName;
                 invoiceInfo.CustomerName = infodto.CustomerName;
                 invoiceInfo.CustomerPhone = infodto.CustomerPhone;
                 invoiceInfo.Email = infodto.Email;
@@ -250,6 +254,8 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                     Detail.BranchId = branchId;
                     Detail.SalesType = item.SalesType;
                     Detail.IMEI = item.IMEI;
+                    Detail.ModelId = item.ModelId;
+                    Detail.ModelName = item.ModelName;
                     invoiceDetails.Add(Detail);
                 }
                 invoiceInfo.InvoiceDetails = invoiceDetails;
@@ -274,7 +280,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 if (item.SalesType == "Good")
                 {
                     var reqQty = item.Quantity;
-                    var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(i => i.MobilePartId == item.PartsId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
+                    var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(i => i.MobilePartId == item.PartsId && i.DescriptionId== item.ModelId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
 
                     if (partsInStock.Count() > 0)
                     {
@@ -326,7 +332,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 if (item.SalesType == "Faulty")
                 {
                     var reqQty = item.Quantity;
-                    var partsInStock = _faultyStockInfoBusiness.GetAllFaultyStockInfoByOrgId(orgId, branchId).Where(i => i.PartsId == item.PartsId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.FaultyStockInfoId).ToList();
+                    var partsInStock = _faultyStockInfoBusiness.GetAllFaultyStockInfoByOrgId(orgId, branchId).Where(i => i.PartsId == item.PartsId && i.DescriptionId == item.ModelId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.FaultyStockInfoId).ToList();
 
                     if (partsInStock.Count() > 0)
                     {

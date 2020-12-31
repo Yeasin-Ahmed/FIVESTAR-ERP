@@ -344,7 +344,41 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6" id="changeIMEI1">
+                                <label for="txtIMEI1" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                                <input type="text" class="form-control form-control-sm" id="txtIMEI1" placeholder="Input IMEI1" />
+                                <span class="error hide require-IMEI1 font-weight-bold">Mobile IMEI1 is required !</span>
+                                <span class="error hide require-len-IMEI1 font-weight-bold">Must Input 15 digit IMEI !</span>
+                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset IMEI !</span>
+                                <span class="error hide duplicate-IMEI1 font-weight-bold">Already Exist IMEI1 !</span>
+                            </div>
+                            <div class="col-md-6" id="changeIMEI2">
+                                <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                                <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
+                                <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
+                                <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
+                                <span class="error hide duplicate-IMEI2 font-weight-bold">Already Exist IMEI2 !</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5" id="changeModel">
+                                <label for="ddlModelName" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                <span class="error hide require-modelName font-weight-bold">Model is required !</span>
+                            </div>
+                            <div class="col-md-5" id="changeColor">
+                                <label for="ddlModelColor" class="control-label font-weight-bold">Color<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                                @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
+                                <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required !</span>
+                            </div>
+                            <div class="col-md-2" id="changeButton">
+                                <label  class="control-label font-weight-bold" style="visibility:hidden">Coloroooo</label>
+                                <button type="button" id="btnHandsetChangeSave" class="btn btn-sm btn-primary" title="">Update</button>
+                            </div>
+                        </div>
                     </div>
+                    
 
                     <div class="col-md-1">
                         <input class="btn btn-success btn-sm float-lg-right" value="Save" type="button" id="btnSave" onclick="window.close()" />
@@ -353,7 +387,9 @@
                     <div id="btnjobsign">
                         <a href="#" class="btn btn-danger btn-sm float-lg-right" id="btnJobSingOut"><i class="fas fa-sign-out"></i>Job Sing Out</a>
                     </div>
-                    
+                    <div id="btnHandsetchange" class="hide">
+                        <a href="#" class="btn btn-danger btn-sm float-lg-right" id="btnHandsetchangeJobSingOut"><i class="fas fa-sign-out"></i>Job-Sing-Out</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -954,11 +990,7 @@
        // var repairName = $("#repairName");
         //var btnjobsign = $("#btnjobsign");
 
-        $(document).ready(function () {
-            if ($("#repairName").text() != "REPAIR AND RETURN" && $("#repairName").text() != "RETURN WITHOUT REPAIR") {
-                $("#btnjobsign").hide();
-            }
-        });
+        
 
         function OpenRepairModal() {
             clearCtrlRepair();
@@ -1264,8 +1296,13 @@ $('.toastrDefaultError').trigger('click');
                             }
                             ////req end
 
+
+
+
+
+
                             ///TS Stock Return
-                            function OpenTSStockModal() {
+        function OpenTSStockModal() {
             $("#modalTSStock").modal("show");
             $(".error").addClass("hide");
                             }
@@ -1273,48 +1310,23 @@ $('.toastrDefaultError').trigger('click');
                             var jobOrderSignOutObj = {};
 
         $("#btnJobSingOut").click(function (e) {
-                                jobOrderSignOutObj = {};
-                                e.preventDefault();
+                  jobOrderSignOutObj = {};
+                  e.preventDefault();
             $("#tblStockByRequsition tbody").empty();
-                                //OpenTSStockModal();
-                                var data = JSON.stringify({
-                                jobOrderId: TryParseInt(hdfJobOrderId.val(), 0)
-                                });
-            //$.when(getReqWithData('html', 'GET', '/FrontDesk/GetTSStockByRequsition', data)).then(function (response, status) {
-            //    if (status == "success") {
-            //        $("#dataContainer2").empty();
-            //        $("#dataContainer2").append(res);
-            //        fnDisableRowsInputElementByRepairStatus();
-            //    }
-            //}).fail(function (error) {
-            //    console.log(error);
-            //    })
-
-            // Json Data: JobOrder , JorOrderTsStock
-            //data = JSON.stringify({ data })
-            //console.log("Json Data");
-            //console.log(data);
-            //return;
+                var data = JSON.stringify({
+                jobOrderId: TryParseInt(hdfJobOrderId.val(), 0)
+                });
             $.when(postReqWithToken(dataType.applicationJson,dataType.json, type.post, '/FrontDesk/JobOrderTsStock', data,getToken())).then(function (response, status) {
                                     if (response != null && status == "success") {
-                                        //$("#dataContainer2").empty();
-                                        //$("#dataContainer2").append(res);
-                                        //fnDisableRowsInputElementByRepairStatus();
                                         console.log("JobOrder Objects");
-                                        //console.log(response.jobOrder);
-
-                                        //console.log(response.tsStock);
                                         jobOrderSignOutObj.jobOrder = response.jobOrder;
                                         jobOrderSignOutObj.tsStock = response.tsStock;
-                                        //console.log("jobOrderSignOutObj");
-                                        //console.log(jobOrderSignOutObj.jobOrder);
-                                        //console.log(jobOrderSignOutObj.tsStock);
                                         fnJobOrderSignOut(jobOrderSignOutObj)
                                     }
                                 }).fail(function (error) {
                                     console.log(error);
-                                })
-        });
+                         })
+               });
 
         function fnJobOrderSignOut(jobOrderobj)
                             {
@@ -1324,30 +1336,46 @@ $('.toastrDefaultError').trigger('click');
                                 console.log("fnJobOrderSignOut");
                                 console.log(info);
                                 console.log(stocks);
-                                if (info.TsRepairStatus === "REPAIR AND RETURN")
-                                {
-                                    // If Stocks avaiable // used qty
-                                    //alert("Lenght" +stocks.length)
-                                    if (stocks.length > 0) {
-                                        fnBindTsStockmodalForSignOut(stocks);
-                                    }
-                                    else {
-                                        //
-                                        fnSubmitJobSignOut(jobOrderSignOutObj);
-                                    }
-                                }
-                                else {
-                                    // not used qty
-                                    // Direct Stock Singout
-                                    fnSubmitJobSignOut(jobOrderSignOutObj);
-                                }
-                            }
+            if (info.TsRepairStatus === "REPAIR AND RETURN") {
+                // If Stocks avaiable // used qty
+                if (stocks.length > 0) {
+                    fnBindTsStockmodalForSignOut(stocks);
+                }
+                else {
+                    fnSubmitJobSignOut(jobOrderSignOutObj);
+                }
+            }
+            else if (info.TsRepairStatus === "RETURN WITHOUT REPAIR") {
+                // not used qty
+                // Direct Stock Singout
+                fnSubmitJobSignOut(jobOrderSignOutObj);
+            }
+            else if (info.TsRepairStatus === "MODULE SWAP") {
+                if (validateIMEIForm() == true) {
+                    fnSubmitJobSignOut(jobOrderSignOutObj);
+                }
+            }
+        }
+        function validateIMEIForm() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if (TryParseInt(hdfJobOrderId.val(), 0) == 0) {
+                $(".require-IMEI1").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                if (ajaxBooleanChecker(JSON.stringify({ jobId: TryParseInt(hdfJobOrderId.val(), 0) }), '/Common2/ExistJobOrderForIMEI',
+                    getToken()) == true){
+                    $(".newHandset-IMEI1").removeClass("hide");
+                    isValid = false;
+                }
+            } 
+            return isValid;
+        }
 
                             function fnBindTsStockmodalForSignOut(stocks) {
             $("#tblStockByRequsition tbody").empty();
                                 if (!$.isEmptyObject(stocks)) { // list
-                //console.log("Model Fn");
-                //console.log(stocks);
                 $.each(stocks, function (index,item) {
                                         var td1 = "<td>" + (index + 1) + "</td>";
                                         var td2 = "<td class='hide'>" + item.RequsitionInfoForJobOrderId + "</td>";
@@ -1362,23 +1390,26 @@ $('.toastrDefaultError').trigger('click');
                                     })
                 OpenTSStockModal();
                                 }
-                            }
+        }
 
-                            function fnSubmitJobSignOut(obj) {
-                                console.log("Fooooo");
-                                console.log(obj); // Final Obj
 
-                                var stocks = []; stocks.length;
 
-                                var info = {
+
+               function fnSubmitJobSignOut(obj) {
+                       console.log("Fooooo");
+                      console.log(obj); // Final Obj
+
+                       var stocks = []; stocks.length;
+
+                       var info = {
                 TsRepairStatus: obj.jobOrder.TsRepairStatus,
                 JobOrderId: obj.jobOrder.JodOrderId,
                 TSId: obj.jobOrder.TSId
                                 };
 
             $.each(obj.tsStock, function (index,item) {
-                                stocks.push({
-                                RequsitionInfoForJobOrderId: item.RequsitionInfoForJobOrderId,
+                    stocks.push({
+                    RequsitionInfoForJobOrderId: item.RequsitionInfoForJobOrderId,
                     RequsitionCode: item.RequsitionCode,
                     PartsId: item.PartsId,
                     PartsName: item.PartsName,
@@ -1422,12 +1453,12 @@ $('.toastrDefaultError').trigger('click');
                                             var pId = tds.eq(3).html();
                                             var iuputQty = tds.eq(6).children('input').val();
                                             if (item.PartsId == pId) {
-                                                item.UsedQty = TryParseInt(iuputQty,0);
-                                            }
-                                        })
+                                            item.UsedQty = TryParseInt(iuputQty,0);
+                          }
+                    })
                 })
             }
-                                fnSubmitJobSignOut(jobOrderSignOutObj);
+            fnSubmitJobSignOut(jobOrderSignOutObj);
         });
 
         function fnDisableRowsInputElementByRepairStatus()
@@ -1442,8 +1473,96 @@ $('.toastrDefaultError').trigger('click');
             }
         }
 
+        //////
+        $(document).ready(function () {
+            if ($("#repairName").text() == "REPAIR AND RETURN" || $("#repairName").text() == "RETURN WITHOUT REPAIR") {
+                $("#btnjobsign").show();
+               // $("#btnHandsetchange").hide();
+                $("#changeIMEI1").hide();
+                $("#changeIMEI2").hide();
+                $("#changeModel").hide();
+                $("#changeColor").hide();
+                $("#changeButton").hide();
+            }
+            else if ($("#repairName").text() == "MODULE SWAP") {
+                //$("#btnHandsetchange").show();
+                $("#btnjobsign").show();
+                $("#changeIMEI1").show();
+                $("#changeIMEI2").show();
+                $("#changeModel").show();
+                $("#changeColor").show();
+                $("#changeButton").show();
+            }
+            else {
+                //$("#btnHandsetchange").hide();
+                $("#btnjobsign").hide();
+                $("#changeIMEI1").hide();
+                $("#changeIMEI2").hide();
+                $("#changeModel").hide();
+                $("#changeColor").hide();
+                $("#changeButton").hide();
+            }
+        });
 
+        ///////Handset Changes////////
+        var txtIMEI1 = $("#txtIMEI1");
+        var txtIMEI2 = $("#txtIMEI2");
+        var ddlModelName = $("#ddlModelName");
+        var ddlModelColor = $("#ddlModelColor");
 
+        $("#btnHandsetChangeSave").click(function (e) {
+           e.preventDefault();
+            if (validateChangeHForm()) {
+                var data = JSON.stringify({ jobId: TryParseInt(hdfJobOrderId.val(), 0), imei1: txtIMEI1.val(), imei2: txtIMEI2.val(), modelId: ddlModelName.val(), color: ddlModelColor.val() });
+                console.log("ChangeList");
+                console.log(data);
+                //return console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateAndChangeJobOrder', data, getToken())).then(function (res, status) {
+                       if (res === true && status === "success") {
+                         $('.toastrDefaultSuccess').trigger('click');
+                          setTimeout(function () {
+                            redirectPage('@Url.Action("ServicesDetails","FrontDesk",new { @joborderId = jobOrder.JodOrderId })');
+                            }, 1000);
+                          }
+                       else {
+                         $('.toastrDefaultError').trigger('click');
+                            }
+                       }).fail(function (error) {
+                        console.log(error);
+                    $('.toastrDefaultError').trigger('click');
+                        });
+                 }
+        });
+
+        function validateChangeHForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+            if (txtIMEI1.val() === "") {
+                $(".require-IMEI1").removeClass("hide");
+                isValid = false;
+            }
+            if (txtIMEI1.val().length !== 15) {
+                $(".require-len-IMEI1").removeClass("hide");
+                isValid = false;
+            }
+            if (txtIMEI2.val() === "") {
+                $(".require-IMEI2").removeClass("hide");
+                isValid = false;
+            }
+            if (txtIMEI2.val().length !== 15) {
+                $(".require-len-IMEI2").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlModelName.val() === "") {
+                $(".require-modelName").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlModelColor.val() === "") {
+                $(".require-ModelColor").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
 
         function redirectPage(page) {
             window.location.replace(page);

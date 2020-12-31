@@ -22,8 +22,9 @@ namespace ERPBLL.FrontDesk
         private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
         private readonly IJobOrderBusiness _jobOrderBusiness;
         private readonly IFaultyStockDetailBusiness _faultyStockDetailBusiness;
+        private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
 
-        public TechnicalServicesStockBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IJobOrderBusiness jobOrderBusiness, IFaultyStockDetailBusiness faultyStockDetailBusiness)
+        public TechnicalServicesStockBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IJobOrderBusiness jobOrderBusiness, IFaultyStockDetailBusiness faultyStockDetailBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this.technicalServicesStockRepository = new TechnicalServicesStockRepository(this._frontDeskUnitOfWork);
@@ -33,6 +34,7 @@ namespace ERPBLL.FrontDesk
             this._jobOrderTSBusiness = jobOrderTSBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
             this._faultyStockDetailBusiness = faultyStockDetailBusiness;
+            this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
         }
 
         public IEnumerable<TechnicalServicesStock> GetAllTechnicalServicesStock(long id, long orgId, long branchId)
@@ -109,6 +111,15 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
         {
             bool IsSuccess = true;
             var jobOrderInDb = _jobOrderBusiness.GetJobOrderById(dto.JobOrderId, orgId);
+            long modelId;
+            if(jobOrderInDb.TsRepairStatus== "MODULE SWAP")
+            {
+                modelId = _handsetChangeTraceBusiness.GetOneJobByOrgId(dto.JobOrderId,orgId).ModelId;
+            }
+            else
+            {
+                modelId= _jobOrderBusiness.GetJobOrderById(dto.JobOrderId, orgId).DescriptionId;
+            }
             if(jobOrderInDb != null)
             {
                 //jobOrderInDb.StateStatus = dto.TsRepairStatus == "REPAIR AND RETURN" ? "Repair-Done" : JobOrderStatus.CustomerApproved;
@@ -161,7 +172,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                                 PartsId = servicesInfo.PartsId,
                                 Quantity = item.UsedQty,
                                 TSId = dto.TSId,
-                                DescriptionId = _jobOrderBusiness.GetJobOrderById(servicesInfo.JobOrderId.Value, orgId).DescriptionId,
+                                DescriptionId = modelId,
                             };
                             faultyStockDetailsDTOs.Add(faulty);
                         }
@@ -231,7 +242,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
             return IsSuccess;
         }
 
-        public bool SaveTechnicalServicesStockIn(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId, long branchId)
+        public bool SaveTechnicalServicesStockIn(List<TechnicalServicesStockDTO> servicesStockDTOs, long userId, long orgId, long branchId,long modelId)
         {
 
             List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
@@ -260,6 +271,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                     stockServices.BranchId = branchId;
                     stockServices.EUserId = userId;
                     stockServices.Remarks = item.Remarks;
+                    stockServices.ModelId = modelId;
                     stockServices.EntryDate = DateTime.Now;
                     technicalServicesStockRepository.Insert(stockServices);
                 }
@@ -359,7 +371,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                     };
                     technicalServicesStockDTOs.Add(technicalServicesStockDTO);
                 }
-                if (SaveTechnicalServicesStockIn(technicalServicesStockDTOs, userId, orgId, branchId) == true)
+                if (SaveTechnicalServicesStockIn(technicalServicesStockDTOs, userId, orgId, branchId,0) == true)//Change 0
                 {
                     return _requsitionInfoForJobOrderBusiness.SaveRequisitionStatus(id, status, userId, orgId, branchId);
                 }

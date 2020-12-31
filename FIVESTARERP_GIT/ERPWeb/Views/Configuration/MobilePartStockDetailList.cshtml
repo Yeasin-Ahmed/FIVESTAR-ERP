@@ -31,6 +31,10 @@
                         @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select S.Warehouse--", new { @class = "form-control form-control-sm" })
                     </div>
                     <div class="col-md-2">
+                        <label for="ddlModels" class="control-label font-weight-bold">Model</label>
+                        @Html.DropDownList("ddlModels", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
+                    </div>
+                    <div class="col-md-2">
                         <label for="ddlMobileParts" class="control-label font-weight-bold">Parts Name</label>
                         @Html.DropDownList("ddlMobileParts", (IEnumerable<SelectListItem>)ViewBag.ddlMobileParts, "--Select Parts--", new { @class = "form-control form-control-sm" })
                     </div>
@@ -83,6 +87,7 @@
     var dptFromDate = $("#dptFromDate");
     var dptToDate = $("#dptToDate");
     var ddlStockStatus = $("#ddlStockStatus");
+    var ddlModels = $("#ddlModels");
     var pageNo = 1;
 
     $(document).ready(function () {
@@ -133,6 +138,9 @@
     ddlMobileParts.change(function () {
         LoadDataTable();
     })
+    ddlModels.change(function () {
+        LoadDataTable();
+    })
     ddlStockStatus.change(function () {
         LoadDataTable();
     })
@@ -140,7 +148,7 @@
 
     function LoadDataTable() {
         //string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate
-        var data = { flag: "search", swarehouseId: TryParseInt(ddlServicesWarehouse.val(), 0), mobilePartId: TryParseInt(ddlMobileParts.val(), 0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
+        var data = { flag: "search", swarehouseId: TryParseInt(ddlServicesWarehouse.val(), 0), mobilePartId: TryParseInt(ddlMobileParts.val(), 0), descriptionId: TryParseInt( ddlModels.val(),0), stockStatus: ddlStockStatus.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: pageNo };
 
         console.log(data);
         $.when(getReqWithData('html', 'GET', '/Configuration/MobilePartStockDetailList', data)).then(function (res, status) {

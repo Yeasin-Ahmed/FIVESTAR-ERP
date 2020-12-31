@@ -44,5 +44,7 @@ namespace ERPBO.FrontDesk.ViewModels
         public string InvoiceType { get; set; }
         [StringLength(100)]
         public string UserName { get; set; }
+        public long? ModelId { get; set; }
+        public string ModelName { get; set; }
     }
 }

@@ -169,7 +169,7 @@ Order By JTSId desc) 'TSName',
 
 (Select top 1 SignOutDate from tblJobOrderTS jt
 Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
-Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
+Where jt.JodOrderId = jo.JodOrderId and (j.TsRepairStatus='REPAIR AND RETURN' or(j.TsRepairStatus='MODULE SWAP' and j.StateStatus='HandSetChange')) Order by jt.JTSId desc) 'RepairDate'
 
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
@@ -937,11 +937,23 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public bool UpdateJobSingOutStatus(long jobOrderId, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
-            var jobStatus = jobOrder.TsRepairStatus == "REPAIR AND RETURN" ? JobOrderStatus.RepairDone : JobOrderStatus.JobInitiated;
+            //var jobStatus = jobOrder.TsRepairStatus == "REPAIR AND RETURN" ? JobOrderStatus.RepairDone : JobOrderStatus.JobInitiated;
             if (jobOrder != null)
             {
                 jobOrder.JodOrderId = jobOrderId;
-                jobOrder.StateStatus = jobStatus;
+
+                if (jobOrder.TsRepairStatus == "REPAIR AND RETURN")
+                {
+                    jobOrder.StateStatus = JobOrderStatus.RepairDone;
+                }
+                else if(jobOrder.TsRepairStatus == "MODULE SWAP")
+                {
+                    jobOrder.StateStatus = "HandSetChange";
+                }
+                else
+                {
+                    jobOrder.StateStatus = JobOrderStatus.JobInitiated;
+                }
                 jobOrder.UpUserId = userId;
                 jobOrder.UpdateDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrder);
@@ -1577,6 +1589,14 @@ Where OrganizationId={0} and BranchId={1}", orgId, branchId)).ToList();
                 string.Format(@"Exec [dbo].[spDailySellsChart] '{0}','{1}',{2},{3}",fromDate,toDate, branchId, orgId)).ToList();
             }
             return data;
+        }
+
+        public IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardNotAssignJob(long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<DashboardDailyReceiveJobOrderDTO>(
+                string.Format(@"select ISNULL(Count(StateStatus),0)'Total' 
+from tblJobOrders where OrganizationId={0} and ((BranchId={1} and JobLocation={1}) or (TransferBranchId={1} and IsTransfer='True')) 
+and StateStatus='Job-Initiated' ", orgId, branchId)).ToList(); 
         }
     }
 }

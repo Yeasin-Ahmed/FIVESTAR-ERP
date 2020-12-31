@@ -33,5 +33,7 @@ namespace ERPBO.FrontDesk.DomainModels
         public InvoiceInfo InvoiceInfo { get; set; }
         public string SalesType { get; set; }
         public string IMEI { get; set; }
+        public long? ModelId { get; set; }
+        public string ModelName { get; set; }
     }
 }

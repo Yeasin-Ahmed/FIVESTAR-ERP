@@ -739,13 +739,15 @@ namespace ERPWeb.Controllers
             return Json(isSuccess);
         }
 
-        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId, string stockStatus, string fromDate, string toDate, int page = 1)
+        public ActionResult MobilePartStockDetailList(string flag, long? swarehouseId, long? mobilePartId,long? descriptionId, string stockStatus, string fromDate, string toDate, int page = 1)
         {
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
 
                 ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
+
+                ViewBag.ddlModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
 
                 ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
                 {
@@ -764,6 +766,8 @@ namespace ERPWeb.Controllers
                     MobilePartId = detail.MobilePartId,
                     MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
                     PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartCode),
+                    DescriptionId=detail.DescriptionId,
+                    ModelName=(_descriptionBusiness.GetDescriptionOneByOrdId(detail.DescriptionId.Value,User.OrgId).DescriptionName),
                     CostPrice = detail.CostPrice,
                     SellPrice = detail.SellPrice,
                     Quantity = detail.Quantity,
@@ -778,6 +782,7 @@ namespace ERPWeb.Controllers
                          (swarehouseId == null || swarehouseId <= 0 || f.SWarehouseId == swarehouseId) &&
                          (stockStatus == null || stockStatus.Trim() == "" || f.StockStatus == stockStatus.Trim()) &&
                          (mobilePartId == null || mobilePartId <= 0 || f.MobilePartId == mobilePartId) &&
+                        (descriptionId == null || descriptionId <= 0 || f.DescriptionId == descriptionId) &&
                          (
                              (fromDate == null && toDate == null)
                              ||
@@ -928,6 +933,7 @@ namespace ERPWeb.Controllers
             {
                 ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
                 ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                //ViewBag.ddlColors = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
             {

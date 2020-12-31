@@ -192,7 +192,7 @@ order by EntryDate desc
         {
             bool IsSuccess = false;
             var reqInfos = requsitionInfoForJobOrderRepository.GetAll(req => req.JobOrderId == jobOrderId && req.OrganizationId == orgId && req.BranchId == branchId);
-            var Status = tsRepairStatus == "RETURN WITHOUT REPAIR" ? RequisitionStatus.Void : RequisitionStatus.Approved;
+            var Status = ((tsRepairStatus == "RETURN WITHOUT REPAIR") || (tsRepairStatus == "MODULE SWAP")) ? RequisitionStatus.Void : RequisitionStatus.Approved;
             if(reqInfos.Count() > 0)
             {
                 foreach (var item in reqInfos)
