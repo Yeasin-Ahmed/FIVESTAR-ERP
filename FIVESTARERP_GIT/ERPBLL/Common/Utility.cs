@@ -54,6 +54,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfCallCenterApproval()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=CallCenterApproval.Approved,value=CallCenterApproval.Approved},
+                new Dropdown(){text=CallCenterApproval.DisApproved,value=CallCenterApproval.DisApproved}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfJournalType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>

@@ -850,6 +850,9 @@
     <Content Include="Views\Configuration\_FaultyStockAssignTSList.cshtml" />
     <Content Include="Views\Configuration\_FaultyStockRepairedList.cshtml" />
     <Content Include="Views\Configuration\_FaultyStockScrapList.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobOrderListForCallCenter.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrderDetailsForCallCenter.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrderForCallCenter.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1041,5 +1044,5 @@
     </ItemGroup>
     <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
     <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
-</Target>
+  </Target>
 </Project>

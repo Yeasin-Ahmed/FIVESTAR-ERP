@@ -448,6 +448,10 @@
     <Compile Include="FrontDeskContextMigrations\202012300628165_FrontDesk_HandsetChangeTrace.Designer.cs">
       <DependentUpon>202012300628165_FrontDesk_HandsetChangeTrace.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202101021000515_FrontDesk_CallCenterRemarks&amp;CustomerApproval.cs" />
+    <Compile Include="FrontDeskContextMigrations\202101021000515_FrontDesk_CallCenterRemarks&amp;CustomerApproval.Designer.cs">
+      <DependentUpon>202101021000515_FrontDesk_CallCenterRemarks&amp;CustomerApproval.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -1150,6 +1154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202012300628165_FrontDesk_HandsetChangeTrace.resx">
       <DependentUpon>202012300628165_FrontDesk_HandsetChangeTrace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202101021000515_FrontDesk_CallCenterRemarks&amp;CustomerApproval.resx">
+      <DependentUpon>202101021000515_FrontDesk_CallCenterRemarks&amp;CustomerApproval.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

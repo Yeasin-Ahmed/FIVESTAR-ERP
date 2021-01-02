@@ -312,11 +312,13 @@ namespace ERPWeb.Controllers
             bool isExist = _handsetChangeTraceBusiness.ExitJobOrderForIMEI(jobId, User.OrgId,User.BranchId);
             return Json(isExist);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateIMEI1(long jobId,string imei1)
         {
             bool isExist = _handsetChangeTraceBusiness.IsDuplicateIMEI1(jobId, imei1, User.OrgId, User.BranchId);
             return Json(isExist);
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsDuplicateIMEI2(long jobId, string imei2)
         {
             bool isExist = _handsetChangeTraceBusiness.IsDuplicateIMEI2(jobId, imei2, User.OrgId, User.BranchId);

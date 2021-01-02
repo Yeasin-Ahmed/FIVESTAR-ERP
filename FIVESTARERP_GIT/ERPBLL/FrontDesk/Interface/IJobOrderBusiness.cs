@@ -71,5 +71,7 @@ namespace ERPBLL.FrontDesk.Interface
         IEnumerable<DailySellsChart> DailySellsChart(string fromDate, string toDate, long orgId, long branchId);
 
         IEnumerable<DashboardDailyReceiveJobOrderDTO> DashboardNotAssignJob(long orgId, long branchId);
+
+        bool SaveCallCenterApproval(long jobId,string approval, string remarks,long userId, long orgId);
     }
 }

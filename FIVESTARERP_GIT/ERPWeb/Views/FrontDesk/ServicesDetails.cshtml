@@ -91,11 +91,27 @@
                                             <td>
                                                 <b>F.Desk Remarks:</b> @jobOrder.Remarks
                                             </td>
+                                            <td>
+                                                <b>C.Center Approval:</b> @jobOrder.CustomerApproval
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        @*<div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>C.Center Remarks:</b> @jobOrder.CallCenterRemarks
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>*@
                         <div class="row">
                             <div class="col-md-11">
                                 <table class="table table-bordered table-striped table-sm table-responsive-lg">
@@ -186,7 +202,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <b>Repair: </b><span id="repairName">@repair.RepairName</span> 
+                                                <b>Repair: </b><span id="repairName">@repair.RepairName</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -197,21 +213,21 @@
                             </div>
                         </div>
                         @*<div class="row">
-                                <div class="col-md-11">
-                                    <table class="table table-bordered table-striped table-sm table-responsive-lg">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <b>TSRemarks: </b>@jobOrder.TSRemarks
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
-                                </div>
-                            </div>*@
+            <div class="col-md-11">
+                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>TSRemarks: </b>@jobOrder.TSRemarks
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-1">
+                <button type="button" id="btnTsRemarks" class="btn btn-sm btn-primary" title="Remarks"><i class="fas fa-plus"> </i> </button>
+            </div>
+        </div>*@
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="form-row">
@@ -350,7 +366,7 @@
                                 <input type="text" class="form-control form-control-sm" id="txtIMEI1" placeholder="Input IMEI1" />
                                 <span class="error hide require-IMEI1 font-weight-bold">Mobile IMEI1 is required !</span>
                                 <span class="error hide require-len-IMEI1 font-weight-bold">Must Input 15 digit IMEI !</span>
-                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset IMEI !</span>
+                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset IMEI1 !</span>
                                 <span class="error hide duplicate-IMEI1 font-weight-bold">Already Exist IMEI1 !</span>
                             </div>
                             <div class="col-md-6" id="changeIMEI2">
@@ -358,6 +374,7 @@
                                 <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                                 <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
                                 <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
+                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset IMEI2 !</span>
                                 <span class="error hide duplicate-IMEI2 font-weight-bold">Already Exist IMEI2 !</span>
                             </div>
                         </div>
@@ -366,11 +383,13 @@
                                 <label for="ddlModelName" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                                 @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
                                 <span class="error hide require-modelName font-weight-bold">Model is required !</span>
+                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset Model !</span>
                             </div>
                             <div class="col-md-5" id="changeColor">
                                 <label for="ddlModelColor" class="control-label font-weight-bold">Color<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                                 @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
                                 <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required !</span>
+                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset Color !</span>
                             </div>
                             <div class="col-md-2" id="changeButton">
                                 <label  class="control-label font-weight-bold" style="visibility:hidden">Coloroooo</label>

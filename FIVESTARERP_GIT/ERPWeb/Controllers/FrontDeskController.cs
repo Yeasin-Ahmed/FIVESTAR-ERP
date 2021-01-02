@@ -1077,7 +1077,9 @@ namespace ERPWeb.Controllers
                 ModelName= (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrder.DescriptionId, User.OrgId).DescriptionName),
                 ModelColor=jobOrder.ModelColor,
                 Remarks=jobOrder.Remarks,
-                TSRemarks=jobOrder.TSRemarks
+                TSRemarks=jobOrder.TSRemarks,
+                CallCenterRemarks=jobOrder.CallCenterRemarks,
+                CustomerApproval=jobOrder.CustomerApproval
             };
             IEnumerable<JobOrderProblemDTO> prblm = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(joborderId.Value, User.OrgId).Select(p => new JobOrderProblemDTO
             {
@@ -1747,6 +1749,79 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_AllBranchDailySummaryReport", viewModels);
             }
+        }
+        #endregion
+
+        #region Call Center
+        public ActionResult GetJobOrderListForCallCenter(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", string tab = "", string customerType = "", string jobType = "", int page = 1)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrders");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlJobType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+                ViewBag.ddlCallCenterApproval = Utility.ListOfCallCenterApproval().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign" || flag=="TSWork"))
+            {
+                var dto = _jobOrderBusiness.GetJobOrders(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId, fromDate, toDate,customerType,jobType);
+
+                IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+               
+                if (flag == "view" || flag == "search")
+                {
+                    // Pagination //
+                    ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                    dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                    //-----------------//
+                    AutoMapper.Mapper.Map(dto, viewModels);
+                    return PartialView("_GetJobOrderForCallCenter", viewModels);
+                }
+                //if (flag == "TSWork")
+                //{
+                //    AutoMapper.Mapper.Map(dto, viewModels);
+                //    return PartialView("_GetTSWorkDetails", viewModels.FirstOrDefault());
+                //}
+                else if (flag == "Detail")// Flag = Detail
+                {
+                    var oldHandset = _handsetChangeTraceBusiness.GetOneJobByOrgId(jobOrderId.Value,User.OrgId);
+                    var handset = new HandsetChangeTraceViewModel();
+                    if (oldHandset != null)
+                    {
+                        handset = new HandsetChangeTraceViewModel
+                        {
+                            IMEI1 = oldHandset.IMEI1,
+                            IMEI2 = oldHandset.IMEI2,
+                            ModelId = oldHandset.ModelId,
+                            ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(oldHandset.ModelId, User.OrgId).DescriptionName),
+                            Color = oldHandset.Color,
+                        };
+                    }
+                    ViewBag.OldHansetInformation = handset;
+
+                    AutoMapper.Mapper.Map(dto, viewModels);
+                    ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                    return PartialView("_GetJobOrderDetailsForCallCenter", viewModels.FirstOrDefault());
+                }
+               
+            }
+            return View();
+        }
+
+        public ActionResult SaveCallCenterApproval(long jobId,string approval,string remarks)
+        {
+            bool IsSuccess = false;
+            if (jobId > 0)
+            {
+                IsSuccess = _jobOrderBusiness.SaveCallCenterApproval(jobId, approval, remarks, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
         }
         #endregion
     }

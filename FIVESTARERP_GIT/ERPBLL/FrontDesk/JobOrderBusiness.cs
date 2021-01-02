@@ -129,8 +129,8 @@ CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
-IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -1597,6 +1597,20 @@ Where OrganizationId={0} and BranchId={1}", orgId, branchId)).ToList();
                 string.Format(@"select ISNULL(Count(StateStatus),0)'Total' 
 from tblJobOrders where OrganizationId={0} and ((BranchId={1} and JobLocation={1}) or (TransferBranchId={1} and IsTransfer='True')) 
 and StateStatus='Job-Initiated' ", orgId, branchId)).ToList(); 
+        }
+
+        public bool SaveCallCenterApproval(long jobId, string approval, string remarks, long userId, long orgId)
+        {
+            var jobOrderInDb = GetJobOrderById(jobId, orgId);
+            if(jobOrderInDb != null)
+            {
+                jobOrderInDb.CustomerApproval = approval;
+                jobOrderInDb.CallCenterRemarks = remarks;
+                jobOrderInDb.UpdateDate = DateTime.Now;
+                jobOrderInDb.UpUserId = userId;
+                _jobOrderRepository.Update(jobOrderInDb);
+            }
+            return _jobOrderRepository.Save();
         }
     }
 }

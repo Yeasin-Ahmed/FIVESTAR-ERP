@@ -42,6 +42,11 @@ namespace ERPBLL.Common
         public static readonly string Received = "Received";
         public static readonly string Pending = "Pending";
     }
+    public class CallCenterApproval
+    {
+        public static readonly string Approved = "Approved";
+        public static readonly string DisApproved = "DisApproved";
+    }
     public class InvoiceTypeStatus
     {
         public static readonly string JobOrder = "JobOrder";

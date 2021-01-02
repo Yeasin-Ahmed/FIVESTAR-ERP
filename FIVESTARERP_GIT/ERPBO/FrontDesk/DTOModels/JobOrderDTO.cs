@@ -75,5 +75,8 @@ namespace ERPBO.FrontDesk.DTOModels
         public long? JobLocation { get; set; }
         public string JobLocationB { get; set; }
         public bool? IsHandset { get; set; }
+        //
+        public string CustomerApproval { get; set; }
+        public string CallCenterRemarks { get; set; }
     }
 }
