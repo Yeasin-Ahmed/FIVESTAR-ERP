@@ -3,6 +3,7 @@ using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBO.Configuration.DomainModels;
 using ERPBO.FrontDesk.DomainModels;
+using ERPBO.FrontDesk.DTOModels;
 using ERPDAL.ConfigurationDAL;
 using ERPDAL.FrontDeskDAL;
 using System;
@@ -115,6 +116,50 @@ namespace ERPBLL.FrontDesk
         public bool IsDuplicateIMEI2(long jobId, string imei2, long orgId, long branchId)
         {
             return _handsetChangeTraceRepository.GetOneByOrg(f => f.JobOrderId != jobId && f.IMEI2 == imei2 && f.OrganizationId == orgId) != null ? true : false;
+        }
+
+        public IEnumerable<HandsetChangeInformationDTO> GetHandsetChangeList(long orgId, long branchId, string fromDate, string toDate)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<HandsetChangeInformationDTO>(QueryForHandsetChangeList(orgId, branchId, fromDate, toDate)).ToList();
+        }
+        private string QueryForHandsetChangeList(long orgId, long branchId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+            if (orgId > 0)
+            {
+                param += string.Format(@"and hc.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and hc.BranchId={0}", branchId);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(hc.EntryDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(hc.EntryDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(hc.EntryDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select hc.JobOrderCode,dhc.DescriptionName'OldModel',hc.IMEI1'OldIMEI1',hc.IMEI2'OldIMEI2',
+hc.Color'OldColor',dhc2.DescriptionName 'NewModel',jo.IMEI'IMEI1',jo.IMEI2,jo.ModelColor'Color',hc.EntryDate
+From tblHandsetChangeTraces hc
+left join [Inventory].dbo.tblDescriptions dhc on hc.ModelId=dhc.DescriptionId
+left join tblJobOrders jo on hc.JobOrderId=jo.JodOrderId
+left join [Inventory].dbo.tblDescriptions dhc2 on jo.DescriptionId=dhc2.DescriptionId
+where 1=1{0}
+order by hc.EntryDate desc", Utility.ParamChecker(param));
+            return query;
         }
     }
 }

@@ -853,6 +853,8 @@
     <Content Include="Views\FrontDesk\GetJobOrderListForCallCenter.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrderDetailsForCallCenter.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrderForCallCenter.cshtml" />
+    <Content Include="Views\FrontDesk\GetHandsetChangeInformationList.cshtml" />
+    <Content Include="Views\FrontDesk\_GetHandsetChangeInformationList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

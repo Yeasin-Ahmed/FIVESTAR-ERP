@@ -213,6 +213,12 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(returnDTO, returnViewModels);
                 ViewBag.ReturnPartsViewModel = returnViewModels;
 
+                // Call Center Approval
+                IEnumerable<JobOrderDTO> callDto = _jobOrderBusiness.DashboardCallCenterApproval(User.OrgId,User.BranchId, User.UserId);
+                IEnumerable<JobOrderViewModel> callViewModels = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(callDto, callViewModels);
+                ViewBag.CallCenterViewModel = callViewModels;
+
                 return View("Index2");
             }
         }

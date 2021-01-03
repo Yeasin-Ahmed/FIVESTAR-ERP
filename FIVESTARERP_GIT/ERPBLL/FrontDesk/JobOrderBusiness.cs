@@ -45,12 +45,12 @@ namespace ERPBLL.FrontDesk
             return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.OrganizationId == orgId);
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType)
+        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType,repairStatus)).ToList();
         }
 
-        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType)
+        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -85,6 +85,10 @@ namespace ERPBLL.FrontDesk
                 if (!string.IsNullOrEmpty(jobCode))
                 {
                     param += string.Format(@"and jo.JobOrderCode Like '%{0}%'", jobCode);
+                }
+                if (!string.IsNullOrEmpty(repairStatus))
+                {
+                    param += string.Format(@"and jo.TsRepairStatus Like '%{0}%'", repairStatus);
                 }
                 if (!string.IsNullOrEmpty(iMEI))
                 {
@@ -1611,6 +1615,13 @@ and StateStatus='Job-Initiated' ", orgId, branchId)).ToList();
                 _jobOrderRepository.Update(jobOrderInDb);
             }
             return _jobOrderRepository.Save();
+        }
+
+        public IEnumerable<JobOrderDTO> DashboardCallCenterApproval(long orgId, long branchId, long userId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
+                string.Format(@"Select JodOrderId,JobOrderCode,CustomerApproval from tblJobOrders
+Where OrganizationId={0} and BranchId={1} and TsRepairStatus='PENDING FOR APPROVAL' and (CustomerApproval='Approved' or CustomerApproval='DisApproved') and TSId={2}", orgId, branchId,userId)).ToList();
         }
     }
 }

@@ -82,7 +82,7 @@
                             </td>
                             
                             <td>
-                                @if (item.TsRepairStatus == "PENDING FOR APPROVAL")
+                                @if (item.TsRepairStatus == "PENDING FOR APPROVAL" && item.CustomerApproval==null)
                                 {
                                     <p style="color:sandybrown">@item.TsRepairStatus</p>
                                 }

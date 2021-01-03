@@ -1008,6 +1008,54 @@
         <div class="col-md-12">
             <div class="card shadow" style="height:125px">
                 <div class="row">
+                    <div class="col-md-6 col-6">
+                        <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                            <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                                <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center Approval</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0" style="max-height:115px;overflow-y:scroll">
+                                @if (((IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel).Count() > 0)
+                                {
+                                    <table class="table table-sm table-valign-middle text-sm">
+                                        <thead>
+                                            <tr>
+                                                <th class="hide"></th>
+                                                <th class="text-center">Job Order</th>
+                                                <th class="text-center">C. Center Approval</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel)
+                                            {
+                                                <tr>
+                                                    <td class="hide">@app.JodOrderId</td>
+                                                    <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
+                                                    <td class="text-center">@app.CustomerApproval</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="text-center text-indigo" style="width:200px;height:200px">
+                                        <div style="position:absolute;top:40%;left:35%">
+                                            <i class="fas fa-address-card fa-5x"></i>
+                                            <p class="text-dark text-bold">No Current Requsition</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner" style="height:115px">
@@ -1029,6 +1077,56 @@
             </div>
         </div>
     </div>
+    @*<div class="row">
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center Approval</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="text-center">Job Order</th>
+                                    <th class="text-center">C. Center Approval</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel)
+                                {
+                                    <tr>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
+                                        <td class="text-center">@app.CustomerApproval</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-address-card fa-5x"></i>
+                                <p class="text-dark text-bold">No Current Requsition</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
 }
 @if (User.RoleName == "Head Of Technical Services")
 {

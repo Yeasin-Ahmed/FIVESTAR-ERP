@@ -206,6 +206,7 @@ namespace ERPBLL.Common
                  new Dropdown(){text=JobOrderStatus.AssignToTS,value=JobOrderStatus.AssignToTS},
                  new Dropdown(){text=JobOrderStatus.RepairDone,value=JobOrderStatus.RepairDone},
                  new Dropdown(){text=JobOrderStatus.DeliveryDone,value=JobOrderStatus.DeliveryDone},
+                 new Dropdown(){text=JobOrderStatus.HandSetChange,value=JobOrderStatus.HandSetChange},
             };
             return dropdowns;
         }

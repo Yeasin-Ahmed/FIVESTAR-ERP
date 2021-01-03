@@ -240,6 +240,7 @@
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockAssignTSDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockDetailsDTO.cs" />
+    <Compile Include="FrontDesk\DTOModels\HandsetChangeInformationDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\HandsetChangeTraceDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceDetailDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\InvoiceInfoDTO.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockAssignTSViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockDetailsViewModel.cs" />
+    <Compile Include="FrontDesk\ViewModels\HandsetChangeInformationViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\HandsetChangeTraceViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceDetailViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\InvoiceInfoViewModel.cs" />

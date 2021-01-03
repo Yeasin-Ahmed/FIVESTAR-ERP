@@ -85,6 +85,10 @@
                                                 @Html.DropDownList("ddlJobType", (IEnumerable<SelectListItem>)ViewBag.ddlJobType, "--Search By Job Type--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                             <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">TS Work Status</label>
+                                                <input type="text" id="txtRepairStatus" class="form-control form-control-sm" placeholder="Search By Ts Repair Status" />
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -331,6 +335,7 @@
         var txtMobileNo2 = $("#txtMobileNo2");
         var ddlCustomerType = $("#ddlCustomerType");
         var ddlJobType = $("#ddlJobType");
+        var txtRepairStatus = $("#txtRepairStatus");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -424,6 +429,9 @@
         txtJobCode.keyup(function () {
             LoadDataTable();
         })
+        txtRepairStatus.keyup(function () {
+            LoadDataTable();
+        })
         txtIMEINo.keyup(function () {
             LoadDataTable();
         })
@@ -436,7 +444,7 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), repairStatus: txtRepairStatus.val().trim(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderListForCallCenter', data)).then(function (res, status) {

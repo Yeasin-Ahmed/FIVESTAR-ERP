@@ -131,6 +131,7 @@ namespace ERPBLL.Common
         public static readonly string AssignToTS = "TS-Assigned";
         public static readonly string RepairDone = "Repair-Done";
         public static readonly string DeliveryDone = "Delivery-Done";
+        public static readonly string HandSetChange = "HandSetChange";
     }
     public class JobOrderTypes
     {
