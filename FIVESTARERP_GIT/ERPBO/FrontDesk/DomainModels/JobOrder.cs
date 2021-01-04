@@ -69,5 +69,8 @@ namespace ERPBO.FrontDesk.DomainModels
         ///Call Center
         public string CustomerApproval { get; set; }
         public string CallCenterRemarks { get; set; }
+        //
+        public string QCStatus { get; set; }
+        public string QCRemarks { get; set; }
     }
 }

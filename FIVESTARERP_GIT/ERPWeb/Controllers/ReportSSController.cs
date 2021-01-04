@@ -30,8 +30,9 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderReturnDetailBusiness _jobOrderReturnDetailBusiness;
         private readonly IJobOrderTransferDetailBusiness _jobOrderTransferDetailBusiness;
         private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
+        private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
         // GET: ReportSS
-        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness)
+        public ReportSSController(IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderBusiness jobOrderBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartBusiness mobilePartBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness)
         {
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._jobOrderBusiness = jobOrderBusiness;
@@ -46,6 +47,7 @@ namespace ERPWeb.Controllers
             this._jobOrderReturnDetailBusiness = jobOrderReturnDetailBusiness;
             this._jobOrderTransferDetailBusiness = jobOrderTransferDetailBusiness;
             this._jobOrderTSBusiness = jobOrderTSBusiness;
+            this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
         }
 
         #region JobOrderList
@@ -827,6 +829,52 @@ namespace ERPWeb.Controllers
                 localReport.DataSources.Add(dataSource2);
                 localReport.Refresh();
                 localReport.DisplayName = "DailySummary";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region HandsetChangeInformationReport
+        public ActionResult HandsetChangeReports(string fromDate, string toDate,string rptType)
+        {
+            bool IsSuccess = false;
+            IEnumerable<HandsetChangeInformationDTO> reportData = _handsetChangeTraceBusiness.GetHandsetChangeList(User.OrgId, User.BranchId, fromDate, toDate).ToList();
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptHandsetChangeInformation.rdlc");
+            string id = string.Empty;
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("HandsetChangeInformation", reportData);
+                ReportDataSource dataSource2 = new ReportDataSource("ReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "List";
 
                 string mimeType;
                 string encoding;

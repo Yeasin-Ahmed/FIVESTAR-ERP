@@ -855,6 +855,9 @@
     <Content Include="Views\FrontDesk\_GetJobOrderForCallCenter.cshtml" />
     <Content Include="Views\FrontDesk\GetHandsetChangeInformationList.cshtml" />
     <Content Include="Views\FrontDesk\_GetHandsetChangeInformationList.cshtml" />
+    <Content Include="Views\FrontDesk\GetJobOrderListForQc.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrderListForQc.cshtml" />
+    <Content Include="Views\FrontDesk\_GetJobOrderDetailsForQC.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -958,6 +961,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Reports\ServiceRpt\Configuration\rptOtherBranchRequsition - Copy.rdlc" />
+    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptHandsetChangeInformation.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">

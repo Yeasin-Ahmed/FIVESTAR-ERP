@@ -18,5 +18,7 @@ namespace ERPBO.FrontDesk.DTOModels
         public string IMEI2 { get; set; }
         public string Color { get; set; }
         public Nullable<DateTime> EntryDate { get; set; }
+        public Nullable<DateTime> FromDate { get; set; }
+        public Nullable<DateTime> ToDate { get; set; }
     }
 }

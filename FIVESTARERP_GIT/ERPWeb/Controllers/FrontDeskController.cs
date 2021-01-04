@@ -1843,5 +1843,68 @@ namespace ERPWeb.Controllers
             return Json(IsSuccess);
         }
         #endregion
+
+        #region QC
+        public ActionResult GetJobOrderListForQc(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", string tab = "", string customerType = "", string jobType = "", string repairStatus = "", int page = 1)
+        {
+            ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrderListForQc");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlJobType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+                ViewBag.ddlCallCenterApproval = Utility.ListOfCallCenterApproval().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign" || flag == "TSWork"))
+            {
+                var dto = _jobOrderBusiness.GetJobOrderForQc(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId, fromDate, toDate, customerType, jobType, repairStatus);
+
+                IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+
+                if (flag == "view" || flag == "search")
+                {
+                    // Pagination //
+                    ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                    dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                    //-----------------//
+                    AutoMapper.Mapper.Map(dto, viewModels);
+                    return PartialView("_GetJobOrderListForQc", viewModels);
+                }
+                //if (flag == "TSWork")
+                //{
+                //    AutoMapper.Mapper.Map(dto, viewModels);
+                //    return PartialView("_GetTSWorkDetails", viewModels.FirstOrDefault());
+                //}
+                else if (flag == "Detail")// Flag = Detail
+                {
+                    var oldHandset = _handsetChangeTraceBusiness.GetOneJobByOrgId(jobOrderId.Value, User.OrgId);
+                    var handset = new HandsetChangeTraceViewModel();
+                    if (oldHandset != null)
+                    {
+                        handset = new HandsetChangeTraceViewModel
+                        {
+                            IMEI1 = oldHandset.IMEI1,
+                            IMEI2 = oldHandset.IMEI2,
+                            ModelId = oldHandset.ModelId,
+                            ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(oldHandset.ModelId, User.OrgId).DescriptionName),
+                            Color = oldHandset.Color,
+                        };
+                    }
+                    ViewBag.OldHansetInformation = handset;
+
+                    AutoMapper.Mapper.Map(dto, viewModels);
+                    ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                    return PartialView("_GetJobOrderDetailsForQC", viewModels.FirstOrDefault());
+                }
+
+            }
+            return View();
+        }
+        #endregion
     }
 }

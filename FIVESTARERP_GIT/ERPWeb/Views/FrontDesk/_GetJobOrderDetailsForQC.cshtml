@@ -53,7 +53,7 @@
                 <td class="text-purple">Problems</td>
                 <td>@Model.Problems</td>
                 @*<td class="text-purple">Warrenty Available</td>
-            <td>@isWarrantyAvailable</td>*@
+                    <td>@isWarrantyAvailable</td>*@
                 <td class="text-purple">Warrenty Paper</td>
                 <td>@isWarrantyPaperEnclosed</td>
 
@@ -123,12 +123,12 @@
                     <td colspan="3">@Model.CustomerApproval</td>
                 </tr>
             }
-                <tr>
-                    <td class="text-purple">TsRemarks</td>
-                    <td colspan="2"><b style="color:orangered">@Model.TSRemarks</b></td>
-                    <td class="text-purple">Call Center Remarks</td>
-                    <td colspan="2">@Model.CallCenterRemarks</td>
-                </tr>
+            <tr>
+                <td class="text-purple">TsRemarks</td>
+                <td colspan="2"><b style="color:orangered">@Model.TSRemarks</b></td>
+                <td class="text-purple">Call Center Remarks</td>
+                <td colspan="2">@Model.CallCenterRemarks</td>
+            </tr>
         </table>
         @if (Model.StateStatus == "HandSetChange" && Model.TsRepairStatus == "MODULE SWAP")
         {
@@ -154,13 +154,14 @@
     <div class="col-md-12">
         <div class="modal-footer">
             @*@if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.IsReturn == true) || ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone) && (Model.JobOrderType == "Warrenty")) || ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone) && (Model.InvoiceCode != null)) || (Model.StateStatus == "HandSetChange" && Model.TsRepairStatus == "MODULE SWAP"))
-        {
-            <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
-        }*@
-            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS && Model.TsRepairStatus == "PENDING FOR APPROVAL" && Model.CustomerApproval == null)
+                {
+                    <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
+                }*@
+            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS && Model.TsRepairStatus == "QC" && Model.QCStatus == null)
             {
-                <button type="button" title="Click For Approval" class="btn btn-outline-success btnApproval"><i class="fas fa-sticky-note"></i></button>
+                <button type="button" title="Click For Approval" class="btn btn-outline-success btnQcStatus"><i class="fas fa-sticky-note"></i></button>
             }
         </div>
     </div>
 </div>
+
