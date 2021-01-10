@@ -218,6 +218,11 @@ namespace ERPWeb.Controllers
                 IEnumerable<JobOrderViewModel> callViewModels = new List<JobOrderViewModel>();
                 AutoMapper.Mapper.Map(callDto, callViewModels);
                 ViewBag.CallCenterViewModel = callViewModels;
+                // Call Center Approval
+                IEnumerable<JobOrderDTO> qcdto = _jobOrderBusiness.DashboardQCStatus(User.OrgId, User.BranchId, User.UserId);
+                IEnumerable<JobOrderViewModel> qcviewModel = new List<JobOrderViewModel>();
+                AutoMapper.Mapper.Map(qcdto, qcviewModel);
+                ViewBag.QCStatusViewModel = qcviewModel;
 
                 return View("Index2");
             }

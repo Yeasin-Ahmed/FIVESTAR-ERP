@@ -84,6 +84,8 @@ namespace ERPBO.FrontDesk.ViewModels
         //
         public string QCStatus { get; set; }
         public string QCRemarks { get; set; }
+        //
+        public string MultipleDeliveryCode { get; set; }
 
     }
 }

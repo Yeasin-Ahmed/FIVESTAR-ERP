@@ -1,10 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Call Center";
-    var privilege = (ERPBO.Common.UserPrivilege)ViewBag.UserPrivilege;
-    string tab = Request.QueryString["tab"] != null ? Request.QueryString["tab"].ToString() : "";
+    ViewBag.Title = "Job Order List";
 }
-
 <div class="row">
     <div class="col-md-12">
         <div class="card shadow card-primary card-outline card-tabs" style="margin-top:-20px">
@@ -34,7 +31,8 @@
                                                     Job Order List
                                                 </h5>
                                             </div>
-                                            <div class="col-md-3 hide">
+                                            <div class="col-md-3">
+
                                             </div>
                                         </div>
                                     </div>
@@ -81,10 +79,6 @@
                                                 @Html.DropDownList("ddlJobType", (IEnumerable<SelectListItem>)ViewBag.ddlJobType, "--Search By Job Type--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">TS Work Status</label>
-                                                <input type="text" id="txtRepairStatus" class="form-control form-control-sm" placeholder="Search By Ts Repair Status" />
-                                            </div>
-                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -102,6 +96,10 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label font-weight-bold" style="visibility:hidden">To Dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</label>
+                                                <button type="button" class="btn float-lg-right btn-sm btn-primary" id="btnSubmitMDelivery">Submit</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -111,75 +109,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12 text-sm text-sm" id="dataContainer" style="overflow-y:scroll">
-                                                @{Html.RenderAction("GetJobOrderListForCallCenter", new { @flag = "view" });}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-accessoriesSellsList" role="tabpanel" aria-labelledby="custom-tabs-two-accessoriesSellsList-tab">
-                        <div class="row" style="margin-top:-15px">
-                            <div class="col-md-12">
-                                <div class="card shadow card-gray-dark">
-                                    <div class="card-header shadow">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h5 class="text-center text-bold">
-                                                    Invoice List For Accessories Sells
-                                                </h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card shadow card-navy">
-                                    <div class="card-body text-sm">
-                                        <div class="row text-sm">
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">Invoice</label>
-                                                <input type="text" id="txtInvoice" class="form-control form-control-sm" placeholder="Search By Invoice" />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">Mobile No</label>
-                                                <input type="text" id="txtMobileNo2" class="form-control form-control-sm" placeholder="Search By MobileNo" />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">From Date</label>
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" />
-                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate2" style="cursor:pointer">
-                                                        <span class="input-group-text">&#10008;</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">To Date</label>
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate2" />
-                                                    <div class="input-group-prepend remove-date dptToDate2" style="cursor:pointer">
-                                                        <span class="input-group-text">&#10008;</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12 text-sm text-sm" id="dataContainer3" style="overflow-y:scroll">
-                                                @{Html.RenderAction("AccessoriesSells", new { @flag = "sell" });}
+                                                @{Html.RenderAction("GetJobOrderListForDelivery", new { @flag = "view" });}
                                             </div>
                                         </div>
                                     </div>
@@ -188,23 +118,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<div class="modal fade" id="modalJobOrderDetails" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-secondary" style="height:60px">
-                @Html.AntiForgeryToken()
-                <input type="hidden" id="hdfJobOrderId" />
-                <h4 id="modalHeading" class="modal-title">Job Order Details</h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body" id="dataContainer2">
             </div>
         </div>
     </div>
@@ -262,45 +175,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalCallCenter" role="dialog" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header alert-secondary" style="height:60px">
-                <h4 id="modalHeading" class="modal-title"><span id="spanModalHead">Call Center Approval</span></h4>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmInvoice">
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="ddlCallCenterApproval" class="control-label font-weight-bold">Customer Approval<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            @Html.DropDownList("ddlCallCenterApproval", (IEnumerable<SelectListItem>)ViewBag.ddlCallCenterApproval, new { @class = "form-control form-control-sm ctrl-changed " })
-                            <span class="error hide required-ServiceName font-weight-bold">Input Service!</span>
-                            <span class="error hide duplicate-servicesName font-weight-bold">Alrady Service Exist!</span>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="txtCallCenterRemarks" class="control-label font-weight-bold">Remarks</label>
-                            <input type="text" name="remarks" value="" id="txtCallCenterRemarks" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer btn-light">
-                <div class="col-md-6">
-                    <div id="msg1" class="alert alert-success hide float-left">
-                        Data has been saved Successful!
-                    </div>
-                    <div id="msg2" class="alert alert-danger hide float-left">
-                        Data has been failed to save!
-                    </div>
-                </div>
-                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-sm btn-success float-right" id="btnCallCenterSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section scripts{
     <script type="text/javascript">
         //JobOrder
@@ -327,7 +201,6 @@
         var txtMobileNo2 = $("#txtMobileNo2");
         var ddlCustomerType = $("#ddlCustomerType");
         var ddlJobType = $("#ddlJobType");
-        var txtRepairStatus = $("#txtRepairStatus");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -366,9 +239,6 @@
                 todayHighlight: true,
                 autoclose: true
             });
-            if ('@tab' == "AccessoriesSells") {
-                $("#custom-tabs-two-accessoriesSellsList-tab").trigger('click');
-            }
         })
 
         $(document).on('click', 'div.remove-date', function () {
@@ -421,9 +291,6 @@
         txtJobCode.keyup(function () {
             LoadDataTable();
         })
-        txtRepairStatus.keyup(function () {
-            LoadDataTable();
-        })
         txtIMEINo.keyup(function () {
             LoadDataTable();
         })
@@ -436,10 +303,10 @@
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), repairStatus: txtRepairStatus.val().trim(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), page: pageNo };
 
             console.log(data);
-            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderListForCallCenter', data)).then(function (res, status) {
+            $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderListForDelivery', data)).then(function (res, status) {
                 console.log(status);
                 if (status === "success") {
                     $("#dataContainer").fadeOut('500', function () {
@@ -451,201 +318,6 @@
                 console.log(error);
             });
         }
-        // View Job Order
-        $(document).on('click', 'a.data-item-details', function (e) {
-            e.preventDefault();
-            var id = $(this).attr("data-item-details");
-            getJobOrderDetail("Detail",id)
-            
-        })
-        //Ts Work Details
-        $(document).on('click', 'a.data-item-tsWork', function (e) {
-            e.preventDefault();
-            var id = $(this).attr("data-item-tsWork");
-            getJobOrderDetail("TSWork", id);
-        })
-
-        // assign a T.S.
-        $(document).on('click', 'a.data-item-assignTS', function (e) {
-            e.preventDefault();
-            var id = $(this).attr("data-item-assignTS");
-            getJobOrderDetail("Assign", id);
-        })
-
-        function getJobOrderDetail(flag, id) {
-            hdfJobOrderId.val("0");
-            if (TryParseInt(id) > 0) {
-                hdfJobOrderId.val(id)
-                var data = { flag: flag, modelId: 0, jobOrderId: id, mobileNo: '', status: "", jobCode: "", page: 1 };
-
-                console.log(data);
-                $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderListForCallCenter', data)).then(function (res, status) {
-                    console.log(status);
-                    if (status === "success") {
-                        $("#dataContainer2").empty();
-                        $("#dataContainer2").append(res).fadeIn('500');
-                        $("#modalJobOrderDetails").modal("show");
-                    }
-                }).fail(function (error) {
-                    console.log(error);
-                });
-            }
-        }
-
-        // edit status
-        function validateStatus() {
-            var isValid = true;
-            $(".error").addClass("hide");
-            if ($(".ddlJobOrderType").val() === "") {
-                $(".require-type").removeClass("hide");
-                isValid = false;
-            }
-            return isValid;
-        }
-
-        $(document).on('click', '.btnDisapproved', function (e) {
-            e.preventDefault();
-            if (validateStatus()) {
-
-                bootbox.confirm("Are you sure you want to change the status to <b>Disapproved<b>?", function (result) {
-                    if (result) {
-                        changeJobOrderStatus(jobOrderStatus.customerDisapproved);
-                    }
-                })
-            }
-        })
-
-        
-
-        function changeJobOrderStatus(status) {
-           // disable(".btnDisapproved");
-           // disable(".btnApproved");
-            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val(), status: status, type: $(".ddlJobOrderType").val() });
-
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateJobOrderStatus', data, getToken())).then(function (res, status) {
-                if (res === true && status === "success") {
-                    $("#modalJobOrderDetails").modal("toggle");
-                    $('.toastrJobOrderSuccess').trigger('click');
-                    LoadDataTable();
-                }
-                else {
-                    $('.toastrJobOrderError').trigger('click');
-                }
-               // enable(".btnDisapproved");
-              //  enable(".btnApproved");
-            }).fail(function (error) {
-                //enable(".btnDisapproved");
-                //enable(".btnApproved");
-                console.log(error);
-            })
-
-            console.log(data);
-           // enable(".btnDisapproved");
-           // enable(".btnApproved");
-        }
-
-        //btnAssignTS
-
-        function validateTS() {
-            var isValid = true;
-            $(".error").addClass("hide");
-            if ($(".ddlTSName").val() === "") {
-                $(".require-ts").removeClass("hide");
-                isValid = false;
-            }
-            return isValid;
-        }
-
-        $(document).on('click', '.btnAssignTS', function (e) {
-            e.preventDefault();
-            if (validateTS()) {
-                bootbox.confirm("Are you sure you want to Assign this T.S. to the Job Order?", function (result) {
-                    if (result) {
-                        assignTStoTheJobOrder();
-                    }
-                })
-            }
-        })
-
-        function assignTStoTheJobOrder() {
-
-            disable(".btnAssignTS");
-            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val(), tsId: $(".ddlTSName").val() });
-
-            console.log(data);
-
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/AssignTSForJobOrder', data, getToken())).then(function (res, status) {
-                if (res === true && status === "success") {
-                    $("#modalJobOrderDetails").modal("toggle");
-                    $('.toastrDefaultSuccess').trigger('click');
-                    LoadDataTable();
-                }
-                else {
-                    $('.toastrDefaultError').trigger('click');
-                }
-                enable(".btnAssignTS");
-            }).fail(function (error) {
-                enable(".btnAssignTS");
-                console.log(error);
-            })
-            enable(".btnAssignTS");
-        }
-
-        $(document).on('click', '.btnDeliveryDone', function (e) {
-            e.preventDefault();
-            if (validateStatus()) {
-                bootbox.confirm("Are you sure you want to change the status to <b>Delivery<b>?", function (result) {
-                    if (result) {
-                        changeJobOrderStatus(jobOrderStatus.deliveryDone);
-                    }
-                })
-            }
-        })
-        function changeJobOrderStatus(status) {
-            var data = JSON.stringify({ jobOrderId: hdfJobOrderId.val() });
-            //return console.log(data);
-
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/GetJobOrderReceiptReport', data, getToken())).then(function (res, status) {
-                if (res.IsSuccess === true && status === "success") {
-                    //alert("Success");
-                    setTimeout(function () {
-                                    redirectPage('@Url.Action("GetJobOrders")');
-                                }, 1000);
-                   // LoadDataTable();
-
-                    var pdfWindow = window.open("", "_blank")
-                    console.log(res.File);
-                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
-                    //download(res.File, res.FileName, "application/pdf"); // Download
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
-
-            console.log(data);
-        }
-
-        // Report
-        $("#btnReport").click(function (e) {
-            e.preventDefault();
-            var data = JSON.stringify({ flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val() });
-            //return console.log(data)
-            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/ReportSS/GetJobOrderReport', data, getToken())).then(function (res, status) {
-                console.log(res.IsSuccess);
-                if (res.IsSuccess === true) {
-                    var pdfWindow = window.open("", "_blank")
-                    console.log(res.File);
-                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.File + "'></embed >"); // Preview
-                    //download(res.File, res.FileName, "application/pdf"); // Download
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
-        })
-        $(document).on('click', '.data-report-item', function (e) {
-            e.preventDefault();
-
-        })
 
         function OpenInvoiceModal() {
             $("#modalInvoice").modal("show");
@@ -744,103 +416,108 @@
                     }
                 });
         });
-       
-        // Accessories
-        dptFromDate2.change(function () {
-            LoadDataTableForASells();
-        })
-        dptToDate2.change(function () {
-            LoadDataTableForASells();
-        })
-        txtInvoice.keyup(function () {
-            LoadDataTableForASells();
-        })
-        txtMobileNo2.keyup(function () {
-            LoadDataTableForASells();
-        })
-        function LoadDataTableForASells() {
-            var data = { flag: "sell", invoice: txtInvoice.val().trim(), mobileNo: txtMobileNo2.val().trim(), fromDate: dptFromDate2.val(), toDate: dptToDate2.val(), page: pageNo };
-
-            console.log(data);
-            //return console.log(data);
-            $.when(getReqWithData('html', 'GET', '/FrontDesk/AccessoriesSells', data)).then(function (res, status) {
-                console.log(status);
-                if (status === "success") {
-                    $("#dataContainer3").fadeOut('500', function () {
-                        $("#dataContainer3").empty();
-                        $("#dataContainer3").append(res).fadeIn('500');
-                    });
-                }
-            }).fail(function (error) {
-                console.log(error);
-            })
-        }
-
-        ///// Call center
-        var ddlCallCenterApproval = $("#ddlCallCenterApproval");
-        var txtCallCenterRemarks = $("#txtCallCenterRemarks");
-
-        function OpenCallCenterModal() {
-            $("#modalCallCenter").modal("show");
-            $(".error").addClass("hide");
-        }
-
-
-
-
-        $(document).on('click', '.btnApproval', function (e) {
-            e.preventDefault();
-            OpenCallCenterModal();
-        })
-
-
-
-        $("#btnCallCenterSubmit").click(function (e) {
-            e.preventDefault();
-            $(".error").addClass("hide");
-            bootbox.confirm("Are you sure you want to save?", function (result) {
-                var data = JSON.stringify ({ jobId: TryParseInt(hdfJobOrderId.val(), 0), approval: ddlCallCenterApproval.val(), remarks: txtCallCenterRemarks.val()
-                    });
-                    console.log(data);
-                    //return console.log(data)
-                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveCallCenterApproval', data, getToken())).then(function (res, status) {
-                        console.log(res);
-                        console.log(status);
-                        // enable("#btnSubmit");
-                        if (res == true) {
-                            $('.toastrDefaultSuccess').trigger('click');
-                            setTimeout(function () {
-                                redirectPage('@Url.Action("GetJobOrderListForCallCenter")');
-                            }, 1000);
-                        }
-                        else {
-                            $('.toastrDefaultError').trigger('click');
-                        }
-                    }).fail(function (error) {
-                        consoleLog(error)
-                    })
-            })
-        });
-
-        // Pagination
-        $(document).on('click', 'a.page-link', function (e) {
-            e.preventDefault();
-            if (!$(this).hasClass('current-page')) {
-                if ($(this).parent().parents('div').hasClass('joborder')) {
-                    pageNo = $(this).attr('data-page-no');
-                    LoadDataTable();
-                }
-                else if ($(this).parent().parents('div').hasClass('sell')) {
-                    pageNo = $(this).attr('data-page-no');
-                    LoadDataTableForASells();
-                }
+        //M Delivery C
+        var count = 0;
+        $(document).on('change', 'input[name="allJobOrder"]', function () {
+            var isChecked = $('input[name="allJobOrder"]').is(":checked");
+            $('input[name="jobOrderName"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblJobOrderDeliveryList tbody tr").length;
+            }
+            else {
+                count = 0;
             }
         })
 
+        $(document).on('change', 'input[name="jobOrderName"]', function () {
+            count = 0;
+            $.each($(".tblJobOrderDeliveryList tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="jobOrderName"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblJobOrderDeliveryList tbody tr").length == count;
+            $('input[name="allJobOrder"]').prop("checked", allChecked);
+        })
+
+        
+        function ValidateSubmit() {
+            var isValid = true;
+            if (count == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one row");
+            }
+            return isValid;
+        }
+        $("#btnSubmitMDelivery").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit()) {
+                bootbox.confirm("Are you sure you want to pushing these Job Orders", function (result) {
+                    if (result) {
+                        disable("#btnSubmitMDelivery");
+                        var jobOrders = []; jobOrders.length = 0;
+                        $.each($(".tblJobOrderDeliveryList tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="jobOrderName"]');
+                            if (checkBox.is(":checked")) {
+                                jobOrders.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                            }
+                        });
+                        //console.log("JobOrders");
+                        //console.log(jobOrders);
+
+                        var data = JSON.stringify({ jobOrders: jobOrders });
+                       // return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/SaveMultipleDelivery', data, getToken())).then(function (res, status) {
+                             if (res.isSuccess === true && status === "success") {
+                                    $('.toastrDefaultSuccess').trigger('click');
+
+                                    var pdfWindow = window.open("", "_blank")
+                                    console.log(res.text);
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
+                                    //download(res.text, "DeliveryChallan", "application/pdf"); // Download
+
+                                    count = 0;
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJobOrderListForDelivery")');
+                                    }, 1000);
+
+                                }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                                }
+                            enable("#btnSubmitMDelivery");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnSubmitMDelivery");
+                        });
+                    }
+                })
+            }
+        });
+
+
+
+
+        // Pagination
+        //$(document).on('click', 'a.page-link', function (e) {
+        //    e.preventDefault();
+        //    if (!$(this).hasClass('current-page')) {
+        //        if ($(this).parent().parents('div').hasClass('joborder')) {
+        //            pageNo = $(this).attr('data-page-no');
+        //            LoadDataTable();
+        //        }
+        //        else if ($(this).parent().parents('div').hasClass('sell')) {
+        //            pageNo = $(this).attr('data-page-no');
+        //            LoadDataTableForASells();
+        //        }
+        //    }
+        //})
 
         function redirectPage(page) {
             window.location.replace(page);
         }
     </script>
 }
+
 

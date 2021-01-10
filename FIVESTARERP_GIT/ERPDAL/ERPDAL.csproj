@@ -456,6 +456,10 @@
     <Compile Include="FrontDeskContextMigrations\202101040931394_FrontDesk_QCStatusAndQCRemarks.Designer.cs">
       <DependentUpon>202101040931394_FrontDesk_QCStatusAndQCRemarks.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202101070652509_FrontDesk_MultipleJobDelivey.cs" />
+    <Compile Include="FrontDeskContextMigrations\202101070652509_FrontDesk_MultipleJobDelivey.Designer.cs">
+      <DependentUpon>202101070652509_FrontDesk_MultipleJobDelivey.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -1164,6 +1168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202101040931394_FrontDesk_QCStatusAndQCRemarks.resx">
       <DependentUpon>202101040931394_FrontDesk_QCStatusAndQCRemarks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202101070652509_FrontDesk_MultipleJobDelivey.resx">
+      <DependentUpon>202101070652509_FrontDesk_MultipleJobDelivey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

@@ -89,10 +89,10 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <b>F.Desk Remarks:</b> @jobOrder.Remarks
+                                                <b>F.Desk:</b> @jobOrder.Remarks
                                             </td>
                                             <td>
-                                                <b>C.Center Approval:</b> @jobOrder.CustomerApproval
+                                                <b>@jobOrder.JobOrderType</b> 
                                             </td>
                                         </tr>
                                     </tbody>
@@ -360,6 +360,40 @@
                                 </table>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>CC:</b> @jobOrder.CustomerApproval
+                                            </td>
+                                            <td>
+                                               @jobOrder.CallCenterRemarks
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>QC:</b> @jobOrder.QCStatus
+                                            </td>
+                                            <td>
+                                                @jobOrder.QCRemarks
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6" id="changeIMEI1">
                                 <label for="txtIMEI1" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
@@ -392,10 +426,11 @@
                                 <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset Color !</span>
                             </div>
                             <div class="col-md-2" id="changeButton">
-                                <label  class="control-label font-weight-bold" style="visibility:hidden">Coloroooo</label>
+                                <label class="control-label font-weight-bold" style="visibility:hidden">Coloroooo</label>
                                 <button type="button" id="btnHandsetChangeSave" class="btn btn-sm btn-primary" title="">Update</button>
                             </div>
                         </div>
+
                     </div>
                     
 

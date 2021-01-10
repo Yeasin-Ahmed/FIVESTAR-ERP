@@ -75,5 +75,11 @@ namespace ERPBLL.FrontDesk.Interface
         bool SaveCallCenterApproval(long jobId,string approval, string remarks,long userId, long orgId);
         IEnumerable<JobOrderDTO> DashboardCallCenterApproval(long orgId, long branchId,long userId);
         IEnumerable<JobOrderDTO> GetJobOrderForQc(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus);
+        bool SaveQCApproval(long jobId, string approval, string remarks, long userId, long orgId);
+        IEnumerable<JobOrderDTO> DashboardQCStatus(long orgId, long branchId, long userId);
+
+        IEnumerable<JobOrderDTO> GetJobOrderForDelivery(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus);
+        ExecutionStateWithText SaveJobOrderMDelivey(long[] jobOrders, long userId, long orgId, long branchId);
+        IEnumerable<JobOrderDTO> GetMultipleJobDeliveryChalan(string deliveryCode, long branchId, long orgId);
     }
 }

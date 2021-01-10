@@ -1098,6 +1098,8 @@ namespace ERPWeb.Reports.DataSets {
             
             private global::System.Data.DataColumn columnApproxBill;
             
+            private global::System.Data.DataColumn columnMultipleDeliveryCode;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public JobOrderDataTable() {
@@ -1469,6 +1471,14 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MultipleDeliveryCodeColumn {
+                get {
+                    return this.columnMultipleDeliveryCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1546,7 +1556,8 @@ namespace ERPWeb.Reports.DataSets {
                         string CustomerType, 
                         string CourierName, 
                         string CourierNumber, 
-                        string ApproxBill) {
+                        string ApproxBill, 
+                        string MultipleDeliveryCode) {
                 JobOrderRow rowJobOrderRow = ((JobOrderRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         JodOrderId,
@@ -1590,7 +1601,8 @@ namespace ERPWeb.Reports.DataSets {
                         CustomerType,
                         CourierName,
                         CourierNumber,
-                        ApproxBill};
+                        ApproxBill,
+                        MultipleDeliveryCode};
                 rowJobOrderRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowJobOrderRow);
                 return rowJobOrderRow;
@@ -1655,6 +1667,7 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnCourierName = base.Columns["CourierName"];
                 this.columnCourierNumber = base.Columns["CourierNumber"];
                 this.columnApproxBill = base.Columns["ApproxBill"];
+                this.columnMultipleDeliveryCode = base.Columns["MultipleDeliveryCode"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1744,6 +1757,8 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnCourierNumber);
                 this.columnApproxBill = new global::System.Data.DataColumn("ApproxBill", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnApproxBill);
+                this.columnMultipleDeliveryCode = new global::System.Data.DataColumn("MultipleDeliveryCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMultipleDeliveryCode);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11740,6 +11755,22 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MultipleDeliveryCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobOrder.MultipleDeliveryCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MultipleDeliveryCode\' in table \'JobOrder\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobOrder.MultipleDeliveryCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsJodOrderIdNull() {
                 return this.IsNull(this.tableJobOrder.JodOrderIdColumn);
             }
@@ -12240,6 +12271,18 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetApproxBillNull() {
                 this[this.tableJobOrder.ApproxBillColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMultipleDeliveryCodeNull() {
+                return this.IsNull(this.tableJobOrder.MultipleDeliveryCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMultipleDeliveryCodeNull() {
+                this[this.tableJobOrder.MultipleDeliveryCodeColumn] = global::System.Convert.DBNull;
             }
         }
         

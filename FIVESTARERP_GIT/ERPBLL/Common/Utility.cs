@@ -63,6 +63,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfQCStatus()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=QCStatus.QCPass,value=QCStatus.QCPass},
+                new Dropdown(){text=QCStatus.QCFail,value=QCStatus.QCFail}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfJournalType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>

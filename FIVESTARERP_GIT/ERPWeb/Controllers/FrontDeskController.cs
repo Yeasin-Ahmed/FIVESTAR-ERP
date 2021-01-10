@@ -337,6 +337,102 @@ namespace ERPWeb.Controllers
 
         #endregion
 
+        #region Multiple Job Delivery
+        public ActionResult GetJobOrderListForDelivery(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", string tab = "", string customerType = "", string jobType = "", string repairStatus = "", int page = 1)
+        {
+            //ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrders");
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlJobType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+                return View();
+            }
+            else if (!string.IsNullOrEmpty(flag) && (flag == "view" || flag == "search" || flag == "Detail" || flag == "Assign" || flag == "TSWork"))
+            {
+                var dto = _jobOrderBusiness.GetJobOrderForDelivery(mobileNo.Trim(), modelId, status.Trim(), jobOrderId, jobCode, iMEI.Trim(), iMEI2.Trim(), User.OrgId, User.BranchId, fromDate, toDate, customerType, jobType, repairStatus);
+
+                IEnumerable<JobOrderViewModel> viewModels = new List<JobOrderViewModel>();
+
+                if (flag == "view" || flag == "search")
+                {
+                    // Pagination //
+                    //ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
+                    //dto = dto.Skip((page - 1) * 5).Take(5).ToList();
+                    //-----------------//
+                    AutoMapper.Mapper.Map(dto, viewModels);
+                    return PartialView("_GetJobOrderListForDelivery", viewModels);
+                }
+            }
+            return View();
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveMultipleDelivery(long[] jobOrders)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            if (jobOrders.Count() > 0)
+            {
+                executionState = _jobOrderBusiness.SaveJobOrderMDelivey(jobOrders, User.UserId, User.OrgId, User.BranchId);
+                if (executionState.isSuccess)
+                {
+                    executionState.text = GetMultipleJobDelivery(executionState.text);
+                }
+                    
+            }
+            return Json(executionState);
+        }
+        private string GetMultipleJobDelivery(string deliveryCode)
+        {
+            string file = string.Empty;
+            IEnumerable<JobOrderDTO> jobOrderDetails = _jobOrderBusiness.GetMultipleJobDeliveryChalan(deliveryCode,User.BranchId, User.OrgId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptMultipleJobOrderDelivery.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("JobOrder", jobOrderDetails);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Receipt";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
+        }
+        #endregion
+
         #region JobTransfer And Receive
         [HttpGet]
         public ActionResult GetJobTransferList(string flag,string tab="",int page=1)
@@ -1079,7 +1175,10 @@ namespace ERPWeb.Controllers
                 Remarks=jobOrder.Remarks,
                 TSRemarks=jobOrder.TSRemarks,
                 CallCenterRemarks=jobOrder.CallCenterRemarks,
-                CustomerApproval=jobOrder.CustomerApproval
+                CustomerApproval=jobOrder.CustomerApproval,
+                QCStatus=jobOrder.QCStatus,
+                QCRemarks=jobOrder.QCRemarks,
+                JobOrderType=jobOrder.JobOrderType
             };
             IEnumerable<JobOrderProblemDTO> prblm = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(joborderId.Value, User.OrgId).Select(p => new JobOrderProblemDTO
             {
@@ -1856,7 +1955,7 @@ namespace ERPWeb.Controllers
                 ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 ViewBag.ddlJobType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
-                ViewBag.ddlCallCenterApproval = Utility.ListOfCallCenterApproval().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlQCStatus = Utility.ListOfQCStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
                 return View();
             }
@@ -1904,6 +2003,16 @@ namespace ERPWeb.Controllers
 
             }
             return View();
+        }
+
+        public ActionResult SaveQCApproval(long jobId, string approval, string remarks)
+        {
+            bool IsSuccess = false;
+            if (jobId > 0)
+            {
+                IsSuccess = _jobOrderBusiness.SaveQCApproval(jobId, approval, remarks, User.UserId, User.OrgId);
+            }
+            return Json(IsSuccess);
         }
         #endregion
     }

@@ -49,7 +49,7 @@ group by rd.RequsitionDetailForJobOrderId,rd.PartsId,rd.Quantity,parts.MobilePar
         {
             var data = this._frontDeskUnitOfWork.Db.Database.SqlQuery<RequsitionDetailForJobOrderDTO>(
                 string.Format(@"select rd.RequsitionInfoForJobOrderId,rd.RequsitionDetailForJobOrderId,rd.PartsId,parts.MobilePartName 'PartsName',parts.MobilePartCode
-,rd.Quantity,ISNULL((select (ISNULL(Sum(ISNULL(StockInQty,0)-ISNULL(StockOutQty,0)),0)) 'AvailableQty' from [Configuration].dbo.tblMobilePartStockInfo where DescriptionId=jo.DescriptionId),0)'AvailableQty'
+,rd.Quantity,ISNULL((select (ISNULL(Sum(ISNULL(StockInQty,0)-ISNULL(StockOutQty,0)),0)) 'AvailableQty' from [Configuration].dbo.tblMobilePartStockInfo where DescriptionId=jo.DescriptionId and MobilePartId=rd.PartsId),0)'AvailableQty'
 from tblRequsitionDetailForJobOrders rd
 inner join [Configuration].dbo.tblMobilePartStockInfo std on rd.PartsId=std.MobilePartId 
 left join [Configuration].dbo.tblMobileParts parts on rd.PartsId=parts.MobilePartId

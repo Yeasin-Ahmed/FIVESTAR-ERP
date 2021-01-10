@@ -282,14 +282,14 @@
                 <form id="frmInvoice">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="ddlQCApproval" class="control-label font-weight-bold">QC Approval<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            @Html.DropDownList("ddlCallCenterApproval", (IEnumerable<SelectListItem>)ViewBag.ddlCallCenterApproval, new { @class = "form-control form-control-sm ctrl-changed " })
-                            <span class="error hide required-ServiceName font-weight-bold">Input Service!</span>
-                            <span class="error hide duplicate-servicesName font-weight-bold">Alrady Service Exist!</span>
+                            <label for="ddlQCStatus" class="control-label font-weight-bold">QC Status<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlQCStatus", (IEnumerable<SelectListItem>)ViewBag.ddlQCStatus, new { @class = "form-control form-control-sm ctrl-changed " })
+                            <span class="error hide required-qcStatus font-weight-bold">Input Status !</span>
+                            <span class="error hide duplicate-qcStatus font-weight-bold">Alrady Service Exist!</span>
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="txtCallCenterRemarks" class="control-label font-weight-bold">Remarks</label>
-                            <input type="text" name="remarks" value="" id="txtCallCenterRemarks" class="form-control form-control-sm" />
+                            <label for="txtQCRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtQCRemarks" class="form-control form-control-sm" />
                         </div>
                     </div>
                 </form>
@@ -786,8 +786,8 @@
         }
 
         ///// QC Status
-        var ddlCallCenterApproval = $("#ddlCallCenterApproval");
-        var txtCallCenterRemarks = $("#txtCallCenterRemarks");
+        var ddlQCStatus = $("#ddlQCStatus");
+        var txtQCRemarks = $("#txtQCRemarks");
 
         function OpenQCModal() {
             $("#modalQC").modal("show");
@@ -808,18 +808,19 @@
             e.preventDefault();
             $(".error").addClass("hide");
             bootbox.confirm("Are you sure you want to save?", function (result) {
-                var data = JSON.stringify ({ jobId: TryParseInt(hdfJobOrderId.val(), 0), approval: ddlCallCenterApproval.val(), remarks: txtCallCenterRemarks.val()
+                var data = JSON.stringify({
+                    jobId: TryParseInt(hdfJobOrderId.val(), 0), approval: ddlQCStatus.val(), remarks: txtQCRemarks.val()
                     });
                     console.log(data);
                     //return console.log(data)
-                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveCallCenterApproval', data, getToken())).then(function (res, status) {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveQCApproval', data, getToken())).then(function (res, status) {
                         console.log(res);
                         console.log(status);
                         // enable("#btnSubmit");
                         if (res == true) {
                             $('.toastrDefaultSuccess').trigger('click');
                             setTimeout(function () {
-                                redirectPage('@Url.Action("GetJobOrderListForCallCenter")');
+                                redirectPage('@Url.Action("GetJobOrderListForQc")');
                             }, 1000);
                         }
                         else {

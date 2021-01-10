@@ -1,11 +1,13 @@
 ﻿@using ERPBO.Production.ViewModels
 @using ERPBO.FrontDesk.ViewModels
 @{
-    /**/
+                /**/
 
-    ViewBag.Title = "Index";
-    int sl = 0;
-    string badge = string.Empty;
+                /**/
+
+                ViewBag.Title = "Index";
+                int sl = 0;
+                string badge = string.Empty;
 }
 
 <div class="row">
@@ -264,12 +266,12 @@
                                     </tbody>
                                 </table>
                                 @*<p><b><i>Today's TransferJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                                    <h3>
+                                        @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                        {
+                                            <b><i>@job.Total</i></b>
+                                        }
+                                    </h3>*@
 
                             </div>
                             <div class="icon">
@@ -302,12 +304,12 @@
                                     </tbody>
                                 </table>
                                 @*<p><b><i>Today's ReceiveJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                                    <h3>
+                                        @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                        {
+                                            <b><i>@job.Total</i></b>
+                                        }
+                                    </h3>*@
                             </div>
                             <div class="icon">
                                 <i class="fas fa-download"></i>
@@ -585,6 +587,104 @@
         </div>
 
     </div>
+    <div class="row">
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic8.svg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic2.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="text-center">Job Order</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel)
+                                {
+                                    <tr>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
+                                        <td class="text-center">@app.CustomerApproval</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-address-card fa-5x"></i>
+                                <p class="text-dark text-bold">No Job Found</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>QC</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<JobOrderViewModel>)ViewBag.QCStatusViewModel).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="text-center">Job Order</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.QCStatusViewModel)
+                                {
+                                    <tr>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
+                                        <td class="text-center">@app.QCStatus</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-address-book fa-5x"></i>
+                                <p class="text-dark text-bold">No Job Found</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @if (User.RoleName == "FrontDesk")
@@ -764,7 +864,7 @@
                         </button>
                     </div>
                 </div>
-                <input type="hidden" class="roleName hide" name="Id" id="roleName" roleName="@User.RoleName"/>
+                <input type="hidden" class="roleName hide" name="Id" id="roleName" roleName="@User.RoleName" />
                 <div class="card-body" style="height:280px">
                     <div style="width:100%;height:100%;">
                         <canvas class="chart " id="dailySellsChart" style="min-height: 250px; height: 250px; max-height: 300px; min-width: 100%;max-width:700px"></canvas>
@@ -801,12 +901,12 @@
                             </tbody>
                         </table>
                         @*<p><b><i>Today's TransferJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                            <h3>
+                                @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                {
+                                    <b><i>@job.Total</i></b>
+                                }
+                            </h3>*@
 
                     </div>
                     <div class="icon">
@@ -841,12 +941,12 @@
                             </tbody>
                         </table>
                         @*<p><b><i>Today's ReceiveJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                            <h3>
+                                @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                {
+                                    <b><i>@job.Total</i></b>
+                                }
+                            </h3>*@
                     </div>
                     <div class="icon">
                         <i class="fas fa-download"></i>
@@ -950,12 +1050,12 @@
                                     </tbody>
                                 </table>
                                 @*<p><b><i>Today's TransferJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                                    <h3>
+                                        @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                        {
+                                            <b><i>@job.Total</i></b>
+                                        }
+                                    </h3>*@
                             </div>
                             <div class="icon">
                                 <i class="fas fa-exchange-alt"></i>
@@ -968,12 +1068,12 @@
                         <div class="small-box bg-gradient-green text-white">
                             <div class="inner" style="height:115px">
                                 @*<p><b><i>Today's ReceiveJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                                    <h3>
+                                        @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                        {
+                                            <b><i>@job.Total</i></b>
+                                        }
+                                    </h3>*@
                                 <table>
                                     <tbody>
                                         @foreach (var Bill in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
@@ -1008,54 +1108,6 @@
         <div class="col-md-12">
             <div class="card shadow" style="height:125px">
                 <div class="row">
-                    <div class="col-md-6 col-6">
-                        <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
-                            <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
-                                <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center Approval</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0" style="max-height:115px;overflow-y:scroll">
-                                @if (((IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel).Count() > 0)
-                                {
-                                    <table class="table table-sm table-valign-middle text-sm">
-                                        <thead>
-                                            <tr>
-                                                <th class="hide"></th>
-                                                <th class="text-center">Job Order</th>
-                                                <th class="text-center">C. Center Approval</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel)
-                                            {
-                                                <tr>
-                                                    <td class="hide">@app.JodOrderId</td>
-                                                    <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
-                                                    <td class="text-center">@app.CustomerApproval</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                }
-                                else
-                                {
-                                    <div class="text-center text-indigo" style="width:200px;height:200px">
-                                        <div style="position:absolute;top:40%;left:35%">
-                                            <i class="fas fa-address-card fa-5x"></i>
-                                            <p class="text-dark text-bold">No Current Requsition</p>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-sm-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner" style="height:115px">
@@ -1077,11 +1129,11 @@
             </div>
         </div>
     </div>
-    @*<div class="row">
+    <div class="row">
         <div class="col-md-6 col-6">
-            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
-                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
-                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center Approval</h3>
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic8.svg)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic2.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -1099,7 +1151,7 @@
                                 <tr>
                                     <th class="hide"></th>
                                     <th class="text-center">Job Order</th>
-                                    <th class="text-center">C. Center Approval</th>
+                                    <th class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1119,14 +1171,114 @@
                         <div class="text-center text-indigo" style="width:200px;height:200px">
                             <div style="position:absolute;top:40%;left:35%">
                                 <i class="fas fa-address-card fa-5x"></i>
-                                <p class="text-dark text-bold">No Current Requsition</p>
+                                <p class="text-dark text-bold">No Job Found</p>
                             </div>
                         </div>
                     }
                 </div>
             </div>
         </div>
-    </div>*@
+        <div class="col-md-6 col-6">
+            <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                    <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>QC</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                    @if (((IEnumerable<JobOrderViewModel>)ViewBag.QCStatusViewModel).Count() > 0)
+                    {
+                        <table class="table table-sm table-valign-middle text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="hide"></th>
+                                    <th class="text-center">Job Order</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.QCStatusViewModel)
+                                {
+                                    <tr>
+                                        <td class="hide">@app.JodOrderId</td>
+                                        <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
+                                        <td class="text-center">@app.QCStatus</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center text-indigo" style="width:200px;height:200px">
+                            <div style="position:absolute;top:40%;left:35%">
+                                <i class="fas fa-address-book fa-5x"></i>
+                                <p class="text-dark text-bold">No Job Found</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        @*<div class="row">
+                <div class="col-md-6 col-6">
+                    <div class="card shadow card-gray-dark" style="background-image:url(../../Content/Images/pic7.png)">
+                        <div class="card-header border-transparent" style="background-image:url(../../Content/Images/pic14.jpg)">
+                            <h3 class="card-title font-weight-bold text-dark"><i class="fab fa-gg"></i>Call Center Approval</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0" style="max-height:200px;overflow-y:scroll">
+                            @if (((IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel).Count() > 0)
+                            {
+                                <table class="table table-sm table-valign-middle text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="hide"></th>
+                                            <th class="text-center">Job Order</th>
+                                            <th class="text-center">C. Center Approval</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var app in (IEnumerable<JobOrderViewModel>)ViewBag.CallCenterViewModel)
+                                        {
+                                            <tr>
+                                                <td class="hide">@app.JodOrderId</td>
+                                                <td class="text-center"><a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=app.JodOrderId })" title="Click And Services Job Order" target="_blank">@app.JobOrderCode</a></td>
+                                                <td class="text-center">@app.CustomerApproval</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <div class="text-center text-indigo" style="width:200px;height:200px">
+                                    <div style="position:absolute;top:40%;left:35%">
+                                        <i class="fas fa-address-card fa-5x"></i>
+                                        <p class="text-dark text-bold">No Current Requsition</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
 }
 @if (User.RoleName == "Head Of Technical Services")
 {
@@ -1221,12 +1373,12 @@
                                     </tbody>
                                 </table>
                                 @*<p><b><i>Today's TransferJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                                    <h3>
+                                        @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalTransferViewModel)
+                                        {
+                                            <b><i>@job.Total</i></b>
+                                        }
+                                    </h3>*@
                             </div>
                             <div class="icon">
                                 <i class="fas fa-exchange-alt"></i>
@@ -1258,12 +1410,12 @@
                                     </tbody>
                                 </table>
                                 @*<p><b><i>Today's ReceiveJob</i></b></p>
-        <h3>
-            @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
-            {
-                <b><i>@job.Total</i></b>
-            }
-        </h3>*@
+                                    <h3>
+                                        @foreach (var job in (IEnumerable<DashboardDailyReceiveJobOrderViewModel>)ViewBag.DashboardTotalReceiveViewModel)
+                                        {
+                                            <b><i>@job.Total</i></b>
+                                        }
+                                    </h3>*@
                             </div>
                             <div class="icon">
                                 <i class="fas fa-download"></i>
@@ -1505,7 +1657,7 @@
                                 {
                                     <tr>
                                         <td class="hide" jorOrderId="@stock.JobOrderId">@stock.JobOrderId</td>
-                                        <td class="hide" >@stock.ReturnInfoId</td>
+                                        <td class="hide">@stock.ReturnInfoId</td>
                                         <td class="text-center">@stock.JobOrderCode</td>
                                         <td class="text-center"><a href="#" class="text-bold btnPartsReturn" data-item-val="@stock.ReturnInfoId.ToString()">@stock.RequsitionCode</a></td>
                                         <td class="text-center">@stock.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
@@ -1792,7 +1944,7 @@
                     $(".toastrDefaultError").fadeOut(800);
                 })
             }
-           
+
         })
 
         var colors = [" #410e85"];

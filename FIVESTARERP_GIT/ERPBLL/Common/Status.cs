@@ -27,6 +27,11 @@ namespace ERPBLL.Common
         public static readonly string FreshStock = "FreshStock";
         public static readonly string FaultyStock = "FaultyStock";
     }
+    public class QCStatus
+    {
+        public static readonly string QCPass = "QC-Pass";
+        public static readonly string QCFail = "QC-Fail";
+    }
     public class JournalType
     {
         public static readonly string Dr = "Dr";
