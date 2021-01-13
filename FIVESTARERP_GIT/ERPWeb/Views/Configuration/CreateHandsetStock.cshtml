@@ -43,7 +43,7 @@
                                 <div class="card shadow card-navy">
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
-                                            <div class="row col-md-7">
+                                            <div class="row col-md-6">
                                                 <div class="col-md-4">
                                                     <label for="ddlModels" class="control-label font-weight-bold">Model</label>
                                                     @Html.DropDownList("ddlModels", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
@@ -64,11 +64,15 @@
                                                     <span class="error hide req-stockType">Input Stock Type!</span>
                                                 </div>
                                             </div>
-                                            <div class="row col-md-5">
+                                            <div class="row col-md-6">
                                                 <h5 class="col-md-12" style="border-bottom:2px solid #70cf44">SCANING</h5>
-                                                <div class="col-md-12">
-                                                    <input type="text" id="txtHandsetIMEI" class="form-control form-control-sm" placeholder="IMEI SCANNING" />
-                                                    <span class="error hide dup-imei">IMEI Already Exists!</span>
+                                                <div class="col-md-6">
+                                                    <input type="text" id="txtHandsetIMEI1" class="form-control form-control-sm" placeholder="IMEI1 SCANNING" />
+                                                    <span class="error hide dup-imei">IMEI1 Already Exists!</span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="text" id="txtHandsetIMEI" class="form-control form-control-sm" placeholder="IMEI2 SCANNING" />
+                                                    <span class="error hide dup-imei">IMEI1 Already Exists!</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -205,6 +209,7 @@
         var ddlColors = $("#ddlColors");
         var ddlStockType = $("#ddlStockType");
         var txtHandsetIMEI = $("#txtHandsetIMEI");
+        var txtHandsetIMEI1 = $("#txtHandsetIMEI1");
 
         // Handset Stock List
         var ddlModelsSearch = $("#ddlModelsSearch");
@@ -252,8 +257,8 @@
         txtHandsetIMEI.change(function () {
             if (validateUI() == true) {
                 $('.error').addClass('hide');
-                if ($.trim(txtHandsetIMEI.val()) != "" && $.trim(txtHandsetIMEI.val()).length == 15) {
-                    var data = JSON.stringify({ /*HandSetStockId: TryParseInt(hdfHandSetStockId.val(), 0),*/DescriptionId: TryParseInt(ddlModels.val(), 0), ColorId: TryParseInt(ddlColors.val(), 0), IMEI: $.trim(txtHandsetIMEI.val()), StockType: ddlStockType.val() });
+                if ($.trim(txtHandsetIMEI.val()) != "" && $.trim(txtHandsetIMEI.val()).length == 15 && $.trim(txtHandsetIMEI1.val()) != "" && $.trim(txtHandsetIMEI1.val()).length == 15) {
+                    var data = JSON.stringify({ /*HandSetStockId: TryParseInt(hdfHandSetStockId.val(), 0),*/DescriptionId: TryParseInt(ddlModels.val(), 0), ColorId: TryParseInt(ddlColors.val(), 0), IMEI: $.trim(txtHandsetIMEI.val()), IMEI1: $.trim(txtHandsetIMEI1.val()), StockType: ddlStockType.val() });
                     $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveHandsetStock', data, getToken())).then(function (res, status) {
                         consoleLog(status);
                         consoleLog(res);
@@ -261,12 +266,16 @@
                             toastrSuccessAlert(execuStatus.successSave);
                             txtHandsetIMEI.val('');
                             txtHandsetIMEI.focus();
+                            txtHandsetIMEI1.val('');
+                            txtHandsetIMEI1.focus();
                             LoadDataTable();
                         }
                         else {
                             toastrErrorAlert(execuStatus.fail);
                             txtHandsetIMEI.val('');
                             txtHandsetIMEI.focus();
+                            txtHandsetIMEI1.val('');
+                            txtHandsetIMEI1.focus();
                         }
                     })
                 }
@@ -274,11 +283,15 @@
                     toastrErrorAlert("IMEI is not valid!");
                     txtHandsetIMEI.val('');
                     txtHandsetIMEI.focus();
+                    txtHandsetIMEI1.val('');
+                    txtHandsetIMEI1.focus();
                 }
             }
             else {
                 txtHandsetIMEI.val('');
                 txtHandsetIMEI.focus();
+                txtHandsetIMEI1.val('');
+                txtHandsetIMEI1.focus();
             }
         })
 

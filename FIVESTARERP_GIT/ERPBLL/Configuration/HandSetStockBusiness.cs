@@ -42,6 +42,7 @@ namespace ERPBLL.Configuration
                     BranchId = branchId,
                     ColorId = dto.ColorId,
                     IMEI = dto.IMEI,
+                    IMEI1=dto.IMEI1,
                     StateStatus = StockStatus.StockIn,
                     StockType = dto.StockType,
                     Remarks = "StockIn",
@@ -81,7 +82,7 @@ namespace ERPBLL.Configuration
                 param += string.Format(@" and stock.StockType='{0}'", stockType.Trim());
             }
 
-            query = string.Format(@"Select stock.HandSetStockId,stock.ColorId,co.ColorName,stock.IMEI,
+            query = string.Format(@"Select stock.HandSetStockId,stock.ColorId,co.ColorName,stock.IMEI,stock.IMEI1,
 stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName' 
 From tblHandSetStock stock
 Left Join [Inventory].dbo.tblColors co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
@@ -96,7 +97,7 @@ Where 1=1 and stock.StateStatus='Stock-In' and stock.OrganizationId={0} {1}", or
         }
         public bool IsExistsHandsetStockIMEI(string imei,long orgId, string status)
         {
-            return _handSetStockRepository.GetOneByOrg(s => s.IMEI == imei && s.OrganizationId == orgId && s.StateStatus == status) != null ? true : false;
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.OrganizationId == orgId && s.StateStatus == status) != null ? true : false;
         }
         public IEnumerable<HandSetStockDTO> GetAllHansetModelAndColor(long orgId)
         {
@@ -106,6 +107,11 @@ FROM [Configuration].dbo.tblHandsetStock hst
 Inner Join [Inventory].dbo.tblDescriptions des on hst.DescriptionId = des.DescriptionId and hst.OrganizationId = des.OrganizationId
 Inner Join [Inventory].dbo.tblColors clr on hst.ColorId = clr.ColorId and hst.OrganizationId = clr.OrganizationId
 where hst.OrganizationId={0}", orgId)).ToList();
+        }
+
+        public HandSetStock GetIMEI2ByIMEI1(string imei, long branchId, long orgId)
+        {
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.BranchId == branchId && s.OrganizationId == orgId);
         }
     }
 }

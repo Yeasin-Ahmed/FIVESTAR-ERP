@@ -363,7 +363,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg" style="background-color:lightgoldenrodyellow">
                                     <tbody>
                                         <tr>
                                             <td>
@@ -379,7 +379,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-bordered table-striped table-sm table-responsive-lg">
+                                <table class="table table-bordered table-striped table-sm table-responsive-lg" style="background-color:lightgoldenrodyellow">
                                     <tbody>
                                         <tr>
                                             <td>
@@ -408,7 +408,7 @@
                                 <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                                 <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
                                 <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
-                                <span class="error hide newHandset-IMEI1 font-weight-bold">Input New Hanset IMEI2 !</span>
+                                
                                 <span class="error hide duplicate-IMEI2 font-weight-bold">Already Exist IMEI2 !</span>
                             </div>
                         </div>
@@ -1599,14 +1599,14 @@ $('.toastrDefaultError').trigger('click');
                 $(".require-len-IMEI1").removeClass("hide");
                 isValid = false;
             }
-            if (txtIMEI2.val() === "") {
-                $(".require-IMEI2").removeClass("hide");
-                isValid = false;
-            }
-            if (txtIMEI2.val().length !== 15) {
-                $(".require-len-IMEI2").removeClass("hide");
-                isValid = false;
-            }
+            //if (txtIMEI2.val() === "") {
+            //    $(".require-IMEI2").removeClass("hide");
+            //    isValid = false;
+            //}
+            //if (txtIMEI2.val().length !== 15) {
+            //    $(".require-len-IMEI2").removeClass("hide");
+            //    isValid = false;
+            //}
             if (ddlModelName.val() === "") {
                 $(".require-modelName").removeClass("hide");
                 isValid = false;

@@ -164,6 +164,7 @@ namespace ERPBLL.Common
     {
         public static readonly string ERP = "ERP";
         public static readonly string Service = "Service";
+        public static readonly string Accounts = "Accounts";
 
     }
 

@@ -116,7 +116,7 @@ namespace ERPWeb.Controllers
 
                 return View();
             }
-            else
+            else if(User.AppType == ApplicationType.Service)
             {
                 IEnumerable<DashboardRequisitionSummeryDTO> dto = _jobOrderBusiness.DashboardJobOrderSummery(User.OrgId,User.BranchId);
                 IEnumerable<DashboardRequisitionSummeryViewModel> viewModel = new List<DashboardRequisitionSummeryViewModel>();
@@ -225,6 +225,10 @@ namespace ERPWeb.Controllers
                 ViewBag.QCStatusViewModel = qcviewModel;
 
                 return View("Index2");
+            }
+            else
+            {
+                return View("Index3");
             }
         }
 

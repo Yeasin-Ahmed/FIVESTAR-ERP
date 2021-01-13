@@ -10,6 +10,7 @@ namespace ERPBO.Configuration.ViewModels
     {
         public long HandSetStockId { get; set; }
         public string IMEI { get; set; }
+        public string IMEI1 { get; set; }
         public long DescriptionId { get; set; }
         public long ColorId { get; set; }
         public string StockType { get; set; }

@@ -235,7 +235,8 @@ namespace ERPBLL.Common
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
             {
                 new Dropdown(){text=ApplicationType.ERP,value=ApplicationType.ERP},
-                new Dropdown(){text=ApplicationType.Service,value=ApplicationType.Service}
+                new Dropdown(){text=ApplicationType.Service,value=ApplicationType.Service},
+                new Dropdown(){text=ApplicationType.Accounts,value=ApplicationType.Accounts}
             };
             return dropdowns;
         }

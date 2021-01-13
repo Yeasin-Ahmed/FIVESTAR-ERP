@@ -11,11 +11,12 @@
                 <th class="hide"></th>
                 <th class="hide"></th>
                 <th class="hide"></th>
-                <th>IMEI</th>
+                <th>IMEI-1</th>
+                <th>IMEI-2</th>
                 <th>Model</th>
                 <th>Color</th>
                 <th>Type</th>
-                <th>Action</th>
+                <th class="hide">Action</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -28,12 +29,13 @@
                 <td class="hide">@info.HandSetStockId</td>
                 <td class="hide">@info.DescriptionId</td>
                 <td class="hide">@info.ColorId</td>
+                <td class="text-center">@info.IMEI1</td>
                 <td class="text-center">@info.IMEI</td>
                 <td class="text-center" data-val="@info.DescriptionId">@info.ModelName</td>
                 <td class="text-center" data-val="@info.ColorId">@info.ColorName</td>
                 <td class="text-center">@info.StockType</td>
-                <td class="text-center">
-                    <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item ="@info.HandSetStockId" style="line-height:1"><i class="fa fa-pen"></i>Edit</a>
+                <td class="text-center hide">
+                    <a href="#" class="btn btn-warning btn-sm data-edit-item" data-edit-item="@info.HandSetStockId" style="line-height:1"><i class="fa fa-pen"></i>Edit</a>
                 </td>
             </tr>
             }

@@ -601,8 +601,7 @@
 
                                     var pdfWindow = window.open("", "_blank")
                                     console.log(res.text);
-                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
-                                    //download(res.text, "DeliveryChallan", "application/pdf"); // Download
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); 
 
                                     count = 0;
                                     setTimeout(function () {

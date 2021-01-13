@@ -340,7 +340,6 @@ namespace ERPWeb.Controllers
         #region Multiple Job Delivery
         public ActionResult GetJobOrderListForDelivery(string flag, string fromDate, string toDate, long? modelId, long? jobOrderId, string mobileNo = "", string status = "", string jobCode = "", string iMEI = "", string iMEI2 = "", string tab = "", string customerType = "", string jobType = "", string repairStatus = "", int page = 1)
         {
-            //ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrders");
             if (string.IsNullOrEmpty(flag))
             {
                 ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
@@ -359,10 +358,6 @@ namespace ERPWeb.Controllers
 
                 if (flag == "view" || flag == "search")
                 {
-                    // Pagination //
-                    //ViewBag.PagerData = GetPagerData(dto.Count(), 5, page);
-                    //dto = dto.Skip((page - 1) * 5).Take(5).ToList();
-                    //-----------------//
                     AutoMapper.Mapper.Map(dto, viewModels);
                     return PartialView("_GetJobOrderListForDelivery", viewModels);
                 }

@@ -860,6 +860,7 @@
     <Content Include="Views\FrontDesk\_GetJobOrderDetailsForQC.cshtml" />
     <Content Include="Views\FrontDesk\GetJobOrderListForDelivery.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrderListForDelivery.cshtml" />
+    <Content Include="Views\User\Index3.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

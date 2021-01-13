@@ -30,7 +30,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    badge = item.StateStatus == "Job-Initiated" ? "badge bg-success" : "badge bg-success";
+                    badge = item.StateStatus == "Repair-Done" ? "badge bg-success" : "badge bg-danger";
                     sl = sl + 1;
                     isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
                     isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";

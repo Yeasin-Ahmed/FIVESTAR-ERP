@@ -384,7 +384,7 @@ where 1=1{0} order by EntryDate desc", Utility.ParamChecker(param));
                 if (item.SalesType == "Handset")
                 {
                     var reqQty = item.Quantity;
-                    var imeiInStock = _handSetStockBusiness.GetAllHansetStockByOrgIdAndBranchId(orgId, branchId).Where(i => i.IMEI == item.IMEI).OrderBy(i => i.HandSetStockId).ToList();
+                    var imeiInStock = _handSetStockBusiness.GetAllHansetStockByOrgIdAndBranchId(orgId, branchId).Where(i => i.IMEI1 == item.IMEI).OrderBy(i => i.HandSetStockId).ToList();
 
                     if (imeiInStock.Count() == 1)
                     {

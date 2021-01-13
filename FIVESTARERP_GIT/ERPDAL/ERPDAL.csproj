@@ -236,6 +236,10 @@
     <Compile Include="ConfigurationContextMigrations\202012101245161_Configuration_tblScrap.Designer.cs">
       <DependentUpon>202012101245161_Configuration_tblScrap.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.cs" />
+    <Compile Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.Designer.cs">
+      <DependentUpon>202101121213172_Configuration_Handsetstock_IMEI1.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -1012,6 +1016,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202012101245161_Configuration_tblScrap.resx">
       <DependentUpon>202012101245161_Configuration_tblScrap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.resx">
+      <DependentUpon>202101121213172_Configuration_Handsetstock_IMEI1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

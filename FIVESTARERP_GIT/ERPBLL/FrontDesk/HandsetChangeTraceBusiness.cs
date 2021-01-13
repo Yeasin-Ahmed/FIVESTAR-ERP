@@ -52,7 +52,7 @@ namespace ERPBLL.FrontDesk
             List<HandSetStock> handSetStocks = new List<HandSetStock>();
 
             var reqQty = 1;
-            var imeiInStock = _handSetStockBusiness.GetAllHansetStockByOrgIdAndBranchId(orgId, branchId).Where(i => i.IMEI == imei1).OrderBy(i => i.HandSetStockId).ToList();
+            var imeiInStock = _handSetStockBusiness.GetAllHansetStockByOrgIdAndBranchId(orgId, branchId).Where(i => i.IMEI1 == imei1).OrderBy(i => i.HandSetStockId).ToList();
 
             if (imeiInStock.Count() == 1)
             {
@@ -74,6 +74,7 @@ namespace ERPBLL.FrontDesk
         {
             bool isSuccess = false;
             var JobOrderInDb = _jobOrderBusiness.GetJobOrderById(jobId, orgId);
+            var imei_2 = _handSetStockBusiness.GetIMEI2ByIMEI1(imei1,branchId,orgId).IMEI;
 
             HandsetChangeTrace handset = new HandsetChangeTrace();
             handset.JobOrderId = JobOrderInDb.JodOrderId;
@@ -97,9 +98,16 @@ namespace ERPBLL.FrontDesk
             {
                 JobOrderInDb.DescriptionId = modelId;
                 JobOrderInDb.IMEI = imei1;
-                JobOrderInDb.IMEI2 = imei2;
+                if (imei2 == "")
+                {
+                    JobOrderInDb.IMEI2 = imei_2;
+                }
+                else
+                {
+                    JobOrderInDb.IMEI2 = imei2;
+                }
                 JobOrderInDb.ModelColor = color;
-                _jobOrderRepository.Update(JobOrderInDb);
+                 _jobOrderRepository.Update(JobOrderInDb);
             }
             if (_jobOrderRepository.Save() == true)
             {
