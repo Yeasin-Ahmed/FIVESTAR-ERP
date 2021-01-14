@@ -1595,6 +1595,12 @@ $('.toastrDefaultError').trigger('click');
                 $(".require-IMEI1").removeClass("hide");
                 isValid = false;
             }
+            else {
+                if (ajaxBooleanChecker(JSON.stringify({ iMEI: txtIMEI1.val().trim(), jobOrdeId: hdfJobOrderId.val() }), '/Common2/IsIMEIExistWithRunningJobOrder', getToken()) == true) {
+                    $(".duplicate-IMEI1").removeClass("hide");
+                    isValid = false;
+                }
+            }
             if (txtIMEI1.val().length !== 15) {
                 $(".require-len-IMEI1").removeClass("hide");
                 isValid = false;

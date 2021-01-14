@@ -306,6 +306,17 @@
     <Content Include="Reports\DataSets\InventoryDS.xsc">
       <DependentUpon>InventoryDS.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\Accounts.xsc">
+      <DependentUpon>Accounts.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\Accounts.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Accounts.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\Accounts.xss">
+      <DependentUpon>Accounts.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\InventoryDS.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -406,6 +417,11 @@
     <Compile Include="Infrastructure\PagerData.cs" />
     <Compile Include="Infrastructure\PrintReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\DataSets\Accounts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Accounts.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSets\InventoryDS.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -937,6 +953,7 @@
     <Content Include="ExcelFile\Demo.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Reports\Accounts\rptDebitVoucherReport.rdlc" />
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\rptModelWiseDailyItemStock.rdlc" />
     <Content Include="Reports\ERPRpt\Inventory\rptStockShortageOrExcess - Copy.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

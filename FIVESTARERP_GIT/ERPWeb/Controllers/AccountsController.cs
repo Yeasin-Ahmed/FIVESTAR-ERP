@@ -2,7 +2,10 @@
 using ERPBLL.Common;
 using ERPBO.Accounts.DTOModels;
 using ERPBO.Accounts.ViewModels;
+using ERPBO.Common;
+using ERPBO.FrontDesk.ReportModels;
 using ERPWeb.Filters;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,6 +94,69 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
+        }
+        public ActionResult SaveDebitVoucherWithReport(List<JournalViewModel> models)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                List<JournalDTO> dto = new List<JournalDTO>();
+                AutoMapper.Mapper.Map(models, dto);
+                executionState = _journalBusiness.SaveDebitVoucharAndPrint(dto, User.UserId, User.OrgId);
+                //executionState = _jobOrderBusiness.SaveJobOrderMDelivey(jobOrders, User.UserId, User.OrgId, User.BranchId);
+                if (executionState.isSuccess)
+                {
+                    executionState.text = GetDebitVoucherReport(executionState.text);
+                }
+
+            }
+            return Json(executionState);
+        }
+        private string GetDebitVoucherReport(string voucherNo)
+        {
+            string file = string.Empty;
+            IEnumerable<JournalDTO> debit = _journalBusiness.GetDebitVoucherReport(voucherNo, User.OrgId);
+
+           ServicesReportHead reportHead = _journalBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+           reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+           List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/Accounts/rptDebitVoucherReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("Debit", debit);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "DebitVoucher";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
         }
         [HttpPost]
         public ActionResult SaveCreditVoucher(List<JournalViewModel> models)

@@ -541,9 +541,26 @@
                         reqData = JSON.stringify({ models: reqData });
                         console.log(reqData);
                         //return console.log(reqData);
-                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveDebitVoucher', reqData, getToken())).then(function (res, status)
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveDebitVoucherWithReport', reqData, getToken())).then(function (res, status)
                         {
-                            if (res == true) {
+                            if (res.isSuccess === true && status === "success") {
+                                    $('.toastrDefaultSuccess').trigger('click');
+
+                                    var pdfWindow = window.open("", "_blank")
+                                    console.log(res.text);
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
+                                    //download(res.text, "DeliveryChallan", "application/pdf"); // Download
+
+                                    count = 0;
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJournalList")');
+                                    }, 1000);
+
+                                }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                                }
+                            @*if (res == true) {
                                 $('.toastrDefaultSuccess').trigger('click');
                                 setTimeout(function () {
                                     redirectPage('@Url.Action("GetJournalList")');
@@ -551,7 +568,7 @@
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
-                 }
+                 }*@
                         }).fail(function (error) {
                             alert(execuStatus.fail);
                         })
