@@ -177,6 +177,69 @@ namespace ERPWeb.Controllers
             }
             return Json(isSuccess);
         }
+        public ActionResult SaveCreditVoucherWithReport(List<JournalViewModel> models)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                List<JournalDTO> dto = new List<JournalDTO>();
+                AutoMapper.Mapper.Map(models, dto);
+                executionState = _journalBusiness.SaveCreditVoucharAndPrint(dto, User.UserId, User.OrgId);
+                //executionState = _jobOrderBusiness.SaveJobOrderMDelivey(jobOrders, User.UserId, User.OrgId, User.BranchId);
+                if (executionState.isSuccess)
+                {
+                    executionState.text = GetCreditVoucherReport(executionState.text);
+                }
+
+            }
+            return Json(executionState);
+        }
+        private string GetCreditVoucherReport(string voucherNo)
+        {
+            string file = string.Empty;
+            IEnumerable<JournalDTO> credit = _journalBusiness.GetCreditVoucherReport(voucherNo, User.OrgId);
+
+            ServicesReportHead reportHead = _journalBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/Accounts/rptCreditVoucherReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("Credit", credit);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "CreditVoucher";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
+        }
         [HttpPost]
         public ActionResult SaveJournalVoucher(List<JournalViewModel> models)
         {
@@ -195,6 +258,69 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
+        }
+        public ActionResult SaveJournalVoucherWithReport(List<JournalViewModel> models)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            if (ModelState.IsValid && models.Count > 0)
+            {
+                List<JournalDTO> dto = new List<JournalDTO>();
+                AutoMapper.Mapper.Map(models, dto);
+                executionState = _journalBusiness.SaveJournalVoucharAndPrint(dto, User.UserId, User.OrgId);
+                //executionState = _jobOrderBusiness.SaveJobOrderMDelivey(jobOrders, User.UserId, User.OrgId, User.BranchId);
+                if (executionState.isSuccess)
+                {
+                    executionState.text = GetJournalVoucherReport(executionState.text);
+                }
+
+            }
+            return Json(executionState);
+        }
+        private string GetJournalVoucherReport(string voucherNo)
+        {
+            string file = string.Empty;
+            IEnumerable<JournalDTO> journal = _journalBusiness.GetJournalVoucherReport(voucherNo, User.OrgId);
+
+            ServicesReportHead reportHead = _journalBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/Accounts/rptJournalVoucherReport.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("Journal", journal);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "CreditVoucher";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
         }
         #endregion
 

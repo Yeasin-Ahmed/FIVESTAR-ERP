@@ -20,5 +20,9 @@ namespace ERPBLL.Accounts.Interface
         ExecutionStateWithText SaveDebitVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId);
         IEnumerable<JournalDTO> GetDebitVoucherReport(string voucherNo, long orgId);
         ServicesReportHead GetBranchInformation(long orgId, long branchId);
+        IEnumerable<JournalDTO> GetCreditVoucherReport(string voucherNo, long orgId);
+        ExecutionStateWithText SaveCreditVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId);
+        ExecutionStateWithText SaveJournalVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId);
+        IEnumerable<JournalDTO> GetJournalVoucherReport(string voucherNo, long orgId);
     }
 }

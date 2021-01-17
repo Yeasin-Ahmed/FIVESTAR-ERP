@@ -660,9 +660,24 @@
                         reqData = JSON.stringify({ models: reqData });
                         console.log(reqData);
                         //return console.log(reqData);
-                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveCreditVoucher', reqData, getToken())).then(function (res, status)
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveCreditVoucherWithReport', reqData, getToken())).then(function (res, status)
                         {
-                            if (res == true) {
+                            if (res.isSuccess === true && status === "success") {
+                                    $('.toastrDefaultSuccess').trigger('click');
+
+                                    var pdfWindow = window.open("", "_blank")
+                                    console.log(res.text);
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >");
+                                    count = 0;
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJournalList", new { tab = "CreditVoucher" })');
+                                    }, 1000);
+
+                                }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                                }
+                            @*if (res == true) {
                                 $('.toastrDefaultSuccess').trigger('click');
                                 setTimeout(function () {
                                     redirectPage('@Url.Action("GetJournalList", new { tab = "CreditVoucher" })');
@@ -670,7 +685,7 @@
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
-                    }
+                    }*@
                         }).fail(function (error) {
                             alert(execuStatus.fail);
                         })
@@ -740,7 +755,7 @@
             $.each($("#tblJournalVoucherEntry tbody tr"), function (index, item) {
                 var debit = TryParseInt($(this).children('td').eq(4).attr("data-val"), 0);
                 debitAmount += debit;
-                var credit = TryParseInt($(this).children('td').eq(5).attr("data-val"), 0);
+                var credit = TryParseInt($(this).children('td').eq(5).attr("data-val"), 0); 
                 creditAmmount += credit;
             })
             $("#tblJournalVoucherEntry tfoot tr").children('td').eq(0).html(debitAmount);
@@ -770,9 +785,20 @@
         })
         $("#btnSaveJournalVoucher").click(function (e) {
             e.preventDefault();
+            
+            //return console.log(creditAmmount);
             if ($("#tblJournalVoucherEntry tbody tr").length > 0)
             {
-                bootbox.confirm("Are you sure you want to save?", function (result) {
+                var debitAmount = 0;
+                var creditAmmount = 0;
+                $.each($("#tblJournalVoucherEntry tbody tr"), function (index, item) {
+                    var debit = TryParseInt($(this).children('td').eq(4).attr("data-val"), 0);
+                    debitAmount += debit;
+                    var credit = TryParseInt($(this).children('td').eq(5).attr("data-val"), 0);
+                    creditAmmount += credit;
+                })
+                if (debitAmount == creditAmmount) {
+                    bootbox.confirm("Are you sure you want to save?", function (result) {
                     if (result === true)
                     {
                         var reqData = [];
@@ -792,9 +818,24 @@
                         reqData = JSON.stringify({ models: reqData });
                         console.log(reqData);
                         //return console.log(reqData);
-                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveJournalVoucher', reqData, getToken())).then(function (res, status)
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/SaveJournalVoucherWithReport', reqData, getToken())).then(function (res, status)
                         {
-                            if (res == true) {
+                            if (res.isSuccess === true && status === "success") {
+                                    $('.toastrDefaultSuccess').trigger('click');
+
+                                    var pdfWindow = window.open("", "_blank")
+                                    console.log(res.text);
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >");
+                                    count = 0;
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJournalList", new { tab = "JournalVoucher" })');
+                                    }, 1000);
+
+                                }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                                }
+                            @*if (res == true) {
                                 $('.toastrDefaultSuccess').trigger('click');
                                 setTimeout(function () {
                                     redirectPage('@Url.Action("GetJournalList", new { tab = "JournalVoucher" })');
@@ -802,12 +843,13 @@
                             }
                             else {
                                 $('.toastrDefaultError').trigger('click');
-                    }
+                            }*@
                         }).fail(function (error) {
                             alert(execuStatus.fail);
                         })
                     }
                 })
+                }
             }
         })
 

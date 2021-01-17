@@ -327,5 +327,122 @@ inner join tblAccount a on j.AccountId=a.AccountId where Flag='Journal' and 1=1{
 left join tblAccount a on j.AccountId=a.AccountId
 where ReferenceNum='{0}' and Debit>0", voucherNo, orgId)).ToList();
         }
+
+        public IEnumerable<JournalDTO> GetCreditVoucherReport(string voucherNo, long orgId)
+        {
+            var data= this._accountsDb.Db.Database.SqlQuery<JournalDTO>(
+                string.Format(@"Select * From tblJournal j
+left join tblAccount a on j.AccountId=a.AccountId
+where ReferenceNum='{0}' and Credit>0", voucherNo, orgId)).ToList();
+            return data;
+        }
+
+        public ExecutionStateWithText SaveCreditVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            var refnumberCredit = ("CCV-" + DateTime.Now.ToString("yy") + "-" + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            var cashId = _accountsHeadBusiness.GetCashHeadId(orgId).AccountId;
+            string sDate = journalDTO.FirstOrDefault().JournalDate.ToString();
+            DateTime datevalue = (Convert.ToDateTime(sDate.ToString()));
+
+            short day = (short)datevalue.Day;
+            short month = (short)datevalue.Month;
+            short years = (short)datevalue.Year;
+
+
+            List<Journal> journals = new List<Journal>();
+            foreach (var item in journalDTO)
+            {
+                Journal journal = new Journal();
+                journal.AccountId = item.AccountId;
+                journal.Credit = item.Credit;
+                journal.Narration = item.Narration;
+                journal.Remarks = item.Remarks;
+                journal.ReferenceNum = refnumberCredit;
+                journal.JournalDate = item.JournalDate;
+                journal.Flag = "Voucher";
+                journal.Year = years;
+                journal.Month = month;
+                journal.Day = day;
+                journal.OrganizationId = orgId;
+                journal.EntryDate = DateTime.Now;
+                journal.EUserId = userId;
+                journals.Add(journal);
+            }
+            journalRepository.InsertAll(journals);
+            var debit = journals.Sum(c => c.Credit);
+            Journal jl = new Journal();
+            jl.AccountId = cashId;
+            jl.Credit = 0;
+            jl.Debit = debit;
+            jl.Narration = journalDTO.FirstOrDefault().Narration;
+            jl.Remarks = journalDTO.FirstOrDefault().Remarks;
+            jl.ReferenceNum = refnumberCredit;
+            jl.JournalDate = journalDTO.FirstOrDefault().JournalDate;
+            jl.Flag = "Voucher";
+            jl.Year = years;
+            jl.Month = month;
+            jl.Day = day;
+            jl.OrganizationId = orgId;
+            jl.EntryDate = DateTime.Now;
+            jl.EUserId = userId;
+            journalRepository.Insert(jl);
+            if (journalRepository.Save() == true)
+            {
+                executionState.isSuccess = true;
+                executionState.text = refnumberCredit;
+            }
+            return executionState;
+        }
+
+        public ExecutionStateWithText SaveJournalVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            var refnumber = ("JV-" + DateTime.Now.ToString("yy") + "-" + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss")); ;
+            string sDate = journalDTO.FirstOrDefault().JournalDate.ToString();
+            DateTime datevalue = (Convert.ToDateTime(sDate.ToString()));
+
+            short day = (short)datevalue.Day;
+            short month = (short)datevalue.Month;
+            short years = (short)datevalue.Year;
+
+
+            List<Journal> journals = new List<Journal>();
+            foreach (var item in journalDTO)
+            {
+                Journal journal = new Journal();
+                journal.AccountId = item.AccountId;
+                journal.Debit = item.Debit;
+                journal.Credit = item.Credit;
+                journal.Narration = item.Narration;
+                journal.Remarks = item.Remarks;
+                journal.ReferenceNum = refnumber;
+                journal.Flag = "Journal";
+                journal.JournalDate = item.JournalDate;
+                journal.Year = years;
+                journal.Month = month;
+                journal.Day = day;
+                journal.OrganizationId = orgId;
+                journal.EntryDate = DateTime.Now;
+                journal.EUserId = userId;
+                journals.Add(journal);
+            }
+            journalRepository.InsertAll(journals);
+            if (journalRepository.Save() == true)
+            {
+                executionState.isSuccess = true;
+                executionState.text = refnumber;
+            }
+            return executionState;
+        }
+
+        public IEnumerable<JournalDTO> GetJournalVoucherReport(string voucherNo, long orgId)
+        {
+            var data = this._accountsDb.Db.Database.SqlQuery<JournalDTO>(
+                string.Format(@"Select * From tblJournal j
+left join tblAccount a on j.AccountId=a.AccountId
+where ReferenceNum='{0}'", voucherNo, orgId)).ToList();
+            return data;
+        }
     }
 }

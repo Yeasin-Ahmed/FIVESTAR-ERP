@@ -824,7 +824,8 @@ Where 1 = 1{0} and jo.StateStatus='Job-Initiated'
 
         public bool SaveJobOrderPulling(long jobOrderId, long userId, long orgId, long branchId)
         {
-            var jobOrderInDb = GetJobOrdersByIdWithBranch(jobOrderId, branchId, orgId);
+            var jobId = GetJobOrderById(jobOrderId, orgId);
+            var jobOrderInDb = GetJobOrdersByIdWithBranch(jobOrderId, jobId.BranchId.Value, orgId);
             if (jobOrderInDb != null && jobOrderInDb.StateStatus == JobOrderStatus.JobInitiated)
             {
                 jobOrderInDb.StateStatus = JobOrderStatus.AssignToTS;
@@ -1681,13 +1682,17 @@ Where OrganizationId={0} and BranchId={1} and TsRepairStatus='PENDING FOR APPROV
             {
                 param += string.Format(@"and jo.OrganizationId={0}", orgId);
             }
+//            if (branchId > 0)
+//            {
+//                param += string.Format(@"and ((jo.BranchId={0} and (jo.IsTransfer is null or jo.IsTransfer='True'))
+//OR 
+//(jo.TransferBranchId={0} and jo.IsTransfer= 'true')
+//OR
+//(jo.IsReturn='True' and jo.BranchId={0} and jo.IsTransfer='False'))", branchId);
+//            }
             if (branchId > 0)
             {
-                param += string.Format(@"and ((jo.BranchId={0} and (jo.IsTransfer is null or jo.IsTransfer='True'))
-OR 
-(jo.TransferBranchId={0} and jo.IsTransfer= 'true')
-OR
-(jo.IsReturn='True' and jo.BranchId={0} and jo.IsTransfer='False'))", branchId);
+                param += string.Format(@"and ((jo.TsRepairStatus='QC' and jo.IsTransfer is null and jo.BranchId={0}) or (jo.TsRepairStatus='QC' and jo.IsTransfer='True' and jo.TransferBranchId={0}))", branchId);
             }
             if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
             {
@@ -1758,7 +1763,7 @@ Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.Descripti
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
 
-Where 1 = 1{0} and jo.TsRepairStatus='QC') tbl Order By JobOrderCode desc
+Where 1 = 1{0}) tbl Order By JobOrderCode desc
 ", Utility.ParamChecker(param));
             return query;
         }
