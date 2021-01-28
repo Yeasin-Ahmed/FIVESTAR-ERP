@@ -1,4 +1,5 @@
-﻿using ERPBO.Accounts.DTOModels;
+﻿using ERPBO.Accounts.DomainModels;
+using ERPBO.Accounts.DTOModels;
 using ERPBO.Common;
 using ERPBO.FrontDesk.ReportModels;
 using System;
@@ -14,7 +15,7 @@ namespace ERPBLL.Accounts.Interface
         bool SaveDebitVouchar(List<JournalDTO> journalDTO, long userId, long orgId);
         bool SaveCreditVouchar(List<JournalDTO> journalDTO, long userId, long orgId);
         bool SaveJournalVouchar(List<JournalDTO> journalDTO, long userId, long orgId);
-        IEnumerable<JournalDTO> GetJournalList(long orgId, string fromDate, string toDate);
+        IEnumerable<JournalDTO> GetJournalList(string voucherNo, long orgId, string fromDate, string toDate);
         IEnumerable<JournalDTO> CashVoucherList(long orgId, string fromDate, string toDate);
         IEnumerable<JournalDTO> LedgerList(long? accountId,long orgId, string fromDate, string toDate);
         ExecutionStateWithText SaveDebitVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId);
@@ -24,5 +25,9 @@ namespace ERPBLL.Accounts.Interface
         ExecutionStateWithText SaveCreditVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId);
         ExecutionStateWithText SaveJournalVoucharAndPrint(List<JournalDTO> journalDTO, long userId, long orgId);
         IEnumerable<JournalDTO> GetJournalVoucherReport(string voucherNo, long orgId);
+        bool DeleteJournalVoucher(string voucherNo, long orgId);
+        IEnumerable<Journal> GetAllLegder(long accountId,long orgId);
+        IEnumerable<Journal> GetDebitDueAmount(long accountId, long orgId);
+
     }
 }

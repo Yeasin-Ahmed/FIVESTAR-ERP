@@ -78,6 +78,7 @@
     <Compile Include="Accounts\DomainModels\FinanceYear.cs" />
     <Compile Include="Accounts\DomainModels\Journal.cs" />
     <Compile Include="Accounts\DTOModels\AccountDTO.cs" />
+    <Compile Include="Accounts\DTOModels\DetailsLedgerDTO.cs" />
     <Compile Include="Accounts\DTOModels\FinanceYearDTO.cs" />
     <Compile Include="Accounts\DTOModels\JournalDTO.cs" />
     <Compile Include="Accounts\ViewModels\AccountViewModel.cs" />

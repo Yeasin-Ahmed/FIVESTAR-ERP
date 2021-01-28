@@ -98,6 +98,10 @@
     <Compile Include="AccountsContextMigrations\202011211137295_Accounts_tblFinanceYear.Designer.cs">
       <DependentUpon>202011211137295_Accounts_tblFinanceYear.cs</DependentUpon>
     </Compile>
+    <Compile Include="AccountsContextMigrations\202101280508536_Accounts_JournalNewColumnAdd.cs" />
+    <Compile Include="AccountsContextMigrations\202101280508536_Accounts_JournalNewColumnAdd.Designer.cs">
+      <DependentUpon>202101280508536_Accounts_JournalNewColumnAdd.cs</DependentUpon>
+    </Compile>
     <Compile Include="AccountsContextMigrations\Configuration.cs" />
     <Compile Include="AccountsDAL\AccountsBaseRepository.cs" />
     <Compile Include="AccountsDAL\AccountsDbContext.cs" />
@@ -917,6 +921,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AccountsContextMigrations\202011211137295_Accounts_tblFinanceYear.resx">
       <DependentUpon>202011211137295_Accounts_tblFinanceYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsContextMigrations\202101280508536_Accounts_JournalNewColumnAdd.resx">
+      <DependentUpon>202101280508536_Accounts_JournalNewColumnAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.resx">
       <DependentUpon>202005310415074_Configuration_DbInitialize.cs</DependentUpon>

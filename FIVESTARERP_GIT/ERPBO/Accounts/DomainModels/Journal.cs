@@ -32,5 +32,9 @@ namespace ERPBO.Accounts.DomainModels
         public Nullable<DateTime> UpdateDate { get; set; }
         public long? ApprovedBy { get; set; }
         public Nullable<DateTime> ApproveDate { get; set; }
+        //28-01-2021
+        public string PersonalCode { get; set; }
+        public string VoucherNo { get; set; }
+        public double? DueAmount { get; set; }
     }
 }

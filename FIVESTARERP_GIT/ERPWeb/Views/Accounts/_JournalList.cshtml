@@ -16,12 +16,13 @@
             <tr class="text-center">
                 <th>#SL</th>
                 <th>Journal Date</th>
-                <th>Voucher Number</th>
+                <th>V No.</th>
                 <th>Narration</th>
-                <th>Account Name</th>
+                <th>Acc Name</th>
                 <th>Remarks</th>
                 <th>Dr.</th>
                 <th>Cr.</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +45,9 @@
                 <td>@jor.Remarks</td>
                 <td class="text-center">@jor.Debit</td>
                 <td class="text-center">@jor.Credit</td>
+                <td>
+                    <a href="#" class="btn btn-outline-danger btn-sm data-del-item-journal" title="Delete" data-del-item-journal="@jor.VoucherNo"><i class="far fa-trash-alt"></i> </a>
+                </td>
             </tr>
             }
             @if (Model.Count() == 0)
@@ -87,6 +91,7 @@
                 <th colspan="6" class="text-right">Total</th>
                 <td class="text-center font-weight-bold ">@debit</td>
                 <td class="text-center font-weight-bold ">@credit</td>
+                <th colspan="1" class="text-right"></th>
             </tr>
         </tfoot>
         @*<tfoot style="background-color:  #bfbfbf">

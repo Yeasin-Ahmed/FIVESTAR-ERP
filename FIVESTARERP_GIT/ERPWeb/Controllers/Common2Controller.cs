@@ -1,4 +1,5 @@
-﻿using ERPBLL.Common;
+﻿using ERPBLL.Accounts.Interface;
+using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
 using ERPBLL.Inventory.Interface;
@@ -44,11 +45,12 @@ namespace ERPWeb.Controllers
         private readonly IServicesWarehouseBusiness _servicesWarehouseBusiness;
         public readonly IRepairBusiness _repairBusiness;
         private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
+        private readonly IJournalBusiness _journalBusiness;
         //Nishad
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IJournalBusiness journalBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -72,6 +74,7 @@ namespace ERPWeb.Controllers
             this._handSetStockBusiness = handSetStockBusiness;
             this._faultyStockInfoBusiness = faultyStockInfoBusiness;
             this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
+            this._journalBusiness = journalBusiness;
         }
 
         #region Configuration Module
@@ -424,6 +427,31 @@ namespace ERPWeb.Controllers
             //price.MobilePartStockInfoId = detailDTO.MobilePartStockDetailId;
             //price.SellPrice = detailDTO.SellPrice;
             return Json(price.SellPrice);
+        }
+
+        #endregion
+        #region Accounts
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetDebitDueAmount(long accountId)
+        {
+            var acount = _journalBusiness.GetDebitDueAmount(accountId,User.OrgId);
+            double amount = 0;
+            if (acount != null)
+            {
+                 amount = acount.Sum(s => (s.Debit - s.Credit));
+            }
+            return Json(amount);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult GetCreditDueAmount(long accountId)
+        {
+            var acount = _journalBusiness.GetDebitDueAmount(accountId, User.OrgId);
+            double amount = 0;
+            if (acount != null)
+            {
+                amount = acount.Sum(s => (s.Credit - s.Debit));
+            }
+            return Json(amount);
         }
         #endregion
     }

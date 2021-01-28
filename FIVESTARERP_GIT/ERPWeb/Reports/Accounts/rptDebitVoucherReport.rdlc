@@ -206,10 +206,11 @@
                               <Value>=Fields!Debit.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
+                                <Format>0.00;(0.00)</Format>
                               </Style>
                             </TextRun>
                             <TextRun>
-                              <Value> /=</Value>
+                              <Value xml:space="preserve"> </Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                               </Style>
@@ -279,7 +280,7 @@
               </TextRun>
               <TextRun>
                 <Label>VoucherNo</Label>
-                <Value>=First(Fields!ReferenceNum.Value, "Debit")</Value>
+                <Value>=First(Fields!VoucherNo.Value, "Debit")</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                   <FontWeight>Bold</FontWeight>
@@ -442,6 +443,7 @@
                     <Value>Total</Value>
                     <Style>
                       <FontFamily>times New Roman</FontFamily>
+                      <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -477,12 +479,8 @@
                     <Value>=Sum(Fields!Debit.Value, "Debit")</Value>
                     <Style>
                       <FontFamily>times New Roman</FontFamily>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>/=</Value>
-                    <Style>
-                      <FontFamily>times New Roman</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>0.00;(0.00)</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -802,6 +800,14 @@
         </Field>
         <Field Name="AccountName">
           <DataField>AccountName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VoucherNo">
+          <DataField>VoucherNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PersonalCode">
+          <DataField>PersonalCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

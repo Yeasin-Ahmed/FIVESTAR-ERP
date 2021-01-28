@@ -2,87 +2,6 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Textbox Name="Textbox9">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Voucher No: </Value>
-                <Style>
-                  <FontFamily>times New Roman</FontFamily>
-                </Style>
-              </TextRun>
-              <TextRun>
-                <Label>VoucherNo</Label>
-                <Value>=First(Fields!VoucherNo.Value, "Journal")</Value>
-                <Style>
-                  <FontFamily>times New Roman</FontFamily>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.70417in</Top>
-        <Left>0.15562in</Left>
-        <Height>0.25in</Height>
-        <Width>2.33333in</Width>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox11">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Voucher Date:</Value>
-                <Style>
-                  <FontFamily>times New Roman</FontFamily>
-                </Style>
-              </TextRun>
-              <TextRun>
-                <Label>VoucherDate</Label>
-                <Value>=First(Fields!JournalDate.Value, "Journal")</Value>
-                <Style>
-                  <FontFamily>times New Roman</FontFamily>
-                  <Format>dd MMM yyyy</Format>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.70417in</Top>
-        <Left>5.68688in</Left>
-        <Height>0.25in</Height>
-        <Width>2.4275in</Width>
-        <ZIndex>1</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Textbox Name="Textbox12">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -90,7 +9,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Journal Voucher</Value>
+                <Value>Ledger</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
                   <FontSize>14pt</FontSize>
@@ -104,11 +23,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox12</rd:DefaultName>
-        <Top>0.05417in</Top>
+        <Top>0.07917in</Top>
         <Left>2.53062in</Left>
-        <Height>0.3125in</Height>
+        <Height>0.29272in</Height>
         <Width>3.13542in</Width>
-        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -122,9 +40,8 @@
       <Rectangle Name="Rectangle2">
         <ReportItems>
           <Line Name="Line1">
-            <Top>0.00417in</Top>
-            <Left>6.53775in</Left>
-            <Height>0.27083in</Height>
+            <Left>7.1098in</Left>
+            <Height>0.29149in</Height>
             <Width>0in</Width>
             <Style>
               <Border>
@@ -142,7 +59,6 @@
                     <Value>Total</Value>
                     <Style>
                       <FontFamily>times New Roman</FontFamily>
-                      <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -152,10 +68,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>0.01389in</Top>
-            <Left>3.94583in</Left>
+            <Top>0.02187in</Top>
+            <Left>4.02916in</Left>
             <Height>0.23906in</Height>
-            <Width>1.03819in</Width>
+            <Width>2.01727in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -178,7 +94,6 @@
                     <Value>=Sum(Fields!Credit.Value, "Journal")</Value>
                     <Style>
                       <FontFamily>times New Roman</FontFamily>
-                      <FontWeight>Bold</FontWeight>
                       <Format>0.00;(0.00)</Format>
                     </Style>
                   </TextRun>
@@ -189,10 +104,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>0.0125in</Top>
-            <Left>6.6072in</Left>
+            <Top>0.03177in</Top>
+            <Left>7.12651in</Left>
             <Height>0.23906in</Height>
-            <Width>1.32655in</Width>
+            <Width>1.01195in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -205,8 +120,8 @@
             </Style>
           </Textbox>
           <Line Name="Line2">
-            <Left>5.04035in</Left>
-            <Height>0.27083in</Height>
+            <Left>6.0881in</Left>
+            <Height>0.29149in</Height>
             <Width>0in</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -226,7 +141,6 @@
                     <Value>=Sum(Fields!Debit.Value, "Journal")</Value>
                     <Style>
                       <FontFamily>times New Roman</FontFamily>
-                      <FontWeight>Bold</FontWeight>
                       <Format>0.00;(0.00)</Format>
                     </Style>
                   </TextRun>
@@ -237,10 +151,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>0.0125in</Top>
-            <Left>5.1098in</Left>
+            <Top>0.01927in</Top>
+            <Left>6.11447in</Left>
             <Height>0.23906in</Height>
-            <Width>1.38351in</Width>
+            <Width>0.95367in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -254,11 +168,11 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.74792in</Top>
-        <Left>0.15562in</Left>
-        <Height>0.275in</Height>
-        <Width>7.95875in</Width>
-        <ZIndex>3</ZIndex>
+        <Top>1.31268in</Top>
+        <Left>0.07229in</Left>
+        <Height>0.29149in</Height>
+        <Width>8.13845in</Width>
+        <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -272,19 +186,22 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.60851in</Width>
+              <Width>0.6224in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.4974in</Width>
+              <Width>1.07639in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.93445in</Width>
+              <Width>1.14931in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.4974in</Width>
+              <Width>3.24001in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.42101in</Width>
+              <Width>1.02171in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.02865in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -328,14 +245,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox31">
+                    <Textbox Name="Textbox1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Account Name</Value>
+                              <Value>Journal Date</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -347,7 +264,42 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox31</rd:DefaultName>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>V No.</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -507,16 +459,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="AccountName">
+                    <Textbox Name="JournalDate">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!AccountName.Value</Value>
+                              <Value>=Fields!JournalDate.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
+                                <Format>dd MMM yyyy</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -525,7 +478,40 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>AccountName</rd:DefaultName>
+                      <rd:DefaultName>JournalDate</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="ReferenceNum">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!ReferenceNum.Value</Value>
+                              <Style>
+                                <FontFamily>times New Roman</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>ReferenceNum</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -648,6 +634,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -661,145 +648,459 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>Journal</DataSetName>
-        <Top>1.24792in</Top>
-        <Left>0.15562in</Left>
+        <Top>0.80417in</Top>
+        <Left>0.07229in</Left>
         <Height>0.5in</Height>
-        <Width>7.95877in</Width>
-        <ZIndex>4</ZIndex>
+        <Width>8.13845in</Width>
+        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Tablix>
+      <Rectangle Name="Rectangle3">
+        <ReportItems>
+          <Line Name="Line3">
+            <Left>7.1098in</Left>
+            <Height>0.29149in</Height>
+            <Width>0in</Width>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Textbox Name="Textbox22">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Closing</Value>
+                    <Style>
+                      <FontFamily>times New Roman</FontFamily>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox18</rd:DefaultName>
+            <Top>0.03316in</Top>
+            <Left>4.02916in</Left>
+            <Height>0.23906in</Height>
+            <Width>2.01586in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox24">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>@closeCredit</Label>
+                    <Value>=Sum(Fields!Credit.Value, "LedgerDetails")</Value>
+                    <Style>
+                      <FontFamily>times New Roman</FontFamily>
+                      <Format>0.00;(0.00)</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox18</rd:DefaultName>
+            <Top>0.03177in</Top>
+            <Left>7.13617in</Left>
+            <Height>0.23906in</Height>
+            <Width>1.00228in</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Line Name="Line4">
+            <Left>6.0881in</Left>
+            <Height>0.29149in</Height>
+            <Width>0in</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Textbox Name="Textbox28">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>@closeDebit</Label>
+                    <Value>=Sum(Fields!Debit.Value, "LedgerDetails")</Value>
+                    <Style>
+                      <FontFamily>times New Roman</FontFamily>
+                      <Format>0.00;(0.00)</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox18</rd:DefaultName>
+            <Top>0.04427in</Top>
+            <Left>6.12046in</Left>
+            <Height>0.23906in</Height>
+            <Width>0.96157in</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <KeepTogether>true</KeepTogether>
+        <Top>1.60712in</Top>
+        <Left>0.07229in</Left>
+        <Height>0.29149in</Height>
+        <Width>8.13845in</Width>
+        <ZIndex>3</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <TopBorder>
+            <Style>None</Style>
+          </TopBorder>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <LeftBorder>
+            <Color>Black</Color>
+            <Width>1pt</Width>
+          </LeftBorder>
+          <RightBorder>
+            <Color>Black</Color>
+            <Width>1pt</Width>
+          </RightBorder>
+        </Style>
+      </Rectangle>
+      <Rectangle Name="Rectangle4">
+        <ReportItems>
+          <Line Name="Line5">
+            <Left>7.1098in</Left>
+            <Height>0.28333in</Height>
+            <Width>0in</Width>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Textbox Name="Textbox26">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Total</Value>
+                    <Style>
+                      <FontFamily>times New Roman</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox18</rd:DefaultName>
+            <Top>0.02066in</Top>
+            <Left>4.02916in</Left>
+            <Height>0.23906in</Height>
+            <Width>2.00927in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox29">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>@totalCredit</Label>
+                    <Value>=Sum(Fields!TotalCredit.Value, "LedgerDetails")</Value>
+                    <Style>
+                      <FontFamily>times New Roman</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>0.00;(0.00)</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox18</rd:DefaultName>
+            <Top>0.03177in</Top>
+            <Left>7.13069in</Left>
+            <Height>0.23906in</Height>
+            <Width>0.98639in</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Line Name="Line6">
+            <Left>6.0881in</Left>
+            <Height>0.2901in</Height>
+            <Width>0in</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
+          <Textbox Name="Textbox30">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>@DebitTotal</Label>
+                    <Value>=Sum(Fields!TotalDebit.Value, "LedgerDetails")</Value>
+                    <Style>
+                      <FontFamily>times New Roman</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>0.00;(0.00)</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox18</rd:DefaultName>
+            <Top>0.03177in</Top>
+            <Left>6.12235in</Left>
+            <Height>0.23906in</Height>
+            <Width>0.94179in</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <KeepTogether>true</KeepTogether>
+        <Top>1.90157in</Top>
+        <Left>0.07229in</Left>
+        <Height>0.29427in</Height>
+        <Width>8.13845in</Width>
+        <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <TopBorder>
+            <Style>None</Style>
+          </TopBorder>
+        </Style>
+      </Rectangle>
+      <Textbox Name="Textbox6">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Label>Account Name</Label>
+                <Value>=First(Fields!AccountName.Value, "LedgerDetails")</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox6</rd:DefaultName>
+        <Top>0.53406in</Top>
+        <Left>0.07229in</Left>
+        <Height>0.22845in</Height>
+        <Width>1.69879in</Width>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox7">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Label>@todate</Label>
+                <Value>=First(Fields!ToDate.Value, "LedgerDetails")</Value>
+                <Style>
+                  <FontFamily>times New Roman</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox6</rd:DefaultName>
+        <Top>0.51878in</Top>
+        <Left>7.22637in</Left>
+        <Height>0.22845in</Height>
+        <Width>0.98437in</Width>
+        <ZIndex>6</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox8">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Label>@fromDate</Label>
+                <Value>=First(Fields!FromDate.Value, "LedgerDetails")</Value>
+                <Style>
+                  <FontFamily>times New Roman</FontFamily>
+                  <Format>dd MMM yyyy</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox6</rd:DefaultName>
+        <Top>0.51878in</Top>
+        <Left>6.00862in</Left>
+        <Height>0.22845in</Height>
+        <Width>0.9945in</Width>
+        <ZIndex>7</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox9">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Label>Account Name</Label>
+                <Value>to</Value>
+                <Style>
+                  <FontFamily>times New Roman</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox6</rd:DefaultName>
+        <Top>0.51878in</Top>
+        <Left>7.02257in</Left>
+        <Height>0.22845in</Height>
+        <Width>0.18991in</Width>
+        <ZIndex>8</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>2.04808in</Height>
+    <Height>2.69149in</Height>
     <Style />
   </Body>
   <Width>8.27in</Width>
   <Page>
-    <PageFooter>
-      <Height>0.44912in</Height>
-      <PrintOnFirstPage>true</PrintOnFirstPage>
-      <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox15">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>Received By</Value>
-                  <Style>
-                    <FontFamily>times New Roman</FontFamily>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox13</rd:DefaultName>
-          <Top>0.15709in</Top>
-          <Left>0.25698in</Left>
-          <Height>0.25in</Height>
-          <Width>1.30208in</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <TopBorder>
-              <Style>Solid</Style>
-            </TopBorder>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="Textbox22">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>Accounts Manager</Value>
-                  <Style>
-                    <FontFamily>times New Roman</FontFamily>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox13</rd:DefaultName>
-          <Top>0.15709in</Top>
-          <Left>3.54427in</Left>
-          <Height>0.25in</Height>
-          <Width>1.30208in</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <TopBorder>
-              <Style>Solid</Style>
-            </TopBorder>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="Textbox24">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>Project Manager</Value>
-                  <Style>
-                    <FontFamily>times New Roman</FontFamily>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox13</rd:DefaultName>
-          <Top>0.15709in</Top>
-          <Left>6.71094in</Left>
-          <Height>0.25in</Height>
-          <Width>1.30208in</Width>
-          <ZIndex>2</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <TopBorder>
-              <Style>Solid</Style>
-            </TopBorder>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-      </ReportItems>
-      <Style>
-        <Border>
-          <Style>None</Style>
-        </Border>
-      </Style>
-    </PageFooter>
     <PageHeight>11.69in</PageHeight>
     <PageWidth>8.27in</PageWidth>
     <Style />
@@ -905,14 +1206,6 @@
           <DataField>AccountName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="VoucherNo">
-          <DataField>VoucherNo</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="PersonalCode">
-          <DataField>PersonalCode</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>Accounts</rd:DataSetName>
@@ -966,6 +1259,50 @@
         <rd:DataSetName>Accounts</rd:DataSetName>
         <rd:SchemaPath>C:\Users\User\source\repos\Yeasin-Ahmed\FIVESTAR-ERP\FIVESTARERP_GIT\ERPWeb\Reports\DataSets\Accounts.xsd</rd:SchemaPath>
         <rd:TableName>ServicesReportHead</rd:TableName>
+        <rd:TableAdapterFillMethod />
+        <rd:TableAdapterGetDataMethod />
+        <rd:TableAdapterName />
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="LedgerDetails">
+      <Query>
+        <DataSourceName>Accounts</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="TotalDebit">
+          <DataField>TotalDebit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="TotalCredit">
+          <DataField>TotalCredit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Debit">
+          <DataField>Debit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Credit">
+          <DataField>Credit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="FromDate">
+          <DataField>FromDate</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ToDate">
+          <DataField>ToDate</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AccountName">
+          <DataField>AccountName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>Accounts</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\User\source\repos\Yeasin-Ahmed\FIVESTAR-ERP\FIVESTARERP_GIT\ERPWeb\Reports\DataSets\Accounts.xsd</rd:SchemaPath>
+        <rd:TableName>LedgerDetails</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />

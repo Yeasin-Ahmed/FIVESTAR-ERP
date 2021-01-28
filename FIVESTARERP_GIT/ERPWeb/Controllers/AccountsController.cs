@@ -1,5 +1,6 @@
 ﻿using ERPBLL.Accounts.Interface;
 using ERPBLL.Common;
+using ERPBO.Accounts.DomainModels;
 using ERPBO.Accounts.DTOModels;
 using ERPBO.Accounts.ViewModels;
 using ERPBO.Common;
@@ -325,7 +326,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Cashbook/Journalbook list
-        public ActionResult JournalList(string flag_, string fromDate, string toDate)
+        public ActionResult JournalList(string voucherNo, string flag_, string fromDate, string toDate)
         {
             if (string.IsNullOrEmpty(flag_))
             {
@@ -333,11 +334,28 @@ namespace ERPWeb.Controllers
             }
             else
             {
-                var dto = _journalBusiness.GetJournalList(User.OrgId, fromDate, toDate);
+                var dto = _journalBusiness.GetJournalList(voucherNo, User.OrgId, fromDate, toDate);
                 List<JournalViewModel> viewModels = new List<JournalViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_JournalList", viewModels);
             }
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult DeleteVoucher(string voucherNo)
+        {
+            bool isSuccess = false;
+            if (voucherNo !=null)
+            {
+                try
+                {
+                    isSuccess = _journalBusiness.DeleteJournalVoucher(voucherNo, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         public ActionResult CashVoucherList(string flag_, string fromDate, string toDate)
         {
@@ -400,6 +418,253 @@ namespace ERPWeb.Controllers
                 }
             }
             return Json(isSuccess);
+        }
+        #endregion
+
+        #region Reports
+        public ActionResult GetJournalVoucherReports(string voucherNo, string fromDate, string toDate,string rptType)
+        {
+            string file = string.Empty;
+            IEnumerable<JournalDTO> journal = _journalBusiness.GetJournalList(voucherNo,User.OrgId, fromDate, toDate);
+
+            ServicesReportHead reportHead = _journalBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/Accounts/rptJournalVoucherReport.rdlc");
+
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("Journal", journal);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Stock";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+
+        public ActionResult GetLedgerReports(long ddlLedgerAccountName, string fromDate, string toDate, string rptType)
+        {
+            string file = string.Empty;
+            List<DetailsLedgerDTO> detailslist = new List<DetailsLedgerDTO>();
+            DetailsLedgerDTO details = new DetailsLedgerDTO();
+            double totaldebit = 0;
+            double totalcredit = 0;
+            double debit = 0;
+            double credit = 0;
+            
+            IEnumerable<JournalDTO> journal = _journalBusiness.LedgerList(ddlLedgerAccountName, User.OrgId, fromDate, toDate);
+            double d = journal.Sum(a => (a.Debit));
+            double c = journal.Sum(b => (b.Credit));
+            double sumd = journal.Sum(s => (s.Debit - s.Credit));
+            double sumc = journal.Sum(s => (s.Credit - s.Debit));
+            string acname = journal.LastOrDefault().AccountName;
+            if (sumd > 0)
+            {
+                credit = sumd;
+            }
+            else
+            {
+                credit = 0;
+            }
+            if (sumc > 0)
+            {
+                debit = sumc;
+            }
+            else
+            {
+                debit = 0;
+            }
+            if (sumd > 0)
+            {
+                totalcredit = c + sumd;
+            }
+            else
+            {
+
+                totalcredit = c;
+            }
+            if (sumc > 0)
+            {
+                totaldebit = d + sumc;
+            }
+            else
+            {
+
+                totaldebit = d;
+            }
+            details.TotalDebit = totaldebit;
+            details.TotalCredit = totalcredit;
+            details.Debit = debit;
+            details.Credit = credit;
+            details.FromDate = fromDate;
+            details.ToDate = toDate;
+            details.AccountName = acname;
+            detailslist.Add(details);
+
+
+            //IEnumerable<JournalDTO> journal = _journalBusiness.LedgerList(ddlLedgerAccountName, User.OrgId, fromDate, toDate);
+
+            ServicesReportHead reportHead = _journalBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/Accounts/rptLedgerReport.rdlc");
+
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("Journal", journal);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                ReportDataSource dataSource3 = new ReportDataSource("LedgerDetails", detailslist);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.DataSources.Add(dataSource3);
+                localReport.Refresh();
+                localReport.DisplayName = "Ledger";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+
+        public ActionResult CashbookReport(string fromDate, string toDate, string rptType)
+        {
+            string file = string.Empty;
+            List<DetailsLedgerDTO> detailslist = new List<DetailsLedgerDTO>();
+            DetailsLedgerDTO details = new DetailsLedgerDTO();
+            double totaldebit = 0;
+            double totalcredit = 0;
+            double debit = 0;
+            double credit = 0;
+
+            IEnumerable<JournalDTO> cash = _journalBusiness.CashVoucherList(User.OrgId, fromDate, toDate);
+            double d = cash.Sum(a => (a.Debit));
+            double c = cash.Sum(b => (b.Credit));
+            double sumd = cash.Sum(s => (s.Debit - s.Credit));
+            double sumc = cash.Sum(s => (s.Credit - s.Debit));
+            if (sumd > 0)
+            {
+                credit = sumd;
+            }
+            else
+            {
+                credit = 0;
+            }
+            if (sumc > 0)
+            {
+                debit = sumc;
+            }
+            else
+            {
+                debit = 0;
+            }
+            if (sumd > 0)
+            {
+                totalcredit = c + sumd;
+            }
+            else
+            {
+
+                totalcredit = c;
+            }
+            if (sumc > 0)
+            {
+                totaldebit = d + sumc;
+            }
+            else
+            {
+
+                totaldebit = d;
+            }
+            details.TotalDebit = totaldebit;
+            details.TotalCredit = totalcredit;
+            details.Debit = debit;
+            details.Credit = credit;
+            details.FromDate = fromDate;
+            details.ToDate = toDate;
+            detailslist.Add(details);
+
+            ServicesReportHead reportHead = _journalBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> accountsReportHead = new List<ServicesReportHead>();
+            accountsReportHead.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/Accounts/rptCashbookReport.rdlc");
+
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("Cashbook", cash);
+                ReportDataSource dataSource2 = new ReportDataSource("AccountsReportHead", accountsReportHead);
+                ReportDataSource dataSource3 = new ReportDataSource("Cashbookdetails", detailslist);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.DataSources.Add(dataSource3);
+                localReport.Refresh();
+                localReport.DisplayName = "Cashbook";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
         }
         #endregion
     }

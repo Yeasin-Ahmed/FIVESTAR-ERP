@@ -21,7 +21,6 @@
                 <th>Narration</th>
                 <th class="hide"></th>
                 <th class="hide">Account Name</th>
-                <th>Remarks</th>
                 <th>Dr.</th>
                 <th>Cr.</th>
             </tr>
@@ -44,7 +43,6 @@
                 <td>@jor.ReferenceNum</td>
                 <td>@jor.Narration</td>
                 <td class="hide">@jor.AccountName</td>
-                <td>@jor.Remarks</td>
                 <td class="text-center">@jor.Debit</td>
                 <td class="text-center">@jor.Credit</td>
             </tr>
@@ -60,7 +58,7 @@
         </tbody>
         <tfoot style="background-color:#bfbfbf">
             <tr class="">
-                <th colspan="5" class="text-right">Total</th>
+                <th colspan="4" class="text-right">Total</th>
                 <td class="text-center font-weight-bold">
                     @if (debit <= totalD)
                     {
@@ -87,14 +85,14 @@
         </tfoot>
         <tfoot style="background-color:#bfbfbf">
             <tr class="">
-                <th colspan="5" class="text-right"></th>
+                <th colspan="4" class="text-right"></th>
                 <td class="text-center font-weight-bold">@debit</td>
                 <td class="text-center font-weight-bold">@credit</td>
             </tr>
         </tfoot>
         <tfoot style="background-color:#bfbfbf">
             <tr class="">
-                <th colspan="5" class="text-right">Closing Balance</th>
+                <th colspan="4" class="text-right">Closing Balance</th>
                 <td class="text-center font-weight-bold">
                     @if (c > 0)
                     {

@@ -29,5 +29,9 @@ namespace ERPBO.Accounts.ViewModels
         public long? ApprovedBy { get; set; }
         public Nullable<DateTime> ApproveDate { get; set; }
         public string AccountName { get; set; }
+        //
+        public string PersonalCode { get; set; }
+        public string VoucherNo { get; set; }
+        public double? DueAmount { get; set; }
     }
 }

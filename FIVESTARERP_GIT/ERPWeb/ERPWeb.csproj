@@ -953,9 +953,21 @@
     <Content Include="ExcelFile\Demo.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Reports\Accounts\rptCreditVoucherReport.rdlc" />
-    <EmbeddedResource Include="Reports\Accounts\rptDebitVoucherReport.rdlc" />
-    <EmbeddedResource Include="Reports\Accounts\rptJournalVoucherReport.rdlc" />
+    <Content Include="Reports\Accounts\rptCreditVoucherReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Accounts\rptDebitVoucherReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Accounts\rptJournalVoucherReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Accounts\rptLedgerReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Accounts\rptCashbookReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Reports\ERPRpt\Inventory\rptModelWiseDailyItemStock.rdlc" />
     <Content Include="Reports\ERPRpt\Inventory\rptStockShortageOrExcess - Copy.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

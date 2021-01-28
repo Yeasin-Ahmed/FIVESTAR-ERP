@@ -9,17 +9,17 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-two-journalVoucherList-tab" data-toggle="pill" href="#custom-tabs-two-journalVoucherList" role="tab" aria-controls="custom-tabs-two-journalVoucherList" aria-selected="true">Journal Book</a>
+                        <a class="nav-link active" id="custom-tabs-two-cashVoucherList-tab" data-toggle="pill" href="#custom-tabs-two-cashVoucherList" role="tab" aria-controls="custom-tabs-two-cashVoucherList" aria-selected="true">Cash Book</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-cashVoucherList-tab" data-toggle="pill" href="#custom-tabs-two-cashVoucherList" role="tab" aria-controls="custom-tabs-two-cashVoucherList" aria-selected="false">Cash Book</a>
+                        <a class="nav-link" id="custom-tabs-two-journalVoucherList-tab" data-toggle="pill" href="#custom-tabs-two-journalVoucherList" role="tab" aria-controls="custom-tabs-two-journalVoucherList" aria-selected="false">Journal Book</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body shadow">
                 <div class="tab-content" id="custom-tabs-two-tabContent">
                     @Html.AntiForgeryToken()
-                    <div class="tab-pane fade show active" id="custom-tabs-two-journalVoucherList" role="tabpanel" aria-labelledby="custom-tabs-two-journalVoucherList-tab">
+                    <div class="tab-pane fade show" id="custom-tabs-two-journalVoucherList" role="tabpanel" aria-labelledby="custom-tabs-two-journalVoucherList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card shadow card-gray shadow">
@@ -41,44 +41,61 @@
                             </div>
                         </div>
                         <div class="row text-sm">
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card shadow">
-                                    <div class="card-body shadow">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">From Date</label>
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
-                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
-                                                        <span class="input-group-text">&#10008;</span>
+                            <div class="col-md-12" style="margin-top:-15px">
+                                <div class="card card-navy">
+                                    <div class="card-body">
+                                        @using (Html.BeginForm("GetJournalVoucherReports", "Accounts", FormMethod.Get, new { @target = "_blank" }))
+                                        {
+                                            <div class="col-md-12">
+                                                <form method="get">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">V No.</label>
+                                                            <input type="text" id="txtVoucherNo1" name="voucherNo" class="form-control form-control-sm" placeholder="Search By Voucher No" />
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">From Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
+                                                                <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">To Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
+                                                                <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="rptType">Type</label>
+                                                            <select name="rptType" id="rptType" class="form-control form-control-sm">
+                                                                <option value="PDF">PDF</option>
+                                                                <option value="EXCEL">EXCEL</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label for="Download" style="visibility:hidden">Download</label>
+                                                            <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i></button>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">To Date</label>
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
-                                                    <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
-                                                        <span class="input-group-text">&#10008;</span>
-                                                    </div>
-                                                </div>
+                                            <br />
+                                            <div class="col-md-12 text-sm mb-2" id="dataContainer" style="overflow-y:scroll">
+                                                @*@{Html.RenderAction("JournalList", new { @flag_ = "journal" });}*@
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card shadow">
-                                    <div class="card-body shadow">
-                                        <div class="col-md-12 text-sm text-sm" id="dataContainer" style="overflow-y:scroll">
-                                            @*@{Html.RenderAction("JournalList", new { @flag_ = "journal" });}*@
-                                        </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show" id="custom-tabs-two-cashVoucherList" role="tabpanel" aria-labelledby="custom-tabs-two-cashVoucherList-tab">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-cashVoucherList" role="tabpanel" aria-labelledby="custom-tabs-two-cashVoucherList-tab">
                         <div class="row" style="margin-top:-15px">
                             <div class="col-md-12">
                                 <div class="card shadow card-gray shadow">
@@ -103,35 +120,48 @@
                             <div class="col-md-12" style="margin-top:-10px">
                                 <div class="card shadow">
                                     <div class="card-body shadow">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">From Date</label>
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" />
-                                                    <div class="input-group-prepend cursor-pointer remove-date dptFromDate2" style="cursor:pointer">
-                                                        <span class="input-group-text">&#10008;</span>
+                                        @using (Html.BeginForm("CashbookReport", "Accounts", FormMethod.Get, new { @target = "_blank" }))
+                                        {
+                                            <div class="col-md-12">
+                                                <form method="get">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">From Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate2" name="fromDate"/>
+                                                                <div class="input-group-prepend cursor-pointer remove-date dptFromDate2" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label font-weight-bold">To Date</label>
+                                                            <div class="input-group input-group-sm ">
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate2" name="toDate"/>
+                                                                <div class="input-group-prepend remove-date dptToDate2" style="cursor:pointer">
+                                                                    <span class="input-group-text">&#10008;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="rptType">Type</label>
+                                                            <select name="rptType" id="rptType" class="form-control form-control-sm">
+                                                                <option value="PDF">PDF</option>
+                                                                <option value="EXCEL">EXCEL</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label for="Download" style="visibility:hidden">Download</label>
+                                                            <button type="submit" title="Download Report" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i></button>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">To Date</label>
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate2" />
-                                                    <div class="input-group-prepend remove-date dptToDate2" style="cursor:pointer">
-                                                        <span class="input-group-text">&#10008;</span>
-                                                    </div>
-                                                </div>
+                                            <br />
+                                            <div class="col-md-12 text-sm text-sm" id="dataContainer2" style="overflow-y:scroll">
+                                                @{Html.RenderAction("CashVoucherList", new { @flag_ = "cash" });}
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:-10px">
-                                <div class="card shadow">
-                                    <div class="card-body shadow">
-                                        <div class="col-md-12 text-sm text-sm" id="dataContainer2" style="overflow-y:scroll">
-                                            @{Html.RenderAction("CashVoucherList", new { @flag_ = "cash" });}
-                                        </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +179,7 @@
         var dptToDate = $("#dptToDate");
         var dptFromDate2 = $("#dptFromDate2");
         var dptToDate2 = $("#dptToDate2");
+        var txtVoucherNo1 = $("#txtVoucherNo1");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -223,8 +254,11 @@
         dptToDate.change(function () {
             LoadDataTableForJournal();
         })
+        txtVoucherNo1.keyup(function () {
+            LoadDataTableForJournal();
+        })
         function LoadDataTableForJournal() {
-            var data = { flag_: "journal", fromDate: dptFromDate.val(), toDate: dptToDate.val()};
+            var data = { flag_: "journal", voucherNo: txtVoucherNo1.val().trim(), fromDate: dptFromDate.val(), toDate: dptToDate.val() };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/Accounts/JournalList', data)).then(function (res, status) {
@@ -239,6 +273,31 @@
                 console.log(error);
             });
         }
+        $(document).on('click', 'a.data-del-item-journal', function (e) {
+            e.preventDefault();
+            var voucherNo = $(this).attr('data-del-item-journal');
+            var index = $(this).parent().parents('tr').index();
+            bootbox.confirm('Are you sure you want to delete', function (result) {
+                if (result) {
+
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Accounts/DeleteVoucher', JSON.stringify({ voucherNo: voucherNo }), getToken())).then(function (res, status) {
+                        console.log(status);
+                        console.log(res);
+                        if (res === true) {
+                            $('.toastrDefaultDelete').trigger('click');
+                            fnRemoveARowFromTbody("#tblJournalList", index);
+                            LoadDataTableForJournal();
+                        }
+                        else {
+                            $('.toastrDefaultError').trigger('click');
+                        }
+                    }).fail(function (err) {
+                        $('.toastrDefaultError').trigger('click');
+                        console.log(err);
+                    });
+                }
+            })
+        })
         dptFromDate2.change(function () {
             LoadDataTableCashbook();
         })
