@@ -258,6 +258,7 @@ namespace ERPWeb
             container.RegisterType<IAccountsHeadBusiness, AccountsHeadBusiness>();
             container.RegisterType<IJournalBusiness, JournalBusiness>();
             container.RegisterType<IFinanceYearBusiness, FinanceYearBusiness>();
+            container.RegisterType<IChequeBookBusiness, ChequeBookBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

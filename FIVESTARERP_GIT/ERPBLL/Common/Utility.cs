@@ -63,6 +63,7 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+
         public static IEnumerable<Dropdown> ListOfQCStatus()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
@@ -240,6 +241,17 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        #region Accounts
+        public static IEnumerable<Dropdown> ListOfChequeType()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=ChequeType.Payment,value=ChequeType.Payment},
+                new Dropdown(){text=ChequeType.Receipt,value=ChequeType.Receipt}
+            };
+            return dropdowns;
+        }
+        #endregion
 
 
         public static IEnumerable<SetIMEIDataForHTML> StrickerOne(int stickerCount, int imeiNo)

@@ -27,6 +27,11 @@ namespace ERPBLL.Common
         public static readonly string FreshStock = "FreshStock";
         public static readonly string FaultyStock = "FaultyStock";
     }
+    public class ChequeType
+    {
+        public static readonly string Payment = "Payment";
+        public static readonly string Receipt = "Receipt";
+    }
     public class QCStatus
     {
         public static readonly string QCPass = "QC-Pass";

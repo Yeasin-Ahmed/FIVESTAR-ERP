@@ -41,7 +41,7 @@ namespace ERPBLL.Accounts
         public AccountDTO GetCashHeadId(long orgId)
         {
             return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
-                string.Format(@"Select * from tblAccount Where AccountName='Cash' and OrganizationId={0}", orgId)).FirstOrDefault();
+                string.Format(@"Select * from tblAccount Where AccountName='Cash In Hand' and OrganizationId={0}", orgId)).FirstOrDefault();
         }
 
         public bool IsDuplicateAaccountCode(string code, long id, long orgId)

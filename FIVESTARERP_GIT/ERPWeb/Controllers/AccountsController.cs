@@ -21,12 +21,18 @@ namespace ERPWeb.Controllers
         private readonly IAccountsHeadBusiness _accountsHeadBusiness;
         private readonly IJournalBusiness _journalBusiness;
         private readonly IFinanceYearBusiness _financeYearBusiness;
+        private readonly IChequeBookBusiness _chequeBookBusiness;
+        private readonly ISupplierBusiness _supplierBusiness;
+        private readonly ICustomerBusiness _customerBusiness;
         // GET: Accounts
-        public AccountsController(IAccountsHeadBusiness accountsHeadBusiness, IJournalBusiness journalBusiness, IFinanceYearBusiness financeYearBusiness)
+        public AccountsController(IAccountsHeadBusiness accountsHeadBusiness, IJournalBusiness journalBusiness, IFinanceYearBusiness financeYearBusiness, IChequeBookBusiness chequeBookBusiness, ISupplierBusiness supplierBusiness, ICustomerBusiness customerBusiness)
         {
             this._accountsHeadBusiness = accountsHeadBusiness;
             this._journalBusiness = journalBusiness;
             this._financeYearBusiness = financeYearBusiness;
+            this._chequeBookBusiness = chequeBookBusiness;
+            this._supplierBusiness = supplierBusiness;
+            this._customerBusiness = customerBusiness;
         }
 
         #region tblAccount
@@ -665,6 +671,71 @@ namespace ERPWeb.Controllers
                 return File(renderedBytes, mimeType);
             }
             return new EmptyResult();
+        }
+        #endregion
+
+        #region CheckBook Entry
+        [HttpGet]
+        public ActionResult GetChequeBookList(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                ViewBag.ddlChequeType = Utility.ListOfChequeType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                return View();
+            }
+            else
+            {
+                var dto = _chequeBookBusiness.GetChequeBookList(User.OrgId);
+                List<ChequeBookViewModel> viewModel = new List<ChequeBookViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModel);
+                return PartialView("_GetChequeBookList", viewModel);
+            }
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveChequeBook(ChequeBookViewModel chequeBookViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ChequeBookDTO dto = new ChequeBookDTO();
+                    AutoMapper.Mapper.Map(chequeBookViewModel, dto);
+                    isSuccess = _chequeBookBusiness.SaveChequeBook(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Supplier & Customer List
+        public ActionResult GetAllCustomerAndSupplier(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+
+            }
+            else 
+                if(string.IsNullOrEmpty(flag) && flag == "supplier")
+            {
+                var dto = _supplierBusiness.GetAllSupplierList(User.OrgId);
+                List<SupplierViewModel> supplierViews = new List<SupplierViewModel>();
+                AutoMapper.Mapper.Map(dto, supplierViews);
+                return PartialView("_Supplier", supplierViews);
+            }
+            else
+                if(string.IsNullOrEmpty(flag) && flag == "customer")
+            {
+                var dtos = _customerBusiness.GetAllCustomerList(User.OrgId);
+                List<CustomerViewModel> customerViews = new List<CustomerViewModel>();
+                AutoMapper.Mapper.Map(dtos, customerViews);
+                return PartialView("_Customer", customerViews);
+            }
+            return View();
         }
         #endregion
     }

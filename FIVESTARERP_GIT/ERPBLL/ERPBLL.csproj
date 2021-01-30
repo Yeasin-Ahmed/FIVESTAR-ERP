@@ -100,11 +100,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\AccountsHeadBusiness.cs" />
+    <Compile Include="Accounts\ChequeBookBusiness.cs" />
+    <Compile Include="Accounts\CustomerBusiness.cs" />
     <Compile Include="Accounts\FinanceYearBusiness.cs" />
     <Compile Include="Accounts\Interface\IAccountsHeadBusiness.cs" />
+    <Compile Include="Accounts\Interface\IChequeBookBusiness.cs" />
+    <Compile Include="Accounts\Interface\ICustomerBusiness.cs" />
     <Compile Include="Accounts\Interface\IFinanceYearBusiness.cs" />
     <Compile Include="Accounts\Interface\IJournalBusiness.cs" />
+    <Compile Include="Accounts\Interface\ISupplierBusiness.cs" />
     <Compile Include="Accounts\JournalBusiness.cs" />
+    <Compile Include="Accounts\SupplierBusiness.cs" />
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Configuration\AccessoriesBusiness.cs" />

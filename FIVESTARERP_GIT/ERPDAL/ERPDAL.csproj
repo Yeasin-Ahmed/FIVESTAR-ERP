@@ -102,6 +102,14 @@
     <Compile Include="AccountsContextMigrations\202101280508536_Accounts_JournalNewColumnAdd.Designer.cs">
       <DependentUpon>202101280508536_Accounts_JournalNewColumnAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="AccountsContextMigrations\202101300750285_Accounts_ChequeBook.cs" />
+    <Compile Include="AccountsContextMigrations\202101300750285_Accounts_ChequeBook.Designer.cs">
+      <DependentUpon>202101300750285_Accounts_ChequeBook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountsContextMigrations\202101301225558_Accounts_Supplier&amp;Customers.cs" />
+    <Compile Include="AccountsContextMigrations\202101301225558_Accounts_Supplier&amp;Customers.Designer.cs">
+      <DependentUpon>202101301225558_Accounts_Supplier&amp;Customers.cs</DependentUpon>
+    </Compile>
     <Compile Include="AccountsContextMigrations\Configuration.cs" />
     <Compile Include="AccountsDAL\AccountsBaseRepository.cs" />
     <Compile Include="AccountsDAL\AccountsDbContext.cs" />
@@ -924,6 +932,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AccountsContextMigrations\202101280508536_Accounts_JournalNewColumnAdd.resx">
       <DependentUpon>202101280508536_Accounts_JournalNewColumnAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsContextMigrations\202101300750285_Accounts_ChequeBook.resx">
+      <DependentUpon>202101300750285_Accounts_ChequeBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsContextMigrations\202101301225558_Accounts_Supplier&amp;Customers.resx">
+      <DependentUpon>202101301225558_Accounts_Supplier&amp;Customers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.resx">
       <DependentUpon>202005310415074_Configuration_DbInitialize.cs</DependentUpon>

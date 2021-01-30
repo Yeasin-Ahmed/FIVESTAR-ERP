@@ -19,4 +19,16 @@ namespace ERPDAL.AccountsDAL
     {
         public FinanceYearRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
     }
+    public class ChequeBookRepository : AccountsBaseRepository<ChequeBook>
+    {
+        public ChequeBookRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
+    }
+    public class SupplierRepository : AccountsBaseRepository<Supplier>
+    {
+        public SupplierRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
+    }
+    public class CustomerRepository : AccountsBaseRepository<Customer>
+    {
+        public CustomerRepository(IAccountsUnitOfWork accountsUnitOfWork) : base(accountsUnitOfWork) { }
+    }
 }

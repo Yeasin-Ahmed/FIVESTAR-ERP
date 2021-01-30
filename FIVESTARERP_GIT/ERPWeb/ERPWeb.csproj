@@ -877,6 +877,8 @@
     <Content Include="Views\FrontDesk\GetJobOrderListForDelivery.cshtml" />
     <Content Include="Views\FrontDesk\_GetJobOrderListForDelivery.cshtml" />
     <Content Include="Views\User\Index3.cshtml" />
+    <Content Include="Views\Accounts\GetChequeBookList.cshtml" />
+    <Content Include="Views\Accounts\_GetChequeBookList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

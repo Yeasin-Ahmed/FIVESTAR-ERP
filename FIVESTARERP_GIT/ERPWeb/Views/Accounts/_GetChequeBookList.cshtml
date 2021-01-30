@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ERPBO.Accounts.ViewModels.ChequeBookViewModel>
+@{ 
+    int sl = 0;
+    Layout = null;
+}
+<div class="col-md-12 text-sm">
+    <table class="table table-bordered table-sm table-striped tblJournalList" id="tblChequeBookList">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th class="hide"></th>
+                <th>Cheque Date</th>
+                <th>Pay/Receive To</th>
+                <th>Acc Name</th>
+                <th>Acc No</th>
+                <th>Cheque Type</th>
+                <th>Cheque No</th>
+                <th>Amount</th>
+                <th>Remarks</th>
+                <th>EntryUser</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var jor in Model)
+            {
+                sl = sl + 1;
+                string checkdate = jor.CheckDate != null ? jor.CheckDate.Value.ToString("dd-MMM-yyy") : "";
+            <tr>
+                <td class="text-center">@sl</td>
+                <td class="hide"></td>
+                <td>@checkdate</td>
+                <td>@jor.PayOrReceive</td>
+                <td>@jor.AccName</td>
+                <td>@jor.AccountNumber</td>
+                <td>@jor.CheckType</td>
+                <td>@jor.CheckNo</td>
+                <td class="text-center">@jor.Amount.ToString("0.00")</td>
+                <td class="text-center">@jor.Remarks</td>
+                <td class="text-center">@jor.UserName</td>
+            </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="9">
+                        No Rows Found
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
