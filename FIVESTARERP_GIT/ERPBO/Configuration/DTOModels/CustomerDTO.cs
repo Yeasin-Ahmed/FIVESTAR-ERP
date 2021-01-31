@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Configuration.DTOModels
+namespace ERPBO.DTOModels
 {
    public class CustomerDTO
     {

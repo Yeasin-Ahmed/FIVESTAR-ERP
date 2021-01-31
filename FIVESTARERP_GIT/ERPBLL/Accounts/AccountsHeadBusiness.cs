@@ -1,6 +1,8 @@
 ﻿using ERPBLL.Accounts.Interface;
 using ERPBO.Accounts.DomainModels;
 using ERPBO.Accounts.DTOModels;
+using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
 using ERPDAL.AccountsDAL;
 using System;
 using System.Collections.Generic;
@@ -42,6 +44,18 @@ namespace ERPBLL.Accounts
         {
             return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
                 string.Format(@"Select * from tblAccount Where AccountName='Cash In Hand' and OrganizationId={0}", orgId)).FirstOrDefault();
+        }
+
+        public AccountDTO GetCustomerAncestorId(long orgId)
+        {
+            return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
+                string.Format(@"Select * from tblAccount Where AccountName='Bill Receable' and OrganizationId={0}", orgId)).FirstOrDefault();
+        }
+
+        public AccountDTO GetSupplierAncestorId(long orgId)
+        {
+            return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
+               string.Format(@"Select * from tblAccount Where AccountName='Bill Payable' and OrganizationId={0}", orgId)).FirstOrDefault();
         }
 
         public bool IsDuplicateAaccountCode(string code, long id, long orgId)

@@ -1,6 +1,8 @@
 ﻿
 using ERPBO.Accounts.DomainModels;
 using ERPBO.Accounts.DTOModels;
+using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +19,8 @@ namespace ERPBLL.Accounts.Interface
         bool IsDuplicateAaccountCode(string code, long id, long orgId);
         AccountDTO GetCashHeadId(long orgId);
         AccountDTO GetAccountName(long accountId, long orgId);
+        AccountDTO GetCustomerAncestorId(long orgId);
+        AccountDTO GetSupplierAncestorId(long orgId);
+
     }
 }

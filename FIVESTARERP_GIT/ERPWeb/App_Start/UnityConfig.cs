@@ -54,7 +54,7 @@ namespace ERPWeb
             container.RegisterType<IWarehouseFaultyStockDetailBusiness, WarehouseFaultyStockDetailBusiness>();
             container.RegisterType<IItemPreparationInfoBusiness, ItemPreparationInfoBusiness>();
             container.RegisterType<IItemPreparationDetailBusiness, ItemPreparationDetailBusiness>();
-            container.RegisterType<ISupplierBusiness, SupplierBusiness>();
+            container.RegisterType<ERPBLL.Inventory.Interface.ISupplierBusiness, ERPBLL.Inventory.SupplierBusiness>();
             container.RegisterType<IInventoryReportBusiness, InventoryReportBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.ICategoryBusiness, ERPBLL.Inventory.CategoryBusiness>();
             container.RegisterType<ERPBLL.Inventory.Interface.ICategoryBusiness, ERPBLL.Inventory.CategoryBusiness>();
@@ -259,6 +259,8 @@ namespace ERPWeb
             container.RegisterType<IJournalBusiness, JournalBusiness>();
             container.RegisterType<IFinanceYearBusiness, FinanceYearBusiness>();
             container.RegisterType<IChequeBookBusiness, ChequeBookBusiness>();
+            container.RegisterType<ICustomersBusiness,CustomersBusiness>();
+            container.RegisterType<ERPBLL.Accounts.Interface.ISupplierBusiness, ERPBLL.Accounts.SupplierBusiness>();
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

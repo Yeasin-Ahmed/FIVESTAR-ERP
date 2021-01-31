@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ERPBO.Accounts.DTOModels
 {
-  public  class SupplierDTO
+   public class AccountsCustomerDTO
     {
-        public long SupplierId { get; set; }
-        public string SupplierName { get; set; }
+        public long CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }

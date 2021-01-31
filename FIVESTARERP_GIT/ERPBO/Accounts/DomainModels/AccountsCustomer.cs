@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERPBO.Accounts.ViewModels
+namespace ERPBO.Accounts.DomainModels
 {
-   public class SupplierViewModel
+    [Table("tblCustomers")]
+   public class AccountsCustomer
     {
-        public long SupplierId { get; set; }
-        public string SupplierName { get; set; }
+        [Key]
+        public long CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }

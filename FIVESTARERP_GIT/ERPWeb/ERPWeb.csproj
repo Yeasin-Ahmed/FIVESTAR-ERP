@@ -879,6 +879,9 @@
     <Content Include="Views\User\Index3.cshtml" />
     <Content Include="Views\Accounts\GetChequeBookList.cshtml" />
     <Content Include="Views\Accounts\_GetChequeBookList.cshtml" />
+    <Content Include="Views\Accounts\GetAllCustomerAndSupplier.cshtml" />
+    <Content Include="Views\Accounts\_Supplier.cshtml" />
+    <Content Include="Views\Accounts\_Customer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

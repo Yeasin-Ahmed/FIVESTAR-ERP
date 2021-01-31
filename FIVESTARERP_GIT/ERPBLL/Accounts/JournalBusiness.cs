@@ -1,7 +1,7 @@
 ﻿using ERPBLL.Accounts.Interface;
 using ERPBLL.Common;
-using ERPBO.Accounts.DomainModels;
-using ERPBO.Accounts.DTOModels;
+using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
 using ERPBO.Common;
 using ERPBO.FrontDesk.ReportModels;
 using ERPDAL.AccountsDAL;
@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ERPBO.Accounts.DTOModels;
+using ERPBO.Accounts.DomainModels;
 
 namespace ERPBLL.Accounts
 {

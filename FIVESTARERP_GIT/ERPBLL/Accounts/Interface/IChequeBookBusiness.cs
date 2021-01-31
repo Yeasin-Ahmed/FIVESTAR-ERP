@@ -1,4 +1,5 @@
 ﻿using ERPBO.Accounts.DTOModels;
+using ERPBO.Configuration.DTOModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,8 @@
 ﻿using ERPBLL.Accounts.Interface;
 using ERPBO.Accounts.DomainModels;
 using ERPBO.Accounts.DTOModels;
+using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
 using ERPDAL.AccountsDAL;
 using System;
 using System.Collections.Generic;

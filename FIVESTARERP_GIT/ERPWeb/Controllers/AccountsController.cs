@@ -1,8 +1,8 @@
 ﻿using ERPBLL.Accounts.Interface;
 using ERPBLL.Common;
-using ERPBO.Accounts.DomainModels;
-using ERPBO.Accounts.DTOModels;
-using ERPBO.Accounts.ViewModels;
+using ERPBO.Configuration.DomainModels;
+using ERPBO.Configuration.DTOModels;
+using ERPBO.Configuration.ViewModels;
 using ERPBO.Common;
 using ERPBO.FrontDesk.ReportModels;
 using ERPWeb.Filters;
@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ERPBO.Accounts.ViewModels;
+using ERPBO.Accounts.DTOModels;
 
 namespace ERPWeb.Controllers
 {
@@ -23,16 +25,16 @@ namespace ERPWeb.Controllers
         private readonly IFinanceYearBusiness _financeYearBusiness;
         private readonly IChequeBookBusiness _chequeBookBusiness;
         private readonly ISupplierBusiness _supplierBusiness;
-        private readonly ICustomerBusiness _customerBusiness;
+        private readonly ICustomersBusiness _customersBusiness;
         // GET: Accounts
-        public AccountsController(IAccountsHeadBusiness accountsHeadBusiness, IJournalBusiness journalBusiness, IFinanceYearBusiness financeYearBusiness, IChequeBookBusiness chequeBookBusiness, ISupplierBusiness supplierBusiness, ICustomerBusiness customerBusiness)
+        public AccountsController(IAccountsHeadBusiness accountsHeadBusiness, IJournalBusiness journalBusiness, IFinanceYearBusiness financeYearBusiness, IChequeBookBusiness chequeBookBusiness, ISupplierBusiness supplierBusiness, ICustomersBusiness customersBusiness)
         {
             this._accountsHeadBusiness = accountsHeadBusiness;
             this._journalBusiness = journalBusiness;
             this._financeYearBusiness = financeYearBusiness;
             this._chequeBookBusiness = chequeBookBusiness;
             this._supplierBusiness = supplierBusiness;
-            this._customerBusiness = customerBusiness;
+            this._customersBusiness = customersBusiness;
         }
 
         #region tblAccount
@@ -713,6 +715,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Supplier & Customer List
+        [HttpGet]
         public ActionResult GetAllCustomerAndSupplier(string flag)
         {
             if (string.IsNullOrEmpty(flag))
@@ -720,22 +723,61 @@ namespace ERPWeb.Controllers
 
             }
             else 
-                if(string.IsNullOrEmpty(flag) && flag == "supplier")
+                if(!string.IsNullOrEmpty(flag) && flag == "supplier")
             {
                 var dto = _supplierBusiness.GetAllSupplierList(User.OrgId);
-                List<SupplierViewModel> supplierViews = new List<SupplierViewModel>();
+                List<AccountsSupplierViewModel> supplierViews = new List<AccountsSupplierViewModel>(); 
                 AutoMapper.Mapper.Map(dto, supplierViews);
                 return PartialView("_Supplier", supplierViews);
             }
             else
-                if(string.IsNullOrEmpty(flag) && flag == "customer")
+                if(!string.IsNullOrEmpty(flag) && flag == "customer")
             {
-                var dtos = _customerBusiness.GetAllCustomerList(User.OrgId);
-                List<CustomerViewModel> customerViews = new List<CustomerViewModel>();
+                var dtos = _customersBusiness.GetAllCustomerList(User.OrgId);
+                List<AccountsCustomerViewModel> customerViews = new List<AccountsCustomerViewModel>();
                 AutoMapper.Mapper.Map(dtos, customerViews);
                 return PartialView("_Customer", customerViews);
             }
             return View();
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveAccountsCustomer(AccountsCustomerViewModel viewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    AccountsCustomerDTO dto = new AccountsCustomerDTO();
+                    AutoMapper.Mapper.Map(viewModel, dto);
+                    isSuccess = _customersBusiness.SaveAccountsCustomers(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveAccountsSupplier(AccountsSupplierViewModel viewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    AccountsSupplierDTO dto = new AccountsSupplierDTO();
+                    AutoMapper.Mapper.Map(viewModel, dto);
+                    isSuccess = _supplierBusiness.SaveAccountsSuppliers(dto, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using ERPBO.Accounts.DomainModels;
+using ERPBO.Configuration.DomainModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,7 +19,7 @@ namespace ERPDAL.AccountsDAL
         public DbSet<Journal> tblJournal { get; set; }
         public DbSet<FinanceYear> tblFinanceYear { get; set; }
         public DbSet<ChequeBook> tblChequeBooks { get; set; }
-        public DbSet<Supplier> tblSuppliers { get; set; }
-        public DbSet<Customer> tblCustomers { get; set; }
+        public DbSet<AccountsSupplier> tblSuppliers { get; set; }
+        public DbSet<AccountsCustomer> tblCustomers { get; set; }
     }
 }
