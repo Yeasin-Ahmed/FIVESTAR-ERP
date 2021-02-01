@@ -21,6 +21,9 @@ namespace ERPBLL.Accounts.Interface
         AccountDTO GetAccountName(long accountId, long orgId);
         AccountDTO GetCustomerAncestorId(long orgId);
         AccountDTO GetSupplierAncestorId(long orgId);
+        IEnumerable<AccountDTO> GetAllBankName(long orgId);
+        Account GetCustomerByCustomerId(long cusId, long orgId);
+        Account GetSupplierBySupplierId(long supId, long orgId);
 
     }
 }

@@ -108,17 +108,19 @@
                             <input type="text" name="remarks" value="" id="txtCustomerName" class="form-control form-control-sm" />
                             <span class="error hide required-customerName font-weight-bold">Required Customer Name!</span>
                         </div>
+                        
                         <div class="form-group col-md-6">
-                            <label for="txtCustomerPhoneNumber" class="control-label font-weight-bold">Phone</label>
-                            <input type="text" name="remarks" value="" id="txtCustomerPhoneNumber" class="form-control form-control-sm" />
-                            <span class="error hide required-CustomerPhoneNumber font-weight-bold">Required Phone No!</span>
+                            <label for="txtCustomerMobileNo" class="control-label font-weight-bold">Mobile No</label>
+                            <input type="text" name="remarks" value="" id="txtCustomerMobileNo" class="form-control form-control-sm" />
+                            <span class="error hide required-customermobileNo font-weight-bold">Required Mobile No!</span>
+                            <span class="error hide duplicate-customermobileNo font-weight-bold">Already Exits!</span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="txtCustomerMobileNo" class="control-label font-weight-bold">Mobile No</label>
-                            <input type="text" name="remarks" value="" id="txtCustomerMobileNo" class="form-control form-control-sm" />
-                            <span class="error hide required-mobileNo font-weight-bold">Required Mobile No!</span>
+                            <label for="txtCustomerPhoneNumber" class="control-label font-weight-bold">Phone</label>
+                            <input type="text" name="remarks" value="" id="txtCustomerPhoneNumber" class="form-control form-control-sm" />
+                            <span class="error hide required-CustomerPhoneNumber font-weight-bold">Required Phone No!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtCustomerAddress" class="control-label font-weight-bold">Address</label>
@@ -172,17 +174,19 @@
                             <input type="text" name="remarks" value="" id="txtSupplierName" class="form-control form-control-sm" />
                             <span class="error hide required-supplierName font-weight-bold">Required Supplier Name!</span>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="txtSupplierPhoneNumber" class="control-label font-weight-bold">Phone</label>
-                            <input type="text" name="remarks" value="" id="txtSupplierPhoneNumber" class="form-control form-control-sm" />
-                            <span class="error hide required-supplierPhoneNumber font-weight-bold">Required Phone No!</span>
-                        </div>
-                    </div>
-                    <div class="form-row">
+                        
                         <div class="form-group col-md-6">
                             <label for="txtSupplierMobileNo" class="control-label font-weight-bold">Mobile No</label>
                             <input type="text" name="remarks" value="" id="txtSupplierMobileNo" class="form-control form-control-sm" />
                             <span class="error hide required-supplierMobileNo font-weight-bold">Required Mobile No!</span>
+                            <span class="error hide duplicate-suppliermobileNo font-weight-bold">Already Exits!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtSupplierPhoneNumber" class="control-label font-weight-bold">Phone</label>
+                            <input type="text" name="remarks" value="" id="txtSupplierPhoneNumber" class="form-control form-control-sm" />
+                            <span class="error hide required-supplierPhoneNumber font-weight-bold">Required Phone No!</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtSupplierAddress" class="control-label font-weight-bold">Address</label>
@@ -214,7 +218,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
-                <button type="submit" class="btn btn-success btn-sm float-right" id="btnSupplierSubmit"><i class="far fa-save"></i> <span id="spanSaveText">Save</span> </button>
+                <button type="submit" class="btn btn-success btn-sm float-right" id="btnSupplierSubmit"><i class="far fa-save"></i> <span id="spanSaveText2">Save</span> </button>
             </div>
         </div>
     </div>
@@ -270,14 +274,21 @@
                 $(".required-customerName").removeClass("hide");
                 isValid = false;
             }
-            if ($.trim(txtCustomerPhoneNumber.val()) == "") {
-                $(".required-supplierPhoneNumber").removeClass("hide");
-                isValid = false;
-            }
-            //if ($.trim(txtCustomerEmail.val()) == "") {
-            //    $(".required-customerEmail").removeClass("hide");
+            //if ($.trim(txtCustomerPhoneNumber.val()) == "") {
+            //    $(".required-supplierPhoneNumber").removeClass("hide");
             //    isValid = false;
             //}
+            if ($.trim(txtCustomerMobileNo.val()) == "") {
+                $(".required-customermobileNo").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfCustomerId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, mobile: txtCustomerMobileNo.val().trim() }), '/Common2/IsDuplicateCustomerMobile', getToken()) == true) {
+                    $(".duplicate-customermobileNo").removeClass("hide");
+                    isValid = false;
+                }
+            }
             if ($.trim(txtCustomerAddress.val()) == "") {
                 $(".required-customerAddress").removeClass("hide");
                 isValid = false;
@@ -319,6 +330,29 @@
             }
 
         })
+        $(document).on("click", "a.data-edit-customer", function (e) {
+            e.preventDefault()
+            OpenModalCustomer()
+            $("#spanModalHead").text('Update Customer Info');
+            $("#spanSaveText").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+            var td5 = row.find('td:eq(5)').html();
+            var td6 = row.find('td:eq(6)').html();
+            var td7 = row.find('td:eq(7)').html();
+
+            hdfCustomerId.val(td1);
+            txtCustomerName.val(td2);
+            txtCustomerPhoneNumber.val(td3);
+            txtCustomerMobileNo.val(td4)
+            txtCustomerAddress.val(td5);
+            txtCustomerEmail.val(td6);
+            txtCustomerRemarks.val(td7);
+
+        })
 
         ///Supplier
         function OpenModalSupplier() {
@@ -350,9 +384,16 @@
                 $(".required-supplierName").removeClass("hide");
                 isValid = false;
             }
-            if ($.trim(txtSupplierPhoneNumber.val()) == "") {
-                $(".required-CustomerPhoneNumber").removeClass("hide");
+            if ($.trim(txtSupplierMobileNo.val()) == "") {
+                $(".required-supplierMobileNo").removeClass("hide");
                 isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfSupplierId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, mobile: txtSupplierMobileNo.val().trim() }), '/Common2/IsDuplicateSupplierMobile', getToken()) == true) {
+                    $(".duplicate-suppliermobileNo").removeClass("hide");
+                    isValid = false;
+                }
             }
             //if ($.trim(txtSupplierEmail.val()) == "") {
             //    $(".required-customerEmail").removeClass("hide");
@@ -399,7 +440,29 @@
             }
 
         })
+        $(document).on("click", "a.data-edit-supplier", function (e) {
+            e.preventDefault()
+            OpenModalSupplier()
+            $("#spanModalHead2").text('Update Supplier Info');
+            $("#spanSaveText2").text('Update');
+            var row = $(this).parent().parents('tr');
+            var td1 = row.find('td:eq(1)').html();
+            var td2 = row.find('td:eq(2)').html();
+            var td3 = row.find('td:eq(3)').html();
+            var td4 = row.find('td:eq(4)').html();
+            var td5 = row.find('td:eq(5)').html();
+            var td6 = row.find('td:eq(6)').html();
+            var td7 = row.find('td:eq(7)').html();
 
+            hdfSupplierId.val(td1);
+            txtSupplierName.val(td2);
+            txtSupplierPhoneNumber.val(td3);
+            txtSupplierMobileNo.val(td4)
+            txtSupplierAddress.val(td5);
+            txtSupplierEmail.val(td6);
+            txtSupplierRemarks.val(td7);
+
+        })
 
         function redirectPage(page) {
             window.location.replace(page);

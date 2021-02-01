@@ -678,16 +678,17 @@ namespace ERPWeb.Controllers
 
         #region CheckBook Entry
         [HttpGet]
-        public ActionResult GetChequeBookList(string flag)
+        public ActionResult GetChequeBookList(string flag, string accName, string accNo, string chqType, string bankName, string chqNo, string fromDate, string toDate)
         {
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.ddlAllBankName = _accountsHeadBusiness.GetAllBankName(User.OrgId).Select(acc => new SelectListItem { Text = acc.AccountName, Value = acc.AccountName }).ToList();
                 ViewBag.ddlChequeType = Utility.ListOfChequeType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 return View();
             }
             else
             {
-                var dto = _chequeBookBusiness.GetChequeBookList(User.OrgId);
+                var dto = _chequeBookBusiness.GetChequeBookList(User.OrgId, accName, accNo, chqType, bankName, chqNo, fromDate, toDate);
                 List<ChequeBookViewModel> viewModel = new List<ChequeBookViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModel);
                 return PartialView("_GetChequeBookList", viewModel);

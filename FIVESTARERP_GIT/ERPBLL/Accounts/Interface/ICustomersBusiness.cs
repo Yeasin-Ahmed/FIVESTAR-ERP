@@ -15,5 +15,7 @@ namespace ERPBLL.Accounts.Interface
         IEnumerable<AccountsCustomerDTO> GetAllCustomerList(long orgId);
         bool SaveAccountsCustomers(AccountsCustomerDTO dto,long userId, long orgId);
         AccountsCustomer GetCustomerByOrgId(long cusId, long orgId);
+        AccountsCustomer GetCustomerByMobileNo(string mobile, long orgId);
+        bool IsDuplicateCustomerMobile(string mobile, long id, long orgId);
     }
 }

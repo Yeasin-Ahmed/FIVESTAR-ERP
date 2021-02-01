@@ -46,11 +46,13 @@ namespace ERPWeb.Controllers
         public readonly IRepairBusiness _repairBusiness;
         private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
         private readonly IJournalBusiness _journalBusiness;
+        private readonly ICustomersBusiness _customersBusiness;
+        private readonly ERPBLL.Accounts.Interface.ISupplierBusiness _suppliersBusiness;
         //Nishad
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IJournalBusiness journalBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IJournalBusiness journalBusiness, ICustomersBusiness customersBusiness, ERPBLL.Accounts.Interface.ISupplierBusiness suppliersBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -75,6 +77,8 @@ namespace ERPWeb.Controllers
             this._faultyStockInfoBusiness = faultyStockInfoBusiness;
             this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
             this._journalBusiness = journalBusiness;
+            this._customersBusiness = customersBusiness;
+            this._suppliersBusiness = suppliersBusiness;
         }
 
         #region Configuration Module
@@ -449,9 +453,21 @@ namespace ERPWeb.Controllers
             double amount = 0;
             if (acount != null)
             {
-                amount = acount.Sum(s => (s.Credit - s.Debit));
+                amount = acount.Sum(s => (s.Credit - s.Debit)); 
             }
             return Json(amount);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateCustomerMobile(string mobile, long id)
+        {
+            bool isExist = _customersBusiness.IsDuplicateCustomerMobile(mobile, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateSupplierMobile(string mobile, long id)
+        {
+            bool isExist = _suppliersBusiness.IsDuplicateSupplierMobile(mobile, id, User.OrgId);
+            return Json(isExist);
         }
         #endregion
     }

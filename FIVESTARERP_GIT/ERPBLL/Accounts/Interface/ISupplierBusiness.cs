@@ -14,5 +14,7 @@ namespace ERPBLL.Accounts.Interface
         IEnumerable<AccountsSupplierDTO> GetAllSupplierList(long orgId);
         bool SaveAccountsSuppliers(AccountsSupplierDTO dto, long userId, long orgId);
         AccountsSupplier GetSupplierByOrgId(long suppId, long orgId);
+        AccountsSupplier GetSupplierByMobileNo(string mobile, long orgId);
+        bool IsDuplicateSupplierMobile(string mobile, long id, long orgId);
     }
 }

@@ -40,6 +40,12 @@ namespace ERPBLL.Accounts
             return accountsHeadRepository.GetOneByOrg(h => h.AccountId == id && h.OrganizationId == orgId);
         }
 
+        public IEnumerable<AccountDTO> GetAllBankName(long orgId)
+        {
+            string query = string.Format(@"Exec [dbo].[spBankName] {0}", orgId);
+            return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(query).ToList();
+        }
+
         public AccountDTO GetCashHeadId(long orgId)
         {
             return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
@@ -52,10 +58,20 @@ namespace ERPBLL.Accounts
                 string.Format(@"Select * from tblAccount Where AccountName='Bill Receable' and OrganizationId={0}", orgId)).FirstOrDefault();
         }
 
+        public Account GetCustomerByCustomerId(long cusId, long orgId)
+        {
+            return accountsHeadRepository.GetOneByOrg(c => c.CustomerId == cusId && c.OrganizationId == orgId);
+        }
+
         public AccountDTO GetSupplierAncestorId(long orgId)
         {
             return this._accountsDb.Db.Database.SqlQuery<AccountDTO>(
                string.Format(@"Select * from tblAccount Where AccountName='Bill Payable' and OrganizationId={0}", orgId)).FirstOrDefault();
+        }
+
+        public Account GetSupplierBySupplierId(long supId, long orgId)
+        {
+            return accountsHeadRepository.GetOneByOrg(c => c.SupplierId == supId && c.OrganizationId == orgId);
         }
 
         public bool IsDuplicateAaccountCode(string code, long id, long orgId)

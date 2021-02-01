@@ -110,6 +110,10 @@
     <Compile Include="AccountsContextMigrations\202101301225558_Accounts_Supplier&amp;Customers.Designer.cs">
       <DependentUpon>202101301225558_Accounts_Supplier&amp;Customers.cs</DependentUpon>
     </Compile>
+    <Compile Include="AccountsContextMigrations\202102010949473_Accounts_Account_CusandSuppAdd.cs" />
+    <Compile Include="AccountsContextMigrations\202102010949473_Accounts_Account_CusandSuppAdd.Designer.cs">
+      <DependentUpon>202102010949473_Accounts_Account_CusandSuppAdd.cs</DependentUpon>
+    </Compile>
     <Compile Include="AccountsContextMigrations\Configuration.cs" />
     <Compile Include="AccountsDAL\AccountsBaseRepository.cs" />
     <Compile Include="AccountsDAL\AccountsDbContext.cs" />
@@ -938,6 +942,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AccountsContextMigrations\202101301225558_Accounts_Supplier&amp;Customers.resx">
       <DependentUpon>202101301225558_Accounts_Supplier&amp;Customers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountsContextMigrations\202102010949473_Accounts_Account_CusandSuppAdd.resx">
+      <DependentUpon>202102010949473_Accounts_Account_CusandSuppAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202005310415074_Configuration_DbInitialize.resx">
       <DependentUpon>202005310415074_Configuration_DbInitialize.cs</DependentUpon>

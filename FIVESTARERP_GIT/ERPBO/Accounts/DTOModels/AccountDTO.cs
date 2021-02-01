@@ -21,5 +21,8 @@ namespace ERPBO.Accounts.DTOModels
         public bool IsGroupHead { get; set; }
         public string AccountType { get; set; }
         public string AncestorId { get; set; }
+        //
+        public long? CustomerId { get; set; }
+        public long? SupplierId { get; set; }
     }
 }
