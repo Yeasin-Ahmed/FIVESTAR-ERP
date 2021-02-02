@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Check Book";
+    ViewBag.Title = "Cheque Book";
 }
 
 <div class="row">
@@ -46,22 +46,18 @@
                                                 <div class="col-md-2">
                                                     <label for="txtAccountName" class="control-label font-weight-bold">Account Name</label>
                                                     <input type="text" name="remarks" value="" id="txtAccountName" class="form-control form-control-sm" />
-                                                    <span class="error hide required-accountName font-weight-bold">Required Acc Name!</span>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="ddlChequeType" class="control-label font-weight-bold">Cheque Type</label>
                                                     @Html.DropDownList("ddlChequeType", (IEnumerable<SelectListItem>)ViewBag.ddlChequeType, "--Select One--", new { @class = "form-control form-control-sm" })
-                                                    <span class="error hide required-chequeType font-weight-bold">Required Cheque Type!</span>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="txtChequeNo" class="control-label font-weight-bold">Cheque No.</label>
                                                     <input type="text" name="remarks" value="" id="txtChequeNo" class="form-control form-control-sm" />
-                                                    <span class="error hide required-chequeNo font-weight-bold">Required Cheque No.!</span>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="ddlAllBankName" class="control-label font-weight-bold">Bank Name</label>
                                                     @Html.DropDownList("ddlAllBankName", (IEnumerable<SelectListItem>)ViewBag.ddlAllBankName, "--Select One--", new { @class = "form-control form-control-sm" })
-                                                    <span class="error hide required-bankName font-weight-bold">Bank Name !</span>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label class="control-label font-weight-bold">From Date</label>
@@ -108,7 +104,7 @@
                 <form id="frmItem">
                     <input type="hidden" name="Id" id="hdfChequeBookId" />
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="col-md-6">
                             <label class="control-label font-weight-bold">Cheque Date</label>
                             <div class="input-group input-group-sm ">
                                 <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptChecqueDate" />
@@ -116,6 +112,7 @@
                                     <span class="input-group-text">&#10008;</span>
                                 </div>
                             </div>
+                            <span class="error hide required-chequeType font-weight-bold">Required Cheque Date !</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="ddlChequeType" class="control-label font-weight-bold">Cheque Type</label>
@@ -151,7 +148,7 @@
                         <div class="form-group col-md-6">
                             <label for="ddlAllBankName" class="control-label font-weight-bold">Bank Name</label>
                             @Html.DropDownList("ddlAllBankName", (IEnumerable<SelectListItem>)ViewBag.ddlAllBankName, "--Select One--", new { @class = "form-control form-control-sm" })
-                            <span class="error hide required-bankName font-weight-bold">Bank Name !</span>
+                            <span class="error hide required-bankName font-weight-bold">Required Bank Name !</span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtBranchName" class="control-label font-weight-bold">Branch Name</label>
@@ -327,7 +324,7 @@
                 isValid = false;
             }
             if ($.trim(ddlAllBankName.val()) == "") {
-                $(".required-branchName").removeClass("hide");
+                $(".required-bankName").removeClass("hide");
                 isValid = false;
             }
             if ($.trim(txtPayOrReceive.val()) == "") {
