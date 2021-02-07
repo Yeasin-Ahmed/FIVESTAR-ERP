@@ -212,11 +212,12 @@ namespace ERPBLL.Common
             {
                 //new Dropdown(){text=JobOrderStatus.PendingJobOrder,value=JobOrderStatus.PendingJobOrder},
                 new Dropdown(){text=JobOrderStatus.JobInitiated,value=JobOrderStatus.JobInitiated},
-                //new Dropdown(){text=JobOrderStatus.CustomerDisapproved,value=JobOrderStatus.CustomerDisapproved},
+                new Dropdown(){text=JobOrderStatus.QCAssigned,value=JobOrderStatus.QCAssigned},
                  new Dropdown(){text=JobOrderStatus.AssignToTS,value=JobOrderStatus.AssignToTS},
                  new Dropdown(){text=JobOrderStatus.RepairDone,value=JobOrderStatus.RepairDone},
                  new Dropdown(){text=JobOrderStatus.DeliveryDone,value=JobOrderStatus.DeliveryDone},
                  new Dropdown(){text=JobOrderStatus.HandSetChange,value=JobOrderStatus.HandSetChange},
+
             };
             return dropdowns;
         }

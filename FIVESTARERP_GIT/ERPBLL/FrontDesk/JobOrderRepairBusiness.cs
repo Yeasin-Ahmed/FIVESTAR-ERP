@@ -68,6 +68,14 @@ namespace ERPBLL.FrontDesk
             if (jobOrder != null)
             {
                 jobOrder.TsRepairStatus = jobOrderRepairStatus; // Repair Code text //
+                if (jobOrderRepairStatus == "QC")
+                {
+                    jobOrder.QCTransferStatus = "Pending";
+                }
+                else
+                {
+                    jobOrder.QCTransferStatus = null;
+                }
                 jobOrder.UpUserId = userId;
                 jobOrder.UpdateDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrder);

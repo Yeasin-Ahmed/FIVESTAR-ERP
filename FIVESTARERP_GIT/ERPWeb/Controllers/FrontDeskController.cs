@@ -2005,7 +2005,23 @@ namespace ERPWeb.Controllers
             bool IsSuccess = false;
             if (jobId > 0)
             {
-                IsSuccess = _jobOrderBusiness.SaveQCApproval(jobId, approval, remarks, User.UserId, User.OrgId);
+                IsSuccess = _jobOrderBusiness.SaveQCApproval(jobId, approval, remarks, User.UserId, User.OrgId,User.BranchId);
+                if (approval == "QC-Fail")
+                {
+                    IsSuccess = _jobOrderTSBusiness.UpdateJobOrderTsForQcFail(jobId, User.UserId, User.OrgId, User.BranchId);
+                }
+                
+            }
+            return Json(IsSuccess);
+        }
+
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult UpdateQCTransferStatus(long jobOrderId)
+        {
+            bool IsSuccess = false;
+            if (jobOrderId > 0)
+            {
+                IsSuccess = _jobOrderBusiness.UpdateQCTransferStatus(jobOrderId, User.OrgId, User.BranchId, User.UserId);
             }
             return Json(IsSuccess);
         }

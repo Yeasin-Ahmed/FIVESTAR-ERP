@@ -831,6 +831,36 @@
                     })
             })
         });
+        /////
+        $(document).on('click', '.data-item-received', function (e) {
+            e.preventDefault();
+            var jobId = $(this).attr("data-item-received");
+            bootbox.confirm("Are you sure you want to Received This Job", function (result) {
+                if (result) {
+                    receivedJobOrder(jobId);
+                }
+            });
+        })
+
+        function receivedJobOrder(jobId) {
+            var data = JSON.stringify({ jobOrderId: jobId });
+            //return console.log(data);
+            $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/FrontDesk/UpdateQCTransferStatus', data, getToken())).then(function (res, status) {
+                if (res === true && status === "success") {
+                    $('.toastrDefaultSuccess').trigger('click');
+                    setTimeout(function () {
+                            redirectPage('@Url.Action("GetJobOrderListForQc")');
+                    }, 1000);
+                }
+                else {
+                    $('.toastrDefaultError').trigger('click');
+                }
+            }).fail(function (error) {
+                console.log(error);
+                $('.toastrDefaultError').trigger('click');
+                });
+            LoadDataTable();
+        }
 
         // Pagination
         $(document).on('click', 'a.page-link', function (e) {

@@ -154,10 +154,10 @@
     <div class="col-md-12">
         <div class="modal-footer">
             @*@if ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.TsRepairStatus == "RETURN WITHOUT REPAIR") || (Model.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && Model.IsReturn == true) || ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone) && (Model.JobOrderType == "Warrenty")) || ((Model.StateStatus == ERPBLL.Common.JobOrderStatus.RepairDone) && (Model.InvoiceCode != null)) || (Model.StateStatus == "HandSetChange" && Model.TsRepairStatus == "MODULE SWAP"))
-                {
-                    <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
-                }*@
-            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS && Model.TsRepairStatus == "QC" && Model.QCStatus == null)
+        {
+            <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
+        }*@
+            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.QCAssigned && Model.TsRepairStatus == "QC" && Model.QCTransferStatus == "Received")
             {
                 <button type="button" title="Click For Approval" class="btn btn-outline-success btnQcStatus"><i class="fas fa-sticky-note"></i></button>
             }

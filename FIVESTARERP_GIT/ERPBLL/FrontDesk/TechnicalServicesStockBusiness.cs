@@ -136,6 +136,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                         servicesInfo.UsedQty = item.UsedQty;
                         servicesInfo.ReturnQty = item.Quantity - item.UsedQty;
                         servicesInfo.StateStatus = "Stock-Closed";
+                        servicesInfo.Remarks = "Used";
                         servicesInfo.UpUserId = userId;
                         servicesInfo.UpdateDate = DateTime.Now;
 
@@ -270,7 +271,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                     stockServices.OrganizationId = orgId;
                     stockServices.BranchId = branchId;
                     stockServices.EUserId = userId;
-                    stockServices.Remarks = item.Remarks;
+                    stockServices.Remarks = "NotUsed";
                     stockServices.ModelId = modelId;
                     stockServices.EntryDate = DateTime.Now;
                     technicalServicesStockRepository.Insert(stockServices);
@@ -407,7 +408,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
         inner join [FrontDesk].dbo.tblJobOrders jo on stock.JobOrderId=jo.JodOrderId
         inner join [FrontDesk].dbo.tblRequsitionInfoForJobOrders rq on stock.RequsitionInfoForJobOrderId=rq.RequsitionInfoForJobOrderId
         inner join [Configuration].dbo.tblMobileParts parts on stock.PartsId=parts.MobilePartId
-        where  rq.StateStatus='Approved'{0} and stock.StateStatus='Stock-Open'{0}", Utility.ParamChecker(param));
+        where  rq.StateStatus='Approved'{0} and stock.Remarks='NotUsed' and stock.StateStatus='Stock-Open'{0}", Utility.ParamChecker(param));
             return query;
         }
     }

@@ -74,5 +74,6 @@ namespace ERPBO.FrontDesk.DomainModels
         public string QCRemarks { get; set; }
         //
         public string MultipleDeliveryCode { get; set; }
+        public string QCTransferStatus { get; set; }
     }
 }

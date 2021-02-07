@@ -100,5 +100,23 @@ namespace ERPBLL.FrontDesk
             }
             return _jobOrderTSRepository.Save();
         }
+        public bool UpdateJobOrderTsForQcFail(long joborderId, long userId, long orgId, long branchId)
+        {
+            var jobOrderTsStatus = GetJobOrderTsByJobOrderId(joborderId, orgId, branchId);
+            if (jobOrderTsStatus != null)
+            {
+                jobOrderTsStatus.StateStatus = "Sign-In";
+                jobOrderTsStatus.IsActive = true;
+                jobOrderTsStatus.UpUserId = userId;
+                jobOrderTsStatus.SignOutDate = DateTime.Now;
+                _jobOrderTSRepository.Update(jobOrderTsStatus);
+            }
+            return _jobOrderTSRepository.Save();
+        }
+
+        public JobOrderTS GetJobOrderTsByJobOrderId(long joborderId, long orgId, long branchId)
+        {
+            return _jobOrderTSRepository.GetOneByOrg(ts => ts.JodOrderId == joborderId && ts.OrganizationId == orgId && ts.BranchId == branchId);
+        }
     }
 }

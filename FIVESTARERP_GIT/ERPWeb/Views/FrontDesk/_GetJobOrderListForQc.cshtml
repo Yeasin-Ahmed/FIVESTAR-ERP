@@ -82,7 +82,7 @@
                             <td>
                                 @if (item.TsRepairStatus == "QC" && item.QCStatus == null)
                                 {
-                                    <b style="color:#fbcd05">@item.TsRepairStatus</b>
+                                    <b>@item.TsRepairStatus</b>
                                 }
                                 else
                                 {
@@ -120,6 +120,12 @@
                                 <a href="#" class="btn btn-sm btn-outline-info data-item-details" data-item-details="@item.JodOrderId" title="Job Order Details">
                                     <i class="fas fa-eye"></i>
                                 </a>
+                                @if (item.QCTransferStatus == "Pending" && item.StateStatus=="QC-Assigned")
+                                {
+                                    <a href="#" class="btn btn-sm btn-outline-success data-item-received" data-item-received="@item.JodOrderId" title="Job Order Received">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                }
                             </td>
 
 

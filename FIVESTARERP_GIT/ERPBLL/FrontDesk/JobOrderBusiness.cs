@@ -26,6 +26,7 @@ namespace ERPBLL.FrontDesk
         private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
         private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
         private readonly IBranchBusiness _branchBusiness;
+        //private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
 
         public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IBranchBusiness branchBusiness)
         {
@@ -947,13 +948,13 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
             {
                 jobOrder.JodOrderId = jobOrderId;
 
-                if (jobOrder.TsRepairStatus == "REPAIR AND RETURN")
+                if (jobOrder.TsRepairStatus == "QC")
                 {
-                    jobOrder.StateStatus = JobOrderStatus.RepairDone;
+                    jobOrder.StateStatus = JobOrderStatus.QCAssigned;
                 }
                 else if(jobOrder.TsRepairStatus == "MODULE SWAP")
                 {
-                    jobOrder.StateStatus = "HandSetChange";
+                    jobOrder.StateStatus = JobOrderStatus.HandSetChange;
                 }
                 else
                 {
@@ -1715,9 +1716,9 @@ Where OrganizationId={0} and BranchId={1} and TsRepairStatus='PENDING FOR APPROV
 CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
-SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,QCTransferStatus,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks,QCStatus,QCRemarks
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,jo.QCStatus,jo.QCRemarks,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,jo.QCStatus,jo.QCRemarks,jo.QCTransferStatus,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -1763,23 +1764,47 @@ Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.Descripti
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
 
-Where 1 = 1{0}) tbl Order By JobOrderCode desc
+Where 1 = 1{0} and jo.StateStatus='QC-Assigned') tbl Order By JobOrderCode desc
 ", Utility.ParamChecker(param));
             return query;
         }
 
-        public bool SaveQCApproval(long jobId, string approval, string remarks, long userId, long orgId)
+        public bool SaveQCApproval(long jobId, string approval, string remarks, long userId, long orgId,long branchId)
         {
+            bool isSuccess = false;
             var jobOrderInDb = GetJobOrderById(jobId, orgId);
-            if (jobOrderInDb != null)
+            if (approval == "QC-Pass")
             {
-                jobOrderInDb.QCStatus = approval;
-                jobOrderInDb.QCRemarks = remarks;
-                jobOrderInDb.UpdateDate = DateTime.Now;
-                jobOrderInDb.UpUserId = userId;
-                _jobOrderRepository.Update(jobOrderInDb);
+                if (jobOrderInDb != null)
+                {
+                    jobOrderInDb.QCStatus = approval;
+                    jobOrderInDb.QCRemarks = remarks;
+                    jobOrderInDb.StateStatus = JobOrderStatus.RepairDone;
+                    jobOrderInDb.TsRepairStatus = "REPAIR AND RETURN";
+                    jobOrderInDb.UpdateDate = DateTime.Now;
+                    jobOrderInDb.UpUserId = userId;
+                    _jobOrderRepository.Update(jobOrderInDb);
+                    isSuccess = _jobOrderRepository.Save();
+                }
             }
-            return _jobOrderRepository.Save();
+            else
+            {
+                if(jobOrderInDb != null)
+                {
+                    jobOrderInDb.QCStatus = approval;
+                    jobOrderInDb.QCRemarks = remarks;
+                    jobOrderInDb.StateStatus = JobOrderStatus.AssignToTS;
+                    jobOrderInDb.UpdateDate = DateTime.Now;
+                    jobOrderInDb.UpUserId = userId;
+                    _jobOrderRepository.Update(jobOrderInDb);
+                    isSuccess = _jobOrderRepository.Save() == true;
+                   // {
+                   //     isSuccess = _jobOrderTSBusiness.UpdateJobOrderTsForQcFail(jobId, userId, orgId, branchId);
+                   // }
+                }
+            }
+            
+            return isSuccess;
         }
 
         public IEnumerable<JobOrderDTO> DashboardQCStatus(long orgId, long branchId, long userId)
@@ -2018,6 +2043,20 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
 where MultipleDeliveryCode='{0}' and jo.BranchId={1} and jo.OrganizationId={2}) tbl Order By EntryDate asc", deliveryCode,branchId, orgId)).ToList();
             return data;
+        }
+
+        public bool UpdateQCTransferStatus(long jobOrderId, long orgId, long branchId, long userId)
+        {
+            var jobOrderInDb = GetJobOrdersByIdWithBranch(jobOrderId, branchId, orgId);
+           
+            if (jobOrderInDb != null)
+            {
+                jobOrderInDb.QCTransferStatus = "Received";
+                jobOrderInDb.UpUserId = userId;
+                jobOrderInDb.UpdateDate = DateTime.Now;
+                _jobOrderRepository.Update(jobOrderInDb);
+            }
+            return _jobOrderRepository.Save();
         }
     }
 }

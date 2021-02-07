@@ -14,5 +14,7 @@ namespace ERPBLL.FrontDesk.Interface
         JobOrderTS GetJobOrderActiveTsByJobOrderId(long joborderId, long orgId, long branchId);
         bool UpdateJobOrderTsStatus(long joborderId, long userId, long orgId, long branchId);
         IEnumerable<JobOrderTSDTO> JobSignInAndOut(long? tsId,string jobCode,long orgId, long branchId, string fromDate, string toDate);
+        bool UpdateJobOrderTsForQcFail(long joborderId, long userId, long orgId, long branchId);
+        JobOrderTS GetJobOrderTsByJobOrderId(long joborderId, long orgId, long branchId);
     }
 }

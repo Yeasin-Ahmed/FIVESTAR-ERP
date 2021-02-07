@@ -1390,7 +1390,7 @@ $('.toastrDefaultError').trigger('click');
                                 console.log("fnJobOrderSignOut");
                                 console.log(info);
                                 console.log(stocks);
-            if (info.TsRepairStatus === "REPAIR AND RETURN") {
+            if (info.TsRepairStatus === "QC") {
                 // If Stocks avaiable // used qty
                 if (stocks.length > 0) {
                     fnBindTsStockmodalForSignOut(stocks);
@@ -1436,9 +1436,10 @@ $('.toastrDefaultError').trigger('click');
                                         var td3 = "<td>" + item.RequsitionCode+"</td>";
                                         var td4 = "<td class='hide'>"+item.PartsId+"</td>";
                                         var td5 = "<td>" + item.PartsName+"</td>";
-                                        var td6 = "<td class='text-center'>" + item.Quantity+"</td>";
+                    var td6 = "<td class='text-center'>" + item.Quantity + "</td>";
                                         var td7 = "<td class='text-center' style='width:15%'><input type='number' value=0 class='form-control form-control-sm' name='usedQty' /></td>";
-                                        var td8 = "<td class='hide'></td>";
+                    var td8 = "<td class='hide'></td>";
+                    
                                         var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + "</tr>";
                     $("#tblStockByRequsition tbody").append(tr);
                                     })
@@ -1529,7 +1530,7 @@ $('.toastrDefaultError').trigger('click');
 
         //////
         $(document).ready(function () {
-            if ($("#repairName").text() == "REPAIR AND RETURN" || $("#repairName").text() == "RETURN WITHOUT REPAIR") {
+            if ($("#repairName").text() == "QC" || $("#repairName").text() == "RETURN WITHOUT REPAIR") {
                 $("#btnjobsign").show();
                // $("#btnHandsetchange").hide();
                 $("#changeIMEI1").hide();
