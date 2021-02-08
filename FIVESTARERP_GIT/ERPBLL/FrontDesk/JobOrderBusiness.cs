@@ -46,12 +46,12 @@ namespace ERPBLL.FrontDesk
             return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.OrganizationId == orgId);
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
+        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus, string customer)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType,repairStatus)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType,repairStatus,customer)).ToList();
         }
 
-        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
+        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus,string customer)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -98,6 +98,10 @@ namespace ERPBLL.FrontDesk
                 if (!string.IsNullOrEmpty(iMEI2))
                 {
                     param += string.Format(@"and jo.IMEI2 Like '%{0}%'", iMEI2);
+                }
+                if (!string.IsNullOrEmpty(customer))
+                {
+                    param += string.Format(@"and jo.CustomerName Like '%{0}%'", customer);
                 }
             }
             if (orgId > 0)
@@ -718,7 +722,7 @@ Order By j.EUserId desc) 'EntryUser'
 from tblJobOrders jo
 Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.TSId = ap.UserId 
-Where 1 = 1  and (jo.StateStatus='TS-Assigned' or jo.StateStatus='Repair-Done' or jo.StateStatus='Delivery-Done'){0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Where 1 = 1  and (jo.StateStatus='TS-Assigned' or jo.StateStatus='QC-Assigned' or jo.StateStatus='Repair-Done' or jo.StateStatus='Delivery-Done'){0}) tbl Order By JobOrderCode desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -1949,7 +1953,7 @@ Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.Descripti
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
 
-Where 1 = 1{0} and ((jo.TsRepairStatus='REPAIR AND RETURN' and jo.StateStatus='Repair-Done' and jo.InvoiceCode is not null) or (jo.TsRepairStatus='RETURN WITHOUT REPAIR' and jo.StateStatus='Job-Initiated') or jo.StateStatus='HandSetChange')) tbl Order By JobOrderCode desc
+Where 1 = 1{0} and ((jo.TsRepairStatus='REPAIR AND RETURN' and jo.StateStatus='Repair-Done') or (jo.TsRepairStatus='RETURN WITHOUT REPAIR' and jo.StateStatus='Job-Initiated') or jo.StateStatus='HandSetChange')) tbl Order By JobOrderCode desc
 ", Utility.ParamChecker(param));
             return query;
         }
@@ -1965,6 +1969,7 @@ Where 1 = 1{0} and ((jo.TsRepairStatus='REPAIR AND RETURN' and jo.StateStatus='R
                 var jobOrderInDb = GetJobOrdersByIdWithBranch(job, branchId, orgId);
                 jobOrderInDb.MultipleDeliveryCode = deliveryCode;
                 jobOrderInDb.StateStatus = JobOrderStatus.DeliveryDone;
+                jobOrderInDb.CloseDate = DateTime.Now;
                 jobOrderInDb.UpUserId = userId;
                 jobOrderInDb.UpdateDate = DateTime.Now;
                 _jobOrderRepository.Update(jobOrderInDb);

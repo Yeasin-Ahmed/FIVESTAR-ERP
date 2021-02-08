@@ -43,7 +43,16 @@
                     <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
                     <td class="text-center">@info.StockInQty</td>
                     <td class="text-center">@info.StockOutQty</td>
-                    <td class="text-center">@stock</td>
+                    <td class="text-center">
+                        @if (stock < 100)
+                        {
+                            <b style="color:red">@stock</b>
+                        }
+                        else
+                        {
+                            @stock
+                        }
+                    </td>
                     <td>@info.Remarks</td>
                 </tr>
             }

@@ -12,7 +12,7 @@ namespace ERPBLL.FrontDesk.Interface
 {
     public interface IJobOrderBusiness
     {
-        IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode,string iMEI, string iMEI2, long orgId,long branchId, string fromDate, string toDate,string customerType,string jobType,string repairStatus);
+        IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode,string iMEI, string iMEI2, long orgId,long branchId, string fromDate, string toDate,string customerType,string jobType,string repairStatus, string customer);
         JobOrder GetJobOrderById(long jobOrderId, long orgId);
         bool SaveJobOrder(JobOrderDTO jobOrder, List<JobOrderAccessoriesDTO> jobOrderAccessories, List<JobOrderProblemDTO> jobOrderProblems, long userId, long orgId,long branchId);
         bool UpdateJobOrderStatus(long jobOrderId, string status, string type, long userId, long orgId,long branchId);

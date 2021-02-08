@@ -52,10 +52,10 @@ namespace ERPWeb.Controllers
 
         #region JobOrderList
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate,string ddlCustomerType,string ddlJobType,string repairStatus, string rptType)
+        public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate,string ddlCustomerType,string ddlJobType,string repairStatus,string customer, string rptType)
         {
             bool IsSuccess = false;
-            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate,ddlCustomerType, ddlJobType,repairStatus).ToList();
+            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate,ddlCustomerType, ddlJobType,repairStatus, customer).ToList();
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -870,6 +870,51 @@ namespace ERPWeb.Controllers
                 localReport.ReportPath = reportPath;
                 ReportDataSource dataSource1 = new ReportDataSource("HandsetChangeInformation", reportData);
                 ReportDataSource dataSource2 = new ReportDataSource("ReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "List";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    rptType,
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #region Dealer Receipt
+        public ActionResult GetDealerReceipt(string mobile, long? ddlModelName, string ddlStateStatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate, string ddlCustomerType, string ddlJobType, string repairStatus, string customer, string rptType)
+        {
+            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobile, ddlModelName, ddlStateStatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate, ddlCustomerType, ddlJobType, repairStatus, customer).ToList();
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptDealerReceipt.rdlc");
+            string id = string.Empty;
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("DealerReceipt", reportData);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
                 localReport.DataSources.Clear();
                 localReport.DataSources.Add(dataSource1);
                 localReport.DataSources.Add(dataSource2);
