@@ -319,19 +319,22 @@
                                 <table class="table table-bordered table-sm table-striped" id="tblTechnicalServicesStockData">
                                     <thead class="btn-dark">
                                         <tr class="text-center">
-                                            <th>#SL</th>
+                                            <th style="vertical-align:middle">#SL</th>
                                             <th class="hide"></th>
                                             <th class="hide"></th>
                                             <th class="hide">SWarehouse Name</th>
                                             <th class="hide"></th>
-                                            <th>Requsition Code</th>
+                                            <th style="vertical-align:middle">Requsition Code</th>
                                             <th class="hide"></th>
-                                            <th>Parts Name</th>
-                                            <th>Parts Code</th>
-                                            <th>Qty.</th>
-                                            <th class="hide">Used Qty.</th>
+                                            <th style="vertical-align:middle">Parts Name</th>
+                                            <th style="vertical-align:middle">Parts Code</th>
+                                            <th style="vertical-align:middle">Qty.</th>
+                                            @if (jobOrder.QCStatus == "QC-Fail")
+                                            {
+                                                <th class="hide" style="vertical-align:middle">U Qty.</th>
+                                                <th class="hide" style="vertical-align:middle">R Qty.</th>
+                                            }
                                             <th class="hide">Total Qty.</th>
-                                            <th class="hide">Return Qty.</th>
                                             <th class="hide">Remarks</th>
                                         </tr>
                                     </thead>
@@ -339,22 +342,26 @@
                                         @foreach (var stock in tsStock)
                                         {
                                             sl2 = sl2 + 1;
-                                            <tr>
-                                                <td class="text-center text-bold" width="10%">@sl2</td>
-                                                <td class="hide">@stock.TsStockId</td>
-                                                <td class="hide">@stock.SWarehouseId</td>
-                                                <td class="hide">@stock.SWarehouseName</td>
-                                                <td class="hide">@stock.RequsitionInfoForJobOrderId</td>
-                                                <td>@stock.RequsitionCode</td>
-                                                <td class="hide">@stock.PartsId</td>
-                                                <td>@stock.PartsName</td>
-                                                <td>@stock.MobilePartCode</td>
-                                                <td class="text-center">@stock.Quantity</td>
-                                                <td class="text-center hide">@stock.UsedQty</td>
-                                                <td class="text-center hide">@stock.TotalQty</td>
-                                                <td class="text-center hide">@stock.ReturnQty</td>
-                                                <td class="text-center hide">@stock.Remarks</td>
-                                            </tr>
+                                        <tr>
+                                            <td class="text-center text-bold" width="10%">@sl2</td>
+                                            <td class="hide">@stock.TsStockId</td>
+                                            <td class="hide">@stock.SWarehouseId</td>
+                                            <td class="hide">@stock.SWarehouseName</td>
+                                            <td class="hide">@stock.RequsitionInfoForJobOrderId</td>
+                                            <td>@stock.RequsitionCode</td>
+                                            <td class="hide">@stock.PartsId</td>
+                                            <td>@stock.PartsName</td>
+                                            <td>@stock.MobilePartCode</td>
+                                            <td class="text-center">@stock.Quantity</td>
+                                            @if (jobOrder.QCStatus == "QC-Fail")
+                                            {
+                                            <td class="text-center hide">@stock.UsedQty</td>
+                                            <td class="text-center hide">@stock.ReturnQty</td>
+                                            }
+                                            
+                                            <td class="text-center hide">@stock.TotalQty</td>
+                                            <td class="text-center hide">@stock.Remarks</td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>

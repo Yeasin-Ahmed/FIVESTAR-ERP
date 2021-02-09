@@ -53,16 +53,16 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
-                    {
-                        badge1 = item.JobOrderType == "Billing" ? "badge bg-danger" : "badge bg-success";
-                        badge = item.StateStatus == "Pending-JobOrder" ? "badge bg-warning" : (item.StateStatus == "Job-Initiated" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" : "badge bg-primary"));
-                        sl = sl + 1;
-                        isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
-                        isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-                        //isHandSet = item.IsHandset.Value ? "DOA" : "DAP";
-                        string strWarrentStartDate = item.WarrantyDate.HasValue ? item.WarrantyDate.Value.ToString("dd-MMM-yyy") : "";
-                        string closeDate = item.CloseDate != null ? item.CloseDate.Value.ToString("dd-MMM-yyy") : "";
-                        string repairDate = item.RepairDate != null ? item.RepairDate.Value.ToString("dd-MMM-yyy") : "";
+                            {
+                                badge1 = item.JobOrderType == "Billing" ? "badge bg-danger" : "badge bg-success";
+                                badge = item.StateStatus == "QC-Assigned" ? "badge bg-warning" : (item.StateStatus == "Job-Initiated" ? "badge bg-success" : item.StateStatus == "Delivery-Done" ? "badge bg-danger" : (item.StateStatus == "TS-Assigned" ? "badge bg-secondary" :(item.StateStatus== "HandSetChange"? "badge bg-info": "badge bg-primary")));
+                                sl = sl + 1;
+                                isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
+                                isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
+                                //isHandSet = item.IsHandset.Value ? "DOA" : "DAP";
+                                string strWarrentStartDate = item.WarrantyDate.HasValue ? item.WarrantyDate.Value.ToString("dd-MMM-yyy") : "";
+                                string closeDate = item.CloseDate != null ? item.CloseDate.Value.ToString("dd-MMM-yyy") : "";
+                                string repairDate = item.RepairDate != null ? item.RepairDate.Value.ToString("dd-MMM-yyy") : "";
                     <tr class="text-sm">
 
                         <td class="hide">@item.JodOrderId</td>
@@ -74,7 +74,7 @@
                             </a>
 
                             @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && item.IsTransfer == null)
-                            {
+                        {
                                 <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit Job Order"><i class="fas fa-pencil-alt"></i> </a>
                             }
                         </td>

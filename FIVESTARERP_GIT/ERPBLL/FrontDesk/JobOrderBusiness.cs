@@ -1816,7 +1816,7 @@ Where 1 = 1{0} and jo.StateStatus='QC-Assigned') tbl Order By JobOrderCode desc
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
                 string.Format(@"Select JodOrderId,JobOrderCode,QCStatus from tblJobOrders
 Where OrganizationId={0} and BranchId={1} and TsRepairStatus='QC' 
-and (QCStatus='QC-Pass' or CustomerApproval='QC-Fail') and TSId={2}", orgId, branchId, userId)).ToList();
+and QCStatus='QC-Fail' and TSId={2}", orgId, branchId, userId)).ToList();
         }
 
         public IEnumerable<JobOrderDTO> GetJobOrderForDelivery(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)

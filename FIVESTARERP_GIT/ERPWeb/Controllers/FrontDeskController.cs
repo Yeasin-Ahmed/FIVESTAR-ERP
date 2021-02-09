@@ -1174,6 +1174,7 @@ namespace ERPWeb.Controllers
                 QCStatus=jobOrder.QCStatus,
                 QCRemarks=jobOrder.QCRemarks,
                 JobOrderType=jobOrder.JobOrderType
+                
             };
             IEnumerable<JobOrderProblemDTO> prblm = _jobOrderProblemBusiness.GetJobOrderProblemByJobOrderId(joborderId.Value, User.OrgId).Select(p => new JobOrderProblemDTO
             {

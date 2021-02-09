@@ -14,120 +14,63 @@
         <table class="table table-sm table-bordered table-responsive-lg text-sm text-bold" id="tblJobOrderDetail">
             <tr>
                 <td class="hide">@Model.JodOrderId</td>
-                <td class="text-purple">Job Code</td>
+                <td class="text-blue">Job Code</td>
                 <td class="font-weight-bold">@Model.JobOrderCode</td>
-                <td class="text-purple">Invoice</td>
+                <td class="text-blue"></td>
                 <td class="font-weight-bold">@Model.InvoiceCode</td>
-                <td class="text-purple">Create Date</td>
+                <td class="text-blue">Create Date</td>
                 <td class="font-weight-bold">@EntryDate</td>
             </tr>
             <tr>
-                <td class="text-purple">Customer Name</td>
-                <td>@Model.CustomerName</td>
-                <td class="text-purple">Moblie No</td>
-                <td>@Model.MobileNo</td>
-                <td class="text-purple">Address</td>
-                <td>@Model.Address</td>
-            </tr>
-            <tr>
-                <td class="text-purple">Customer Type</td>
+                <td class="text-blue">Customer Type</td>
                 <td>@Model.CustomerType</td>
-                <td class="text-purple">IMEI1</td>
+                <td class="text-blue">IMEI1</td>
                 <td>@Model.IMEI</td>
-                <td class="text-purple">IMEI2</td>
+                <td class="text-blue">IMEI2</td>
                 <td>@Model.IMEI2</td>
 
             </tr>
             <tr>
-                <td class="text-purple">Type</td>
+                <td class="text-blue">Type</td>
                 <td>@Model.Type</td>
-                <td class="text-purple">Model</td>
+                <td class="text-blue">Model</td>
                 <td>@Model.ModelName</td>
-                <td class="text-purple">Color</td>
+                <td class="text-blue">Color</td>
                 <td>@Model.ModelColor</td>
-
             </tr>
             <tr>
-                <td class="text-purple">Accessories</td>
-                <td>@Model.AccessoriesNames</td>
-                <td class="text-purple">Problems</td>
-                <td>@Model.Problems</td>
-                @*<td class="text-purple">Warrenty Available</td>
-                    <td>@isWarrantyAvailable</td>*@
-                <td class="text-purple">Warrenty Paper</td>
-                <td>@isWarrantyPaperEnclosed</td>
-
-            </tr>
-            <tr>
-                <td class="text-purple">Job Status</td>
+                <td class="text-blue">Job Status</td>
                 <td>@Model.StateStatus</td>
-                <td class="text-purple">Work Status</td>
-                <td>@Model.TsRepairStatus</td>
-                <td class="text-purple">Ref. Number</td>
-                <td>@Model.ReferenceNumber</td>
-
-            </tr>
-            <tr>
-                <td class="text-purple">Warrenty Date</td>
-                <td>@strWarrentStartDate</td>
-                <td class="text-purple">Repair Date</td>
-                <td>@RepairDate</td>
-                <td class="text-purple">Close Date</td>
-                <td>@CloseDate</td>
-            </tr>
-            <tr>
-                <td class="text-purple">TS Name</td>
-                <td>@Model.TSName</td>
-                <td class="text-purple">Issued by</td>
+                <td class="text-blue">Accessories</td>
+                <td>@Model.AccessoriesNames</td>
+                <td class="text-blue">Issued by</td>
                 <td>@Model.EntryUser</td>
-                <td class="text-purple">Close by</td>
-                <td>@Model.CloseUser</td>
             </tr>
             <tr>
-                <td class="text-purple">Remarks</td>
-                <td>@Model.Remarks</td>
-                <td class="text-purple">Used Parts</td>
-                <td colspan="3">@Model.PartsName</td>
+                <td class="text-blue">Repair Status</td>
+                <td colspan="3">@Model.TsRepairStatus</td>
+                <td class="text-blue">TS Name</td>
+                <td>@Model.TSName</td>
             </tr>
             <tr>
-                <td class="text-purple">Courier Name</td>
-                <td>@Model.CourierName</td>
-                <td class="text-purple">Courier Number</td>
-                <td>@Model.CourierNumber</td>
-                <td class="text-purple">Approx Bill</td>
-                <td>@Model.ApproxBill</td>
+                <td class="text-blue">Symptoms</td>
+                <td colspan="5">@Model.Problems</td>
             </tr>
-
-            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.PendingJobOrder)
-            {
-                <tr>
-                    <td class="text-purple">
-                        JobOrder Type
-                    </td>
-                    <td colspan="5">
-                        @Html.DropDownList("ddlJobOrderType", (IEnumerable<SelectListItem>)ViewBag.ddlJobOrderType, "Select JobOrder Type", new { @class = "form-control form-control-sm ddlJobOrderType" })
-                        <span class="error hide require-type font-weight-bold">Type is required</span>
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td class="text-purple">
-                        Job Order Type
-                    </td>
-                    <td>
-                        @Model.JobOrderType
-                    </td>
-                    <td class="text-purple">Cust. Approval</td>
-                    <td colspan="3">@Model.CustomerApproval</td>
-                </tr>
-            }
             <tr>
-                <td class="text-purple">TsRemarks</td>
-                <td colspan="2"><b style="color:orangered">@Model.TSRemarks</b></td>
-                <td class="text-purple">Call Center Remarks</td>
-                <td colspan="2">@Model.CallCenterRemarks</td>
+                <td class="text-blue">Fault</td>
+                <td colspan="5">@Model.FaultName</td>
+            </tr>
+            <tr>
+                <td class="text-blue">Services</td>
+                <td colspan="5">@Model.ServiceName</td>
+            </tr>
+            <tr>
+                <td class="text-blue">UsedParts</td>
+                <td colspan="5">@Model.PartsName</td>
+            </tr>
+            <tr>
+                <td class="text-blue">TsRemarks</td>
+                <td colspan="5"><b style="color:orangered">@Model.TSRemarks</b></td>
             </tr>
         </table>
         @if (Model.StateStatus == "HandSetChange" && Model.TsRepairStatus == "MODULE SWAP")

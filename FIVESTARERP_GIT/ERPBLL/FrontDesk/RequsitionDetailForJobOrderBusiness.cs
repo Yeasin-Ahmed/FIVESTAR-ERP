@@ -49,14 +49,14 @@ group by rd.RequsitionDetailForJobOrderId,rd.PartsId,rd.Quantity,parts.MobilePar
         {
             var data = this._frontDeskUnitOfWork.Db.Database.SqlQuery<RequsitionDetailForJobOrderDTO>(
                 string.Format(@"select rd.RequsitionInfoForJobOrderId,rd.RequsitionDetailForJobOrderId,rd.PartsId,parts.MobilePartName 'PartsName',parts.MobilePartCode
-,rd.Quantity,ISNULL((select (ISNULL(Sum(ISNULL(StockInQty,0)-ISNULL(StockOutQty,0)),0)) 'AvailableQty' from [Configuration].dbo.tblMobilePartStockInfo where DescriptionId=jo.DescriptionId and MobilePartId=rd.PartsId),0)'AvailableQty'
+,rd.Quantity,ISNULL((select (ISNULL(Sum(ISNULL(StockInQty,0)-ISNULL(StockOutQty,0)),0)) 'AvailableQty' from [Configuration].dbo.tblMobilePartStockInfo where DescriptionId=jo.DescriptionId and MobilePartId=rd.PartsId and BranchId=jo.BranchId),0)'AvailableQty'
 from tblRequsitionDetailForJobOrders rd
 inner join [Configuration].dbo.tblMobilePartStockInfo std on rd.PartsId=std.MobilePartId 
 left join [Configuration].dbo.tblMobileParts parts on rd.PartsId=parts.MobilePartId
 inner join [FrontDesk].dbo.tblJobOrders jo on rd.JobOrderId=jo.JodOrderId 
 where rd.RequsitionInfoForJobOrderId={0} and jo.OrganizationId={1} and jo.BranchId={2}
 and jo.DescriptionId={3}
-group by rd.RequsitionDetailForJobOrderId,rd.PartsId,rd.Quantity,parts.MobilePartName,parts.MobilePartCode,rd.RequsitionInfoForJobOrderId,jo.DescriptionId", reqInfoId, orgId, branchId, modelId)).ToList();
+group by rd.RequsitionDetailForJobOrderId,rd.PartsId,rd.Quantity,parts.MobilePartName,parts.MobilePartCode,rd.RequsitionInfoForJobOrderId,jo.DescriptionId,jo.BranchId", reqInfoId, orgId, branchId, modelId)).ToList();
             return data;
         }
     }
