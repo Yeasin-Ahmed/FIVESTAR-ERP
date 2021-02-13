@@ -457,14 +457,17 @@
         $(document).on('click', ".btnPending", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.pending);
+            LoadDataTable()
         })
         $(document).on('click', ".btnReject", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.reject);
+            LoadDataTable()
         })
         $(document).on('click', ".btnIssue", function (e) {
             e.preventDefault();
             fnRequisitionStateChange(hdfRequsitionDetailId.val(), hdfRowIndex.val(), reqStatus.approved);
+            LoadDataTable()
         })
 
         function fnRequisitionStateChange(id, index, status) {
@@ -544,14 +547,17 @@
         $(document).on('click', ".btnPending2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange2(hdfRequsitionDetailId2.val(), hdfRowIndex2.val(), reqStatus.pending);
+            LoadDataTableReqOtherBranch();
         })
         $(document).on('click', ".btnReject2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange2(hdfRequsitionDetailId2.val(), hdfRowIndex2.val(), reqStatus.reject);
+            LoadDataTableReqOtherBranch();
         })
         $(document).on('click', ".btnIssue2", function (e) {
             e.preventDefault();
             fnRequisitionStateChange2(hdfRequsitionDetailId2.val(), hdfRowIndex2.val(), reqStatus.approved);
+            LoadDataTableReqOtherBranch();
         })
 
         function fnRequisitionStateChange2(id, index, status) {

@@ -171,7 +171,7 @@
         <Top>1.31268in</Top>
         <Left>0.07229in</Left>
         <Height>0.29149in</Height>
-        <Width>8.13845in</Width>
+        <Width>8.13846in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -493,14 +493,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="ReferenceNum">
+                    <Textbox Name="VoucherNo">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ReferenceNum.Value</Value>
+                              <Value>=Fields!VoucherNo.Value</Value>
                               <Style>
                                 <FontFamily>times New Roman</FontFamily>
                               </Style>
@@ -511,7 +511,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>ReferenceNum</rd:DefaultName>
+                      <rd:DefaultName>VoucherNo</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -651,7 +651,7 @@
         <Top>0.80417in</Top>
         <Left>0.07229in</Left>
         <Height>0.5in</Height>
-        <Width>8.13845in</Width>
+        <Width>8.13847in</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -1204,6 +1204,14 @@
         </Field>
         <Field Name="AccountName">
           <DataField>AccountName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="VoucherNo">
+          <DataField>VoucherNo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PersonalCode">
+          <DataField>PersonalCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

@@ -30,6 +30,7 @@ namespace ERPBLL.Accounts.Interface
         bool DeleteJournalVoucher(string voucherNo, long orgId);
         IEnumerable<Journal> GetAllLegder(long accountId,long orgId);
         IEnumerable<Journal> GetDebitDueAmount(long accountId, long orgId);
-
+        IEnumerable<JournalDTO> DebitVoucherList(string voucherNo, long orgId, string fromDate, string toDate);
+        IEnumerable<JournalDTO> CreditVoucherList(string voucherNo, long orgId, string fromDate, string toDate);
     }
 }

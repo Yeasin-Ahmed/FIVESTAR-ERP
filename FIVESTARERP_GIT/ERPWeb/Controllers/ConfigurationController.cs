@@ -690,7 +690,7 @@ namespace ERPWeb.Controllers
             return View();
         }
         public ActionResult MobilePartStockInfoPartialList(long? SwerehouseId, long? MobilePartId,long? modelId, string lessOrEq, int page = 1)
-        {
+       {
             //IEnumerable<MobilePartStockInfoDTO> partStockInfoDTO = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(info => new MobilePartStockInfoDTO
             //{
             //    MobilePartStockInfoId = info.MobilePartStockInfoId,

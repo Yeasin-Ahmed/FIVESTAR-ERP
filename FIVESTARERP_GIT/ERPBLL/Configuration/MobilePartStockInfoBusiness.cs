@@ -96,8 +96,15 @@ order by d.DescriptionName
         {
             string query = string.Empty;
             string param = string.Empty;
-
-            if(warehouseId != null && warehouseId.Value > 0)
+            if (orgId > 0)
+            {
+                param += string.Format(@" and stock.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@" and stock.BranchId={0}", branchId);
+            }
+            if (warehouseId != null && warehouseId.Value > 0)
             {
                 param += string.Format(@" and stock.SWarehouseId={0}", warehouseId);
             }
@@ -121,7 +128,7 @@ From tblMobilePartStockInfo stock
 Left Join tblServiceWarehouses w on stock.SWarehouseId = w.SWarehouseId and stock.OrganizationId =w.OrganizationId
 Left Join tblMobileParts parts on stock.MobilePartId = parts.MobilePartId and stock.OrganizationId =parts.OrganizationId
 Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
-Where stock.OrganizationId={0} and stock.BranchId= {1} order by DescriptionName", orgId, branchId, Utility.ParamChecker(param));
+Where 1=1{0} order by DescriptionName", Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(query).ToList();
         }

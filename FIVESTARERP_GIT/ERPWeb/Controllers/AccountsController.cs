@@ -36,7 +36,7 @@ namespace ERPWeb.Controllers
             this._supplierBusiness = supplierBusiness;
             this._customersBusiness = customersBusiness;
         }
-
+ 
         #region tblAccount
         [HttpGet]
         public ActionResult GetAccountList()
@@ -333,7 +333,7 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
-        #region Cashbook/Journalbook list
+        #region Voucher list & Delete
         public ActionResult JournalList(string voucherNo, string flag_, string fromDate, string toDate)
         {
             if (string.IsNullOrEmpty(flag_))
@@ -377,6 +377,34 @@ namespace ERPWeb.Controllers
                 List<JournalViewModel> viewModels = new List<JournalViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
                 return PartialView("_CashVoucherList", viewModels);
+            }
+        }
+        public ActionResult GetDebitVoucherList(string voucherNo, string flag_, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag_))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _journalBusiness.DebitVoucherList(voucherNo, User.OrgId, fromDate, toDate);
+                List<JournalViewModel> viewModels = new List<JournalViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_DebitVoucherList", viewModels);
+            }
+        } 
+        public ActionResult GetCreditVoucherList(string voucherNo, string flag_, string fromDate, string toDate)
+        {
+            if (string.IsNullOrEmpty(flag_))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _journalBusiness.CreditVoucherList(voucherNo, User.OrgId, fromDate, toDate);
+                List<JournalViewModel> viewModels = new List<JournalViewModel>();
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_CreditVoucherList", viewModels);
             }
         }
         #endregion

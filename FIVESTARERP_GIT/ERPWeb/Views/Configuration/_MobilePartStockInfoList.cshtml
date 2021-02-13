@@ -30,31 +30,45 @@
             {
                 sl = sl + 1;
                 stock = (info.StockInQty.Value - info.StockOutQty.Value);
-                <tr>
-                    <td class="text-center text-bold">@sl</td>
-                    <td class="hide">@info.MobilePartStockInfoId</td>
-                    <td class="hide">@info.SWarehouseId</td>
-                    <td class="hide">@info.ServicesWarehouseName</td>
-                    <td class="hide">@info.MobilePartId</td>
-                    <td>@info.ModelName</td>
-                    <td>@info.MobilePartName</td>
-                    <td>@info.PartsCode</td>
-                    <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
-                    <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
-                    <td class="text-center">@info.StockInQty</td>
-                    <td class="text-center">@info.StockOutQty</td>
-                    <td class="text-center">
-                        @if (stock < 100)
-                        {
-                            <b style="color:red">@stock</b>
-                        }
-                        else
-                        {
-                            @stock
-                        }
-                    </td>
-                    <td>@info.Remarks</td>
-                </tr>
+                if (stock < 20)
+                {
+                    <tr style="background-color:#fd8773">
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@info.MobilePartStockInfoId</td>
+                        <td class="hide">@info.SWarehouseId</td>
+                        <td class="hide">@info.ServicesWarehouseName</td>
+                        <td class="hide">@info.MobilePartId</td>
+                        <td>@info.ModelName</td>
+                        <td>@info.MobilePartName</td>
+                        <td>@info.PartsCode</td>
+                        <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
+                        <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
+                        <td class="text-center">@info.StockInQty</td>
+                        <td class="text-center">@info.StockOutQty</td>
+                        <td class="text-center">@stock</td>
+                        <td>@info.Remarks</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td class="text-center text-bold">@sl</td>
+                        <td class="hide">@info.MobilePartStockInfoId</td>
+                        <td class="hide">@info.SWarehouseId</td>
+                        <td class="hide">@info.ServicesWarehouseName</td>
+                        <td class="hide">@info.MobilePartId</td>
+                        <td>@info.ModelName</td>
+                        <td>@info.MobilePartName</td>
+                        <td>@info.PartsCode</td>
+                        <td class="text-center">@info.CostPrice.ToString("0.00 Tk")</td>
+                        <td class="text-center">@info.SellPrice.ToString("0.00 Tk")</td>
+                        <td class="text-center">@info.StockInQty</td>
+                        <td class="text-center">@info.StockOutQty</td>
+                        <td class="text-center">@stock</td>
+                        <td>@info.Remarks</td>
+                    </tr>
+                }
+
             }
             @if (Model.Count() == 0)
             {

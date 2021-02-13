@@ -15,7 +15,7 @@ using ERPBO.Accounts.DomainModels;
 
 namespace ERPBLL.Accounts
 {
-   public class JournalBusiness:IJournalBusiness
+   public class JournalBusiness:IJournalBusiness   
     {
         private readonly IAccountsUnitOfWork _accountsDb; // database
         private readonly JournalRepository journalRepository; // repo
@@ -471,6 +471,84 @@ where VoucherNo='{0}'", voucherNo, orgId)).ToList();
         public IEnumerable<Journal> GetDebitDueAmount(long accountId, long orgId)
         {
             return journalRepository.GetAll(d => d.AccountId == accountId && d.OrganizationId == orgId).ToList();
+        }
+
+        public IEnumerable<JournalDTO> DebitVoucherList(string voucherNo, long orgId, string fromDate, string toDate)
+        {
+            return this._accountsDb.Db.Database.SqlQuery<JournalDTO>(QueryForDevitVoucherList(voucherNo, orgId, fromDate, toDate)).ToList();
+        }
+        private string QueryForDevitVoucherList(string voucherNo, long orgId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (orgId > 0)
+            {
+                param += string.Format(@"and OrganizationId={0}", orgId);
+            }
+            if (!string.IsNullOrEmpty(voucherNo))
+            {
+                param += string.Format(@"and VoucherNo Like '%{0}%'", voucherNo);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(JournalDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(JournalDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(JournalDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select * From [Accounts].dbo.tblJournal
+Where 1=1{0} and Debit>0 and AccountId !=(Select AccountId From tblAccount Where AccountName='Cash In Hand')", Utility.ParamChecker(param));
+            return query;
+        }
+
+        public IEnumerable<JournalDTO> CreditVoucherList(string voucherNo, long orgId, string fromDate, string toDate)
+        {
+            return this._accountsDb.Db.Database.SqlQuery<JournalDTO>(QueryForCreditVoucherList(voucherNo, orgId, fromDate, toDate)).ToList();
+        }
+        private string QueryForCreditVoucherList(string voucherNo, long orgId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (orgId > 0)
+            {
+                param += string.Format(@"and OrganizationId={0}", orgId);
+            }
+            if (!string.IsNullOrEmpty(voucherNo))
+            {
+                param += string.Format(@"and VoucherNo Like '%{0}%'", voucherNo);
+            }
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(JournalDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(JournalDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(JournalDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select * From [Accounts].dbo.tblJournal
+Where 1=1{0} and Credit>0 and AccountId !=(Select AccountId From tblAccount Where AccountName='Cash In Hand')", Utility.ParamChecker(param));
+            return query;
         }
     }
 }
