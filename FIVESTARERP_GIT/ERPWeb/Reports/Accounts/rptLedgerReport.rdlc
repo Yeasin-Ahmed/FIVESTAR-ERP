@@ -12,7 +12,7 @@
                 <Value>Ledger</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
-                  <FontSize>14pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -23,10 +23,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox12</rd:DefaultName>
-        <Top>0.07917in</Top>
-        <Left>2.53062in</Left>
+        <Top>0.34167in</Top>
+        <Left>2.92039in</Left>
         <Height>0.29272in</Height>
-        <Width>3.13542in</Width>
+        <Width>2.59375in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -168,7 +168,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.31268in</Top>
+        <Top>1.97518in</Top>
         <Left>0.07229in</Left>
         <Height>0.29149in</Height>
         <Width>8.13846in</Width>
@@ -648,7 +648,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>Journal</DataSetName>
-        <Top>0.80417in</Top>
+        <Top>1.46667in</Top>
         <Left>0.07229in</Left>
         <Height>0.5in</Height>
         <Width>8.13847in</Width>
@@ -790,7 +790,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.60712in</Top>
+        <Top>2.26962in</Top>
         <Left>0.07229in</Left>
         <Height>0.29149in</Height>
         <Width>8.13845in</Width>
@@ -950,7 +950,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.90157in</Top>
+        <Top>2.56407in</Top>
         <Left>0.07229in</Left>
         <Height>0.29427in</Height>
         <Width>8.13845in</Width>
@@ -980,7 +980,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.53406in</Top>
+        <Top>1.19656in</Top>
         <Left>0.07229in</Left>
         <Height>0.22845in</Height>
         <Width>1.69879in</Width>
@@ -1013,7 +1013,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.51878in</Top>
+        <Top>1.18128in</Top>
         <Left>7.22637in</Left>
         <Height>0.22845in</Height>
         <Width>0.98437in</Width>
@@ -1047,7 +1047,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.51878in</Top>
+        <Top>1.18128in</Top>
         <Left>6.00862in</Left>
         <Height>0.22845in</Height>
         <Width>0.9945in</Width>
@@ -1080,7 +1080,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.51878in</Top>
+        <Top>1.18128in</Top>
         <Left>7.02257in</Left>
         <Height>0.22845in</Height>
         <Width>0.18991in</Width>
@@ -1095,8 +1095,45 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox13">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Label>Organization</Label>
+                <Value>=First(Fields!OrganizationName.Value, "ServicesReportHead")</Value>
+                <Style>
+                  <FontFamily>times New Roman</FontFamily>
+                  <FontSize>14pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox12</rd:DefaultName>
+        <Top>0.04895in</Top>
+        <Left>2.92039in</Left>
+        <Height>0.29272in</Height>
+        <Width>2.59375in</Width>
+        <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>2.69149in</Height>
+    <Height>2.93107in</Height>
     <Style />
   </Body>
   <Width>8.27in</Width>

@@ -517,7 +517,7 @@ namespace ERPWeb.Controllers
             double c = journal.Sum(b => (b.Credit));
             double sumd = journal.Sum(s => (s.Debit - s.Credit));
             double sumc = journal.Sum(s => (s.Credit - s.Debit));
-            string acname = journal.LastOrDefault().AccountName;
+            string acname = _accountsHeadBusiness.GetAccountOneByOrgId(ddlLedgerAccountName, User.OrgId).AccountName;
             if (sumd > 0)
             {
                 credit = sumd;

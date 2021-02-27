@@ -466,7 +466,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>Cashbook</DataSetName>
-        <Top>0.74667in</Top>
+        <Top>1.24667in</Top>
         <Left>0.1in</Left>
         <Height>0.5in</Height>
         <Width>8.07626in</Width>
@@ -486,7 +486,7 @@
                 <Value>Cashbook</Value>
                 <Style>
                   <FontFamily>times New Roman</FontFamily>
-                  <FontSize>14pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -497,8 +497,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox15</rd:DefaultName>
-        <Top>0.08208in</Top>
-        <Left>3.18625in</Left>
+        <Top>0.65361in</Top>
+        <Left>3.05834in</Left>
         <Height>0.34375in</Height>
         <Width>2.21875in</Width>
         <ZIndex>1</ZIndex>
@@ -643,7 +643,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.24667in</Top>
+        <Top>1.74667in</Top>
         <Left>0.1in</Left>
         <Height>0.26471in</Height>
         <Width>8.07625in</Width>
@@ -794,7 +794,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.50457in</Top>
+        <Top>2.00457in</Top>
         <Left>0.1in</Left>
         <Height>0.26471in</Height>
         <Width>8.07625in</Width>
@@ -948,7 +948,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>1.76247in</Top>
+        <Top>2.26247in</Top>
         <Left>0.1in</Left>
         <Height>0.26471in</Height>
         <Width>8.07625in</Width>
@@ -982,14 +982,16 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.46266in</Top>
-        <Left>7.19188in</Left>
+        <Top>0.96266in</Top>
+        <Left>7.06688in</Left>
         <Height>0.22845in</Height>
-        <Width>0.98437in</Width>
+        <Width>1.10937in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -1016,14 +1018,16 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.46266in</Top>
-        <Left>5.97413in</Left>
+        <Top>0.96266in</Top>
+        <Left>5.68246in</Left>
         <Height>0.22845in</Height>
-        <Width>0.9945in</Width>
+        <Width>1.16117in</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -1053,8 +1057,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.46266in</Top>
-        <Left>6.98808in</Left>
+        <Top>0.96266in</Top>
+        <Left>6.86308in</Left>
         <Height>0.22845in</Height>
         <Width>0.18991in</Width>
         <ZIndex>7</ZIndex>
@@ -1068,8 +1072,61 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Image Name="OrgLogo">
+        <Source>Database</Source>
+        <Value>=First(Fields!ReportImage.Value, "AccountsReportHead")</Value>
+        <MIMEType>image/png</MIMEType>
+        <Sizing>Fit</Sizing>
+        <Top>0.08208in</Top>
+        <Left>0.1in</Left>
+        <Height>1.10417in</Height>
+        <Width>1.06945in</Width>
+        <ZIndex>8</ZIndex>
+        <ToolTip>=First(Fields!ReportImage.Value, "AccountsReportHead")</ToolTip>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Textbox Name="Textbox4">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Label>Organization</Label>
+                <Value>=First(Fields!OrganizationName.Value, "AccountsReportHead")</Value>
+                <Style>
+                  <FontFamily>times New Roman</FontFamily>
+                  <FontSize>14pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>0.34458in</Top>
+        <Left>3.05834in</Left>
+        <Height>0.30208in</Height>
+        <Width>2.21875in</Width>
+        <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>2.103in</Height>
+    <Height>2.57175in</Height>
     <Style />
   </Body>
   <Width>8.27in</Width>
