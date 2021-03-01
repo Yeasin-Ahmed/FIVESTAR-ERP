@@ -6,13 +6,13 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.69444in</Width>
+              <Width>2.72916in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.46444in</Width>
+              <Width>2.49916in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.90278in</Width>
+              <Width>1.9375in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -147,7 +147,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CodeNo</rd:DefaultName>
@@ -179,7 +181,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ProductionFloorName</rd:DefaultName>
@@ -211,7 +215,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>AssemblyLineName</rd:DefaultName>
@@ -250,10 +256,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>QRCodesByRef</DataSetName>
-        <Top>0.12375in</Top>
-        <Left>0.10417in</Left>
         <Height>0.5in</Height>
-        <Width>7.06167in</Width>
+        <Width>7.16583in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -261,58 +265,11 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>0.75in</Height>
+    <Height>0.51042in</Height>
     <Style />
   </Body>
-  <Width>7.27in</Width>
+  <Width>7.16583in</Width>
   <Page>
-    <PageHeader>
-      <Height>0.60417in</Height>
-      <PrintOnFirstPage>true</PrintOnFirstPage>
-      <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox7">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>QR Code List</Value>
-                  <Style>
-                    <FontFamily>TImes New Roman</FontFamily>
-                    <FontSize>12pt</FontSize>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox7</rd:DefaultName>
-          <Top>0.17583in</Top>
-          <Left>1.75917in</Left>
-          <Height>0.25in</Height>
-          <Width>4.01042in</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-      </ReportItems>
-      <Style>
-        <Border>
-          <Style>None</Style>
-        </Border>
-      </Style>
-    </PageHeader>
     <PageHeight>11.69in</PageHeight>
     <PageWidth>8.27in</PageWidth>
     <LeftMargin>0.5in</LeftMargin>
