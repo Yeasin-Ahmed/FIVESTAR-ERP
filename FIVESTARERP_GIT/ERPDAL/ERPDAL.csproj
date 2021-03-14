@@ -256,6 +256,14 @@
     <Compile Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.Designer.cs">
       <DependentUpon>202101121213172_Configuration_Handsetstock_IMEI1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202103131038098_Configuration_DealerSS.cs" />
+    <Compile Include="ConfigurationContextMigrations\202103131038098_Configuration_DealerSS.Designer.cs">
+      <DependentUpon>202103131038098_Configuration_DealerSS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs" />
+    <Compile Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.Designer.cs">
+      <DependentUpon>202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -1051,6 +1059,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.resx">
       <DependentUpon>202101121213172_Configuration_Handsetstock_IMEI1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202103131038098_Configuration_DealerSS.resx">
+      <DependentUpon>202103131038098_Configuration_DealerSS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.resx">
+      <DependentUpon>202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>

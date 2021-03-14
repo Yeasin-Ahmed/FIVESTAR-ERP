@@ -173,6 +173,7 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IDealerSSBusiness, DealerSSBusiness>();
             container.RegisterType<IScrapStockDetailBusiness, ScrapStockDetailBusiness>();
             container.RegisterType<IScrapStockInfoBusiness, ScrapStockInfoBusiness>();
             container.RegisterType<IStockTransferInfoModelToModelBusiness, StockTransferInfoModelToModelBusiness>();

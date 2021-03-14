@@ -39,6 +39,7 @@ namespace ERPWeb.Controllers
         private readonly IServiceBusiness _serviceBusiness;
         private readonly IWorkShopBusiness _workShopBusiness;
         private readonly IRepairBusiness _repairBusiness;
+        private readonly IDealerSSBusiness _dealerSSBusiness;
         //Nishad
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
@@ -55,7 +56,7 @@ namespace ERPWeb.Controllers
         //Front Desk
         private readonly IFaultyStockAssignTSBusiness _faultyStockAssignTSBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness, IDealerSSBusiness dealerSSBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -83,6 +84,8 @@ namespace ERPWeb.Controllers
             this._roleBusiness = roleBusiness;
             this._faultyStockAssignTSBusiness = faultyStockAssignTSBusiness;
             this._scrapStockInfoBusiness = scrapStockInfoBusiness;
+            this._dealerSSBusiness = dealerSSBusiness;
+
             #region Inventory
             this._descriptionBusiness = descriptionBusiness;
             #endregion
@@ -210,7 +213,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(serviceDTO, viewModel);
                 return PartialView("_Services", viewModel);
             }
-            else if (!string.IsNullOrEmpty(flag) && flag == "repair")
+            else if (!string.IsNullOrEmpty(flag) && flag == "_repair")
             {
                 IEnumerable<RepairDTO> repairDTO = _repairBusiness.GetAllRepairByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.RepairName.Contains(name) || r.RepairCode.Contains(name))).Select(repair => new RepairDTO
                 {
@@ -221,6 +224,7 @@ namespace ERPWeb.Controllers
                     OrganizationId = repair.OrganizationId,
                     EUserId = repair.EUserId,
                     EntryDate = repair.EntryDate,
+
                     UpUserId = repair.UpUserId,
                     UpdateDate = repair.UpdateDate,
                     EntryUser = UserForEachRecord(repair.EUserId.Value).UserName,
@@ -232,6 +236,36 @@ namespace ERPWeb.Controllers
                 //-----------------//
                 AutoMapper.Mapper.Map(repairDTO, viewModels);
                 return PartialView("_Repair", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "dealer")
+            {
+                IEnumerable<DealerSSDTO> dealers = _dealerSSBusiness.GetAllDealerByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.DealerName.Contains(name) || r.MobileNo.Contains(name) || r.TelephoneNo.Contains(name) || r.DivisionName.Contains(name) || r.DistrictName.Contains(name) || r.ZoneName.Contains(name))).Select(model => new DealerSSDTO
+                {
+                    DealerId = model.DealerId,
+                    DealerName = model.DealerName,
+                    DealerCode = model.DealerCode,
+                    TelephoneNo = model.TelephoneNo,
+                    MobileNo = model.MobileNo,
+                    Address = model.Address,
+                    Email = model.Email,
+                    DivisionName = model.DivisionName,
+                    DistrictName = model.DistrictName,
+                    ZoneName = model.ZoneName,
+                    ContactPersonName = model.ContactPersonName,
+                    ContactPersonMobile = model.ContactPersonMobile,
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<DealerSSViewModel> viewModels = new List<DealerSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dealers.Count(), 10, page);
+                dealers = dealers.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dealers, viewModels);
+                return PartialView("_DealerSS", viewModels);
             }
             return View();
         }
@@ -264,6 +298,28 @@ namespace ERPWeb.Controllers
                 try
                 {
                     isSuccess = _accessoriesBusiness.DeleteAccessories(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Dealer
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDealer(DealerSSViewModel dealerSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DealerSSDTO dto = new DealerSSDTO();
+                    AutoMapper.Mapper.Map(dealerSSViewModel, dto);
+                    isSuccess = _dealerSSBusiness.SaveDealer(dto, User.OrgId, User.BranchId, User.UserId);
                 }
                 catch (Exception ex)
                 {

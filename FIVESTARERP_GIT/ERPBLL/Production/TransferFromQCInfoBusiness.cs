@@ -364,7 +364,7 @@ Left Join [Inventory].dbo.tblWarehouses wa on info.WarehouseId = wa.Id
 Left Join [Inventory].dbo.tblItemTypes it on info.ItemTypeId = it.ItemId
 Left Join [Inventory].dbo.tblItems i on info.ItemId = i.ItemId
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on info.EUserId = app.UserId
-Where 1=1 {0}", param);
+Where 1=1 {0} Order By info.EntryDate desc", param);
 
             return query;
         }

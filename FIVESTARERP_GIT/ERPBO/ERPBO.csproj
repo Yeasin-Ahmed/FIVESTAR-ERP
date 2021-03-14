@@ -103,7 +103,9 @@
     <Compile Include="Common\UserPrivilege.cs" />
     <Compile Include="Configuration\DomainModels\Accessories.cs" />
     <Compile Include="Configuration\DomainModels\Branch.cs" />
+    <Compile Include="Configuration\DomainModels\BrandSS.cs" />
     <Compile Include="Configuration\DomainModels\ClientProblem.cs" />
+    <Compile Include="Configuration\DomainModels\ColorSS.cs" />
     <Compile Include="Configuration\DomainModels\Customer.cs" />
     <Compile Include="Configuration\DomainModels\CustomerService.cs" />
     <Compile Include="Configuration\DomainModels\Fault.cs" />
@@ -127,7 +129,9 @@
     <Compile Include="Configuration\DomainModels\WorkShop.cs" />
     <Compile Include="Configuration\DTOModels\AccessoriesDTO.cs" />
     <Compile Include="Configuration\DTOModels\BranchDTO.cs" />
+    <Compile Include="Configuration\DTOModels\BrandSSDTO.cs" />
     <Compile Include="Configuration\DTOModels\ClientProblemDTO.cs" />
+    <Compile Include="Configuration\DTOModels\ColorSSDTO.cs" />
     <Compile Include="Configuration\DTOModels\CustomerDTO.cs" />
     <Compile Include="Configuration\DTOModels\CustomerServiceDTO.cs" />
     <Compile Include="Configuration\DTOModels\FaultDTO.cs" />
@@ -138,6 +142,7 @@
     <Compile Include="Configuration\DTOModels\MobilePartDTO.cs" />
     <Compile Include="Configuration\DTOModels\MobilePartStockDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\MobilePartStockInfoDTO.cs" />
+    <Compile Include="Configuration\DTOModels\ModelSSDTO.cs" />
     <Compile Include="Configuration\DTOModels\RepairDTO.cs" />
     <Compile Include="Configuration\DTOModels\ScrapStockDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\ScrapStockInfoDTO.cs" />
@@ -149,9 +154,12 @@
     <Compile Include="Configuration\DTOModels\TransferDetailDTO.cs" />
     <Compile Include="Configuration\DTOModels\TransferInfoDTO.cs" />
     <Compile Include="Configuration\DTOModels\WorkShopDTO.cs" />
+    <Compile Include="Configuration\DomainModels\ModelSS.cs" />
     <Compile Include="Configuration\ViewModels\AccessoriesViewModel.cs" />
     <Compile Include="Configuration\ViewModels\BranchViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\BrandSSViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ClientProblemViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\ColorSSViewModel.cs" />
     <Compile Include="Configuration\ViewModels\CustomerServiceViewModel.cs" />
     <Compile Include="Configuration\ViewModels\CustomerViewModel.cs" />
     <Compile Include="Configuration\ViewModels\FaultViewModel.cs" />
@@ -162,6 +170,7 @@
     <Compile Include="Configuration\ViewModels\MobilePartStockDetailViewModel.cs" />
     <Compile Include="Configuration\ViewModels\MobilePartStockInfoViewModel.cs" />
     <Compile Include="Configuration\ViewModels\MobilePartViewModel.cs" />
+    <Compile Include="Configuration\ViewModels\ModelSSViewModel.cs" />
     <Compile Include="Configuration\ViewModels\RepairViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ScrapStockDetailViewModel.cs" />
     <Compile Include="Configuration\ViewModels\ScrapStockInfoViewModel.cs" />
@@ -222,6 +231,7 @@
     <Compile Include="ControlPanel\ViewModels\VmUserMenu.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInRepairRequisitionAttr.cs" />
     <Compile Include="CustomValidationAttribute\Production\RequisitionForInProductionRequisitionAttr.cs" />
+    <Compile Include="Configuration\DomainModels\DealerSS.cs" />
     <Compile Include="FrontDesk\DomainModels\FaultyStockAssignTS.cs" />
     <Compile Include="FrontDesk\DomainModels\HandsetChangeTrace.cs" />
     <Compile Include="FrontDesk\DomainModels\InvoiceDetail.cs" />
@@ -248,6 +258,7 @@
     <Compile Include="FrontDesk\DTOModels\DashboardRequestSparePartsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashboardSellsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="Configuration\DTOModels\DealerSSDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockAssignTSDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\FaultyStockDetailsDTO.cs" />
     <Compile Include="FrontDesk\DTOModels\HandsetChangeInformationDTO.cs" />
@@ -279,6 +290,7 @@
     <Compile Include="FrontDesk\ViewModels\DashboardRequestSparePartsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashboardSellsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\DashbordTsPartsReturnDTO.cs" />
+    <Compile Include="Configuration\ViewModels\DealerSSViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockAssignTSViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\FaultyStockDetailsViewModel.cs" />
     <Compile Include="FrontDesk\ViewModels\HandsetChangeInformationViewModel.cs" />

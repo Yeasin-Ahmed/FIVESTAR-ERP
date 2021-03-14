@@ -1,4 +1,5 @@
 ﻿using ERPBO.Configuration.DomainModels;
+using ERPBO.FrontDesk.DomainModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -38,5 +39,9 @@ namespace ERPDAL.ConfigurationDAL
         public DbSet<WorkShop> tblWorkShop { get; set; }
         public DbSet<FaultyStockDetails> tblFaultyStockDetails { get; set; }
         public DbSet<FaultyStockInfo> tblFaultyStockInfo { get; set; }
+        public DbSet<DealerSS> tblDealerSS { get; set; }
+        public DbSet<ColorSS> tblColorSS { get; set; }
+        public DbSet<BrandSS> tblBrandSS { get; set; }
+        public DbSet<ModelSS> tblModelSS { get; set; }
     }
 }
