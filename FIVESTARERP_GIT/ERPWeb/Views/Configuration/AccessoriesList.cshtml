@@ -30,6 +30,12 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-dealerList-tab" data-toggle="pill" href="#custom-tabs-two-dealerList" role="tab" aria-controls="custom-tabs-two-dealerList" aria-selected="false">Dealer</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-colorList-tab" data-toggle="pill" href="#custom-tabs-two-colorList" role="tab" aria-controls="custom-tabs-two-colorList" aria-selected="false">Color</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-brandList-tab" data-toggle="pill" href="#custom-tabs-two-brandList" role="tab" aria-controls="custom-tabs-two-brandList" aria-selected="false">Brand</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body shadow">
@@ -350,6 +356,88 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" style="overflow-y:scroll" id="dataContainer7">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-colorList" role="tabpanel" aria-labelledby="custom-tabs-two-colorList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6"><h5 class="text-center text-bold">Color List</h5></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="serch" id="searchByColor" class="form-control form-control-sm" placeholder="Search By Color" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewColor"><i class="fas fa-plus"> Create Color</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="overflow-y:scroll" id="dataContainer8">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-brandList" role="tabpanel" aria-labelledby="custom-tabs-two-brandList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6"><h5 class="text-center text-bold">Brand List</h5></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="serch" id="searchByBrand" class="form-control form-control-sm" placeholder="Search By Brand" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewBrand"><i class="fas fa-plus"> Create Brand</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="overflow-y:scroll" id="dataContainer9">
 
                                         </div>
                                     </div>
@@ -841,6 +929,92 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalColor" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadColor">Add New Color</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfColorId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtColorName" class="control-label font-weight-bold">Color Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="text" name="txtColorName" value="" id="txtColorName" class="form-control form-control-sm" />
+                            <span class="error hide required-colorName font-weight-bold">Input Color Name!</span>
+                            <span class="error hide duplicate-colorName font-weight-bold">Already Color Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtColorRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtColorRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msgR" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msgR2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitColor"><i class="far fa-save"></i> <span id="spanSaveText">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalBrand" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadBrand">Add New Brand</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfBrandId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtBrandName" class="control-label font-weight-bold">Brand Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="text" name="txtBrandName" value="" id="txtBrandName" class="form-control form-control-sm" />
+                            <span class="error hide required-brandName font-weight-bold">Input Brand Name!</span>
+                            <span class="error hide duplicate-brandName font-weight-bold">Already Brand Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtBrandRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtBrandRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msgR" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msgR2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitBrand"><i class="far fa-save"></i> <span id="spanSaveTextBrand">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section scripts{
     <script type="text/javascript">
@@ -896,6 +1070,16 @@
         var txtDealerContractPMobile = $("#txtDealerContractPMobile");
         var txtDealerCode = $("#txtDealerCode");
         var txtDealerRemarks = $("#txtDealerRemarks");
+        //Color
+        var searchByColor = $("#searchByColor");
+        var txtColorName = $("#txtColorName");
+        var txtColorRemarks = $("#txtColorRemarks");
+        var hdfColorId = $("#hdfColorId");
+        //Brand
+        var searchByBrand = $("#searchByBrand");
+        var txtBrandName = $("#txtBrandName");
+        var txtBrandRemarks = $("#txtBrandRemarks");
+        var hdfBrandId = $("#hdfBrandId");
 
         $(document).ready(function () {
             $('.select2').select2();
@@ -924,6 +1108,12 @@
             if ('@tab' == "dealer") {
                 $("#custom-tabs-two-dealerList-tab").trigger('click');
             }
+            if ('@tab' == "color") {
+                $("#custom-tabs-two-colorList-tab").trigger('click');
+            }
+            if ('@tab' == "brand") {
+                $("#custom-tabs-two-brandList-tab").trigger('click');
+            }
         })
 
         function LoadDataInitializer() {
@@ -934,6 +1124,8 @@
             LoadServicesDataTable();
             LoadRepairDataTable();
             LoadDealerDataTable();
+            LoadColorDataTable();
+            LoadBrandDataTable();
         }
         searchByAccessories.keyup(function () {
             LoadAccessoriesDataTable()
@@ -1885,7 +2077,161 @@
             txtDealerContractPMobile.val('');
             txtDealerRemarks.val('');
         }
+        //Color
+        searchByColor.keyup(function () {
+            LoadColorDataTable();
+        })
 
+        function LoadColorDataTable() {
+            var data = { flag: "color", name: $.trim(searchByColor.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer8").empty();
+                    $("#dataContainer8").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+        function OpenModalColor() {
+            //clearCtrlRepair();
+            $("#spanModalHeadColor").text('Add New Color');
+            $("#spanSaveTextColor").text('Save');
+            $("#modalColor").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewColor").click(function (e) {
+            e.preventDefault();
+            //clearCtrlRepair();
+            OpenModalColor();
+        })
+
+        function validateColor() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtColorName.val()) == "") {
+                $(".required-colorName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfRepairId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, repairName: txtRepairName.val().trim() }), '/Common2/IsDuplicateRepairNameC', getToken()) == true) {
+                    $(".duplicate-repairName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitColor").click(function (e) {
+            e.preventDefault();
+            if (validateColor() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ ColorId: TryParseInt(hdfColorId.val(), 0), ColorName: txtColorName.val(), Remarks: txtColorRemarks.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveColorSS', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "color" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                    }
+                    //if (res == true) {
+                    //    message("#msgR", "#tblRepairData");
+                    //}
+                    //else {
+                    //    message("#msgR2");
+                    //}
+                    enable("#btnSubmitColor");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitColor");
+                });
+            }
+        })
+        //
+        //Brand
+        searchByColor.keyup(function () {
+            LoadBrandDataTable();
+        })
+
+        function LoadBrandDataTable() {
+            var data = { flag: "brand", name: $.trim(searchByBrand.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer9").empty();
+                    $("#dataContainer9").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+
+        function OpenModalBrand() {
+            //clearCtrlRepair();
+            $("#spanModalHeadBrand").text('Add New Brand');
+            $("#spanSaveTextBrand").text('Save');
+            $("#modalBrand").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewBrand").click(function (e) {
+            e.preventDefault();
+            //clearCtrlRepair();
+            OpenModalBrand();
+        })
+        function validateBrand() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtBrandName.val()) == "") {
+                $(".required-brandName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfRepairId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, repairName: txtRepairName.val().trim() }), '/Common2/IsDuplicateRepairNameC', getToken()) == true) {
+                    $(".duplicate-repairName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitBrand").click(function (e) {
+            e.preventDefault();
+            if (validateBrand() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ BrandId: TryParseInt(hdfBrandId.val(), 0), BrandName: txtBrandName.val(), Remarks: txtBrandRemarks.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveBrand', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "brand" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                    }
+                    //if (res == true) {
+                    //    message("#msgR", "#tblRepairData");
+                    //}
+                    //else {
+                    //    message("#msgR2");
+                    //}
+                    enable("#btnSubmitBrand");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitBrand");
+                });
+            }
+        })
         // Pagination
         $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
@@ -1917,6 +2263,14 @@
                 else if ($(this).parent().parents('div').hasClass('dealer')) {
                     pageNo = $(this).attr('data-page-no');
                     LoadDealerDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('color')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadColorDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('brand')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadBrandDataTable();
                 }
             }
         })

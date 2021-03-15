@@ -40,6 +40,8 @@ namespace ERPWeb.Controllers
         private readonly IWorkShopBusiness _workShopBusiness;
         private readonly IRepairBusiness _repairBusiness;
         private readonly IDealerSSBusiness _dealerSSBusiness;
+        private readonly IColorSSBusiness _colorSSBusiness;
+        private readonly IBrandSSBusiness _brandSSBusiness;
         //Nishad
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
@@ -56,7 +58,7 @@ namespace ERPWeb.Controllers
         //Front Desk
         private readonly IFaultyStockAssignTSBusiness _faultyStockAssignTSBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness, IDealerSSBusiness dealerSSBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness, IDealerSSBusiness dealerSSBusiness, IColorSSBusiness colorSSBusiness, IBrandSSBusiness brandSSBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -85,6 +87,9 @@ namespace ERPWeb.Controllers
             this._faultyStockAssignTSBusiness = faultyStockAssignTSBusiness;
             this._scrapStockInfoBusiness = scrapStockInfoBusiness;
             this._dealerSSBusiness = dealerSSBusiness;
+            this._colorSSBusiness = colorSSBusiness;
+            this._brandSSBusiness = brandSSBusiness;
+            
 
             #region Inventory
             this._descriptionBusiness = descriptionBusiness;
@@ -267,6 +272,46 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(dealers, viewModels);
                 return PartialView("_DealerSS", viewModels);
             }
+            else if (!string.IsNullOrEmpty(flag) && flag == "color")
+            {
+                IEnumerable<ColorSSDTO> colors = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.ColorName.Contains(name))).Select(model => new ColorSSDTO
+                {
+                    ColorId=model.ColorId,
+                    ColorName=model.ColorName,
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<ColorSSViewModel> viewModels = new List<ColorSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(colors.Count(), 10, page);
+                colors = colors.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(colors, viewModels);
+                return PartialView("_ColorSS", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "brand")
+            {
+                IEnumerable<BrandSSDTO> brand = _brandSSBusiness.GetAllBrandByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.BrandName.Contains(name))).Select(model => new BrandSSDTO
+                {
+                    BrandId = model.BrandId,
+                    BrandName = model.BrandName,
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<BrandSSViewModel> viewModels = new List<BrandSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(brand.Count(), 10, page);
+                brand = brand.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(brand, viewModels);
+                return PartialView("_BrandSS", viewModels);
+            }
             return View();
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
@@ -320,6 +365,50 @@ namespace ERPWeb.Controllers
                     DealerSSDTO dto = new DealerSSDTO();
                     AutoMapper.Mapper.Map(dealerSSViewModel, dto);
                     isSuccess = _dealerSSBusiness.SaveDealer(dto, User.OrgId, User.BranchId, User.UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Colors
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveColorSS(ColorSSViewModel colorSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ColorSSDTO dto = new ColorSSDTO();
+                    AutoMapper.Mapper.Map(colorSSViewModel, dto);
+                    isSuccess = _colorSSBusiness.SaveColorSS(dto, User.OrgId, User.BranchId, User.UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Brand
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveBrand(BrandSSViewModel brandSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    BrandSSDTO dto = new BrandSSDTO();
+                    AutoMapper.Mapper.Map(brandSSViewModel, dto);
+                    isSuccess = _brandSSBusiness.SaveBrandSS(dto, User.OrgId, User.BranchId, User.UserId);
                 }
                 catch (Exception ex)
                 {

@@ -885,6 +885,8 @@
     <Content Include="Views\Accounts\_DebitVoucherList.cshtml" />
     <Content Include="Views\Accounts\_CreditVoucherList.cshtml" />
     <Content Include="Views\Configuration\_DealerSS.cshtml" />
+    <Content Include="Views\Configuration\_ColorSS.cshtml" />
+    <Content Include="Views\Configuration\_BrandSS.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
