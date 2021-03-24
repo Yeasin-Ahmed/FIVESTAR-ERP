@@ -41,11 +41,25 @@ namespace ERPBLL.Configuration
             if (dto.ModelId == 0)
             {
                 model.ModelName = dto.ModelName;
+                model.BrandId = dto.BrandId;
                 model.Remarks = dto.Remarks;
+                model.Flag = dto.Flag;
+                model.EntryDate = DateTime.Now;
+                model.EUserId = userId;
+                model.OrganizationId = orgId;
+                model.BranchId = branchId;
+                modelSSRepository.Insert(model);
             }
             else
             {
-
+                model = GetModelById(dto.ModelId, orgId);
+                model.BrandId = dto.BrandId;
+                model.ModelName = dto.ModelName;
+                model.Remarks = dto.Remarks;
+                model.Flag = dto.Flag;
+                model.UpdateDate = DateTime.Now;
+                model.UpUserId = userId;
+                modelSSRepository.Update(model);
             }
             return modelSSRepository.Save();
         }

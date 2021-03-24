@@ -887,6 +887,11 @@
     <Content Include="Views\Configuration\_DealerSS.cshtml" />
     <Content Include="Views\Configuration\_ColorSS.cshtml" />
     <Content Include="Views\Configuration\_BrandSS.cshtml" />
+    <Content Include="Views\Configuration\_ModelSS.cshtml" />
+    <Content Include="Views\Inventory\StockTransferModelToModel.cshtml" />
+    <Content Include="Views\Inventory\CreateStockTransferMToM.cshtml" />
+    <Content Include="Views\Inventory\_StockTransferModelToModel.cshtml" />
+    <Content Include="Views\Inventory\_StockTransferMToMDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

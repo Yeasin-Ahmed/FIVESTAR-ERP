@@ -123,12 +123,12 @@ order by d.DescriptionName
 
             query = string.Format(@"Select stock.MobilePartStockInfoId,stock.SWarehouseId,w.ServicesWarehouseName,stock.MobilePartId
 ,parts.MobilePartName,parts.MobilePartCode 'PartsCode',stock.CostPrice,stock.SellPrice,stock.StockInQty
-,stock.StockOutQty,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName' 
+,stock.StockOutQty,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.ModelName
 From tblMobilePartStockInfo stock
 Left Join tblServiceWarehouses w on stock.SWarehouseId = w.SWarehouseId and stock.OrganizationId =w.OrganizationId
 Left Join tblMobileParts parts on stock.MobilePartId = parts.MobilePartId and stock.OrganizationId =parts.OrganizationId
-Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
-Where 1=1{0} order by DescriptionName", Utility.ParamChecker(param));
+Left Join tblModelSS de  on stock.DescriptionId = de.ModelId and stock.OrganizationId =de.OrganizationId
+Where 1=1 order by ModelName", Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<MobilePartStockInfoDTO>(query).ToList();
         }

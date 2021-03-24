@@ -244,6 +244,8 @@
     <Compile Include="Inventory\Interface\IItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IModelColorBusiness.cs" />
+    <Compile Include="Inventory\Interface\ISTransferDetailsMToMBusiness.cs" />
+    <Compile Include="Inventory\Interface\ISTransferInfoMToMBusiness.cs" />
     <Compile Include="Inventory\InventoryReportBusiness.cs" />
     <Compile Include="Inventory\IQCStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseFaultyStockDetailBusiness.cs" />
@@ -260,6 +262,8 @@
     <Compile Include="Inventory\ItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\ItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\ModelColorBusiness.cs" />
+    <Compile Include="Inventory\STransferDetailsMToMBusiness.cs" />
+    <Compile Include="Inventory\STransferInfoMToMBusiness.cs" />
     <Compile Include="Inventory\WarehouseFaultyStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseFaultyStockInfoBusiness.cs" />
     <Compile Include="Inventory\SupplierBusiness.cs" />

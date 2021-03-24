@@ -24,7 +24,7 @@
                     <th style="vertical-align:middle">Remarks</th>
                     <th style="vertical-align:middle">Entry Date</th>
                     <th style="vertical-align:middle">Entry User</th>
-                    <th style="vertical-align:middle">Action</th>
+                    <th style="vertical-align:middle" class="hide">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,7 +49,7 @@
                         <td>@dealer.Remarks</td>
                         <td>@entryDate</td>
                         <td>@dealer.EntryUser</td>
-                        <td class="text-center">
+                        <td class="text-center hide">
                             <a href="#" class="btn btn-outline-warning btn-sm data-edit-dealer" title="Edit" data-edit-dealer="@dealer.DealerId"><i class="fas fa-pencil-alt"></i> </a>
                         </td>
                     </tr>

@@ -546,6 +546,14 @@
     <Compile Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.Designer.cs">
       <DependentUpon>202011120949407_Inventory_Add_tbl_HandSetStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="InventoryContextMigrations\202103180714505_Inventory_STransferModelToModel.cs" />
+    <Compile Include="InventoryContextMigrations\202103180714505_Inventory_STransferModelToModel.Designer.cs">
+      <DependentUpon>202103180714505_Inventory_STransferModelToModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202103231316087_Inventory_TransferCode.cs" />
+    <Compile Include="InventoryContextMigrations\202103231316087_Inventory_TransferCode.Designer.cs">
+      <DependentUpon>202103231316087_Inventory_TransferCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
     <Compile Include="InventoryDAL\WarehouseRepository.cs" />
@@ -1263,6 +1271,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.resx">
       <DependentUpon>202011120949407_Inventory_Add_tbl_HandSetStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202103180714505_Inventory_STransferModelToModel.resx">
+      <DependentUpon>202103180714505_Inventory_STransferModelToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202103231316087_Inventory_TransferCode.resx">
+      <DependentUpon>202103231316087_Inventory_TransferCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>

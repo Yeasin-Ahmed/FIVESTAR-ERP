@@ -57,6 +57,8 @@ namespace ERPWeb.Controllers
         private readonly IBrandCategoriesBusiness _brandCategoriesBusiness;
         private readonly IColorBusiness _colorBusiness;
         private readonly IHandSetStockBusiness _handSetStockBusiness;
+        private readonly ISTransferInfoMToMBusiness _sTransferInfoMToMBusiness;
+        private readonly ISTransferDetailsMToMBusiness _sTransferDetailsMToMBusiness;
         #endregion
 
         #region Production
@@ -70,7 +72,7 @@ namespace ERPWeb.Controllers
         private readonly IStockItemReturnDetailBusiness _stockItemReturnDetailBusiness;
         #endregion
 
-        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoriesBusiness, IColorBusiness colorBusiness, IHandSetStockBusiness handSetStockBusiness)
+        public InventoryController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IWarehouseStockDetailBusiness warehouseStockDetailBusiness, IProductionLineBusiness productionLineBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IItemReturnInfoBusiness itemReturnInfoBusiness, IItemReturnDetailBusiness itemReturnDetailBusiness, IWarehouseFaultyStockInfoBusiness repairStockInfoBusiness, IWarehouseFaultyStockDetailBusiness repairStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IFinishGoodsSendToWarehouseInfoBusiness finishGoodsSendToWarehouseInfoBusiness, IFinishGoodsSendToWarehouseDetailBusiness finishGoodsSendToWarehouseDetailBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, ISupplierBusiness supplierBusiness, IRepairSectionRequisitionInfoBusiness repairSectionRequisitionInfoBusiness, IRepairLineBusiness repairLineBusiness, IRepairSectionRequisitionDetailBusiness repairSectionRequisitionDetailBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIQCItemReqInfoList iQCItemReqInfoList, IIQCStockDetailBusiness iQCStockDetailBusiness, IIQCStockInfoBusiness iQCStockInfoBusiness, IPackagingLineBusiness packagingLineBusiness, IIMEIGenerator iMEIGenerator, IGeneratedIMEIBusiness generatedIMEIBusiness, IStockItemReturnInfoBusiness stockItemReturnInfoBusiness, IStockItemReturnDetailBusiness stockItemReturnDetailBusiness, ICategoryBusiness categoryBusiness, IBrandBusiness brandBusiness, IBrandCategoriesBusiness brandCategoriesBusiness, IColorBusiness colorBusiness, IHandSetStockBusiness handSetStockBusiness, ISTransferInfoMToMBusiness sTransferInfoMToMBusiness, ISTransferDetailsMToMBusiness sTransferDetailsMToMBusiness)
         {
             #region Inventory
             this._warehouseBusiness = warehouseBusiness;
@@ -102,6 +104,8 @@ namespace ERPWeb.Controllers
             this._brandCategoriesBusiness = brandCategoriesBusiness;
             this._colorBusiness = colorBusiness;
             this._handSetStockBusiness = handSetStockBusiness;
+            this._sTransferInfoMToMBusiness = sTransferInfoMToMBusiness;
+            this._sTransferDetailsMToMBusiness = sTransferDetailsMToMBusiness;
             #endregion
 
             #region Production
@@ -772,6 +776,71 @@ namespace ERPWeb.Controllers
             ItemViewModel itemViewModel = new ItemViewModel();
             AutoMapper.Mapper.Map(itemDTO, itemViewModel);
             return Json(itemViewModel);
+        }
+        #endregion
+
+        #region StockTransferModelToModel
+        public ActionResult StockTransferModelToModel(string flag)
+        {
+            if (string.IsNullOrEmpty(flag))
+            {
+                return View();
+            }
+            else
+            {
+                var dto = _sTransferInfoMToMBusiness.GetAllTransfer(User.OrgId);
+                List<StockTransferInfoMToMViewModel> viewModels = new List<StockTransferInfoMToMViewModel>();
+                
+                AutoMapper.Mapper.Map(dto, viewModels);
+                return PartialView("_StockTransferModelToModel", viewModels);
+            }
+        }
+        public ActionResult StockTransferMToMDetails(long transferId)
+        {
+            IEnumerable<StockTransferDetailsMToMDTO> infoDTO = _sTransferDetailsMToMBusiness.GetDetailsDataOneByOrg(transferId, User.OrgId).Select(details => new StockTransferDetailsMToMDTO
+            {
+                ItemTypeId = details.ItemTypeId,
+                ItemType = _itemTypeBusiness.GetItemType(details.ItemTypeId.Value, User.OrgId).ItemName,
+                ItemId=details.ItemId,
+                Item=_itemBusiness.GetItemById(details.ItemId.Value,User.OrgId).ItemName,
+                Quantity = details.Quantity,
+                Remarks = details.Remarks,
+                OrganizationId = details.OrganizationId,
+                EUserId = details.EUserId,
+                EntryDate = details.EntryDate,
+            }).ToList();
+
+            List<StockTransferDetailsMToMViewModel> viewModel = new List<StockTransferDetailsMToMViewModel>();
+            AutoMapper.Mapper.Map(infoDTO, viewModel);
+            return PartialView("_StockTransferMToMDetails", viewModel);
+        }
+        public ActionResult CreateStockTransferMToM()
+        {
+            ViewBag.ddlFromModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlToModel = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(des => new SelectListItem { Text = des.DescriptionName, Value = des.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlItems = _itemBusiness.GetItemDetails(User.OrgId).Where(s => !s.ItemName.Contains("Warehouse 3")).Select(s => new SelectListItem { Text = s.ItemName, Value = s.ItemId }).ToList();
+            return View();
+        }
+
+        public ActionResult SaveStockTransferModelToModel(StockTransferInfoMToMViewModel models)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    StockTransferInfoMToMDTO dtos = new StockTransferInfoMToMDTO();
+                    AutoMapper.Mapper.Map(models, dtos);
+                    isSuccess = _sTransferInfoMToMBusiness.SaveStockTransferMToM(dtos, User.UserId, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
         }
         #endregion
 

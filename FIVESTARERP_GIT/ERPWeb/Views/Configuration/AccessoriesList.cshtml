@@ -36,6 +36,9 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-brandList-tab" data-toggle="pill" href="#custom-tabs-two-brandList" role="tab" aria-controls="custom-tabs-two-brandList" aria-selected="false">Brand</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-modelList-tab" data-toggle="pill" href="#custom-tabs-two-modelList" role="tab" aria-controls="custom-tabs-two-modelList" aria-selected="false">Model</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body shadow">
@@ -438,6 +441,47 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="col-md-12" style="overflow-y:scroll" id="dataContainer9">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="custom-tabs-two-modelList" role="tabpanel" aria-labelledby="custom-tabs-two-modelList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card shadow card-gray-dark">
+                                    <div class="card-header shadow">
+                                        <div class="row">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6"><h5 class="text-center text-bold">Model List</h5></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card shadow card-navy">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" name="serch" id="searchByModel" class="form-control form-control-sm" placeholder="Search By Model" />
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-outline-primary btn-flat btn-sm float-right" id="btnAddNewModel"><i class="fas fa-plus"> Create Model</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="overflow-y:scroll" id="dataContainer10">
 
                                         </div>
                                     </div>
@@ -1015,6 +1059,55 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalModel" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary" style="height:60px">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadModel">Add New Model</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAccessories">
+                    <input type="hidden" name="Id" id="hdfModelId" />
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtModelName" class="control-label font-weight-bold">Model Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="text" name="txtModelName" value="" id="txtModelName" class="form-control form-control-sm" />
+                            <span class="error hide required-modelName font-weight-bold">Input Model Name!</span>
+                            <span class="error hide duplicate-modelName font-weight-bold">Already Model Name Exist!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ddlBrandName" class="control-label font-weight-bold">Brand<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlBrandName", (IEnumerable<SelectListItem>)ViewBag.ddlBrandName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide require-brandName font-weight-bold">Brand is required !</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="txtModelRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" name="remarks" value="" id="txtModelRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer btn-light">
+                <div class="col-md-6">
+                    <div id="msgR" class="alert alert-success hide float-left">
+                        Data has been saved Successful!
+                    </div>
+                    <div id="msgR2" class="alert alert-danger hide float-left">
+                        Data has been failed to save!
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-sm btn-success float-right" id="btnSubmitModel"><i class="far fa-save"></i> <span id="spanSaveTextModel">Save </span> </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts{
     <script type="text/javascript">
@@ -1080,6 +1173,12 @@
         var txtBrandName = $("#txtBrandName");
         var txtBrandRemarks = $("#txtBrandRemarks");
         var hdfBrandId = $("#hdfBrandId");
+        //Model
+        var searchByModel = $("#searchByModel");
+        var hdfModelId = $("#hdfModelId");
+        var txtModelName = $("#txtModelName");
+        var txtModelRemarks = $("#txtModelRemarks");
+        var ddlBrandName = $("#ddlBrandName");
 
         $(document).ready(function () {
             $('.select2').select2();
@@ -1114,6 +1213,9 @@
             if ('@tab' == "brand") {
                 $("#custom-tabs-two-brandList-tab").trigger('click');
             }
+            if ('@tab' == "model") {
+                $("#custom-tabs-two-modelList-tab").trigger('click');
+            }
         })
 
         function LoadDataInitializer() {
@@ -1126,6 +1228,7 @@
             LoadDealerDataTable();
             LoadColorDataTable();
             LoadBrandDataTable();
+            LoadModelDataTable();
         }
         searchByAccessories.keyup(function () {
             LoadAccessoriesDataTable()
@@ -2219,12 +2322,6 @@
                             else {
                                 $('.toastrDefaultError').trigger('click');
                     }
-                    //if (res == true) {
-                    //    message("#msgR", "#tblRepairData");
-                    //}
-                    //else {
-                    //    message("#msgR2");
-                    //}
                     enable("#btnSubmitBrand");
                 }).fail(function (err) {
                     console.log(err);
@@ -2232,6 +2329,82 @@
                 });
             }
         })
+        //Model
+        searchByModel.keyup(function () {
+            LoadModelDataTable();
+        })
+
+        function LoadModelDataTable() {
+            var data = { flag: "model", name: $.trim(searchByModel.val()), page: pageNo }
+            $.when(getReqWithData(dataType.html, type.get, '/Configuration/AccessoriesList', data)).then(function (res, status) {
+                console.log(res);
+                if (status === "success") {
+                    $("#dataContainer10").empty();
+                    $("#dataContainer10").append(res);
+                }
+            }).fail(function (err) { console.log(err) })
+        }
+
+        function OpenModalModel() {
+            //clearCtrlRepair();
+            $("#spanModalHeadModel").text('Add New Brand');
+            $("#spanSaveTextModel").text('Save');
+            $("#modalModel").modal("show");
+            $(".error").addClass("hide");
+        }
+
+        $("#btnAddNewModel").click(function (e) {
+            e.preventDefault();
+            //clearCtrlRepair();
+            OpenModalModel();
+        })
+        function validateModel() {
+            $(".error").addClass("hide");
+            var isValid = true;
+            if ($.trim(txtModelName.val()) == "") {
+                $(".required-modelName").removeClass("hide");
+                isValid = false;
+            }
+            else {
+                var id = TryParseInt(hdfRepairId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, repairName: txtRepairName.val().trim() }), '/Common2/IsDuplicateRepairNameC', getToken()) == true) {
+                    $(".duplicate-modelName").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            if ($.trim(ddlBrandName.val()) == "") {
+                $(".required-brandName").removeClass("hide");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        $("#btnSubmitModel").click(function (e) {
+            e.preventDefault();
+            if (validateModel() == true) {
+                $(".error").addClass("hide");
+                var data = JSON.stringify({ ModelId: TryParseInt(hdfModelId.val(), 0), ModelName: txtModelName.val(), BrandId: TryParseInt(ddlBrandName.val(),0), Remarks: txtModelRemarks.val() });
+                console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveModel', data, getToken())).then(function (res, status) {
+                    console.log(status);
+                    console.log(res);
+                    if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("AccessoriesList", new { tab = "model" })');
+                                }, 500);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                    }
+                    enable("#btnSubmitModel");
+                }).fail(function (err) {
+                    console.log(err);
+                    enable("#btnSubmitModel");
+                });
+            }
+        })
+
         // Pagination
         $(document).on('click', 'a.page-link', function (e) {
             e.preventDefault();
@@ -2269,6 +2442,10 @@
                     LoadColorDataTable();
                 }
                 else if ($(this).parent().parents('div').hasClass('brand')) {
+                    pageNo = $(this).attr('data-page-no');
+                    LoadBrandDataTable();
+                }
+                else if ($(this).parent().parents('div').hasClass('model')) {
                     pageNo = $(this).attr('data-page-no');
                     LoadBrandDataTable();
                 }
