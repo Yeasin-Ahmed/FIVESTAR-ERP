@@ -472,4 +472,11 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class LotInLogRepository : ProductionBaseRepository<LotInLog>
+    {
+        public LotInLogRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork)
+        {
+
+        }
+    }
 }

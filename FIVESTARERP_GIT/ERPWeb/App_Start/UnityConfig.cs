@@ -71,6 +71,7 @@ namespace ERPWeb
 
             // Production Database
             #region Production
+            container.RegisterType<ILotInLogBusiness, LotInLogBusiness>();
             container.RegisterType<IProductionLineBusiness, ProductionLineBusiness>();
             container.RegisterType<IRequsitionDetailBusiness, RequsitionDetailBusiness>();
             container.RegisterType<IRequsitionInfoBusiness, RequsitionInfoBusiness>();

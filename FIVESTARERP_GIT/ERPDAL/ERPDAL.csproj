@@ -817,6 +817,10 @@
     <Compile Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.Designer.cs">
       <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.cs" />
+    <Compile Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.Designer.cs">
+      <DependentUpon>202103250815287_Production_tblLotIn.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -1472,6 +1476,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.resx">
       <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.resx">
+      <DependentUpon>202103250815287_Production_tblLotIn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.resx">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>

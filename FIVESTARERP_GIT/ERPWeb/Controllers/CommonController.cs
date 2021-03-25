@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using ERPBO.Production.DTOModel;
 using ERPBO.Production.ViewModels;
 using ERPBLL.SalesAndDistribution.Interface;
+using System;
 
 namespace ERPWeb.Controllers
 {
@@ -1056,6 +1057,14 @@ namespace ERPWeb.Controllers
         }
         #endregion
 
+        [HttpPost]
+        public ActionResult IsExistLotInAssembly(string qrCode)
+        {
+            DateTime date = DateTime.Today;
+            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, date, QRCodeStatus.Assembly, User.OrgId);
+            return Json(IsExist);
+        }
+
         #endregion
 
         #region Inventory Module
@@ -1211,6 +1220,7 @@ namespace ERPWeb.Controllers
             return Json(data);
         }
         #endregion
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

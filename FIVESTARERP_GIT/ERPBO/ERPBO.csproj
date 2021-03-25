@@ -362,6 +362,7 @@
     <Compile Include="Production\DomainModels\FaultyItemStockInfo.cs" />
     <Compile Include="Production\DomainModels\FaultyCase.cs" />
     <Compile Include="Production\DomainModels\GeneratedIMEI.cs" />
+    <Compile Include="Production\DomainModels\LotInLog.cs" />
     <Compile Include="Production\DomainModels\PackagingFaultyStockDetail.cs" />
     <Compile Include="Production\DomainModels\PackagingFaultyStockInfo.cs" />
     <Compile Include="Production\DomainModels\PackagingRepairRawStockDetail.cs" />
@@ -486,6 +487,7 @@
     <Compile Include="Production\DTOModel\IMEITransferToRepairDetailDTO.cs" />
     <Compile Include="Production\DTOModel\IMEITransferToRepairInfoDTO.cs" />
     <Compile Include="Production\DTOModel\IMEIWriteDTO.cs" />
+    <Compile Include="Production\DTOModel\LotInLogDTO.cs" />
     <Compile Include="Production\DTOModel\MiniStockTransferDetailDTO.cs" />
     <Compile Include="Production\DTOModel\MiniStockTransferInfoDTO.cs" />
     <Compile Include="Production\DTOModel\PackagingFaultyStockDetailDTO.cs" />
@@ -613,6 +615,7 @@
     <Compile Include="Production\ViewModels\ItemReturnDetailListViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\ItemReturnInfoViewModel.cs" />
+    <Compile Include="Production\ViewModels\LotInLogViewModel.cs" />
     <Compile Include="Production\ViewModels\MiniStockTransferDetailViewModel.cs" />
     <Compile Include="Production\ViewModels\MiniStockTransferInfoViewModel.cs" />
     <Compile Include="Production\ViewModels\PackagingFaultyStockDetailViewModel.cs" />

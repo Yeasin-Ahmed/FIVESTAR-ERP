@@ -280,6 +280,7 @@
     <Compile Include="Production\Interface\IIMEIGenerator.cs" />
     <Compile Include="Production\Interface\IIMEITransferToRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\IIMEITransferToRepairInfoBusiness.cs" />
+    <Compile Include="Production\Interface\ILotInLogBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingFaultyStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IMiniStockTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IMiniStockTransferInfoBusiness.cs" />
@@ -309,6 +310,7 @@
     <Compile Include="Production\Interface\ITransferToPackagingRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferToPackagingRepairInfoBusiness.cs" />
     <Compile Include="Production\IMEIGenerator.cs" />
+    <Compile Include="Production\LotInLogBusiness.cs" />
     <Compile Include="Production\MiniStockTransferDetailBusiness.cs" />
     <Compile Include="Production\MiniStockTransferInfoBusiness.cs" />
     <Compile Include="Production\PackagingFaultyStockDetailBusiness.cs" />

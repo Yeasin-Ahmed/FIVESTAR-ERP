@@ -91,5 +91,6 @@ namespace ERPDAL.ProductionDAL
         public DbSet<GeneratedIMEI> tblGeneratedIMEI { get; set; }
         public DbSet<StockItemReturnInfo> tblStockItemReturnInfo { get; set; }
         public DbSet<StockItemReturnDetail> tblStockItemReturnDetail { get; set; }
+        public DbSet<LotInLog> tblLotInLog { get; set; }
     }
 }

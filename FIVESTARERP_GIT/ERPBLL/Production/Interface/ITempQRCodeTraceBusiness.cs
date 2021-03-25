@@ -29,5 +29,7 @@ namespace ERPBLL.Production.Interface
         Task<TempQRCodeTrace> GetIMEIWithThisQRCode(string imei, long codeId, long orgId);
 
         Task<TempQRCodeTrace> GetIMEIWithOutThisQRCode(string imei, long codeId, long orgId);
+        bool IsExistQRCodeWithStatus(string qrCode, DateTime date, string status, long orgId);
+        bool SaveQRCodeStatusByLotIn(string qrCode, long orgId, long userId);
     }
 }
