@@ -37,7 +37,8 @@ namespace ERPWeb.Controllers
         private readonly IServiceBusiness _serviceBusiness;
         private readonly IRepairBusiness _repairBusiness;
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
-        private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness; 
+        private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
+        private readonly IColorSSBusiness _colorSSBusiness;
         // Warehouse
         private readonly IDescriptionBusiness _descriptionBusiness;
         //ControlPanel
@@ -62,8 +63,9 @@ namespace ERPWeb.Controllers
         private readonly IJobOrderReturnDetailBusiness _jobOrderReturnDetailBusiness;
         private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
         private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
+        private readonly IModelSSBusiness _modelSSBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IColorSSBusiness colorSSBusiness, IModelSSBusiness modelSSBusiness)
         {
             this._handSetStockBusiness = handSetStockBusiness;
             this._accessoriesBusiness = accessoriesBusiness;
@@ -99,6 +101,8 @@ namespace ERPWeb.Controllers
             this._jobOrderTSBusiness = jobOrderTSBusiness;
             this._faultyStockInfoBusiness = faultyStockInfoBusiness;
             this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
+            this._colorSSBusiness = colorSSBusiness;
+            this._modelSSBusiness = modelSSBusiness;
         }
 
         #region JobOrder
@@ -108,7 +112,8 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrders");
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
@@ -186,13 +191,18 @@ namespace ERPWeb.Controllers
         [HttpGet]
         public ActionResult CreateJobOrder(long? jobOrderId)
         {
-            ViewBag.ddlDescriptions = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+            //ViewBag.ddlDescriptions = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlDescriptions= _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+
 
             ViewBag.ddlAccessories = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Select(a => new SelectListItem { Text = a.AccessoriesName, Value = a.AccessoriesId.ToString() }).ToList();
 
             ViewBag.ddlProblems = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(p => new SelectListItem { Text = p.ProblemName, Value = p.ProblemId.ToString() }).ToList();
 
-            ViewBag.ddlModelColor = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+            //ViewBag.ddlModelColor = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            ViewBag.ddlModelColor = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorName }).ToList();
 
             ViewBag.ddlPhoneTypes = Utility.ListOfPhoneTypes().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
@@ -295,7 +305,7 @@ namespace ERPWeb.Controllers
                 MobileNo = jobOrder.MobileNo,
                 Address = jobOrder.Address,
                 DescriptionId = jobOrder.DescriptionId,
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrder.DescriptionId, User.OrgId).DescriptionName),
+                ModelName = (_modelSSBusiness.GetModelById(jobOrder.DescriptionId, User.OrgId).ModelName),
                 IsWarrantyAvailable = jobOrder.IsWarrantyAvailable,
                 IsWarrantyPaperEnclosed = jobOrder.IsWarrantyPaperEnclosed,
                 StateStatus = jobOrder.StateStatus,
@@ -342,7 +352,9 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
@@ -693,7 +705,9 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
                 return View();
             }
@@ -841,7 +855,7 @@ namespace ERPWeb.Controllers
                 RequsitionCode = info.RequsitionCode,
                 JobOrderCode = (jobOrderInfo.JobOrderCode),
                 Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                ModelName = (_modelSSBusiness.GetModelById(jobOrderInfo.DescriptionId, User.OrgId).ModelName),
                 EntryDate = info.EntryDate,
                 SWarehouseName = (_servicesWarehouseBusiness.GetServiceWarehouseOneByOrgId(info.SWarehouseId.Value, User.OrgId, jobOrderInfo.BranchId.Value).ServicesWarehouseName),
             };
@@ -951,7 +965,7 @@ namespace ERPWeb.Controllers
                 RequsitionCode = info.RequsitionCode,
                 JobOrderCode = (jobOrderInfo.JobOrderCode),
                 Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                ModelName = (_modelSSBusiness.GetModelById(jobOrderInfo.DescriptionId, User.OrgId).ModelName),
                 ModelColor=jobOrderInfo.ModelColor,
                 Requestby = UserForEachRecord(info.EUserId.Value).UserName,
                 EntryDate = info.EntryDate,
@@ -1078,7 +1092,7 @@ namespace ERPWeb.Controllers
                 RequsitionCode = info.RequsitionCode,
                 JobOrderCode = (jobOrderInfo.JobOrderCode),
                 Type = (_jobOrderBusiness.GetJobOrdersByIdWithBranch(info.JobOrderId.Value, jobOrderInfo.BranchId.Value, User.OrgId).Type),
-                ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrderInfo.DescriptionId, User.OrgId).DescriptionName),
+                ModelName = (_modelSSBusiness.GetModelById(jobOrderInfo.DescriptionId, User.OrgId).ModelName),
                 ModelColor = jobOrderInfo.ModelColor,
                 Requestby = UserForEachRecord(info.EUserId.Value).UserName,
                 EntryDate = info.EntryDate,
@@ -1147,9 +1161,13 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlSymptomName = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.ProblemName, Value = mobile.ProblemId.ToString() }).ToList();
             //New Handset//
-            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
+            //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
 
-            ViewBag.ddlModelColor = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+            ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+
+            //ViewBag.ddlModelColor = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            ViewBag.ddlModelColor = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorName }).ToList();
 
 
             var jobOrder = _jobOrderBusiness.GetJobOrderById(joborderId.Value, User.OrgId);
@@ -1165,7 +1183,7 @@ namespace ERPWeb.Controllers
                 IMEI2=jobOrder.IMEI2,
                 Type=jobOrder.Type,
                 DescriptionId=jobOrder.DescriptionId,
-                ModelName= (_descriptionBusiness.GetDescriptionOneByOrdId(jobOrder.DescriptionId, User.OrgId).DescriptionName),
+                ModelName= (_modelSSBusiness.GetModelById(jobOrder.DescriptionId, User.OrgId).ModelName),
                 ModelColor=jobOrder.ModelColor,
                 Remarks=jobOrder.Remarks,
                 TSRemarks=jobOrder.TSRemarks,
@@ -1508,7 +1526,9 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlHandset = _handSetStockBusiness.GetAllHansetModelAndColor(User.OrgId).Select(s => new SelectListItem { Text = s.ModelName, Value = s.ModelId.ToString() }).ToList();
 
-            ViewBag.ddlPartsModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
+            //.ViewBag.ddlPartsModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
+
+            ViewBag.ddlPartsModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
             return View();
         }
 
@@ -1945,7 +1965,9 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrderListForQc");
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
@@ -1986,7 +2008,7 @@ namespace ERPWeb.Controllers
                             IMEI1 = oldHandset.IMEI1,
                             IMEI2 = oldHandset.IMEI2,
                             ModelId = oldHandset.ModelId,
-                            ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(oldHandset.ModelId, User.OrgId).DescriptionName),
+                            ModelName = (_modelSSBusiness.GetModelById(oldHandset.ModelId, User.OrgId).ModelName),
                             Color = oldHandset.Color,
                         };
                     }

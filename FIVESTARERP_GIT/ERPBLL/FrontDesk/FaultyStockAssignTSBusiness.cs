@@ -98,9 +98,9 @@ namespace ERPBLL.FrontDesk
         }
         public IEnumerable<FaultyStockAssignTSDTO> GetFaultyStockAssignTsByOrgId(long orgId, long branchId)
         {
-            return this._fronDeskDb.Db.Database.SqlQuery<FaultyStockAssignTSDTO>(string.Format(@"Select fsa.FaultyStockAssignTSId,fsa.FaultyStockInfoId,fsa.DescriptionId,fsa.PartsId,fsa.TSId,fsa.Quantity,fsa.CostPrice,fsa.SellPrice,mp.MobilePartName,des.DescriptionName 'ModelName',fsa.StateStatus,fsa.RepairedQuantity,fsa.ScrapQuantity
-From tblFaultyStockAssignTS fsa
-Left Join [Inventory].dbo.tblDescriptions des on fsa.DescriptionId = des.DescriptionId and fsa.OrganizationId = des.OrganizationId
+            return this._fronDeskDb.Db.Database.SqlQuery<FaultyStockAssignTSDTO>(string.Format(@"Select fsa.FaultyStockAssignTSId,fsa.FaultyStockInfoId,fsa.DescriptionId,fsa.PartsId,fsa.TSId,fsa.Quantity,fsa.CostPrice,fsa.SellPrice,mp.MobilePartName,des.ModelName,fsa.StateStatus,fsa.RepairedQuantity,fsa.ScrapQuantity
+From [FrontDesk].dbo.tblFaultyStockAssignTS fsa
+Left Join [Configuration].dbo.tblModelSS des on fsa.DescriptionId = des.ModelId and fsa.OrganizationId = des.OrganizationId
 Left Join [Configuration].dbo.tblMobileParts mp on fsa.PartsId = mp.MobilePartId and fsa.OrganizationId = mp.OrganizationId
 where fsa.OrganizationId={0} and fsa.BranchId={1}", orgId, branchId)).ToList();
         }

@@ -83,10 +83,10 @@ namespace ERPBLL.Configuration
             }
 
             query = string.Format(@"Select stock.HandSetStockId,stock.ColorId,co.ColorName,stock.IMEI,stock.IMEI1,
-stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName' 
+stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.ModelName 
 From tblHandSetStock stock
-Left Join [Inventory].dbo.tblColors co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
-Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
+Left Join [Configuration].dbo.tblColorSS co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
+Left Join [Configuration].dbo.tblModelSS de  on stock.DescriptionId = de.ModelId and stock.OrganizationId =de.OrganizationId
 Where 1=1 and stock.StateStatus='Stock-In' and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<HandSetStockDTO>(query).ToList();
@@ -102,10 +102,10 @@ Where 1=1 and stock.StateStatus='Stock-In' and stock.OrganizationId={0} {1}", or
         public IEnumerable<HandSetStockDTO> GetAllHansetModelAndColor(long orgId)
         {
             return this._configurationDb.Db.Database.SqlQuery<HandSetStockDTO>(
-                string.Format(@"SELECT (Cast(hst.DescriptionId as nvarchar(100)) + '#' + Cast(hst.ColorId as nvarchar(100))) 'ModelId',(des.DescriptionName +'-'+ clr.ColorName)'ModelName'
+                string.Format(@"SELECT (Cast(hst.DescriptionId as nvarchar(100)) + '#' + Cast(hst.ColorId as nvarchar(100))) 'ModelId',(des.ModelName +'-'+ clr.ColorName)'ModelName'
 FROM [Configuration].dbo.tblHandsetStock hst
-Inner Join [Inventory].dbo.tblDescriptions des on hst.DescriptionId = des.DescriptionId and hst.OrganizationId = des.OrganizationId
-Inner Join [Inventory].dbo.tblColors clr on hst.ColorId = clr.ColorId and hst.OrganizationId = clr.OrganizationId
+Inner Join [Configuration].dbo.tblModelSS des on hst.DescriptionId = des.ModelId and hst.OrganizationId = des.OrganizationId
+Inner Join [Configuration].dbo.tblColorSS clr on hst.ColorId = clr.ColorId and hst.OrganizationId = clr.OrganizationId
 where hst.OrganizationId={0}", orgId)).ToList();
         }
 

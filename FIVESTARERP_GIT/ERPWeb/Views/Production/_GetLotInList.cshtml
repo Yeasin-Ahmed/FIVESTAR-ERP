@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.LotInLogViewModel>
+@{ 
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+    string badge = string.Empty;
+}
+<table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblReturnAndFaultyItem">
+    <thead class="btn-dark">
+        <tr class="text-center">
+            <th style="vertical-align:middle">#SL</th>
+            <th class="hide"></th>
+            <th style="vertical-align:middle">QR Code</th>
+            <th style="vertical-align:middle">Ref. Number</th>
+            <th style="vertical-align:middle">Status</th>
+            <th style="vertical-align:middle">Entry Date</th>
+            <th style="vertical-align:middle">Entry User</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            sl += 1;
+            badge = item.StateStatus == "Pending" ? "badge bg-warning" : (item.StateStatus == "Accepted" ? "badge bg-primary" : item.StateStatus == "Approved" ? "badge bg-success" : (item.StateStatus == "Decline" ? "badge bg-danger" : "badge bg-primary"));
+            <tr>
+                <td class="text-center"><b>@sl</b></td>
+                <td class="hide">@item.LotInLogId</td>
+                <td>@item.CodeNo</td>
+                <td>@item.ReferenceNumber</td>
+                <td class="text-center" data-val="@item.StateStatus">
+                    <span class="@badge">@item.StateStatus</span>
+                </td>
+                <td>@item.EntryDate</td>
+                <td>@item.EUserName</td>
+            </tr>
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr class="text-center empty-row">
+                <td colspan="11">No data found in the table</td>
+            </tr>
+        }
+    </tbody>
+</table>

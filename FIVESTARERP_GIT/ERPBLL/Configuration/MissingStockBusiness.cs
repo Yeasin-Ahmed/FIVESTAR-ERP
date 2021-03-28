@@ -108,10 +108,10 @@ namespace ERPBLL.Configuration
             }
 
             query = string.Format(@"Select stock.MissingStockId,stock.ColorId,co.ColorName,stock.Quantity,
-stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName',mp.MobilePartName 'PartsName', stock.PartsId, stock.IMEI 
+stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.ModelName,mp.MobilePartName 'PartsName', stock.PartsId, stock.IMEI 
 From tblMissingStock stock
-Left Join [Inventory].dbo.tblColors co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
-Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
+Left Join [Configuration].dbo.tblColorSS co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
+Left Join [Configuration].dbo.tblModelSS de  on stock.DescriptionId = de.ModelId and stock.OrganizationId =de.OrganizationId
 Left Join [Configuration].dbo.tblMobileParts mp  on stock.PartsId = mp.MobilePartId and stock.OrganizationId =mp.OrganizationId
 Where 1=1 and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
 

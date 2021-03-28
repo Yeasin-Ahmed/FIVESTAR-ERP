@@ -4188,7 +4188,7 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> SaveQRCodeWiseQcItemTransfer(QRCodeTransferToRepairInfoViewModel model)
         {
             bool IsSuccess = false;
-            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(model.QRCode, QRCodeStatus.Assembly, User.OrgId);
+            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(model.QRCode, QRCodeStatus.LotIn, User.OrgId);
             //_qRCodeTransferToRepairInfoBusiness.IsQRCodeExistInTransferWithStatus(model.QRCode, string.Format(@"'Receiced','Send'"), User.OrgId);
             var msg = (IsExist == false ? "This QRCode already has been transfered To Repair/MiniStock" : "");
             if (IsExist && ModelState.IsValid)
@@ -5153,7 +5153,7 @@ namespace ERPWeb.Controllers
 
             IEnumerable<LotInLogViewModel> viewModel = new List<LotInLogViewModel>();
             AutoMapper.Mapper.Map(dto, viewModel);
-            return PartialView(viewModel);
+            return PartialView("_GetLotInList", viewModel);
         }
         #endregion
 

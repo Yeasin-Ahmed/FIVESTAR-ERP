@@ -893,6 +893,7 @@
     <Content Include="Views\Inventory\_StockTransferModelToModel.cshtml" />
     <Content Include="Views\Inventory\_StockTransferMToMDetails.cshtml" />
     <Content Include="Views\Production\CreateLot.cshtml" />
+    <Content Include="Views\Production\_GetLotInList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

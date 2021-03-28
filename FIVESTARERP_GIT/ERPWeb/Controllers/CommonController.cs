@@ -894,7 +894,7 @@ namespace ERPWeb.Controllers
         [HttpPost]
         public ActionResult IsExistInAssembly(string qrCode)
         {
-            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, QRCodeStatus.Assembly, User.OrgId);
+            var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, QRCodeStatus.LotIn, User.OrgId);
             return Json(IsExist);
         }
         [HttpPost]

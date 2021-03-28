@@ -165,7 +165,7 @@ Where 1 = 1{0}
                 string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,ModelName,ModelColor,StateStatus,JobOrderType,EntryDate,EntryUser,
 CloseDate,TsRepairStatus,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',CloseUser
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,de.DescriptionName 'ModelName',jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,de.ModelName,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -175,7 +175,7 @@ jo.JobOrderCode,jo.TSId,jo.ModelColor,jo.TsRepairStatus,
 (Select UserName  from tblJobOrders job
 Inner Join [ControlPanel].dbo.tblApplicationUsers app on job.CUserId = app.UserId where job.JodOrderId=jo.JodOrderId) 'CloseUser'
 from tblJobOrders jo
-Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
 Where 1 = 1 and jo.JodOrderId={0} and jo.OrganizationId={1} and jo.BranchId={2}) tbl Order By EntryDate desc", jobOrderId, orgId, branchId)).FirstOrDefault();

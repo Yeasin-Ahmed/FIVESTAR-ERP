@@ -1131,9 +1131,11 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
-                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+                //ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
                 //ViewBag.ddlColors = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlColors = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorId.ToString() }).ToList();
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
             {
@@ -1168,8 +1170,10 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
-                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+                //ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlColors = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorId.ToString() }).ToList();
                 ViewBag.ddlMobilePart = new SelectList(_mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId), "MobilePartId", "MobilePartName");
             }
             else if(!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
@@ -1352,8 +1356,8 @@ namespace ERPWeb.Controllers
                     StateStatus = trans.StateStatus,
                     DescriptionId = trans.DescriptionId,
                     ToDescriptionId = trans.ToDescriptionId,
-                    FromModelName = _descriptionBusiness.GetDescriptionOneByOrdId(trans.DescriptionId.Value, User.OrgId).DescriptionName,
-                    ToModelName = _descriptionBusiness.GetDescriptionOneByOrdId(trans.ToDescriptionId.Value, User.OrgId).DescriptionName,
+                    FromModelName = _modelSSBusiness.GetModelById(trans.DescriptionId.Value, User.OrgId).ModelName,
+                    ToModelName = _modelSSBusiness.GetModelById(trans.ToDescriptionId.Value, User.OrgId).ModelName,
                 }).AsEnumerable();
 
                 stockTransferInfoDTO = stockTransferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.WarehouseId == sWerehouseId)).ToList();
