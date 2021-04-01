@@ -1,0 +1,327 @@
+﻿
+@{
+    ViewBag.Title = "Create Multiple JobOrder";
+}
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-4 text-left">
+                        <a href="/FrontDesk/GetJobOrders" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="text-center">Create Multiple Job Order</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" id="btnSubmit" class="btn btn-sm btn-success float-right" title="Submit the form for save"><i class="fas fa-paper-plane"></i> Place Job Order </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row text-sm">
+    <div class="col-md-12">
+        <div class="card card-secondary shadow">
+            <form id="frmJobOrder">
+                @Html.AntiForgeryToken()
+                @Html.Hidden("jobOrderId")
+                <div class="card-body shadow">
+                    <div class="row text-sm">
+                        <div class="col-md-2">
+                            <label for="ddlDealerName" class="control-label font-weight-bold">Dealer Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlDealerName", (IEnumerable<SelectListItem>)ViewBag.ddlDealerName, "--Select One--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide require-delar font-weight-bold">Delar name is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtMobileNumber" class="control-label font-weight-bold">Mobile Number<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="text" class="form-control form-control-sm" id="txtMobileNumber" />
+                            <span class="error hide require-mobile font-weight-bold">Mobile No is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtAddress" class="control-label font-weight-bold">Address<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <textarea id="txtAddress" class="form-control form-control-sm" cols="10" rows="1"></textarea>
+                            <span class="error hide require-address font-weight-bold">Mobile No is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtCourierName" class="control-label font-weight-bold">Courier Name</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtCourierName" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtCourierNumber" class="control-label font-weight-bold">Courier Number</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtCourierNumber" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtAddress" class="control-label font-weight-bold" style="visibility:hidden">Addresssssssssssssssssss<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <div class="input-group input-group-sm ">
+                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date" />
+                                <div class="input-group-prepend cursor-pointer remove-date dptJobEntryDate" style="cursor:pointer">
+                                    <span class="input-group-text">&#10008;</span>
+                                </div>
+                            </div>
+                            <span class="error hide require-JobentryDate font-weight-bold">Jobentrydate No is required !</span>
+                        </div>
+                    </div>
+                    <div class="row text-sm">
+                        <div class="col-md-2">
+                            <label for="ddlDescriptions" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                            <span class="error hide require-modelName font-weight-bold">Model is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="ddlPhoneTypes" class="control-label font-weight-bold">Type<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlPhoneTypes", (IEnumerable<SelectListItem>)ViewBag.ddlPhoneTypes, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-Type font-weight-bold">Mobile Type is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtIMEI" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="number" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
+                            <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
+                            <span class="error hide require-len-IMEI font-weight-bold">Must Input 15 digit IMEI !</span>
+                            <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="number" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
+                            <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
+                            <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
+                            <span class="error hide duplicate-IMEI2 font-weight-bold">Already This IMEI2 Job Pending !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="ddlModelColor" class="control-label font-weight-bold">Color<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-ModelColor font-weight-bold">Mobile ModelColor is required !</span>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label for="ddlJobOrderType" class="control-label font-weight-bold">JobOrder Type<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlJobOrderType", (IEnumerable<SelectListItem>)ViewBag.ddlJobOrderType, "Select JobOrder Type", new { @class = "form-control form-control-sm ddlJobOrderType" })
+                            <span class="error hide require-type font-weight-bold">JobOrderType is required !</span>
+                        </div>
+                    </div>
+                    <div class="row text-sm">
+                        <div class="col-md-3">
+                            <label for="ddlProblems" class="control-label font-weight-bold">Symptom<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlProblems", (IEnumerable<SelectListItem>)ViewBag.ddlProblems, "--Select Symptom--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-problem font-weight-bold">Symptom is required !</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="ddlAccessories" class="control-label font-weight-bold">Accessories<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlAccessories", (IEnumerable<SelectListItem>)ViewBag.ddlAccessories, "--Select Accessories--", new { @class = "form-control form-control-sm select2 select2-danger", @multiple = "multiple" })
+                            <span class="error hide require-accessories font-weight-bold">Accessories is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtApproxBill" class="control-label font-weight-bold">ApproxBill</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtApproxBill" />
+                        </div>
+                        <div class="col-md-2">
+                            <label for="ddlJobSource" class="control-label font-weight-bold">Source<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            @Html.DropDownList("ddlJobSource", (IEnumerable<SelectListItem>)ViewBag.ddlJobSource, "--Select Source--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-Source font-weight-bold">Source is required !</span>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" class="form-control form-control-sm" id="txtRemarks" />
+                        </div>
+                    </div>
+                    <div class="row text-sm">
+                        <div class="col-md-2" id="warrantydate">
+                            <label class="control-label font-weight-bold">Warranty Start Date</label>
+                            <div class="input-group input-group-sm ">
+                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptWarrantyDate" placeholder="Select Warranty Start Date" />
+                                <div class="input-group-prepend cursor-pointer remove-date dptWarrantyDate" style="cursor:pointer">
+                                    <span class="input-group-text">&#10008;</span>
+                                </div>
+                            </div>
+                            <span class="error hide require-warranty font-weight-bold">Warranty is required !</span>
+                            <span class="error hide not-warranty font-weight-bold">Warranty is not available !</span>
+                        </div>
+                        <div class="col-md-2" id="chkWarrantyPaper">
+                            <label for="" style="visibility:hidden;">Enclosed</label>
+                            <div class="form-control form-control-sm clearfix">
+                                <b>W. Paper?</b>
+                                <input type="radio" name="Enclosed" id="enclosedYes" /><b> Yes</b>
+                                <input type="radio" name="Enclosed" id="enclosedNo" checked /><b> No</b>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label for="ddlJobSource" class="control-label font-weight-bold" style="visibility:hidden">Source</label>
+                            <button type="button" id="btnAddToList" class="btn btn-sm btn-primary" title="Add To List"><i class="fas fa-plus"> </i> </button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblMultipleJobOrder">
+                                <thead>
+                                    <tr class="btn-dark text-center">
+                                        <th style="vertical-align:middle">#SL</th>
+                                        <th style="vertical-align:middle" class="hide"></th>
+                                        <th style="vertical-align:middle">Model</th>
+                                        <th style="vertical-align:middle">Type</th>
+                                        <th style="vertical-align:middle">IMEI1</th>
+                                        <th style="vertical-align:middle">IMEI2</th>
+                                        <th style="vertical-align:middle" class="hide"></th>
+                                        <th style="vertical-align:middle">Color</th>
+                                        <th style="vertical-align:middle">Job Type</th>
+                                        <th style="vertical-align:middle" class="hide"></th>
+                                        <th style="vertical-align:middle">Symptom</th>
+                                        <th style="vertical-align:middle" class="hide"></th>
+                                        <th style="vertical-align:middle">Accessories</th>
+                                        <th style="vertical-align:middle">ApproxBill</th>
+                                        <th style="vertical-align:middle">Remarks</th>
+                                        <th style="vertical-align:middle">Warrenty</th>
+                                        <th style="vertical-align:middle">W Paper</th>
+                                        <th style="vertical-align:middle">Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var ddlAccessories = $("#ddlAccessories");
+        var txtSearchCustomer = $("#txtSearchCustomer");
+        var txtCustomer = $("#txtCustomer");
+        var txtMobileNumber = $("#txtMobileNumber");
+        var txtAddress = $("#txtAddress");
+        var ddlDescriptions = $("#ddlDescriptions");
+        var ddlAccessories = $("#ddlAccessories");
+        var ddlProblems = $("#ddlProblems");
+        var chkIsWarrentyAvailable = $("#chkIsWarrentyAvailable");
+        var rdnEnclosedYes = $("#enclosedYes");
+        var rdnEnclosedNo = $("#enclosedNo");
+        var customerId = $("#customerId");
+
+        //
+        var txtIMEI = $("#txtIMEI");
+        var ddlPhoneTypes = $("#ddlPhoneTypes");
+        var ddlModelColor = $("#ddlModelColor");
+        var dptWarrantyDate = $("#dptWarrantyDate");
+        var txtRemarks = $("#txtRemarks");
+        var txtReferenceNumber = $("#txtReferenceNumber");
+        var jobOrderId = $("#jobOrderId");
+        var txtSearchIMEI = $("#txtSearchIMEI");
+        var dptWarrantyEndDate = $("#dptWarrantyEndDate");
+        var dptJobEntryDate = $("#dptJobEntryDate");
+        var txtIMEI2 = $("#txtIMEI2");
+        var hdfJobOrderId = $("#hdfJobOrderId");
+        var chkWarrantyPaper = $("#chkWarrantyPaper");
+        var ddlJobOrderType = $("#ddlJobOrderType");
+        var ddlCustomerType = $("#ddlCustomerType");
+        var txtCourierNumber = $("#txtCourierNumber");
+        var txtCourierName = $("#txtCourierName");
+        var txtApproxBill = $("#txtApproxBill");
+        var txtSearchJobOrder = $("#txtSearchJobOrder");
+        var chkHandset = $("#chkHandset");
+        var handsetDOA = $("#handsetDOA");
+        var handsetDAP = $("#handsetDAP");
+        var ddlDealerName = $("#ddlDealerName");
+        var ddlJobSource = $("#ddlJobSource");
+        $(document).ready(function () {
+            var date = new Date();
+            //var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            //$('#dptJobEntryDate').datepicker('setDate', today);
+            ////$('#dptJobEntryDate').()
+            ////alert(date.getDate());
+            $("#warrantydate").hide();
+            $("#chkWarrantyPaper").hide();
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+            dptWarrantyDate.prop('readonly', true);
+            dptWarrantyEndDate.prop('readonly', true);
+            dptJobEntryDate.prop('readonly', true);
+            dptWarrantyDate.css("background-color", "#fff");
+            dptWarrantyEndDate.css("background-color", "#fff");
+            dptJobEntryDate.css("background-color", "#fff");
+            $('#dptWarrantyDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+            $('#dptWarrantyEndDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+
+            $('#dptJobEntryDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true,
+                autoclose: true
+            });
+
+          
+            var thisDate = date.getDate() + ' ' + getMonthName(date.getMonth() + 1, "MM") + " " + date.getFullYear();
+            $('#dptJobEntryDate').val(thisDate)
+            $('#dptJobEntryDate').trigger('change');
+        })
+
+        ddlDealerName.change(function () {
+            $("#txtMobileNumber").val('');
+            $("#txtAddress").val('');
+            if (ddlDealerName.val() != "") {
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Common2/GetDealer', JSON.stringify({ dealerId: TryParseInt(ddlDealerName.val(), 0) }), getToken())).then(function (res, status) {
+                    if (status == "success") {
+                        $("#txtMobileNumber").val(res.MobileNo);
+                        $("#txtAddress").val(res.Address);
+                    }
+                }).fail(function (error) {
+                    consoleLog(error);
+                })
+            }
+        });
+        //show hide
+        $('#ddlJobOrderType').change(function () {
+            if ($('#ddlJobOrderType').val() == 'Warrenty') {
+                $("#warrantydate").show();
+                $("#chkWarrantyPaper").show();
+            }
+            else {
+                $("#warrantydate").hide();
+                $("#chkWarrantyPaper").hide();
+            }
+        });
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault()
+            disable("#ddlDealerName");
+            disable("#txtMobileNumber");
+            disable("#txtAddress");
+            disable("#txtCourierName");
+            disable("#txtCourierNumber");
+            var sl = $("#tblMultipleJobOrder tbody tr").length;
+            var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>";
+            var td2 = "<td class='hide'>" + ddlDescriptions.val() + "</td>";
+            var td3 = "<td>" + $("#ddlDescriptions option:selected").text() + "</td>";
+            var td4 = "<td class='text-center'>" + ddlPhoneTypes.val() + "</td>";
+            var td5 = "<td class='text-center'>" + txtIMEI.val() + "</td>";
+            var td6 = "<td class='text-center'>" + txtIMEI2.val() + "</td>";
+            var td7 = "<td class='hide'>" + ddlModelColor.val() + "</td>";
+            var td8 = "<td>" + $("#ddlModelColor option:selected").text() + "</td>";
+            var td9 = "<td class='text-center'>" + ddlJobOrderType.val() + "</td>";
+            var td10 = "<td>" + $("#ddlProblems option:selected").text() + "</td>";
+            var td11 = "<td>" + $("#ddlAccessories option:selected").text() + "</td>";
+
+            var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + "</tr>";
+            $("#tblMultipleJobOrder tbody").append(tr);
+        });
+
+    </script>
+    }

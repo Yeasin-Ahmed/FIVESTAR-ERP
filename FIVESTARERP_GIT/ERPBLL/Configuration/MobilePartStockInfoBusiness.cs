@@ -81,13 +81,13 @@ namespace ERPBLL.Configuration
                 param += string.Format(@"and stock.BranchId={0}", branchId);
             }
 
-            query = string.Format(@"select MobilePartStockInfoId,d.DescriptionName 'ModelName',stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode 'PartsCode',
+            query = string.Format(@"select MobilePartStockInfoId,d.ModelName,stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode 'PartsCode',
 sum(StockInQty-StockOutQty) 'Quantity' from tblMobilePartStockInfo stock
 left join tblMobileParts parts on stock.MobilePartId=parts.MobilePartId
-left join [Inventory].dbo.tblDescriptions d on stock.DescriptionId=d.DescriptionId
+left join [Configuration].dbo.tblModelSS d on stock.DescriptionId=d.ModelId
 where 1=1{0}
-group by MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode,d.DescriptionName
-order by d.DescriptionName
+group by MobilePartStockInfoId,stock.MobilePartId,parts.MobilePartName,parts.MobilePartCode,d.ModelName
+order by d.ModelName
 ", Utility.ParamChecker(param));
             return query;
         }

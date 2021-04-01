@@ -39,6 +39,7 @@ namespace ERPWeb.Controllers
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
         private readonly IColorSSBusiness _colorSSBusiness;
+        private readonly IDealerSSBusiness _dealerSSBusiness;
         // Warehouse
         private readonly IDescriptionBusiness _descriptionBusiness;
         //ControlPanel
@@ -65,7 +66,7 @@ namespace ERPWeb.Controllers
         private readonly IHandsetChangeTraceBusiness _handsetChangeTraceBusiness;
         private readonly IModelSSBusiness _modelSSBusiness;
 
-        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IColorSSBusiness colorSSBusiness, IModelSSBusiness modelSSBusiness)
+        public FrontDeskController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IDescriptionBusiness descriptionBusiness, IJobOrderBusiness jobOrderBusiness, ITechnicalServiceBusiness technicalServiceBusiness,ICustomerBusiness customerBusiness, IRequsitionInfoForJobOrderBusiness requsitionInfoForJobOrderBusiness, IRequsitionDetailForJobOrderBusiness requsitionDetailForJobOrderBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IBranchBusiness branchBusiness, IMobilePartBusiness mobilePartBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, ITechnicalServicesStockBusiness technicalServicesStockBusiness, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IJobOrderRepairBusiness jobOrderRepairBusiness, IRepairBusiness repairBusiness, IRoleBusiness roleBusiness, ITsStockReturnInfoBusiness tsStockReturnInfoBusiness, ITsStockReturnDetailsBusiness tsStockReturnDetailsBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IJobOrderTransferDetailBusiness jobOrderTransferDetailBusiness, IJobOrderReturnDetailBusiness jobOrderReturnDetailBusiness, IJobOrderTSBusiness jobOrderTSBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IColorSSBusiness colorSSBusiness, IModelSSBusiness modelSSBusiness, IDealerSSBusiness dealerSSBusiness)
         {
             this._handSetStockBusiness = handSetStockBusiness;
             this._accessoriesBusiness = accessoriesBusiness;
@@ -103,6 +104,7 @@ namespace ERPWeb.Controllers
             this._handsetChangeTraceBusiness = handsetChangeTraceBusiness;
             this._colorSSBusiness = colorSSBusiness;
             this._modelSSBusiness = modelSSBusiness;
+            this._dealerSSBusiness = dealerSSBusiness;
         }
 
         #region JobOrder
@@ -152,7 +154,7 @@ namespace ERPWeb.Controllers
                             IMEI1 = oldHandset.IMEI1,
                             IMEI2 = oldHandset.IMEI2,
                             ModelId = oldHandset.ModelId,
-                            ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(oldHandset.ModelId, User.OrgId).DescriptionName),
+                            ModelName = (_modelSSBusiness.GetModelById(oldHandset.ModelId, User.OrgId).ModelName),
                             Color = oldHandset.Color,
                         };
                     }
@@ -209,6 +211,8 @@ namespace ERPWeb.Controllers
             ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
             ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            ViewBag.ddlCustomerSupport = Utility.ListOfCustomerSupport().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
             long jobOrder = 0;
             if (jobOrderId != null && jobOrderId > 0)
@@ -343,6 +347,29 @@ namespace ERPWeb.Controllers
                 IsSuccess = _jobOrderBusiness.UpdateJobOrderStatus(jobOrderId, status, type, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
+        }
+
+        [HttpGet]
+        public ActionResult CreateMultipleJobOrder()
+        {
+            ViewBag.ddlDealerName = _dealerSSBusiness.GetAllDealerForD(User.OrgId).Select(p => new SelectListItem { Text = p.Dealer, Value = p.DealerId.ToString() }).ToList();
+
+            ViewBag.ddlDescriptions = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+
+
+            ViewBag.ddlAccessories = _accessoriesBusiness.GetAllAccessoriesByOrgId(User.OrgId).Select(a => new SelectListItem { Text = a.AccessoriesName, Value = a.AccessoriesId.ToString() }).ToList();
+
+            ViewBag.ddlProblems = _clientProblemBusiness.GetAllClientProblemByOrgId(User.OrgId).Select(p => new SelectListItem { Text = p.ProblemName, Value = p.ProblemId.ToString() }).ToList();
+
+            ViewBag.ddlModelColor = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorName }).ToList();
+
+            ViewBag.ddlPhoneTypes = Utility.ListOfPhoneTypes().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            ViewBag.ddlJobOrderType = Utility.ListOfJobOrderType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            ViewBag.ddlJobSource = Utility.ListOfJobSource().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+
+            return View();
         }
 
         #endregion
@@ -1553,7 +1580,8 @@ namespace ERPWeb.Controllers
         [HttpGet]
         public ActionResult GetJobOrderListReport()
         {
-            ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+            //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+            ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
             ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
             ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
@@ -1892,7 +1920,8 @@ namespace ERPWeb.Controllers
             ViewBag.UserPrivilege = UserPrivilege("FrontDesk", "GetJobOrders");
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                //ViewBag.ddlModelName = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(d => new SelectListItem { Text = d.DescriptionName, Value = d.DescriptionId.ToString() }).ToList();
+                ViewBag.ddlModelName = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
                 ViewBag.ddlStateStatus = Utility.ListOfJobOrderStatus().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
                 ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
@@ -1933,7 +1962,7 @@ namespace ERPWeb.Controllers
                             IMEI1 = oldHandset.IMEI1,
                             IMEI2 = oldHandset.IMEI2,
                             ModelId = oldHandset.ModelId,
-                            ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(oldHandset.ModelId, User.OrgId).DescriptionName),
+                            ModelName = (_modelSSBusiness.GetModelById(oldHandset.ModelId, User.OrgId).ModelName),
                             Color = oldHandset.Color,
                         };
                     }

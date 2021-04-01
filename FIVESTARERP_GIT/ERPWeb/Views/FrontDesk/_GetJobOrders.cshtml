@@ -22,6 +22,7 @@
                         <th style="vertical-align:middle">Job Status</th>
                         <th style="vertical-align:middle">TS Work Status</th>
                         <th style="vertical-align:middle">Job Location</th>
+                        <th style="vertical-align:middle">Brand</th>
                         <th style="vertical-align:middle">Model</th>
                         <th style="vertical-align:middle">Type</th>
                         <th style="vertical-align:middle">IMEI1</th>
@@ -49,6 +50,7 @@
                         <th style="vertical-align:middle">Create Date</th>
                         <th style="vertical-align:middle">Repair Date</th>
                         <th style="vertical-align:middle">Close Date</th>
+                        <th class="hide" style="vertical-align:middle">Close Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,7 +76,7 @@
                             </a>
 
                             @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.JobInitiated && item.IsTransfer == null)
-                        {
+                            {
                                 <a href="@Url.Action("CreateJobOrder","FrontDesk",new {@jobOrderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Edit Job Order"><i class="fas fa-pencil-alt"></i> </a>
                             }
                         </td>
@@ -86,6 +88,7 @@
                         </td>
                         <td>@item.TsRepairStatus</td>
                         <td>@item.JobLocationB</td>
+                        <td>@item.BrandName</td>
                         <td>@item.ModelName</td>
                         <td>@item.Type</td>
                         <td>@item.IMEI</td>
@@ -124,6 +127,7 @@
                         <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
                         <td>@repairDate</td>
                         <td>@closeDate</td>
+                        <td class="hide">@item.CustomerSupportStatus</td>
 
 
                     </tr>

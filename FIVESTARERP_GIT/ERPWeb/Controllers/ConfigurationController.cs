@@ -1270,7 +1270,8 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
 
-            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
             return View();
         }
@@ -1404,7 +1405,8 @@ namespace ERPWeb.Controllers
 
             //ViewBag.ddlSellPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
             //Nishad//
-            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
             return View();
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

@@ -2,6 +2,7 @@
 @{
     var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
     int sl = pagerData.Serial;
+    string badge1 = string.Empty;
 }
 <div class="row">
     <table class="table table-bordered table-sm table-striped" id="tblHandsetStock">
@@ -13,6 +14,7 @@
                 <th class="hide"></th>
                 <th>IMEI-1</th>
                 <th>IMEI-2</th>
+                <th>StateStatus</th>
                 <th>Model</th>
                 <th>Color</th>
                 <th>Type</th>
@@ -24,6 +26,7 @@
             @foreach (var info in Model)
             {
                 sl = sl + 1;
+                badge1 = info.StateStatus == "Stock-In" ? "badge bg-success" : "badge bg-warning";
             <tr>
                 <td class="text-center text-bold">@sl</td>
                 <td class="hide">@info.HandSetStockId</td>
@@ -31,6 +34,9 @@
                 <td class="hide">@info.ColorId</td>
                 <td class="text-center">@info.IMEI1</td>
                 <td class="text-center">@info.IMEI</td>
+                <td class="text-center" data-val="@info.StateStatus">
+                    <span class="@badge1">@info.StateStatus</span>
+                </td>
                 <td class="text-center" data-val="@info.DescriptionId">@info.ModelName</td>
                 <td class="text-center" data-val="@info.ColorId">@info.ColorName</td>
                 <td class="text-center">@info.StockType</td>

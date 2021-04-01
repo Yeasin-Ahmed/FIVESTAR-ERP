@@ -157,7 +157,7 @@
         {
             <button type="button" class="btn btn-sm btn-success btnDeliveryDone">Delivery</button>
         }*@
-            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS && Model.TsRepairStatus == "PENDING FOR APPROVAL" && Model.CustomerApproval == null)
+            @if (Model.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS && Model.TsRepairStatus == "PENDING FOR APPROVAL" && (Model.CustomerApproval == null || Model.CustomerApproval == "Pending"))
             {
                 <button type="button" title="Click For Approval" class="btn btn-outline-success btnApproval"><i class="fas fa-sticky-note"></i></button>
             }

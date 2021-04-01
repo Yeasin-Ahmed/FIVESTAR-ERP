@@ -34,6 +34,15 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfJobSource()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=JobSource.DOA,value=JobSource.DOA},
+                new Dropdown(){text=JobSource.Service,value=JobSource.Service}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfReturnType()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>()
@@ -54,12 +63,22 @@ namespace ERPBLL.Common
             };
             return dropdowns;
         }
+        public static IEnumerable<Dropdown> ListOfCustomerSupport()
+        {
+            IEnumerable<Dropdown> dropdowns = new List<Dropdown>
+            {
+                new Dropdown(){text=CustomerSupport.Handset,value=CustomerSupport.Handset},
+                new Dropdown(){text=CustomerSupport.Other,value=CustomerSupport.Other}
+            };
+            return dropdowns;
+        }
         public static IEnumerable<Dropdown> ListOfCallCenterApproval()
         {
             IEnumerable<Dropdown> dropdowns = new List<Dropdown>
             {
                 new Dropdown(){text=CallCenterApproval.Approved,value=CallCenterApproval.Approved},
-                new Dropdown(){text=CallCenterApproval.DisApproved,value=CallCenterApproval.DisApproved}
+                new Dropdown(){text=CallCenterApproval.DisApproved,value=CallCenterApproval.DisApproved},
+                new Dropdown(){text=CallCenterApproval.Pending,value=CallCenterApproval.Pending}
             };
             return dropdowns;
         }

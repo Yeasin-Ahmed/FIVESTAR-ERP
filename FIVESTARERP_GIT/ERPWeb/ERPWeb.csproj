@@ -894,6 +894,7 @@
     <Content Include="Views\Inventory\_StockTransferMToMDetails.cshtml" />
     <Content Include="Views\Production\CreateLot.cshtml" />
     <Content Include="Views\Production\_GetLotInList.cshtml" />
+    <Content Include="Views\FrontDesk\CreateMultipleJobOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

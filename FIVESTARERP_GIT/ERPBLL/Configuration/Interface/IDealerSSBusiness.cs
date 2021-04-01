@@ -16,5 +16,6 @@ namespace ERPBLL.Configuration.Interface
         DealerSS GetDealerById(long dealerId, long orgId);
         bool SaveDealer(DealerSSDTO dto,long orgId, long branchId, long userId);
         bool IsDuplicateDealer(string mobile, long id, long orgId);
+        IEnumerable<DealerSSDTO> GetAllDealerForD(long orgId);
     }
 }

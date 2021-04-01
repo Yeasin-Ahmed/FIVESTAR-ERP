@@ -26,9 +26,10 @@ namespace ERPBLL.FrontDesk
         private readonly IJobOrderProblemBusiness _jobOrderProblemBusiness;
         private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
         private readonly IBranchBusiness _branchBusiness;
+        private readonly IHandSetStockBusiness _handSetStockBusiness;
         //private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
 
-        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IBranchBusiness branchBusiness)
+        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IBranchBusiness branchBusiness, IHandSetStockBusiness handSetStockBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._jobOrderRepository = new JobOrderRepository(this._frontDeskUnitOfWork);
@@ -38,6 +39,7 @@ namespace ERPBLL.FrontDesk
             this._jobOrderProblemRepository = new JobOrderProblemRepository(this._frontDeskUnitOfWork);
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._branchBusiness = branchBusiness;
+            this._handSetStockBusiness = handSetStockBusiness;
 
         }
 
@@ -133,13 +135,13 @@ OR
                 param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,CSModelName,CSColorName,CSIMEI1,CSIMEI2,CustomerSupportStatus,[Address],ModelName,BrandName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,
 CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,bn.BrandName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,mo.ModelName'CSModelName',co.ColorName'CSColorName',jo.CSIMEI1,jo.CSIMEI2,jo.CustomerSupportStatus,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -184,6 +186,9 @@ from tblJobOrders jo
 Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
+Left Join [Configuration].dbo.tblBrandSS bn on de.BrandId=bn.BrandId
+Left Join [Configuration].dbo.tblModelSS mo on jo.CSModel=mo.ModelId
+Left Join [Configuration].dbo.tblColorSS co on jo.CSColor=co.ColorId
 
 Where 1 = 1{0}) tbl Order By JobOrderCode desc
 ", Utility.ParamChecker(param));
@@ -395,6 +400,7 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
         public ExecutionStateWithText SaveJobOrderWithReport(JobOrderDTO jobOrderDto, List<JobOrderAccessoriesDTO> jobOrderAccessoriesDto, List<JobOrderProblemDTO> jobOrderProblemsDto, long userId, long orgId, long branchId)
         {
             var branchShortName = _branchBusiness.GetBranchOneByOrgId(branchId, orgId).ShortName;
+            var handset = _handSetStockBusiness.GetIMEI2ByIMEI1(jobOrderDto.CSIMEI1, branchId, orgId);
 
             ExecutionStateWithText execution = new ExecutionStateWithText();
             JobOrder jobOrder = null;
@@ -427,7 +433,7 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
                     EUserId = userId,
                     OrganizationId = orgId,
                     StateStatus = JobOrderStatus.JobInitiated,
-                    
+                    CustomerSupportStatus= jobOrderDto.CustomerSupportStatus,
                     BranchId = branchId
                 };
                 if (jobOrder.JobOrderType == "Warrenty")
@@ -436,6 +442,14 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
                     jobOrder.IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed;
                     jobOrder.IsHandset = jobOrderDto.IsHandset;
                     //jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                }
+                if (jobOrderDto.CustomerSupportStatus == "Handset")
+                {
+                    jobOrder.CSIMEI1 = jobOrderDto.CSIMEI1;
+                    jobOrder.CSIMEI2 = handset.IMEI;
+                    jobOrder.CSModel = handset.DescriptionId;
+                    jobOrder.CSColor = handset.ColorId;
+                    _handSetStockBusiness.UpdateHandsetStockByCustomerSupport(jobOrderDto.CSIMEI1, branchId, orgId, userId);
                 }
                 List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
                 foreach (var item in jobOrderAccessoriesDto)
@@ -680,7 +694,7 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
                 }
                 if (modelId != null && modelId > 0)
                 {
-                    param += string.Format(@" and de.DescriptionId ={0}", modelId);
+                    param += string.Format(@" and de.ModelId ={0}", modelId);
                 }
                 if (!string.IsNullOrEmpty(jobCode))
                 {
@@ -974,6 +988,7 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public bool UpdateJobOrderDeliveryStatus(long jobOrderId, long userId, long orgId, long branchId)
         {
             var jobOrder = GetJobOrderById(jobOrderId, orgId);
+            _handSetStockBusiness.UpdateHandsetStockByReceiptHandset(jobOrder.CSIMEI1, branchId, orgId, userId);
             if (jobOrder != null)
             {
                 jobOrder.StateStatus = JobOrderStatus.DeliveryDone;
@@ -1024,13 +1039,13 @@ Group By parts.MobilePartId,parts.MobilePartName) tbl", orgId, branchId, jobOrde
         public IEnumerable<JobOrderDTO> GetJobCreateReceipt(long jobOrderId, long orgId, long branchId)
         {
             return this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
-                string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+                string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,BrandName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,ApproxBill
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.ApproxBill,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,bn.BrandName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.ApproxBill,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -1074,6 +1089,7 @@ Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Ord
 from tblJobOrders jo
 Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
+Inner Join [Configuration].dbo.tblBrandSS bn on de.BrandId=bn.BrandId
 
 Where jo.JodOrderId={0} and  jo.OrganizationId={1} and jo.BranchId={2}) tbl Order By EntryDate desc", jobOrderId, orgId, branchId)).ToList();
         }
@@ -1114,7 +1130,7 @@ Where jo.JodOrderId={0} and  jo.OrganizationId={1} and jo.BranchId={2}) tbl Orde
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,CourierName,CourierNumber,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CourierName,jo.CourierNumber,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CourierName,jo.CourierNumber,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -1127,7 +1143,7 @@ Where jop.JobOrderId = jo.JodOrderId
 Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName'
 
 from tblJobOrders jo
-Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.IsTransfer is null and jo.StateStatus='Job-Initiated' {0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
@@ -1182,7 +1198,7 @@ Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId W
             query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,CourierName,CourierNumber,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,BranchId
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CourierName,jo.CourierNumber,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CourierName,jo.CourierNumber,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -1195,9 +1211,9 @@ Where jop.JobOrderId = jo.JodOrderId
 Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,ts.Name 'TSName',jo.BranchId
 
 from tblJobOrders jo
-Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Left Join [Configuration].dbo.tblTechnicalServiceEngs ts on jo.TSId =ts.EngId
-Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1 and jo.IsTransfer='True' and (jo.StateStatus='Repair-Done' OR jo.StateStatus='Job-Initiated'){0}) tbl Order By EntryDate desc", Utility.ParamChecker(param));
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId Where 1 = 1{0} and jo.IsTransfer='True' and (jo.StateStatus='Repair-Done' OR jo.StateStatus='Job-Initiated')) tbl Order By EntryDate desc", Utility.ParamChecker(param));
             return query;
         }
 
@@ -1278,7 +1294,7 @@ SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -1320,7 +1336,7 @@ Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
 Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
 
 from tblJobOrders jo
-Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
 Where 1 = 1 and jo.JodOrderId ={0} and jo.OrganizationId={1}
@@ -1991,7 +2007,7 @@ SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,TransferCode,DestinationBranch,MultipleDeliveryCode
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.DescriptionName 'ModelName',jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.MultipleDeliveryCode,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.MultipleDeliveryCode,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -2043,7 +2059,7 @@ Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
 Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
 
 from tblJobOrders jo
-Inner Join [Inventory].dbo.tblDescriptions de on jo.DescriptionId = de.DescriptionId
+Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
 
 where MultipleDeliveryCode='{0}' and jo.BranchId={1} and jo.OrganizationId={2}) tbl Order By EntryDate asc", deliveryCode,branchId, orgId)).ToList();

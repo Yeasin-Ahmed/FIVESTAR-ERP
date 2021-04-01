@@ -19,5 +19,7 @@ namespace ERPBLL.Configuration.Interface
         IEnumerable<HandSetStock> GetAllHansetStockByOrgIdAndBranchId(long orgId, long branchId);
         bool IsExistsHandsetStockIMEI(string imei, long orgId, string status);
         HandSetStock GetIMEI2ByIMEI1(string imei, long branchId, long orgId);
+        bool UpdateHandsetStockByCustomerSupport(string imei, long branchId, long orgId, long userId);
+        bool UpdateHandsetStockByReceiptHandset(string imei, long branchId, long orgId, long userId);
     }
 }

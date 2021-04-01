@@ -22,10 +22,20 @@ namespace ERPBLL.Common
         public static readonly string Void = "Void";
         public static readonly string Return = "Return";
     }
+    public class JobSource
+    {
+        public static readonly string DOA = "DOA";
+        public static readonly string Service = "Service";
+    }
     public class StockType
     {
         public static readonly string FreshStock = "FreshStock";
         public static readonly string FaultyStock = "FaultyStock";
+    }
+    public class CustomerSupport
+    {
+        public static readonly string Handset = "Handset";
+        public static readonly string Other = "Other";
     }
     public class ChequeType
     {
@@ -56,6 +66,7 @@ namespace ERPBLL.Common
     {
         public static readonly string Approved = "Approved";
         public static readonly string DisApproved = "DisApproved";
+        public static readonly string Pending = "Pending";
     }
     public class InvoiceTypeStatus
     {

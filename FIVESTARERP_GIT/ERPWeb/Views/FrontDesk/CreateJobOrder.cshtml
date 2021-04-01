@@ -80,7 +80,7 @@
                             <button type="submit" id="btnSubmit" class="btn btn-sm btn-success float-right" title="Submit the form for save"><i class="fas fa-paper-plane"></i> Place Job Order </button>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-sm">
                         <div class="col-md-3">
                             <label for="txtCustomer" class="control-label font-weight-bold">Customer Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" class="form-control form-control-sm" id="txtCustomer" />
@@ -102,7 +102,7 @@
                             <span class="error hide require-customerType font-weight-bold">Customer Type is required !</span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-sm">
                         <div class="col-md-3">
                             <label for="ddlDescriptions" class="control-label font-weight-bold">Model<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlDescriptions", (IEnumerable<SelectListItem>)ViewBag.ddlDescriptions, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
@@ -115,20 +115,20 @@
                         </div>
                         <div class="col-md-3">
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <input type="text" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
+                            <input type="number" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
                             <span class="error hide require-len-IMEI font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
                         </div>
                         <div class="col-md-3">
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <input type="text" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
+                            <input type="number" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                             <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
                             <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI2 font-weight-bold">Already This IMEI2 Job Pending !</span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-sm">
                         <div class="col-md-3">
                             <label for="ddlModelColor" class="control-label font-weight-bold">Color<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlModelColor", (IEnumerable<SelectListItem>)ViewBag.ddlModelColor, "--Select Color--", new { @class = "form-control form-control-sm ctrl-changed" })
@@ -150,7 +150,7 @@
                             <span class="error hide require-type font-weight-bold">JobOrderType is required !</span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-sm">
                         <div class="col-md-3">
                             <label for="txtCourierName" class="control-label font-weight-bold">CourierName</label>
                             <input type="text" class="form-control form-control-sm disabled" id="txtCourierName" />
@@ -168,7 +168,7 @@
                             <input type="text" class="form-control form-control-sm disabled" id="txtReferenceNumber" />
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-sm">
                         <div class="col-md-3">
                             <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
                             <input type="text" class="form-control form-control-sm" id="txtRemarks" />
@@ -200,6 +200,21 @@
                                 <input type="checkbox" name="HandSet" id="handsetDAP" /><b> DAP</b>
                             </div>
                         </div>
+                        <div class="col-md-3" id="divCustomerSupport">
+                            <label for="ddlCustomerSupport" class="control-label font-weight-bold">Customer Support</label>
+                            @Html.DropDownList("ddlCustomerSupport", (IEnumerable<SelectListItem>)ViewBag.ddlCustomerSupport, "--Select Types--", new { @class = "form-control form-control-sm ctrl-changed" })
+                            <span class="error hide require-CustomerSupport font-weight-bold">Type is required !</span>
+                        </div>
+                        <div class="col-md-3" id="divCustomerSupportIMEI1">
+                            <label for="txtCustomerSupportIMEI1" class="control-label font-weight-bold">CS Handset IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <input type="number" class="form-control form-control-sm" id="txtCustomerSupportIMEI1" placeholder="Input IMEI1" />
+                            <span class="error hide require-CustomerSupportIMEI1 font-weight-bold">Mobile IMEI1 is required !</span>
+                            <span class="error hide require-lenCustomerSupportIMEI font-weight-bold">Must Input 15 digit IMEI !</span>
+                            <span class="error hide duplicate-CustomerSupportIMEI1 font-weight-bold">Already This IMEI Job Pending !</span>
+                        </div>
+                    </div>
+                    <div class="row text-sm">
+                        
                     </div>
                 </div>
             </form>
@@ -303,6 +318,8 @@
         var chkHandset = $("#chkHandset");
         var handsetDOA = $("#handsetDOA");
         var handsetDAP = $("#handsetDAP");
+        var ddlCustomerSupport = $("#ddlCustomerSupport");
+        var txtCustomerSupportIMEI1 = $("#txtCustomerSupportIMEI1");
 
         $(document).ready(function () {
             var date = new Date();
@@ -310,7 +327,7 @@
             //$('#dptJobEntryDate').datepicker('setDate', today);
             ////$('#dptJobEntryDate').()
             ////alert(date.getDate());
-           
+            $("#divCustomerSupportIMEI1").hide();
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -352,6 +369,15 @@
             loadData();
 
         })
+        //show/hide
+        $('#ddlCustomerSupport').change(function () {
+            if ($('#ddlCustomerSupport').val() == 'Handset') {
+                $("#divCustomerSupportIMEI1").show();
+            }
+            else {
+                $("#divCustomerSupportIMEI1").hide();
+            }
+        });
 
         $(document).ready(function () {
             $('#dptWarrantyDate').change(function () {
@@ -802,6 +828,16 @@
                 $(".require-accessories").removeClass("hide");
                 isValid = false;
             }
+            if (ddlCustomerSupport.val() === "Handset") {
+                if (txtCustomerSupportIMEI1.val().length !== 15) {
+                    $(".require-lenCustomerSupportIMEI").removeClass("hide");
+                    isValid = false;
+                }
+                if (txtCustomerSupportIMEI1.val() === "") {
+                    $(".require-CustomerSupportIMEI1").removeClass("hide");
+                    isValid = false;
+                }
+            }
             return isValid;
         }
 
@@ -822,7 +858,7 @@
                     entryDate=   new Date(dptJobEntryDate.val());
                 }
 
-                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsHandset: handsetDOA.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate, Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val(), CourierName: txtCourierName.val(), CourierNumber: txtCourierNumber.val(), ApproxBill: txtApproxBill.val() };
+                var jobOrder = { JodOrderId: TryParseInt(hdfJobOrderId.val(), 0), CustomerId: TryParseInt(customerId.val(), 0), CustomerName: txtCustomer.val(), IMEI: txtIMEI.val(), Type: ddlPhoneTypes.val(), ModelColor: ddlModelColor.val(), MobileNo: txtMobileNumber.val(), Address: txtAddress.val(), DescriptionId: TryParseInt(ddlDescriptions.val(), 0), IsWarrantyAvailable: chkIsWarrentyAvailable.is(":checked"), IsHandset: handsetDOA.is(":checked"), IsWarrantyPaperEnclosed: rdnEnclosedYes.is(":checked"), WarrantyDate: dptWarrantyDate.val(), ReferenceNumber: txtReferenceNumber.val(), WarrantyEndDate: dptWarrantyEndDate.val(), IMEI2: txtIMEI2.val(), EntryDate: entryDate, Remarks: txtRemarks.val(), JobOrderType: ddlJobOrderType.val(), CustomerType: ddlCustomerType.val(), CourierName: txtCourierName.val(), CourierNumber: txtCourierNumber.val(), ApproxBill: txtApproxBill.val(), CustomerSupportStatus: ddlCustomerSupport.val(), CSIMEI1: txtCustomerSupportIMEI1.val()};
 
                 var aryAccessories = []; aryAccessories.length = 0;
                 var accessories = ddlAccessories.val();
