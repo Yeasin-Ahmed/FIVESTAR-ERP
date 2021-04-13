@@ -213,6 +213,7 @@ namespace ERPWeb.Controllers
             ViewBag.ddlCustomerType = Utility.ListOfCustomerType().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
             ViewBag.ddlCustomerSupport = Utility.ListOfCustomerSupport().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+            ViewBag.ddlJobSource = Utility.ListOfJobSource().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
 
             long jobOrder = 0;
             if (jobOrderId != null && jobOrderId > 0)
@@ -228,6 +229,7 @@ namespace ERPWeb.Controllers
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult SaveJobOrder(JobOrderViewModel jobOrder, List<JobOrderAccessoriesViewModel> jobOrderAccessories,List<JobOrderProblemViewModel> jobOrderProblems)
         {
+
             bool IsSuccess = false;
             string file = string.Empty;
             if (ModelState.IsValid && jobOrderProblems.Count > 0)
@@ -306,6 +308,7 @@ namespace ERPWeb.Controllers
                 CustomerId = jobOrder.CustomerId,
                 CustomerName = jobOrder.CustomerName,
                 CustomerType=jobOrder.CustomerType,
+                JobSource=jobOrder.JobSource,
                 MobileNo = jobOrder.MobileNo,
                 Address = jobOrder.Address,
                 DescriptionId = jobOrder.DescriptionId,
@@ -371,7 +374,78 @@ namespace ERPWeb.Controllers
 
             return View();
         }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveMultipleJobOrders(List<JobOrderViewModel> jobOrder)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+           // bool IsSuccess = false;
+            string file = string.Empty;
+            if (jobOrder.Count > 0)
+            {
+                List<JobOrderDTO> jobOrderDTO = new List<JobOrderDTO>();
+                //List<JobOrderAccessoriesDTO> listJobOrderAccessoriesDTO = new List<JobOrderAccessoriesDTO>();
+               // List<JobOrderProblemDTO> listJobOrderProblemDTO = new List<JobOrderProblemDTO>();
 
+                AutoMapper.Mapper.Map(jobOrder, jobOrderDTO);
+                //AutoMapper.Mapper.Map(jobOrderAccessories, listJobOrderAccessoriesDTO);
+               // AutoMapper.Mapper.Map(jobOrderProblems, listJobOrderProblemDTO);
+
+                 executionState = _jobOrderBusiness.SaveMultipleJobOrderWithReport(jobOrderDTO, User.UserId, User.OrgId, User.BranchId);
+
+                if (executionState.isSuccess)
+                {
+                    executionState.text = GetDealerReceiptReport(executionState.text);
+                }
+                
+            }
+            return Json(executionState);
+        }
+        private string GetDealerReceiptReport(string multipleCode)
+        {
+            string file = string.Empty;
+            IEnumerable<JobOrderDTO> jobOrderDetails = _jobOrderBusiness.GetMultipleJobReceipt(multipleCode, User.OrgId, User.BranchId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptDealerReceipt.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("DealerReceipt", jobOrderDetails);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Receipt";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                var base64 = Convert.ToBase64String(renderedBytes);
+                var fs = String.Format("data:application/pdf;base64,{0}", base64);
+
+                file = fs;
+            }
+
+            return file;
+        }
         #endregion
 
         #region Multiple Job Delivery

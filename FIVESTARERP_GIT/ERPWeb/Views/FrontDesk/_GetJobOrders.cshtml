@@ -26,8 +26,8 @@
                         <th style="vertical-align:middle">Model</th>
                         <th style="vertical-align:middle">Type</th>
                         <th style="vertical-align:middle">IMEI1</th>
-                        <th style="vertical-align:middle">IMEI2</th>
-                        <th style="vertical-align:middle">Color</th>
+                        @*<th style="vertical-align:middle">IMEI2</th>*@
+                        @*<th style="vertical-align:middle">Color</th>*@
                         <th style="vertical-align:middle">Symptoms</th>
                         <th style="vertical-align:middle">Accessories</th>
                         <th style="vertical-align:middle">Job Type</th>
@@ -69,7 +69,18 @@
 
                         <td class="hide">@item.JodOrderId</td>
                         <td class="text-center text-bold">@sl</td>
-                        <td class="text-center text-bold">@item.JobOrderCode</td>
+                        @if (User.RoleName == "FrontDesk")
+                        {
+                            <td>
+                                <a href="@Url.Action("GetJobOrderReceipt", "ReportSS", new { @jobOrderId = item.JodOrderId })" target="_blank" class="btn text-bold" style="color:blue" title="Download Receipt">@item.JobOrderCode</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @item.JobOrderCode
+                            </td>
+                        }
                         <td class="text-center action">
                             <a href="#" class="btn btn-sm btn-outline-info data-item-details" data-item-details="@item.JodOrderId" title="Job Order Details">
                                 <i class="fas fa-eye"></i>
@@ -92,8 +103,8 @@
                         <td>@item.ModelName</td>
                         <td>@item.Type</td>
                         <td>@item.IMEI</td>
-                        <td>@item.IMEI2</td>
-                        <td>@item.ModelColor</td>
+                        @*<td>@item.IMEI2</td>*@
+                        @*<td>@item.ModelColor</td>*@
                         <td>@item.Problems</td>
                         <td class="hiddendots">@item.AccessoriesNames</td>
                         <td>@item.JobOrderType</td>

@@ -188,19 +188,19 @@
               <Width>0.66958in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.24303in</Width>
+              <Width>1.19095in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.20542in</Width>
+              <Width>1.17417in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.09667in</Width>
+              <Width>0.84667in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.24833in</Width>
+              <Width>2.40458in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.91917in</Width>
+              <Width>2.09624in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.40917in</Width>
@@ -864,7 +864,7 @@
         <DataSetName>DealerReceipt</DataSetName>
         <Top>2.09875in</Top>
         <Height>0.5in</Height>
-        <Width>11.14792in</Width>
+        <Width>11.14791in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>

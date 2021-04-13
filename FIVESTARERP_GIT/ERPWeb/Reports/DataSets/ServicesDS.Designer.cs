@@ -2257,6 +2257,8 @@ namespace ERPWeb.Reports.DataSets {
             
             private global::System.Data.DataColumn columnTsRepairStatus;
             
+            private global::System.Data.DataColumn columnPartsName;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public JobOrderReceiptDataTable() {
@@ -2372,6 +2374,14 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PartsNameColumn {
+                get {
+                    return this.columnPartsName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2407,7 +2417,7 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public JobOrderReceiptRow AddJobOrderReceiptRow(long JodOrderId, string JobOrderCode, string CustomerName, string MobileNo, string ModelName, string ModelColor, System.DateTime CloseDate, System.DateTime EntryDate, string AccessoriesNames, string TsRepairStatus) {
+            public JobOrderReceiptRow AddJobOrderReceiptRow(long JodOrderId, string JobOrderCode, string CustomerName, string MobileNo, string ModelName, string ModelColor, System.DateTime CloseDate, System.DateTime EntryDate, string AccessoriesNames, string TsRepairStatus, string PartsName) {
                 JobOrderReceiptRow rowJobOrderReceiptRow = ((JobOrderReceiptRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         JodOrderId,
@@ -2419,7 +2429,8 @@ namespace ERPWeb.Reports.DataSets {
                         CloseDate,
                         EntryDate,
                         AccessoriesNames,
-                        TsRepairStatus};
+                        TsRepairStatus,
+                        PartsName};
                 rowJobOrderReceiptRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowJobOrderReceiptRow);
                 return rowJobOrderReceiptRow;
@@ -2452,6 +2463,7 @@ namespace ERPWeb.Reports.DataSets {
                 this.columnEntryDate = base.Columns["EntryDate"];
                 this.columnAccessoriesNames = base.Columns["AccessoriesNames"];
                 this.columnTsRepairStatus = base.Columns["TsRepairStatus"];
+                this.columnPartsName = base.Columns["PartsName"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2477,6 +2489,8 @@ namespace ERPWeb.Reports.DataSets {
                 base.Columns.Add(this.columnAccessoriesNames);
                 this.columnTsRepairStatus = new global::System.Data.DataColumn("TsRepairStatus", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTsRepairStatus);
+                this.columnPartsName = new global::System.Data.DataColumn("PartsName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPartsName);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -12701,6 +12715,22 @@ namespace ERPWeb.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PartsName {
+                get {
+                    try {
+                        return ((string)(this[this.tableJobOrderReceipt.PartsNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PartsName\' in table \'JobOrderReceipt\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableJobOrderReceipt.PartsNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsJodOrderIdNull() {
                 return this.IsNull(this.tableJobOrderReceipt.JodOrderIdColumn);
             }
@@ -12817,6 +12847,18 @@ namespace ERPWeb.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetTsRepairStatusNull() {
                 this[this.tableJobOrderReceipt.TsRepairStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPartsNameNull() {
+                return this.IsNull(this.tableJobOrderReceipt.PartsNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPartsNameNull() {
+                this[this.tableJobOrderReceipt.PartsNameColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -162,23 +162,59 @@ Where 1 = 1{0}
         public JobOrderDTO GetReceiptForJobOrder(long jobOrderId, long orgId, long branchId)
         {
             var data= this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
-                string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,ModelName,ModelColor,StateStatus,JobOrderType,EntryDate,EntryUser,
-CloseDate,TsRepairStatus,
-SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',CloseUser
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,de.ModelName,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,
+                string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,BrandName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+CloseDate,TSRemarks,
+SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,ApproxBill
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,bn.BrandName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.ApproxBill,
+
+Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
+Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
+Where jof.JobOrderId = jo.JodOrderId
+Order BY FaultName For XML PATH('')) as nvarchar(MAX))  'FaultName',
+
+Cast((Select ServiceName+',' From [Configuration].dbo.tblServices ser
+Inner Join tblJobOrderServices jos on ser.ServiceId = jos.ServiceId
+Where jos.JobOrderId = jo.JodOrderId
+Order BY ServiceName For XML PATH('')) as nvarchar(MAX))  'ServiceName',
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
 Where joa.JobOrderId = jo.JodOrderId
 Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
-jo.JobOrderCode,jo.TSId,jo.ModelColor,jo.TsRepairStatus,
+
+Cast((Select  (parts.MobilePartName+' (Qty-' + Cast(tstock.UsedQty as nvarchar(20)))+')'+',' from [FrontDesk].dbo.tblTechnicalServicesStock tstock
+inner join [Configuration].dbo.tblMobileParts parts
+on tstock.PartsId=parts.MobilePartId
+Where tstock.JobOrderId = jo.JodOrderId
+Order BY (parts.MobilePartName+'#' + Cast(tstock.UsedQty as nvarchar(20))) For XML PATH('')) as nvarchar(MAX)) 'PartsName',
+
+Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
+Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
+Where jop.JobOrderId = jo.JodOrderId 
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,jo.TSRemarks,
+--ts.Name ,
+jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus,
 (Select UserName  from tblJobOrders job
-Inner Join [ControlPanel].dbo.tblApplicationUsers app on job.CUserId = app.UserId where job.JodOrderId=jo.JodOrderId) 'CloseUser'
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on job.CUserId = app.UserId where job.JodOrderId=jo.JodOrderId) 'CloseUser',
+
+(Select Top 1 UserName 'TSName' from tblJobOrderTS jts
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on jts.TSId = app.UserId
+Where jts.JodOrderId = jo.JodOrderId 
+Order By JTSId desc) 'TSName',
+
+(Select top 1 SignOutDate from tblJobOrderTS jt
+Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
+Where jt.JodOrderId = jo.JodOrderId and j.TsRepairStatus='REPAIR AND RETURN' Order by jt.JTSId desc) 'RepairDate'
+
 from tblJobOrders jo
 Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
 Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
+Inner Join [Configuration].dbo.tblBrandSS bn on de.BrandId=bn.BrandId
 
-Where 1 = 1 and jo.JodOrderId={0} and jo.OrganizationId={1} and jo.BranchId={2}) tbl Order By EntryDate desc", jobOrderId, orgId, branchId)).FirstOrDefault();
+Where jo.JodOrderId={0} and  jo.OrganizationId={1} and jo.BranchId={2}) tbl Order By EntryDate desc", jobOrderId, orgId, branchId)).FirstOrDefault();
             return data;
         }
     }

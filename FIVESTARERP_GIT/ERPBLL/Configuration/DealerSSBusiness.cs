@@ -36,7 +36,12 @@ namespace ERPBLL.Configuration
 
         public DealerSS GetDealerById(long dealerId, long orgId)
         {
-            return dealerSSRepository.GetOneByOrg(d => d.DealerId == d.DealerId && d.OrganizationId == orgId);
+            return dealerSSRepository.GetOneByOrg(d => d.DealerId == dealerId && d.OrganizationId == orgId);
+        }
+
+        public DealerSS GetDealerByMobile(string mobile, long orgId)
+        {
+            return dealerSSRepository.GetOneByOrg(d => d.MobileNo == mobile && d.OrganizationId == orgId);
         }
 
         public bool IsDuplicateDealer(string mobile, long id, long orgId)

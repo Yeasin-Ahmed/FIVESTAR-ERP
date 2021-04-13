@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ERPBO.FrontDesk.DomainModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -94,5 +95,12 @@ namespace ERPBO.FrontDesk.DTOModels
         public long? CSColor { get; set; }
         public string CSModelName { get; set; }
         public string CSColorName { get; set; }
+        public string MultipleJobOrderCode { get; set; }
+        public string JobSource { get; set; }
+        public string AccessoriesId { get; set; }
+        public string ProblemId { get; set; }
+        public ICollection<JobOrderAccessories> JobOrderAccessories { get; set; }
+        public ICollection<JobOrderProblem> JobOrderProblems { get; set; }
+        public int RefeTimes { get; set; }
     }
 }

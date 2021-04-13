@@ -30,6 +30,16 @@
                 <div class="card-body shadow">
                     <div class="row text-sm">
                         <div class="col-md-2">
+                            <label for="txtAddress" class="control-label font-weight-bold">Job Entry Date<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
+                            <div class="input-group input-group-sm ">
+                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date" />
+                                <div class="input-group-prepend cursor-pointer remove-date dptJobEntryDate" style="cursor:pointer">
+                                    <span class="input-group-text">&#10008;</span>
+                                </div>
+                            </div>
+                            <span class="error hide require-JobentryDate font-weight-bold">Jobentrydate No is required !</span>
+                        </div>
+                        <div class="col-md-2">
                             <label for="ddlDealerName" class="control-label font-weight-bold">Dealer Name<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlDealerName", (IEnumerable<SelectListItem>)ViewBag.ddlDealerName, "--Select One--", new { @class = "form-control form-control-sm select2 select2-danger" })
                             <span class="error hide require-delar font-weight-bold">Delar name is required !</span>
@@ -52,16 +62,6 @@
                             <label for="txtCourierNumber" class="control-label font-weight-bold">Courier Number</label>
                             <input type="text" class="form-control form-control-sm disabled" id="txtCourierNumber" />
                         </div>
-                        <div class="col-md-2">
-                            <label for="txtAddress" class="control-label font-weight-bold" style="visibility:hidden">Addresssssssssssssssssss<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <div class="input-group input-group-sm ">
-                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptJobEntryDate" placeholder="Job Entry Date" />
-                                <div class="input-group-prepend cursor-pointer remove-date dptJobEntryDate" style="cursor:pointer">
-                                    <span class="input-group-text">&#10008;</span>
-                                </div>
-                            </div>
-                            <span class="error hide require-JobentryDate font-weight-bold">Jobentrydate No is required !</span>
-                        </div>
                     </div>
                     <div class="row text-sm">
                         <div class="col-md-2">
@@ -76,14 +76,17 @@
                         </div>
                         <div class="col-md-2">
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <input type="number" class="form-control form-control-sm" id="txtIMEI" placeholder="Input IMEI1" />
+                            <input type="number" 
+                                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="15"
+                                   class="form-control form-control-sm" 
+                                   id="txtIMEI" placeholder="Input IMEI1"  />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
                             <span class="error hide require-len-IMEI font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
                         </div>
                         <div class="col-md-2">
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <input type="number" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
+                            <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="15" class="form-control form-control-sm" id="txtIMEI2" placeholder="Input IMEI2" />
                             <span class="error hide require-IMEI2 font-weight-bold">Mobile IMEI2 is required !</span>
                             <span class="error hide require-len-IMEI2 font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI2 font-weight-bold">Already This IMEI2 Job Pending !</span>
@@ -112,20 +115,18 @@
                             <span class="error hide require-accessories font-weight-bold">Accessories is required !</span>
                         </div>
                         <div class="col-md-2">
-                            <label for="txtApproxBill" class="control-label font-weight-bold">ApproxBill</label>
-                            <input type="text" class="form-control form-control-sm disabled" id="txtApproxBill" />
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" class="form-control form-control-sm" id="txtRemarks" />
                         </div>
                         <div class="col-md-2">
                             <label for="ddlJobSource" class="control-label font-weight-bold">Source<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             @Html.DropDownList("ddlJobSource", (IEnumerable<SelectListItem>)ViewBag.ddlJobSource, "--Select Source--", new { @class = "form-control form-control-sm ctrl-changed" })
                             <span class="error hide require-Source font-weight-bold">Source is required !</span>
                         </div>
-                        <div class="col-md-2">
-                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
-                            <input type="text" class="form-control form-control-sm" id="txtRemarks" />
+                        <div class="col-md-2" id="divApproxBill">
+                            <label for="txtApproxBill" class="control-label font-weight-bold">Approx Bill</label>
+                            <input type="text" class="form-control form-control-sm disabled" id="txtApproxBill" />
                         </div>
-                    </div>
-                    <div class="row text-sm">
                         <div class="col-md-2" id="warrantydate">
                             <label class="control-label font-weight-bold">Warranty Start Date</label>
                             <div class="input-group input-group-sm ">
@@ -137,7 +138,10 @@
                             <span class="error hide require-warranty font-weight-bold">Warranty is required !</span>
                             <span class="error hide not-warranty font-weight-bold">Warranty is not available !</span>
                         </div>
-                        <div class="col-md-2" id="chkWarrantyPaper">
+                    </div>
+                    <div class="row text-sm">
+                        
+                        <div class="col-md-2 hide" id="chkWarrantyPaper">
                             <label for="" style="visibility:hidden;">Enclosed</label>
                             <div class="form-control form-control-sm clearfix">
                                 <b>W. Paper?</b>
@@ -153,7 +157,7 @@
                     <br />
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblMultipleJobOrder">
+                            <table class="table table-bordered table-sm table-striped table-responsive-lg" id="tblMultipleJobOrder" style="overflow-y:scroll">
                                 <thead>
                                     <tr class="btn-dark text-center">
                                         <th style="vertical-align:middle">#SL</th>
@@ -170,10 +174,10 @@
                                         <th style="vertical-align:middle" class="hide"></th>
                                         <th style="vertical-align:middle">Accessories</th>
                                         <th style="vertical-align:middle">ApproxBill</th>
+                                        <th style="vertical-align:middle">Source</th>
                                         <th style="vertical-align:middle">Remarks</th>
                                         <th style="vertical-align:middle">Warrenty</th>
-                                        <th style="vertical-align:middle">W Paper</th>
-                                        <th style="vertical-align:middle">Source</th>
+                                        <th style="vertical-align:middle">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -194,7 +198,6 @@
         var txtMobileNumber = $("#txtMobileNumber");
         var txtAddress = $("#txtAddress");
         var ddlDescriptions = $("#ddlDescriptions");
-        var ddlAccessories = $("#ddlAccessories");
         var ddlProblems = $("#ddlProblems");
         var chkIsWarrentyAvailable = $("#chkIsWarrentyAvailable");
         var rdnEnclosedYes = $("#enclosedYes");
@@ -213,7 +216,7 @@
         var dptWarrantyEndDate = $("#dptWarrantyEndDate");
         var dptJobEntryDate = $("#dptJobEntryDate");
         var txtIMEI2 = $("#txtIMEI2");
-        var hdfJobOrderId = $("#hdfJobOrderId");
+        
         var chkWarrantyPaper = $("#chkWarrantyPaper");
         var ddlJobOrderType = $("#ddlJobOrderType");
         var ddlCustomerType = $("#ddlCustomerType");
@@ -226,6 +229,8 @@
         var handsetDAP = $("#handsetDAP");
         var ddlDealerName = $("#ddlDealerName");
         var ddlJobSource = $("#ddlJobSource");
+        var hdfJobOrderId = 0;
+
         $(document).ready(function () {
             var date = new Date();
             //var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -234,7 +239,9 @@
             ////alert(date.getDate());
             $("#warrantydate").hide();
             $("#chkWarrantyPaper").hide();
-
+            $("#divApproxBill").hide();
+            $("#ddlAccessories").attr("data-placeholder", "Select Accessories");
+            $("#ddlProblems").attr("data-placeholder", "Select Symptom");
             //Initialize Select2 Elements
             $('.select2').select2();
 
@@ -287,41 +294,267 @@
                     consoleLog(error);
                 })
             }
+            disable("#txtMobileNumber");
+            disable("#txtAddress");
         });
         //show hide
         $('#ddlJobOrderType').change(function () {
             if ($('#ddlJobOrderType').val() == 'Warrenty') {
                 $("#warrantydate").show();
-                $("#chkWarrantyPaper").show();
+                $("#chkWarrantyPaper").hide();
+                $("#divApproxBill").hide();
             }
             else {
                 $("#warrantydate").hide();
                 $("#chkWarrantyPaper").hide();
+                $("#divApproxBill").show();
             }
         });
+        function validateForm() {
+            var isValid = true;
+            $(".error").addClass('hide');
+
+            if (txtCustomer.val() === "") {
+                $(".require-customer").removeClass("hide");
+                isValid = false;
+            }
+            if (txtMobileNumber.val() === "") {
+                $(".require-mobile").removeClass("hide");
+                isValid = false;
+            }
+            if (txtAddress.val() === "") {
+                $(".require-address").removeClass("hide");
+                isValid = false;
+            }
+            
+            if (ddlDescriptions.val() === "") {
+                $(".require-modelName").removeClass("hide");
+                isValid = false;
+            }
+            if (txtIMEI.val().length !== 15) {
+                $(".require-len-IMEI").removeClass("hide");
+                isValid = false;
+            } 
+            //if (txtIMEI2.val().length !== 15) {
+            //    $(".require-len-IMEI2").removeClass("hide");
+            //    isValid = false;
+            //} 
+            if (txtIMEI.val() === "") {
+                $(".require-IMEI").removeClass("hide");
+                isValid = false;
+            } else {
+
+                if (ajaxBooleanChecker(JSON.stringify({ iMEI: txtIMEI.val().trim(), jobOrdeId: 0 }), '/Common2/IsIMEIExistWithRunningJobOrder', getToken()) == true) {
+                    $(".duplicate-IMEI").removeClass("hide");
+                    isValid = false;
+                }
+            }
+            
+            //if (txtIMEI2.val() === "") {
+            //    $(".require-IMEI2").removeClass("hide");
+            //    isValid = false;
+            //} else {
+            //    if (ajaxBooleanChecker(JSON.stringify({ iMEI2: txtIMEI2.val().trim(), jobOrdeId: 0 }), '/Common2/IsIMEI2ExistWithRunningJobOrder', getToken()) == true) {
+            //        $(".duplicate-IMEI2").removeClass("hide");
+            //        isValid = false;
+            //    }
+            //}
+            if (ddlPhoneTypes.val() === "") {
+                $(".require-Type").removeClass("hide");
+                isValid = false;
+            }
+            //if (ddlModelColor.val() === "") {
+            //    $(".require-ModelColor").removeClass("hide");
+            //    isValid = false;
+            //}
+            if (ddlJobOrderType.val() === "") {
+                $(".require-type").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlJobSource.val() === "") {
+                $(".require-Source").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlDealerName.val() === "") {
+                $(".require-delar").removeClass("hide");
+                isValid = false;
+            }
+            if (dptJobEntryDate.val() === "") {
+                $(".require-JobentryDate").removeClass("hide");
+                isValid = false;
+            }
+            
+            if (ddlProblems.val().length === 0) {
+                $(".require-problem").removeClass("hide");
+                isValid = false;
+            }
+            if (ddlAccessories.val().length === 0) {
+                $(".require-accessories").removeClass("hide");
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        
+
         $("#btnAddToList").click(function (e) {
             e.preventDefault()
-            disable("#ddlDealerName");
-            disable("#txtMobileNumber");
-            disable("#txtAddress");
-            disable("#txtCourierName");
-            disable("#txtCourierNumber");
-            var sl = $("#tblMultipleJobOrder tbody tr").length;
-            var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>";
-            var td2 = "<td class='hide'>" + ddlDescriptions.val() + "</td>";
-            var td3 = "<td>" + $("#ddlDescriptions option:selected").text() + "</td>";
-            var td4 = "<td class='text-center'>" + ddlPhoneTypes.val() + "</td>";
-            var td5 = "<td class='text-center'>" + txtIMEI.val() + "</td>";
-            var td6 = "<td class='text-center'>" + txtIMEI2.val() + "</td>";
-            var td7 = "<td class='hide'>" + ddlModelColor.val() + "</td>";
-            var td8 = "<td>" + $("#ddlModelColor option:selected").text() + "</td>";
-            var td9 = "<td class='text-center'>" + ddlJobOrderType.val() + "</td>";
-            var td10 = "<td>" + $("#ddlProblems option:selected").text() + "</td>";
-            var td11 = "<td>" + $("#ddlAccessories option:selected").text() + "</td>";
+            if (validateForm() == true) {
 
-            var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + "</tr>";
-            $("#tblMultipleJobOrder tbody").append(tr);
+                var aryProblems = []; //aryProblems.length = 0;
+                var problems = ddlProblems.val();
+                aryProblems.push(problems);
+
+                var aryAccessories = []; aryAccessories.length = 0;
+                var accessories = ddlAccessories.val();
+                aryAccessories.push(accessories);
+
+
+                disable("#ddlDealerName");
+                disable("#txtMobileNumber");
+                disable("#txtAddress");
+                disable("#txtCourierName");
+                disable("#txtCourierNumber");
+                var sl = $("#tblMultipleJobOrder tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>";
+                var td2 = "<td class='hide'>" + ddlDescriptions.val() + "</td>";
+                var td3 = "<td>" + $("#ddlDescriptions option:selected").text() + "</td>";
+                var td4 = "<td class='text-center'>" + ddlPhoneTypes.val() + "</td>";
+                var td5 = "<td class='text-center'>" + txtIMEI.val() + "</td>";
+                var td6 = "<td class='text-center'>" + txtIMEI2.val() + "</td>";
+                var td7 = "<td class='hide'>" + ddlModelColor.val() + "</td>";
+                var td8 = "<td>" + $("#ddlModelColor option:selected").text() + "</td>";
+                var td9 = "<td class='text-center'>" + ddlJobOrderType.val() + "</td>";
+                var td10 = "<td class='hide'>" + aryProblems + "</td>";
+                var td11 = "<td>" + $("#ddlProblems option:selected").text() + "</td>";
+                var td12 = "<td class='hide'>" + aryAccessories + "</td>";
+                var td13 = "<td>" + $("#ddlAccessories option:selected").text(); + "</td>";
+                var td14 = "<td class='text-center'>" + txtApproxBill.val() + "</td>";
+                var td15 = "<td class='text-center'>" + ddlJobSource.val() + "</td>";
+                var td16 = "<td class='text-center'>" + txtRemarks.val() + "</td>";
+                var td17 = "<td class='text-center'>" + dptWarrantyDate.val() + "</td>";
+                var td18 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del'><i class='far fa-trash-alt'></i> Delete</a></td>";
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + td12 + td13 + td14 + td15 + td16 + td17 + td18 + "</tr>";
+                $("#tblMultipleJobOrder tbody").append(tr);
+                clearCtrl();
+            }
         });
 
+        function clearCtrl() {
+            ddlDescriptions.val('');
+            ddlDescriptions.trigger("change");
+            ddlPhoneTypes.val('');
+            ddlPhoneTypes.trigger("change");
+            txtIMEI.val('');
+
+            txtIMEI2.val('');
+            ddlModelColor.val('');
+            ddlModelColor.trigger("change");
+            ddlJobOrderType.val('');
+            ddlJobOrderType.trigger("change");
+            ddlAccessories.val([]);
+            ddlAccessories.trigger("change");
+            ddlProblems.val([]);
+            ddlProblems.trigger("change");
+            txtApproxBill.val('');
+            ddlJobSource.val('');
+            ddlJobSource.trigger("change");
+            txtRemarks.val('');
+            dptWarrantyDate.val('');
+        }
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblMultipleJobOrder tbody", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblMultipleJobOrder", index);
+                };
+            }));
+        })
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if ($("#tblMultipleJobOrder tbody tr").length > 0)
+            {
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result === true)
+                    {
+                        disable("#btnSubmit");
+                        var reqData = [];
+                        reqData.length = 0;
+                        //var accesslist = []; accesslist.length = 0;
+                        //var problemlist = []; problemlist.length = 0;
+                        $.each($("#tblMultipleJobOrder tbody tr"), function (index, item) {
+                            var td = $(this).children('td');
+                            reqData.push({
+                                EntryDate: dptJobEntryDate.val(),
+                                DealerId: ddlDealerName.val(),
+                                Address: txtAddress.val(),
+                                MobileNo: txtMobileNumber.val(),
+                                CourierName: txtCourierName.val(),
+                                CourierNumber: txtCourierNumber.val(),
+                                DescriptionId: td.eq(1).html(),
+                                Type: td.eq(3).html(),
+                                IMEI: td.eq(4).html(),
+                                IMEI2: td.eq(5).html(),
+                                ModelColor: td.eq(7).html(),
+                                JobOrderType: td.eq(8).html(),
+                                ApproxBill: td.eq(13).html(),
+                                JobSource: td.eq(14).html(),
+                                Remarks: td.eq(15).html(),
+                                WarrantyDate: td.eq(16).html(),
+                                AccessoriesId: td.eq(11).html(),
+                                ProblemId: td.eq(9).html(),
+
+                            });
+                            //problemlist.push({
+                            //    ProblemId: td.eq(9).html(),
+                            //});
+
+                            //accesslist.push({
+                            //    AccessoriesId: td.eq(11).html(),
+                            //});
+                           
+                        })
+                        //reqData.push.JobOrderAccessories = accesslist;
+                        //reqData.push.JobOrderProblems = problemlist;
+                        data = JSON.stringify({ jobOrder: reqData/*, jobOrderProblems:problemlist,jobOrderAccessories: accesslist*/});
+                        console.log(data);
+                        //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/FrontDesk/SaveMultipleJobOrders', data, getToken())).then(function (res, status)
+                        {
+                            if (res.isSuccess === true && status === "success") {
+                                    $('.toastrDefaultSuccess').trigger('click');
+
+                                    var pdfWindow = window.open("", "_blank")
+                                    console.log(res.text);
+                                    pdfWindow.document.write("<embed  width='100%' height='100%' src='" + res.text + "'></embed >"); // Preview
+                                    //download(res.text, "DeliveryChallan", "application/pdf"); // Download
+
+                                    count = 0;
+                                    setTimeout(function () {
+                                        redirectPage('@Url.Action("GetJobOrders")');
+                                    }, 1000);
+
+                                }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                            }
+                            enable("#btnSubmit");
+                        }).fail(function (error) {
+                            alert(execuStatus.fail);
+                            enable("#btnSubmit");
+                        })
+                    }
+                })
+            }
+        })
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
     </script>
     }

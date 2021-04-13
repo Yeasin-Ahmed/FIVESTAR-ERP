@@ -82,5 +82,10 @@ namespace ERPBLL.FrontDesk.Interface
         ExecutionStateWithText SaveJobOrderMDelivey(long[] jobOrders, long userId, long orgId, long branchId);
         IEnumerable<JobOrderDTO> GetMultipleJobDeliveryChalan(string deliveryCode, long branchId, long orgId);
         bool UpdateQCTransferStatus(long jobOrderId, long orgId, long branchId, long userId);
+
+        ExecutionStateWithText SaveMultipleJobOrderWithReport(List<JobOrderDTO> jobOrders, long userId, long orgId, long branchId);
+
+        IEnumerable<JobOrderDTO> GetMultipleJobReceipt(string multipleJobCode,long orgId, long branchId);
+        IEnumerable<JobOrderDTO> GetRefeNumberCount(string imei, long branchId, long orgId);
     }
 }

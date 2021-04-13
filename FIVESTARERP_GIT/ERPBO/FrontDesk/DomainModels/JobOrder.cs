@@ -35,8 +35,8 @@ namespace ERPBO.FrontDesk.DomainModels
         public Nullable<DateTime> EntryDate { get; set; }
         public long? UpUserId { get; set; }
         public Nullable<DateTime> UpdateDate { get; set; }
-        public ICollection<JobOrderAccessories> JobOrderAccessories { get; set; }
-        public ICollection<JobOrderProblem> JobOrderProblems { get; set; }
+        public List<JobOrderAccessories> JobOrderAccessories { get; set; }
+        public List<JobOrderProblem> JobOrderProblems { get; set; }
         public ICollection<JobOrderFault> JobOrderFaults { get; set; }
         public ICollection<JobOrderService> JobOrderServices { get; set; }
         public long? BranchId { get; set; }
@@ -81,5 +81,8 @@ namespace ERPBO.FrontDesk.DomainModels
         public string CSIMEI2 { get; set; }
         public long? CSModel { get; set; }
         public long? CSColor { get; set; }
+        public string MultipleJobOrderCode { get; set; }
+        public string JobSource { get; set; }
+
     }
 }

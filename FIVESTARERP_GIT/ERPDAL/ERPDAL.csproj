@@ -504,6 +504,10 @@
     <Compile Include="FrontDeskContextMigrations\202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.Designer.cs">
       <DependentUpon>202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.cs" />
+    <Compile Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.Designer.cs">
+      <DependentUpon>202104050629469_FrontDesk_JobOrderMultipleCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -1260,6 +1264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.resx">
       <DependentUpon>202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.resx">
+      <DependentUpon>202104050629469_FrontDesk_JobOrderMultipleCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

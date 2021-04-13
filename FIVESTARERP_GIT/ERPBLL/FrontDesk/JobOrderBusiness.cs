@@ -27,9 +27,10 @@ namespace ERPBLL.FrontDesk
         private readonly IJobOrderReportBusiness _jobOrderReportBusiness;
         private readonly IBranchBusiness _branchBusiness;
         private readonly IHandSetStockBusiness _handSetStockBusiness;
+        private readonly IDealerSSBusiness _dealerSSBusiness;
         //private readonly IJobOrderTSBusiness _jobOrderTSBusiness;
 
-        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IBranchBusiness branchBusiness, IHandSetStockBusiness handSetStockBusiness)
+        public JobOrderBusiness(IFrontDeskUnitOfWork frontDeskUnitOfWork, IJobOrderAccessoriesBusiness jobOrderAccessoriesBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderReportBusiness jobOrderReportBusiness, IBranchBusiness branchBusiness, IHandSetStockBusiness handSetStockBusiness, IDealerSSBusiness dealerSSBusiness)
         {
             this._frontDeskUnitOfWork = frontDeskUnitOfWork;
             this._jobOrderRepository = new JobOrderRepository(this._frontDeskUnitOfWork);
@@ -40,6 +41,7 @@ namespace ERPBLL.FrontDesk
             this._jobOrderReportBusiness = jobOrderReportBusiness;
             this._branchBusiness = branchBusiness;
             this._handSetStockBusiness = handSetStockBusiness;
+            this._dealerSSBusiness = dealerSSBusiness;
 
         }
 
@@ -430,6 +432,7 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
                     IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed,
                     IsHandset= jobOrderDto.IsHandset,
                     EntryDate = jobOrderDto.EntryDate,
+                    JobSource= jobOrderDto.JobSource,
                     EUserId = userId,
                     OrganizationId = orgId,
                     StateStatus = JobOrderStatus.JobInitiated,
@@ -514,6 +517,7 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
                 jobOrderDb.IsWarrantyAvailable = jobOrderDto.IsWarrantyAvailable;
                 jobOrderDb.IsWarrantyPaperEnclosed = jobOrderDto.IsWarrantyPaperEnclosed;
                 jobOrderDb.IsHandset = jobOrderDto.IsHandset;
+                jobOrderDb.JobSource = jobOrderDto.JobSource;
                 jobOrderDb.UpUserId = userId;
                 jobOrderDb.UpdateDate = DateTime.Now;
 
@@ -2078,6 +2082,162 @@ where MultipleDeliveryCode='{0}' and jo.BranchId={1} and jo.OrganizationId={2}) 
                 _jobOrderRepository.Update(jobOrderInDb);
             }
             return _jobOrderRepository.Save();
+        }
+
+        public ExecutionStateWithText SaveMultipleJobOrderWithReport(List<JobOrderDTO> jobOrders, long userId, long orgId, long branchId)
+        {
+            ExecutionStateWithText executionState = new ExecutionStateWithText();
+            var branchShortName = _branchBusiness.GetBranchOneByOrgId(branchId, orgId).ShortName;
+            var multiplejobCode = (branchShortName + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.ToString("hh") + DateTime.Now.ToString("mm") + DateTime.Now.ToString("ss"));
+            //bool IsSuccess = false;
+            List<JobOrder> jobOrderslist = new List<JobOrder>();
+            foreach(var job in jobOrders)
+            {
+
+                String[] values = job.AccessoriesId.Split(',');
+                String[] values2 = job.ProblemId.Split(',');
+                var dealer = _dealerSSBusiness.GetDealerByMobile(job.MobileNo,orgId);
+                
+                if (job.JodOrderId == 0)
+                {
+                    JobOrder jobOrder = new JobOrder()
+                    {
+                        CustomerName = dealer.DealerName,
+                        MobileNo = job.MobileNo,
+                        Address = job.Address,
+                        IMEI=job.IMEI,
+                        IMEI2=job.IMEI2,
+                        Type=job.Type,
+                        CustomerType="Dealer",
+                        MultipleJobOrderCode= multiplejobCode,
+                        ModelColor =job.ModelColor,
+                        DescriptionId=job.DescriptionId,
+                        JobOrderType=job.JobOrderType,
+                        JobLocation=branchId,
+                        Remarks=job.Remarks,
+                        CourierName=job.CourierName,
+                        CourierNumber=job.CourierNumber,
+                        ApproxBill=job.ApproxBill,
+                        StateStatus= JobOrderStatus.JobInitiated,
+                        JobSource=job.JobSource,
+                        EntryDate=job.EntryDate,
+                        BranchId=branchId,
+                        OrganizationId=orgId,
+                        EUserId=userId,
+                    };
+                    if (jobOrder.JobOrderType == "Warrenty")
+                    {
+                        jobOrder.WarrantyDate = job.WarrantyDate.Value.Date;
+                        //jobOrder.WarrantyEndDate = jobOrderDto.WarrantyEndDate.Value.Date;
+                    }
+
+                    
+
+                    List<JobOrderAccessories> listJobOrderAccessories = new List<JobOrderAccessories>();
+                    foreach (var item in values)
+                    {
+                        JobOrderAccessories jobOrderAccessories = new JobOrderAccessories
+                        {
+                            AccessoriesId = Convert.ToInt64(item),
+                            EntryDate = DateTime.Now,
+                            EUserId = userId,
+                            OrganizationId = orgId
+                        };
+                        listJobOrderAccessories.Add(jobOrderAccessories);
+                    }
+                    jobOrder.JobOrderAccessories = listJobOrderAccessories;
+
+                    List<JobOrderProblem> listjobOrderProblems = new List<JobOrderProblem>();
+                    foreach (var item in values2)
+                    {
+                        JobOrderProblem jobOrderProblem = new JobOrderProblem
+                        {
+                            ProblemId = Convert.ToInt64(item),
+                            EntryDate = DateTime.Now,
+                            EUserId = userId,
+                            OrganizationId = orgId
+                        };
+                        listjobOrderProblems.Add(jobOrderProblem);
+                    }
+                    jobOrder.JobOrderProblems = listjobOrderProblems;
+
+                    string jobOrderCode = branchShortName + "-" + GetJobOrderSerial(orgId, branchId).PadLeft(7, '0'); // 0000001
+                    jobOrder.JobOrderCode = jobOrderCode;
+                    _jobOrderRepository.Insert(jobOrder);
+                    executionState.isSuccess = _jobOrderRepository.Save();
+                } 
+
+            }// end foreach
+            executionState.text = multiplejobCode;
+            return executionState; ;
+        }
+
+        public IEnumerable<JobOrderDTO> GetMultipleJobReceipt(string multipleJobCode, long orgId, long branchId)
+        {
+            return this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
+                string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,CSModelName,CSColorName,CSIMEI1,CSIMEI2,CustomerSupportStatus,[Address],ModelName,BrandName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,
+CloseDate,TSRemarks,
+SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
+SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
+IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,bn.BrandName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,mo.ModelName'CSModelName',co.ColorName'CSColorName',jo.CSIMEI1,jo.CSIMEI2,jo.CustomerSupportStatus,
+
+Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
+Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
+Where jof.JobOrderId = jo.JodOrderId
+Order BY FaultName For XML PATH('')) as nvarchar(MAX))  'FaultName',
+
+Cast((Select ServiceName+',' From [Configuration].dbo.tblServices ser
+Inner Join tblJobOrderServices jos on ser.ServiceId = jos.ServiceId
+Where jos.JobOrderId = jo.JodOrderId
+Order BY ServiceName For XML PATH('')) as nvarchar(MAX))  'ServiceName',
+
+Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
+Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
+Where joa.JobOrderId = jo.JodOrderId
+Order BY AccessoriesName For XML PATH('')) as nvarchar(MAX))  'AccessoriesNames',
+
+Cast((Select  (parts.MobilePartName+' (Qty-' + Cast(tstock.UsedQty as nvarchar(20)))+')'+',' from [FrontDesk].dbo.tblTechnicalServicesStock tstock
+inner join [Configuration].dbo.tblMobileParts parts
+on tstock.PartsId=parts.MobilePartId
+Where tstock.UsedQty>0 and tstock.JobOrderId = jo.JodOrderId
+Order BY (parts.MobilePartName+'#' + Cast(tstock.UsedQty as nvarchar(20))) For XML PATH('')) as nvarchar(MAX)) 'PartsName',
+
+Cast((Select ProblemName+',' From [Configuration].dbo.tblClientProblems prob
+Inner Join tblJobOrderProblems jop on prob.ProblemId = jop.ProblemId
+Where jop.JobOrderId = jo.JodOrderId 
+Order BY ProblemName For XML PATH(''))as nvarchar(MAX)) 'Problems',jo.JobOrderCode,jo.TSId,jo.TSRemarks,
+--ts.Name ,
+jo.IMEI,jo.[Type],jo.ModelColor,jo.WarrantyDate,jo.Remarks,jo.ReferenceNumber,jo.IMEI2,jo.TsRepairStatus,
+(Select UserName  from tblJobOrders job
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on job.CUserId = app.UserId where job.JodOrderId=jo.JodOrderId) 'CloseUser',
+
+(Select Top 1 UserName 'TSName' from tblJobOrderTS jts
+Inner Join [ControlPanel].dbo.tblApplicationUsers app on jts.TSId = app.UserId
+Where jts.JodOrderId = jo.JodOrderId 
+Order By JTSId desc) 'TSName',
+
+(Select top 1 SignOutDate from tblJobOrderTS jt
+Inner Join tblJobOrders j on jt.JodOrderId = j.JodOrderId
+Where jt.JodOrderId = jo.JodOrderId and (j.TsRepairStatus='REPAIR AND RETURN' or(j.TsRepairStatus='MODULE SWAP' and j.StateStatus='HandSetChange')) Order by jt.JTSId desc) 'RepairDate'
+
+from tblJobOrders jo
+Inner Join [Configuration].dbo.tblModelSS de on jo.DescriptionId = de.ModelId
+Inner Join [ControlPanel].dbo.tblApplicationUsers ap on jo.EUserId = ap.UserId
+Left Join [ControlPanel].dbo.tblBranch bb on jo.JobLocation=bb.BranchId
+Left Join [Configuration].dbo.tblBrandSS bn on de.BrandId=bn.BrandId
+Left Join [Configuration].dbo.tblModelSS mo on jo.CSModel=mo.ModelId
+Left Join [Configuration].dbo.tblColorSS co on jo.CSColor=co.ColorId
+
+Where 1 = 1 and jo.MultipleJobOrderCode='{0}' and jo.OrganizationId={1} and jo.BranchId={2}) tbl Order By JobOrderCode desc", multipleJobCode, orgId, branchId)).ToList();
+        }
+
+        public IEnumerable<JobOrderDTO> GetRefeNumberCount(string imei, long branchId, long orgId)
+        {
+            var data= this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
+                string.Format(@"Select * From tblJobOrders Where IMEI='{0}' and BranchId={1} and OrganizationId={2}", imei, branchId, orgId)).ToList();
+            return data;
         }
     }
 }

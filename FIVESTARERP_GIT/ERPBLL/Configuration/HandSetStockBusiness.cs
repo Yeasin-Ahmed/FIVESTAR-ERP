@@ -139,5 +139,15 @@ where hst.OrganizationId={0}", orgId)).ToList();
             }
             return _handSetStockRepository.Save();
         }
+
+        public bool IsHandsetStockIMEICheck(string imei, long orgId)
+        {
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.OrganizationId == orgId) != null ? false : true;
+        }
+
+        public bool IsHandsetCustomerPrndingIMEI(string imei, string status, long orgId)
+        {
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.StateStatus== status && s.OrganizationId == orgId) != null ? true : false;
+        }
     }
 }
