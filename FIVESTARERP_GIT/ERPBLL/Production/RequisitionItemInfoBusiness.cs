@@ -251,7 +251,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
                     var sec = Convert.ToInt32(DateTime.Now.ToString("ss"));
                     var mili = Convert.ToInt32(DateTime.Now.ToString("fffffff"));
                     var val = (year + month + day + hour + min + sec + mili + j + userId).ToString();
-                    val = val.PadLeft(10, '0');
+                    val = val.PadLeft(11, '0');
                     QRCodeTraceDTO qRCode = new QRCodeTraceDTO
                     {
                         ProductionFloorId = reqItemDto[i].FloorId,
@@ -272,7 +272,7 @@ Where 1= 1 and ri.OrganizationId={0} and ri.ReqInfoId = {1}", orgId, refNo)).ToL
                         ItemTypeName = reqItemDto[i].ItemTypeName,
                         ItemName = reqItemDto[i].ItemName,
                         ProductionFloorName = reqItemDto[i].FloorName,
-                        CodeNo = val,//(prefix + itemCount.ToString()),//reqItemDto[i].ModelName + "-" + tCode + "-" + sl.ToString(),
+                        CodeNo = 1+val,//(prefix + itemCount.ToString()),//reqItemDto[i].ModelName + "-" + tCode + "-" + sl.ToString(),
                         AssemblyId = reqItemDto[i].AssemblyLineId,
                         AssemblyLineName = reqItemDto[i].AssemblyLineName
                     };

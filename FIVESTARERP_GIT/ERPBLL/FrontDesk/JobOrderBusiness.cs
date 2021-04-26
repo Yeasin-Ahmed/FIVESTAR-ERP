@@ -1822,9 +1822,6 @@ Where 1 = 1{0} and jo.StateStatus='QC-Assigned') tbl Order By JobOrderCode desc
                     jobOrderInDb.UpUserId = userId;
                     _jobOrderRepository.Update(jobOrderInDb);
                     isSuccess = _jobOrderRepository.Save() == true;
-                   // {
-                   //     isSuccess = _jobOrderTSBusiness.UpdateJobOrderTsForQcFail(jobId, userId, orgId, branchId);
-                   // }
                 }
             }
             

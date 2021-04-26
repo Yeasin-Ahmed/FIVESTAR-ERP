@@ -4152,7 +4152,8 @@ namespace ERPWeb.Controllers
                 var dto = _faultyCaseBusiness.GetFaultyCases(User.OrgId).Select(s => new FaultyCaseDTO
                 {
                     CaseId = s.CaseId,
-                    ProblemDescription = s.ProblemDescription
+                    ProblemDescription = s.ProblemDescription,
+                    QRCode=s.QRCode
                 }).ToList();
 
                 List<FaultyCaseViewModel> viewModels = new List<FaultyCaseViewModel>();
