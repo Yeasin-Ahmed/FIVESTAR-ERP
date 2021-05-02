@@ -76,13 +76,14 @@
                         </div>
                         <div class="col-md-2">
                             <label for="txtIMEI" class="control-label font-weight-bold">IMEI1<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
-                            <input type="number" 
+                            <input type="number"
                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="15"
-                                   class="form-control form-control-sm" 
-                                   id="txtIMEI" placeholder="Input IMEI1"  />
+                                   class="form-control form-control-sm"
+                                   id="txtIMEI" placeholder="Input IMEI1" />
                             <span class="error hide require-IMEI font-weight-bold">Mobile IMEI1 is required !</span>
                             <span class="error hide require-len-IMEI font-weight-bold">Must Input 15 digit IMEI !</span>
                             <span class="error hide duplicate-IMEI font-weight-bold">Already This IMEI Job Pending !</span>
+                            <span class="error hide duplicate-IMEI1 font-weight-bold">This IMEI Job Input !</span>
                         </div>
                         <div class="col-md-2">
                             <label for="txtIMEI2" class="control-label font-weight-bold">IMEI2<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
@@ -313,7 +314,16 @@
         function validateForm() {
             var isValid = true;
             $(".error").addClass('hide');
-
+            var count = $("#tblMultipleJobOrder tbody tr").length;
+            if (count > 0) {
+                $.each($("#tblMultipleJobOrder tbody tr"), function (index, item) {
+                    var imei1 = $(this).children('td').eq(4).html();
+                    if (imei1 == txtIMEI.val()) {
+                        isValid = false;
+                        $(".duplicate-IMEI1").removeClass('hide');
+                    }
+                })
+            }
             if (txtCustomer.val() === "") {
                 $(".require-customer").removeClass("hide");
                 isValid = false;
