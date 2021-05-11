@@ -479,4 +479,20 @@ namespace ERPDAL.ProductionDAL
 
         }
     }
+    public class RepairSectionSemiFinishStockInfoRepository : ProductionBaseRepository<RepairSectionSemiFinishStockInfo>
+    {
+        public RepairSectionSemiFinishStockInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class RepairSectionSemiFinishStockDetailsRepository : ProductionBaseRepository<RepairSectionSemiFinishStockDetails>
+    {
+        public RepairSectionSemiFinishStockDetailsRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class RepairSectionSemiFinishTransferInfoRepository : ProductionBaseRepository<RepairSectionSemiFinishTransferInfo>
+    {
+        public RepairSectionSemiFinishTransferInfoRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
+    public class RepairSectionSemiFinishTransferDetailsRepository : ProductionBaseRepository<RepairSectionSemiFinishTransferDetails>
+    {
+        public RepairSectionSemiFinishTransferDetailsRepository(IProductionUnitOfWork productionUnitOfWork) : base(productionUnitOfWork) { }
+    }
 }

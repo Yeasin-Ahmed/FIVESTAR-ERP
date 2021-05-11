@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.QRCodeTransferToRepairInfoViewModel>
+@{ 
+    int sl = 0;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-responsive-lg table-striped text-sm tblRepairSectionQRCodeList" id="tblRepairSectionQRCodeList">
+            <thead class="btn-dark text-center">
+                <tr>
+                    <th class="hide"></th>
+                    <th style="vertical-align:central">
+                        <input type="checkbox" name="allQRCode" id="allQRCode" />
+                    </th>
+                    <th>#SL</th>
+                    <th>Floor</th>
+                    <th>QC Line</th>
+                    <th>Repair-Line</th>
+                    <th>QRCode</th>
+                    <th>Model</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                <tr>
+                    <td class="hide">@item.QRTRInfoId</td>
+                    <td class="btn-dark text-center" style="vertical-align:central">
+                        <input type="checkbox" name="QRCodes" data-item-val="@item.QRTRInfoId" data-code-val="@item.QRTRInfoId" />
+                    </td>
+                    <td class="text-center text-bold">@sl</td>
+                    <td>@item.FloorName</td>
+                    <td>@item.QCLineName</td>
+                    <td>@item.RepairLineName</td>
+                    <td>@item.QRCode</td>
+                    <td class="text-center">@item.ModelName</td>
+                    <td class="text-center">@item.StateStatus</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

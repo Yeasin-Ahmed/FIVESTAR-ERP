@@ -837,6 +837,14 @@
     <Compile Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.Designer.cs">
       <DependentUpon>202103250815287_Production_tblLotIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202105050625539_Production_RepairSectionSemiFinishStock.cs" />
+    <Compile Include="ProductionContextMigrations\202105050625539_Production_RepairSectionSemiFinishStock.Designer.cs">
+      <DependentUpon>202105050625539_Production_RepairSectionSemiFinishStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202105050916145_Production_RepairSectionSemiFinishTransfer.cs" />
+    <Compile Include="ProductionContextMigrations\202105050916145_Production_RepairSectionSemiFinishTransfer.Designer.cs">
+      <DependentUpon>202105050916145_Production_RepairSectionSemiFinishTransfer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -1507,6 +1515,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.resx">
       <DependentUpon>202103250815287_Production_tblLotIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202105050625539_Production_RepairSectionSemiFinishStock.resx">
+      <DependentUpon>202105050625539_Production_RepairSectionSemiFinishStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202105050916145_Production_RepairSectionSemiFinishTransfer.resx">
+      <DependentUpon>202105050916145_Production_RepairSectionSemiFinishTransfer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.resx">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>

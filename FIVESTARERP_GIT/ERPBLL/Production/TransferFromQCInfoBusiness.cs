@@ -164,11 +164,11 @@ namespace ERPBLL.Production
                         }
                         if (_transferFromQCInfoRepository.Save())
                         {
-                            if (_repairLineStockDetailBusiness.SaveRepairLineStockIn(stockDetails, userId, orgId))
-                            {
+                            //if (_repairLineStockDetailBusiness.SaveRepairLineStockIn(stockDetails, userId, orgId))
+                            //{
                                 IsSuccess = _repairItemStockDetailBusiness.SaveRepairItemStockIn(repairStocks, userId, orgId);
                                
-                            }
+                            //}
                         }
                     }
                 }

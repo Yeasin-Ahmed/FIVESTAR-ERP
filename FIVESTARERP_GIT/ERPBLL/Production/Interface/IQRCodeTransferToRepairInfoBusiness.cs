@@ -22,5 +22,10 @@ namespace ERPBLL.Production.Interface
         Task<QRCodeTransferToRepairInfo> GetQRCodeTransferToRepairInfoByIdAsync(long id, long orgId);
         bool IsQRCodeExistInTransferWithStatus(string qrCode, string status, long orgId);
         IEnumerable<QRCodeTransferToRepairInfoDTO> GetQRCodeTransferToRepairInfosByQuery(long? floorId, long? assemblyId, long? qcLineId, long? repairLineId, string qrCode,string transferCode ,string status, string date, long? userId, long orgId);
+        IEnumerable<QRCodeTransferToRepairInfoDTO> GetRepairSectionReceiveQRCode(long? modelId, long orgId, long? lineId, long? qclineId, long? repairlineId);
+        QRCodeTransferToRepairInfo GetOneByQRCodeById(long qrId, long orgId);
+        bool QRCodeUpdateStatus(long[] qrCodes, long orgId,long userId);
+        bool QRCodeStatusUpdate(string qrCode, long userId, long orgId);
+        IEnumerable<QRCodeTransferToRepairInfo> GetQRCodeByQRCode(string qrCode,string status, long orgId);
     }
 }

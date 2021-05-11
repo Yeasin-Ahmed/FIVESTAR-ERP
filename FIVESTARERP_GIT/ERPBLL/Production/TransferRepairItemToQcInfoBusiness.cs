@@ -342,8 +342,8 @@ namespace ERPBLL.Production
                 if (await _repairItemStockDetailBusiness.SaveRepairItemStockOutAsync(repairItemStocks, user, orgId))
                 {
 
-                    if (await _repairLineStockDetailBusiness.SaveRepairLineStockOutAsync(repairLineStocks, user, orgId, string.Empty))
-                    {
+                    //if (await _repairLineStockDetailBusiness.SaveRepairLineStockOutAsync(repairLineStocks, user, orgId, string.Empty))
+                    //{
                         if (transferInfo.TRQInfoId > 0)
                         {
                             _transferRepairItemToQcInfoRepository.Update(transferInfo);
@@ -362,7 +362,7 @@ namespace ERPBLL.Production
 
                         return await _transferRepairItemToQcInfoRepository.SaveAsync();
                     }
-                }
+                //}
             }
             return false;
         }

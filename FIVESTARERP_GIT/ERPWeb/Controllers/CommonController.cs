@@ -67,6 +67,7 @@ namespace ERPWeb.Controllers
         private readonly IIMEITransferToRepairInfoBusiness _iMEITransferToRepairInfoBusiness;
         private readonly IPackagingFaultyStockInfoBusiness _packagingFaultyStockInfoBusiness;
         private readonly IPackagingFaultyStockDetailBusiness _packagingFaultyStockDetailBusiness;
+        private readonly IRepairSectionSemiFinishStockInfoBusiness _repairSectionSemiFinishStockInfoBusiness;
         #endregion
 
         #region ControlPanel
@@ -87,7 +88,7 @@ namespace ERPWeb.Controllers
         private readonly IDealerBusiness _dealerBusiness;
         #endregion
 
-        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIMEITransferToRepairInfoBusiness iMEITransferToRepairInfoBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness,IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness, ERPBLL.Inventory.Interface.IColorBusiness colorBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, ISalesRepresentativeBusiness salesRepresentativeBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness brandCategoriesBusiness, ERPBLL.Inventory.Interface.IModelColorBusiness modelColorBusiness, IDealerBusiness dealerBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness categoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness brandBusiness)
+        public CommonController(IWarehouseBusiness warehouseBusiness, IItemTypeBusiness itemTypeBusiness, IUnitBusiness unitBusiness, IItemBusiness itemBusiness, IRequsitionInfoBusiness requsitionInfoBusiness, IRequsitionDetailBusiness requsitionDetailBusiness, IProductionLineBusiness productionLineBusiness, IProductionStockInfoBusiness productionStockInfoBusiness, IAppUserBusiness appUserBusiness, IWarehouseStockInfoBusiness warehouseStockInfoBusiness, IRoleBusiness roleBusiness, IBranchBusiness branchBusiness, IFinishGoodsStockInfoBusiness finishGoodsStockInfoBusiness, IOrganizationBusiness organizationBusiness, IUserAuthorizationBusiness userAuthorizationBusiness, IItemPreparationInfoBusiness itemPreparationInfoBusiness, IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, IAssemblyLineBusiness assemblyLineBusiness, IQualityControlBusiness qualityControlBusiness, ISupplierBusiness supplierBusiness, IAssemblyLineStockInfoBusiness assemblyLineStockInfoBusiness, IRepairLineBusiness repairLineBusiness, IPackagingLineBusiness packagingLineBusiness, IQCLineStockInfoBusiness qCLineStockInfoBusiness, IPackagingLineStockInfoBusiness packagingLineStockInfoBusiness, IRepairLineStockInfoBusiness repairLineStockInfoBusiness, IQRCodeTraceBusiness qRCodeTraceBusiness, IItemPreparationDetailBusiness itemPreparationDetailBusiness, IFaultyItemStockInfoBusiness faultyItemStockInfoBusiness, IRepairItemStockInfoBusiness repairItemStockInfoBusiness, IQCItemStockInfoBusiness qCItemStockInfoBusiness, IProductionAssembleStockInfoBusiness productionAssembleStockInfoBusiness, IFaultyCaseBusiness faultyCaseBusiness, IFaultyItemStockDetailBusiness faultyItemStockDetailBusiness, IQRCodeTransferToRepairInfoBusiness qRCodeTransferToRepairInfoBusiness, ITempQRCodeTraceBusiness tempQRCodeTraceBusiness, IIQCBusiness iQCBusiness, IIQCItemReqDetailList iQCItemReqDetailList, IIMEITransferToRepairInfoBusiness iMEITransferToRepairInfoBusiness, IPackagingFaultyStockInfoBusiness packagingFaultyStockInfoBusiness,IPackagingFaultyStockDetailBusiness packagingFaultyStockDetailBusiness, IDescriptionBusiness descriptionBusiness, IModuleBusiness moduleBusiness, IManiMenuBusiness maniMenuBusiness, ISubMenuBusiness subMenuBusiness, ERPBLL.Inventory.Interface.IColorBusiness colorBusiness, IDistrictBusiness districtBusiness, IZoneBusiness zoneBusiness, ISalesRepresentativeBusiness salesRepresentativeBusiness, ERPBLL.Inventory.Interface.IBrandCategoriesBusiness brandCategoriesBusiness, ERPBLL.Inventory.Interface.IModelColorBusiness modelColorBusiness, IDealerBusiness dealerBusiness, ERPBLL.Inventory.Interface.ICategoryBusiness categoryBusiness, ERPBLL.Inventory.Interface.IBrandBusiness brandBusiness, IRepairSectionSemiFinishStockInfoBusiness repairSectionSemiFinishStockInfoBusiness)
         {
             #region Inventory Module
             this._warehouseBusiness = warehouseBusiness;
@@ -134,6 +135,7 @@ namespace ERPWeb.Controllers
             this._iMEITransferToRepairInfoBusiness = iMEITransferToRepairInfoBusiness;
             this._packagingFaultyStockInfoBusiness = packagingFaultyStockInfoBusiness;
             this._packagingFaultyStockDetailBusiness = packagingFaultyStockDetailBusiness;
+            this._repairSectionSemiFinishStockInfoBusiness = repairSectionSemiFinishStockInfoBusiness;
             #endregion
 
             #region ControlPanel
@@ -1064,6 +1066,13 @@ namespace ERPWeb.Controllers
             var IsExist = _tempQRCodeTraceBusiness.IsExistQRCodeWithStatus(qrCode, date, QRCodeStatus.Assembly, User.OrgId);
             return Json(IsExist);
         }
+        [HttpPost]
+        public ActionResult IsExistCheckMiniStock(string qrCode)
+        {
+            var status = "Stock-In";
+            var IsExist = _repairSectionSemiFinishStockInfoBusiness.QRCodeCheckMiniStock(qrCode, status, User.OrgId);
+            return Json(IsExist);
+        }
 
         #endregion
 
@@ -1165,7 +1174,7 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> GetFaultyCasesListAsync()
         {
             var data = await _faultyCaseBusiness.GetFaultyCasesAsync(User.OrgId);
-            var faultyCases = data.Select(s => new { CaseId = s.CaseId, ProblemDescription = s.ProblemDescription }).ToList();
+            var faultyCases = data.Select(s => new { QRCode = s.QRCode, ProblemDescription = s.ProblemDescription }).ToList();
             return Json(faultyCases);
         }
 

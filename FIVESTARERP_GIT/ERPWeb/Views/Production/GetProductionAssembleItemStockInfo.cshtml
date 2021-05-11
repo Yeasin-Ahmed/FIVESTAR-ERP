@@ -17,6 +17,12 @@
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-three-transferList-tab" data-toggle="pill" href="#custom-tabs-three-transferList" role="tab" aria-controls="custom-tabs-three-transferList" aria-selected="true">Mini Stock Transfer</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-repairSectionSemiFinishGoodList-tab" data-toggle="pill" href="#custom-tabs-three-repairSectionSemiFinishGoodList" role="tab" aria-controls="custom-tabs-three-repairSectionSemiFinishGoodList" aria-selected="true">R S Semi Finish Good</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-three-repairSectionSemiFinishGoodStockList-tab" data-toggle="pill" href="#custom-tabs-three-repairSectionSemiFinishGoodStockList" role="tab" aria-controls="custom-tabs-three-repairSectionSemiFinishGoodStockList" aria-selected="true">Mini Stock(R S)</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body text-sm">
@@ -247,6 +253,115 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade show" id="custom-tabs-three-repairSectionSemiFinishGoodList" role="tabpanel" aria-labelledby="custom-tabs-three-repairSectionSemiFinishGoodList-tab">
+                            <div class="row" style="margin-top:-15px">
+                                <div class="col-md-12">
+                                    <div class="card card-gray-dark">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-center text-bold">Repair Section Semi Finish Good Receive</h5>
+                                                </div>
+                                                <div class="col-md-3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card card-navy">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Search By</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-top:-15px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card">
+                                        <div class="row">
+                                            <div class="card-body">
+                                                <div class="col-md-12" id="dataContainer4">
+                                                    @{Html.RenderAction("GetRepairSectionSemiFinishGoodReceiveList", new { @flag = "View" });}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show" id="custom-tabs-three-repairSectionSemiFinishGoodStockList" role="tabpanel" aria-labelledby="custom-tabs-three-repairSectionSemiFinishGoodStockList-tab">
+                            <div class="row" style="margin-top:-15px">
+                                <div class="col-md-12">
+                                    <div class="card card-gray-dark">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <a href="/Production/GetRepairSectionSemiFinishGoodStockDetailsList" style="background-color:darkblue" class="float-left btn btn-sm btn-outline-primary" title="Details View">
+                                                        <i class="fas fa-eye"></i> Go To Details View
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-center text-bold">Repair Section Semi Finish Good Stock Info</h5>
+                                                </div>
+                                                <div class="col-md-3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card card-navy">
+                                        <div class="card-header">
+                                            <h6 class="card-title">Search By</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-top:-15px">
+                                                <div class="col-md-2">
+                                                    <label for="ddlFloorRepairSecitionQRCode" class="control-label font-weight-bold">Floor</label>
+                                                    @Html.DropDownList("ddlFloorRepairSecitionQRCode", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlRepairLineQRCodeQC" class="control-label font-weight-bold">QC</label>
+                                                    <select id="ddlRepairLineQRCodeQC" class="form-control form-control-sm">
+                                                        <option value="0">--Select QC--</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlRepairLineQRCodeRepair" class="control-label font-weight-bold">Repair</label>
+                                                    <select id="ddlRepairLineQRCodeRepair" class="form-control form-control-sm">
+                                                        <option value="0">--Select Repair--</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="ddlModelNames" class="control-label font-weight-bold">Model</label>
+                                                    @Html.DropDownList("ddlModelNames", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="margin-top:-10px">
+                                    <div class="card">
+                                        <div class="row">
+                                            <div class="card-body">
+                                                <div class="col-md-12" id="dataContainer5">
+                                                    @{Html.RenderAction("GetRepairSectionSemiFinishGoodStockInfoList", new { @flag = "View" });}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -321,6 +436,23 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="modal fade" id="rsmodalTransferDetails" role="dialog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-secondary">
+                    <input type="hidden" id="hdfRTransferInfoId" />
+                    <input type="hidden" id="hdfRRowIndex" />
+                    <h4 id="modalHeading" class="modal-title">Transfer Details</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" id="dataContainer8">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script type="text/javascript">
         var hdTransferInfoId = $("#hdTransferInfoId");
@@ -344,6 +476,14 @@
         var txtMSTCode = $("#txtMSTCode");
         var dptFromDateTransferItem = $("#dptFromDateTransferItem");
         var dptToDateTransferItem = $("#dptToDateTransferItem");
+        //
+        var hdfRTransferInfoId = $("#hdfRTransferInfoId");
+        //
+        //Repair Section QRCodeList
+        var ddlFloorRepairSecitionQRCode = $("#ddlFloorRepairSecitionQRCode");
+        var ddlRepairLineQRCodeQC = $("#ddlRepairLineQRCodeQC");
+        var ddlRepairLineQRCodeRepair = $("#ddlRepairLineQRCodeRepair");
+        var ddlModelNames = $("#ddlModelNames");
 
         var pageNo = 1;
 
@@ -649,6 +789,114 @@
                 enable(".btnSendMiniStock");
             })
         }
+        $(document).on('click', 'a.data-item-detail', function (e) {
+            e.preventDefault();
+            hdfRTransferInfoId.val("0")
+            var id = $(this).attr("data-item-detail");
+            hdfRTransferInfoId.val(id);
+            $.when(getReqWithData('html', type.get, '/Production/GetRepairSectionQRCodesDetails', { infoId: id })).then(function (res, status) {
+                if (status === "success") {
+                    $("#dataContainer8").empty();
+                    $("#dataContainer8").append(res);
+                    $("#rsmodalTransferDetails").modal("toggle");
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        })
+        $(document).on("click", ".btnReceiveSemiFinish", function (e) {
+            e.preventDefault();
+            bootbox.confirm("Are you sure you want to save?", function (result) {
+                if (result) {
+                   var infoId = $(".tblRepairSectionSemiFinishGoodDetails tbody tr").children('td').eq('16').html();
+                        var details = []; details.length = 0;
+                        $.each($(".tblRepairSectionSemiFinishGoodDetails tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            var flId = tds.eq('2').html();
+                            var asId = tds.eq('4').html();
+                            var qcId = tds.eq('6').html();
+                            var rpId = tds.eq('8').html();
+                            var qrCode = tds.eq('10').html();
+                            var moId = tds.eq('11').html();
+                            var wId = tds.eq('13').html();
+
+                            details.push({
+                                FloorId: TryParseInt(flId, 0),
+                                AssemblyLineId: TryParseInt(asId, 0),
+                                QCLineId: TryParseInt(qcId, 0),
+                                RepairLineId: TryParseInt(rpId, 0),
+                                QRCode: qrCode,
+                                DescriptionId: TryParseInt(moId, 0),
+                                WarehouseId: TryParseInt(wId, 0),
+                            })
+                        });
+
+                    var data = JSON.stringify({ details: details, infoId: infoId });
+                        console.log("Receive Transfer Data");
+                        console.log(data);
+                        //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Production/SaveStockRepairSectionSemiFinshGood', data, getToken())).then(function (res, status) {
+                            console.log(res);
+                            console.log(status);
+                            if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("GetProductionAssembleItemStockInfo")');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            consoleLog(error)
+                        })
+                    }
+                });
+        })
+        //////
+        ddlFloorRepairSecitionQRCode.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockInfo();
+            clearDropdown("ddlRepairLineQRCodeQC");
+            clearDropdown("ddlRepairLineQRCodeRepair");
+            if (ddlFloorRepairSecitionQRCode.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlRepairLineQRCodeQC, JSON.stringify({ lineId: ddlFloorRepairSecitionQRCode.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineQRCodeRepair, JSON.stringify({ lineId: ddlFloorRepairSecitionQRCode.val() }));
+            }
+        });
+
+
+        ddlFloorRepairSecitionQRCode.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockInfo();
+        })
+        ddlRepairLineQRCodeQC.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockInfo();
+        })
+        ddlRepairLineQRCodeRepair.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockInfo();
+        })
+        ddlModelNames.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockInfo();
+        })
+
+        function LoadDataTableRepairSectionSemiFinishGoodStockInfo() {
+            var data = { flag: "View", moId: TryParseInt(ddlModelNames.val(), 0), flId: ddlFloorRepairSecitionQRCode.val(), qcId: ddlRepairLineQRCodeQC.val(), rqId: ddlRepairLineQRCodeRepair.val() };
+            //return console.log(data);
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionSemiFinishGoodStockInfoList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer5").fadeOut('500', function () {
+                        $("#dataContainer5").empty();
+                        $("#dataContainer5").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            // pageNo = 1;
+        }
+
     </script>
 }
 

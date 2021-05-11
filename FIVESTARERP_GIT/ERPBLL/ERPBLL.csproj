@@ -300,6 +300,9 @@
     <Compile Include="Production\Interface\IQRCodeTransferToRepairInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IProductionAssembleStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishStockDetailsBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishTransferDetailsBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\Interface\IStockItemReturnDetailBusiness.cs" />
@@ -310,6 +313,7 @@
     <Compile Include="Production\Interface\ITransferToPackagingRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferToPackagingRepairInfoBusiness.cs" />
     <Compile Include="Production\IMEIGenerator.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishTransferInfoBusiness.cs" />
     <Compile Include="Production\LotInLogBusiness.cs" />
     <Compile Include="Production\MiniStockTransferDetailBusiness.cs" />
     <Compile Include="Production\MiniStockTransferInfoBusiness.cs" />
@@ -418,6 +422,10 @@
     <Compile Include="Production\RepairLineBusiness.cs" />
     <Compile Include="Production\RepairSectionFaultyItemTransferInfoBusiness.cs" />
     <Compile Include="Production\RepairSectionRequisitionInfoBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishStockDetailsBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishStockInfoBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishTransferDetailsBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishTransferInfoBusiness.cs" />
     <Compile Include="Production\RequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\RequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\RequsitionDetailBusiness.cs" />

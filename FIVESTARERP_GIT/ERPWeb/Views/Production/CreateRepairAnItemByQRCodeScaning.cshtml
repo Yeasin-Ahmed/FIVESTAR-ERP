@@ -127,12 +127,16 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="button" class="btn btn-flat btn-danger btn-Action" id="btnFaulty">
-                                    Faulty
-                                </button>
-                                <button type="button" class="btn btn-flat btn-success btn-Action" id="btnRepairDone">
-                                    Repair Done
-                                </button>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-flat btn-danger btn-Action" id="btnFaulty">
+                                            Faulty
+                                        </button>
+                                        <button type="button" class="btn btn-flat btn-success btn-Action" id="btnRepairDone">
+                                            Repair Done
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,7 +176,9 @@
 
             txtSearchQRCode.val('');
             txtSearchQRCode.focus();
+            $("#btnFaulty").hide();
         })
+        
 
         function clearHdf() {
             $(".error").addClass('hide');
@@ -385,9 +391,13 @@
             return isValid;
         }
 
+        
+
         $("#btnAddToList").click(function (e) {
             e.preventDefault();
             if (validationFaultyInput()) {
+                $("#btnFaulty").show();
+                $("#btnRepairDone").hide();
                 var rows = $("#tblFaultItems tbody tr").length;
                 getItemValues();
                 var itemText = dropDownSelectedText("ddlItems");
@@ -412,6 +422,14 @@
             var index = $(this).parent().parents('tbody tr').index();
             removeTableRow("#tblFaultItems tbody", index);
             fnFixTheTbodyRowSerial("#tblFaultItems", index);
+            if (index == 0) {
+                $("#btnFaulty").hide();
+                $("#btnRepairDone").show();
+            }
+            if (($("#tblFaultItems tbody").find("tr.old-item")).length > 0 && ($("#tblFaultItems tbody").find("tr.new-item")).length == 1) {
+                $("#btnFaulty").hide();
+                $("#btnRepairDone").show();
+            }
         })
 
         $(document).on('click', '.btn-Action', function (e) {
@@ -457,12 +475,15 @@
                     if (res === true || status === "success") {
                         toastrSuccessAlert("Faulty item added");
                         fnGetFaultyItemsAfterSubmit(FaultyInfo.QRCode, FaultyInfo.TransferId);
+                        $("#btnFaulty").hide();
+                        $("#btnRepairDone").show();
                     }
                     enable('.btn-Action');
 
                 }).fail(function (error) {
                     console.log(error);
                     enable('.btn-Action');
+                    $("#btnRepairDone").show();
                 })
             }
             else {
