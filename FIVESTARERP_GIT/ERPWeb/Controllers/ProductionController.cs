@@ -4387,14 +4387,14 @@ namespace ERPWeb.Controllers
         public async Task<ActionResult> SaveRepairItemByQRCodeScaning(TransferRepairItemByQRCodeScanningViewModel model)
         {
             bool IsSuccess = false;
-            var stockAvailable = _qRCodeTransferToRepairInfoBusiness.CheckingAvailabilityOfSparepartsWithRepairLineStock(model.ModelId, model.ItemId, model.RepairLineId, User.OrgId);
-            if (ModelState.IsValid && stockAvailable.isSuccess)
+            //var stockAvailable = _qRCodeTransferToRepairInfoBusiness.CheckingAvailabilityOfSparepartsWithRepairLineStock(model.ModelId, model.ItemId, model.RepairLineId, User.OrgId);
+            if (ModelState.IsValid )
             {
                 TransferRepairItemByQRCodeScanningDTO dto = new TransferRepairItemByQRCodeScanningDTO();
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = await _transferRepairItemToQcInfoBusiness.SaveTransferByQRCodeScanningAsync(dto, User.UserId, User.OrgId);
             }
-            return Json(new { IsSuccess = IsSuccess, Msg = stockAvailable.text });
+            return Json(new { IsSuccess = IsSuccess });
         }
 
         [HttpPost, ValidateJsonAntiForgeryToken]

@@ -545,10 +545,10 @@
         }
 
         function fnRepairDone() {
-            if (validateRepairDone()) {
                 var data = JSON.stringify({ QRCode: hdfQRCode.val(), AssemblyLineId: TryParseInt(hdfAssemblyLineId.val(), 0), RepairLineId: TryParseInt(hdfRepairLineId.val(), 0), QCLineId: TryParseInt(hdfQCLineId.val(), 0), ModelId: TryParseInt(hdfModelId.val(), 0), ItemId: TryParseInt(hdfItem.val(), 0) })
                 console.log("Repair Done");
-                console.log(data);
+                //return console.log(data);
+                
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairItemByQRCodeScaning', data, getToken())).then(function (res, status) {
                     console.log(res.IsSuccess);
                     console.log(res.Msg);
@@ -567,10 +567,6 @@
                     console.log(error);
                     enable('.btn-Action');
                 })
-            }
-            else {
-                enable('.btn-Action');
-            }
         }
 
         //SaveVoidAFaultyItem
