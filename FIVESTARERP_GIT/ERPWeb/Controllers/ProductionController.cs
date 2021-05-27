@@ -3765,7 +3765,7 @@ namespace ERPWeb.Controllers
             }
             else if (!string.IsNullOrEmpty(flag) && flag == "StockReturnList")
             {
-                var dto = _stockItemReturnInfoBusiness.GetStockItemReturnInfosByQuery(modelId, lineId, repairId, null, null, warehouseId, returnId, returnCode, StockRetunFlag.AssemblyRepair, status, fromDate, toDate, User.OrgId);
+                var dto = _stockItemReturnInfoBusiness.GetStockItemReturnInfosByQuery(modelId, lineId, repairId, null, null, warehouseId, returnId, returnCode,StockRetunFlag.AssemblyRepair, status, fromDate, toDate, User.OrgId);
 
                 List<StockItemReturnInfoViewModel> viewModels = new List<StockItemReturnInfoViewModel>();
                 AutoMapper.Mapper.Map(dto, viewModels);
