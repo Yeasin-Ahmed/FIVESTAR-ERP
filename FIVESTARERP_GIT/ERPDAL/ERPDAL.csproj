@@ -264,6 +264,10 @@
     <Compile Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.Designer.cs">
       <DependentUpon>202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202105311036369_Configuration_HandsetStock_Flag.cs" />
+    <Compile Include="ConfigurationContextMigrations\202105311036369_Configuration_HandsetStock_Flag.Designer.cs">
+      <DependentUpon>202105311036369_Configuration_HandsetStock_Flag.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -507,6 +511,10 @@
     <Compile Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.cs" />
     <Compile Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.Designer.cs">
       <DependentUpon>202104050629469_FrontDesk_JobOrderMultipleCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202105270833075_FrontDesk_QCPassFailDate.cs" />
+    <Compile Include="FrontDeskContextMigrations\202105270833075_FrontDesk_QCPassFailDate.Designer.cs">
+      <DependentUpon>202105270833075_FrontDesk_QCPassFailDate.cs</DependentUpon>
     </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
@@ -1102,6 +1110,9 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.resx">
       <DependentUpon>202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202105311036369_Configuration_HandsetStock_Flag.resx">
+      <DependentUpon>202105311036369_Configuration_HandsetStock_Flag.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1275,6 +1286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.resx">
       <DependentUpon>202104050629469_FrontDesk_JobOrderMultipleCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202105270833075_FrontDesk_QCPassFailDate.resx">
+      <DependentUpon>202105270833075_FrontDesk_QCPassFailDate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>

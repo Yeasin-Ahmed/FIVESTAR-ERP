@@ -41,7 +41,7 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="row text-sm">
-                    <div class="col-md-12 text-sm" id="dataContainer">
+                    <div class="col-md-12 text-sm" id="dataContainer" style="overflow-y:scroll">
                         @{Html.RenderAction("CreateFaultyAssignTS", new { @flag = "AssignList" });}
                     </div>
                 </div>

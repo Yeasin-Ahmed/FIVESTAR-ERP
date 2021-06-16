@@ -910,7 +910,7 @@
                             <label for="txtDealerMobile" class="control-label font-weight-bold">Mobile No<sup><i class="fas fa-asterisk fa-sm text-red" style="font-size:0.25rem;"></i></sup></label>
                             <input type="text" name="dealer" value="" id="txtDealerMobile" class="form-control form-control-sm" />
                             <span class="error hide required-dealerMobile font-weight-bold">Required Dealer Mobile !</span>
-                            <span class="error hide duplicate-dealerMobile font-weight-bold">Already dealer Mobile No Exist!</span>
+                            <span class="error hide duplicate-dealerMobile font-weight-bold">Already dealer Mobile Exist!</span>
                             <span class="error hide digit-dealerMobile font-weight-bold">Input 11 Digit Mobile No !</span>
                         </div>
                         <div class="form-group col-md-4">
@@ -1280,6 +1280,7 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateForm() == true) {
+                disable("#btnSubmit");
                 var data = JSON.stringify({
                     AccessoriesId: TryParseInt(hdfAccessoriesId.val(), 0),
                     AccessoriesName: txtAccessoriesName.val(),
@@ -1418,6 +1419,7 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateFormSymptom() == true) {
+                disable("#btnSubmitSymptom");
                 var data = JSON.stringify({ ProblemId: TryParseInt(hdfProblemId.val(), 0), ProblemName: txtProblemName.val(), Remarks: txtRemarksSymptom.val() });
                 console.log(data);
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Configuration/SaveClientProblem', data, getToken())).then(function (res, status) {
@@ -1551,6 +1553,7 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateFormParts() == true) {
+                disable("#btnSubmitParts");
                 var data = JSON.stringify({
                     MobilePartId: TryParseInt(hdfMobilePartId.val(), 0),
                     MobilePartName: txtMobilePartName.val(),
@@ -1683,6 +1686,7 @@
         $("#btnSubmitFault").click(function (e) {
             e.preventDefault();
             if (validateFormFault() == true) {
+                disable("#btnSubmitFault");
                 $(".error").addClass("hide");
                 var data = JSON.stringify({ FaultId: TryParseInt(hdfFaultId.val(), 0), FaultName: txtFaultName.val(), FaultCode: txtFaultCode.val(), Remarks: txtRemarksFault.val() });
                 console.log(data);
@@ -1813,6 +1817,7 @@
         $("#btnSubmitServices").click(function (e) {
             e.preventDefault();
             if (validateFormServices() == true) {
+                disable("#btnSubmitServices");
                 $(".error").addClass("hide");
                 var data = JSON.stringify({ ServiceId: TryParseInt(hdfServicesId.val(), 0), ServiceName: txtServicesName.val(), ServiceCode: txtServicesCode.val(), Remarks: txtRemarksServices.val() });
                 console.log(data);
@@ -1942,6 +1947,7 @@
         $("#btnSubmitRepair").click(function (e) {
             e.preventDefault();
             if (validateFormRepair() == true) {
+                disable("#btnSubmitRepair");
                 $(".error").addClass("hide");
                 var data = JSON.stringify({ RepairId: TryParseInt(hdfRepairId.val(), 0), RepairName: txtRepairName.val(), RepairCode: txtRepairCode.val(), Remarks: txtRemarksRepair.val() });
                 console.log(data);
@@ -2091,6 +2097,7 @@
             e.preventDefault();
             $(".error").addClass("hide");
             if (validateDealerForm() == true) {
+                disable("#btnDealerSubmit");
                 var data = JSON.stringify({
                     DealerId: TryParseInt(hdfDealerId.val(), 0),
                     DealerName: txtDealerName.val(),
@@ -2229,6 +2236,7 @@
         $("#btnSubmitColor").click(function (e) {
             e.preventDefault();
             if (validateColor() == true) {
+                disable("#btnSubmitColor");
                 $(".error").addClass("hide");
                 var data = JSON.stringify({ ColorId: TryParseInt(hdfColorId.val(), 0), ColorName: txtColorName.val(), Remarks: txtColorRemarks.val() });
                 console.log(data);
@@ -2307,6 +2315,7 @@
         $("#btnSubmitBrand").click(function (e) {
             e.preventDefault();
             if (validateBrand() == true) {
+                disable("#btnSubmitBrand");
                 $(".error").addClass("hide");
                 var data = JSON.stringify({ BrandId: TryParseInt(hdfBrandId.val(), 0), BrandName: txtBrandName.val(), Remarks: txtBrandRemarks.val() });
                 console.log(data);
@@ -2366,8 +2375,8 @@
                 isValid = false;
             }
             else {
-                var id = TryParseInt(hdfRepairId.val(), 0);
-                if (ajaxBooleanChecker(JSON.stringify({ id: id, repairName: txtRepairName.val().trim() }), '/Common2/IsDuplicateRepairNameC', getToken()) == true) {
+                var id = TryParseInt(hdfModelId.val(), 0);
+                if (ajaxBooleanChecker(JSON.stringify({ id: id, model: txtModelName.val().trim() }), '/Common2/IsDuplicateModelNameSS', getToken()) == true) {
                     $(".duplicate-modelName").removeClass("hide");
                     isValid = false;
                 }
@@ -2382,6 +2391,7 @@
         $("#btnSubmitModel").click(function (e) {
             e.preventDefault();
             if (validateModel() == true) {
+                disable("#btnSubmitModel");
                 $(".error").addClass("hide");
                 var data = JSON.stringify({ ModelId: TryParseInt(hdfModelId.val(), 0), ModelName: txtModelName.val(), BrandId: TryParseInt(ddlBrandName.val(),0), Remarks: txtModelRemarks.val() });
                 console.log(data);
@@ -2447,7 +2457,7 @@
                 }
                 else if ($(this).parent().parents('div').hasClass('model')) {
                     pageNo = $(this).attr('data-page-no');
-                    LoadBrandDataTable();
+                    LoadModelDataTable();
                 }
             }
         })

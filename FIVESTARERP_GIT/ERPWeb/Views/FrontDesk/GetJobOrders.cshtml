@@ -84,16 +84,20 @@
                                                         </div>
                                                         <div class="col-md-2" id="divCustomerName">
                                                             <label class="col-form-label">Dealer Name</label>
-                                                            <input type="text" id="txtCustomerName" class="form-control form-control-sm" placeholder="Search By Dealer" name="customer"/>
+                                                            <input type="text" id="txtCustomerName" class="form-control form-control-sm" placeholder="Search By Dealer" name="customer" />
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label class="col-form-label">Job Status</label>
                                                             @Html.DropDownList("ddlStateStatus", (IEnumerable<SelectListItem>)ViewBag.ddlStateStatus, "--Search By Status--", new { @class = "form-control form-control-sm ctrl-changed " })
                                                         </div>
                                                         <div class="col-md-2">
+                                                            <label class="col-form-label">Receive Id</label>
+                                                            <input type="text" id="txtReceiveId" class="form-control form-control-sm" placeholder="Search By Receive Id" name="recId" />
+                                                        </div>
+                                                        <div class="col-md-2">
                                                             <label class="col-form-label">From Date</label>
                                                             <div class="input-group input-group-sm ">
-                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate"/>
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" name="fromDate" />
                                                                 <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
                                                                     <span class="input-group-text">&#10008;</span>
                                                                 </div>
@@ -102,7 +106,7 @@
                                                         <div class="col-md-2">
                                                             <label class="col-form-label">To Date</label>
                                                             <div class="input-group input-group-sm ">
-                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate"/>
+                                                                <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" name="toDate" />
                                                                 <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
                                                                     <span class="input-group-text">&#10008;</span>
                                                                 </div>
@@ -403,6 +407,7 @@
         var hdfJobOrderId = $("#hdfJobOrderId");
         var txtIMEINo = $("#txtIMEINo");
         var txtIMEI2No = $("#txtIMEI2No");
+        var txtReceiveId = $("#txtReceiveId");
         //JobOrderInvoice
         var txtLabourCharge = $("#txtLabourCharge");
         var txtVat = $("#txtVat");
@@ -535,13 +540,16 @@
         txtCustomerName.keyup(function () {
             LoadDataTable();
         })
+        txtReceiveId.keyup(function () {
+            LoadDataTable();
+        })
 
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
         
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), customer: txtCustomerName.val().trim(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), customer: txtCustomerName.val().trim(), recId: txtReceiveId.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrders', data)).then(function (res, status) {

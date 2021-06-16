@@ -17,6 +17,7 @@
             <th>Sell Price</th>
             <th>Quantity</th>
             <th>Stock Status</th>
+            <th>Remarks</th>
             <th>Entry Date</th>
         </tr>
     </thead>
@@ -38,6 +39,7 @@
             <td class="text-center" data-val="@item.StockStatus">
                 <span class="@badge">@item.StockStatus</span>
             </td>
+            <td>@item.Remarks</td>
             <td class="text-center">@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
         </tr>
         }

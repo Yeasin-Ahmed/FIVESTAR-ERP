@@ -27,6 +27,7 @@ namespace ERPBO.Configuration.DTOModels
         public string ModelName { get; set; }
         public string ColorName { get; set; }
         public string ModelId { get; set; }
+        public string Flag { get; set; }
 
     }
 }

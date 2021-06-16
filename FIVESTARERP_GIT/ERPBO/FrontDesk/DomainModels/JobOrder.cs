@@ -83,6 +83,7 @@ namespace ERPBO.FrontDesk.DomainModels
         public long? CSColor { get; set; }
         public string MultipleJobOrderCode { get; set; }
         public string JobSource { get; set; }
+        public Nullable<DateTime> QCPassFailDate { get; set; }
 
     }
 }

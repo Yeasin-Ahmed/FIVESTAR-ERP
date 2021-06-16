@@ -46,6 +46,11 @@ namespace ERPBLL.Configuration
             return mobilePartStockDetailRepository.GetAll(detail => detail.OrganizationId == orgId && detail.BranchId == branchId).ToList();
         }
 
+        public MobilePartStockInfo GetPriceByModel(long modelId, long partsId, long orgId, long branchId)
+        {
+            return mobilePartStockInfoRepository.GetOneByOrg(p => p.DescriptionId == modelId && p.MobilePartId == partsId && p.OrganizationId == orgId && p.BranchId == branchId);
+        }
+
         public bool SaveMobilePartsStockOutByTSRequistion(long reqId, string status, long orgId, long userId, long branchId)
         {
             var reqInfo = _requsitionInfoForJobOrderBusiness.GetAllRequsitionInfoForJobOrderId(reqId, orgId);
@@ -93,7 +98,7 @@ namespace ERPBLL.Configuration
                 StockDetail.CostPrice = item.CostPrice;
                 StockDetail.SellPrice = item.SellPrice;
                 StockDetail.Quantity = item.Quantity;
-                StockDetail.Remarks = item.Remarks;
+                StockDetail.Remarks = "Stock-In By Warehouse";
                 StockDetail.OrganizationId = orgId;
                 StockDetail.BranchId = branchId;
                 StockDetail.EUserId = userId;
@@ -159,7 +164,6 @@ namespace ERPBLL.Configuration
                 warehouseInfo.UpUserId = userId;
                 mobilePartStockInfoRepository.Update(warehouseInfo);
                 mobilePartStockDetails.Add(StockDetail);
-
             }
             mobilePartStockDetailRepository.InsertAll(mobilePartStockDetails);
             return mobilePartStockDetailRepository.Save();

@@ -78,5 +78,10 @@ where fsi.OrganizationId={0}", orgId)).ToList();
         {
             return _faultyStockInfoRepository.GetOneByOrg(s => s.FaultyStockInfoId == id && s.OrganizationId == orgId);
         }
+
+        public FaultyStockInfo GetAllFaultyStockByStockIn(long modelId, long partsId, long orgId, long branchId)
+        {
+            return _faultyStockInfoRepository.GetOneByOrg(s => s.DescriptionId == modelId && s.PartsId == partsId && s.OrganizationId == orgId && s.BranchId == branchId);
+        }
     }
 }

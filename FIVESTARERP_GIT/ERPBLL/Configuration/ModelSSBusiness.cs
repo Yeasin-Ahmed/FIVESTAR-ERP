@@ -30,9 +30,9 @@ namespace ERPBLL.Configuration
             return modelSSRepository.GetOneByOrg(m => m.ModelId == modelId && m.OrganizationId == orgId);
         }
 
-        public bool IsDuplicateModelName(string modelName, long orgId)
+        public bool IsDuplicateModelName(string modelName,long id, long orgId)
         {
-            throw new NotImplementedException();
+            return modelSSRepository.GetOneByOrg(f => f.ModelName == modelName && f.ModelId != id && f.OrganizationId == orgId) != null ? true : false;
         }
 
         public bool SaveModelSS(ModelSSDTO dto, long orgId, long branchId, long userId)

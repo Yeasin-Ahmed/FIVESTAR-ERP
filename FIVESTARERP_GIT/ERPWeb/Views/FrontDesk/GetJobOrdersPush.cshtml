@@ -22,7 +22,10 @@
                     <div class="col-md-2">
                         @Html.DropDownList("ddlTechnicalServicesName", (IEnumerable<SelectListItem>)ViewBag.ddlTechnicalServicesName, "--Select T.S Name--", new { @class = "form-control ctrl-changed select2 select2-danger ctrl-changed" })
                     </div>
-                    <div class="col-md-4"></div>
+                    <div class="col-md-2">
+                        <input type="text" id="txtReceiveId" class="form-control form-control-sm" placeholder="Search By Receive Id" name="recId" />
+                    </div>
+                    <div class="col-md-2"></div>
                     <div class="col-md-6">
                         <button type="submit" id="btnSubmit" class="btn float-right btn-success"> Push <i class="fas fa-arrow-down"></i></button>
                     </div>
@@ -49,6 +52,7 @@
 @section scripts{
     <script type="text/javascript">
         var ddlTechnicalServicesName = $("#ddlTechnicalServicesName");
+        var txtReceiveId = $("#txtReceiveId");
         var count = 0;
 
         $(document).on('change', 'input[name="allJobOrder"]', function () {
@@ -112,9 +116,12 @@
                 })
             }
         })
+        txtReceiveId.keyup(function () {
+            LoadDataTable();
+        })
 
         function LoadDataTable() {
-            var data = { flag: "view"};
+            var data = { flag: "view", recId: txtReceiveId.val().trim() };
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrdersPush', data)).then(function (res, status) {
                 console.log(status);

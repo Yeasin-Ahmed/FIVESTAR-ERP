@@ -13,6 +13,6 @@ namespace ERPBLL.Configuration.Interface
         IEnumerable<ModelSS> GetAllModel(long orgId);
         ModelSS GetModelById(long modelId, long orgId);
         bool SaveModelSS(ModelSSDTO dto, long orgId, long branchId, long userId);
-        bool IsDuplicateModelName(string modelName, long orgId);
+        bool IsDuplicateModelName(string modelName, long id, long orgId);
     }
 }

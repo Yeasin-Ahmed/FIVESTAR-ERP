@@ -50,12 +50,12 @@ namespace ERPBLL.FrontDesk
             return _jobOrderRepository.GetOneByOrg(j => j.JodOrderId == jobOrderId && j.OrganizationId == orgId);
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus, string customer)
+        public IEnumerable<JobOrderDTO> GetJobOrders(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus, string customer, string courierNumber, string recId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType,repairStatus,customer)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrder(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate,customerType,jobType,repairStatus,customer,courierNumber,recId)).ToList();
         }
 
-        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus,string customer)
+        private string QueryForJobOrder(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus,string customer, string courierNumber, string recId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -107,6 +107,14 @@ namespace ERPBLL.FrontDesk
                 {
                     param += string.Format(@"and jo.CustomerName Like '%{0}%'", customer);
                 }
+                if (!string.IsNullOrEmpty(courierNumber))
+                {
+                    param += string.Format(@"and jo.CourierNumber Like '%{0}%'", courierNumber);
+                }
+                if (!string.IsNullOrEmpty(recId))
+                {
+                    param += string.Format(@"and jo.MultipleJobOrderCode Like '%{0}%'", recId);
+                }
             }
             if (orgId > 0)
             {
@@ -137,13 +145,13 @@ OR
                 param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,CSModelName,CSColorName,CSIMEI1,CSIMEI2,CustomerSupportStatus,[Address],ModelName,BrandName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,CSModelName,CSColorName,CSIMEI1,CSIMEI2,CustomerSupportStatus,[Address],ModelName,BrandName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,MultipleJobOrderCode,
 CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,bn.BrandName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,mo.ModelName'CSModelName',co.ColorName'CSColorName',jo.CSIMEI1,jo.CSIMEI2,jo.CustomerSupportStatus,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,bn.BrandName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,mo.ModelName'CSModelName',co.ColorName'CSColorName',jo.CSIMEI1,jo.CSIMEI2,jo.CustomerSupportStatus,jo.MultipleJobOrderCode,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -681,7 +689,7 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
         {
             return _jobOrderRepository.GetAll(access => access.OrganizationId == orgId).ToList();
         }
-        private string QueryForJobOrderTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, long userId, long orgId,long branchId)
+        private string QueryForJobOrderTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, string status,string recId, long userId, long orgId,long branchId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -704,6 +712,14 @@ Where 1 = 1{0}) tbl Order By JobOrderCode desc
                 {
                     param += string.Format(@" and jo.JobOrderCode Like '%{0}%'", jobCode);
                 }
+                if (!string.IsNullOrEmpty(status))
+                {
+                    param += string.Format(@"and jo.StateStatus ='{0}'", status);
+                }
+                if (!string.IsNullOrEmpty(recId))
+                {
+                    param += string.Format(@"and jo.MultipleJobOrderCode Like '%{0}%'", recId);
+                }
             }
             if (orgId > 0)
             {
@@ -718,10 +734,10 @@ and (IsTransfer is null or IsTransfer = 'False')) OR (IsTransfer = 'True' and Tr
             {
                 param += string.Format(@" and jo.TSId ={0}", userId);
             }
-            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,IMEI,MultipleJobOrderCode,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,BranchId
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,UserName,jo.BranchId,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,UserName,jo.BranchId,jo.IMEI,jo.MultipleJobOrderCode,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -744,17 +760,17 @@ Where 1 = 1{0} and (jo.StateStatus='TS-Assigned' or jo.StateStatus='QC-Assigned'
             return query;
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrdersTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, long userId, long orgId, long branchId)
+        public IEnumerable<JobOrderDTO> GetJobOrdersTS(string roleName, string mobileNo, long? modelId, long? jobOrderId, string jobCode, string status,string recId,long userId, long orgId, long branchId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderTS(roleName,mobileNo, modelId, jobOrderId, jobCode, userId, orgId, branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderTS(roleName,mobileNo, modelId, jobOrderId, jobCode,status,recId, userId, orgId, branchId)).ToList();
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrdersPush(long? jobOrderId, long orgId, long branchId)
+        public IEnumerable<JobOrderDTO> GetJobOrdersPush(long? jobOrderId,string recId, long orgId, long branchId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderPush(jobOrderId, orgId,branchId)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderPush(jobOrderId,recId, orgId,branchId)).ToList();
         }
 
-        private string QueryForJobOrderPush(long? jobOrderId, long orgId, long branchId)
+        private string QueryForJobOrderPush(long? jobOrderId,string recId, long orgId, long branchId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -762,6 +778,10 @@ Where 1 = 1{0} and (jo.StateStatus='TS-Assigned' or jo.StateStatus='QC-Assigned'
             if (jobOrderId != null && jobOrderId > 0)
             {
                 param += string.Format(@"and jo.JodOrderId ={0}", jobOrderId);
+            }
+            if (!string.IsNullOrEmpty(recId))
+            {
+                param += string.Format(@"and jo.MultipleJobOrderCode Like '%{0}%'", recId);
             }
             if (orgId > 0)
             {
@@ -773,10 +793,10 @@ Where 1 = 1{0} and (jo.StateStatus='TS-Assigned' or jo.StateStatus='QC-Assigned'
 and (IsTransfer is null or IsTransfer = 'False')) OR (IsTransfer = 'True' and TransferBranchId={0}))", branchId);
             }
 
-            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,StateStatus,JobOrderType,EntryDate,EntryUser,MultipleJobOrderCode,
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,BranchName
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',b.BranchName,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.IsWarrantyPaperEnclosed,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName 'EntryUser',b.BranchName,jo.MultipleJobOrderCode,
 
 Cast((Select AccessoriesName+',' From [Configuration].dbo.tblAccessories ass
 Inner Join tblJobOrderAccessories joa on ass.AccessoriesId = joa.AccessoriesId
@@ -1636,7 +1656,7 @@ and StateStatus='Job-Initiated' ", orgId, branchId)).ToList();
             {
                 jobOrderInDb.CustomerApproval = approval;
                 jobOrderInDb.CallCenterRemarks = remarks;
-                jobOrderInDb.UpdateDate = DateTime.Now;
+                jobOrderInDb.QCPassFailDate = DateTime.Now;
                 jobOrderInDb.UpUserId = userId;
                 _jobOrderRepository.Update(jobOrderInDb);
             }
@@ -1650,11 +1670,11 @@ and StateStatus='Job-Initiated' ", orgId, branchId)).ToList();
 Where OrganizationId={0} and BranchId={1} and TsRepairStatus='PENDING FOR APPROVAL' and (CustomerApproval='Approved' or CustomerApproval='DisApproved') and TSId={2}", orgId, branchId,userId)).ToList();
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrderForQc(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
+        public IEnumerable<JobOrderDTO> GetJobOrderForQc(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus, string recId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderQC(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate, customerType, jobType, repairStatus)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderQC(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate, customerType, jobType, repairStatus,recId)).ToList();
         }
-        private string QueryForJobOrderQC(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
+        private string QueryForJobOrderQC(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus, string recId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -1702,6 +1722,10 @@ Where OrganizationId={0} and BranchId={1} and TsRepairStatus='PENDING FOR APPROV
                 {
                     param += string.Format(@"and jo.IMEI2 Like '%{0}%'", iMEI2);
                 }
+                if (!string.IsNullOrEmpty(recId))
+                {
+                    param += string.Format(@"and jo.MultipleJobOrderCode Like '%{0}%'", recId);
+                }
             }
             if (orgId > 0)
             {
@@ -1740,9 +1764,9 @@ Where OrganizationId={0} and BranchId={1} and TsRepairStatus='PENDING FOR APPROV
 CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
-SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,QCTransferStatus,
+SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,QCTransferStatus,MultipleJobOrderCode,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks,QCStatus,QCRemarks
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,jo.QCStatus,jo.QCRemarks,jo.QCTransferStatus,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,jo.QCStatus,jo.QCRemarks,jo.QCTransferStatus,jo.MultipleJobOrderCode,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -1836,11 +1860,11 @@ Where OrganizationId={0} and BranchId={1} and TsRepairStatus='QC'
 and QCStatus='QC-Fail' and TSId={2}", orgId, branchId, userId)).ToList();
         }
 
-        public IEnumerable<JobOrderDTO> GetJobOrderForDelivery(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
+        public IEnumerable<JobOrderDTO> GetJobOrderForDelivery(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus,string recId)
         {
-            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderDelivery(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate, customerType, jobType, repairStatus)).ToList();
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForJobOrderDelivery(mobileNo, modelId, status, jobOrderId, jobCode, iMEI, iMEI2, orgId, branchId, fromDate, toDate, customerType, jobType, repairStatus,recId)).ToList();
         }
-        private string QueryForJobOrderDelivery(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus)
+        private string QueryForJobOrderDelivery(string mobileNo, long? modelId, string status, long? jobOrderId, string jobCode, string iMEI, string iMEI2, long orgId, long branchId, string fromDate, string toDate, string customerType, string jobType, string repairStatus,string recId)
         {
             string query = string.Empty;
             string param = string.Empty;
@@ -1888,6 +1912,10 @@ and QCStatus='QC-Fail' and TSId={2}", orgId, branchId, userId)).ToList();
                 {
                     param += string.Format(@"and jo.IMEI2 Like '%{0}%'", iMEI2);
                 }
+                if (!string.IsNullOrEmpty(recId))
+                {
+                    param += string.Format(@"and jo.MultipleJobOrderCode Like '%{0}%'", recId);
+                }
             }
             if (orgId > 0)
             {
@@ -1918,13 +1946,13 @@ OR
                 param += string.Format(@" and Cast(jo.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,
+            query = string.Format(@"Select JodOrderId,TsRepairStatus,JobOrderCode,CustomerName,MobileNo,[Address],ModelName,IsWarrantyAvailable,IsWarrantyPaperEnclosed,IsHandset,StateStatus,JobOrderType,EntryDate,EntryUser,MultipleJobOrderCode,
 CloseDate,TSRemarks,
 SUBSTRING(FaultName,1,LEN(FaultName)-1) 'FaultName',SUBSTRING(ServiceName,1,LEN(ServiceName)-1) 'ServiceName',
 SUBSTRING(AccessoriesNames,1,LEN(AccessoriesNames)-1) 'AccessoriesNames',SUBSTRING(PartsName,1,LEN(PartsName)-1) 'PartsName',
 SUBSTRING(Problems,1,LEN(Problems)-1) 'Problems',TSId,TSName,RepairDate,
 IMEI,[Type],ModelColor,WarrantyDate,Remarks,ReferenceNumber,IMEI2,CloseUser,InvoiceCode,InvoiceInfoId,CustomerType,CourierNumber,CourierName,ApproxBill,IsTransfer,JobLocationB,IsReturn,CustomerApproval,CallCenterRemarks,QCStatus,QCRemarks
-From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,jo.QCStatus,jo.QCRemarks,
+From (Select jo.JodOrderId,jo.CustomerName,jo.MobileNo,jo.[Address],de.ModelName,jo.IsWarrantyAvailable,jo.InvoiceInfoId,jo.IsWarrantyPaperEnclosed,jo.IsHandset,jo.JobOrderType,jo.StateStatus,jo.EntryDate,ap.UserName'EntryUser',jo.CloseDate,jo.InvoiceCode,jo.CustomerType,jo.CourierNumber,jo.CourierName,jo.ApproxBill,jo.IsTransfer,jo.IsReturn,bb.BranchName'JobLocationB',jo.CustomerApproval,jo.CallCenterRemarks,jo.QCStatus,jo.QCRemarks,jo.MultipleJobOrderCode,
 
 Cast((Select FaultName+',' From [Configuration].dbo.tblFault fa
 Inner Join tblJobOrderFault jof on fa.FaultId = jof.FaultId
@@ -2235,6 +2263,59 @@ Where 1 = 1 and jo.MultipleJobOrderCode='{0}' and jo.OrganizationId={1} and jo.B
             var data= this._frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(
                 string.Format(@"Select * From tblJobOrders Where IMEI='{0}' and BranchId={1} and OrganizationId={2}", imei, branchId, orgId)).ToList();
             return data;
+        }
+
+        public IEnumerable<JobOrderDTO> GetQCPassFailData(string jobCode, long? modelId, string status, long orgId, long branchId, string fromDate, string toDate)
+        {
+            return _frontDeskUnitOfWork.Db.Database.SqlQuery<JobOrderDTO>(QueryForGetQCPassFailData(jobCode, modelId, status, orgId, branchId, fromDate, toDate)).ToList();
+        }
+        private string QueryForGetQCPassFailData(string jobCode, long? modelId, string status, long orgId, long branchId, string fromDate, string toDate)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            if (orgId > 0)
+            {
+                param += string.Format(@"and job.OrganizationId={0}", orgId);
+            }
+            if (branchId > 0)
+            {
+                param += string.Format(@"and job.BranchId={0}", branchId);
+            }
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@"and job.DescriptionId ={0}", modelId);
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                param += string.Format(@"and job.QCStatus ='{0}'", status);
+            }
+            if (!string.IsNullOrEmpty(jobCode))
+            {
+                param += string.Format(@"and job.JobOrderCode Like '%{0}%'", jobCode);
+            }
+
+            if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "" && !string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(job.QCPassFailDate as date) between '{0}' and '{1}'", fDate, tDate);
+            }
+            else if (!string.IsNullOrEmpty(fromDate) && fromDate.Trim() != "")
+            {
+                string fDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(job.QCPassFailDate as date)='{0}'", fDate);
+            }
+            else if (!string.IsNullOrEmpty(toDate) && toDate.Trim() != "")
+            {
+                string tDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                param += string.Format(@" and Cast(job.QCPassFailDate as date)='{0}'", tDate);
+            }
+
+            query = string.Format(@"Select job.JobOrderCode,m.ModelName,job.DescriptionId,job.QCStatus,job.QCRemarks From [FrontDesk].dbo.tblJobOrders job
+Left Join [Configuration].dbo.tblModelSS m on job.DescriptionId=m.ModelId
+Where 1=1{0} and (job.QCStatus='QC-Pass' OR job.QCStatus='QC-Fail')", Utility.ParamChecker(param));
+            return query;
         }
     }
 }

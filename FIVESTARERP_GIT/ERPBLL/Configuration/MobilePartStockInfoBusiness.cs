@@ -145,5 +145,10 @@ where mpsi.OrganizationId={0}", orgId)).ToList();
         {
             return mobilePartStockInfoRepository.GetAll(info => info.SWarehouseId == warehouseId && info.MobilePartId == partsId && info.OrganizationId == orgId && info.BranchId == branchId && info.DescriptionId==modelId).ToList();
         }
+
+        public MobilePartStockInfo GetPriceByModel(long modelId, long partsId, long orgId, long branchId)
+        {
+            return mobilePartStockInfoRepository.GetOneByOrg(p => p.DescriptionId == modelId && p.MobilePartId == partsId && p.OrganizationId == orgId && p.BranchId == branchId);
+        }
     }
 }

@@ -18,11 +18,13 @@
                     <th style="vertical-align:middle">Customer Name</th>
                     <th style="vertical-align:middle">Mobile No</th>
                     <th style="vertical-align:middle">Address</th>
+                    <th style="vertical-align:middle">IMEI1</th>
                     <th style="vertical-align:middle">Model</th>
                     <th style="vertical-align:middle">Symptom</th>
                     <th style="vertical-align:middle">Accessories</th>
+                    <th style="vertical-align:middle">Receive Id</th>
                     @*<th style="vertical-align:middle">Warrenty Available</th>
-                    <th style="vertical-align:middle">Warrenty Paper Enclosed</th>*@
+        <th style="vertical-align:middle">Warrenty Paper Enclosed</th>*@
                     <th style="vertical-align:middle">Job Status</th>
                     <th style="vertical-align:middle">Issued by</th>
                     <th style="vertical-align:middle">Create Date</th>
@@ -37,37 +39,39 @@
                     sl = sl + 1;
                     isWarrantyAvailable = item.IsWarrantyAvailable ? "Yes" : "No";
                     isWarrantyPaperEnclosed = item.IsWarrantyPaperEnclosed ? "Yes" : "No";
-                    <tr>
-                        <td class="hide">@item.JodOrderId</td>
-                        <td class="text-center text-bold">@sl</td>
-                        <td class="text-center text-bold">@item.JobOrderCode</td>
-                        <td class="text-center text-bold">@item.TSName</td>
-                        <td>@item.CustomerName</td>
-                        <td>@item.MobileNo</td>
-                        <td>@item.Address</td>
-                        <td>@item.ModelName</td>
-                        <td>@item.Problems</td>
-                        <td>@item.AccessoriesNames</td>
-                        @*<td class="text-center">@isWarrantyAvailable</td>
-                        <td class="text-center">@isWarrantyPaperEnclosed</td>*@
-                        <td class="text-center" data-val="@item.StateStatus">
-                            <span class="@badge">@item.StateStatus</span>
-                        </td>
-                        <td class="text-center text-bold">@item.EntryUser</td>
-                        <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
-                        <td>
-                            <a href="#" class="data-item-tsWork" data-item-tsWork="@item.JodOrderId" title="View TS Work">
-                                TSWork
-                            </a>
-                        </td>
-                        <td>
-                            @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS)
-                            {
-                                <a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Service Details" target="_blank">Services</a>
-                            }
-                        </td>
+                <tr>
+                    <td class="hide">@item.JodOrderId</td>
+                    <td class="text-center text-bold">@sl</td>
+                    <td class="text-center text-bold">@item.JobOrderCode</td>
+                    <td class="text-center text-bold">@item.TSName</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.MobileNo</td>
+                    <td>@item.Address</td>
+                    <td>@item.IMEI</td>
+                    <td>@item.ModelName</td>
+                    <td>@item.Problems</td>
+                    <td>@item.AccessoriesNames</td>
+                    <td>@item.MultipleJobOrderCode</td>
+                    @*<td class="text-center">@isWarrantyAvailable</td>
+        <td class="text-center">@isWarrantyPaperEnclosed</td>*@
+                    <td class="text-center" data-val="@item.StateStatus">
+                        <span class="@badge">@item.StateStatus</span>
+                    </td>
+                    <td class="text-center text-bold">@item.EntryUser</td>
+                    <td>@item.EntryDate.Value.ToString("dd-MMM-yyyy")</td>
+                    <td>
+                        <a href="#" class="data-item-tsWork" data-item-tsWork="@item.JodOrderId" title="View TS Work">
+                            TSWork
+                        </a>
+                    </td>
+                    <td>
+                        @if (item.StateStatus == ERPBLL.Common.JobOrderStatus.AssignToTS)
+                        {
+                            <a href="@Url.Action("ServicesDetails","FrontDesk",new {@joborderId=item.JodOrderId })" class="btn btn-sm btn-outline-success" title="Service Details" target="_blank">Services</a>
+                        }
+                    </td>
 
-                    </tr>
+                </tr>
                 }
                 @if (Model.Count() == 0)
                 {

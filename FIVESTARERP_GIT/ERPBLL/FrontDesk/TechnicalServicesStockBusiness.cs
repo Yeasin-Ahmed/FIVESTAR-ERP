@@ -1,6 +1,7 @@
 ﻿using ERPBLL.Common;
 using ERPBLL.Configuration.Interface;
 using ERPBLL.FrontDesk.Interface;
+using ERPBO.Configuration.DTOModels;
 using ERPBO.FrontDesk.DomainModels;
 using ERPBO.FrontDesk.DTOModels;
 using ERPDAL.FrontDeskDAL;
@@ -128,7 +129,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                 {
                     List<TechnicalServicesStock> servicesStocks = new List<TechnicalServicesStock>();
                     List<TsStockReturnDetailDTO> returnStocks = new List<TsStockReturnDetailDTO>();
-                    List<FaultyStockDetailsDTO> faultyStockDetailsDTOs = new List<FaultyStockDetailsDTO>();
+                    List<FaultyStockDetailDTO> faultyStockDetailsDTOs = new List<FaultyStockDetailDTO>();
 
                     foreach (var item in dto.StockDetails)
                     {
@@ -159,7 +160,7 @@ where ts.UsedQty>0 and 1=1{0}  order by rq.EntryDate desc
                         }
                         if (servicesInfo.UsedQty > 0)
                         {
-                            FaultyStockDetailsDTO faulty = new FaultyStockDetailsDTO()
+                            FaultyStockDetailDTO faulty = new FaultyStockDetailDTO()
                             {
                                 JobOrderId = servicesInfo.JobOrderId,
                                 SWarehouseId = servicesInfo.SWarehouseId,

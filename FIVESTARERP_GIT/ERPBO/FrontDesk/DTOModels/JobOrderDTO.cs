@@ -102,5 +102,6 @@ namespace ERPBO.FrontDesk.DTOModels
         public ICollection<JobOrderAccessories> JobOrderAccessories { get; set; }
         public ICollection<JobOrderProblem> JobOrderProblems { get; set; }
         public int RefeTimes { get; set; }
+        public Nullable<DateTime> QCPassFailDate { get; set; }
     }
 }

@@ -901,6 +901,9 @@
     <Content Include="Views\Production\_GetRepairSectionSemiFinishGoodStockInfoList.cshtml" />
     <Content Include="Views\Production\_GetRepairSectionSemiFinishGoodStockDetailsList.cshtml" />
     <Content Include="Views\Production\GetRepairSectionSemiFinishGoodStockDetailsList.cshtml" />
+    <Content Include="Views\FrontDesk\QCPassFailReport.cshtml" />
+    <Content Include="Views\FrontDesk\_QCPassFailReport.cshtml" />
+    <Content Include="Views\Configuration\CreateFaultyStock.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1028,6 +1031,7 @@
     <Content Include="Reports\ServiceRpt\FrontDesk\rptDealerReceipt.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Reports\ServiceRpt\FrontDesk\rptQCPassFailReport.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ERPBLL\ERPBLL.csproj">

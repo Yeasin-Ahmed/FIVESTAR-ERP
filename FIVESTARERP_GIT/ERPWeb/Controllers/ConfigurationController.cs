@@ -43,6 +43,7 @@ namespace ERPWeb.Controllers
         private readonly IColorSSBusiness _colorSSBusiness;
         private readonly IBrandSSBusiness _brandSSBusiness;
         private readonly IModelSSBusiness _modelSSBusiness;
+        private readonly IFaultyStockDetailBusiness _faultyStockDetailBusiness;
         //Nishad
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
@@ -59,7 +60,7 @@ namespace ERPWeb.Controllers
         //Front Desk
         private readonly IFaultyStockAssignTSBusiness _faultyStockAssignTSBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness, IDealerSSBusiness dealerSSBusiness, IColorSSBusiness colorSSBusiness, IBrandSSBusiness brandSSBusiness, IModelSSBusiness modelSSBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness, IDealerSSBusiness dealerSSBusiness, IColorSSBusiness colorSSBusiness, IBrandSSBusiness brandSSBusiness, IModelSSBusiness modelSSBusiness, IFaultyStockDetailBusiness faultyStockDetailBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -91,6 +92,7 @@ namespace ERPWeb.Controllers
             this._colorSSBusiness = colorSSBusiness;
             this._brandSSBusiness = brandSSBusiness;
             this._modelSSBusiness = modelSSBusiness;
+            this._faultyStockDetailBusiness = faultyStockDetailBusiness;
             
 
             #region Inventory
@@ -1030,35 +1032,15 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Faulty Stock
-        //Nishad
-        //public ActionResult FaultyStockInfoList(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
-        //{
-        //    if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
-        //    {
-        //        IEnumerable<FaultyStockInfoDTO> dto = _faultyStockInfoBusiness.GetFaultyStockInfoByQuery(SwerehouseId ?? 0, modelId ?? 0, MobilePartId ?? 0, lessOrEq, User.OrgId);
+        public ActionResult CreateFaultyStock()
+        {
+            ViewBag.ddlServicesWarehouse = _servicesWarehouseBusiness.GetAllServiceWarehouseByOrgId(User.OrgId, User.BranchId).Select(services => new SelectListItem { Text = services.ServicesWarehouseName, Value = services.SWarehouseId.ToString() }).ToList();
 
-        //        List<FaultyStockInfoViewModel> ViewModels = new List<FaultyStockInfoViewModel>();
-        //        // Pagination //
-        //        ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
-        //        dto = dto.Skip((page - 1) * 10).Take(10).ToList();
-        //        //-----------------//
-        //        AutoMapper.Mapper.Map(dto, ViewModels);
-        //        return PartialView("_FaultyStockInfoList", ViewModels);
-        //    }
-        //    else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
-        //    {
-        //        IEnumerable<FaultyStockAssignTSDTO> dto = _faultyStockAssignTSBusiness.GetFaultyStockAssignTsByOrgId(User.OrgId,User.BranchId).Where(s=> s.StateStatus == "Received");
+            ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
-        //        List<FaultyStockAssignTSViewModel> ViewModels = new List<FaultyStockAssignTSViewModel>();
-        //        // Pagination //
-        //        ViewBag.PagerData = GetPagerData(dto.Count(), 10, page);
-        //        dto = dto.Skip((page - 1) * 10).Take(10).ToList();
-        //        //-----------------//
-        //        AutoMapper.Mapper.Map(dto, ViewModels);
-        //        return PartialView("_FaultyStockAssignTSList", ViewModels);
-        //    }
-            
-        //}
+            ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+            return View();
+        }
 
         public ActionResult CreateFaultyAssignTS(string flag, long? SwerehouseId, long? MobilePartId, long? modelId, string lessOrEq, int page = 1)
         {
@@ -1120,6 +1102,17 @@ namespace ERPWeb.Controllers
             if (model.Count > 0)
             {
                 IsSuccess = _faultyStockAssignTSBusiness.SaveFaultyStockRepairedItems(model, User.UserId, User.OrgId, User.BranchId);
+            }
+            return Json(IsSuccess);
+        }
+        public ActionResult SaveFaultyStock(List<FaultyStockDetailViewModel> model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                List<FaultyStockDetailDTO> dto = new List<FaultyStockDetailDTO>();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _faultyStockDetailBusiness.SaveFaultyStock(dto, User.UserId, User.OrgId, User.BranchId);
             }
             return Json(IsSuccess);
         }
@@ -1197,6 +1190,17 @@ namespace ERPWeb.Controllers
                 MissingStockDTO dto = new MissingStockDTO();
                 AutoMapper.Mapper.Map(model, dto);
                 IsSuccess = _missingStockBusiness.SaveMissingStock(dto, User.UserId, User.BranchId, User.OrgId);
+            }
+            return Json(IsSuccess);
+        }
+        public ActionResult UpdateMissingStock(MissingStockViewModel model)
+        {
+            bool IsSuccess = false;
+            if (ModelState.IsValid)
+            {
+                MissingStockDTO dto = new MissingStockDTO();
+                AutoMapper.Mapper.Map(model, dto);
+                IsSuccess = _missingStockBusiness.UpdateMissingStock(dto, User.UserId, User.BranchId, User.OrgId);
             }
             return Json(IsSuccess);
         }

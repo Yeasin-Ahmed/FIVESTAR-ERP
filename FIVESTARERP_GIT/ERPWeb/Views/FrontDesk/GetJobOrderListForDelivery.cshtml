@@ -77,6 +77,10 @@
                                                 @Html.DropDownList("ddlJobType", (IEnumerable<SelectListItem>)ViewBag.ddlJobType, "--Search By Job Type--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                             <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Receive Id</label>
+                                                <input type="text" id="txtReceiveId" class="form-control form-control-sm" placeholder="Search By Receive Id" name="recId" />
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
                                                 <div class="input-group input-group-sm ">
                                                     <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
@@ -94,8 +98,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label class="control-label font-weight-bold" style="visibility:hidden">To Dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</label>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold" style="visibility:hidden">To Dateeeeeee</label>
                                                 <button type="button" class="btn float-lg-right btn-sm btn-success" id="btnSubmitMDelivery">Submit  <i class="fas fa-paper-plane"></i></button>
                                             </div>
                                         </div>
@@ -184,6 +188,7 @@
         var hdfJobOrderId = $("#hdfJobOrderId");
         var txtIMEINo = $("#txtIMEINo");
         var txtIMEI2No = $("#txtIMEI2No");
+        var txtReceiveId = $("#txtReceiveId");
         //JobOrderInvoice
         var txtLabourCharge = $("#txtLabourCharge");
         var txtVat = $("#txtVat");
@@ -295,13 +300,16 @@
         txtIMEI2No.keyup(function () {
             LoadDataTable();
         })
+        txtReceiveId.keyup(function () {
+            LoadDataTable();
+        })
 
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), recId: txtReceiveId.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderListForDelivery', data)).then(function (res, status) {

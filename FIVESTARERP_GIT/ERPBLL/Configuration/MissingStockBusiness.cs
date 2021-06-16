@@ -15,10 +15,26 @@ namespace ERPBLL.Configuration
     {
         private readonly IConfigurationUnitOfWork _configDb;
         private readonly MissingStockRepository _missingStockRepository;
-        public MissingStockBusiness(IConfigurationUnitOfWork configDb)
+        private readonly IMobilePartStockInfoBusiness _mobilePartStockInfoBusiness;
+        private readonly MobilePartStockDetailRepository _mobilePartStockDetailRepository; // repo
+        private readonly MobilePartStockInfoRepository _mobilePartStockInfoRepository; //repo
+        private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
+        private readonly FaultyStockInfoRepository _faultyStockInfoRepository;
+        private readonly FaultyStockDetailRepository _faultyStockDetailRepository;
+        private readonly HandSetStockRepository _handSetStockRepository;
+        private readonly IHandSetStockBusiness _handSetStockBusiness;
+        public MissingStockBusiness(IConfigurationUnitOfWork configDb, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandSetStockBusiness handSetStockBusiness)
         {
             this._configDb = configDb;
             _missingStockRepository = new MissingStockRepository(this._configDb);
+            this._mobilePartStockInfoBusiness = mobilePartStockInfoBusiness;
+            this._mobilePartStockDetailRepository = new MobilePartStockDetailRepository(this._configDb);
+            this._mobilePartStockInfoRepository = new MobilePartStockInfoRepository(this._configDb);
+            this._faultyStockInfoBusiness = faultyStockInfoBusiness;
+            _faultyStockInfoRepository = new FaultyStockInfoRepository(this._configDb);
+            _faultyStockDetailRepository = new FaultyStockDetailRepository(this._configDb);
+            _handSetStockRepository = new HandSetStockRepository(this._configDb);
+            this._handSetStockBusiness = handSetStockBusiness;
         }
 
         public MissingStock GetMissingStockOneById(long id, long orgId)
@@ -31,6 +47,7 @@ namespace ERPBLL.Configuration
         }
         public bool SaveMissingStock(MissingStockDTO dto, long userId, long branchId, long orgId)
         {
+            bool isSuccess = false;
             if (dto.MissingStockId > 0)
             {
                 var stockIsExists = GetMissingStockOneByModelAndColorAndPartsAndStockType(dto.DescriptionId, dto.ColorId, dto.PartsId, dto.StockType, orgId);
@@ -82,7 +99,11 @@ namespace ERPBLL.Configuration
                     _missingStockRepository.Update(missingStock);
                 }
             }
-            return _missingStockRepository.Save();
+            if(_missingStockRepository.Save() == true)
+            {
+                isSuccess = StockOutByMissingStock(dto, orgId, branchId, userId);
+            }
+            return isSuccess;
         }
 
         public IEnumerable<MissingStockDTO> GetMissingStockInfoByQuery(long? modelId, long? colorId, long? partsId, string stockType,long orgId)
@@ -116,6 +137,297 @@ Left Join [Configuration].dbo.tblMobileParts mp  on stock.PartsId = mp.MobilePar
 Where 1=1 and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
 
             return _configDb.Db.Database.SqlQuery<MissingStockDTO>(query).ToList();
+        }
+
+        public bool StockOutByMissingStock(MissingStockDTO dto, long orgId, long branchId, long userId)
+        {
+            bool isSuccess = false;
+            FaultyStockDetails faultyStockDetails = new FaultyStockDetails();
+            HandSetStock handSetStocks = new HandSetStock();
+            MobilePartStockDetail stockDetails = new MobilePartStockDetail();
+            if (dto.StockType == "Good")
+            {
+                var reqQty = dto.Quantity;
+                var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(i => i.MobilePartId == dto.PartsId && i.DescriptionId == dto.DescriptionId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
+
+                if (partsInStock.Count() > 0)
+                {
+                    int remainQty = reqQty;
+                    foreach (var stock in partsInStock)
+                    {
+
+                        var totalStockqty = (stock.StockInQty - stock.StockOutQty); // total stock
+                        var stockOutQty = 0;
+                        if (totalStockqty <= remainQty)
+                        {
+                            stock.StockOutQty += totalStockqty;
+                            stockOutQty = totalStockqty.Value;
+                            remainQty -= totalStockqty.Value;
+                        }
+                        else
+                        {
+                            stockOutQty = remainQty;
+                            stock.StockOutQty += remainQty;
+                            remainQty = 0;
+                        }
+
+                        MobilePartStockDetail stockDetail = new MobilePartStockDetail()
+                        {
+                            SWarehouseId = stock.SWarehouseId,
+                            MobilePartId = dto.PartsId,
+                            CostPrice = stock.CostPrice,
+                            SellPrice = stock.SellPrice,
+                            Quantity = stockOutQty,
+                            Remarks = dto.Remarks,
+                            OrganizationId = orgId,
+                            BranchId = branchId,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            StockStatus = StockStatus.StockOut,
+                            ReferrenceNumber = dto.StockType,
+                            DescriptionId = stock.DescriptionId,
+
+                        };
+                        _mobilePartStockInfoRepository.Update(stock);
+                        _mobilePartStockDetailRepository.Insert(stockDetail);
+
+                        if (remainQty == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                isSuccess = _mobilePartStockDetailRepository.Save();
+            }
+            if (dto.StockType == "Faulty")
+            {
+                var reqQty = dto.Quantity;
+                var partsInStock = _faultyStockInfoBusiness.GetAllFaultyStockInfoByOrgId(orgId, branchId).Where(i => i.PartsId == dto.PartsId && i.DescriptionId == dto.DescriptionId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.FaultyStockInfoId).ToList();
+
+                if (partsInStock.Count() > 0)
+                {
+                    int remainQty = reqQty;
+                    foreach (var stock in partsInStock)
+                    {
+
+                        var totalStockqty = (stock.StockInQty - stock.StockOutQty); // total stock
+                        var stockOutQty = 0;
+                        if (totalStockqty <= remainQty)
+                        {
+                            stock.StockOutQty += totalStockqty;
+                            stockOutQty = totalStockqty;
+                            remainQty -= totalStockqty;
+                        }
+                        else
+                        {
+                            stockOutQty = remainQty;
+                            stock.StockOutQty += remainQty;
+                            remainQty = 0;
+                        }
+
+                        FaultyStockDetails stockDetail = new FaultyStockDetails()
+                        {
+                            SWarehouseId = stock.SWarehouseId,
+                            PartsId = dto.PartsId,
+                            CostPrice = stock.CostPrice,
+                            SellPrice = stock.SellPrice,
+                            Quantity = stockOutQty,
+                            Remarks = dto.Remarks,
+                            OrganizationId = orgId,
+                            BranchId = branchId,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            StateStatus = StockStatus.StockOut,
+                            DescriptionId = stock.DescriptionId,
+                            JobOrderId = stock.JobOrderId,
+                            FaultyStockInfoId = stock.FaultyStockInfoId,
+                        };
+                        _faultyStockInfoRepository.Update(stock);
+                        _faultyStockDetailRepository.Insert(stockDetail);
+
+                        if (remainQty == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                isSuccess = _faultyStockDetailRepository.Save();
+            }
+            if (dto.StockType == "Handset")
+            {
+                var reqQty = dto.Quantity;
+                var imeiInStock = _handSetStockBusiness.GetIMEI2ByIMEI1(dto.IMEI,branchId,orgId);
+
+                if (imeiInStock.IMEI1 != null)
+                {
+                    imeiInStock.StateStatus = StockStatus.StockOut;
+                    imeiInStock.Flag = "MissingStock";
+                    imeiInStock.UpdateDate = DateTime.Now;
+                    imeiInStock.UpUserId = userId;
+
+                    _handSetStockRepository.Update(imeiInStock);
+                }
+                isSuccess = _handSetStockRepository.Save();
+            }
+            return isSuccess;
+        }
+
+        public bool UpdateMissingStock(MissingStockDTO dto, long userId, long branchId, long orgId)
+        {
+            bool isSuccess = false;
+            //var stockInfo = GetMissingStockOneByModelAndColorAndPartsAndStockType(dto.DescriptionId, dto.ColorId, dto.PartsId, dto.StockType, orgId);
+            if (dto.StockType == "Handset")
+            {
+                var handset = GetMissingByHandsetStock(dto.DescriptionId, dto.IMEI, dto.ColorId, dto.StockType, orgId, branchId);
+                if (handset != null)
+                {
+                    handset.IMEI = "Stock Return";
+                    handset.Quantity -= dto.Quantity;
+                    handset.UpdateDate = DateTime.Now;
+                    handset.UpUserId = userId;
+                    _missingStockRepository.Update(handset);
+                }
+            }
+            else
+            {
+                var othStock = GetMissingGoodOrFaultyStock(dto.DescriptionId, dto.PartsId, dto.StockType, orgId, branchId);
+                if(othStock != null)
+                {
+                    othStock.Quantity -= dto.Quantity;
+                    othStock.UpdateDate = DateTime.Now;
+                    othStock.UpUserId = userId;
+                    _missingStockRepository.Update(othStock);
+                }
+            }
+            if (_missingStockRepository.Save() == true)
+            {
+                isSuccess = StockInByMissingStock(dto, orgId, branchId, userId);
+            }
+            return isSuccess;
+        }
+        public bool StockInByMissingStock(MissingStockDTO dto, long orgId, long branchId, long userId)
+        {
+            bool isSuccess = false;
+            FaultyStockDetails faultyStockDetails = new FaultyStockDetails();
+            HandSetStock handSetStocks = new HandSetStock();
+            MobilePartStockDetail stockDetails = new MobilePartStockDetail();
+            if (dto.StockType == "Good")
+            {
+                var reqQty = dto.Quantity;
+                var partsInStock = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(orgId, branchId).Where(i => i.MobilePartId == dto.PartsId && i.DescriptionId == dto.DescriptionId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.MobilePartStockInfoId).ToList();
+
+                if (partsInStock.Count() > 0)
+                {
+                    int remainQty = reqQty;
+                    foreach (var stock in partsInStock)
+                    {
+
+                        if(stock != null)
+                        {
+                            stock.StockOutQty -= remainQty;
+                            stock.UpdateDate = DateTime.Now;
+                            stock.UpUserId = userId;
+                        }
+                        MobilePartStockDetail stockDetail = new MobilePartStockDetail()
+                        {
+                            SWarehouseId = stock.SWarehouseId,
+                            MobilePartId = dto.PartsId,
+                            CostPrice = stock.CostPrice,
+                            SellPrice = stock.SellPrice,
+                            Quantity = dto.Quantity,
+                            Remarks = "Stock-In By Missing",
+                            OrganizationId = orgId,
+                            BranchId = branchId,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            StockStatus = StockStatus.StockIn,
+                            ReferrenceNumber = dto.StockType,
+                            DescriptionId = stock.DescriptionId,
+
+                        };
+                        _mobilePartStockInfoRepository.Update(stock);
+                        _mobilePartStockDetailRepository.Insert(stockDetail);
+
+                        if (remainQty == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                isSuccess = _mobilePartStockDetailRepository.Save();
+            }
+            if (dto.StockType == "Faulty")
+            {
+                var reqQty = dto.Quantity;
+                var partsInStock = _faultyStockInfoBusiness.GetAllFaultyStockInfoByOrgId(orgId, branchId).Where(i => i.PartsId == dto.PartsId && i.DescriptionId == dto.DescriptionId && (i.StockInQty - i.StockOutQty) > 0).OrderBy(i => i.FaultyStockInfoId).ToList();
+
+                if (partsInStock.Count() > 0)
+                {
+                    int remainQty = reqQty;
+                    foreach (var stock in partsInStock)
+                    {
+
+                        if (stock != null)
+                        {
+                            stock.StockOutQty -= remainQty;
+                            stock.UpdateDate = DateTime.Now;
+                            stock.UpUserId = userId;
+                        }
+
+                        FaultyStockDetails stockDetail = new FaultyStockDetails()
+                        {
+                            SWarehouseId = stock.SWarehouseId,
+                            PartsId = dto.PartsId,
+                            CostPrice = stock.CostPrice,
+                            SellPrice = stock.SellPrice,
+                            Quantity = dto.Quantity,
+                            Remarks = dto.Remarks,
+                            OrganizationId = orgId,
+                            BranchId = branchId,
+                            EUserId = userId,
+                            EntryDate = DateTime.Now,
+                            StateStatus = StockStatus.StockIn,
+                            DescriptionId = stock.DescriptionId,
+                            JobOrderId = stock.JobOrderId,
+                            FaultyStockInfoId = stock.FaultyStockInfoId,
+                        };
+                        _faultyStockInfoRepository.Update(stock);
+                        _faultyStockDetailRepository.Insert(stockDetail);
+
+                        if (remainQty == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                isSuccess = _faultyStockDetailRepository.Save();
+            }
+            if (dto.StockType == "Handset")
+            {
+                var reqQty = dto.Quantity;
+                var imeiInStock = _handSetStockBusiness.GetIMEI2ByIMEI1(dto.IMEI, branchId, orgId);
+
+                if (imeiInStock.IMEI1 != null)
+                {
+                    imeiInStock.StateStatus = StockStatus.StockIn;
+                    imeiInStock.Flag = "MissingStockReturn";
+                    imeiInStock.UpdateDate = DateTime.Now;
+                    imeiInStock.UpUserId = userId;
+                    _handSetStockRepository.Update(imeiInStock);
+                }
+                isSuccess = _handSetStockRepository.Save();
+            }
+            return isSuccess;
+        }
+
+        public MissingStock GetMissingGoodOrFaultyStock(long model, long parts, string type, long orgId, long branchId)
+        {
+            return _missingStockRepository.GetOneByOrg(s => s.DescriptionId == model  && s.PartsId == parts && s.StockType==type && s.OrganizationId == orgId && s.BranchId==branchId);
+        }
+
+        public MissingStock GetMissingByHandsetStock(long model, string imei, long colorId, string type, long orgId, long branchId)
+        {
+            return _missingStockRepository.GetOneByOrg(s => s.DescriptionId == model && s.IMEI==imei && s.ColorId == colorId && s.StockType == type && s.OrganizationId == orgId && s.BranchId==branchId);
         }
     }
 }

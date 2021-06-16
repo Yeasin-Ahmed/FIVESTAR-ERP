@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ERPBO.FrontDesk.ViewModels.JobOrderViewModel>
+@{ 
+    Layout = null;
+    int sl = 0;
+    string badge = string.Empty;
+}
+<div class="col-md-12 text-sm">
+    <table class="table table-bordered table-sm table-striped" id="tblPartsUsed">
+        <thead class="btn-dark">
+            <tr class="text-center">
+                <th>#SL</th>
+                <th>Job Code</th>
+                <th>Model</th>
+                <th>Status</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                sl = sl + 1;
+                string entryDate = item.EntryDate != null ? item.EntryDate.Value.ToString("dd-MMM-yyy hh:mm tt") : "";
+                badge = item.QCStatus == "QC-Fail" ? "badge bg-danger" : "badge bg-success";
+            <tr>
+                <td class="text-center">@sl</td>
+                <td>@item.JobOrderCode</td>
+                <td>@item.ModelName</td>
+                <td class="text-center" data-val="@item.QCStatus">
+                    <span class="@badge">@item.QCStatus</span>
+                </td>
+                <td>@item.QCRemarks</td>
+            </tr>
+            }
+            @if (Model.Count() == 0)
+            {
+                <tr class="text-center empty-row">
+                    <td colspan="6">
+                        No Rows Found
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

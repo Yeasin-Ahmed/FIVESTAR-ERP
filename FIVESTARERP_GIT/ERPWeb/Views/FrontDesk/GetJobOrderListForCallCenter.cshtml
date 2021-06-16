@@ -58,9 +58,13 @@
                                                 <label class="col-form-label">IMEI1</label>
                                                 <input type="text" id="txtIMEINo" class="form-control form-control-sm" placeholder="Search By IMEI1" />
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 hide">
                                                 <label class="col-form-label">IMEI2</label>
                                                 <input type="text" id="txtIMEI2No" class="form-control form-control-sm" placeholder="Search By IMEI2" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="col-form-label">Job Type</label>
+                                                @Html.DropDownList("ddlJobType", (IEnumerable<SelectListItem>)ViewBag.ddlJobType, "--Search By Job Type--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="col-form-label">Mobile No</label>
@@ -73,16 +77,21 @@
                                         </div>
                                         <div class="row text-sm">
                                             <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Courier Number</label>
+                                                <input type="text" id="txtCourierNumber" class="form-control form-control-sm" placeholder="Search By C Number" />
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">Customer Type</label>
                                                 @Html.DropDownList("ddlCustomerType", (IEnumerable<SelectListItem>)ViewBag.ddlCustomerType, "--Search By CustomerType--", new { @class = "form-control form-control-sm ctrl-changed " })
                                             </div>
-                                            <div class="col-md-2">
-                                                <label class="control-label font-weight-bold">Job Type</label>
-                                                @Html.DropDownList("ddlJobType", (IEnumerable<SelectListItem>)ViewBag.ddlJobType, "--Search By Job Type--", new { @class = "form-control form-control-sm ctrl-changed " })
-                                            </div>
+                                            
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">TS Work Status</label>
                                                 <input type="text" id="txtRepairStatus" class="form-control form-control-sm" placeholder="Search By Ts Repair Status" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label font-weight-bold">Receive Id</label>
+                                                <input type="text" id="txtReceiveId" class="form-control form-control-sm" placeholder="Search By Receive Id" name="recId" />
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">From Date</label>
@@ -144,6 +153,7 @@
                                 <div class="card shadow card-navy">
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
+                                           
                                             <div class="col-md-2">
                                                 <label class="control-label font-weight-bold">Invoice</label>
                                                 <input type="text" id="txtInvoice" class="form-control form-control-sm" placeholder="Search By Invoice" />
@@ -312,6 +322,7 @@
         var hdfJobOrderId = $("#hdfJobOrderId");
         var txtIMEINo = $("#txtIMEINo");
         var txtIMEI2No = $("#txtIMEI2No");
+        var txtReceiveId = $("#txtReceiveId");
         //JobOrderInvoice
         var txtLabourCharge = $("#txtLabourCharge");
         var txtVat = $("#txtVat");
@@ -328,6 +339,7 @@
         var ddlCustomerType = $("#ddlCustomerType");
         var ddlJobType = $("#ddlJobType");
         var txtRepairStatus = $("#txtRepairStatus");
+        var txtCourierNumber = $("#txtCourierNumber");
 
         $(document).ready(function () {
             dptFromDate.prop('readonly', true);
@@ -430,13 +442,19 @@
         txtIMEI2No.keyup(function () {
             LoadDataTable();
         })
+        txtCourierNumber.keyup(function () {
+            LoadDataTable();
+        })
+        txtReceiveId.keyup(function () {
+            LoadDataTable();
+        })
 
         $(document).on('change', '.ctrl-changed', function () {
             LoadDataTable();
         })
 
         function LoadDataTable() {
-            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), repairStatus: txtRepairStatus.val().trim(), page: pageNo };
+            var data = { flag: "search", modelId: TryParseInt(ddlModelName.val(), 0), jobOrderId: 0, mobileNo: $.trim(txtMobileNo.val()), status: ddlStateStatus.val(), jobCode: txtJobCode.val(), iMEI: txtIMEINo.val(), iMEI2: txtIMEI2No.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), customerType: ddlCustomerType.val(), jobType: ddlJobType.val(), repairStatus: txtRepairStatus.val().trim(), courierNumber: txtCourierNumber.val(), recId: txtReceiveId.val(), page: pageNo };
 
             console.log(data);
             $.when(getReqWithData('html', 'GET', '/FrontDesk/GetJobOrderListForCallCenter', data)).then(function (res, status) {
@@ -785,16 +803,10 @@
             $(".error").addClass("hide");
         }
 
-
-
-
         $(document).on('click', '.btnApproval', function (e) {
             e.preventDefault();
             OpenCallCenterModal();
         })
-
-
-
         $("#btnCallCenterSubmit").click(function (e) {
             e.preventDefault();
             $(".error").addClass("hide");

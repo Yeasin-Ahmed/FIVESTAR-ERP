@@ -332,6 +332,18 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateDealerMobileNo(string mobileNo, long id)
+        {
+            bool isExist = _dealerSSBusiness.IsDuplicateDealer(mobileNo, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsDuplicateModelNameSS(string model, long id)
+        {
+            bool isExist = _modelSSBusiness.IsDuplicateModelName(model, id, User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult ExistJobOrderForIMEI(long jobId)
         {
             bool isExist = _handsetChangeTraceBusiness.ExitJobOrderForIMEI(jobId, User.OrgId,User.BranchId);

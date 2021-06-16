@@ -29,6 +29,7 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-3">
+                                                <a href="#" style="background-color:darkblue" class="btn btn-outline-primary btn-sm float-lg-right" id="btnSbtr"><i class="fa fa-minus"></i> Sbtr Stock</a>
                                                 <a href="#" style="background-color:darkblue" class="btn btn-outline-primary btn-sm float-lg-right" id="btnAddNew"><i class="fa fa-plus"></i> Create Stock</a>
                                             </div>
                                         </div>
@@ -107,22 +108,19 @@
                             <span class="error hide req-model">Input Model!</span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="ddlColorsEdit" class="control-label font-weight-bold">Color</label>
-                            @Html.DropDownList("ddlColorsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm select2" })
-                            <span class="error hide req-color">Input Color!</span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
                             <label for="ddlStockTypeEdit" class="control-label font-weight-bold">Stock Type</label>
                             <select class="form-control form-control-sm select2" id="ddlStockTypeEdit">
                                 <option value="">--Select Type--</option>
                                 <option value="Good">Good</option>
                                 <option value="Faulty">Faulty</option>
-                                <option value="DOA">DOA</option>
+                                <option value="Handset">Handset</option>
                             </select>
                             <span class="error hide req-stockType">Input Stock Type!</span>
                         </div>
+                        
+                    </div>
+                    <div class="form-row">
+
                         <div class="form-group col-md-6" id="divParts">
                             <label for="ddlMobilePartsEdit" class="control-label font-weight-bold">Mobile Parts</label>
                             @Html.DropDownList("ddlMobilePartsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2" })
@@ -134,20 +132,98 @@
                             <span class="error hide req-imei">Input IMEI!</span>
                             <span class="error hide req-imei-range">Input 15 Digits IMEI!</span>
                         </div>
+                        <div class="form-group col-md-6" id="divColors">
+                            <label for="ddlColorsEdit" class="control-label font-weight-bold">Color</label>
+                            @Html.DropDownList("ddlColorsEdit", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-color">Input Color!</span>
+                        </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
                             <label for="txtQuantityEdit" class="control-label font-weight-bold">Missing Qty</label>
                             <input type="number" id="txtQuantityEdit" class="form-control form-control-sm" />
                             <span class="error hide req-qty">Input Qty!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" id="txtRemarks" class="form-control form-control-sm" />
                         </div>
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer btn-default">
-                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-paper-plane"></i> Cancel </button>
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
                 <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmititemType"><i class="fas fa-paper-plane"></i> <span id="spanSaveMissingStock">Save</span> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalMissingStock2" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-secondary">
+                <h4 id="modalHeading" class="modal-title"><span id="spanModalHeadMissingStock2">Add New</span></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmHandsetStock2">
+                    <input type="hidden" name="Id" id="hdfMissingStockId2" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="ddlModelsEdit" class="control-label font-weight-bold">Model</label>
+                            @Html.DropDownList("ddlModelsEdit2", (IEnumerable<SelectListItem>)ViewBag.ddlModels, "--Select Model--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-model2">Input Model!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ddlStockTypeEdit2" class="control-label font-weight-bold">Stock Type</label>
+                            <select class="form-control form-control-sm select2" id="ddlStockTypeEdit2">
+                                <option value="">--Select Type--</option>
+                                <option value="Good">Good</option>
+                                <option value="Faulty">Faulty</option>
+                                <option value="Handset">Handset</option>
+                            </select>
+                            <span class="error hide req-stockType2">Input Stock Type!</span>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6" id="divParts2">
+                            <label for="ddlMobilePartsEdit2" class="control-label font-weight-bold">Mobile Parts</label>
+                            @Html.DropDownList("ddlMobilePartsEdit2", (IEnumerable<SelectListItem>)ViewBag.ddlMobilePart, "--Select Parts--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-parts2">Input Parts!</span>
+                        </div>
+                        <div class="form-group col-md-6" id="divIMEI2">
+                            <label for="txtIMEIEdit2" class="control-label font-weight-bold">IMEI</label>
+                            <input type="text" id="txtIMEIEdit2" class="form-control form-control-sm" />
+                            <span class="error hide req-imei2">Input IMEI!</span>
+                            <span class="error hide req-imei-range2">Input 15 Digits IMEI!</span>
+                        </div>
+                        <div class="form-group col-md-6" id="divColors2">
+                            <label for="ddlColorsEdit2" class="control-label font-weight-bold">Color</label>
+                            @Html.DropDownList("ddlColorsEdit2", (IEnumerable<SelectListItem>)ViewBag.ddlColors, "--Select Color--", new { @class = "form-control form-control-sm select2" })
+                            <span class="error hide req-color2">Input Color!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtQuantityEdit2" class="control-label font-weight-bold">Missing Qty</label>
+                            <input type="number" id="txtQuantityEdit2" class="form-control form-control-sm" />
+                            <span class="error hide req-qty2">Input Qty!</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="txtRemarks2" class="control-label font-weight-bold">Remarks</label>
+                            <input type="text" id="txtRemarks2" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer btn-default">
+                <button type="button" class="btn btn-outline-danger btn-sm float-right" data-dismiss="modal" data-target="#"><i class="fas fa-times"></i> Cancel </button>
+                <button type="submit" class="btn btn-outline-success btn-sm float-right" id="btnSubmititemType2"><i class="fas fa-paper-plane"></i> <span id="spanSaveMissingStock2">Save</span> </button>
             </div>
         </div>
     </div>
@@ -170,6 +246,17 @@
         var txtQuantityEdit = $("#txtQuantityEdit");
         var hdfMissingStockId = $("#hdfMissingStockId");
         var txtIMEIEdit = $("#txtIMEIEdit");
+        var txtRemarks = $("#txtRemarks");
+
+        //Missing Stock
+        var ddlMobilePartsEdit2 = $("#ddlMobilePartsEdit2");
+        var ddlModelsEdit2 = $("#ddlModelsEdit2");
+        var ddlColorsEdit2 = $("#ddlColorsEdit2");
+        var ddlStockTypeEdit2 = $("#ddlStockTypeEdit2");
+        var txtQuantityEdit2 = $("#txtQuantityEdit2");
+        var hdfMissingStockId2 = $("#hdfMissingStockId2");
+        var txtIMEIEdit2 = $("#txtIMEIEdit2");
+        var txtRemarks2 = $("#txtRemarks2");
 
         $(document).ready(function () {
             $('.select2').select2();
@@ -180,6 +267,10 @@
             //disable("#txtIMEIEdit");
             $("#divParts").hide();
             $("#divIMEI").hide();
+            $("#divColors").hide();
+            $("#divParts2").hide();
+            $("#divIMEI2").hide();
+            $("#divColors2").hide();
         })
         //Stock List
 
@@ -189,24 +280,57 @@
                 //disable("#txtIMEIEdit");
                 $("#divParts").hide();
                 $("#divIMEI").hide();
+                $("#divColors").hide();
                 ddlMobilePartsEdit.val('');
                 ddlMobilePartsEdit.trigger("change");
                 txtIMEIEdit.val('');
+                
             }
-            else if (ddlStockTypeEdit.val() === "DOA") {
+            else if (ddlStockTypeEdit.val() === "Handset") {
                 //disable("#ddlMobilePartsEdit");
                 //enable("#txtIMEIEdit");
                 $("#divParts").hide();
                 $("#divIMEI").show();
+                $("#divColors").show();
                 ddlMobilePartsEdit.val('');
                 ddlMobilePartsEdit.trigger("change");
+
+                
             }
             else {
                 //enable("#ddlMobilePartsEdit");
                 //disable("#txtIMEIEdit");
                 $("#divParts").show();
                 $("#divIMEI").hide();
+                $("#divColors").hide();
                 txtIMEIEdit.val('');
+
+              
+            }
+        })
+        ddlStockTypeEdit2.change(function () {
+            if (ddlStockTypeEdit2.val() === "") {
+                $("#divParts2").hide();
+                $("#divIMEI2").hide();
+                $("#divColors2").hide();
+                ddlMobilePartsEdit2.val('');
+                ddlMobilePartsEdit2.trigger("change");
+                txtIMEIEdit2.val('');
+            }
+            else if (ddlStockTypeEdit2.val() === "Handset") {
+
+                $("#divParts2").hide();
+                $("#divIMEI2").show();
+                $("#divColors2").show();
+                ddlMobilePartsEdit2.val('');
+                ddlMobilePartsEdit2.trigger("change");
+            }
+            else {
+
+                $("#divParts2").show();
+                $("#divIMEI2").hide();
+                $("#divColors2").hide();
+                txtIMEIEdit2.val('');
             }
         })
         
@@ -260,6 +384,7 @@
             OpenModal();
             clearCtrl();
         })
+        
         function clearCtrl() {
             hdfMissingStockId.val('0');
             ddlColorsEdit.val('');
@@ -272,6 +397,8 @@
             ddlMobilePartsEdit.trigger("change");
             txtQuantityEdit.val('0');
         }
+
+        
         $(document).on('click', 'a.data-edit-item', function (e) {
             e.preventDefault();
 
@@ -301,10 +428,6 @@
                 isValid = false;
                 $(".req-model").removeClass("hide");
             }
-            if (TryParseInt(ddlColorsEdit.val(), 0) <= 0) {
-                isValid = false;
-                $(".req-color").removeClass("hide");
-            }
             if (ddlStockTypeEdit.val() == "") {
                 isValid = false;
                 $(".req-stockType").removeClass("hide");
@@ -329,32 +452,99 @@
                 isValid = false;
                 $(".req-qty").removeClass("hide");
             }
-            //if (TryParseInt(ddlMobilePartsEdit.val(), 0) <= 0) {
-            //    isValid = false;
-            //    $(".req-parts").removeClass("hide");
-            //}
-            
-            //if ($.trim(txtIMEIEdit.val()) == "") {
-            //    isValid = false;
-            //    $(".req-imei").removeClass("hide");
-            //}
-            //else if ($.trim(txtIMEIEdit.val()).length != 15) {
-            //    isValid = false;
-            //    $(".req-imei-range").removeClass("hide");
-            //}
             return isValid;
         }
+
+        
         $("#spanSaveMissingStock").click(function (e) {
             e.preventDefault();
             if (validateForm() == true) {
                 $('.error').addClass('hide');
-                var data = JSON.stringify({ MissingStockId: TryParseInt(hdfMissingStockId.val(), 0), DescriptionId: TryParseInt(ddlModelsEdit.val(), 0), ColorId: TryParseInt(ddlColorsEdit.val(), 0), Quantity: TryParseInt(txtQuantityEdit.val(), 0), StockType: ddlStockTypeEdit.val(), PartsId: TryParseInt(ddlMobilePartsEdit.val(), 0), IMEI: $.trim(txtIMEIEdit.val()) });
+                var data = JSON.stringify({ MissingStockId: TryParseInt(hdfMissingStockId.val(), 0), DescriptionId: TryParseInt(ddlModelsEdit.val(), 0), ColorId: TryParseInt(ddlColorsEdit.val(), 0), Quantity: TryParseInt(txtQuantityEdit.val(), 0), StockType: ddlStockTypeEdit.val(), PartsId: TryParseInt(ddlMobilePartsEdit.val(), 0), IMEI: $.trim(txtIMEIEdit.val()), Remarks: txtRemarks.val() });
                 $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/SaveMissingStock', data, getToken())).then(function (res, status) {
                     if (status === "success" && res === true) {
                         $("#modalMissingStock").modal('toggle');
                         toastrSuccessAlert(execuStatus.successSave);
                         LoadDataTable();
                         clearCtrl();
+                    }
+                    else {
+                        toastrErrorAlert(execuStatus.fail);
+                    }
+                })
+
+            }
+        })
+        /////
+        function OpenModalSbtr() {
+            $("#modalMissingStock2").modal("show");
+            $("#spanModalHeadMissingStock2").text('Subtract Data');
+            $("#spanSaveMissingStock2").text('Update');
+            $(".error").addClass("hide");
+        }
+        $("#btnSbtr").click(function (e) {
+            e.preventDefault();
+            OpenModalSbtr();
+            clearCtrlSbtr();
+        })
+
+        function clearCtrlSbtr() {
+            hdfMissingStockId2.val('0');
+            ddlColorsEdit2.val('');
+            ddlColorsEdit2.trigger("change");
+            ddlModelsEdit2.val('');
+            ddlModelsEdit2.trigger("change");
+            ddlStockTypeEdit2.val('');
+            ddlStockTypeEdit2.trigger("change");
+            ddlMobilePartsEdit2.val('');
+            ddlMobilePartsEdit2.trigger("change");
+            txtQuantityEdit2.val('0');
+        }
+        function validateForm2() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            if (TryParseInt(ddlModelsEdit2.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-model2").removeClass("hide");
+            }
+            if (ddlStockTypeEdit2.val() == "") {
+                isValid = false;
+                $(".req-stockType2").removeClass("hide");
+            }
+            else if (ddlStockTypeEdit2.val() == "Good" || ddlStockTypeEdit2.val() == "Faulty") {
+                if (TryParseInt(ddlMobilePartsEdit2.val(), 0) <= 0) {
+                    isValid = false;
+                    $(".req-parts2").removeClass("hide");
+                }
+            }
+            else if (ddlStockTypeEdit2.val() == "DOA") {
+                if ($.trim(txtIMEIEdit2.val()) == "") {
+                    isValid = false;
+                    $(".req-imei2").removeClass("hide");
+                }
+                else if ($.trim(txtIMEIEdit2.val()).length != 15) {
+                    isValid = false;
+                    $(".req-imei-range2").removeClass("hide");
+                }
+            }
+            if (TryParseInt(txtQuantityEdit2.val(), 0) <= 0) {
+                isValid = false;
+                $(".req-qty2").removeClass("hide");
+            }
+            return isValid;
+        }
+        $("#btnSubmititemType2").click(function (e) {
+            e.preventDefault();
+            if (validateForm2() == true) {
+                $('.error').addClass('hide');
+                var data = JSON.stringify({ MissingStockId: TryParseInt(hdfMissingStockId2.val(), 0), DescriptionId: TryParseInt(ddlModelsEdit2.val(), 0), ColorId: TryParseInt(ddlColorsEdit2.val(), 0), Quantity: TryParseInt(txtQuantityEdit2.val(), 0), StockType: ddlStockTypeEdit2.val(), PartsId: TryParseInt(ddlMobilePartsEdit2.val(), 0), IMEI: $.trim(txtIMEIEdit2.val()), Remarks: txtRemarks2.val() });
+               // return console.log(data);
+                $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Configuration/UpdateMissingStock', data, getToken())).then(function (res, status) {
+                    if (status === "success" && res === true) {
+                        $("#modalMissingStock2").modal('toggle');
+                        toastrSuccessAlert(execuStatus.successSave);
+                        LoadDataTable();
+                        clearCtrlSbtr();
                     }
                     else {
                         toastrErrorAlert(execuStatus.fail);
