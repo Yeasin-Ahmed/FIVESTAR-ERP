@@ -256,6 +256,14 @@
     <Compile Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.Designer.cs">
       <DependentUpon>202101121213172_Configuration_Handsetstock_IMEI1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationContextMigrations\202103131038098_Configuration_DealerSS.cs" />
+    <Compile Include="ConfigurationContextMigrations\202103131038098_Configuration_DealerSS.Designer.cs">
+      <DependentUpon>202103131038098_Configuration_DealerSS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs" />
+    <Compile Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.Designer.cs">
+      <DependentUpon>202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationContextMigrations\Configuration.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationBaseRepository.cs" />
     <Compile Include="ConfigurationDAL\ConfigurationDbContext.cs" />
@@ -484,6 +492,22 @@
     <Compile Include="FrontDeskContextMigrations\202102070515371_FrontDesk_QCTransferStatus.Designer.cs">
       <DependentUpon>202102070515371_FrontDesk_QCTransferStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrontDeskContextMigrations\202103290601365_FrontDesk_NewColumn.cs" />
+    <Compile Include="FrontDeskContextMigrations\202103290601365_FrontDesk_NewColumn.Designer.cs">
+      <DependentUpon>202103290601365_FrontDesk_NewColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202103310913128_FrontDesk_JobOrderCustomerSupport.cs" />
+    <Compile Include="FrontDeskContextMigrations\202103310913128_FrontDesk_JobOrderCustomerSupport.Designer.cs">
+      <DependentUpon>202103310913128_FrontDesk_JobOrderCustomerSupport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.cs" />
+    <Compile Include="FrontDeskContextMigrations\202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.Designer.cs">
+      <DependentUpon>202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.cs" />
+    <Compile Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.Designer.cs">
+      <DependentUpon>202104050629469_FrontDesk_JobOrderMultipleCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrontDeskContextMigrations\Configuration.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskDbContext.cs" />
     <Compile Include="FrontDeskDAL\FrontDeskRepository.cs" />
@@ -537,6 +561,14 @@
     <Compile Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.cs" />
     <Compile Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.Designer.cs">
       <DependentUpon>202011120949407_Inventory_Add_tbl_HandSetStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202103180714505_Inventory_STransferModelToModel.cs" />
+    <Compile Include="InventoryContextMigrations\202103180714505_Inventory_STransferModelToModel.Designer.cs">
+      <DependentUpon>202103180714505_Inventory_STransferModelToModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryContextMigrations\202103231316087_Inventory_TransferCode.cs" />
+    <Compile Include="InventoryContextMigrations\202103231316087_Inventory_TransferCode.Designer.cs">
+      <DependentUpon>202103231316087_Inventory_TransferCode.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryContextMigrations\Configuration.cs" />
     <Compile Include="InventoryDAL\InventoryUnitOfWork.cs" />
@@ -801,6 +833,18 @@
     <Compile Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.Designer.cs">
       <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.cs" />
+    <Compile Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.Designer.cs">
+      <DependentUpon>202103250815287_Production_tblLotIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202105050625539_Production_RepairSectionSemiFinishStock.cs" />
+    <Compile Include="ProductionContextMigrations\202105050625539_Production_RepairSectionSemiFinishStock.Designer.cs">
+      <DependentUpon>202105050625539_Production_RepairSectionSemiFinishStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionContextMigrations\202105050916145_Production_RepairSectionSemiFinishTransfer.cs" />
+    <Compile Include="ProductionContextMigrations\202105050916145_Production_RepairSectionSemiFinishTransfer.Designer.cs">
+      <DependentUpon>202105050916145_Production_RepairSectionSemiFinishTransfer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductionContextMigrations\Configuration.cs" />
     <Compile Include="ProductionDAL\ProductionRepository.cs" />
     <Compile Include="ProductionDAL\ProductionUnitOfWork.cs" />
@@ -1052,6 +1096,12 @@
     <EmbeddedResource Include="ConfigurationContextMigrations\202101121213172_Configuration_Handsetstock_IMEI1.resx">
       <DependentUpon>202101121213172_Configuration_Handsetstock_IMEI1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202103131038098_Configuration_DealerSS.resx">
+      <DependentUpon>202103131038098_Configuration_DealerSS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationContextMigrations\202103140951575_Configuration_ColorSS_ModelSS_BrandSS.resx">
+      <DependentUpon>202103140951575_Configuration_ColorSS_ModelSS_BrandSS.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPanelContextMigrations\202006151000333_ControlPanel_AllEntities_16-May-2020.resx">
       <DependentUpon>202006151000333_ControlPanel_AllEntities_16-May-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1214,6 +1264,18 @@
     <EmbeddedResource Include="FrontDeskContextMigrations\202102070515371_FrontDesk_QCTransferStatus.resx">
       <DependentUpon>202102070515371_FrontDesk_QCTransferStatus.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202103290601365_FrontDesk_NewColumn.resx">
+      <DependentUpon>202103290601365_FrontDesk_NewColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202103310913128_FrontDesk_JobOrderCustomerSupport.resx">
+      <DependentUpon>202103310913128_FrontDesk_JobOrderCustomerSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.resx">
+      <DependentUpon>202103311121513_FrontDesk_JobOrderCustomerSupportTypeChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrontDeskContextMigrations\202104050629469_FrontDesk_JobOrderMultipleCode.resx">
+      <DependentUpon>202104050629469_FrontDesk_JobOrderMultipleCode.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202008121414323_Inventory_AllEntities_12-Aug-2020.resx">
       <DependentUpon>202008121414323_Inventory_AllEntities_12-Aug-2020.cs</DependentUpon>
     </EmbeddedResource>
@@ -1249,6 +1311,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryContextMigrations\202011120949407_Inventory_Add_tbl_HandSetStock.resx">
       <DependentUpon>202011120949407_Inventory_Add_tbl_HandSetStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202103180714505_Inventory_STransferModelToModel.resx">
+      <DependentUpon>202103180714505_Inventory_STransferModelToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InventoryContextMigrations\202103231316087_Inventory_TransferCode.resx">
+      <DependentUpon>202103231316087_Inventory_TransferCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202006271621248_Production_AllEntities_27-Jun-2020.resx">
       <DependentUpon>202006271621248_Production_AllEntities_27-Jun-2020.cs</DependentUpon>
@@ -1444,6 +1512,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProductionContextMigrations\202009011120058_Production_AddFaultyGroupAndType.resx">
       <DependentUpon>202009011120058_Production_AddFaultyGroupAndType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202103250815287_Production_tblLotIn.resx">
+      <DependentUpon>202103250815287_Production_tblLotIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202105050625539_Production_RepairSectionSemiFinishStock.resx">
+      <DependentUpon>202105050625539_Production_RepairSectionSemiFinishStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductionContextMigrations\202105050916145_Production_RepairSectionSemiFinishTransfer.resx">
+      <DependentUpon>202105050916145_Production_RepairSectionSemiFinishTransfer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SalesAndDistributionContextMigrations\202011011005081_SalesAndDistribution_AddTables.resx">
       <DependentUpon>202011011005081_SalesAndDistribution_AddTables.cs</DependentUpon>

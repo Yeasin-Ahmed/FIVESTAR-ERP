@@ -25,9 +25,9 @@ namespace ERPBLL.Configuration
         }
         public IEnumerable<ScrapStockInfoDTO> GetScrapStockByOrgId(long orgId, long branchId)
         {
-            return this._configurationDb.Db.Database.SqlQuery<ScrapStockInfoDTO>(string.Format(@"Select fsa.ScrapStockInfoId,fsa.DescriptionId,fsa.PartsId,fsa.CostPrice,fsa.SellPrice,mp.MobilePartName'PartsName',des.DescriptionName 'ModelName',fsa.ScrapQuantity
-From tblScrapStockInfo fsa
-Left Join [Inventory].dbo.tblDescriptions des on fsa.DescriptionId = des.DescriptionId and fsa.OrganizationId = des.OrganizationId
+            return this._configurationDb.Db.Database.SqlQuery<ScrapStockInfoDTO>(string.Format(@"Select fsa.ScrapStockInfoId,fsa.DescriptionId,fsa.PartsId,fsa.CostPrice,fsa.SellPrice,mp.MobilePartName'PartsName',des.ModelName,fsa.ScrapQuantity
+From [Configuration].dbo.tblScrapStockInfo fsa
+Left Join [Configuration].dbo.tblModelSS des on fsa.DescriptionId =des.ModelId  and fsa.OrganizationId = des.OrganizationId
 Left Join [Configuration].dbo.tblMobileParts mp on fsa.PartsId = mp.MobilePartId and fsa.OrganizationId = mp.OrganizationId
 where fsa.OrganizationId={0} and fsa.BranchId={1}", orgId, branchId)).ToList();
         }

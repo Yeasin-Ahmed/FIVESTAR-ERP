@@ -46,9 +46,9 @@
                                 <div class="card shadow card-navy">
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 hide">
                                                 <label for="ddlServicesWarehouse" class="control-label font-weight-bold">ServicesWarehouse Name</label>
-                                                @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlServicesWarehouse", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse,new { @class = "form-control form-control-sm" })
                                             </div>
                                         </div>
                                     </div>
@@ -94,9 +94,9 @@
                                 <div class="card shadow card-navy">
                                     <div class="card-body text-sm">
                                         <div class="row text-sm">
-                                            <div class="col-md-3">
+                                            <div class="col-md-3 hide">
                                                 <label for="ddlServicesWarehouseMM" class="control-label font-weight-bold">ServicesWarehouse Name</label>
-                                                @Html.DropDownList("ddlServicesWarehouseMM", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, "--Select ServicesWarehouse--", new { @class = "form-control form-control-sm" })
+                                                @Html.DropDownList("ddlServicesWarehouseMM", (IEnumerable<SelectListItem>)ViewBag.ddlServicesWarehouse, new { @class = "form-control form-control-sm" })
                                             </div>
                                         </div>
                                     </div>

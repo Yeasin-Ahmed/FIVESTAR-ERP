@@ -303,22 +303,22 @@ Where 1=1 {0} Order By ri.ReqInfoId desc", Utility.ParamChecker(param));
             var q = string.Format(@"Select pl.LineId 'ProductionFloorId',pl.LineNumber 'ProductionFloorName',al.AssemblyLineId,al.AssemblyLineName,
 (Select ISNULL(SUM(Quantity),0) From tblRequisitionItemInfo req 
 Inner Join tblRequsitionInfo r on r.ReqInfoId = req.ReqInfoId And r.StateStatus='Accepted'
-Where r.OrganizationId={0} and r.AssemblyLineId=al.AssemblyLineId and Cast(req.EntryDate as date)= Cast(GETDATE() as date)) 'TargetQuantity',
+Where r.OrganizationId={0} and r.AssemblyLineId=al.AssemblyLineId) 'TargetQuantity',
 
 --(Select COUNT(*) From tblTempQRCodeTrace 
---Where AssemblyId=al.AssemblyLineId and OrganizationId={0} and StateStatus='MiniStock' and Cast(EntryDate as date)= Cast(GETDATE() as date)) 'CompleteQuantity',
-ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where AssemblyLineId=al.AssemblyLineId and OrganizationId={0} and Cast(EntryDate as date)= Cast(GETDATE() as date)),0) 'CompleteQuantity',
-ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where StateStatus='Received By Production' and  AssemblyLineId=al.AssemblyLineId and OrganizationId={0} and Cast(EntryDate as date)= Cast(GETDATE() as date)),0) 'MiniStockReceivedQty',
-ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where StateStatus='Send By QC' and  AssemblyLineId=al.AssemblyLineId and OrganizationId={0} and Cast(EntryDate as date)= Cast(GETDATE() as date)),0) 'MiniStockNotReceivedQty',
+--Where AssemblyId=al.AssemblyLineId and OrganizationId={0} and StateStatus='MiniStock') 'CompleteQuantity',
+ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where AssemblyLineId=al.AssemblyLineId and OrganizationId={0}),0) 'CompleteQuantity',
+ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where StateStatus='Received By Production' and  AssemblyLineId=al.AssemblyLineId and OrganizationId={0}),0) 'MiniStockReceivedQty',
+ISNULL((Select SUM(Quantity) From tblQCPassTransferInformation Where StateStatus='Send By QC' and  AssemblyLineId=al.AssemblyLineId and OrganizationId={0}),0) 'MiniStockNotReceivedQty',
 --and StateStatus IN('Send','Received')
-(Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0}  and Cast(EntryDate as date)= Cast(GETDATE() as date) and AssemblyLineId=al.AssemblyLineId) 'RepairIn',
+(Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0}  and AssemblyLineId=al.AssemblyLineId) 'RepairIn',
 
-(Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0} and StateStatus ='Repair-Done' and Cast(EntryDate as date)= Cast(GETDATE() as date) and AssemblyLineId=al.AssemblyLineId) 'RepairOut'
+(Select COUNT(*) From tblQRCodeTransferToRepairInfo Where OrganizationId={0} and StateStatus ='Repair-Done' and AssemblyLineId=al.AssemblyLineId) 'RepairOut'
 
 From tblRequsitionInfo ri
 Inner Join [Production].dbo.tblAssemblyLines al on ri.AssemblyLineId =al.AssemblyLineId and ri.OrganizationId=al.OrganizationId and ISNULL(ri.AssemblyLineId,0) > 0
 Inner Join [Production].dbo.tblProductionLines pl on al.ProductionLineId = pl.LineId
-Where al.OrganizationId={0} and Cast(ri.EntryDate as date)= Cast(GETDATE() as date) and ri.StateStatus='Accepted'
+Where al.OrganizationId={0} and ri.StateStatus='Accepted'
 Group By pl.LineId,pl.LineNumber,al.AssemblyLineId,al.AssemblyLineName", orgId);
             var data = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyProgressDTO>(q).ToList();
 
@@ -328,7 +328,7 @@ Group By pl.LineId,pl.LineNumber,al.AssemblyLineId,al.AssemblyLineName", orgId);
 Inner Join [Inventory].dbo.tblItems i on fsd.ItemId = i.ItemId
 Inner Join [Production].dbo.tblAssemblyLines al on fsd.AsseemblyLineId = al.AssemblyLineId
 Inner Join [Production].dbo.tblProductionLines pl on al.ProductionLineId = pl.LineId
-Where 1=1 and fsd.OrganizationId={0} and Cast(fsd.EntryDate as Date) = Cast(GetDate() as date) and fsd.StockStatus='Stock-In' and fsd.AsseemblyLineId={1}
+Where 1=1 and fsd.OrganizationId={0} and fsd.StockStatus='Stock-In' and fsd.AsseemblyLineId={1}
 Group By al.AssemblyLineId,fsd.ItemId,i.ItemName", orgId, item.AssemblyLineId);
 
                 item.AssemblyFaultys = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyFaultyDTO>(assemblyFaulty).ToList();
@@ -336,7 +336,7 @@ Group By al.AssemblyLineId,fsd.ItemId,i.ItemName", orgId, item.AssemblyLineId);
                 string AssemblyProblems = string.Format(@"Select al.AssemblyLineId,al.AssemblyLineName,f.CaseId 'ProblemId',f.ProblemDescription,COUNT(*) 'Count' From tblQRCodeProblem qp
 Inner Join tblFaultyCase f on f.CaseId = qp.ProblemId
 Inner Join [Production].dbo.tblAssemblyLines al on qp.AssemblyLineId = al.AssemblyLineId
-Where 1= 1 and qp.OrganizationId={0} and Cast(qp.EntryDate as date)= Cast(GETDATE() as date) and qp.AssemblyLineId={1}
+Where 1= 1 and qp.OrganizationId={0} and qp.AssemblyLineId={1}
 Group By al.AssemblyLineId,al.AssemblyLineName,f.CaseId,f.ProblemDescription", orgId, item.AssemblyLineId);
 
                 item.AssemblyProblems = this._productionDb.Db.Database.SqlQuery<DashBoardAssemblyProblemDTO>(AssemblyProblems).ToList();

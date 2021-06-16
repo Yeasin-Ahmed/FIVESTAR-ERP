@@ -39,6 +39,8 @@ namespace ERPWeb
             // e.g. container.RegisterType<ITestService, TestService>();
             // Inventory Database
             #region Inventory
+            container.RegisterType<ISTransferDetailsMToMBusiness, STransferDetailsMToMBusiness>();
+            container.RegisterType<ISTransferInfoMToMBusiness, STransferInfoMToMBusiness>();
             container.RegisterType<IIQCStockDetailBusiness, IQCStockDetailBusiness>();
             container.RegisterType<IIQCStockInfoBusiness, IQCStockInfoBusiness>();
             container.RegisterType<IIQCItemReqDetailList, IQCItemReqDetailListBusiness>();
@@ -69,6 +71,11 @@ namespace ERPWeb
 
             // Production Database
             #region Production
+            container.RegisterType<IRepairSectionSemiFinishTransferDetailsBusiness, RepairSectionSemiFinishTransferDetailsBusiness>();
+            container.RegisterType<IRepairSectionSemiFinishTransferInfoBusiness, RepairSectionSemiFinishTransferInfoBusiness>();
+            container.RegisterType<IRepairSectionSemiFinishStockDetailsBusiness, RepairSectionSemiFinishStockDetailsBusiness>();
+            container.RegisterType<IRepairSectionSemiFinishStockInfoBusiness, RepairSectionSemiFinishStockInfoBusiness>();
+            container.RegisterType<ILotInLogBusiness, LotInLogBusiness>();
             container.RegisterType<IProductionLineBusiness, ProductionLineBusiness>();
             container.RegisterType<IRequsitionDetailBusiness, RequsitionDetailBusiness>();
             container.RegisterType<IRequsitionInfoBusiness, RequsitionInfoBusiness>();
@@ -173,6 +180,10 @@ namespace ERPWeb
 
             // Configuration Database
             #region Configuration
+            container.RegisterType<IModelSSBusiness, ModelSSBusiness>();
+            container.RegisterType<IBrandSSBusiness, BrandSSBusiness>();
+            container.RegisterType<IColorSSBusiness, ColorSSBusiness>();
+            container.RegisterType<IDealerSSBusiness, DealerSSBusiness>();
             container.RegisterType<IScrapStockDetailBusiness, ScrapStockDetailBusiness>();
             container.RegisterType<IScrapStockInfoBusiness, ScrapStockInfoBusiness>();
             container.RegisterType<IStockTransferInfoModelToModelBusiness, StockTransferInfoModelToModelBusiness>();

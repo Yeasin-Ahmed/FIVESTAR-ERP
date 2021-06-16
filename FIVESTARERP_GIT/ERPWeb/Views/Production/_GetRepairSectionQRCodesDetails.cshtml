@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionSemiFinishTransferDetailsViewModel>
+@{ 
+    int sl = 0;
+    var status = (ERPBO.Production.ViewModels.RepairSectionSemiFinishTransferInfoViewModel)ViewBag.StateStatus;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-responsive-lg table-striped text-sm tblRepairSectionSemiFinishGoodDetails" id="tblRepairSectionSemiFinishGoodDetails">
+            <thead class="btn-dark text-center">
+                <tr>
+                    <th style="vertical-align:middle">#SL</th>
+                    <th style="vertical-align:middle">Transfer Code</th>
+                    <th style="vertical-align:middle" class="hide"></th>
+                    <th style="vertical-align:middle">FloorName</th>
+                    <th style="vertical-align:middle" class="hide"></th>
+                    <th style="vertical-align:middle">AssemblyLine</th>
+                    <th style="vertical-align:middle" class="hide"></th>
+                    <th style="vertical-align:middle">QCLine</th>
+                    <th style="vertical-align:middle" class="hide"></th>
+                    <th style="vertical-align:middle">Repair Line</th>
+                    <th style="vertical-align:middle">QRCode</th>
+                    <th style="vertical-align:middle" class="hide"></th>
+                    <th style="vertical-align:middle">ModelName</th>
+                    <th style="vertical-align:middle" class="hide"></th>
+                    <th style="vertical-align:middle" class="hide">Warehouse</th>
+                    <th style="vertical-align:middle">EntryDate</th>
+                    <th class="hide"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                <tr>
+                    <td class="text-center text-bold">@sl</td>
+                    <td>@item.StateStatus</td>
+                    <td class="hide">@item.FloorId</td>
+                    <td class="text-center">@item.FloorName</td>
+                    <td class="hide">@item.AssemblyLineId</td>
+                    <td class="text-center">@item.AssemblyLineName</td>
+                    <td class="hide">@item.QCLineId</td>
+                    <td class="text-center">@item.QCLineName</td>
+                    <td class="hide">@item.RepairLineId</td>
+                    <td class="text-center">@item.RepairLineName</td>
+                    <td>@item.QRCode</td>
+                    <td class="hide">@item.DescriptionId</td>
+                    <td class="text-center">@item.ModelName</td>
+                    <td class="hide">@item.WarehouseId</td>
+                    <td class="text-center hide">@item.WarehouseName</td>
+                    <td class="text-center">@item.EntryDate</td>
+                    <td class="hide">@item.TransferInfoId</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-12">
+        @if (status.StateStatus == "Send By Repair Section")
+        {
+            <button type="button" class="btn btn-sm float-lg-right btn-primary btnReceiveSemiFinish">Receive</button>
+        }
+    </div>
+</div>

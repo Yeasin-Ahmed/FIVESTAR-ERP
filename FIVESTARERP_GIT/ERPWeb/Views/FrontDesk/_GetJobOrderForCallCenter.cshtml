@@ -82,7 +82,7 @@
                             </td>
                             
                             <td>
-                                @if (item.TsRepairStatus == "PENDING FOR APPROVAL" && item.CustomerApproval==null)
+                                @if (item.TsRepairStatus == "PENDING FOR APPROVAL" && (item.CustomerApproval==null || item.CustomerApproval == "Pending"))
                                 {
                                     <b style="color:#fbcd05">@item.TsRepairStatus</b>
                                 }
@@ -91,7 +91,16 @@
                                     @item.TsRepairStatus
                                 }
                             </td>
-                            <td>@item.CustomerApproval</td>
+                            <td>
+                                @if (item.CustomerApproval == "Pending")
+                                {
+                                <b style="color:#b200ff">@item.CustomerApproval</b>
+                                }
+                                else
+                                {
+                                    @item.CustomerApproval
+                                }
+                            </td>
                             <td>@item.JobLocationB</td>
                             <td>@item.ModelName</td>
                             <td>@item.Type</td>

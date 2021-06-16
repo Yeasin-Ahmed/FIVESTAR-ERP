@@ -53,7 +53,7 @@
                 <td class="text-purple">Problems</td>
                 <td>@Model.Problems</td>
                 @*<td class="text-purple">Warrenty Available</td>
-                    <td>@isWarrantyAvailable</td>*@
+                <td>@isWarrantyAvailable</td>*@
                 <td class="text-purple">Warrenty Paper</td>
                 <td>@isWarrantyPaperEnclosed</td>
 
@@ -115,31 +115,53 @@
                     <td class="text-purple">
                         Job Order Type
                     </td>
-                    <td colspan="5">
+                    <td colspan="3">
                         @Model.JobOrderType
                     </td>
+                    <td class="text-purple">Brand</td>
+                    <td>@Model.BrandName</td>
                 </tr>
             }
         </table>
-        @if(Model.StateStatus == "HandSetChange" && Model.TsRepairStatus == "MODULE SWAP")
+        @if (Model.CustomerSupportStatus == "Handset")
         {
-        <table class="table table-sm table-bordered table-responsive-lg text-sm text-bold">
-            <tr class="text-center" >
-                <th colspan="4"><b style="color:red">Other Handset Information</b></th>
-            </tr>
-            <tr>
-                <td class="text-purple">IMEI1</td>
-                <td>@jobOrder.IMEI1</td>
-                <td class="text-purple">Model</td>
-                <td>@jobOrder.ModelName</td>
-            </tr>
-            <tr>
-                <td class="text-purple">IMEI2</td>
-                <td>@jobOrder.IMEI2</td>
-                <td class="text-purple">Color</td>
-                <td>@jobOrder.Color</td>
-            </tr>
-        </table>
+            <table class="table table-sm table-bordered table-responsive-lg text-sm text-bold">
+                <tr class="text-center">
+                    <th colspan="4"><b style="color:red">Customer Support Handset Information</b></th>
+                </tr>
+                <tr>
+                    <td class="text-purple">IMEI1</td>
+                    <td>@Model.CSIMEI1</td>
+                    <td class="text-purple">Model</td>
+                    <td>@Model.CSModelName</td>
+                </tr>
+                <tr>
+                    <td class="text-purple">IMEI2</td>
+                    <td>@Model.CSIMEI2</td>
+                    <td class="text-purple">Color</td>
+                    <td>@Model.CSColorName</td>
+                </tr>
+            </table>
+        }
+        @if (Model.StateStatus == "HandSetChange" && Model.TsRepairStatus == "MODULE SWAP")
+        {
+            <table class="table table-sm table-bordered table-responsive-lg text-sm text-bold">
+                <tr class="text-center">
+                    <th colspan="4"><b style="color:red">Other Handset Information</b></th>
+                </tr>
+                <tr>
+                    <td class="text-purple">IMEI1</td>
+                    <td>@jobOrder.IMEI1</td>
+                    <td class="text-purple">Model</td>
+                    <td>@jobOrder.ModelName</td>
+                </tr>
+                <tr>
+                    <td class="text-purple">IMEI2</td>
+                    <td>@jobOrder.IMEI2</td>
+                    <td class="text-purple">Color</td>
+                    <td>@jobOrder.Color</td>
+                </tr>
+            </table>
         }
     </div>
     <div class="col-md-12">

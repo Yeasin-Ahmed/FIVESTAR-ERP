@@ -5,6 +5,7 @@ using ERPBO.Production.DTOModel;
 using ERPDAL.ProductionDAL;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,10 +16,12 @@ namespace ERPBLL.Production
     {
         private readonly IProductionUnitOfWork _productionDb;
         private readonly TempQRCodeTraceRepository _tempQRCodeTraceRepository;
+        private readonly LotInLogRepository _lotInLogRepository;
         public TempQRCodeTraceBusiness(IProductionUnitOfWork productionDb)
         {
             this._productionDb = productionDb;
             this._tempQRCodeTraceRepository = new TempQRCodeTraceRepository(this._productionDb);
+            this._lotInLogRepository = new LotInLogRepository(this._productionDb);
         }
 
         public async Task<TempQRCodeTrace> GetIMEIinQRCode(string imei, string status, long floorId, long packagingId, long orgId)
@@ -78,6 +81,11 @@ namespace ERPBLL.Production
             return this._tempQRCodeTraceRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.CodeNo == qrCode && s.StateStatus == status) != null;
         }
 
+        public bool IsExistQRCodeWithStatus(string qrCode, DateTime date, string status, long orgId)
+        {
+            return this._tempQRCodeTraceRepository.GetOneByOrg(s => s.OrganizationId == orgId && s.CodeNo == qrCode && s.StateStatus == status && DbFunctions.TruncateTime(s.EntryDate) == DbFunctions.TruncateTime(date)) != null;
+        }
+
         public async Task<bool> SaveBatteryCodeAsync(BatteryWriteDTO dto, long userId, long orgId)
         {
             var imeiInDb = await GetIMEIinQRCode(dto.imei,string.Format(@"'PackagingLine'"),dto.floorId,dto.packagingLineId, orgId);
@@ -109,6 +117,35 @@ namespace ERPBLL.Production
                 _tempQRCodeTraceRepository.Update(qrCodeInDb);
             }
             return await _tempQRCodeTraceRepository.SaveAsync();
+        }
+
+        public bool SaveQRCodeStatusByLotIn(string qrCode, long orgId, long userId)
+        {
+            var qrCodeInfo = GetTempQRCodeTraceByCode(qrCode, orgId);
+            qrCodeInfo.StateStatus = "Lot-In";
+            qrCodeInfo.UpdateDate = DateTime.Now;
+            qrCodeInfo.UpUserId = userId;
+            _tempQRCodeTraceRepository.Update(qrCodeInfo);
+
+            LotInLog lotInLog = new LotInLog();
+            lotInLog.AssemblyId = qrCodeInfo.AssemblyId;
+            lotInLog.CodeId = qrCodeInfo.CodeId;
+            lotInLog.CodeNo = qrCodeInfo.CodeNo;
+            lotInLog.DescriptionId = qrCodeInfo.DescriptionId;
+            lotInLog.EntryDate = DateTime.Now;
+            lotInLog.EUserId = userId;
+            lotInLog.ItemId = qrCodeInfo.ItemId;
+            lotInLog.ItemTypeId = qrCodeInfo.ItemTypeId;
+            lotInLog.OrganizationId = qrCodeInfo.OrganizationId;
+            lotInLog.ProductionFloorId = qrCodeInfo.ProductionFloorId;
+            lotInLog.ReferenceId = qrCodeInfo.ReferenceId;
+            lotInLog.ReferenceNumber = qrCodeInfo.ReferenceNumber;
+            lotInLog.Remarks = qrCodeInfo.Remarks;
+            lotInLog.StateStatus = qrCodeInfo.StateStatus;
+            lotInLog.WarehouseId = qrCodeInfo.WarehouseId;
+            _lotInLogRepository.Insert(lotInLog);
+
+            return _lotInLogRepository.Save();
         }
 
         public bool SaveTempQRCodeTrace(List<TempQRCodeTraceDTO> dtos, long userId, long orgId)

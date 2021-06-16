@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "R S Semi Finish Good";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="card card-gray-dark shadow">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="/Production/GetProductionAssembleItemStockInfo" class="btn btn-sm btn-outline-primary float-left" title="Back To Summery"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <h4><b>Repair Section Semi Finish Goods Details</b></h4>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header">
+                @Html.AntiForgeryToken()
+                <div class="row text-sm">
+                    <div class="col-md-2">
+                        <label for="ddlFloorRepairSecitionQRCode" class="control-label font-weight-bold">Floor</label>
+                        @Html.DropDownList("ddlFloorRepairSecitionQRCode", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ddlRepairLineQRCodeQC" class="control-label font-weight-bold">QC</label>
+                        <select id="ddlRepairLineQRCodeQC" class="form-control form-control-sm">
+                            <option value="0">--Select QC--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ddlRepairLineQRCodeRepair" class="control-label font-weight-bold">Repair</label>
+                        <select id="ddlRepairLineQRCodeRepair" class="form-control form-control-sm">
+                            <option value="0">--Select Repair--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ddlModelNames" class="control-label font-weight-bold">Model</label>
+                        @Html.DropDownList("ddlModelNames", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mt-2 text-sm" id="dataContainer">
+                        @{Html.RenderAction("GetRepairSectionSemiFinishGoodStockDetailsList", new { flag = "view" });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var ddlFloorRepairSecitionQRCode = $("#ddlFloorRepairSecitionQRCode");
+        var ddlRepairLineQRCodeQC = $("#ddlRepairLineQRCodeQC");
+        var ddlRepairLineQRCodeRepair = $("#ddlRepairLineQRCodeRepair");
+        var ddlModelNames = $("#ddlModelNames");
+
+        ddlFloorRepairSecitionQRCode.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockDetails();
+            clearDropdown("ddlRepairLineQRCodeQC");
+            clearDropdown("ddlRepairLineQRCodeRepair");
+            if (ddlFloorRepairSecitionQRCode.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlRepairLineQRCodeQC, JSON.stringify({ lineId: ddlFloorRepairSecitionQRCode.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineQRCodeRepair, JSON.stringify({ lineId: ddlFloorRepairSecitionQRCode.val() }));
+            }
+        });
+
+
+        ddlFloorRepairSecitionQRCode.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockDetails();
+        })
+        ddlRepairLineQRCodeQC.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockDetails();
+        })
+        ddlRepairLineQRCodeRepair.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockDetails();
+        })
+        ddlModelNames.change(function () {
+            LoadDataTableRepairSectionSemiFinishGoodStockDetails();
+        })
+
+        function LoadDataTableRepairSectionSemiFinishGoodStockDetails() {
+            var data = { flag: "View", moId: TryParseInt(ddlModelNames.val(), 0), flId: ddlFloorRepairSecitionQRCode.val(), qcId: ddlRepairLineQRCodeQC.val(), rqId: ddlRepairLineQRCodeRepair.val() };
+            //return console.log(data);
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionSemiFinishGoodStockDetailsList', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            // pageNo = 1;
+        }
+    </script>
+    }

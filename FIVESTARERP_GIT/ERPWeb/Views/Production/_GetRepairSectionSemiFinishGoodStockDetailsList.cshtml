@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionSemiFinishStockDetailsViewModel>
+@{
+    int sl = 0;
+    string badge = string.Empty;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-striped text-sm">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th>Warehouse</th>
+                    <th>Floor</th>
+                    <th>AssemblyLine</th>
+                    <th>QCLine</th>
+                    <th>RepairLine</th>
+                    <th>StateStatus</th>
+                    <th>Model</th>
+                    <th>QRCode</th>
+                    <th>Stock-In Date</th>
+                    <th>Stock-Out Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.StateStatus == "Stock-In" ? "badge bg-success" : "badge bg-danger";
+                    string entryDate = item.EntryDate != null ? item.EntryDate.Value.ToString("dd-MMM-yyy") : "";
+                    string update = item.UpdateDate != null ? item.UpdateDate.Value.ToString("dd-MMM-yyy") : "";
+                <tr>
+                    <td class="text-center text-bold">@sl</td>
+                    <td>@item.WarehouseName</td>
+                    <td>@item.FloorName</td>
+                    <td>@item.AssemblyLineName</td>
+                    <td>@item.QCLineName</td>
+                    <td>@item.RepairLineName</td>
+                    <td class="text-center" data-val="@item.StateStatus">
+                        <span class="@badge">@item.StateStatus</span>
+                    </td>
+                    <td class="text-center">@item.ModelName</td>
+                    <td class="text-center">@item.QRCode</td>
+                    <td>@entryDate</td>
+                    <td>@update</td>
+                </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="empty-row text-sm text-bold text-center">
+                        <td colspan="11">
+                            No data found in the table
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

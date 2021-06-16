@@ -88,6 +88,7 @@
               <xs:element name="EntryDate" msprop:Generator_ColumnVarNameInTable="columnEntryDate" msprop:Generator_ColumnPropNameInRow="EntryDate" msprop:Generator_ColumnPropNameInTable="EntryDateColumn" msprop:Generator_UserColumnName="EntryDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="AccessoriesNames" msprop:Generator_ColumnVarNameInTable="columnAccessoriesNames" msprop:Generator_ColumnPropNameInRow="AccessoriesNames" msprop:Generator_ColumnPropNameInTable="AccessoriesNamesColumn" msprop:Generator_UserColumnName="AccessoriesNames" type="xs:string" minOccurs="0" />
               <xs:element name="TsRepairStatus" msprop:Generator_ColumnVarNameInTable="columnTsRepairStatus" msprop:Generator_ColumnPropNameInRow="TsRepairStatus" msprop:Generator_ColumnPropNameInTable="TsRepairStatusColumn" msprop:Generator_UserColumnName="TsRepairStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="PartsName" msprop:Generator_ColumnVarNameInTable="columnPartsName" msprop:Generator_ColumnPropNameInRow="PartsName" msprop:Generator_ColumnPropNameInTable="PartsNameColumn" msprop:Generator_UserColumnName="PartsName" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

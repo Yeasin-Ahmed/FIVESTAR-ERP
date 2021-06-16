@@ -159,12 +159,12 @@ namespace ERPBLL.FrontDesk
                 param += string.Format(@" and Cast(hc.EntryDate as date)='{0}'", tDate);
             }
 
-            query = string.Format(@"Select hc.JobOrderCode,dhc.DescriptionName'OldModel',hc.IMEI1'OldIMEI1',hc.IMEI2'OldIMEI2',
-hc.Color'OldColor',dhc2.DescriptionName 'NewModel',jo.IMEI'IMEI1',jo.IMEI2,jo.ModelColor'Color',hc.EntryDate
-From tblHandsetChangeTraces hc
-left join [Inventory].dbo.tblDescriptions dhc on hc.ModelId=dhc.DescriptionId
-left join tblJobOrders jo on hc.JobOrderId=jo.JodOrderId
-left join [Inventory].dbo.tblDescriptions dhc2 on jo.DescriptionId=dhc2.DescriptionId
+            query = string.Format(@"Select hc.JobOrderCode,dhc.ModelName'OldModel',hc.IMEI1'OldIMEI1',hc.IMEI2'OldIMEI2',
+hc.Color'OldColor',dhc2.ModelName 'NewModel',jo.IMEI'IMEI1',jo.IMEI2,jo.ModelColor'Color',hc.EntryDate
+From [FrontDesk].dbo.tblHandsetChangeTraces hc
+left join [Configuration].dbo.tblModelSS dhc on hc.ModelId=dhc.ModelId
+left join [FrontDesk].dbo.tblJobOrders jo on hc.JobOrderId=jo.JodOrderId
+left join [Configuration].dbo.tblModelSS dhc2 on jo.DescriptionId=dhc2.ModelId
 where 1=1{0}
 order by hc.EntryDate desc", Utility.ParamChecker(param));
             return query;

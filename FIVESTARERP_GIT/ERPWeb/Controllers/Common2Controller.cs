@@ -48,11 +48,13 @@ namespace ERPWeb.Controllers
         private readonly IJournalBusiness _journalBusiness;
         private readonly ICustomersBusiness _customersBusiness;
         private readonly ERPBLL.Accounts.Interface.ISupplierBusiness _suppliersBusiness;
+        private readonly IDealerSSBusiness _dealerSSBusiness;
+        private readonly IModelSSBusiness _modelSSBusiness;
         //Nishad
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
 
-        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IJournalBusiness journalBusiness, ICustomersBusiness customersBusiness, ERPBLL.Accounts.Interface.ISupplierBusiness suppliersBusiness)
+        public Common2Controller(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness,IBranchBusiness2 branchBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IJobOrderBusiness jobOrderBusiness, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IJobOrderProblemBusiness jobOrderProblemBusiness, IJobOrderFaultBusiness jobOrderFaultBusiness, IJobOrderServiceBusiness jobOrderServiceBusiness, IDescriptionBusiness descriptionBusiness, IInvoiceInfoBusiness invoiceInfoBusiness, IInvoiceDetailBusiness invoiceDetailBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IRepairBusiness repairBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IHandsetChangeTraceBusiness handsetChangeTraceBusiness, IJournalBusiness journalBusiness, ICustomersBusiness customersBusiness, ERPBLL.Accounts.Interface.ISupplierBusiness suppliersBusiness, IDealerSSBusiness dealerSSBusiness, IModelSSBusiness modelSSBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -79,6 +81,8 @@ namespace ERPWeb.Controllers
             this._journalBusiness = journalBusiness;
             this._customersBusiness = customersBusiness;
             this._suppliersBusiness = suppliersBusiness;
+            this._dealerSSBusiness = dealerSSBusiness;
+            this._modelSSBusiness = modelSSBusiness;
         }
 
         #region Configuration Module
@@ -101,12 +105,14 @@ namespace ERPWeb.Controllers
         public ActionResult GetReferencesByIMEI(string imei)
         {
             var Refe = _jobOrderBusiness.GetReferencesNumberByIMEI(imei, User.OrgId,User.BranchId);
+
+            var refeCode = _jobOrderBusiness.GetRefeNumberCount(imei, User.BranchId, User.OrgId);
             JobOrderViewModel viewModel = new JobOrderViewModel();
             if (Refe != null)
             {
                 viewModel.JodOrderId = Refe.JodOrderId;
                 viewModel.IMEI = Refe.IMEI;
-                viewModel.ReferenceNumber = Refe.JobOrderCode;
+                viewModel.ReferenceNumber =Refe.JobOrderCode+"-"+ refeCode.Count();
                 viewModel.IMEI2 = Refe.IMEI2;
                 viewModel.Type = Refe.Type;
                 viewModel.ModelColor = Refe.ModelColor;
@@ -114,15 +120,15 @@ namespace ERPWeb.Controllers
                 viewModel.Remarks = Refe.Remarks;
                 viewModel.WarrantyDate = Refe.WarrantyDate;
                 viewModel.DescriptionId = Refe.DescriptionId;
-                viewModel.ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(Refe.DescriptionId,User.OrgId).DescriptionName);
+                viewModel.ModelName = (_modelSSBusiness.GetModelById(Refe.DescriptionId,User.OrgId).ModelName);
                 viewModel.CustomerName = Refe.CustomerName;
                 viewModel.Address = Refe.Address;
                 viewModel.MobileNo = Refe.MobileNo;
                 viewModel.CustomerType = Refe.CustomerType;
-
                 viewModel.CourierName = Refe.CourierName;
                 viewModel.CourierNumber = Refe.CourierNumber;
                 viewModel.ApproxBill = Refe.ApproxBill;
+                viewModel.JobSource = Refe.JobSource;
 
             }
             return Json(viewModel);
@@ -144,7 +150,7 @@ namespace ERPWeb.Controllers
                 viewModel.Remarks = Refe.Remarks;
                 viewModel.WarrantyDate = Refe.WarrantyDate;
                 viewModel.DescriptionId = Refe.DescriptionId;
-                viewModel.ModelName = (_descriptionBusiness.GetDescriptionOneByOrdId(Refe.DescriptionId, User.OrgId).DescriptionName);
+                viewModel.ModelName = (_modelSSBusiness.GetModelById(Refe.DescriptionId, User.OrgId).ModelName);
                 viewModel.CustomerName = Refe.CustomerName;
                 viewModel.Address = Refe.Address;
                 viewModel.MobileNo = Refe.MobileNo;
@@ -215,6 +221,18 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region Duplicate Check
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsHandsetCustomerPending(string imei)
+        {
+            bool isExist = _handSetStockBusiness.IsHandsetCustomerPrndingIMEI(imei, "Customer-Pending", User.OrgId);
+            return Json(isExist);
+        }
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult IsHandsetStockCheck(string imei)
+        {
+            bool isExist = _handSetStockBusiness.IsHandsetStockIMEICheck(imei, User.OrgId);
+            return Json(isExist);
+        }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsExistsInHandsetStock(string imei)
@@ -332,6 +350,21 @@ namespace ERPWeb.Controllers
             return Json(isExist);
         }
         #endregion
+
+        [HttpPost]
+        public ActionResult GetDealer(long dealerId)
+        {
+            var dealer = _dealerSSBusiness.GetDealerById(dealerId, User.OrgId);
+            DealerSSViewModel viewModel = new DealerSSViewModel();
+            if (dealer != null)
+            {
+                viewModel.DealerName = dealer.DealerName;
+                viewModel.MobileNo = dealer.MobileNo;
+                viewModel.Address = dealer.Address;
+                viewModel.DealerId = dealer.DealerId;
+            }
+            return Json(viewModel);
+        }
 
         [HttpPost, ValidateJsonAntiForgeryToken]
         public ActionResult IsIMEIExistWithRunningJobOrder(string iMEI,long jobOrdeId)

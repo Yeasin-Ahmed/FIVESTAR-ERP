@@ -1,4 +1,5 @@
 ﻿using ERPBO.Configuration.DomainModels;
+using ERPBO.FrontDesk.DomainModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,5 +127,21 @@ namespace ERPDAL.ConfigurationDAL
         {
 
         }
+    }
+    public class DealerSSRepository : ConfigurationBaseRepository<DealerSS>
+    {
+        public DealerSSRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class ColorSSRepository : ConfigurationBaseRepository<ColorSS>
+    {
+        public ColorSSRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class BrandSSRepository : ConfigurationBaseRepository<BrandSS>
+    {
+        public BrandSSRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
+    }
+    public class ModelSSRepository : ConfigurationBaseRepository<ModelSS>
+    {
+        public ModelSSRepository(IConfigurationUnitOfWork configurationUnitOfWork) : base(configurationUnitOfWork) { }
     }
 }

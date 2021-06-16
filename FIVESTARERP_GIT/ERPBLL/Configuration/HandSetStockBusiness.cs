@@ -83,11 +83,11 @@ namespace ERPBLL.Configuration
             }
 
             query = string.Format(@"Select stock.HandSetStockId,stock.ColorId,co.ColorName,stock.IMEI,stock.IMEI1,
-stock.StockType,stock.Remarks,stock.OrganizationId,stock.DescriptionId,de.DescriptionName 'ModelName' 
+stock.StockType,stock.StateStatus,stock.OrganizationId,stock.DescriptionId,de.ModelName 
 From tblHandSetStock stock
-Left Join [Inventory].dbo.tblColors co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
-Left Join [Inventory].dbo.tblDescriptions de  on stock.DescriptionId = de.DescriptionId and stock.OrganizationId =de.OrganizationId
-Where 1=1 and stock.StateStatus='Stock-In' and stock.OrganizationId={0} {1}", orgId, Utility.ParamChecker(param));
+Left Join [Configuration].dbo.tblColorSS co  on stock.ColorId = co.ColorId and stock.OrganizationId =co.OrganizationId
+Left Join [Configuration].dbo.tblModelSS de  on stock.DescriptionId = de.ModelId and stock.OrganizationId =de.OrganizationId
+Where 1=1 and (stock.StateStatus='Stock-In' or stock.StateStatus='Customer-Pending') and stock.OrganizationId={0}", orgId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<HandSetStockDTO>(query).ToList();
         }
@@ -102,16 +102,52 @@ Where 1=1 and stock.StateStatus='Stock-In' and stock.OrganizationId={0} {1}", or
         public IEnumerable<HandSetStockDTO> GetAllHansetModelAndColor(long orgId)
         {
             return this._configurationDb.Db.Database.SqlQuery<HandSetStockDTO>(
-                string.Format(@"SELECT (Cast(hst.DescriptionId as nvarchar(100)) + '#' + Cast(hst.ColorId as nvarchar(100))) 'ModelId',(des.DescriptionName +'-'+ clr.ColorName)'ModelName'
+                string.Format(@"SELECT (Cast(hst.DescriptionId as nvarchar(100)) + '#' + Cast(hst.ColorId as nvarchar(100))) 'ModelId',(des.ModelName +'-'+ clr.ColorName)'ModelName'
 FROM [Configuration].dbo.tblHandsetStock hst
-Inner Join [Inventory].dbo.tblDescriptions des on hst.DescriptionId = des.DescriptionId and hst.OrganizationId = des.OrganizationId
-Inner Join [Inventory].dbo.tblColors clr on hst.ColorId = clr.ColorId and hst.OrganizationId = clr.OrganizationId
+Inner Join [Configuration].dbo.tblModelSS des on hst.DescriptionId = des.ModelId and hst.OrganizationId = des.OrganizationId
+Inner Join [Configuration].dbo.tblColorSS clr on hst.ColorId = clr.ColorId and hst.OrganizationId = clr.OrganizationId
 where hst.OrganizationId={0}", orgId)).ToList();
         }
 
         public HandSetStock GetIMEI2ByIMEI1(string imei, long branchId, long orgId)
         {
             return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.BranchId == branchId && s.OrganizationId == orgId);
+        }
+
+        public bool UpdateHandsetStockByCustomerSupport(string imei, long branchId, long orgId, long userId)
+        {
+            var stockupdate = GetIMEI2ByIMEI1(imei, branchId, orgId);
+            if(stockupdate != null)
+            {
+                stockupdate.StateStatus = "Customer-Pending";
+                stockupdate.UpUserId = userId;
+                stockupdate.UpdateDate = DateTime.Now;
+                _handSetStockRepository.Update(stockupdate);
+            }
+            return _handSetStockRepository.Save();
+        }
+
+        public bool UpdateHandsetStockByReceiptHandset(string imei, long branchId, long orgId, long userId)
+        {
+            var stockupdate = GetIMEI2ByIMEI1(imei, branchId, orgId);
+            if (stockupdate != null)
+            {
+                stockupdate.StateStatus = "Stock-In";
+                stockupdate.UpUserId = userId;
+                stockupdate.UpdateDate = DateTime.Now;
+                _handSetStockRepository.Update(stockupdate);
+            }
+            return _handSetStockRepository.Save();
+        }
+
+        public bool IsHandsetStockIMEICheck(string imei, long orgId)
+        {
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.OrganizationId == orgId) != null ? false : true;
+        }
+
+        public bool IsHandsetCustomerPrndingIMEI(string imei, string status, long orgId)
+        {
+            return _handSetStockRepository.GetOneByOrg(s => s.IMEI1 == imei && s.StateStatus== status && s.OrganizationId == orgId) != null ? true : false;
         }
     }
 }

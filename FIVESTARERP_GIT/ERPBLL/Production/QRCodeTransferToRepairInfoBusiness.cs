@@ -407,10 +407,10 @@ Where 1= 1 {0}", Utility.ParamChecker(param));
                     faultyItemStocks.Add(faultyItemStock);
                 }
 
-                if (repairLineStocks.Count > 0 && _repairLineStockDetailBusiness.SaveRepairLineStockOut(repairLineStocks, userId, orgId, string.Empty))
-                {
+                //if (repairLineStocks.Count > 0 && _repairLineStockDetailBusiness.SaveRepairLineStockOut(repairLineStocks, userId, orgId, string.Empty))
+                //{
                     return _faultyItemStockDetailBusiness.SaveFaultyItemStockIn(faultyItemStocks, userId, orgId);
-                }
+                //}
             }
             return false;
         }
@@ -519,6 +519,87 @@ Inner Join [Production].dbo.tblRepairLine rl on qr.RepairLineId = rl.RepairLineI
 Where 1=1 {0}", Utility.ParamChecker(param));
 
             return query;
+        }
+
+        public IEnumerable<QRCodeTransferToRepairInfoDTO> GetRepairSectionReceiveQRCode(long? modelId, long orgId, long? lineId, long? qclineId, long? repairlineId)
+        {
+            return this._productionDb.Db.Database.SqlQuery<QRCodeTransferToRepairInfoDTO>(QueryForRepairSectionReceiveQRCode(modelId, orgId, lineId,qclineId,repairlineId)).ToList();
+        }
+        private string QueryForRepairSectionReceiveQRCode(long? modelId, long orgId, long? lineId, long? qclineId, long? repairlineId)
+        {
+            string query = string.Empty;
+            string param = string.Empty;
+
+            param += string.Format(@" and qrc.OrganizationId={0}", orgId);
+
+            if (modelId != null && modelId > 0)
+            {
+                param += string.Format(@" and qrc.DescriptionId={0}", modelId);
+            }
+            if (lineId != null && lineId > 0)
+            {
+                param += string.Format(@" and qrc.FloorId={0}", lineId);
+            }
+            if (qclineId != null && qclineId > 0)
+            {
+                param += string.Format(@" and qrc.QCLineId={0}", qclineId);
+            }
+            if (repairlineId != null && repairlineId > 0)
+            {
+                param += string.Format(@" and qrc.RepairLineId={0}", repairlineId);
+            }
+
+            query = string.Format(@"Select qrc.QRTRInfoId,qrc.QRCode,qrc.DescriptionId,d.DescriptionName'ModelName',qrc.StateStatus,rl.RepairLineName,qc.QCName 'QCLineName',pl.LineNumber'FloorName',
+qrc.TransferId,qrc.AssemblyLineId,qrc.QCLineId,qrc.RepairLineId,qrc.FloorId  From tblQRCodeTransferToRepairInfo qrc
+Left Join [Inventory].dbo.tblDescriptions d on qrc.DescriptionId=d.DescriptionId
+Inner Join [Production].dbo.tblRepairLine rl on qrc.RepairLineId = rl.RepairLineId
+Inner Join [Production].dbo.tblQualityControl qc on qrc.QCLineId = qc.QCId
+Inner Join[Production].dbo.tblProductionLines pl on qrc.FloorId=pl.LineId
+Where qrc.StateStatus='Received' and 1=1{0}", Utility.ParamChecker(param));
+
+            return query;
+        }
+
+        public QRCodeTransferToRepairInfo GetOneByQRCodeById(long qrId, long orgId)
+        {
+            return _qRCodeTransferToRepairInfoRepository.GetOneByOrg(q => q.QRTRInfoId == qrId && q.OrganizationId == orgId);
+        }
+
+        public bool QRCodeUpdateStatus(long[] qrCodes, long orgId,long userId)
+        {
+            bool isSuccess = true;
+            foreach(var qr in qrCodes)
+            {
+                var qrc = GetOneByQRCodeById(qr, orgId);
+                if(qrc != null)
+                {
+                    qrc.StateStatus = "Transfer";
+                    qrc.UpdateDate = DateTime.Now;
+                    qrc.UpUserId = userId;
+                }
+                _qRCodeTransferToRepairInfoRepository.Update(qrc);
+                 _qRCodeTransferToRepairInfoRepository.Save();
+            }
+            return isSuccess;
+        }
+
+        public bool QRCodeStatusUpdate(string qrCode, long userId, long orgId)
+        {
+            var status = "Transfer";
+            var qrCodeUp = GetQRCodeByQRCode(qrCode,status, orgId).LastOrDefault();
+            if(qrCodeUp != null)
+            {
+                qrCodeUp.StateStatus = "Received";
+                qrCodeUp.UpdateDate = DateTime.Now;
+                qrCodeUp.UpUserId = userId;
+            }
+            _qRCodeTransferToRepairInfoRepository.Update(qrCodeUp);
+           return _qRCodeTransferToRepairInfoRepository.Save();
+        }
+
+        public IEnumerable<QRCodeTransferToRepairInfo> GetQRCodeByQRCode(string qrCode,string status, long orgId)
+        {
+            return _qRCodeTransferToRepairInfoRepository.GetAll(qr => qr.QRCode == qrCode && qr.StateStatus== status && qr.OrganizationId == orgId).ToList();
         }
     }
 }

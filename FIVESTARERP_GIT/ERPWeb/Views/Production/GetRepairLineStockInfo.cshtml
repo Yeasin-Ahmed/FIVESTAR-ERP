@@ -7,7 +7,7 @@
     <div class="col-md-12 text-sm">
         <div class="card card-primary card-outline card-tabs">
             <div class="card-header p-0 pt-1 border-bottom-0">
-                <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                <ul class="nav nav-tabs text-sm" id="custom-tabs-two-tab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="custom-tabs-two-receiveQCStock-tab" data-toggle="pill" href="#custom-tabs-two-receiveQCStock" role="tab" aria-controls="custom-tabs-two-receiveQCStock" aria-selected="true">Receive QC Item</a>
                     </li>
@@ -19,7 +19,7 @@
                         <a class="nav-link" id="custom-tabs-two-transferList-tab" data-toggle="pill" href="#custom-tabs-two-transferList" role="tab" aria-controls="custom-tabs-two-transferList" aria-selected="true">Transfer To QC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Spare Parts Stock</a>
+                        <a class="nav-link" id="custom-tabs-two-stockInfo-tab" data-toggle="pill" href="#custom-tabs-two-stockInfo" role="tab" aria-controls="custom-tabs-two-stockInfo" aria-selected="true">Parts Stock</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-reqList-tab" data-toggle="pill" href="#custom-tabs-two-reqList" role="tab" aria-controls="custom-tabs-two-reqList" aria-selected="true">Requisition List</a>
@@ -38,6 +38,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-two-returnStockList-tab" data-toggle="pill" href="#custom-tabs-two-returnStockList" role="tab" aria-controls="custom-tabs-two-returnStockList" aria-selected="false">Stock Return List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-qrCodeList-tab" data-toggle="pill" href="#custom-tabs-two-qrCodeList" role="tab" aria-controls="custom-tabs-two-qrCodeList" aria-selected="false">QRCode</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-two-qrCodeReceiveFromMiniStockList-tab" data-toggle="pill" href="#custom-tabs-two-qrCodeReceiveFromMiniStockList" role="tab" aria-controls="custom-tabs-two-qrCodeReceiveFromMiniStockList" aria-selected="false">QRCode Scan</a>
                     </li>
                 </ul>
             </div>
@@ -365,7 +371,7 @@
                                                     Repair Section Requisition Info List
                                                 </h5>
                                             </div>
-                                            <div class="col-md-3">                                                
+                                            <div class="col-md-3">
                                                 <a href="@Url.Action("CreateRepairSectionRequisition","Production",new {@reqFor="Repair" })" class="btn btn-sm btn-outline-secondary btn-flat float-right" title="Add New Requisition" id="btnAddNew"><i class="fa fa-plus"></i> Requisition</a>
                                             </div>
                                         </div>
@@ -803,27 +809,27 @@
                                     <div class="card-body text-sm">
                                         <div class="row" style="margin-top:-15px">
                                             <div class="col-md-3">
-                                             
+
                                             </div>
                                             <div class="col-md-3">
-                                               
+
                                             </div>
                                             <div class="col-md-3">
-                                             
+
                                             </div>
                                             <div class="col-md-3">
-                                              
+
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3">
-                                              
+
                                             </div>
                                             <div class="col-md-3">
-                                              
+
                                             </div>
                                             <div class="col-md-3">
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -839,6 +845,136 @@
                                                 </div>
                                                 <div class="col-md-12" id="dataContainer9">
 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-qrCodeList" role="tabpanel" aria-labelledby="custom-tabs-two-qrCodeList-tab">
+                        <div class="row text-sm" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    QRCode List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-sm">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">
+                                            Search By
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-2">
+                                                <label for="ddlFloorRepairSecitionQRCode" class="control-label font-weight-bold">Floor</label>
+                                                @Html.DropDownList("ddlFloorRepairSecitionQRCode", (IEnumerable<SelectListItem>)ViewBag.ddlLineNumber, "--Select Floor--", new { @class = "form-control form-control-sm ctrl-change" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlRepairLineQRCodeQC" class="control-label font-weight-bold">QC</label>
+                                                <select id="ddlRepairLineQRCodeQC" class="form-control form-control-sm">
+                                                    <option value="0">--Select QC--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlRepairLineQRCodeRepair" class="control-label font-weight-bold">Repair</label>
+                                                <select id="ddlRepairLineQRCodeRepair" class="form-control form-control-sm">
+                                                    <option value="0">--Select Repair--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlModelName" class="control-label font-weight-bold">Model</label>
+                                                @Html.DropDownList("ddlModelName", (IEnumerable<SelectListItem>)ViewBag.ddlModelName, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger ctrl-changed" })
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label font-weight-bold" style="visibility:hidden">To Dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</label>
+                                                <button type="button" class="btn float-lg-right btn-sm btn-success" id="btnQRCodesSubmit">Submit  <i class="fas fa-paper-plane"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12" id="dataContainer11" style="min-height:50px">
+                                                @{Html.RenderAction("GetRepairSectionReceiveQRCode", new { @flag = "qrCodeReceive" });}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show " id="custom-tabs-two-qrCodeReceiveFromMiniStockList" role="tabpanel" aria-labelledby="custom-tabs-two-qrCodeReceiveFromMiniStockList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h5 class="text-center text-bold">
+                                                    QR Code Scanning and Receive Semi Finish Good From Mini Stock
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-6">
+                                                <h5 style="border-bottom:2px solid #70cf44">SCANING</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <input type="text" id="txtItemQRCodeForLotIn" placeholder="SCAN ITEM BY QR CODE HERE" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+
+                                                    <div class="col-md-12">
+                                                        <ul>
+                                                            <li class="error hide floor">Floor is required</li>
+                                                            <li class="error hide qc">QC is required</li>
+                                                            <li class="error hide repair">Repair is required</li>
+                                                            <li class="error hide qrCode">QRCode is required</li>
+                                                            <li class="error hide invalid-qrCode">Invalid QRCode</li>
+                                                            <li class="error hide prob-notFound">Add Problems</li>
+                                                            <li class="error hide qc-not-for-pdn">This QRCode is not belongs to this Floor</li>
+                                                            <li class="error hide duplicate-QrCode">This QRCode already has been transfered</li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -988,6 +1124,13 @@
         var ddlStateStatusTransferQCItem = $("#ddlStateStatusTransferQCItem");
         var dptFromDateTransferQCItem = $("#dptFromDateTransferQCItem");
         var dptToDateTransferQCItem = $("#dptToDateTransferQCItem");
+
+        //Repair Section QRCodeList
+        var ddlFloorRepairSecitionQRCode = $("#ddlFloorRepairSecitionQRCode");
+        var ddlRepairLineQRCodeQC = $("#ddlRepairLineQRCodeQC");
+        var ddlRepairLineQRCodeRepair = $("#ddlRepairLineQRCodeRepair");
+        var ddlModelName = $("#ddlModelName");
+
 
         $(document).ready(function () {
             //Initialize Select2 Elements
@@ -2062,5 +2205,172 @@
                 });
             }
         })
+
+        // Repair Section QRCode
+        ddlFloorRepairSecitionQRCode.change(function () {
+            LoadDataTableRepairSectionReceiveQRCode();
+            clearDropdown("ddlRepairLineQRCodeQC");
+            clearDropdown("ddlRepairLineQRCodeRepair");
+            if (ddlFloorRepairSecitionQRCode.val() != "") {
+                LoadDropDown('/Common/GetQCByLine', 'POST', ddlRepairLineQRCodeQC, JSON.stringify({ lineId: ddlFloorRepairSecitionQRCode.val() }));
+                LoadDropDown('/Common/GetRepairLineByLine', 'POST', ddlRepairLineQRCodeRepair, JSON.stringify({ lineId: ddlFloorRepairSecitionQRCode.val() }));
+            }
+        })
+
+        ddlFloorRepairSecitionQRCode.change(function () {
+            LoadDataTableRepairSectionReceiveQRCode();
+        })
+        ddlModelName.change(function () {
+            LoadDataTableRepairSectionReceiveQRCode();
+        })
+        ddlRepairLineQRCodeQC.change(function () {
+            LoadDataTableRepairSectionReceiveQRCode();
+        })
+        ddlRepairLineQRCodeRepair.change(function () {
+            LoadDataTableRepairSectionReceiveQRCode();
+        })
+
+        function LoadDataTableRepairSectionReceiveQRCode() {
+            var data = { flag: "qrCodeReceive1", modelId: TryParseInt(ddlModelName.val(), 0), lineId: ddlFloorRepairSecitionQRCode.val(), qclineId: ddlRepairLineQRCodeQC.val(), repairlineId: ddlRepairLineQRCodeRepair.val() };
+
+            $.when(getReqWithData('html', 'GET', '/Production/GetRepairSectionReceiveQRCode', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer11").fadeOut('500', function () {
+                        $("#dataContainer11").empty();
+                        $("#dataContainer11").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+           // pageNo = 1;
+        }
+
+        var count = 0;
+        $(document).on('change', 'input[name="allQRCode"]', function () {
+            var isChecked = $('input[name="allQRCode"]').is(":checked");
+            $('input[name="QRCodes"]').prop("checked", isChecked);
+            if (isChecked) {
+                count = $(".tblRepairSectionQRCodeList tbody tr").length;
+            }
+            else {
+                count = 0;
+            }
+        })
+
+        $(document).on('change', 'input[name="QRCodes"]', function () {
+            count = 0;
+            $.each($(".tblRepairSectionQRCodeList tbody tr"), function (index, item) {
+                if ($(this).children('td').eq(1).children('input[name="QRCodes"]').is(":checked")) {
+                    count++;
+                }
+            });
+            var allChecked = $(".tblRepairSectionQRCodeList tbody tr").length == count;
+            $('input[name="allQRCode"]').prop("checked", allChecked);
+        })
+
+
+        function ValidateSubmit() {
+            var isValid = true;
+            if (count == 0) {
+                isValid = false;
+                bootbox.alert("Please check at least one row");
+            }
+            return isValid;
+        }
+
+        $("#btnQRCodesSubmit").click(function (e) {
+            e.preventDefault();
+            if (ValidateSubmit()) {
+                bootbox.confirm("Are you sure you want to Transfer these QRCodes", function (result) {
+                    if (result) {
+                        disable("#btnQRCodesSubmit");
+                        var qRCodes = []; qRCodes.length = 0;
+                        $.each($(".tblRepairSectionQRCodeList tbody tr"), function (index, item) {
+                            var checkBox = $(this).children('td').eq(1).children('input[name="QRCodes"]');
+                            if (checkBox.is(":checked")) {
+                                qRCodes.push(TryParseInt(checkBox.attr("data-item-val"), 0));
+                            }
+                        });
+
+                        var data = JSON.stringify({ qRCodes: qRCodes, qty: count });
+                       //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveRepairSectionSemiFinishTransfer', data, getToken())).then(function (res, status) {
+                             if (res == true) {
+                                setTimeout(function () {
+                                    $('.toastrDefaultSuccess').trigger('click');
+                                    redirectPage('@Url.Action("GetRepairLineStockInfo")');
+                                }, 1000);
+                            }
+                                else {
+                                    $('.toastrDefaultError').trigger('click');
+                                }
+                            enable("#btnQRCodesSubmit");
+                        }).fail(function (error) {
+                            console.log(error);
+                            $('.toastrDefaultError').trigger('click');
+                            enable("#btnQRCodesSubmit");
+                        });
+                    }
+                })
+            }
+        });
+
+
+        ///////////
+        var txtItemQRCodeForLotIn = $("#txtItemQRCodeForLotIn");
+        var txtItemQRCodeForLotInSearch = $("#txtItemQRCodeForLotInSearch");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var problemsObj = [];
+        var qrCodeDataObj = {};
+
+        $(document).ready(function () {
+            txtItemQRCodeForLotIn.focus();
+        })
+
+
+
+        function validateQRCode() {
+            return ajaxBooleanChecker(JSON.stringify({ qrCode: $.trim(txtItemQRCodeForLotIn.val()) }), '/Common/IsExistCheckMiniStock', getToken()) == true;
+        }
+
+        txtItemQRCodeForLotIn.change(function () {
+            qrCodeDataObj = {};
+            if ($.trim(txtItemQRCodeForLotIn.val()) !== "") {
+                if (validateQRCode()) {
+                    var data = JSON.stringify({ qrCode: $.trim(txtItemQRCodeForLotIn.val()) });
+                    //return console.log(data);
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/UpdateStockAndReceiveRepairSection', data, getToken())).then(function (res, status) {
+                        if (status === "success") {
+                            qrCodeDataObj = res;
+                            toastrSuccessAlert(execuStatus.successSave);
+                            txtItemQRCodeForLotIn.val('');
+                            txtItemQRCodeForLotIn.focus();
+                        }
+                        else {
+                            txtItemQRCodeForLotIn.val('');
+                            txtItemQRCodeForLotIn.focus();
+                        }
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+                else {
+                    txtItemQRCodeForLotIn.val('');
+                    txtItemQRCodeForLotIn.focus();
+                    toastrErrorAlert('QRCode may has been transfered')
+                }
+            }
+        })
+
+        txtItemQRCodeForLotInSearch.change(function () {
+            LoadDataTableForLotInList();
+            txtItemQRCodeForLotInSearch.val('');
+            txtItemQRCodeForLotInSearch.focus();
+        })
+       
+        
     </script>
 }

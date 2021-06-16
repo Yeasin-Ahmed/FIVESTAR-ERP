@@ -135,4 +135,12 @@ namespace ERPDAL.InventoryDAL
 
         }
     }
+    public class STransferInfoMToMRepository : InventoryBaseRepository<StockTransferInfoMToM>
+    {
+        public STransferInfoMToMRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+    }
+    public class STransferDetailsMToMRepository : InventoryBaseRepository<StockTransferDetailsMToM>
+    {
+        public STransferDetailsMToMRepository(IInventoryUnitOfWork inventoryUnitOfWork) : base(inventoryUnitOfWork) { }
+    }
 }

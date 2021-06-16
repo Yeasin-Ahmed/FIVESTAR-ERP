@@ -115,18 +115,24 @@
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Configuration\AccessoriesBusiness.cs" />
     <Compile Include="Configuration\BranchBusiness2.cs" />
+    <Compile Include="Configuration\BrandSSBusiness.cs" />
     <Compile Include="Configuration\ClientProblemBusiness.cs" />
+    <Compile Include="Configuration\ColorSSBusiness.cs" />
     <Compile Include="Configuration\CustomerBusiness.cs" />
     <Compile Include="Configuration\CustomerServiceBusiness.cs" />
+    <Compile Include="Configuration\DealerSSBusiness.cs" />
     <Compile Include="Configuration\FaultBusiness.cs" />
     <Compile Include="Configuration\FaultyStockDetailBusiness.cs" />
     <Compile Include="Configuration\FaultyStockInfoBusiness.cs" />
     <Compile Include="Configuration\HandSetStockBusiness.cs" />
     <Compile Include="Configuration\Interface\IAccessoriesBusiness.cs" />
     <Compile Include="Configuration\Interface\IBranchBusiness2.cs" />
+    <Compile Include="Configuration\Interface\IBrandSSBusiness.cs" />
     <Compile Include="Configuration\Interface\IClientProblemBusiness.cs" />
+    <Compile Include="Configuration\Interface\IColorSSBusiness.cs" />
     <Compile Include="Configuration\Interface\ICustomerBusiness.cs" />
     <Compile Include="Configuration\Interface\ICustomerServiceBusiness.cs" />
+    <Compile Include="Configuration\Interface\IDealerSSBusiness.cs" />
     <Compile Include="Configuration\Interface\IFaultBusiness.cs" />
     <Compile Include="Configuration\Interface\IFaultyStockDetailBusiness.cs" />
     <Compile Include="Configuration\Interface\IFaultyStockInfoBusiness.cs" />
@@ -135,6 +141,7 @@
     <Compile Include="Configuration\Interface\IMobilePartBusiness.cs" />
     <Compile Include="Configuration\Interface\IMobilePartStockDetailBusiness.cs" />
     <Compile Include="Configuration\Interface\IMobilePartStockInfoBusiness.cs" />
+    <Compile Include="Configuration\Interface\IModelSSBusiness.cs" />
     <Compile Include="Configuration\Interface\IRepairBusiness.cs" />
     <Compile Include="Configuration\Interface\IScrapStockDetailBusiness.cs" />
     <Compile Include="Configuration\Interface\IScrapStockInfoBusiness.cs" />
@@ -150,6 +157,7 @@
     <Compile Include="Configuration\MobilePartBusiness.cs" />
     <Compile Include="Configuration\MobilePartStockDetailBusiness.cs" />
     <Compile Include="Configuration\MobilePartStockInfoBusiness.cs" />
+    <Compile Include="Configuration\ModelSSBusiness.cs" />
     <Compile Include="Configuration\RepairBusiness.cs" />
     <Compile Include="Configuration\ScrapStockDetailBusiness.cs" />
     <Compile Include="Configuration\ScrapStockInfoBusiness.cs" />
@@ -236,6 +244,8 @@
     <Compile Include="Inventory\Interface\IItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\Interface\IItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IModelColorBusiness.cs" />
+    <Compile Include="Inventory\Interface\ISTransferDetailsMToMBusiness.cs" />
+    <Compile Include="Inventory\Interface\ISTransferInfoMToMBusiness.cs" />
     <Compile Include="Inventory\InventoryReportBusiness.cs" />
     <Compile Include="Inventory\IQCStockDetailBusiness.cs" />
     <Compile Include="Inventory\Interface\IWarehouseFaultyStockDetailBusiness.cs" />
@@ -252,6 +262,8 @@
     <Compile Include="Inventory\ItemPreparationDetailBusiness.cs" />
     <Compile Include="Inventory\ItemPreparationInfoBusiness.cs" />
     <Compile Include="Inventory\ModelColorBusiness.cs" />
+    <Compile Include="Inventory\STransferDetailsMToMBusiness.cs" />
+    <Compile Include="Inventory\STransferInfoMToMBusiness.cs" />
     <Compile Include="Inventory\WarehouseFaultyStockDetailBusiness.cs" />
     <Compile Include="Inventory\WarehouseFaultyStockInfoBusiness.cs" />
     <Compile Include="Inventory\SupplierBusiness.cs" />
@@ -268,6 +280,7 @@
     <Compile Include="Production\Interface\IIMEIGenerator.cs" />
     <Compile Include="Production\Interface\IIMEITransferToRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\IIMEITransferToRepairInfoBusiness.cs" />
+    <Compile Include="Production\Interface\ILotInLogBusiness.cs" />
     <Compile Include="Production\Interface\IPackagingFaultyStockDetailBusiness.cs" />
     <Compile Include="Production\Interface\IMiniStockTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IMiniStockTransferInfoBusiness.cs" />
@@ -287,6 +300,9 @@
     <Compile Include="Production\Interface\IQRCodeTransferToRepairInfoBusiness.cs" />
     <Compile Include="Production\Interface\IRepairSectionFaultyItemTransferDetailBusiness.cs" />
     <Compile Include="Production\Interface\IProductionAssembleStockDetailBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishStockDetailsBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishStockInfoBusiness.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishTransferDetailsBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\Interface\IRequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\Interface\IStockItemReturnDetailBusiness.cs" />
@@ -297,6 +313,8 @@
     <Compile Include="Production\Interface\ITransferToPackagingRepairDetailBusiness.cs" />
     <Compile Include="Production\Interface\ITransferToPackagingRepairInfoBusiness.cs" />
     <Compile Include="Production\IMEIGenerator.cs" />
+    <Compile Include="Production\Interface\IRepairSectionSemiFinishTransferInfoBusiness.cs" />
+    <Compile Include="Production\LotInLogBusiness.cs" />
     <Compile Include="Production\MiniStockTransferDetailBusiness.cs" />
     <Compile Include="Production\MiniStockTransferInfoBusiness.cs" />
     <Compile Include="Production\PackagingFaultyStockDetailBusiness.cs" />
@@ -404,6 +422,10 @@
     <Compile Include="Production\RepairLineBusiness.cs" />
     <Compile Include="Production\RepairSectionFaultyItemTransferInfoBusiness.cs" />
     <Compile Include="Production\RepairSectionRequisitionInfoBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishStockDetailsBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishStockInfoBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishTransferDetailsBusiness.cs" />
+    <Compile Include="Production\RepairSectionSemiFinishTransferInfoBusiness.cs" />
     <Compile Include="Production\RequisitionItemDetailBusiness.cs" />
     <Compile Include="Production\RequisitionItemInfoBusiness.cs" />
     <Compile Include="Production\RequsitionDetailBusiness.cs" />

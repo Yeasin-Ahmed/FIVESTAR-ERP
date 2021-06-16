@@ -1,0 +1,266 @@
+﻿
+@{
+    ViewBag.Title = "Lot-In";
+}
+
+<div class="row">
+    <div class="col-md-12 text-sm">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-header p-0 pt-1 border-bottom-0">
+                <ul class="nav nav-tabs nav-pills" id="custom-tabs-two-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-two-LotIn-tab" data-toggle="pill" href="#custom-tabs-two-LotIn" role="tab" aria-controls="custom-tabs-two-LotIn" aria-selected="true">Lot-In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="custom-tabs-two-LotInList-tab" data-toggle="pill" href="#custom-tabs-two-LotInList" role="tab" aria-controls="custom-tabs-two-LotInList" aria-selected="true">Lot-In List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-two-LotIn" role="tabpanel" aria-labelledby="custom-tabs-two-LotIn-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    QR Code Scanning
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-6">
+                                                <h5 style="border-bottom:2px solid #70cf44">SCANING</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <input type="text" id="txtItemQRCodeForLotIn" placeholder="SCAN ITEM BY QR CODE HERE" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+
+                                                    <div class="col-md-12">
+                                                        <ul>
+                                                            <li class="error hide floor">Floor is required</li>
+                                                            <li class="error hide qc">QC is required</li>
+                                                            <li class="error hide repair">Repair is required</li>
+                                                            <li class="error hide qrCode">QRCode is required</li>
+                                                            <li class="error hide invalid-qrCode">Invalid QRCode</li>
+                                                            <li class="error hide prob-notFound">Add Problems</li>
+                                                            <li class="error hide qc-not-for-pdn">This QRCode is not belongs to this Floor</li>
+                                                            <li class="error hide duplicate-QrCode">This QRCode already has been transfered</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="custom-tabs-two-LotInList" role="tabpanel" aria-labelledby="custom-tabs-two-LotInList-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Lot-In List
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Search By</h6>
+                                    </div>
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+                                            <div class="col-md-6">
+                                                <h5 style="border-bottom:2px solid #70cf44">SCANING</h5>
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <input type="text" id="txtItemQRCodeForLotInSearch" placeholder="SCAN ITEM BY QR CODE HERE" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 style="border-bottom:2px solid #70cf44">Date Wise Search</h5>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-2">
+                                                        <label class="control-label font-weight-bold">From Date</label>
+                                                        <div class="input-group input-group-sm ">
+                                                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptFromDate" />
+                                                            <div class="input-group-prepend cursor-pointer remove-date dptFromDate" style="cursor:pointer">
+                                                                <span class="input-group-text">&#10008;</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-2">
+                                                        <label class="control-label font-weight-bold">To Date</label>
+                                                        <div class="input-group input-group-sm ">
+                                                            <input type="text" class="form-control form-control-sm date-datePicker ctrl-changed" id="dptToDate" />
+                                                            <div class="input-group-prepend remove-date dptToDate" style="cursor:pointer">
+                                                                <span class="input-group-text">&#10008;</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" id="dataContainer">
+                                            @{Html.RenderAction("GetLotInListByUserId");}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        var txtItemQRCodeForLotIn = $("#txtItemQRCodeForLotIn");
+        var txtItemQRCodeForLotInSearch = $("#txtItemQRCodeForLotInSearch");
+        var dptFromDate = $("#dptFromDate");
+        var dptToDate = $("#dptToDate");
+        var problemsObj = []; 
+        var qrCodeDataObj = {};
+
+        $(document).ready(function () {
+            txtItemQRCodeForLotIn.focus();
+            dptFromDate.prop('readonly', true);
+            dptToDate.prop('readonly', true);
+            dptFromDate.css("background-color", "#fff");
+            dptToDate.css("background-color", "#fff");
+            $('#dptFromDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+            $('#dptToDate').datepicker({
+                format: "dd MM yyyy",
+                orientation: "bottom auto",
+                todayHighlight: true
+            }).on('change', function () {
+                $('.datepicker').hide();
+            });
+
+        })
+
+        $(document).on('click', 'div.remove-date', function () {
+            if ($(this).hasClass("dptToDate")) {
+                if (dptToDate.val() !== '') {
+                    dptToDate.val('');
+                    LoadDataTableForLotInList();
+                }
+            }
+            if ($(this).hasClass("dptFromDate")) {
+                if (dptFromDate.val() !== '') {
+                    dptFromDate.val('');
+                    LoadDataTableForLotInList();
+                }
+            }
+        })
+
+
+        function validateQRCode() {
+            return ajaxBooleanChecker(JSON.stringify({ qrCode: $.trim(txtItemQRCodeForLotIn.val()) }), '/Common/IsExistLotInAssembly', getToken()) == true;
+        }
+
+        txtItemQRCodeForLotIn.change(function () {
+            qrCodeDataObj = {};
+            if ($.trim(txtItemQRCodeForLotIn.val()) !== "") {
+                if (validateQRCode()) {
+                    var data = JSON.stringify({ qrCode: $.trim(txtItemQRCodeForLotIn.val()) });
+                    //return console.log(data);
+                    $.when(postReqWithToken(dataType.applicationJson, dataType.json, type.post, '/Production/SaveQRCodeScanningForLotIn', data, getToken())).then(function (res, status) {
+                        if (status === "success") {
+                            qrCodeDataObj = res;
+                            toastrSuccessAlert(execuStatus.successSave);
+                            LoadDataTableForLotInList();
+                            txtItemQRCodeForLotIn.val('');
+                            txtItemQRCodeForLotIn.focus();
+                        }
+                        else {
+                            txtItemQRCodeForLotIn.val('');
+                            txtItemQRCodeForLotIn.focus();
+                        }
+                    }).fail(function (error) {
+                        console.log(error);
+                    })
+                }
+                else {
+                    txtItemQRCodeForLotIn.val('');
+                    txtItemQRCodeForLotIn.focus();
+                    toastrErrorAlert('QRCode may has been transfered')
+                }
+            }
+        })
+
+        txtItemQRCodeForLotInSearch.change(function () {
+            LoadDataTableForLotInList();
+            txtItemQRCodeForLotInSearch.val('');
+            txtItemQRCodeForLotInSearch.focus();
+        })
+        $(document).on('change', '.ctrl-changed', function () {
+            LoadDataTableForLotInList();
+        })
+        var page = 1;
+        function LoadDataTableForLotInList() {
+            var data = { qrCode: txtItemQRCodeForLotInSearch.val(), fromDate: dptFromDate.val(), toDate: dptToDate.val(), page: page };
+            $.when(getReqWithData('html', 'GET', '/Production/GetLotInListByUserId', data)).then(function (res, status) {
+                console.log(status);
+                if (status === "success") {
+                    $("#dataContainer").fadeOut('500', function () {
+                        $("#dataContainer").empty();
+                        $("#dataContainer").append(res).fadeIn('500');
+                    });
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+            page = 1;
+        }
+    </script>
+    }

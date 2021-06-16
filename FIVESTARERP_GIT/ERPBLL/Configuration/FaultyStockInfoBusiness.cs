@@ -52,12 +52,11 @@ namespace ERPBLL.Configuration
             }
 
             query = string.Format(@"Select fs.FaultyStockInfoId,fs.SWarehouseId,w.ServicesWarehouseName,fs.PartsId
-,parts.MobilePartName,parts.MobilePartCode 'PartsCode',fs.CostPrice,fs.SellPrice,fs.StockInQty
-,fs.StockOutQty,fs.Remarks,fs.OrganizationId,fs.DescriptionId,de.DescriptionName 'ModelName' 
+,parts.MobilePartName,parts.MobilePartCode 'PartsCode',fs.CostPrice,fs.SellPrice,fs.StockInQty,fs.StockOutQty,fs.Remarks,fs.OrganizationId,fs.DescriptionId,de.ModelName 
 From tblFaultyStockInfo fs
 Left Join tblServiceWarehouses w on fs.SWarehouseId = w.SWarehouseId and fs.OrganizationId =w.OrganizationId
 Left Join tblMobileParts parts on fs.PartsId = parts.MobilePartId and fs.OrganizationId =parts.OrganizationId
-Left Join [Inventory].dbo.tblDescriptions de  on fs.DescriptionId = de.DescriptionId and fs.OrganizationId =de.OrganizationId
+Left Join [Configuration].dbo.tblModelSS de  on fs.DescriptionId = de.ModelId and fs.OrganizationId =de.OrganizationId
 Where 1=1 and fs.OrganizationId={0} and fs.BranchId= {1} {2}", orgId, branchId, Utility.ParamChecker(param));
 
             return _configurationDb.Db.Database.SqlQuery<FaultyStockInfoDTO>(query).ToList();

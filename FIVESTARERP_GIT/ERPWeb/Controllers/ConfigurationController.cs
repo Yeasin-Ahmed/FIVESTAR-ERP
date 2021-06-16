@@ -39,6 +39,10 @@ namespace ERPWeb.Controllers
         private readonly IServiceBusiness _serviceBusiness;
         private readonly IWorkShopBusiness _workShopBusiness;
         private readonly IRepairBusiness _repairBusiness;
+        private readonly IDealerSSBusiness _dealerSSBusiness;
+        private readonly IColorSSBusiness _colorSSBusiness;
+        private readonly IBrandSSBusiness _brandSSBusiness;
+        private readonly IModelSSBusiness _modelSSBusiness;
         //Nishad
         private readonly IFaultyStockInfoBusiness _faultyStockInfoBusiness;
         private readonly ERPBLL.Configuration.Interface.IHandSetStockBusiness _handSetStockBusiness;
@@ -55,7 +59,7 @@ namespace ERPWeb.Controllers
         //Front Desk
         private readonly IFaultyStockAssignTSBusiness _faultyStockAssignTSBusiness;
 
-        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness)
+        public ConfigurationController(IAccessoriesBusiness accessoriesBusiness, IClientProblemBusiness clientProblemBusiness, IMobilePartBusiness mobilePartBusiness, ICustomerBusiness customerBusiness, ITechnicalServiceBusiness technicalServiceBusiness, ICustomerServiceBusiness customerServiceBusiness, IServicesWarehouseBusiness servicesWarehouseBusiness, IMobilePartStockInfoBusiness mobilePartStockInfoBusiness, IMobilePartStockDetailBusiness mobilePartStockDetailBusiness, IBranchBusiness2 branchBusiness, ITransferInfoBusiness transferInfoBusiness, ITransferDetailBusiness transferDetailBusiness, IBranchBusiness branchBusinesss, IFaultBusiness faultBusiness, IServiceBusiness serviceBusiness, IWorkShopBusiness workShopBusiness, IRepairBusiness repairBusiness, IDescriptionBusiness descriptionBusiness, IFaultyStockInfoBusiness faultyStockInfoBusiness, IColorBusiness colorBusiness, ERPBLL.Configuration.Interface.IHandSetStockBusiness handSetStockBusiness, IMissingStockBusiness missingStockBusiness, IStockTransferDetailModelToModelBusiness stockTransferDetailModelToModelBusiness, IStockTransferInfoModelToModelBusiness stockTransferInfoModelToModelBusiness, IRoleBusiness roleBusiness, IFaultyStockAssignTSBusiness faultyStockAssignTSBusiness, IScrapStockInfoBusiness scrapStockInfoBusiness, IDealerSSBusiness dealerSSBusiness, IColorSSBusiness colorSSBusiness, IBrandSSBusiness brandSSBusiness, IModelSSBusiness modelSSBusiness)
         {
             this._accessoriesBusiness = accessoriesBusiness;
             this._clientProblemBusiness = clientProblemBusiness;
@@ -83,6 +87,12 @@ namespace ERPWeb.Controllers
             this._roleBusiness = roleBusiness;
             this._faultyStockAssignTSBusiness = faultyStockAssignTSBusiness;
             this._scrapStockInfoBusiness = scrapStockInfoBusiness;
+            this._dealerSSBusiness = dealerSSBusiness;
+            this._colorSSBusiness = colorSSBusiness;
+            this._brandSSBusiness = brandSSBusiness;
+            this._modelSSBusiness = modelSSBusiness;
+            
+
             #region Inventory
             this._descriptionBusiness = descriptionBusiness;
             #endregion
@@ -92,6 +102,7 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
+                ViewBag.ddlBrandName = _brandSSBusiness.GetAllBrandByOrgId(User.OrgId).Select(services => new SelectListItem { Text = services.BrandName, Value = services.BrandId.ToString() }).ToList();
                 //ViewBag.UserPrivilege = UserPrivilege("Configuration", "AccessoriesList");
                 //return View();
             }
@@ -210,7 +221,7 @@ namespace ERPWeb.Controllers
                 AutoMapper.Mapper.Map(serviceDTO, viewModel);
                 return PartialView("_Services", viewModel);
             }
-            else if (!string.IsNullOrEmpty(flag) && flag == "repair")
+            else if (!string.IsNullOrEmpty(flag) && flag == "_repair")
             {
                 IEnumerable<RepairDTO> repairDTO = _repairBusiness.GetAllRepairByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.RepairName.Contains(name) || r.RepairCode.Contains(name))).Select(repair => new RepairDTO
                 {
@@ -221,6 +232,7 @@ namespace ERPWeb.Controllers
                     OrganizationId = repair.OrganizationId,
                     EUserId = repair.EUserId,
                     EntryDate = repair.EntryDate,
+
                     UpUserId = repair.UpUserId,
                     UpdateDate = repair.UpdateDate,
                     EntryUser = UserForEachRecord(repair.EUserId.Value).UserName,
@@ -232,6 +244,98 @@ namespace ERPWeb.Controllers
                 //-----------------//
                 AutoMapper.Mapper.Map(repairDTO, viewModels);
                 return PartialView("_Repair", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "dealer")
+            {
+                IEnumerable<DealerSSDTO> dealers = _dealerSSBusiness.GetAllDealerByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.DealerName.Contains(name) || r.MobileNo.Contains(name) || r.TelephoneNo.Contains(name) || r.DivisionName.Contains(name) || r.DistrictName.Contains(name) || r.ZoneName.Contains(name))).Select(model => new DealerSSDTO
+                {
+                    DealerId = model.DealerId,
+                    DealerName = model.DealerName,
+                    DealerCode = model.DealerCode,
+                    TelephoneNo = model.TelephoneNo,
+                    MobileNo = model.MobileNo,
+                    Address = model.Address,
+                    Email = model.Email,
+                    DivisionName = model.DivisionName,
+                    DistrictName = model.DistrictName,
+                    ZoneName = model.ZoneName,
+                    ContactPersonName = model.ContactPersonName,
+                    ContactPersonMobile = model.ContactPersonMobile,
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<DealerSSViewModel> viewModels = new List<DealerSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(dealers.Count(), 10, page);
+                dealers = dealers.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(dealers, viewModels);
+                return PartialView("_DealerSS", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "color")
+            {
+                IEnumerable<ColorSSDTO> colors = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.ColorName.Contains(name))).Select(model => new ColorSSDTO
+                {
+                    ColorId=model.ColorId,
+                    ColorName=model.ColorName,
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<ColorSSViewModel> viewModels = new List<ColorSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(colors.Count(), 10, page);
+                colors = colors.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(colors, viewModels);
+                return PartialView("_ColorSS", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "brand")
+            {
+                IEnumerable<BrandSSDTO> brand = _brandSSBusiness.GetAllBrandByOrgId(User.OrgId).Where(r => (name == "" || name == null) || (r.BrandName.Contains(name))).Select(model => new BrandSSDTO
+                {
+                    BrandId = model.BrandId,
+                    BrandName = model.BrandName,
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<BrandSSViewModel> viewModels = new List<BrandSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(brand.Count(), 10, page);
+                brand = brand.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(brand, viewModels);
+                return PartialView("_BrandSS", viewModels);
+            }
+            else if (!string.IsNullOrEmpty(flag) && flag == "model")
+            {
+                IEnumerable<ModelSSDTO> models = _modelSSBusiness.GetAllModel(User.OrgId).Where(r => (name == "" || name == null) || (r.ModelName.Contains(name))).Select(model => new ModelSSDTO
+                {
+                    ModelId = model.ModelId,
+                    ModelName = model.ModelName,
+                    BrandId=model.BrandId,
+                    BrandName=(_brandSSBusiness.GetOneBrandById(model.BrandId, User.OrgId).BrandName),
+                    Remarks = model.Remarks,
+                    Flag = model.Flag,
+                    EUserId = model.EUserId,
+                    EntryDate = model.EntryDate,
+                    EntryUser = UserForEachRecord(model.EUserId.Value).UserName,
+                }).ToList();
+                List<ModelSSViewModel> viewModels = new List<ModelSSViewModel>();
+                // Pagination //
+                ViewBag.PagerData = GetPagerData(models.Count(), 10, page);
+                models = models.Skip((page - 1) * 10).Take(10).ToList();
+                //-----------------//
+                AutoMapper.Mapper.Map(models, viewModels);
+                return PartialView("_ModelSS", viewModels);
             }
             return View();
         }
@@ -264,6 +368,94 @@ namespace ERPWeb.Controllers
                 try
                 {
                     isSuccess = _accessoriesBusiness.DeleteAccessories(id, User.OrgId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Dealer
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveDealer(DealerSSViewModel dealerSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DealerSSDTO dto = new DealerSSDTO();
+                    AutoMapper.Mapper.Map(dealerSSViewModel, dto);
+                    isSuccess = _dealerSSBusiness.SaveDealer(dto, User.OrgId, User.BranchId, User.UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Colors
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveColorSS(ColorSSViewModel colorSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ColorSSDTO dto = new ColorSSDTO();
+                    AutoMapper.Mapper.Map(colorSSViewModel, dto);
+                    isSuccess = _colorSSBusiness.SaveColorSS(dto, User.OrgId, User.BranchId, User.UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Brand
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveBrand(BrandSSViewModel brandSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    BrandSSDTO dto = new BrandSSDTO();
+                    AutoMapper.Mapper.Map(brandSSViewModel, dto);
+                    isSuccess = _brandSSBusiness.SaveBrandSS(dto, User.OrgId, User.BranchId, User.UserId);
+                }
+                catch (Exception ex)
+                {
+                    isSuccess = false;
+                }
+            }
+            return Json(isSuccess);
+        }
+        #endregion
+
+        #region Model
+        [HttpPost, ValidateJsonAntiForgeryToken]
+        public ActionResult SaveModel(ModelSSViewModel modelSSViewModel)
+        {
+            bool isSuccess = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ModelSSDTO dto = new ModelSSDTO();
+                    AutoMapper.Mapper.Map(modelSSViewModel, dto);
+                    isSuccess = _modelSSBusiness.SaveModelSS(dto, User.OrgId, User.BranchId, User.UserId);
                 }
                 catch (Exception ex)
                 {
@@ -637,7 +829,9 @@ namespace ERPWeb.Controllers
 
                 ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
-                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+
+                ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
             }
             
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "FaultyStock")
@@ -685,7 +879,9 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlMobilePart = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
-            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+
+            ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
             return View();
         }
@@ -749,7 +945,9 @@ namespace ERPWeb.Controllers
 
                 ViewBag.ddlMobileParts = _mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.MobilePartName, Value = mobile.MobilePartId.ToString() }).ToList();
 
-                ViewBag.ddlModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
+                //ViewBag.ddlModels = _descriptionBusiness.GetDescriptionByOrgId(User.OrgId).Select(mobile => new SelectListItem { Text = mobile.DescriptionName, Value = mobile.DescriptionId.ToString() }).ToList();
+
+                ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
                 ViewBag.ddlStockStatus = Utility.ListOfStockStatus().Select(s => new SelectListItem
                 {
@@ -769,7 +967,7 @@ namespace ERPWeb.Controllers
                     MobilePartName = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartName),
                     PartsCode = (_mobilePartBusiness.GetMobilePartOneByOrgId(detail.MobilePartId.Value, User.OrgId).MobilePartCode),
                     DescriptionId=detail.DescriptionId,
-                    ModelName=(_descriptionBusiness.GetDescriptionOneByOrdId(detail.DescriptionId.Value,User.OrgId).DescriptionName),
+                    ModelName=(_modelSSBusiness.GetModelById(detail.DescriptionId.Value,User.OrgId).ModelName),
                     CostPrice = detail.CostPrice,
                     SellPrice = detail.SellPrice,
                     Quantity = detail.Quantity,
@@ -933,9 +1131,11 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
-                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+                //ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
                 //ViewBag.ddlColors = Utility.ListOfModelColor().Select(r => new SelectListItem { Text = r.text, Value = r.value }).ToList();
+                ViewBag.ddlColors = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorId.ToString() }).ToList();
             }
             else if (!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
             {
@@ -970,8 +1170,10 @@ namespace ERPWeb.Controllers
         {
             if (string.IsNullOrEmpty(flag))
             {
-                ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
-                ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+                ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
+                //ViewBag.ddlColors = new SelectList(_colorBusiness.GetAllColorByOrgId(User.OrgId), "ColorId", "ColorName");
+                ViewBag.ddlColors = _colorSSBusiness.GetAllColorsByOrgId(User.OrgId).Select(c => new SelectListItem { Text = c.ColorName, Value = c.ColorId.ToString() }).ToList();
                 ViewBag.ddlMobilePart = new SelectList(_mobilePartBusiness.GetAllMobilePartAndCode(User.OrgId), "MobilePartId", "MobilePartName");
             }
             else if(!string.IsNullOrEmpty(flag) && flag.Trim() != "" && flag == "StockList")
@@ -1068,7 +1270,8 @@ namespace ERPWeb.Controllers
 
             ViewBag.ddlCostPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.CostPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
 
-            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
 
             return View();
         }
@@ -1154,8 +1357,8 @@ namespace ERPWeb.Controllers
                     StateStatus = trans.StateStatus,
                     DescriptionId = trans.DescriptionId,
                     ToDescriptionId = trans.ToDescriptionId,
-                    FromModelName = _descriptionBusiness.GetDescriptionOneByOrdId(trans.DescriptionId.Value, User.OrgId).DescriptionName,
-                    ToModelName = _descriptionBusiness.GetDescriptionOneByOrdId(trans.ToDescriptionId.Value, User.OrgId).DescriptionName,
+                    FromModelName = _modelSSBusiness.GetModelById(trans.DescriptionId.Value, User.OrgId).ModelName,
+                    ToModelName = _modelSSBusiness.GetModelById(trans.ToDescriptionId.Value, User.OrgId).ModelName,
                 }).AsEnumerable();
 
                 stockTransferInfoDTO = stockTransferInfoDTO.Where(s => (sWerehouseId == null || sWerehouseId == 0 || s.WarehouseId == sWerehouseId)).ToList();
@@ -1202,7 +1405,8 @@ namespace ERPWeb.Controllers
 
             //ViewBag.ddlSellPrice = _mobilePartStockInfoBusiness.GetAllMobilePartStockInfoByOrgId(User.OrgId, User.BranchId).Select(mobile => new SelectListItem { Text = mobile.SellPrice.ToString(), Value = mobile.MobilePartStockInfoId.ToString() }).ToList();
             //Nishad//
-            ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            //ViewBag.ddlModels = new SelectList(_descriptionBusiness.GetDescriptionByOrgId(User.OrgId), "DescriptionId", "DescriptionName");
+            ViewBag.ddlModels = _modelSSBusiness.GetAllModel(User.OrgId).Select(m => new SelectListItem { Text = m.ModelName, Value = m.ModelId.ToString() }).ToList();
             return View();
         }
         [HttpPost, ValidateJsonAntiForgeryToken]

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ERPBO.Production.ViewModels.RepairSectionSemiFinishTransferInfoViewModel>
+@{ 
+    int sl = 0;
+    string badge = string.Empty;
+}
+<div class="row">
+    <div class="col-md-12" style="overflow-y:scroll">
+        <table class="table table-bordered table-sm table-responsive-lg table-striped text-sm">
+            <thead class="btn-dark text-center">
+                <tr>
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>TransferCode</th>
+                    <th>StateStatus</th>
+                    <th>Qty</th>
+                    <th>EntryDate</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    sl = sl + 1;
+                    badge = item.StateStatus == "Send By Repair Section" ? "badge bg-success" : "badge bg-primary";
+                <tr>
+                    <td class="text-center text-bold">@sl</td>
+                    <td class="hide">@item.TransferInfoId</td>
+                    <td>@item.TransferCode</td>
+                    <td class="text-center" data-val="@item.StateStatus">
+                        <span class="@badge">@item.StateStatus</span>
+                    </td>
+                    <td class="text-center">@item.Qty</td>
+                    <td class="text-center">@item.EntryDate</td>
+                    <td class="text-center">
+                        <a href="#" class="btn btn-sm btn-outline-warning data-item-detail" title="View Details" data-item-detail="@item.TransferInfoId"><i class="fas fa-eye"></i></a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

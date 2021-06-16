@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ERPBO.Configuration.ViewModels.ColorSSViewModel>
+@{
+    var pagerData = (ERPWeb.Infrastructure.PagerData)ViewBag.PagerData;
+    int sl = pagerData.Serial;
+}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm table-striped" id="tblColorsData">
+            <thead class="btn-dark">
+                <tr class="text-center">
+                    <th>#SL</th>
+                    <th class="hide"></th>
+                    <th>Color</th>
+                    <th>Remarks</th>
+                    <th>Entry Date</th>
+                    <th>Entry User</th>
+                    <th class="hide">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var color in Model)
+                {
+                    sl = sl + 1;
+                    string entryDate = color.EntryDate != null ? color.EntryDate.Value.ToString("dd-MMM-yyy") : "";
+                    <tr>
+                        <td class="text-center" width="10%">@sl</td>
+                        <td class="hide">@color.ColorId</td>
+                        <td>@color.ColorName</td>
+                        <td>@color.Remarks</td>
+                        <td>@entryDate</td>
+                        <td>@color.EntryUser</td>
+                        <td class="text-center hide">
+                            <a href="#" class="btn btn-outline-warning btn-sm data-edit-color" title="Edit" data-edit-color="@color.ColorId"><i class="fas fa-pencil-alt"></i> </a>
+                            <a href="#" class="btn btn-outline-danger btn-sm data-del-color" title="Delete" data-del-color="@color.ColorId"><i class="far fa-trash-alt"></i> </a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Count() == 0)
+                {
+                    <tr class="text-center empty-row">
+                        <td colspan="5">
+                            No Rows Found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-12 color">
+    @Html.Partial("_Pagination", pagerData)
+</div>
+

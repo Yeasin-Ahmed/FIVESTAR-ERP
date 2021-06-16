@@ -541,7 +541,7 @@
         txtProblemQRCode.change(function () {
             if ($.trim(txtProblemQRCode.val()) !== "") {
                 var prob = jQuery.grep(problemsObj, function (item) {
-                    return item.CaseId == $.trim(txtProblemQRCode.val());
+                    return item.QRCode == $.trim(txtProblemQRCode.val());
                 })
                 if (prob.length > 0) {
                     if (!fnIsProbExist(prob)) {
@@ -558,7 +558,7 @@
             if ($("#tblProb tbody tr").length > 0) {
                 $.each($("#tblProb tbody tr"), function (index, item) {
                     var probCode = $(this).children('td').eq(3).html();
-                    if (prob[0].CaseId == probCode) {
+                    if (prob[0].QRCode == probCode) {
                         isExist = true;
                     }
                 })
@@ -572,7 +572,7 @@
                 var td1 = "<td class='text-center text-bold'>" + (cellNo + 1) + "</td>";
                 var td2 = "<td>" + p[0].ProblemDescription + "</td>";
                 var td3 = "<td class='text-center'><a href='#' class='btn btn-sm btn-flat btn-danger data-del-onfly'><i class='fas fa-trash'></i></a></td>";
-                var td4 = "<td class='hide'>" + p[0].CaseId + "</td>";
+                var td4 = "<td class='hide'>" + p[0].QRCode + "</td>";
                 var tr = "<tr>" + td1 + td2 + td3 + td4 + "</tr>";
                 $("#tblProb tbody").append(tr);
             }

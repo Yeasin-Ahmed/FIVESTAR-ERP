@@ -15,7 +15,7 @@
                     <th>Remarks</th>
                     <th>Entry Date</th>
                     <th>Entry User</th>
-                    <th>Action</th>
+                    <th class="hide">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,7 +31,7 @@
                         <td>@rep.Remarks</td>
                         <td>@entryDate</td>
                         <td>@rep.EntryUser</td>
-                        <td class="text-center">
+                        <td class="text-center hide">
                             <a href="#" class="btn btn-outline-warning btn-sm data-edit-repair" title="Edit" data-edit-repair="@rep.RepairId"><i class="fas fa-pencil-alt"></i> </a>
                             <a href="#" class="btn btn-outline-danger btn-sm data-del-repair" title="Delete" data-del-repair="@rep.RepairId"><i class="far fa-trash-alt"></i> </a>
                         </td>

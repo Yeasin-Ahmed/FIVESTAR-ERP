@@ -884,6 +884,23 @@
     <Content Include="Views\Accounts\_Customer.cshtml" />
     <Content Include="Views\Accounts\_DebitVoucherList.cshtml" />
     <Content Include="Views\Accounts\_CreditVoucherList.cshtml" />
+    <Content Include="Views\Configuration\_DealerSS.cshtml" />
+    <Content Include="Views\Configuration\_ColorSS.cshtml" />
+    <Content Include="Views\Configuration\_BrandSS.cshtml" />
+    <Content Include="Views\Configuration\_ModelSS.cshtml" />
+    <Content Include="Views\Inventory\StockTransferModelToModel.cshtml" />
+    <Content Include="Views\Inventory\CreateStockTransferMToM.cshtml" />
+    <Content Include="Views\Inventory\_StockTransferModelToModel.cshtml" />
+    <Content Include="Views\Inventory\_StockTransferMToMDetails.cshtml" />
+    <Content Include="Views\Production\CreateLot.cshtml" />
+    <Content Include="Views\Production\_GetLotInList.cshtml" />
+    <Content Include="Views\FrontDesk\CreateMultipleJobOrder.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionReceiveQRCodeList.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionSemiFinishGoodReceiveList.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionQRCodesDetails.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionSemiFinishGoodStockInfoList.cshtml" />
+    <Content Include="Views\Production\_GetRepairSectionSemiFinishGoodStockDetailsList.cshtml" />
+    <Content Include="Views\Production\GetRepairSectionSemiFinishGoodStockDetailsList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

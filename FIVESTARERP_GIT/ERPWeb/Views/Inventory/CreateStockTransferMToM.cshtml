@@ -1,0 +1,356 @@
+﻿
+@{
+    ViewBag.Title = "CreateStockTransferMToM";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline card-tabs" style="margin-top:-20px">
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-two-tabContent">
+                    @Html.AntiForgeryToken()
+
+                    <div class="tab-pane fade show active" id="custom-tabs-two-createStock" role="tabpanel" aria-labelledby="custom-tabs-two-createStock-tab">
+                        <div class="row" style="margin-top:-15px">
+                            <div class="col-md-12">
+                                <div class="card card-gray-dark">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <a href="/Inventory/StockTransferModelToModel" class="btn btn-sm btn-outline-primary" title="Back To List"><i class="fas fa-arrow-alt-circle-left"></i></a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h5 class="text-center text-bold">
+                                                    Stock Transfer Model To Model
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-danger btn-sm float-lg-right" id="btnReset" title="RESET UI"><i class="fas fa-sync-alt"></i> </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card card-navy">
+                                    
+                                    <div class="card-body text-sm">
+                                        <div class="row" style="margin-top:-15px">
+
+                                            <div class="col-md-2">
+                                                <label for="ddlFromModel" class="control-label font-weight-bold">From Model</label>
+                                                @Html.DropDownList("ddlFromModel", (IEnumerable<SelectListItem>)ViewBag.ddlFromModel, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <span class="error hide require-fromModel font-weight-bold">Model is required</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ddlToModel" class="control-label font-weight-bold">To Model</label>
+                                                @Html.DropDownList("ddlToModel", (IEnumerable<SelectListItem>)ViewBag.ddlToModel, "--Select Model--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <span class="error hide require-toModel font-weight-bold">Model is required</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="ddlItems" class="control-label font-weight-bold">Items</label>
+                                                @Html.DropDownList("ddlItems", (IEnumerable<SelectListItem>)ViewBag.ddlItems, "--Select Item--", new { @class = "form-control form-control-sm select2 select2-danger" })
+                                                <span class="error hide req-item-itemType-warehouse font-weight-bold">Item/ItemType/Warehouse is missing</span>
+                                                <span class="error hide req-duplicate-warehouse font-weight-bold">Please Select Same Warehouse</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtTransferQty" class="control-label font-weight-bold">Qty.</label>
+                                                <div class="input-group">
+                                                    <input type="number" placeholder="Qty" name="quantity" id="txtTransferQty" class="form-control form-control-sm" />
+                                                </div>
+                                                <span class="error hide required-qty font-weight-bold">Quantity is required!</span>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="txtRemarks" class="control-label font-weight-bold">Remarks</label>
+                                                <input type="text" name="remarks" value="" id="txtRemarks" class="form-control form-control-sm" />
+                                            </div>
+                                            
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                @*<label for="" class="control-label font-weight-bold" style="visibility:hidden"> Add To List</label>*@
+                                                <div class="clearfix">
+                                                    <button type="submit" class="btn btn-sm btn-outline-warning float-left mr-1" id="btnAddToList" title="ADD TO LIST"><i class="fas fa-plus"></i> &nbsp; ADD TO LIST </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:-10px">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-md-12" style="margin-top:-20px" id="dataContainer">
+                                            @*@{Html.RenderAction("GetWarehouseStockInfoPartialList");}*@
+                                            <div class="row">
+                                                <div class="col-md-12 mt-2" style="overflow-y:scroll">
+                                                    <table class="table table-bordered table-sm text-sm table-striped table-responsive-lg" id="tblTransferStock">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="9">
+                                                                    <button class="btn btn-outline-success btn-sm float-lg-right" id="btnSubmit">SAVE <i class="fas fa-paper-plane"></i> </button>
+                                                                </th>
+                                                            </tr>
+                                                            <tr class="btn-dark text-center">
+                                                                <th>#SL</th>
+                                                                <th class="hide"></th>
+                                                                <th>From Model</th>
+                                                                <th class="hide"></th>
+                                                                <th>To Model</th>
+                                                                <th class="hide"></th>
+                                                                <th>Item Name</th>
+                                                                <th>Qty.</th>
+                                                                <th>Remarks</th>
+                                                                <th>Action</th>
+                                                                <th class="hide itemType"></th>
+                                                                <th class="hide warehouse"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var ddlFromModel = $("#ddlFromModel");
+        var ddlToModel = $("#ddlToModel");
+        var ddlItems = $("#ddlItems");
+        var txtTransferQty = $("#txtTransferQty");
+        var txtRemarks = $("#txtRemarks");
+
+        var transferStock = '';
+        var itemTypeStock = '';
+        var itemStock = '';
+
+        function getItemDetailsByStock() {
+            transferStock = '';
+            itemTypeStock = '';
+            itemStock = '';
+            if (ddlItems.val() != '') {
+                itemStock = ddlItems.val().substring(0, ddlItems.val().indexOf("#"));
+                itemTypeStock = ddlItems.val().substring(ddlItems.val().indexOf("#") + 1, ddlItems.val().lastIndexOf("#"));
+                transferStock = ddlItems.val().substring(ddlItems.val().lastIndexOf("#") + 1);
+            }
+        }
+
+        function validateInput() {
+            $('.error').addClass('hide');
+            var isValid = true;
+            var count = $("#tblTransferStock tbody tr").length;
+            console.log(count);
+            if (count > 0) {
+                $.each($("#tblTransferStock tbody tr"), function (index, item) {
+                    var itemId = $(this).children('td').eq(11).html();
+                    if (itemId != transferStock) {
+                        isValid = false;
+                        $(".req-duplicate-warehouse").removeClass('hide');
+                    }
+                })
+            }
+            if (TryParseInt(ddlFromModel.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-fromModel").removeClass("hide");
+            }
+            if (TryParseInt(ddlToModel.val(), 0) <= 0) {
+                isValid = false;
+                $(".require-toModel").removeClass("hide");
+            }
+            getItemDetailsByStock();
+            if (TryParseInt(itemStock, 0) <= 0 || TryParseInt(itemTypeStock, 0) <= 0 || TryParseInt(transferStock, 0) <= 0) {
+                isValid = false;
+                $(".req-item-itemType-warehouse").removeClass("hide");
+            }
+            if (txtTransferQty.val() == "" || TryParseInt(txtTransferQty.val(), 0) <= 0) {
+                isValid = false;
+                $(".required-qty").removeClass("hide");
+            }
+            return isValid;
+        }
+
+        $("#btnAddToList").click(function (e) {
+            e.preventDefault();
+            if (validateInput() == true) {
+
+                //disable("#ddlWarehouse");
+                disable("#ddlFromModel");
+                disable("#ddlToModel");
+                getItemDetailsByStock();
+                var sl = $("#tblTransferStock tbody tr").length;
+                var td1 = "<td class='text-center text-bold'>" + (sl + 1) + "</td>"
+                var td2 = "<td class='hide'>" + ddlFromModel.val() + "</td>";
+                var td3 = "<td>" + $("#ddlFromModel option:selected").text() + "</td>";
+                var td4 = "<td class='hide'>" + ddlToModel.val() + "</td>";
+                var td5 = "<td>" + $("#ddlToModel option:selected").text() + "</td>";
+                var td6 = "<td class='hide'>" + itemStock + "</td>";
+                var td7 = "<td>" + $("#ddlItems option:selected").text() + "</td>";
+
+                var td8 = "<td class='text-center'>" + txtTransferQty.val() + "</td>";
+
+                var td9 = "<td>" + txtRemarks.val() + "</td>";
+                var td10 = "<td class='text-center'><a href='#' class='btn btn-sm btn-danger data-onfly-del' style='line-height: 1'><i class='far fa-trash-alt'></i> Delete</a></td>";
+
+                var td11 = "<td class='hide itemType'>" + itemTypeStock + "</td>";
+                var td12 = "<td class='hide warehouse'>" + transferStock + "</td>";
+
+                var tr = "<tr>" + td1 + td2 + td3 + td4 + td5 + td6 + td7 + td8 + td9 + td10 + td11 + td12 + "</tr>";
+                if ($("#tblTransferStock tbody tr").length == 0) {
+                    $("#tblTransferStock tbody").append(tr);
+                }
+                else {
+                    $("#tblTransferStock tbody tr").eq(0).before(tr);
+                }
+                ddlItems.val('');
+                ddlItems.trigger('change');
+                txtTransferQty.val('');
+                txtRemarks.val('');
+            }
+        });
+
+        $(document).on("click", "a.data-onfly-del", function (e) {
+            e.preventDefault();
+            var index = $(this).parent().parents('tbody tr').index();
+            if (bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result === true) {
+                    removeTableRow("#tblTransferStock tbody", index);
+                    fnFixTheTbodyRowSerialInDecsOrder("#tblTransferStock", index);
+                };
+            }));
+        })
+
+        $("#btnReset").click(function (e) {
+            e.preventDefault();
+            ddlItems.val('');
+            ddlItems.trigger("change");
+            enable("#ddlFromModel");
+            ddlFromModel.val('');
+            ddlFromModel.trigger("change");
+            enable("#ddlToModel");
+            ddlToModel.val('');
+            ddlToModel.trigger("change");
+            $("#tblTransferStock tbody").empty();
+            clearDropdown("ddlItemType")
+            txtTransferQty.val('');
+            txtRemarks.val('');
+        })
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            if ($("#tblTransferStock tbody tr").length > 0) {
+                $(".error").addClass("hide");
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result) {
+                        disable("#btnSubmit");
+                        var info = {
+                            FromDescriptionId: TryParseInt(ddlFromModel.val(), 0),
+                            ToDescriptionId: TryParseInt(ddlToModel.val(), 0),
+                            WarehouseId: transferStock,
+                        };
+
+                        var details = []; details.length = 0;
+                        $.each($("#tblTransferStock tbody tr"), function (index, item) {
+                            var tds = $(this).children('td');
+                            var itemId = tds.eq('5').html();
+                            var qty = tds.eq('7').html();
+                            var rmk = tds.eq('8').html();
+                            var itemTypeId = tds.eq('10').html();
+                            var wareId = tds.eq('11').html();
+
+                            details.push({
+                                ItemId: TryParseInt(itemId, 0),
+                                Quantity: TryParseInt(qty, 0),
+                                Remarks: rmk,
+                                ItemTypeId: TryParseInt(itemTypeId, 0),
+                                WarehouseId: TryParseInt(wareId, 0)
+                            })
+                        });
+
+                        info.stockTransferDetailsMToM = details;
+                        var data = JSON.stringify({ models: info });
+                        //return console.log(data);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveStockTransferModelToModel', data, getToken())).then(function (res, status) {
+                            enable("#btnSubmit");
+                            if (res == true) {
+                                $('.toastrDefaultSuccess').trigger('click');
+
+                                setTimeout(function () {
+                                    redirectPage('@Url.Action("StockTransferModelToModel")');
+                                }, 1000);
+                            }
+                            else {
+                                $('.toastrDefaultError').trigger('click');
+                            }
+                        }).fail(function (error) {
+                            consoleLog(error)
+                        })
+                        enable("#btnSubmit");
+                    }
+                });
+            }
+        });
+
+        @*$("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            getItemDetailsByStock();
+            if (ddlFromModel.val() != '' && ddlToModel.val() != '' && $("#tblTransferStock tbody tr").length > 0)
+            {
+                bootbox.confirm("Are you sure you want to save?", function (result) {
+                    if (result === true)
+                    {
+                        var reqData = [];
+                        reqData.length = 0;
+                        
+                        $.each($("#tblTransferStock tbody tr"), function (index, item) {
+                            var td = $(this).children('td');
+                            reqData.push({
+                                FromDescriptionId: TryParseInt(ddlFromModel.val(), 0),
+                                ToDescriptionId: TryParseInt(ddlToModel.val(), 0),
+                                ItemId: td.eq(5).html(),
+                                Quantity: td.eq(7).html(),
+                                Remarks: td.eq(8).html(),
+                                ItemTypeId: td.eq(10).html(),
+                                WarehouseId: td.eq(11).html(),
+                            });
+                        })
+
+                        reqData = JSON.stringify({ models: reqData });
+                        console.log(reqData);
+                        return console.log(reqData);
+                        $.when(postReqWithToken(dataType.applicationJson, dataType.json, 'POST', '/Inventory/SaveStockTransferModelToModel', reqData, getToken())).then(function (res, status)
+                        {
+
+                            if (res == true) {
+                            toastrSuccessAlert(execuStatus.successSave);
+                            redirectPage('@Url.Action("StockTransferModelToModel")');
+                                setTimeout(function () {
+                                }, 1000);
+                            }
+                            else {
+                                toastrErrorAlert(execuStatus.fail);
+                            }
+                        }).fail(function (error) {
+                            alert(execuStatus.fail);
+                        })
+                    }
+                  })
+            }
+        })*@
+
+        function redirectPage(page) {
+            window.location.replace(page);
+        }
+    </script>
+    }

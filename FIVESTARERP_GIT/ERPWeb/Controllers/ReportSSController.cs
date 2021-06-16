@@ -52,10 +52,10 @@ namespace ERPWeb.Controllers
 
         #region JobOrderList
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate,string ddlCustomerType,string ddlJobType,string repairStatus,string customer, string rptType)
+        public ActionResult GetJobOrderReport(string mobileNo, long? modelId, string jobstatus, long? jobOrderId, string jobCode, string iMEI, string iMEI2, string fromDate, string toDate, string ddlCustomerType, string ddlJobType, string repairStatus, string customer, string rptType)
         {
             bool IsSuccess = false;
-            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate,ddlCustomerType, ddlJobType,repairStatus, customer).ToList();
+            IEnumerable<JobOrderDTO> reportData = _jobOrderBusiness.GetJobOrders(mobileNo, modelId, jobstatus, jobOrderId, jobCode, iMEI, iMEI2, User.OrgId, User.BranchId, fromDate, toDate, ddlCustomerType, ddlJobType, repairStatus, customer).ToList();
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -303,7 +303,7 @@ namespace ERPWeb.Controllers
 
         #region PartsReturnReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult PartsReturnReport(long? ddlMobileParts2,long? ddlTechnicalServicesName2,string jobCode2, string fromDate2, string toDate2,string rptType2)
+        public ActionResult PartsReturnReport(long? ddlMobileParts2, long? ddlTechnicalServicesName2, string jobCode2, string fromDate2, string toDate2, string rptType2)
         {
             var dto = _tsStockReturnDetailsBusiness.GetReturnParts(User.OrgId, User.BranchId, ddlTechnicalServicesName2, ddlMobileParts2, jobCode2, fromDate2, toDate2);
 
@@ -348,11 +348,11 @@ namespace ERPWeb.Controllers
 
         #region UsedPartsReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult UsedPartsReport(long? ddlMobileParts,long? ddlTechnicalServicesName, string fromDate, string toDate,string rptType,string jobCode)
+        public ActionResult UsedPartsReport(long? ddlMobileParts, long? ddlTechnicalServicesName, string fromDate, string toDate, string rptType, string jobCode)
         {
             bool IsSuccess = false;
 
-            IEnumerable<TechnicalServicesStockDTO> dto = _technicalServicesStockBusiness.GetUsedParts(ddlMobileParts, ddlTechnicalServicesName, User.OrgId, User.BranchId, fromDate, toDate,jobCode);
+            IEnumerable<TechnicalServicesStockDTO> dto = _technicalServicesStockBusiness.GetUsedParts(ddlMobileParts, ddlTechnicalServicesName, User.OrgId, User.BranchId, fromDate, toDate, jobCode);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -400,7 +400,7 @@ namespace ERPWeb.Controllers
 
         #region SellsReport
         //[HttpPost, ValidateJsonAntiForgeryToken]
-        public ActionResult SellsReport(string fromDate, string toDate,string rptType,string ddlInvoiceTypeStatus,string invoice)
+        public ActionResult SellsReport(string fromDate, string toDate, string rptType, string ddlInvoiceTypeStatus, string invoice)
         {
             bool IsSuccess = false;
 
@@ -453,8 +453,8 @@ namespace ERPWeb.Controllers
         #region TSRequsitionReport
         public ActionResult TSRequsitionReport(string reqCode, long? ddlWarehouseName, long? ddlTechnicalServicesName, string reqStatus, string fromDate, string toDate, string rptType, string jobCode = "")
         {
-            
-            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoData(reqCode, ddlWarehouseName, ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId,jobCode);
+
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoData(reqCode, ddlWarehouseName, ddlTechnicalServicesName, reqStatus, fromDate, toDate, User.OrgId, User.BranchId, jobCode);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -500,7 +500,7 @@ namespace ERPWeb.Controllers
         public ActionResult OtherBranchRepairJob(long? ddlBranchName, string fromDate, string toDate, string rptType)
         {
 
-            IEnumerable<JobOrderReturnDetailDTO> dto = _jobOrderReturnDetailBusiness.RepairOtherBranchJob(User.BranchId,ddlBranchName, User.OrgId, fromDate, toDate);
+            IEnumerable<JobOrderReturnDetailDTO> dto = _jobOrderReturnDetailBusiness.RepairOtherBranchJob(User.BranchId, ddlBranchName, User.OrgId, fromDate, toDate);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -590,7 +590,7 @@ namespace ERPWeb.Controllers
         #region OtherBranchRequsitionReport
         public ActionResult OtherBranchRequsitionReport(string reqCode2, long? ddlWarehouseName2, long? ddlTechnicalServicesName2, string reqStatus2, string fromDate2, string toDate2, string rptType2)
         {
-            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode2, ddlWarehouseName2,ddlTechnicalServicesName2, reqStatus2, fromDate2, toDate2, User.OrgId, User.BranchId);
+            var dto = _requsitionInfoForJobOrderBusiness.GetRequsitionInfoOtherBranchData(reqCode2, ddlWarehouseName2, ddlTechnicalServicesName2, reqStatus2, fromDate2, toDate2, User.OrgId, User.BranchId);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -632,7 +632,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region JobOrderReceivedReport
-        public ActionResult ReceivedJobOrderReport(long? ddlBranchName, string fromDate, string ddlTransferStatus, string toDate,string rptType, string jobCode = "", string transferCode = "")
+        public ActionResult ReceivedJobOrderReport(long? ddlBranchName, string fromDate, string ddlTransferStatus, string toDate, string rptType, string jobCode = "", string transferCode = "")
         {
             var dto = _jobOrderTransferDetailBusiness.GetReceiveJob(User.OrgId, User.BranchId, ddlBranchName, jobCode, transferCode, fromDate, toDate, ddlTransferStatus);
 
@@ -722,7 +722,7 @@ namespace ERPWeb.Controllers
         #region JobSignIn And Out 
         public ActionResult JobSignInAndOut(long? ddlTechnicalServicesName, string fromDate, string toDate, string rptType, string jobCode = "")
         {
-            var dto = _jobOrderTSBusiness.JobSignInAndOut(ddlTechnicalServicesName,jobCode,User.OrgId,User.BranchId,fromDate,toDate);
+            var dto = _jobOrderTSBusiness.JobSignInAndOut(ddlTechnicalServicesName, jobCode, User.OrgId, User.BranchId, fromDate, toDate);
 
             ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
             reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
@@ -852,7 +852,7 @@ namespace ERPWeb.Controllers
         #endregion
 
         #region HandsetChangeInformationReport
-        public ActionResult HandsetChangeReports(string fromDate, string toDate,string rptType)
+        public ActionResult HandsetChangeReports(string fromDate, string toDate, string rptType)
         {
             bool IsSuccess = false;
             IEnumerable<HandsetChangeInformationDTO> reportData = _handsetChangeTraceBusiness.GetHandsetChangeList(User.OrgId, User.BranchId, fromDate, toDate).ToList();
@@ -941,5 +941,50 @@ namespace ERPWeb.Controllers
             return new EmptyResult();
         }
         #endregion
+
+        #region GetJobOrderReceipt
+        public ActionResult GetJobOrderReceipt(long jobOrderId)
+        {
+            bool IsSuccess = false;
+            IEnumerable<JobOrderDTO> jobOrderDetails = _jobOrderBusiness.GetJobCreateReceipt(jobOrderId, User.OrgId, User.BranchId);
+
+            ServicesReportHead reportHead = _jobOrderReportBusiness.GetBranchInformation(User.OrgId, User.BranchId);
+            reportHead.ReportImage = Utility.GetImageBytes(User.LogoPaths[0]);
+            List<ServicesReportHead> servicesReportHeads = new List<ServicesReportHead>();
+            servicesReportHeads.Add(reportHead);
+
+            LocalReport localReport = new LocalReport();
+            string reportPath = Server.MapPath("~/Reports/ServiceRpt/FrontDesk/rptJobOrderCreateReceipt.rdlc");
+            if (System.IO.File.Exists(reportPath))
+            {
+                localReport.ReportPath = reportPath;
+                ReportDataSource dataSource1 = new ReportDataSource("JobCreateReceipt", jobOrderDetails);
+                ReportDataSource dataSource2 = new ReportDataSource("ServicesReportHead", servicesReportHeads);
+                localReport.DataSources.Clear();
+                localReport.DataSources.Add(dataSource1);
+                localReport.DataSources.Add(dataSource2);
+                localReport.Refresh();
+                localReport.DisplayName = "Receipt";
+
+                string mimeType;
+                string encoding;
+                string fileNameExtension = ".pdf";
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderedBytes;
+
+                renderedBytes = localReport.Render(
+                    "Pdf",
+                    "",
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            return new EmptyResult();
+            #endregion
+        }
     }
 }
